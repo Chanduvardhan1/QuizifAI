@@ -194,17 +194,15 @@ const Signup = () => {
       })
       .catch((error) => {
         console.error("Error signing up:", error);
-        if (error.detail && error.detail.length > 0) {
+        if (error.detail && Array.isArray(error.detail) && error.detail.length > 0) {
           const detail = error.detail[0];
-          if (detail.type === "value_error" && detail.loc[1] === "user_name") {
-            // Handle the specific error for invalid user name
+          if (detail.type === "value_error" && detail.loc.includes("user_name")) {
             setResponseMessage(detail.msg);
-            // You can perform additional actions here if needed
           } else {
-            alert('Failed to sign up');
+            setResponseMessage("Failed to sign up Names can only contain alphabetic characters");
           }
         } else {
-          alert('Failed to sign up');
+          setResponseMessage("Failed to sign up Names can only contain alphabetic characters");
         }
       });
   };

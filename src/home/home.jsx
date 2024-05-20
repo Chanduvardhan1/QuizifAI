@@ -36,7 +36,11 @@ function Home() {
   };
 
   const handleClick1 = () => {
-    // router.push("/login");
+    // router.push("/");
+  };
+
+  const handleClick3 = () => {
+    navigate("/contact");
   };
   // const location = useLocation();
   // const searchParams = new URLSearchParams(location.search);
@@ -222,10 +226,10 @@ function Home() {
               Pricing
             </li> */}
           
-            <li  onClick={() => setActiveSection("contact")} className="navItem">
-              <Link to={"/contact"}>
+            <li  onClick={handleClick3} className="navItem">
+         
               Contact Us
-              </Link>  
+             
             </li>
 
             <li className="buttons">

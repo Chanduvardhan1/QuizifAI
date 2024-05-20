@@ -32,7 +32,7 @@ function contact() {
 
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate("/contactus");
+    navigate("/contact");
   };
 
   const handleClick1 = () => {

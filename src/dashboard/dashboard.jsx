@@ -13,7 +13,7 @@ import searchIcon from "../../src/assets/Images/images/dashboard/searchBar.png";
 import Start_button from "../../public/images/dashboard/Start-button.png";
 import Share_button from "../../public/images/dashboard/Share-button.png";
 import leaderboard_button from "../../public/images/dashboard/leaderboard-button.png";
-import Edit_button from "../../public/images/dashboard/Edit-button.png";
+import Edit_button from "../../src/assets/Images/dashboard/Edit-button.png"
 import Attempt1 from "../../public/images/dashboard/Attempt1.png";
 import NoOfQuestion from "../../public/images/dashboard/NoOfQuestion.png";
 import Easy from "../../public/images/dashboard/Easy.png";

@@ -99,6 +99,98 @@ const LoginPage = () => {
     setShowResendOTPForm(true);
   };
   const navigate = useNavigate();
+  // const handleLogin = async (loginOption, email, mobile, password) => {
+  //   // if (!termsChecked) {
+  //   //   setErrorMessage("Please agree to the terms and conditions");
+  //   //   return;
+  //   // }
+  //   try {
+  //     console.log("email - ", email);
+  //     const response = await fetch(`https://quizifai.com:8010/login`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         login_option: loginMethod,
+  //         email_or_mobile: loginMethod === "email" ? email : mobile,
+  //         password: password,
+  //       }),
+  //     });
+  //     const responseData = await response.json();
+  //     console.log("API Response:", responseData);
+  //     console.log(responseData);
+
+  //     console.log("User ID:", responseData[0].user_id[0]);
+  //     console.log("User Name:", responseData[0].user_name);
+     
+  //     // Store user_id and user_name in localStorage
+  //     localStorage.setItem('user_id', responseData[0].user_id[0]);
+  //     localStorage.setItem('user_name', responseData[0].user_name)
+    
+
+  //     {
+  //       /*const userId = responseData[0].user_id[0]; 
+  //     console.log('User ID:', userId);
+      
+     
+  //     sessionStorage.setItem('userId', userId);*/
+  //     }
+
+  //     if (response.ok) {
+  //       if (
+  //         Array.isArray(responseData) &&
+  //         responseData[0] &&
+  //         responseData[0].response === "fail"
+  //       ) {
+  //         setErrorMessage(
+  //           responseData[0].message ||
+  //             "An unknown error occurred while logging in."
+  //         );
+  //         console.error(errorMessage);
+  //       } else if (
+  //         typeof responseData === "object" &&
+  //         responseData.response === "fail"
+  //       ) {
+  //         setErrorMessage(
+  //           responseData.data || "An unknown error occurred while logging in."
+  //         );
+  //         console.error(errorMessage);
+  //       }else if (
+     
+  //         responseData.response === "fail" && responseData.data ==="Mobile Number is incorrect or account doesn't exist pls sinup." ) {
+  //         setErrorMessage(
+  //           responseData.data || "Mobile Number is incorrect or account doesn't exist pleass signup."
+  //         );
+  //         console.error(errorMessage);
+  //       }  else if (responseData.response === "success") {
+  //         // const userId = responseData.data.user_id;
+  //         // sessionStorage.setItem('userId', userId);
+
+  //         // const userName = responseData.response.user_name.user_id;
+  //         // sessionStorage.setItem('userName', userName);
+  //         // // sessionStorage.setItem('userid', userId);
+  //         // navigate("/dashboard");
+          
+          
+  //       } else {
+  //         setErrorMessage("");
+  //         navigate("/dashboard");
+  //         console.log("Login successful!");
+  //       }
+  //     } else if (responseData.data === "Mobile Number is incorrect or account doesn't exist pls sinup.") {
+  //       setErrorMessage("Mobile Number is incorrect or account doesn't exist. Please sign up.");
+  //     } else {
+  //       setErrorMessage(
+  //         responseData.message || "An unknown error occurred while logging in."
+  //       );
+  //       console.error(errorMessage);
+  //     }
+  //   } catch (error) {
+  //     console.error("Login failed:", error);
+  //     setErrorMessage("An error occurred while logging in.");
+  //   }
+  // };
   const handleLogin = async (loginOption, email, mobile, password) => {
     // if (!termsChecked) {
     //   setErrorMessage("Please agree to the terms and conditions");
@@ -117,78 +209,58 @@ const LoginPage = () => {
           password: password,
         }),
       });
+  
       const responseData = await response.json();
       console.log("API Response:", responseData);
-      console.log(responseData);
-
-      console.log("User ID:", responseData[0].user_id[0]);
-      console.log("User Name:", responseData[0].user_name);
-     
-      // Store user_id and user_name in localStorage
-      localStorage.setItem('user_id', responseData[0].user_id[0]);
-      localStorage.setItem('user_name', responseData[0].user_name)
-    
-
-      {
-        /*const userId = responseData[0].user_id[0]; 
-      console.log('User ID:', userId);
-      
-     
-      sessionStorage.setItem('userId', userId);*/
-      }
-
+  
       if (response.ok) {
-        if (
-          Array.isArray(responseData) &&
-          responseData[0] &&
-          responseData[0].response === "fail"
-        ) {
-          setErrorMessage(
-            responseData[0].message ||
-              "An unknown error occurred while logging in."
-          );
+        if (Array.isArray(responseData) && responseData[0]) {
+          if (responseData[0].response === "fail") {
+            const errorMessage = responseData[0].message || "An unknown error occurred while logging in.";
+            setErrorMessage(errorMessage);
+            console.error(errorMessage);
+          } else {
+            // Assuming successful response structure in array form
+            localStorage.setItem('user_id', responseData[0].user_id[0]);
+            localStorage.setItem('user_name', responseData[0].user_name);
+            setErrorMessage("");
+            navigate("/dashboard");
+            console.log("Login successful!");
+          }
+        } else if (typeof responseData === "object" && responseData.response === "fail") {
+          const errorMessage = responseData.data || responseData.message || "An unknown error occurred while logging in.";
+          if (responseData.data === "Email is incorrect or account doesn't exist.") {
+            setErrorMessage("Email is incorrect or account doesn't exist. Please sign up.");
+          } else if (responseData.data === "Mobile Number is incorrect or account doesn't exist pls sinup.") {
+            setErrorMessage("Mobile Number is incorrect or account doesn't exist. Please sign up.");
+          } else if (responseData.message === "Email is already registered but not verified. Please verify your email and try again.") {
+            setErrorMessage("Email is already registered but not verified. Please verify your email and try again.");
+          } else {
+            setErrorMessage(errorMessage);
+          }
           console.error(errorMessage);
-        } else if (
-          typeof responseData === "object" &&
-          responseData.response === "fail"
-        ) {
-          setErrorMessage(
-            responseData.data || "An unknown error occurred while logging in."
-          );
-          console.error(errorMessage);
-        }else if (
-     
-          responseData.response === "fail" && responseData.data ==="Mobile Number is incorrect or account doesn't exist pls sinup." ) {
-          setErrorMessage(
-            responseData.data || "Mobile Number is incorrect or account doesn't exist pleass signup."
-          );
-          console.error(errorMessage);
-        }  else if (responseData.response === "success") {
-          // const userId = responseData.data.user_id;
-          // sessionStorage.setItem('userId', userId);
-
-          // const userName = responseData.response.user_name.user_id;
-          // sessionStorage.setItem('userName', userName);
-          // // sessionStorage.setItem('userid', userId);
-          // navigate("/dashboard");
-          
-          
-        } else {
+        } else if (responseData.response === "success") {
+          // Assuming successful response structure in object form
+          localStorage.setItem('user_id', responseData.data.user_id);
+          localStorage.setItem('user_name', responseData.data.user_name);
           setErrorMessage("");
           navigate("/dashboard");
           console.log("Login successful!");
+        } else {
+          setErrorMessage("An unknown error occurred while logging in.");
+          console.error("An unknown error occurred while logging in.");
         }
       } else {
-        setErrorMessage(
-          responseData.message || "An unknown error occurred while logging in."
-        );
-        console.error(errorMessage);
+        setErrorMessage(responseData.message || "An unknown error occurred while logging in.");
+        console.error(responseData.message || "An unknown error occurred while logging in.");
       }
     } catch (error) {
       console.error("Login failed:", error);
       setErrorMessage("An error occurred while logging in.");
     }
   };
+  
+  
   const handleForgotPasswordSubmit = () => {
     // if (!termsChecked) {
     //   setErrorMessage("Please agree to the terms and conditions");

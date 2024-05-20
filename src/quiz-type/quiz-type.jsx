@@ -118,7 +118,7 @@ const options6 = [
 
 const options7 = [
   { label: "Duration" },
-  { label: '10 mits' },
+  { label: 10 },
   { label: 20 },
   { label: 30 },
   { label: 40 },

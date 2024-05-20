@@ -13,11 +13,14 @@ import searchIcon from "../../src/assets/Images/images/dashboard/searchBar.png";
 import Start_button from "../../public/images/dashboard/Start-button.png";
 import Share_button from "../../public/images/dashboard/Share-button.png";
 import leaderboard_button from "../../public/images/dashboard/leaderboard-button.png";
-import Edit_button from "../../src/assets/Images/dashboard/Edit-button.png"
+import Edit_button from "../../src/assets/Images/dashboard/Edit-button.png";
+import download from "../../src/assets/Images/dashboard/download.png";
+// import view from "../../src/assets/Images/dashboard/view.png"
+import high_score from "../../src/assets/Images/dashboard/high-score.png";
+import eye from "../../src/assets/Images/dashboard/eye.png";
 import Attempt1 from "../../public/images/dashboard/Attempt1.png";
 import NoOfQuestion from "../../public/images/dashboard/NoOfQuestion.png";
 import Easy from "../../public/images/dashboard/Easy.png";
-
 import Clock from "../../public/images/dashboard/Clock.png";
 
 // import Clock from "../../public/images/dashboard/Clock.png";
@@ -183,25 +186,24 @@ const Dashboard = () => {
     setIsNavbarOpen8((prevState) => !prevState);
   };
   // -------------------------------------------------
-const toggleNavbar11 = () => {
-  setIsNavbarOpen11((prevState) => !prevState);
-};
-const toggleNavbar12 = () => {
-  setIsNavbarOpen12((prevState) => !prevState);
-};
-const toggleNavbar13 = () => {
-  setIsNavbarOpen13((prevState) => !prevState);
-};
-const toggleNavbar14 = () => {
-  setIsNavbarOpen14((prevState) => !prevState);
-};
-const toggleNavbar15= () => {
-  setIsNavbarOpen15((prevState) => !prevState);
-};
-const toggleNavbar16= () => {
-  setIsNavbarOpen16((prevState) => !prevState);
-};
-
+  const toggleNavbar11 = () => {
+    setIsNavbarOpen11((prevState) => !prevState);
+  };
+  const toggleNavbar12 = () => {
+    setIsNavbarOpen12((prevState) => !prevState);
+  };
+  const toggleNavbar13 = () => {
+    setIsNavbarOpen13((prevState) => !prevState);
+  };
+  const toggleNavbar14 = () => {
+    setIsNavbarOpen14((prevState) => !prevState);
+  };
+  const toggleNavbar15 = () => {
+    setIsNavbarOpen15((prevState) => !prevState);
+  };
+  const toggleNavbar16 = () => {
+    setIsNavbarOpen16((prevState) => !prevState);
+  };
 
   const toggleGetMoreQuizzes = () => {
     setGetMoreQuizzes(true);
@@ -249,7 +251,6 @@ const toggleNavbar16= () => {
 
   return (
     <div className={styles.container}>
-      
       <Navigation />
       <div className={styles.mainContent}>
         <div className={styles.header}>
@@ -337,8 +338,8 @@ const toggleNavbar16= () => {
                   </span>
                   <span
                     style={{
-                      marginLeft: "10px",
-                      width: "125px",
+                      marginLeft: "30px",
+                      width: "130px",
                       height: "8px",
                       fontSize: "8px",
                       marginTop: "7px",
@@ -503,9 +504,7 @@ const toggleNavbar16= () => {
           <div className={styles.infoCards}>
             {/* Info cards content */}
             <div className={styles.card} style={{ paddingTop: "8px" }}>
-              <p className={styles.title}>
-                {latestquizzes[0]?.quiz_name}
-              </p>
+              <p className={styles.title}>{latestquizzes[0]?.quiz_name}</p>
 
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded ">
@@ -529,57 +528,56 @@ const toggleNavbar16= () => {
                   {isNavbarOpen && (
                     <div className={styles.infoIcons}>
                       {/* start */}
-                     <div className={styles.start}>
-                     <img
-                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
-                        src={Start_button}
-                        alt="Play icon"
-                      />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
-                        Start
-                      </span>
-                     </div>
-                     {/* Edit  */}
-                     <div className={styles.start}>
-                     <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
-                        src={Edit_button}
-                        alt="Play icon"
-                      />
-                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
-                        Edit
-                      </span>
-                     </div>
+                      <div className={styles.start}>
+                        <img
+                          className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                          src={Start_button}
+                          alt="Play icon"
+                        />
+                        <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                          Start
+                        </span>
+                      </div>
+                      {/* Edit  */}
+                      <div className={styles.start}>
+                        <img
+                          className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                          src={Edit_button}
+                          alt="Play icon"
+                        />
+                        <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                          Edit
+                        </span>
+                      </div>
                       {/* Leaderboard */}
                       <div className={styles.start}>
-                      <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
-                        src={leaderboard_button}
-                        alt="Play icon"
-                      />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
-                        Leaderboard 
-                      </span>
+                        <img
+                          className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                          src={leaderboard_button}
+                          alt="Play icon"
+                        />
+                        <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                          Leaderboard
+                        </span>
                       </div>
                       {/* Share */}
-                      
-                     <div className={styles.start}>
-                     <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                        src={Share_button}
-                        alt="Play icon"
-                      />
-                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                        Share
-                      </span>
-                     </div>
+
+                      <div className={styles.start}>
+                        <img
+                          className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
+                          src={Share_button}
+                          alt="Play icon"
+                        />
+                        <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
+                          Share
+                        </span>
+                      </div>
                     </div>
                   )}
                 </div>
               </div>
 
-              <div className={styles.category} >
-
+              <div className={styles.category}>
                 <span className={styles.category1}>
                   {latestquizzes[0]?.category}
                 </span>
@@ -590,9 +588,7 @@ const toggleNavbar16= () => {
               </div>
 
               <div className={styles.description}>
-                <span>
-                  {latestquizzes[0]?.quiz_description}
-                </span>
+                <span>{latestquizzes[0]?.quiz_description}</span>
               </div>
               <div
                 className={styles.additionalInfo}
@@ -655,10 +651,10 @@ const toggleNavbar16= () => {
               <span className={styles.title}>
                 {latestquizzes[1]?.quiz_name}
               </span>
- 
+
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                <svg
+                  <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -675,40 +671,40 @@ const toggleNavbar16= () => {
                     {isNavbarOpen ? "Close Navbar" : "Open Navbar"}
                   </svg>
                   {isNavbarOpen1 && (
-                   <div className={styles.infoIcons}>
-                   <img
-                     className="absolute h-[1px] w-[1px] left-[6px] top-1"
-                     src={Start_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
-                     Start
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
-                     src={Edit_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
-                     Edit
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
-                     src={leaderboard_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
-                     Leaderboard 
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                     src={Share_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                     Share
-                   </span>
-                 </div>
+                    <div className={styles.infoIcons}>
+                      <img
+                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                        src={Start_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                        Start
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        src={Edit_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                        Edit
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        src={leaderboard_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                        Leaderboard
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
+                        src={Share_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
+                        Share
+                      </span>
+                    </div>
                   )}
                 </div>
               </div>
@@ -724,9 +720,7 @@ const toggleNavbar16= () => {
               </div>
 
               <div className={styles.description}>
-                <span>
-                  {latestquizzes[1]?.quiz_description}
-                </span>
+                <span>{latestquizzes[1]?.quiz_description}</span>
               </div>
 
               <div
@@ -792,7 +786,7 @@ const toggleNavbar16= () => {
 
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                <svg
+                  <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -809,40 +803,40 @@ const toggleNavbar16= () => {
                     {isNavbarOpen2 ? "Close Navbar" : "Open Navbar"}
                   </svg>
                   {isNavbarOpen2 && (
-                   <div className={styles.infoIcons}>
-                   <img
-                     className="absolute h-[1px] w-[1px] left-[6px] top-1"
-                     src={Start_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
-                     Start
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
-                     src={Edit_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
-                     Edit
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
-                     src={leaderboard_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
-                     Leaderboard 
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                     src={Share_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                     Share
-                   </span>
-                 </div>
+                    <div className={styles.infoIcons}>
+                      <img
+                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                        src={Start_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                        Start
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        src={Edit_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                        Edit
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        src={leaderboard_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                        Leaderboard
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
+                        src={Share_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
+                        Share
+                      </span>
+                    </div>
                   )}
                 </div>
               </div>
@@ -857,16 +851,13 @@ const toggleNavbar16= () => {
               </div>
 
               <div className={styles.description}>
-                <span >
-                  {latestquizzes[2]?.quiz_description}
-                </span>
+                <span>{latestquizzes[2]?.quiz_description}</span>
               </div>
               <div
                 className={styles.additionalInfo}
                 style={{ marginTop: "23px" }}
               >
                 <div
-
                   className={styles.infoIcon}
                   style={{ marginTop: "20px" }}
                 ></div>
@@ -881,8 +872,6 @@ const toggleNavbar16= () => {
                     />
                     <p>{latestquizzes[2]?.quiz_attempts}</p>
                     <span className="text-[6px] ml-1">attempts</span>
-
-
                   </div>
                 </div>
 
@@ -926,7 +915,7 @@ const toggleNavbar16= () => {
               </span>
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                <svg
+                  <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -943,44 +932,43 @@ const toggleNavbar16= () => {
                     {isNavbarOpen3 ? "Close Navbar" : "Open Navbar"}
                   </svg>
                   {isNavbarOpen3 && (
-                   <div className={styles.infoIcons}>
-                   <img
-                     className="absolute h-[1px] w-[1px] left-[6px] top-1"
-                     src={Start_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
-                     Start
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
-                     src={Edit_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
-                     Edit
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
-                     src={leaderboard_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
-                     Leaderboard 
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                     src={Share_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                     Share
-                   </span>
-                 </div>
+                    <div className={styles.infoIcons}>
+                      <img
+                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                        src={Start_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                        Start
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        src={Edit_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                        Edit
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        src={leaderboard_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                        Leaderboard
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
+                        src={Share_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
+                        Share
+                      </span>
+                    </div>
                   )}
                 </div>
               </div>
-          
 
               <div className={styles.category}>
                 <span className={styles.category1}>
@@ -993,16 +981,13 @@ const toggleNavbar16= () => {
               </div>
 
               <div className={styles.description}>
-                <span>
-                  {latestquizzes[3]?.quiz_description}
-                </span>
+                <span>{latestquizzes[3]?.quiz_description}</span>
               </div>
               <div
                 className={styles.additionalInfo}
                 style={{ marginTop: "23px" }}
               >
                 <div
-
                   className={styles.infoIcon}
                   style={{ marginTop: "20px" }}
                 ></div>
@@ -1017,7 +1002,6 @@ const toggleNavbar16= () => {
                     />
                     <p>{latestquizzes[3]?.quiz_attempts}</p>
                     <span className="text-[6px] ml-1">attempts</span>
-
                   </div>
                 </div>
 
@@ -1054,7 +1038,6 @@ const toggleNavbar16= () => {
                   {latestquizzes[3]?.complexity}
                 </span>
               </div>
- 
             </div>
             <div className={styles.card} style={{ paddingTop: "8px" }}>
               <span className={styles.title}>
@@ -1062,7 +1045,7 @@ const toggleNavbar16= () => {
               </span>
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                <svg
+                  <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -1079,40 +1062,40 @@ const toggleNavbar16= () => {
                     {isNavbarOpen4 ? "Close Navbar" : "Open Navbar"}
                   </svg>
                   {isNavbarOpen4 && (
-                   <div className={styles.infoIcons}>
-                   <img
-                     className="absolute h-[1px] w-[1px] left-[6px] top-1"
-                     src={Start_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
-                     Start
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
-                     src={Edit_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
-                     Edit
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
-                     src={leaderboard_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
-                     Leaderboard 
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                     src={Share_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                     Share
-                   </span>
-                 </div>
+                    <div className={styles.infoIcons}>
+                      <img
+                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                        src={Start_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                        Start
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        src={Edit_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                        Edit
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        src={leaderboard_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                        Leaderboard
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
+                        src={Share_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
+                        Share
+                      </span>
+                    </div>
                   )}
                 </div>
               </div>
@@ -1127,9 +1110,7 @@ const toggleNavbar16= () => {
               </div>
 
               <div className={styles.description}>
-                <span>
-                  {latestquizzes[4]?.quiz_description}
-                </span>
+                <span>{latestquizzes[4]?.quiz_description}</span>
               </div>
               <div
                 className={styles.additionalInfo}
@@ -1193,7 +1174,7 @@ const toggleNavbar16= () => {
               </span>
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                <svg
+                  <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -1210,40 +1191,40 @@ const toggleNavbar16= () => {
                     {isNavbarOpen5 ? "Close Navbar" : "Open Navbar"}
                   </svg>
                   {isNavbarOpen5 && (
-                   <div className={styles.infoIcons}>
-                   <img
-                     className="absolute h-[1px] w-[1px] left-[6px] top-1"
-                     src={Start_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
-                     Start
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
-                     src={Edit_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
-                     Edit
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
-                     src={leaderboard_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
-                     Leaderboard 
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                     src={Share_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                     Share
-                   </span>
-                 </div>
+                    <div className={styles.infoIcons}>
+                      <img
+                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                        src={Start_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                        Start
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        src={Edit_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                        Edit
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        src={leaderboard_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                        Leaderboard
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
+                        src={Share_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
+                        Share
+                      </span>
+                    </div>
                   )}
                 </div>
               </div>
@@ -1259,9 +1240,7 @@ const toggleNavbar16= () => {
               </div>
 
               <div className={styles.description}>
-                <span>
-                  {latestquizzes[5]?.quiz_description}
-                </span>
+                <span>{latestquizzes[5]?.quiz_description}</span>
               </div>
 
               <div
@@ -1330,66 +1309,65 @@ const toggleNavbar16= () => {
                       backgroundColor: "#CFFCFF",
                     }}
                   >
-                    <span
-                      className={styles.title} >
+                    <span className={styles.title}>
                       {latestquizzes[6]?.quiz_name}
                     </span>
                     <div className={styles.iconContainer}>
-                <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                    onClick={toggleNavbar6}
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                    />
-                    {isNavbarOpen6 ? "Close Navbar" : "Open Navbar"}
-                  </svg>
-                  {isNavbarOpen6 && (
-                   <div className={styles.infoIcons}>
-                   <img
-                     className="absolute h-[1px] w-[1px] left-[6px] top-1"
-                     src={Start_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
-                     Start
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
-                     src={Edit_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
-                     Edit
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
-                     src={leaderboard_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
-                     Leaderboard 
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                     src={Share_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                     Share
-                   </span>
-                 </div>
-                  )}
-                </div>
-              </div>
+                      <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                          onClick={toggleNavbar6}
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                          />
+                          {isNavbarOpen6 ? "Close Navbar" : "Open Navbar"}
+                        </svg>
+                        {isNavbarOpen6 && (
+                          <div className={styles.infoIcons}>
+                            <img
+                              className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                              src={Start_button}
+                              alt="Play icon"
+                            />
+                            <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                              Start
+                            </span>
+                            <img
+                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                              src={Edit_button}
+                              alt="Play icon"
+                            />
+                            <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                              Edit
+                            </span>
+                            <img
+                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                              src={leaderboard_button}
+                              alt="Play icon"
+                            />
+                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                              Leaderboard
+                            </span>
+                            <img
+                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
+                              src={Share_button}
+                              alt="Play icon"
+                            />
+                            <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
+                              Share
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                     <div className={styles.category}>
                       <span className={styles.category1}>
                         {latestquizzes[6]?.category}
@@ -1401,131 +1379,128 @@ const toggleNavbar16= () => {
                     </div>
 
                     <div className={styles.description}>
-                      <span>
-                        {latestquizzes[6]?.quiz_description}
-                      </span>
+                      <span>{latestquizzes[6]?.quiz_description}</span>
                     </div>
                     <div
-                className={styles.additionalInfo}
-                style={{ marginTop: "23px" }}
-              >
-                <div
-                  className={styles.infoIcon}
-                  style={{ marginTop: "20px" }}
-                ></div>
-                <div className="z-0">
-                  <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                    <img
-                      className="h-[15px] w-[13px] pl-[3px] pb-1"
-                      src={Attempt1}
-                      alt="Attempts Icon"
-                      width={10}
-                      height={10}
-                    />
-                    <p>{latestquizzes[6]?.quiz_attempts}</p>
-                    <span className="text-[6px] ml-1">attempts</span>
-                  </div>
-                </div>
+                      className={styles.additionalInfo}
+                      style={{ marginTop: "23px" }}
+                    >
+                      <div
+                        className={styles.infoIcon}
+                        style={{ marginTop: "20px" }}
+                      ></div>
+                      <div className="z-0">
+                        <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
+                          <img
+                            className="h-[15px] w-[13px] pl-[3px] pb-1"
+                            src={Attempt1}
+                            alt="Attempts Icon"
+                            width={10}
+                            height={10}
+                          />
+                          <p>{latestquizzes[6]?.quiz_attempts}</p>
+                          <span className="text-[6px] ml-1">attempts</span>
+                        </div>
+                      </div>
 
-                <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                  <img
-                    className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
-                    src={NoOfQuestion}
-                    alt="Number of question Icon"
-                    width={15}
-                    height={10}
-                  />{" "}
-                  {latestquizzes[6]?.number_of_questions}
-                  <span className="text-[6px] ml-[1px]">questions</span>
-                </span>
-                <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                  <img
-                    className="pb-[1px] mr-[1px] relative left-[3px] "
-                    src={Clock}
-                    alt="Time Icon"
-                    width={14}
-                    height={14}
-                  />{" "}
-                  {latestquizzes[6]?.quiz_duration}
-                  <span className="text-[6px] -ml-[0.5px]">minutes</span>
-                </span>
-                <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                  <img
-                    className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
-                    src={Easy}
-                    alt="Challenge Icon"
-                    width={15}
-                    height={9}
-                  />{" "}
-                  {latestquizzes[6]?.complexity}
-                </span>
-              </div>
+                      <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
+                        <img
+                          className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                          src={NoOfQuestion}
+                          alt="Number of question Icon"
+                          width={15}
+                          height={10}
+                        />{" "}
+                        {latestquizzes[6]?.number_of_questions}
+                        <span className="text-[6px] ml-[1px]">questions</span>
+                      </span>
+                      <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                        <img
+                          className="pb-[1px] mr-[1px] relative left-[3px] "
+                          src={Clock}
+                          alt="Time Icon"
+                          width={14}
+                          height={14}
+                        />{" "}
+                        {latestquizzes[6]?.quiz_duration}
+                        <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                      </span>
+                      <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                        <img
+                          className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                          src={Easy}
+                          alt="Challenge Icon"
+                          width={15}
+                          height={9}
+                        />{" "}
+                        {latestquizzes[6]?.complexity}
+                      </span>
+                    </div>
                   </div>
 
                   <div
                     className={styles.card}
                     style={{ paddingTop: "8px", backgroundColor: "#CFFCFF" }}
                   >
-                    <span
-                      className={styles.title} >
+                    <span className={styles.title}>
                       {latestquizzes[7]?.quiz_name}
                     </span>
                     <div className={styles.iconContainer}>
-                <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                    onClick={toggleNavbar7}
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                    />
-                    {isNavbarOpen7 ? "Close Navbar" : "Open Navbar"}
-                  </svg>
-                  {isNavbarOpen7 && (
-                   <div className={styles.infoIcons}>
-                   <img
-                     className="absolute h-[1px] w-[1px] left-[6px] top-1"
-                     src={Start_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
-                     Start
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
-                     src={Edit_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
-                     Edit
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
-                     src={leaderboard_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
-                     Leaderboard 
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                     src={Share_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                     Share
-                   </span>
-                 </div>
-                  )}
-                </div>
-              </div>
+                      <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                          onClick={toggleNavbar7}
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                          />
+                          {isNavbarOpen7 ? "Close Navbar" : "Open Navbar"}
+                        </svg>
+                        {isNavbarOpen7 && (
+                          <div className={styles.infoIcons}>
+                            <img
+                              className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                              src={Start_button}
+                              alt="Play icon"
+                            />
+                            <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                              Start
+                            </span>
+                            <img
+                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                              src={Edit_button}
+                              alt="Play icon"
+                            />
+                            <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                              Edit
+                            </span>
+                            <img
+                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                              src={leaderboard_button}
+                              alt="Play icon"
+                            />
+                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                              Leaderboard
+                            </span>
+                            <img
+                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
+                              src={Share_button}
+                              alt="Play icon"
+                            />
+                            <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
+                              Share
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                     <div className={styles.category}>
                       <span className={styles.category1}>
                         {latestquizzes[7]?.category}
@@ -1537,131 +1512,127 @@ const toggleNavbar16= () => {
                     </div>
 
                     <div className={styles.description}>
-                      <span>
-                        {latestquizzes[7]?.quiz_description}
-                      </span>
+                      <span>{latestquizzes[7]?.quiz_description}</span>
                     </div>
                     <div
-                className={styles.additionalInfo}
-                style={{ marginTop: "23px" }}
-              >
-                <div
-                  className={styles.infoIcon}
-                  style={{ marginTop: "20px" }}
-                ></div>
-                <div className="z-0">
-                  <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                    <img
-                      className="h-[15px] w-[13px] pl-[3px] pb-1"
-                      src={Attempt1}
-                      alt="Attempts Icon"
-                      width={10}
-                      height={10}
-                    />
-                    <p>{latestquizzes[7]?.quiz_attempts}</p>
-                    <span className="text-[6px] ml-1">attempts</span>
-                  </div>
-                </div>
+                      className={styles.additionalInfo}
+                      style={{ marginTop: "23px" }}
+                    >
+                      <div
+                        className={styles.infoIcon}
+                        style={{ marginTop: "20px" }}
+                      ></div>
+                      <div className="z-0">
+                        <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
+                          <img
+                            className="h-[15px] w-[13px] pl-[3px] pb-1"
+                            src={Attempt1}
+                            alt="Attempts Icon"
+                            width={10}
+                            height={10}
+                          />
+                          <p>{latestquizzes[7]?.quiz_attempts}</p>
+                          <span className="text-[6px] ml-1">attempts</span>
+                        </div>
+                      </div>
 
-                <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                  <img
-                    className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
-                    src={NoOfQuestion}
-                    alt="Number of question Icon"
-                    width={15}
-                    height={10}
-                  />{" "}
-                  {latestquizzes[7]?.number_of_questions}
-                  <span className="text-[6px] ml-[1px]">questions</span>
-                </span>
-                <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                  <img
-                    className="pb-[1px] mr-[1px] relative left-[3px] "
-                    src={Clock}
-                    alt="Time Icon"
-                    width={14}
-                    height={14}
-                  />{" "}
-                  {latestquizzes[7]?.quiz_duration}
-                  <span className="text-[6px] -ml-[0.5px]">minutes</span>
-                </span>
-                <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                  <img
-                    className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
-                    src={Easy}
-                    alt="Challenge Icon"
-                    width={15}
-                    height={9}
-                  />{" "}
-                  {latestquizzes[7]?.complexity}
-                </span>
-              </div>
+                      <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
+                        <img
+                          className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                          src={NoOfQuestion}
+                          alt="Number of question Icon"
+                          width={15}
+                          height={10}
+                        />{" "}
+                        {latestquizzes[7]?.number_of_questions}
+                        <span className="text-[6px] ml-[1px]">questions</span>
+                      </span>
+                      <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                        <img
+                          className="pb-[1px] mr-[1px] relative left-[3px] "
+                          src={Clock}
+                          alt="Time Icon"
+                          width={14}
+                          height={14}
+                        />{" "}
+                        {latestquizzes[7]?.quiz_duration}
+                        <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                      </span>
+                      <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                        <img
+                          className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                          src={Easy}
+                          alt="Challenge Icon"
+                          width={15}
+                          height={9}
+                        />{" "}
+                        {latestquizzes[7]?.complexity}
+                      </span>
+                    </div>
                   </div>
-
                   <div
                     className={styles.card}
                     style={{ paddingTop: "8px", backgroundColor: "#CFFCFF" }}
                   >
-                    <span
-                      className={styles.title}>
+                    <span className={styles.title}>
                       {latestquizzes[8]?.quiz_name}
                     </span>
                     <div className={styles.iconContainer}>
-                <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                    onClick={toggleNavbar8}
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                    />
-                    {isNavbarOpen8 ? "Close Navbar" : "Open Navbar"}
-                  </svg>
-                  {isNavbarOpen8 && (
-                   <div className={styles.infoIcons}>
-                   <img
-                     className="absolute h-[1px] w-[1px] left-[6px] top-1"
-                     src={Start_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
-                     Start
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
-                     src={Edit_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
-                     Edit
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
-                     src={leaderboard_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
-                     Leaderboard 
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                     src={Share_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                     Share
-                   </span>
-                 </div>
-                  )}
-                </div>
-              </div>
+                      <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                          onClick={toggleNavbar8}
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                          />
+                          {isNavbarOpen8 ? "Close Navbar" : "Open Navbar"}
+                        </svg>
+                        {isNavbarOpen8 && (
+                          <div className={styles.infoIcons}>
+                            <img
+                              className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                              src={Start_button}
+                              alt="Play icon"
+                            />
+                            <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                              Start
+                            </span>
+                            <img
+                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                              src={Edit_button}
+                              alt="Play icon"
+                            />
+                            <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                              Edit
+                            </span>
+                            <img
+                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                              src={leaderboard_button}
+                              alt="Play icon"
+                            />
+                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                              Leaderboard
+                            </span>
+                            <img
+                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
+                              src={Share_button}
+                              alt="Play icon"
+                            />
+                            <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
+                              Share
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                     <div className={styles.category}>
                       <span className={styles.category1}>
                         {latestquizzes[8]?.category}
@@ -1673,55 +1644,242 @@ const toggleNavbar16= () => {
                     </div>
 
                     <div className={styles.description}>
-                      <span>
-                        {latestquizzes[8]?.quiz_description}
-                      </span>
+                      <span>{latestquizzes[8]?.quiz_description}</span>
                     </div>
                     <div
-                className={styles.additionalInfo}
-                style={{ marginTop: "23px" }}
-              >
-                <div
-                  className={styles.infoIcon}
-                  style={{ marginTop: "20px" }}
-                ></div>
-                <div className="z-0">
-                  <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                    <img
-                      className="h-[15px] w-[13px] pl-[3px] pb-1"
-                      src={Attempt1}
-                      alt="Attempts Icon"
-                      width={10}
-                      height={10}
-                    />
-                    <p>{latestquizzes[8]?.quiz_attempts}</p>
-                    <span className="text-[6px] ml-1">attempts</span>
+                      className={styles.additionalInfo}
+                      style={{ marginTop: "23px" }}
+                    >
+                      <div
+                        className={styles.infoIcon}
+                        style={{ marginTop: "20px" }}
+                      ></div>
+                      <div className="z-0">
+                        <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
+                          <img
+                            className="h-[15px] w-[13px] pl-[3px] pb-1"
+                            src={Attempt1}
+                            alt="Attempts Icon"
+                            width={10}
+                            height={10}
+                          />
+                          <p>{latestquizzes[8]?.quiz_attempts}</p>
+                          <span className="text-[6px] ml-1">attempts</span>
+                        </div>
+                      </div>
+
+                      <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
+                        <img
+                          className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                          src={NoOfQuestion}
+                          alt="Number of question Icon"
+                          width={15}
+                          height={10}
+                        />{" "}
+                        {latestquizzes[8]?.number_of_questions}
+                        <span className="text-[6px] ml-[1px]">questions</span>
+                      </span>
+                      <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                        <img
+                          className="pb-[1px] mr-[1px] relative left-[3px] "
+                          src={Clock}
+                          alt="Time Icon"
+                          width={14}
+                          height={14}
+                        />{" "}
+                        {latestquizzes[8]?.quiz_duration}
+                        <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                      </span>
+                      <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                        <img
+                          className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                          src={Easy}
+                          alt="Challenge Icon"
+                          width={15}
+                          height={9}
+                        />{" "}
+                        {latestquizzes[8]?.complexity}
+                      </span>
+                    </div>
                   </div>
                 </div>
+                {/* attempted-quiz  */}
+                <div className="flex">
+                  <div
+                    className={styles.card}
+                    style={{
+                      paddingTop: "8px",
+                    }}
+                  >
+                    <span className={styles.title}>
+                      {latestquizzes[6]?.quiz_name}
+                    </span>
+                    <div className={styles.iconContainer}>
+                      <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                          onClick={toggleNavbar6}
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                          />
+                          {isNavbarOpen6 ? "Close Navbar" : "Open Navbar"}
+                        </svg>
+                        {isNavbarOpen6 && (
+                          <div className={styles.infoIcons}>
+                            <img
+                              className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                              src={eye}
+                              alt="Play icon"
+                            />
+                            <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                              View
+                            </span>
+                            <img
+                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                              src={download}
+                              alt="download icon"
+                            />
+                            <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                              Download
+                            </span>
+                            <img
+                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                              src={leaderboard_button}
+                              alt="Play icon"
+                            />
+                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                              Leaderboard
+                            </span>
+                            <img
+                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
+                              src={Share_button}
+                              alt="Play icon"
+                            />
+                            <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
+                              Share
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div className={styles.category}>
+                      <span className={styles.category1}>
+                        {latestquizzes[6]?.category}
+                      </span>
+                      <p className="px-[2px] font-normal">|</p>
+                      <span className={styles.category1}>
+                        {latestquizzes[6]?.sub_category}
+                      </span>
+                    </div>
 
-                <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                  <img
-                    className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
-                    src={NoOfQuestion}
-                    alt="Number of question Icon"
-                    width={15}
-                    height={10}
-                  />{" "}
-                  {latestquizzes[8]?.number_of_questions}
-                  <span className="text-[6px] ml-[1px]">questions</span>
-                </span>
-                <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                  <img
-                    className="pb-[1px] mr-[1px] relative left-[3px] "
-                    src={Clock}
-                    alt="Time Icon"
-                    width={14}
-                    height={14}
-                  />{" "}
-                  {latestquizzes[8]?.quiz_duration}
-                  <span className="text-[6px] -ml-[0.5px]">minutes</span>
-                </span>
-                <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                    <div className={styles.description}>
+                      <span>{latestquizzes[6]?.quiz_description}</span>
+                    </div>
+
+                    {/* attaempted ranks */}
+                    <div className="text-[6px] font-normal pl-[15px] relative top-[48px]">
+                      <span>pass</span>
+                      <span className="px-[2px]">|</span>
+                      <span>
+                        8 <sup>th</sup>fastest
+                      </span>
+                      <span className="px-[2px]">|</span>
+                      <span>
+                        4 <sup>th</sup>highest
+                      </span>
+                      <span className="px-[2px]">|</span>
+                      <span>grade</span>
+                    </div>
+                    <div
+                      className={styles.additionalInfo}
+                      style={{ marginTop: "23px" }}
+                    >
+                      <div
+                        className={styles.infoIcon}
+                        style={{ marginTop: "20px" }}
+                      ></div>
+                      <div className="z-0">
+                        <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
+                          <img
+                            className="h-[15px] w-[13px] pl-[3px] pb-1"
+                            src={Attempt1}
+                            alt="Attempts Icon"
+                            width={10}
+                            height={10}
+                          />
+                          <p>{latestquizzes[6]?.quiz_attempts}</p>
+                          <span
+                            title="number of times quiz attempted"
+                            className="text-[6px] ml-1 cursor-pointer"
+                          >
+                            quiz attempts
+                          </span>
+                        </div>
+                      </div>
+
+                      <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
+                        <img
+                          className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                          src={high_score}
+                          alt="Number of question Icon"
+                          width={15}
+                          height={10}
+                        />{" "}
+                        {latestquizzes[6]?.number_of_questions}
+                        <div
+                          title="attained score/total score"
+                          className="cursor-pointer text-[6px]"
+                        >
+                          <span className=" ml-[1px]">2/</span>
+                          <span className=" ml-[1px]">10</span>
+                          <span className=" ml-[1px]">score</span>
+                        </div>
+                      </span>
+                      <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                        <img
+                          className="pb-[1px] mr-[1px] relative left-[3px] "
+                          src={NoOfQuestion}
+                          alt="Time Icon"
+                          width={14}
+                          height={14}
+                        />{" "}
+                        {latestquizzes[6]?.quiz_duration}
+                        <div
+                          title="attempted qustions/total questions"
+                          className="cursor-pointer text-[6px]"
+                        >
+                          <span className=" -ml-[1px]">4/</span>
+                          <span className=" ml-[1px]">10</span>
+                          <span className=" ml-[1px]">attemped</span>
+                        </div>
+                      </span>
+                      <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                        <img
+                          className="pb-[1px] mr-[1px] relative left-[3px] "
+                          src={Clock}
+                          alt="Time Icon"
+                          width={14}
+                          height={14}
+                        />{" "}
+                        {latestquizzes[6]?.quiz_duration}
+                        <div
+                          title="time taken for attempted/total duration of quiz "
+                          className="cursor-pointer text-[6px]"
+                        >
+                          <span className=" -ml-[1px]">8/</span>
+                          <span className=" ml-[1px]">20</span>
+                          <span className=" ml-[1px]">duration</span>
+                        </div>
+                      </span>
+                      {/* <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                   <img
                     className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
                     src={Easy}
@@ -1729,9 +1887,383 @@ const toggleNavbar16= () => {
                     width={15}
                     height={9}
                   />{" "}
-                  {latestquizzes[8]?.complexity}
-                </span>
-              </div>
+                  {latestquizzes[6]?.complexity}
+                </span> */}
+                    </div>
+                  </div>
+                  {/* second-card  */}
+                  <div
+                    className={styles.card}
+                    style={{
+                      paddingTop: "8px",
+                    }}
+                  >
+                    <span className={styles.title}>
+                      {latestquizzes[6]?.quiz_name}
+                    </span>
+                    <div className={styles.iconContainer}>
+                      <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                          onClick={toggleNavbar6}
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                          />
+                          {isNavbarOpen6 ? "Close Navbar" : "Open Navbar"}
+                        </svg>
+                        {isNavbarOpen6 && (
+                          <div className={styles.infoIcons}>
+                            <img
+                              className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                              src={eye}
+                              alt="Play icon"
+                            />
+                            <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                              View
+                            </span>
+                            <img
+                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                              src={download}
+                              alt="download icon"
+                            />
+                            <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                              Download
+                            </span>
+                            <img
+                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                              src={leaderboard_button}
+                              alt="Play icon"
+                            />
+                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                              Leaderboard
+                            </span>
+                            <img
+                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
+                              src={Share_button}
+                              alt="Play icon"
+                            />
+                            <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
+                              Share
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div className={styles.category}>
+                      <span className={styles.category1}>
+                        {latestquizzes[6]?.category}
+                      </span>
+                      <p className="px-[2px] font-normal">|</p>
+                      <span className={styles.category1}>
+                        {latestquizzes[6]?.sub_category}
+                      </span>
+                    </div>
+
+                    <div className={styles.description}>
+                      <span>{latestquizzes[6]?.quiz_description}</span>
+                    </div>
+
+                    {/* attaempted ranks */}
+                    <div className="text-[6px] font-normal pl-[15px] relative top-[48px]">
+                      <span>pass</span>
+                      <span className="px-[2px]">|</span>
+                      <span>
+                        8 <sup>th</sup>fastest
+                      </span>
+                      <span className="px-[2px]">|</span>
+                      <span>
+                        4 <sup>th</sup>height
+                      </span>
+                      <span className="px-[2px]">|</span>
+                      <span>grade</span>
+                    </div>
+                    <div
+                      className={styles.additionalInfo}
+                      style={{ marginTop: "23px" }}
+                    >
+                      <div
+                        className={styles.infoIcon}
+                        style={{ marginTop: "20px" }}
+                      ></div>
+                      <div className="z-0">
+                        <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
+                          <img
+                            className="h-[15px] w-[13px] pl-[3px] pb-1"
+                            src={Attempt1}
+                            alt="Attempts Icon"
+                            width={10}
+                            height={10}
+                          />
+                          <p>{latestquizzes[6]?.quiz_attempts}</p>
+                          <span
+                            title="number of times quiz attempted"
+                            className="text-[6px] ml-1 cursor-pointer"
+                          >
+                            quiz attempts
+                          </span>
+                        </div>
+                      </div>
+
+                      <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
+                        <img
+                          className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                          src={high_score}
+                          alt="Number of question Icon"
+                          width={15}
+                          height={10}
+                        />{" "}
+                        {latestquizzes[6]?.number_of_questions}
+                        <div
+                          title="attained score/total score"
+                          className="cursor-pointer text-[6px]"
+                        >
+                          <span className=" ml-[1px]">2/</span>
+                          <span className=" ml-[1px]">10</span>
+                          <span className=" ml-[1px]">score</span>
+                        </div>
+                      </span>
+                      <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                        <img
+                          className="pb-[1px] mr-[1px] relative left-[3px] "
+                          src={NoOfQuestion}
+                          alt="Time Icon"
+                          width={14}
+                          height={14}
+                        />{" "}
+                        {latestquizzes[6]?.quiz_duration}
+                        <div
+                          title="attempted qustions/total questions"
+                          className="cursor-pointer text-[6px]"
+                        >
+                          <span className=" -ml-[1px]">4/</span>
+                          <span className=" ml-[1px]">10</span>
+                          <span className=" ml-[1px]">attemped</span>
+                        </div>
+                      </span>
+                      <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                        <img
+                          className="pb-[1px] mr-[1px] relative left-[3px] "
+                          src={Clock}
+                          alt="Time Icon"
+                          width={14}
+                          height={14}
+                        />{" "}
+                        {latestquizzes[6]?.quiz_duration}
+                        <div
+                          title="time taken for attempted/total duration of quiz "
+                          className="cursor-pointer text-[6px]"
+                        >
+                          <span className=" -ml-[1px]">8/</span>
+                          <span className=" ml-[1px]">20</span>
+                          <span className=" ml-[1px]">duration</span>
+                        </div>
+                      </span>
+                      {/* <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                  <img
+                    className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                    src={Easy}
+                    alt="Challenge Icon"
+                    width={15}
+                    height={9}
+                  />{" "}
+                  {latestquizzes[6]?.complexity}
+                </span> */}
+                    </div>
+                  </div>
+                  {/* third-card  */}
+                  <div
+                    className={styles.card}
+                    style={{
+                      paddingTop: "8px",
+                    }}
+                  >
+                    <span className={styles.title}>
+                      {latestquizzes[6]?.quiz_name}
+                    </span>
+                    <div className={styles.iconContainer}>
+                      <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                          onClick={toggleNavbar6}
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                          />
+                          {isNavbarOpen6 ? "Close Navbar" : "Open Navbar"}
+                        </svg>
+                        {isNavbarOpen6 && (
+                          <div className={styles.infoIcons}>
+                            <img
+                              className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                              src={eye}
+                              alt="Play icon"
+                            />
+                            <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                              View
+                            </span>
+                            <img
+                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                              src={download}
+                              alt="download icon"
+                            />
+                            <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                              Download
+                            </span>
+                            <img
+                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                              src={leaderboard_button}
+                              alt="Play icon"
+                            />
+                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                              Leaderboard
+                            </span>
+                            <img
+                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
+                              src={Share_button}
+                              alt="Play icon"
+                            />
+                            <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
+                              Share
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div className={styles.category}>
+                      <span className={styles.category1}>
+                        {latestquizzes[6]?.category}
+                      </span>
+                      <p className="px-[2px] font-normal">|</p>
+                      <span className={styles.category1}>
+                        {latestquizzes[6]?.sub_category}
+                      </span>
+                    </div>
+
+                    <div className={styles.description}>
+                      <span>{latestquizzes[6]?.quiz_description}</span>
+                    </div>
+
+                    {/* attaempted ranks */}
+                    <div className="text-[6px] font-normal pl-[15px] relative top-[48px]">
+                      <span>pass</span>
+                      <span className="px-[2px]">|</span>
+                      <span>
+                        8 <sup>th</sup>fastest
+                      </span>
+                      <span className="px-[2px]">|</span>
+                      <span>
+                        4 <sup>th</sup>height
+                      </span>
+                      <span className="px-[2px]">|</span>
+                      <span>grade</span>
+                    </div>
+                    <div
+                      className={styles.additionalInfo}
+                      style={{ marginTop: "23px" }}
+                    >
+                      <div
+                        className={styles.infoIcon}
+                        style={{ marginTop: "20px" }}
+                      ></div>
+                      <div className="z-0">
+                        <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
+                          <img
+                            className="h-[15px] w-[13px] pl-[3px] pb-1"
+                            src={Attempt1}
+                            alt="Attempts Icon"
+                            width={10}
+                            height={10}
+                          />
+                          <p>{latestquizzes[6]?.quiz_attempts}</p>
+                          <span
+                            title="number of times quiz attempted"
+                            className="text-[6px] ml-1 cursor-pointer"
+                          >
+                            quiz attempts
+                          </span>
+                        </div>
+                      </div>
+
+                      <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
+                        <img
+                          className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                          src={high_score}
+                          alt="Number of question Icon"
+                          width={15}
+                          height={10}
+                        />{" "}
+                        {latestquizzes[6]?.number_of_questions}
+                        <div
+                          title="attained score/total score"
+                          className="cursor-pointer text-[6px]"
+                        >
+                          <span className=" ml-[1px]">2/</span>
+                          <span className=" ml-[1px]">10</span>
+                          <span className=" ml-[1px]">score</span>
+                        </div>
+                      </span>
+                      <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                        <img
+                          className="pb-[1px] mr-[1px] relative left-[3px] "
+                          src={NoOfQuestion}
+                          alt="Time Icon"
+                          width={14}
+                          height={14}
+                        />{" "}
+                        {latestquizzes[6]?.quiz_duration}
+                        <div
+                          title="attempted qustions/total questions"
+                          className="cursor-pointer text-[6px]"
+                        >
+                          <span className=" -ml-[1px]">4/</span>
+                          <span className=" ml-[1px]">10</span>
+                          <span className=" ml-[1px]">attemped</span>
+                        </div>
+                      </span>
+                      <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                        <img
+                          className="pb-[1px] mr-[1px] relative left-[3px] "
+                          src={Clock}
+                          alt="Time Icon"
+                          width={14}
+                          height={14}
+                        />{" "}
+                        {latestquizzes[6]?.quiz_duration}
+                        <div
+                          title="time taken for attempted/total duration of quiz "
+                          className="cursor-pointer text-[6px]"
+                        >
+                          <span className=" -ml-[1px]">8/</span>
+                          <span className=" ml-[1px]">20</span>
+                          <span className=" ml-[1px]">duration</span>
+                        </div>
+                      </span>
+                      {/* <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                  <img
+                    className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                    src={Easy}
+                    alt="Challenge Icon"
+                    width={15}
+                    height={9}
+                  />{" "}
+                  {latestquizzes[6]?.complexity}
+                </span> */}
+                    </div>
                   </div>
                 </div>
 
@@ -1825,13 +2357,12 @@ const toggleNavbar16= () => {
           <div className={styles.infoCards}>
             {/* Info cards content */}
             <div className={styles.card} style={{ paddingTop: "8px" }}>
-              <span
-                className={styles.title}>
+              <span className={styles.title}>
                 {popularquizzes[0]?.quiz_name}
               </span>
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                <svg
+                  <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -1848,40 +2379,40 @@ const toggleNavbar16= () => {
                     {isNavbarOpen11 ? "Close Navbar" : "Open Navbar"}
                   </svg>
                   {isNavbarOpen11 && (
-                   <div className={styles.infoIcons}>
-                   <img
-                     className="absolute h-[1px] w-[1px] left-[6px] top-1"
-                     src={Start_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
-                     Start
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
-                     src={Edit_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
-                     Edit
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
-                     src={leaderboard_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
-                     Leaderboard 
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                     src={Share_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                     Share
-                   </span>
-                 </div>
+                    <div className={styles.infoIcons}>
+                      <img
+                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                        src={Start_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                        Start
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        src={Edit_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                        Edit
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        src={leaderboard_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                        Leaderboard
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
+                        src={Share_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
+                        Share
+                      </span>
+                    </div>
                   )}
                 </div>
               </div>
@@ -1897,9 +2428,7 @@ const toggleNavbar16= () => {
               </div>
 
               <div className={styles.description}>
-                <span>
-                  {popularquizzes[0]?.quiz_description}
-                </span>
+                <span>{popularquizzes[0]?.quiz_description}</span>
               </div>
 
               <div
@@ -1959,13 +2488,12 @@ const toggleNavbar16= () => {
               </div>
             </div>
             <div className={styles.card} style={{ paddingTop: "8px" }}>
-              <span
-                className={styles.title}>
+              <span className={styles.title}>
                 {popularquizzes[1]?.quiz_name}
               </span>
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                <svg
+                  <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -1982,40 +2510,40 @@ const toggleNavbar16= () => {
                     {isNavbarOpen12 ? "Close Navbar" : "Open Navbar"}
                   </svg>
                   {isNavbarOpen12 && (
-                   <div className={styles.infoIcons}>
-                   <img
-                     className="absolute h-[1px] w-[1px] left-[6px] top-1"
-                     src={Start_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
-                     Start
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
-                     src={Edit_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
-                     Edit
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
-                     src={leaderboard_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
-                     Leaderboard 
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                     src={Share_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                     Share
-                   </span>
-                 </div>
+                    <div className={styles.infoIcons}>
+                      <img
+                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                        src={Start_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                        Start
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        src={Edit_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                        Edit
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        src={leaderboard_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                        Leaderboard
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
+                        src={Share_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
+                        Share
+                      </span>
+                    </div>
                   )}
                 </div>
               </div>
@@ -2030,9 +2558,7 @@ const toggleNavbar16= () => {
               </div>
 
               <div className={styles.description}>
-                <span >
-                  {popularquizzes[1]?.quiz_description}
-                </span>
+                <span>{popularquizzes[1]?.quiz_description}</span>
               </div>
 
               <div
@@ -2092,13 +2618,12 @@ const toggleNavbar16= () => {
               </div>
             </div>
             <div className={styles.card} style={{ paddingTop: "8px" }}>
-              <span
-                className={styles.title}>
+              <span className={styles.title}>
                 {popularquizzes[2]?.quiz_name}
               </span>
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                <svg
+                  <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -2115,40 +2640,40 @@ const toggleNavbar16= () => {
                     {isNavbarOpen13 ? "Close Navbar" : "Open Navbar"}
                   </svg>
                   {isNavbarOpen13 && (
-                   <div className={styles.infoIcons}>
-                   <img
-                     className="absolute h-[1px] w-[1px] left-[6px] top-1"
-                     src={Start_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
-                     Start
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
-                     src={Edit_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
-                     Edit
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
-                     src={leaderboard_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
-                     Leaderboard 
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                     src={Share_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                     Share
-                   </span>
-                 </div>
+                    <div className={styles.infoIcons}>
+                      <img
+                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                        src={Start_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                        Start
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        src={Edit_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                        Edit
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        src={leaderboard_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                        Leaderboard
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
+                        src={Share_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
+                        Share
+                      </span>
+                    </div>
                   )}
                 </div>
               </div>
@@ -2163,9 +2688,7 @@ const toggleNavbar16= () => {
               </div>
 
               <div className={styles.description}>
-                <span>
-                  {popularquizzes[2]?.quiz_description}
-                </span>
+                <span>{popularquizzes[2]?.quiz_description}</span>
               </div>
 
               <div
@@ -2225,13 +2748,12 @@ const toggleNavbar16= () => {
               </div>
             </div>
             <div className={styles.card} style={{ paddingTop: "8px" }}>
-              <span
-                className={styles.title}>
+              <span className={styles.title}>
                 {popularquizzes[3]?.quiz_name}
               </span>
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                <svg
+                  <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -2248,40 +2770,40 @@ const toggleNavbar16= () => {
                     {isNavbarOpen14 ? "Close Navbar" : "Open Navbar"}
                   </svg>
                   {isNavbarOpen14 && (
-                   <div className={styles.infoIcons}>
-                   <img
-                     className="absolute h-[1px] w-[1px] left-[6px] top-1"
-                     src={Start_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
-                     Start
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
-                     src={Edit_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
-                     Edit
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
-                     src={leaderboard_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
-                     Leaderboard 
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                     src={Share_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                     Share
-                   </span>
-                 </div>
+                    <div className={styles.infoIcons}>
+                      <img
+                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                        src={Start_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                        Start
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        src={Edit_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                        Edit
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        src={leaderboard_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                        Leaderboard
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
+                        src={Share_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
+                        Share
+                      </span>
+                    </div>
                   )}
                 </div>
               </div>
@@ -2296,9 +2818,7 @@ const toggleNavbar16= () => {
               </div>
 
               <div className={styles.description}>
-                <span>
-                  {popularquizzes[3]?.quiz_description}
-                </span>
+                <span>{popularquizzes[3]?.quiz_description}</span>
               </div>
 
               <div
@@ -2358,13 +2878,12 @@ const toggleNavbar16= () => {
               </div>
             </div>
             <div className={styles.card} style={{ paddingTop: "10px" }}>
-              <span
-                className={styles.title}>
+              <span className={styles.title}>
                 {popularquizzes[4]?.quiz_name}
               </span>
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                <svg
+                  <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -2381,40 +2900,40 @@ const toggleNavbar16= () => {
                     {isNavbarOpen15 ? "Close Navbar" : "Open Navbar"}
                   </svg>
                   {isNavbarOpen15 && (
-                   <div className={styles.infoIcons}>
-                   <img
-                     className="absolute h-[1px] w-[1px] left-[6px] top-1"
-                     src={Start_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
-                     Start
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
-                     src={Edit_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
-                     Edit
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
-                     src={leaderboard_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
-                     Leaderboard 
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                     src={Share_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                     Share
-                   </span>
-                 </div>
+                    <div className={styles.infoIcons}>
+                      <img
+                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                        src={Start_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                        Start
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        src={Edit_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                        Edit
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        src={leaderboard_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                        Leaderboard
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
+                        src={Share_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
+                        Share
+                      </span>
+                    </div>
                   )}
                 </div>
               </div>
@@ -2429,9 +2948,7 @@ const toggleNavbar16= () => {
               </div>
 
               <div className={styles.description}>
-                <span>
-                  {popularquizzes[4]?.quiz_description}
-                </span>
+                <span>{popularquizzes[4]?.quiz_description}</span>
               </div>
 
               <div
@@ -2491,13 +3008,12 @@ const toggleNavbar16= () => {
               </div>
             </div>
             <div className={styles.card} style={{ paddingTop: "10px" }}>
-              <span
-                className={styles.title}>
+              <span className={styles.title}>
                 {popularquizzes[5]?.quiz_name}
               </span>
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                <svg
+                  <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -2514,40 +3030,40 @@ const toggleNavbar16= () => {
                     {isNavbarOpen16 ? "Close Navbar" : "Open Navbar"}
                   </svg>
                   {isNavbarOpen16 && (
-                   <div className={styles.infoIcons}>
-                   <img
-                     className="absolute h-[1px] w-[1px] left-[6px] top-1"
-                     src={Start_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
-                     Start
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
-                     src={Edit_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
-                     Edit
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
-                     src={leaderboard_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
-                     Leaderboard 
-                   </span>
-                   <img
-                     className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                     src={Share_button}
-                     alt="Play icon"
-                   />
-                   <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                     Share
-                   </span>
-                 </div>
+                    <div className={styles.infoIcons}>
+                      <img
+                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                        src={Start_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                        Start
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        src={Edit_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                        Edit
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        src={leaderboard_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                        Leaderboard
+                      </span>
+                      <img
+                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
+                        src={Share_button}
+                        alt="Play icon"
+                      />
+                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
+                        Share
+                      </span>
+                    </div>
                   )}
                 </div>
               </div>
@@ -2562,9 +3078,7 @@ const toggleNavbar16= () => {
               </div>
 
               <div className={styles.description}>
-                <span>
-                  {popularquizzes[5]?.quiz_description}
-                </span>
+                <span>{popularquizzes[5]?.quiz_description}</span>
               </div>
 
               <div

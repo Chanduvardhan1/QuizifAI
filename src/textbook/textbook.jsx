@@ -500,6 +500,7 @@ export default function quiztype() {
   //   updatedQuestions[chapterKey][subChapterKey][questionIndex].options[optionIndex].correct_answer_flag = !updatedQuestions[chapterKey][subChapterKey][questionIndex].options[optionIndex].correct_answer_flag;
   //   setQuestions(updatedQuestions);
   // };
+
   const handleInputChange = (questionIndex, field, value) => {
     const updatedQuestions = [...questions];
     updatedQuestions[questionIndex][field] = value;
@@ -519,7 +520,25 @@ export default function quiztype() {
     setQuestions(updatedQuestions);
   };
 
+  const getOptions = (options) => {
+    const correctOption = options.find(option => option.correct_answer_flag);
+    const incorrectOptions = options.filter(option => !option.correct_answer_flag);
 
+    let selectedOptions;
+    if (correctOption) {
+      selectedOptions = [correctOption, ...incorrectOptions.slice(0, 3)];
+    } else {
+      selectedOptions = options.slice(0, 4);
+    }
+
+    // Shuffle the selected options to randomize the position of the correct answer
+    for (let i = selectedOptions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [selectedOptions[i], selectedOptions[j]] = [selectedOptions[j], selectedOptions[i]];
+    }
+
+    return selectedOptions;
+  };
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -1088,7 +1107,7 @@ export default function quiztype() {
 
               <div className=" rounded-lg w-[166px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[520px] left-[498px]">
                 <select
-                  className="w-[160px] px-3 py-3 rounded-md cursor-pointer text-[12px]"
+                  className="w-[166px] px-3 py-3 rounded-md cursor-pointer text-[12px]"
                   onChange={handleSelect7}
                   value={duration}
                 >
@@ -1224,7 +1243,8 @@ export default function quiztype() {
               </div>
               <div className="">
                 <input
-                  className="w-[166px] h-[43px] absolute top-[720px] left-[498px] rounded-[10px] border bg-[#ffffff] p-2"
+                placeholder="subject"
+                  className="w-[166px] h-[43px] absolute top-[720px] left-[498px] rounded-[10px]  bg-[#ffffff] border-solid border-[#B8BBC2] border-[1.8px] text-black p-2"
                   value={subject}
                   onChange={(e) => setsubject(e.target.value)}
                 ></input>
@@ -1314,7 +1334,7 @@ export default function quiztype() {
               />
             </div>
             {/* Input fields for options */}
-            {question.options.map((option, optionIndex) => (
+            {getOptions(question.options).map((option, optionIndex) => (
               <div key={optionIndex} className="flex items-center mb-2">
                 <div className="mr-2 text-xl font-normal">
                   {String.fromCharCode(97 + optionIndex)}.

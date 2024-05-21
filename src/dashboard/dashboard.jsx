@@ -1786,17 +1786,18 @@ const Dashboard = () => {
 
                     {/* attaempted ranks */}
                     <div className="text-[6px] font-normal pl-[15px] relative top-[48px]">
-                      <span>pass</span>
+                      <span>Pass</span>
                       <span className="px-[2px]">|</span>
                       <span>
-                        8 <sup>th</sup>fastest
+                        8 <sup>th</sup>Fastest
                       </span>
                       <span className="px-[2px]">|</span>
                       <span>
-                        4 <sup>th</sup>highest
+                        4 <sup>th</sup>Highest
                       </span>
                       <span className="px-[2px]">|</span>
-                      <span>grade</span>
+                      <span>80.3% Score</span><br/>
+                      <span>D Grade</span>
                     </div>
                     <div
                       className={styles.additionalInfo}

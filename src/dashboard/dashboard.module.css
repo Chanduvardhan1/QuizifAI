@@ -236,8 +236,7 @@ margin-left: 20px;
 .infoCards {
   display: flex;
   flex-wrap: wrap;
-  margin-left: 10px;
-  
+  margin-left: 10px; 
 }
 .infoCards1{
   display: flex;

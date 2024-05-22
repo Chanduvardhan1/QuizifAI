@@ -45,7 +45,7 @@
 }
 .logo1 {
   width: 400px;
-  height: 500px;
+  /* height: 500px; */
   margin-top: 50px;
   margin-left: 130px;
   /* position: relative;
@@ -120,7 +120,7 @@
 
 .loginHeader{
   color: #454B60;
-  margin-right: 180px;
+  margin-right: 80px;
 }
 .SignupTitle{
   /* margin-right: 200px; */
@@ -144,7 +144,7 @@
 
 .SignupHeader{
   color: #454B60;
-  margin-right:180px;
+  margin-right:80px;
 }
 .resendAvailable{
   margin-right:10px;
@@ -791,7 +791,7 @@ margin-top: -3px;
   justify-content: center;
   display:flex;
   border-radius: 28px;
-  margin-right:180px;
+  margin-right:80px;
   /* height: 400px; */
   /* position: relative;
   left: 120px; */
@@ -891,7 +891,7 @@ margin-left:40px;
   height: 400px;
   /* position: relative;
   left: 125px; */
-   margin-right: 185px;
+   margin-right: 85px;
   /* position: relative;
     left: 130px; */
 }
@@ -914,6 +914,8 @@ margin-left:40px;
  }
  .logo2{
   width: 370px;
+
+
   height: 500px;
   margin-top: 50px;
   margin-left: 0px;

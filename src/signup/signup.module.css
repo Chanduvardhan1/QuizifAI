@@ -27,7 +27,7 @@
   
   .logo2 {
     width: 400px;
-    height: 500px;
+    /* height: 500px; */
     margin-top: 50px;
     margin-left: 130px;
     /* position: relative;
@@ -1013,7 +1013,7 @@ font-size:18px;
     }
   }
   
-  @media screen and (max-width: 1280px) {
+  /* @media screen and (max-width: 1280px) {
   
     .logo1{
       width: 370px;
@@ -1043,4 +1043,4 @@ font-size:18px;
     margin-right: 290px;
  
  }
-  }
+  } */

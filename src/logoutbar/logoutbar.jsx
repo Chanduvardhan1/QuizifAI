@@ -121,6 +121,15 @@ const LogoutBar = () => {
           >
             Profession
           </p>
+          <p
+          style={{
+            fontSize: "12px",
+            margin: "0",
+            fontWeight: 500,
+            color: "rgb(94,129,244)",
+          }}>
+            User_id : {userId}
+          </p>
           <div style={{ marginTop: "10px" }}>
             <div style={{ marginTop: "40px", marginLeft: "20px" }}>
               <div

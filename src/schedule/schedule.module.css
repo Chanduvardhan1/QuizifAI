@@ -120,6 +120,7 @@
     display: none;
     position: absolute;
     top: 61px;
+    text-decoration: underline;
     background-color: white;
     z-index: 10;
   }
@@ -144,6 +145,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+    cursor: pointer;
   }
   .subdescription{
     width: 145px; 

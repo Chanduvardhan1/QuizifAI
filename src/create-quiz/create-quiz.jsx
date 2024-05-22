@@ -160,7 +160,7 @@ export default function createquiz() {
     Import
   </h1>
   <h1 className="font-Poppins font-light text-[10px] leading-[15px] text-[#575757] flex justify-center">
-    CSV or Excel
+     Excel
   </h1>
 </a>
 

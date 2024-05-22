@@ -243,7 +243,7 @@ function Schedule() {
                       height={10}
                     />
                     {/* <p>{quizAssignedData[0]?.quiz_attempts}</p> */}
-                    <span className="text-[6px] ml-1">attempts</span>
+                    <span className="text-[6px] ml-[1px]">attempts</span>
                   </div>
                 </div>
 
@@ -267,16 +267,16 @@ function Schedule() {
                     height={14}
                   />{" "}
                   {/* {quizAssignedData[0]?.quiz_duration} */}
-                  <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                  <span className="text-[6px] ml-[2px]">minutes</span>
                 </span>
                 <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                  <img
+                  {/* <img
                     className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
                     src={Easy}
                     alt="Challenge Icon"
                     width={15}
                     height={9}
-                  />{" "}
+                  />{" "} */}
                   {quizAssignedData[0]?.complexity}
                 </span>
               </div>

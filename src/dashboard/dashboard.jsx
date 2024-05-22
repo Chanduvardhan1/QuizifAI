@@ -83,6 +83,9 @@ const Dashboard = () => {
   const [latestquizzes, setLatestquizzes] = useState([]);
   // const [attemptedQuizzes, setAttemptedQuizzes] = useState([]);
   const [popularquizzes, setPopularquizzes] = useState([]);
+  const [attemptedquizzes, setAttemptedquizzes] = useState([]);
+  const [allquizzes, setAllquizzes] = useState([]);
+
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
   const [username, setUsername] = useState(localStorage.getItem("user_name"));
   useEffect(() => {
@@ -127,6 +130,9 @@ const Dashboard = () => {
         // setAttemptedQuizzes(data.latest_attempted_quizzes);
         // setTopScoredQuizzes(data.top_scored_quizzes);
         setPopularquizzes(data.popular_quizzes);
+        setAttemptedquizzes(data.attempted_quiz_details);
+        setAllquizzes(data.all_quizes);
+
       } catch (error) {
         console.error("Error fetching quiz data:", error);
       }
@@ -282,6 +288,10 @@ const Dashboard = () => {
               {/* <span className={styles.moreButton} style={{marginLeft:"170px"}}>
                 More <img src={arrow1} alt="More" width={15} height={8} />
               </span> */}
+
+               {latestResult.length === 0 ? (
+                <p className="">No quizzes attempted till now.</p>
+            ) : (
               <div className={styles.resultInfo}>
                 <div className={styles.infoLine}>
                   <span
@@ -441,6 +451,7 @@ const Dashboard = () => {
                   </span>
                 </div>
               </div>
+            )}
             </div>
           </div>
 
@@ -592,7 +603,7 @@ const Dashboard = () => {
               </div>
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "23px" }}
+                style={{ marginTop: "20px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -725,7 +736,7 @@ const Dashboard = () => {
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "23px" }}
+                style={{ marginTop: "20px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -855,7 +866,7 @@ const Dashboard = () => {
               </div>
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "23px" }}
+                style={{ marginTop: "20px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -985,7 +996,7 @@ const Dashboard = () => {
               </div>
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "23px" }}
+                style={{ marginTop: "20px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -1114,7 +1125,7 @@ const Dashboard = () => {
               </div>
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "23px" }}
+                style={{ marginTop: "20px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -1245,7 +1256,7 @@ const Dashboard = () => {
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "23px" }}
+                style={{ marginTop: "20px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -1383,7 +1394,7 @@ const Dashboard = () => {
                     </div>
                     <div
                       className={styles.additionalInfo}
-                      style={{ marginTop: "23px" }}
+                      style={{ marginTop: "20px" }}
                     >
                       <div
                         className={styles.infoIcon}
@@ -1516,7 +1527,7 @@ const Dashboard = () => {
                     </div>
                     <div
                       className={styles.additionalInfo}
-                      style={{ marginTop: "23px" }}
+                      style={{ marginTop: "20px" }}
                     >
                       <div
                         className={styles.infoIcon}
@@ -1648,7 +1659,7 @@ const Dashboard = () => {
                     </div>
                     <div
                       className={styles.additionalInfo}
-                      style={{ marginTop: "23px" }}
+                      style={{ marginTop: "20px" }}
                     >
                       <div
                         className={styles.infoIcon}
@@ -1711,8 +1722,9 @@ const Dashboard = () => {
                       paddingTop: "8px",
                     }}
                   >
-                    <span className={styles.title}>
-                      {latestquizzes[6]?.quiz_name}
+                    <span className={styles.title} style={{width:"210px"}}>
+                      {/* {allquizzes[85]?.quiz_name} */}mathemetics quizes mathemtetics quizes mathemetics
+                      <span className={styles.subtitle}>mathemetics quizes mathemtetics quizes mathemetics</span>
                     </span>
                     <div className={styles.iconContainer}>
                       <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
@@ -1772,43 +1784,44 @@ const Dashboard = () => {
                     </div>
                     <div className={styles.category}>
                       <span className={styles.category1}>
-                        {latestquizzes[6]?.category}
+                        {attemptedquizzes[0]?.category}
                       </span>
                       <p className="px-[2px] font-normal">|</p>
                       <span className={styles.category1}>
-                        {latestquizzes[6]?.sub_category}
+                        {attemptedquizzes[0]?.sub_category}
                       </span>
                     </div>
 
                     <div className={styles.description}>
-                      <span>{latestquizzes[6]?.quiz_description}</span>
+                      <span>{allquizzes[85]?.quiz_description}
+                      <span className={styles.subdescription}>{allquizzes[85]?.quiz_description}</span></span>
                     </div>
 
                     {/* attaempted ranks */}
-                    <div className="text-[6px] font-normal pl-[15px] relative top-[48px]">
+                    <div className="text-[6px] font-normal pl-[15px] relative top-[40px]">
                       <span>Pass</span>
                       <span className="px-[2px]">|</span>
                       <span>
-                        8 <sup>th</sup>Fastest
+                      {attemptedquizzes[0]?.speed_rank}<sup>th</sup>Fastest
                       </span>
                       <span className="px-[2px]">|</span>
                       <span>
-                        4 <sup>th</sup>Highest
+                      {attemptedquizzes[0]?.score_rank} <sup>th</sup>Highest
                       </span>
                       <span className="px-[2px]">|</span>
-                      <span>80.3% Score</span><br/>
-                      <span>D Grade</span>
+                      <span>{attemptedquizzes[0]?.attempt_percentage}% Score</span><br/>
+                      <span>{attemptedquizzes[0]?.quiz_grade} Grade</span>
                     </div>
                     <div
                       className={styles.additionalInfo}
-                      style={{ marginTop: "23px" }}
+                      style={{ marginTop: "10px" }}
                     >
                       <div
                         className={styles.infoIcon}
                         style={{ marginTop: "20px" }}
                       ></div>
                       <div className="z-0">
-                        <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
+                        <div className="text-[7px] flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
                           <img
                             className="h-[15px] w-[13px] pl-[3px] pb-1"
                             src={Attempt1}
@@ -1816,17 +1829,17 @@ const Dashboard = () => {
                             width={10}
                             height={10}
                           />
-                          <p>{latestquizzes[6]?.quiz_attempts}</p>
+                          <p>{attemptedquizzes[0]?.attempts_count} </p>
                           <span
                             title="number of times quiz attempted"
-                            className="text-[6px] ml-1 cursor-pointer"
+                            className="text-[6px] ml-2 cursor-pointer"
                           >
                             quiz attempts
                           </span>
                         </div>
                       </div>
 
-                      <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
+                      <span className=" text-[7px] flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
                         <img
                           className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
                           src={high_score}
@@ -1834,17 +1847,15 @@ const Dashboard = () => {
                           width={15}
                           height={10}
                         />{" "}
-                        {latestquizzes[6]?.number_of_questions}
+                        {attemptedquizzes[0]?.attained_score}/{attemptedquizzes[0]?.total_score}
                         <div
                           title="attained score/total score"
                           className="cursor-pointer text-[6px]"
                         >
-                          <span className=" ml-[1px]">2/</span>
-                          <span className=" ml-[1px]">10</span>
-                          <span className=" ml-[1px]">score</span>
+                          <span className=" ml-[8px]">score</span>
                         </div>
                       </span>
-                      <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                      <span className="text-[7px] flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
                         <img
                           className="pb-[1px] mr-[1px] relative left-[3px] "
                           src={NoOfQuestion}
@@ -1852,17 +1863,15 @@ const Dashboard = () => {
                           width={14}
                           height={14}
                         />{" "}
-                        {latestquizzes[6]?.quiz_duration}
+                        {attemptedquizzes[0]?.attempted_questions}/{attemptedquizzes[0]?.total_questions}
                         <div
                           title="attempted qustions/total questions"
                           className="cursor-pointer text-[6px]"
                         >
-                          <span className=" -ml-[1px]">4/</span>
-                          <span className=" ml-[1px]">10</span>
-                          <span className=" ml-[1px]">attemped</span>
+                          <span className=" ml-[6px]">attemped</span>
                         </div>
                       </span>
-                      <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                      <span className="text-[7px] flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
                         <img
                           className="pb-[1px] mr-[1px] relative left-[3px] "
                           src={Clock}
@@ -1870,14 +1879,12 @@ const Dashboard = () => {
                           width={14}
                           height={14}
                         />{" "}
-                        {latestquizzes[6]?.quiz_duration}
+                        {attemptedquizzes[0]?.attempt_duration_mins}/{attemptedquizzes[0]?.quiz_duration}
                         <div
                           title="time taken for attempted/total duration of quiz "
                           className="cursor-pointer text-[6px]"
                         >
-                          <span className=" -ml-[1px]">8/</span>
-                          <span className=" ml-[1px]">20</span>
-                          <span className=" ml-[1px]">duration</span>
+                          <span className="-ml-[2px]">duration</span>
                         </div>
                       </span>
                       {/* <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
@@ -2434,7 +2441,7 @@ const Dashboard = () => {
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "23px" }}
+                style={{ marginTop: "20px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -2564,7 +2571,7 @@ const Dashboard = () => {
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "23px" }}
+                style={{ marginTop: "20px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -2694,7 +2701,7 @@ const Dashboard = () => {
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "23px" }}
+                style={{ marginTop: "20px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -2824,7 +2831,7 @@ const Dashboard = () => {
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "23px" }}
+                style={{ marginTop: "20px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -2954,7 +2961,7 @@ const Dashboard = () => {
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "23px" }}
+                style={{ marginTop: "20px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -3084,7 +3091,7 @@ const Dashboard = () => {
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "23px" }}
+                style={{ marginTop: "20px" }}
               >
                 <div
                   className={styles.infoIcon}

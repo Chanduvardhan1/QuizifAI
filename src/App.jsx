@@ -27,7 +27,6 @@ import Quizmaster from "./quizmaster/quizmaster.jsx";
 import Quizadmin from "./quizadmin/quizadmin.jsx";
 import Register from "./register/register.jsx";
 
-
 import History from "./history/history.jsx"
 import Createquiz from "./create-quiz/create-quiz.jsx"
 import Csv from "./csv/csv.jsx"
@@ -76,6 +75,8 @@ import Contact from "./contactus/contactus.jsx";
 import Contact1 from "./contact/contact.jsx";
 import Termsandconditions from "./termsandconditions/termsandconditions.jsx";
 
+
+import Quizcreated2 from "./quizcreated-textbook/quizcreated2.jsx";
 // import Home from "./pages/Home.jsx";
 // import ContactUs from "./pages/ContactUs.jsx";
 // import NoPage from "./pages/NoPage.jsx";
@@ -293,7 +294,7 @@ function VerificationHandler() {
             <Route path="quizview1" element={<Quizview1 />} />
             <Route path="quizcreated1" element={<Quizcreated1 />} />
             <Route path="quizAccess" element={<QuizAccess />} />
-
+            <Route path="quizcreated2" element={<Quizcreated2 />} />
             
 
             <Route path="Schedule" element={<Schedule />} />

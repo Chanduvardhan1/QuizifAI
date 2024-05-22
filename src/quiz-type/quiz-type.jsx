@@ -529,6 +529,13 @@ export default function quiztype() {
   };
   const handleNext = async () => {
     try {
+      const user_id = localStorage.getItem('user_id');
+
+      // Check if user_id is retrieved successfully
+      if (!user_id) {
+        setErrorMessage("User ID not found. Please log in again.");
+        return;
+      }
       const questionDuration = calculateQuizDuration();
       
       const response = await fetch(`https://quizifai.com:8010/crt_quiz_mnlly`, {
@@ -554,6 +561,7 @@ export default function quiztype() {
           available_from: availablefrom,
           disabled_on: disabledon,
           quiz_total_marks: quiztotalmarks,
+          user_id:user_id,
           questions: questions.map((question) => ({
             question_text: question.question_text,
             question_weightage: calculateWeightage(numQuestions, quiztotalmarks),

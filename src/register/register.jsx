@@ -942,7 +942,7 @@ const register = () => {
             
               <div
                 className={styles.registrationForm}
-                style={{ marginRight: "20px",marginLeft:"-17px" }}
+                style={{ marginRight: "20px",marginLeft:"45px" }}
               >
                 {/* First Name, Middle Name, Last Name */}
                 <div className={styles.FirstMiddleLast}>

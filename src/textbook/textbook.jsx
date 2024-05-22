@@ -205,6 +205,15 @@ export default function quiztype() {
   const [questions, setQuestions] = useState([]);
 
   const [subject, setsubject] = useState([]);
+
+
+  const [document, setDocument] = useState("");
+  const [author, setAuthor] = useState("");
+  const [publisher, setPublisher] = useState("");
+  const [released, setReleased] = useState("");
+  const [revision, setRevision] = useState("");
+  const [documentType, setDocumentType] = useState("");
+
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -588,6 +597,12 @@ export default function quiztype() {
       if (response.ok) {
         // Assuming router and state setter are defined properly
         setQuestions(responseData.questions);
+        setDocument(responseData.document_name);
+        setAuthor(responseData.author_name);
+        setPublisher(responseData.publisher_name);
+        setReleased(responseData.released_date);
+        setRevision(responseData.revision_year);
+        setDocumentType(responseData.document_type);
       } else {
         if (
           responseData.detail &&
@@ -610,8 +625,15 @@ export default function quiztype() {
 
   const handleNext4 = async () => {
     try {
+      const user_id = localStorage.getItem('user_id');
+
+      // Check if user_id is retrieved successfully
+      if (!user_id) {
+        setErrorMessage("User ID not found. Please log in again.");
+        return;
+      }
       const response = await fetch(
-        `https://quizifai.com:8010/crt_qz_from_pdf`,
+        `https://quizifai.com:8010/crt_qz_from_txtbuk`,
         {
           method: "POST",
           headers: {
@@ -635,8 +657,18 @@ export default function quiztype() {
             available_from: availablefrom,
             disabled_on: disabledon,
             quiz_total_marks: quiztotalmarks,
+            document_name: document,
+            author_name: author,
+            publisher_name: publisher,
+            released_date: released,
+            revision_year: revision,
+            document_type: document,
+            subject_name: subject,
+            user_id:user_id,
             questions: questions.map((question) => ({
               question_text: question.question_text,
+              lesson:question.lesson,
+              sub_heading: question.sub_heading,
               question_weightage: question.question_weightage,
               multi_answer_flag: multiAnswer,
               question_duration: question.question_duration,
@@ -1249,7 +1281,85 @@ export default function quiztype() {
                   onChange={(e) => setsubject(e.target.value)}
                 ></input>
               </div>
-          <div className="w-[140.68px] h-[37.09px] absolute top-[770px] left-[654.43px] rounded-[10px] bg-[#1E4DE9]">
+              <div className="w-[201px] h-[22px] absolute top-[730px] left-[820px]">
+                <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                document name
+                </h1>
+              </div>
+              <div className="">
+                <input
+                placeholder="document"
+                  className="w-[166px] h-[43px] absolute top-[720px] left-[1020px] rounded-[10px]  bg-[#ffffff] border-solid border-[#B8BBC2] border-[1.8px] text-black p-2"
+                  value={document}
+                  onChange={(e) => setDocument(e.target.value)}
+                ></input>
+              </div>
+              <div className="w-[201px] h-[22px] absolute top-[800px] left-[284px]">
+                <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                author name
+                </h1>
+              </div>
+              <div className="">
+                <input
+                placeholder="author"
+                  className="w-[166px] h-[43px] absolute top-[790px] left-[498px] rounded-[10px]  bg-[#ffffff] border-solid border-[#B8BBC2] border-[1.8px] text-black p-2"
+                  value={author}
+                  onChange={(e) => setAuthor(e.target.value)}
+                ></input>
+              </div>
+              <div className="w-[201px] h-[22px] absolute top-[800px] left-[820px]">
+                <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                publisher name
+                </h1>
+              </div>
+              <div className="">
+                <input
+                placeholder="publisher"
+                  className="w-[166px] h-[43px] absolute top-[790px] left-[1020px] rounded-[10px]  bg-[#ffffff] border-solid border-[#B8BBC2] border-[1.8px] text-black p-2"
+                  value={publisher}
+                  onChange={(e) => setPublisher(e.target.value)}
+                ></input>
+              </div>
+              <div className="w-[201px] h-[22px] absolute top-[870px] left-[284px]">
+                <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                released date
+                </h1>
+              </div>
+              <div className="">
+                <input
+                placeholder="released"
+                  className="w-[166px] h-[43px] absolute top-[860px] left-[498px] rounded-[10px]  bg-[#ffffff] border-solid border-[#B8BBC2] border-[1.8px] text-black p-2"
+                  value={released}
+                  onChange={(e) => setReleased(e.target.value)}
+                ></input>
+              </div>
+              <div className="w-[201px] h-[22px] absolute top-[870px] left-[820px]">
+                <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                revision year
+                </h1>
+              </div>
+              <div className="">
+                <input
+                placeholder="revision"
+                  className="w-[166px] h-[43px] absolute top-[860px] left-[1020px] rounded-[10px]  bg-[#ffffff] border-solid border-[#B8BBC2] border-[1.8px] text-black p-2"
+                  value={revision}
+                  onChange={(e) => setRevision(e.target.value)}
+                ></input>
+              </div>
+              <div className="w-[201px] h-[22px] absolute top-[940px] left-[284px]">
+                <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                document type
+                </h1>
+              </div>
+              <div className="">
+                <input
+                placeholder="documentType"
+                  className="w-[166px] h-[43px] absolute top-[930px] left-[498px] rounded-[10px]  bg-[#ffffff] border-solid border-[#B8BBC2] border-[1.8px] text-black p-2"
+                  value={documentType}
+                  onChange={(e) => setDocumentType(e.target.value)}
+                ></input>
+              </div>
+          <div className="w-[140.68px] h-[37.09px] absolute top-[980px] left-[654.43px] rounded-[10px] bg-[#1E4DE9]">
           <label htmlFor="fileInput" className="font-Poppins font-medium text-[15px] leading-[22.5px] flex justify-start px-4 py-2 text-white cursor-pointer" >
           Upload
           <img className="w-[24px] h-[24px] ml-4 -rotate-90" src={Next} alt="Next"/>
@@ -1263,8 +1373,7 @@ export default function quiztype() {
             {/* <h1 className="font-Poppins font-normal text-[10px] leading-[15px] text-[#555555] mt-7 ml-5">Uploading 50%</h1> */}
             
           </div>
-          <div className=" absolute top-[800px] left-[654.43px]">
-
+          <div className=" absolute top-[1020px] left-[654.43px]">
           <button
                 className="rounded-[10px] bg-[#1E4DE9] text-slate-50 mt-4 ml-9 p-2"
                 onClick={handleNext}
@@ -1272,7 +1381,7 @@ export default function quiztype() {
                 Upload
               </button>
       </div>
-            <div className="w-[98px] h-[32px] absolute top-[840px] left-[1182px] rounded-[10px] bg-[#1E4DE9]">
+            <div className="w-[98px] h-[32px] absolute top-[1000px] left-[1182px] rounded-[10px] bg-[#1E4DE9]">
               <button
                 // href="./enter-quiz"
                 onClick={handleNext1}
@@ -1306,6 +1415,26 @@ export default function quiztype() {
           <h2>{question.lesson}</h2>
           <h3>{question.sub_heading}</h3>
           <div className="mb-8">
+            {/* Input field for lesson */}
+            <div className="flex items-center mb-4">
+              <input
+                type="text"
+                placeholder="Lesson"
+                className="w-[70%] h-[50px] rounded-[20px] border-solid border-[#B8BBC2] border-[1.8px] p-[15px]"
+                value={question.lesson}
+                onChange={(e) => handleInputChange(questionIndex, "lesson", e.target.value)}
+              />
+            </div>
+            {/* Input field for sub-heading */}
+            <div className="flex items-center mb-4">
+              <input
+                type="text"
+                placeholder="Sub-heading"
+                className="w-[70%] h-[50px] rounded-[20px] border-solid border-[#B8BBC2] border-[1.8px] p-[15px]"
+                value={question.sub_heading}
+                onChange={(e) => handleInputChange(questionIndex, "sub_heading", e.target.value)}
+              />
+            </div>
             {/* Input field for question */}
             <div className="flex items-center mb-4">
               <div className="mr-2 text-xl font-normal">
@@ -1369,7 +1498,7 @@ export default function quiztype() {
 
                 <button
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1B1852] text-white"
-                  onClick={handleNext}
+                  onClick={handleNext4}
                 >
                   Create
                 </button>

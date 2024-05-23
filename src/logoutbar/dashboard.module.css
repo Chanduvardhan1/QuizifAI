@@ -16,6 +16,7 @@
   
   .navigation {
     width: 219px;
+    height: auto;
     background-color: #F5F5FB;
     font-weight: 500;
   }

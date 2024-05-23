@@ -51,7 +51,9 @@ function Schedule() {
       console.log("User ID:", userId);
       console.log("User Name:", username);
       try {
-        const response = await fetch(`https://quizifai.com:8010/notification_page?user_id=1`);
+        const response = await fetch(`https://quizifai.com:8010/notification_page?user_id=1`
+          
+        );
         if (!response.ok) {
           throw new Error('Failed to fetch quiz data');
         }
@@ -82,7 +84,7 @@ function Schedule() {
               Welcome {username}
             </h1>
           </div>
-          <div className="w-[99px] h-[41px] absolute top-[49px] left-[800px] rounded-[10px] bg-[#FFEDCD]">
+          <div className="w-[99px] h-[41px] mt-9 ml-[450px]  rounded-[10px] bg-[#FFEDCD]">
             <div className="flex">
               <img
                 className="w-[25px] h-[25px] ml-2 mt-2"
@@ -95,7 +97,7 @@ function Schedule() {
             </div>
           </div>
 
-          <div className="w-[40.79px] h-[40.79px] absolute top-[51.51px] left-[910.82px] rounded-[10px] bg-[#E5E9F9]">
+          <div className="w-[40.79px] h-[40.79px] absolute top-[35.51px] left-[910.82px] rounded-[10px] bg-[#E5E9F9]">
             <img
               className="w-[19.04px] h-[19.04px] flex justify-center items-center mx-3 my-3"
               src={Search}
@@ -284,7 +286,8 @@ function Schedule() {
 
             {/* second-box  */}
            <div className={styles.card} style={{ paddingTop: "8px",marginTop:"25px" }}>
-              <p className={styles.title}>{quizAssignedData[0]?.quiz_name}</p>
+           <p className={styles.title}>{quizAssignedData[1]?.title}
+              <p className={styles.subtitle}>{quizAssignedData[1]?.title}</p></p>
 
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded ">
@@ -359,16 +362,17 @@ function Schedule() {
 
               <div className={styles.category}>
                 <span className={styles.category1}>
-                  {quizAssignedData[0]?.category}
+                  {quizAssignedData[1]?.category}
                 </span>
                 <p className="px-[2px] font-normal">|</p>
                 <span className={styles.category1}>
-                  {quizAssignedData[0]?.sub_category}
+                  {quizAssignedData[1]?.sub_category}
                 </span>
               </div>
 
               <div className={styles.description}>
-                <span>{quizAssignedData[0]?.quiz_description}</span>
+                <span>{quizAssignedData[1]?.quiz_description}
+                <span className={styles.subdescription}>{quizAssignedData[0]?.quiz_description}</span></span>
               </div>
               <div
                 className={styles.additionalInfo}
@@ -429,7 +433,8 @@ function Schedule() {
 
             {/* Third-box  */}
             <div className={styles.card} style={{ paddingTop: "8px",marginTop:"25px" }}>
-              <p className={styles.title}>{quizAssignedData[0]?.quiz_name}</p>
+            <p className={styles.title}>{quizAssignedData[2]?.title}
+              <p className={styles.subtitle}>{quizAssignedData[2]?.title}</p></p>
 
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded ">
@@ -513,7 +518,8 @@ function Schedule() {
               </div>
 
               <div className={styles.description}>
-                <span>{quizAssignedData[0]?.quiz_description}</span>
+                <span>{quizAssignedData[0]?.quiz_description}
+                <span className={styles.subdescription}>{quizAssignedData[0]?.quiz_description}</span></span>
               </div>
               <div
                 className={styles.additionalInfo}
@@ -580,8 +586,8 @@ function Schedule() {
              style={{ paddingTop: "8px",
              marginTop:"25px",
              marginLeft:"-18px" }}>
-              <p className={styles.title}>{quizAssignedData[0]?.title}</p>
-
+              <p className={styles.title}>{quizAssignedData[3]?.title}
+              <p className={styles.subtitle}>{quizAssignedData[3]?.title}</p></p>
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded ">
                   <svg
@@ -664,7 +670,8 @@ function Schedule() {
               </div>
 
               <div className={styles.description}>
-                <span>{quizAssignedData[0]?.quiz_description}</span>
+                <span>{quizAssignedData[0]?.quiz_description}
+                <span className={styles.subdescription1}>{quizAssignedData[0]?.quiz_description}</span></span>
               </div>
               <div
                 className={styles.additionalInfo}
@@ -725,8 +732,8 @@ function Schedule() {
 
             {/* second-box  */}
            <div className={styles.card} style={{ paddingTop: "8px",marginTop:"25px" }}>
-              <p className={styles.title}>{quizAssignedData[0]?.quiz_name}</p>
-
+           <p className={styles.title}>{quizAssignedData[4]?.title}
+              <p className={styles.subtitle}>{quizAssignedData[4]?.title}</p></p>
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded ">
                   <svg
@@ -870,7 +877,8 @@ function Schedule() {
 
             {/* Third-box  */}
             <div className={styles.card} style={{ paddingTop: "8px",marginTop:"25px" }}>
-              <p className={styles.title}>{quizAssignedData[0]?.quiz_name}</p>
+            <p className={styles.title}>{quizAssignedData[5]?.title}
+              <p className={styles.subtitle}>{quizAssignedData[5]?.title}</p></p>
 
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded ">

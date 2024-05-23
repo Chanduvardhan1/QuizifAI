@@ -19,6 +19,10 @@ import "react-sweet-progress/lib/style.css";
 const Navigation = () => {
   const navigate = useNavigate();
 
+  const handleBackToHome = () => {
+    navigate("/");
+  };
+
   const handleNavigation = (path) => {
     navigate(path);
   };
@@ -52,6 +56,7 @@ const Navigation = () => {
     <div className={styles.navigation}>
       {/* Navigation content */}
       <img
+      onClick={handleBackToHome}
         src={quizifailogo}
         alt="Logo"
         width={180}

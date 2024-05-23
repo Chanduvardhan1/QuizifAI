@@ -300,18 +300,26 @@ const Dashboard = () => {
                       fontSize: "10px",
                       color: "grey",
                       textWrap: "nowrap",
+
                     }}
                   >
                     {latestResult[0]?.attempt_date}
-                    <span className={styles.titlename}>
-                      {latestResult[0]?.quiz_name}
-                    </span>{" "}
+                
+                <span className="relative group">
+                <span className="absolute ml-3 w-[110px] cursor-pointer z-0 truncate">
+                        {latestResult[0]?.quiz_name}
+                     <span className="hidden absolute w-[200px] top-full left-0 z-20 truncate group-hover:block bg-white p-1 border border-gray-300">
+                        {latestResult[0]?.quiz_name}
+                              </span>
+                     </span>
+                </span>
+                    
                     {/* - {latestResults[0]?.quiz_category} */}
                   </span>
                   <span
                     style={{
                       marginLeft: "10px",
-                      width: "125px",
+                      width: "130px",
                       height: "8px",
                       fontSize: "8px",
                       marginTop: "7px",
@@ -338,22 +346,27 @@ const Dashboard = () => {
                 <div className={styles.infoLine}>
                   <span
                     className={styles.info}
-                    style={{ fontSize: "10px", color: "grey" }}
+                    style={{ fontSize: "10px", color: "grey",textWrap:"nowrap" }}
                   >
                     {latestResult[1]?.attempt_date}
-                    <span className={styles.titlename}>
-                      {latestResult[1]?.quiz_name}
-                    </span>{" "}
+                    <span className="relative group">
+                <span className="absolute ml-3 w-[110px] cursor-pointer z-0 truncate">
+                        {latestResult[0]?.quiz_name}
+                     <span className="hidden absolute w-[200px] top-full left-0 z-20 truncate group-hover:block bg-white p-1 border border-gray-300">
+                        {latestResult[0]?.quiz_name}
+                              </span>
+                     </span>
+                </span>
                     {/* - {latestResults[1]?.quiz_category} */}
                   </span>
                   <span
                     style={{
-                      marginLeft: "30px",
+                      marginLeft: "10px",
                       width: "130px",
                       height: "8px",
                       fontSize: "8px",
                       marginTop: "7px",
-                      marginRight: "10px",
+                      marginRight: "15px",
                     }}
                   >
                     <Line
@@ -377,7 +390,7 @@ const Dashboard = () => {
                 <div className={styles.infoLine} style={{ fontSize: "10px" }}>
                   <span
                     className={styles.info}
-                    style={{ fontSize: "10px", color: "grey" }}
+                    style={{ fontSize: "10px", color: "grey",textWrap:"nowrap" }}
                   >
                     {latestResult[2]?.attempt_date}{" "}
                     <span className={styles.titlename}>
@@ -416,7 +429,7 @@ const Dashboard = () => {
                 <div className={styles.infoLine} style={{ fontSize: "10px" }}>
                   <span
                     className={styles.info}
-                    style={{ fontSize: "10px", color: "grey" }}
+                    style={{ fontSize: "10px", color: "grey",textWrap:"nowrap" }}
                   >
                     {latestResult[3]?.attempt_date}{" "}
                     <span className={styles.titlename}>
@@ -550,7 +563,7 @@ const Dashboard = () => {
                         </span>
                       </div>
                       {/* Edit  */}
-                      <div className={styles.start}>
+                      <div className={styles.edit}>
                         <img
                           className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
                           src={Edit_button}
@@ -561,7 +574,7 @@ const Dashboard = () => {
                         </span>
                       </div>
                       {/* Leaderboard */}
-                      <div className={styles.start}>
+                      <div className={styles.leaderboard}>
                         <img
                           className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
                           src={leaderboard_button}
@@ -573,7 +586,7 @@ const Dashboard = () => {
                       </div>
                       {/* Share */}
 
-                      <div className={styles.start}>
+                      <div className={styles.share}>
                         <img
                           className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
                           src={Share_button}
@@ -1723,8 +1736,7 @@ const Dashboard = () => {
                     }}
                   >
                     <span className={styles.title} style={{width:"210px"}}>
-                      {/* {allquizzes[85]?.quiz_name} */}mathemetics quizes mathemtetics quizes mathemetics
-                      <span className={styles.subtitle}>mathemetics quizes mathemtetics quizes mathemetics</span>
+                      {allquizzes[85]?.quiz_name}
                     </span>
                     <div className={styles.iconContainer}>
                       <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
@@ -2028,13 +2040,12 @@ const Dashboard = () => {
                           width={15}
                           height={10}
                         />{" "}
-                        {latestquizzes[6]?.number_of_questions}
+                      {attemptedquizzes[1]?.attained_score}/{attemptedquizzes[1]?.total_score}
                         <div
                           title="attained score/total score"
                           className="cursor-pointer text-[6px]"
                         >
-                          <span className=" ml-[1px]">2/</span>
-                          <span className=" ml-[1px]">10</span>
+                        
                           <span className=" ml-[1px]">score</span>
                         </div>
                       </span>
@@ -2046,13 +2057,12 @@ const Dashboard = () => {
                           width={14}
                           height={14}
                         />{" "}
-                        {latestquizzes[6]?.quiz_duration}
+                        {attemptedquizzes[1]?.attempted_questions}/{attemptedquizzes[1]?.total_questions}
                         <div
                           title="attempted qustions/total questions"
                           className="cursor-pointer text-[6px]"
                         >
-                          <span className=" -ml-[1px]">4/</span>
-                          <span className=" ml-[1px]">10</span>
+                          
                           <span className=" ml-[1px]">attemped</span>
                         </div>
                       </span>
@@ -2064,13 +2074,11 @@ const Dashboard = () => {
                           width={14}
                           height={14}
                         />{" "}
-                        {latestquizzes[6]?.quiz_duration}
+                       {attemptedquizzes[2]?.attempt_duration_mins}/{attemptedquizzes[2]?.quiz_duration}
                         <div
                           title="time taken for attempted/total duration of quiz "
                           className="cursor-pointer text-[6px]"
                         >
-                          <span className=" -ml-[1px]">8/</span>
-                          <span className=" ml-[1px]">20</span>
                           <span className=" ml-[1px]">duration</span>
                         </div>
                       </span>
@@ -2215,13 +2223,12 @@ const Dashboard = () => {
                           width={15}
                           height={10}
                         />{" "}
-                        {latestquizzes[6]?.number_of_questions}
+                       {attemptedquizzes[3]?.attained_score}/{attemptedquizzes[3]?.total_score}
                         <div
                           title="attained score/total score"
                           className="cursor-pointer text-[6px]"
                         >
-                          <span className=" ml-[1px]">2/</span>
-                          <span className=" ml-[1px]">10</span>
+                          
                           <span className=" ml-[1px]">score</span>
                         </div>
                       </span>
@@ -2233,13 +2240,12 @@ const Dashboard = () => {
                           width={14}
                           height={14}
                         />{" "}
-                        {latestquizzes[6]?.quiz_duration}
+                        {attemptedquizzes[3]?.attempted_questions}/{attemptedquizzes[3]?.total_questions}
                         <div
                           title="attempted qustions/total questions"
                           className="cursor-pointer text-[6px]"
                         >
-                          <span className=" -ml-[1px]">4/</span>
-                          <span className=" ml-[1px]">10</span>
+                         
                           <span className=" ml-[1px]">attemped</span>
                         </div>
                       </span>
@@ -2251,13 +2257,12 @@ const Dashboard = () => {
                           width={14}
                           height={14}
                         />{" "}
-                        {latestquizzes[6]?.quiz_duration}
+                        {attemptedquizzes[3]?.attempt_duration_mins}/{attemptedquizzes[3]?.quiz_duration}{latestquizzes[6]?.quiz_duration}
                         <div
                           title="time taken for attempted/total duration of quiz "
                           className="cursor-pointer text-[6px]"
                         >
-                          <span className=" -ml-[1px]">8/</span>
-                          <span className=" ml-[1px]">20</span>
+                       
                           <span className=" ml-[1px]">duration</span>
                         </div>
                       </span>

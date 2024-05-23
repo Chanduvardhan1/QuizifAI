@@ -39,7 +39,7 @@
   
   
   .infoLine {
-    margin-top: 7px;
+  margin-top: 7px;
   display: flex;
   align-items: center;
   }
@@ -149,9 +149,19 @@
   }
   .subdescription{
     width: 145px; 
+    height: auto;
     display: none;
     position: absolute;
     top: 105px;
+    background-color: white;
+    z-index: 10;
+  }
+  .subdescription1{
+    width: 145px; 
+    height: auto;
+    display: none;
+    position: absolute;
+    top: 155px;
     background-color: white;
     z-index: 10;
   }
@@ -386,10 +396,6 @@
   .start:hover{
     background-color: #cccecf;
   
-  }
-  .titlename{
-  padding-left: 15px;
-  padding-top: 10px;
   }
   
   .description {

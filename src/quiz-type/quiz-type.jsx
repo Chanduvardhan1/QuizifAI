@@ -885,7 +885,7 @@ export default function quiztype() {
     </option>
   ))}
                 </select>  */}
-                      <select
+      <select
         className="w-[260px] h-[41.6px] border-solid border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer text-[12px]"
         value={selectedCategory}
         onChange={handleSelectCategory}

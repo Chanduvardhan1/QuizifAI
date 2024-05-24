@@ -484,7 +484,7 @@ const LoginPage = () => {
                               <div
                                 className={styles.passwordToggleIcon}
                                 onClick={togglePasswordVisibility}
-                                style={{ color: "#A7A3FF" }}
+                                style={{ color: "#A7A3FF",cursor:"pointer" }}
                               >
                                 {showPassword ? <FaEye/> : <FaEyeSlash />}
                               </div>
@@ -699,7 +699,7 @@ const LoginPage = () => {
                             <div
                               className={styles.passwordToggleIcon1}
                               onClick={togglePasswordVisibility1}
-                              style={{ color: "#A7A3FF" }}
+                              style={{ color: "#A7A3FF" ,cursor:"pointer"}}
                             >
                               {showPassword1 ? < FaEye/> : <FaEyeSlash />}
                             </div>

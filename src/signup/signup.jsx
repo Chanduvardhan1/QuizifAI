@@ -184,7 +184,7 @@ const Signup = () => {
           data.data === "Email is already registered. You can log in."
         ) {
           alert(data.data);
-          navigate("/register", {
+          navigate("/login", {
             state: { emailMobOption: loginMethod, emailMob: emailOrMobile },
           });
         } else {
@@ -311,7 +311,7 @@ const Signup = () => {
         ) {
           alert(data.data);
           // navigate("/Register");
-          navigate("/register", {
+          navigate("/login", {
             state: { emailMobOption: loginMethod, emailMob: emailOrMobile },
           });
         } else {

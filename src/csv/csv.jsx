@@ -396,6 +396,7 @@ export default function quiztype() {
     setQuestions(newQuestions);
   };
   const handleNext = async () => {
+    const user_id = localStorage.getItem('user_id');
     try {
       const response = await fetch(
         `https://quizifai.com:8010/crt_qz_from_exl_csv`,
@@ -434,6 +435,7 @@ export default function quiztype() {
             quiz_total_marks: quizData
               ? quizData.quiz_total_marks
               : description,
+              user_id:user_id,
             questions: questions.map((question) => ({
               question_text: question.question_text,
               question_weightage: question.question_weightage,

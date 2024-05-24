@@ -10,6 +10,8 @@ import iconD from "../assets/Images/images/questions/IconD.png";
 import clockIcon from "../assets/Images/images/questions/clock.png";
 import LeftBar from "../leftbar/leftbar";
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 const QuizQuestions = () => {
 
@@ -173,6 +175,7 @@ const QuizQuestions = () => {
     setCurrentQuestionIndex(prevIndex => prevIndex + 1);
   };
 
+  const navigate = useNavigate();
   const handleSubmit = () => {
     clearInterval(timerRef.current);
     if (!quizData || !quizData.data) {
@@ -212,6 +215,7 @@ const QuizQuestions = () => {
     })
     .then(data => {
       console.log(data);
+      navigate(`/quizresults`, { state: { quizId, attemptNo } });
       // Handle response if needed
     })
     .catch(error => {
@@ -371,7 +375,7 @@ const QuizQuestions = () => {
               {Object.keys(currentQuestion).map((key, index) => {
                 if (key.startsWith('quiz_ans_option_') && key.endsWith('_text')) {
                   const optionId = currentQuestion[key.replace('_text', '_id')];
-                  const optionLabel = optionLabels[index];
+                  const optionLabel = optionLabels[index % optionLabels.length]; 
                   return (
                     <li key={optionId}>
                       <button

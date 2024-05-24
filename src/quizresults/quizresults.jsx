@@ -31,11 +31,19 @@ import wrongIcon1 from "../../src/assets/Images/images/quizresults/wrongicon.png
 import two2Icon from "../../src/assets/Images/images/quizview/two2.png";
 import three3Icon from "../../src/assets/Images/images/quizview/three3.png"; 
 import four4Icon from "../../src/assets/Images/images/quizview/four4.png";
+import { useLocation } from 'react-router-dom';
 
 const quizresults = () => {
   const [quizData, setQuizData] = useState(null);
+  const location = useLocation();
+  const { quizId, attemptNo } = location.state || {};
+  const [loading, setLoading] = useState(true); // To manage loading state
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    const userId = localStorage.getItem("user_id");
+
+
     const sendData = async () => {
       try {
         const response = await fetch('https://quizifai.com:8010/quiz_result', {
@@ -45,21 +53,28 @@ const quizresults = () => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            user_id: 1,
-            quiz_id: 556,
-            attempt_id: 251
+            user_id: userId,
+            quiz_id: quizId,
+            attempt_id: attemptNo
           })
         });
-        const data = await response.json();
-        setQuizData(data.data);
+        const result = await response.json();
+        const data = result[0]?.data;
+        setQuizData(data);
         console.log('Quiz result submitted:', data);
       } catch (error) {
         console.error('Error submitting quiz result:', error);
       }
     };
+    if (quizId && attemptNo) {
+      sendData(); // Trigger the POST request only if quizId and attemptNo are available
+    } // Trigger the POST request when the component mounts
+  }, [quizId, attemptNo]);
+  if (!quizData) {
+    return <div>Loading...</div>;
+  }
 
-    sendData(); // Trigger the POST request when the component mounts
-  }, []);
+ 
   return (
 
     <div className={styles.container}>
@@ -70,6 +85,7 @@ const quizresults = () => {
         />
       </Head> */}
       <LeftBar/>
+      
       <div className={styles.mainContent}>
         <div className={styles.header}>
         <div className={styles.titleContainer}>
@@ -108,7 +124,7 @@ const quizresults = () => {
     alt="Calendar Icon"
     className={styles.icon2}
   />
-          <span>You have scored 89%</span>
+          <span>You have scored {quizData.attained_score_percentage}%</span>
         </div>
        
         
@@ -121,7 +137,7 @@ const quizresults = () => {
     alt="Calendar Icon"
     className={styles.icon2}
   />
-          <span>23 mins spent for 60 questions</span>
+          <span>{quizData.attempt_duration} spent for {quizData.total_questions}questions</span>
         </div>
        
         
@@ -147,7 +163,7 @@ const quizresults = () => {
     alt="Calendar Icon"
     className={styles.icon2}
   />
-          <span>59 answered out of 60 questions</span>
+          <span>{quizData.attempted_questions} answered out of {quizData.total_questions} questions</span>
         </div>
         </div>
         <div className={styles.sentencesContainer}>
@@ -157,7 +173,7 @@ const quizresults = () => {
     alt="Calendar Icon"
     className={styles.icon2}
   />
-          <span>53 correct answers</span>
+          <span>{quizData.attained_score} correct answers</span>
         </div>
         </div>
         </div>

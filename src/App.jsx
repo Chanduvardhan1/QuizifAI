@@ -293,9 +293,9 @@ function VerificationHandler() {
             <Route path="quizmaster" element={<Quizmaster />} />
             <Route path="quizview1" element={<Quizview1 />} />
             <Route path="quizcreated1" element={<Quizcreated1 />} />
-            <Route path="quizAccess" element={<QuizAccess />} />
+            {/* <Route path="/quizaccess/:quizId" element={<QuizAccess />} /> */}
             <Route path="quizcreated2" element={<Quizcreated2 />} />
-            
+            <Route path="/quizaccess" element={<QuizAccess />} />
 
             <Route path="Schedule" element={<Schedule />} />
             <Route path="subscription" element={<Subscription />} />
@@ -319,7 +319,7 @@ function VerificationHandler() {
             <Route path="quiz-results" element={<QuestionsPage/>} />
             <Route path="quiz-results1" element={<Questions/>} />
             <Route path="quizmaster-orgadmin" element={<Orgadmin3/>} />
-            <Route path="quizquestions" element={<QuizQuestions/>} />
+            <Route path="/quizquestions/:quizId" element={<QuizQuestions/>} />
             <Route path="resendotp" element={<ResendOTP/>} />
             <Route path="superadmin-profile" element={<SuperadminProfile/>} />
             <Route path="superadmin" element={<Superadmins/>} />

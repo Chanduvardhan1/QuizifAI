@@ -454,7 +454,11 @@ margin-bottom:20px;
   margin-left: 160px;
   
 }
-
+.resendButton:hover{
+  background-color:rgb(239,81,48); /* Change background color on hover */
+  transform: scale(1.1); /* Zoom effect on hover */
+  transition: transform 0.3s ease;
+}
 .resendButton{
   width: 104px;
   height: 41px;

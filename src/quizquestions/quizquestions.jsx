@@ -1,6 +1,6 @@
 //import Head from 'next/head';
 //import img from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useRef } from 'react';
 import styles from './quizquestions.module.css';
 import numberIcon from "../assets/Images/images/questions/numberIcon.png"; 
 import iconA from "../assets/Images/images/questions/IconA.png";
@@ -9,25 +9,130 @@ import iconC from "../assets/Images/images/questions/IconC.png";
 import iconD from "../assets/Images/images/questions/IconD.png"; 
 import clockIcon from "../assets/Images/images/questions/clock.png";
 import LeftBar from "../leftbar/leftbar";
-
+import { useParams } from 'react-router-dom';
 
 const QuizQuestions = () => {
 
+  // const [quizData, setQuizData] = useState(null);
+  // const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  // const [selectedOptions, setSelectedOptions] = useState({});
+  // const [answers, setAnswers] = useState({});
+  // const [attemptNo, setAttemptNo] = useState(null);
+  // const { quizId } = useParams();
+  // useEffect(() => {
+  //   const userId = localStorage.getItem("user_id");
+
+  //   fetch('https://quizifai.com:8010/get-questions', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify({
+  //       quiz_id: 46,
+  //       user_id: userId
+  //     })
+  //   })
+  //     .then(response => {
+  //       if (!response.ok) {
+  //         throw new Error('Network response was not ok');
+  //       }
+  //       return response.json();
+  //     })
+  //     .then(data => {
+  //       console.log(data);
+  //       setQuizData(data.data);
+  //       setAttemptNo(data.data.quiz_level_attempt_id);
+  //     })
+  //     .catch(error => {
+  //       console.error('There was a problem with your fetch operation:', error);
+  //     });
+  // }, []); 
+
+  // if (!quizData) {
+  //   return <div>Loading...</div>;
+  // }
+
+
+  // const handleOptionSelect = (optionId) => {
+  //   setSelectedOptions(prevOptions => ({
+  //     ...prevOptions,
+  //     [currentQuestionIndex]: optionId
+  //   }));
+  // };
+
+  // const handlePreviousQuestion = () => {
+  //   setCurrentQuestionIndex(prevIndex => prevIndex - 1);
+  // };
+
+  // const handleNextQuestion = () => {
+  //   setCurrentQuestionIndex(prevIndex => prevIndex + 1);
+  // };
+
+  // const handleSubmit = () => {
+  //   const userId = localStorage.getItem("user_id");
+  //   const answers = Object.keys(selectedOptions).map(questionIndex => ({
+  //     question_id: quizData.questions[questionIndex].question_id,
+  //     options: {
+  //       [`option_${selectedOptions[questionIndex]}`]: true
+  //     }
+  //   }));
+
+  //   fetch('https://quizifai.com:8010/submit', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify({
+  //       user_id: userId,
+  //       quiz_id: quizId,
+  //       attempt_no: attemptNo,
+  //       answers: answers
+  //     })
+  //   })
+  //   .then(response => {
+  //     if (!response.ok) {
+  //       throw new Error('Network response was not ok');
+  //     }
+  //     return response.json();
+  //   })
+  //   .then(data => {
+  //     console.log(data);
+  //     // Handle response if needed
+  //     setAttemptNo(data.data.quiz_level_attempt_id);
+  //   })
+  //   .catch(error => {
+  //     console.error('There was a problem with your fetch operation:', error);
+  //   });
+  // };
+
+  // if (!quizData) {
+  //   return <div>Loading...</div>;
+  // }
+
+  // const currentQuestion = quizData.questions.data[currentQuestionIndex];
   const [quizData, setQuizData] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [answers, setAnswers] = useState({});
+  const [selectedOptions, setSelectedOptions] = useState({});
+  const userId = localStorage.getItem("user_id");
+ // Assuming quiz_id is 1592
+  const [attemptNo, setAttemptNo] = useState(null);
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const timerRef = useRef(null);
+  const { quizId } = useParams();
 
   useEffect(() => {
-    fetch('https://quizifai.com:8010/access_quiz_for_master', {
+    const quizId = localStorage.getItem("quiz_id");
+    fetch('https://quizifai.com:8010/get-questions', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        quiz_id: 963,
-        user_id: 1
+        quiz_id: quizId,
+        user_id: userId
       })
     })
     .then(response => {
@@ -39,67 +144,94 @@ const QuizQuestions = () => {
     .then(data => {
       console.log(data);
       setQuizData(data.data);
-      initializeAnswers(data.data.questions);
+      setAttemptNo(data.data.data.find(d => d.quiz_level_attempt_id).quiz_level_attempt_id);
     })
     .catch(error => {
       console.error('There was a problem with your fetch operation:', error);
     });
-  }, []);
-function getIcon(option) {
-  switch (option.quiz_ans_option_id) {
-    case option.quiz_ans_option_1_id:
-      return iconA;
-    case option.quiz_ans_option_2_id:
-      return iconB;
-    case option.quiz_ans_option_3_id:
-      return iconC;
-    case option.quiz_ans_option_4_id:
-      return iconD;
-    default:
-      return null;
-  }
-}
-const initializeAnswers = (questions) => {
-  const initialAnswers = {};
-  questions.forEach(question => {
-    initialAnswers[question.question_id] = null;
-  });
-  setAnswers(initialAnswers);
-};
+    timerRef.current = setInterval(() => {
+      setElapsedTime(prevTime => prevTime + 1);
+    }, 1000);
 
-const handleOptionSelect = (optionId) => {
-  setSelectedOption(optionId);
-  setAnswers(prevAnswers => ({
-    ...prevAnswers,
-    [quizData.questions[currentQuestionIndex].question_id]: optionId
-  }));
-};
+    return () => {
+      clearInterval(timerRef.current);
+    };
+  }, [quizId]);
 
-const handleNextQuestion = () => {
-  if (currentQuestionIndex < quizData.questions.length - 1) {
-    setCurrentQuestionIndex(prevIndex => prevIndex + 1);
-    setSelectedOption(null);
-  }
-};
+  const handleOptionSelect = (optionId) => {
+    setSelectedOptions(prevOptions => ({
+      ...prevOptions,
+      [currentQuestionIndex]: optionId
+    }));
+  };
 
-const handlePreviousQuestion = () => {
-  if (currentQuestionIndex > 0) {
+  const handlePreviousQuestion = () => {
     setCurrentQuestionIndex(prevIndex => prevIndex - 1);
-    setSelectedOption(null);
+  };
+
+  const handleNextQuestion = () => {
+    setCurrentQuestionIndex(prevIndex => prevIndex + 1);
+  };
+
+  const handleSubmit = () => {
+    clearInterval(timerRef.current);
+    if (!quizData || !quizData.data) {
+      console.error('No quiz data available to submit');
+      return;
+    }
+
+    const answers = Object.keys(selectedOptions).map(questionIndex => ({
+      question_id: quizData.data[questionIndex].question_id,
+      options: {
+        option_1: selectedOptions[questionIndex] === quizData.data[questionIndex].quiz_ans_option_1_id,
+        option_2: selectedOptions[questionIndex] === quizData.data[questionIndex].quiz_ans_option_2_id,
+        option_3: selectedOptions[questionIndex] === quizData.data[questionIndex].quiz_ans_option_3_id,
+        option_4: selectedOptions[questionIndex] === quizData.data[questionIndex].quiz_ans_option_4_id
+      }
+    }));
+    // const quizId = localStorage.getItem("quiz_id");
+
+    fetch('https://quizifai.com:8010/submit', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        quiz_id: quizId,
+        attempt_no: attemptNo,
+        answers: answers
+      })
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log(data);
+      // Handle response if needed
+    })
+    .catch(error => {
+      console.error('There was a problem with your fetch operation:', error);
+    });
+  };
+  const formatTime = (seconds) => {
+    const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
+    const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+    const s = (seconds % 60).toString().padStart(2, '0');
+    return `${h}:${m}:${s}`;
+  };
+
+  if (!quizData || !quizData.data) {
+    return <div>Loading...</div>;
   }
-};
+  const filteredQuizData = quizData.data.filter(item => item.question_id);
+  const currentQuestion = quizData.data.filter(item => item.question_id)[currentQuestionIndex];
+  const optionLabels = ['A', 'B', 'C', 'D'];
 
-const handleSubmit = () => {
-  // Submit answers
-  console.log(answers);
-  // You can implement your logic to submit answers to the server here
-};
-
-if (!quizData) {
-  return <div>Loading...</div>;
-}
-
-const currentQuestion = quizData.questions[currentQuestionIndex];
   return (
     <div className={styles.container}>
       {/*<Head>
@@ -110,60 +242,194 @@ const currentQuestion = quizData.questions[currentQuestionIndex];
   </Head>*/}
       <LeftBar/>
       <div className={styles.mainContent}>
-          <h1 className={styles.quizTitle}>{quizData.quiz_title}</h1>
-          <div className={styles.imageContainer}>
-          <img
+          <h1 className={styles.quizTitle}>{quizData.data.quiz_title}</h1>
+          {/* <div className={styles.imageContainer}>
+          {/* <img
     src={numberIcon} 
     alt="Logo"
     width={59}
     height={59}
     className={styles.logoImage}
-  />
-        <div className={styles.textContainer}>
-        <p>{currentQuestion.question_text}</p>
-        </div>
-        
-    </div>
-    <div className={styles.boxesContainer}>
+  /> */}
+        {/* <div className={styles.textContainer}>
+        <p>{`${currentQuestionIndex + 1}. ${currentQuestion.question_text}`}</p>
 
+        </div> */}
+        
+    {/* </div>  */}
+    {/* <div className={styles.boxesContainer}>
+{/* 
     <div className={styles.icon}>
     <ul>
-          {Object.keys(currentQuestion).map(key => {
-            if (key.startsWith('quiz_ans_option_') && key.endsWith('_text')) {
-              const optionId = currentQuestion[key.replace('_text', '_id')];
-              return (
-                <li key={optionId} >
-                  <button className={styles.box}
-                    onClick={() => handleOptionSelect(optionId)}
-                    style={{ fontWeight: selectedOption === optionId ? 'bold' : 'normal' }}
-                  >
-                    {currentQuestion[key]}
-                  </button>
-                </li>
-              );
-            }
-            return null;
-          })}
-        </ul>
-    </div>
+        {Object.keys(currentQuestion).map(key => {
+          if (key.startsWith('quiz_ans_option_') && key.endsWith('_text')) {
+            const optionId = currentQuestion[key.replace('_text', '_id')];
+            return (
+              <li key={optionId}>
+                <button
+                  className={styles.box}
+                  onClick={() => handleOptionSelect(optionId)}
+                  style={{ fontWeight: selectedOption === optionId ? 'bold' : 'normal' }}
+                >
+                  {currentQuestion[key]}
+                </button>
+              </li>
+            );
+          }
+          return null;
+        })}
+      </ul>
+    </div> */}
 
-
-<div className={styles.buttonsContainer}>
-<div>
-        <button className={styles.button} style={{ color: '#FFFFFF', backgroundColor: '#FEBB42', height: '52px', borderRadius: '10px', border: 'none' }} onClick={handlePreviousQuestion} disabled={currentQuestionIndex === 0}>Previous</button>
-        {currentQuestionIndex === quizData.questions.length - 1 && <button className={styles.button}              style={{ marginLeft: '50px', backgroundColor: '#8453FC', height: '52px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
- onClick={handleSubmit}>Submit</button>}
-        <button className={styles.button} style={{ marginLeft: '50px', backgroundColor: '#8453FC', height: '52px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }} onClick={handleNextQuestion} disabled={currentQuestionIndex === quizData.questions.length - 1}>Next</button>
+    {/* <div className={styles.buttonsContainer}>
+        <button
+          className={styles.button}
+          style={{ color: '#FFFFFF', backgroundColor: '#FEBB42', height: '52px', borderRadius: '10px', border: 'none' }}
+          onClick={handlePreviousQuestion}
+          disabled={currentQuestionIndex === 0}
+        >
+          Previous
+        </button>
+        {currentQuestionIndex === quizData.questions.length - 1 && (
+          <button
+            className={styles.button}
+            style={{ marginLeft: '50px', backgroundColor: '#8453FC', height: '52px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
+            onClick={handleSubmit}
+          >
+            Submit
+          </button>
+        )}
+        <button
+          className={styles.button}
+          style={{ marginLeft: '50px', backgroundColor: '#8453FC', height: '52px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
+          onClick={handleNextQuestion}
+          disabled={currentQuestionIndex === quizData.questions.length - 1}
+        >
+          Next
+        </button>
+      </div> */}
+  {/* <div>
+      <ul>
+        {currentQuestion && Object.keys(currentQuestion).map(key => {
+          if (key.startsWith('quiz_ans_option_') && key.endsWith('_text')) {
+            const optionId = currentQuestion[key.replace('_text', '_id')];
+            return (
+              <li key={optionId}>
+                <button
+                  className={styles.box}
+                  onClick={() => handleOptionSelect(optionId)}
+                  style={{ fontWeight: selectedOptions[currentQuestionIndex] === optionId ? 'bold' : 'normal' }}
+                >
+                  {currentQuestion[key]}
+                </button>
+              </li>
+            );
+          }
+          return null;
+        })}
+      </ul>
+      <div className={styles.buttonsContainer}>
+        <button
+          className={styles.button}
+          style={{ color: '#FFFFFF', backgroundColor: '#FEBB42', height: '52px', borderRadius: '10px', border: 'none' }}
+          onClick={handlePreviousQuestion}
+          disabled={currentQuestionIndex === 0}
+        >
+          Previous
+        </button>
+        {currentQuestionIndex === quizData.data.length - 1 && (
+          <button
+            className={styles.button}
+            style={{ marginLeft: '50px', backgroundColor: '#8453FC', height: '52px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
+            onClick={handleSubmit}
+          >
+            Submit
+          </button>
+        )}
+        <button
+          className={styles.button}
+          style={{ marginLeft: '50px', backgroundColor: '#8453FC', height: '52px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
+          onClick={handleNextQuestion}
+          disabled={currentQuestionIndex === quizData.data.length - 1}
+        >
+          Next
+        </button>
       </div>
-</div>
+    </div> */}
 
+    {/* </div> */}
+    <div>
+      {currentQuestion && (
+        <>
+          <div className={styles.imageContainer}>
+            <div className={styles.textContainer}>
+              <p>{`${currentQuestionIndex + 1}. ${currentQuestion.question_text}`}</p>
+            </div>
+          </div>
+          <div className={styles.boxesContainer}>
+            <ul>
+              {Object.keys(currentQuestion).map((key, index) => {
+                if (key.startsWith('quiz_ans_option_') && key.endsWith('_text')) {
+                  const optionId = currentQuestion[key.replace('_text', '_id')];
+                  const optionLabel = optionLabels[index];
+                  return (
+                    <li key={optionId}>
+                      <button
+                        className={styles.box}
+                        onClick={() => handleOptionSelect(optionId)}
+                        style={{ fontWeight: selectedOptions[currentQuestionIndex] === optionId ? 'bold' : 'normal' }}
+                      >
+                        {`${optionLabel}. ${currentQuestion[key]}`}
+                      </button>
+                    </li>
+                  );
+                }
+                return null;
+              })}
+            </ul>
+          </div>
+        </>
+      )}
+      <div className={styles.buttonsContainer}>
+        <button
+          className={styles.button}
+          style={{ color: '#FFFFFF', backgroundColor: '#FEBB42', height: '52px', borderRadius: '10px', border: 'none' }}
+          onClick={handlePreviousQuestion}
+          disabled={currentQuestionIndex === 0}
+        >
+          Previous
+        </button>
+        {currentQuestionIndex === quizData.data.filter(item => item.question_id).length - 1 && (
+          <button
+            className={styles.button}
+            style={{ marginLeft: '50px', backgroundColor: '#8453FC', height: '52px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
+            onClick={handleSubmit}
+          >
+            Submit
+          </button>
+        )}
+        <button
+          className={styles.button}
+          style={{ marginLeft: '50px', backgroundColor: '#8453FC', height: '52px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
+          onClick={handleNextQuestion}
+          disabled={currentQuestionIndex === quizData.data.filter(item => item.question_id).length - 1}
+        >
+          Next
+        </button>
+      </div>
+     
     </div>
-    
           </div>
           <div className={styles.verticalLine}></div>
-          <div className={styles.sentence1} style={{marginTop:"110px"}}>1 out of  {quizData.num_questions}</div>
-          <div className={styles.sentence2} style={{marginTop:"170px"}}>Total timer: </div>
-          <div className={styles.sentence3} style={{marginTop:"230px"}}>HH:MM:SS</div>
+      <div className={styles.sentence1} style={{ marginTop: "110px" }}>
+        {`${currentQuestionIndex + 1} out of ${filteredQuizData.length}`}
+      </div>
+      <div className={styles.sentence2} style={{ marginTop: "170px" }}>
+        Total timer:
+      </div>
+      <div className={styles.sentence3} style={{ marginTop: "230px" }}>
+        {formatTime(elapsedTime)}
+      </div>
           <div className={styles.sentence4} style={{marginTop:"290px", marginLeft:"-140px"}}>Quiz timer: </div>
           <div className={styles.imageContainer} style={{marginTop: "350px", marginLeft: "-100px"}}>
     <img

@@ -110,15 +110,20 @@
     color: #454B60;
   }
   .customDatePicker{
-    backgroundRepeat: "no-repeat";
+    background-Repeat: "no-repeat";
     width: "186px";
     height: "50px";
-    paddingLeft: "0px";
-    //backgroundColor: "#F0EFFF";
+    padding-Left: "0px";
+    background-Color: "#F0EFFF";
     border: "none";
-    fontFamily: "poppins";
+    font-Family: "poppins";
 
-    borderRadius: "10px";
+    border-Radius: "10px";
+  }
+  .resendButton:hover{
+    background-color:rgb(239,81,48); /* Change background color on hover */
+    transform: scale(1.1); /* Zoom effect on hover */
+    transition: transform 0.3s ease;
   }
   .resgisterTitle{
     font-size:32px;
@@ -167,7 +172,7 @@ margin-left: 85px;
   .inputRow2{
     display:flex;
   }
- =
+ 
   /* .inputRow{
     height:100px
   } */
@@ -417,7 +422,11 @@ margin-left: 85px;
     margin-right: 200px;
     margin-left:115px;
   }
-  
+  .resendButton:hover{
+    background-color:rgb(239,81,48); /* Change background color on hover */
+    transform: scale(1.1); /* Zoom effect on hover */
+    transition: transform 0.3s ease;
+  }
   .registerButton {
     width: 104px;
     height: 41px;

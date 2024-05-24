@@ -26,6 +26,8 @@ import user1Icon from "../../src/assets/Images/images/quiz-Access/user1.png";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { Progress } from "react-sweet-progress";
 import "react-sweet-progress/lib/style.css";
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const dashboardLogo = "/images/dashboard/quizifaiDashboard.png";
@@ -90,9 +92,17 @@ const quizAccess = () => {
       {currentValue}%
     </progress>
   );
+  const navigate = useNavigate();
   const [quizData, setQuizData] = useState(null);
-
+  // const { quizId } = useParams();
+  const handleStartQuiz = () => {
+    if (quizData && quizData.quiz_id) {
+      navigate(`/quizquestions/${quizData.quiz_id}`);
+    }
+  };
   useEffect(() => {
+    const userId = localStorage.getItem("user_id");
+    const quizId = localStorage.getItem("quiz_id");
     fetch('https://quizifai.com:8010/access_quiz_for_master', {
       method: 'POST',
       headers: {
@@ -100,8 +110,8 @@ const quizAccess = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        quiz_id: 963,
-        user_id: 1
+        quiz_id: quizId,
+        user_id: userId
       })
     })
     .then(response => {
@@ -334,14 +344,14 @@ const quizAccess = () => {
         </div>
         </div>
         <div className={styles.buttonContainer}>
-        <a href="/quizquestions">
-      <button className={styles.imageButton}>
+       
+      <button className={styles.imageButton} onClick={handleStartQuiz}>
         <img
           src={startIcon} 
           alt="Calendar Icon"
         />
       </button>
-    </a>
+  
       </div>
       </> 
         )}

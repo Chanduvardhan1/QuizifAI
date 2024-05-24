@@ -357,7 +357,9 @@ const register = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
+  const togglePasswordVisibility1 = () => {
+    setShowPassword(!showPassword);
+  };
   const handleEmailValidation = (input) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     setEmail(input);
@@ -736,35 +738,31 @@ const register = () => {
         state_name: "",
       });
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+      // if (!response.ok) {
+      //   throw new Error("Network response was not ok");
+      // }
 
-      const data = await response.json();
-      console.log(data);
-      setResponseMessage(data.data[0]);
-      // setfirstname("");
-      // setmiddlename("");
-      // setlastname("");
-      // setdateofbirth("");
-      // setemailOrMobile("");
-      // setuserphonenumber("");
-      // setoccupationname("");
-      // setcityname("");
-      // setcountryname("");
-      // setpincode("");
-      // setstatename("");
-      if (data.response === "success") {
+      const responseData = await response.json();
+
+      if (responseData.response === "success") {
         setShowRegistrationSuccess(true);
-      } else if (
-        data.response === "fail"
-      ) {
-     
+      } else if (responseData.response === "fail") {
         setShowRegistrationSuccess(true);
-      
-      } 
-       else {
-        alert(data.data);
+      } else {
+        // Check if the error detail contains information about age
+        if (
+          responseData.detail &&
+          responseData.detail.length > 0 &&
+          responseData.detail[0].type === "value_error" &&
+          responseData.detail[0].msg ===
+            "Value error, User must be at least 12 years old to use the application"
+        ){
+          // Display an alert specific to age error
+          alert("User must be at least 12 years old to use the application");
+        } else {
+          // Display a general alert for other errors
+          alert(responseData.data);
+        }
       }
     } catch (error) {
       console.error("Error:", error);
@@ -1154,7 +1152,7 @@ const register = () => {
                         <div
                           className={styles.passwordToggleIcon}
                           onClick={togglePasswordVisibility}
-                          style={{ color: "#A7A3FF" }}
+                          style={{ color: "#A7A3FF",cursor:"pointer" }}
                         >
                           {showPassword ? <FaEye /> : <FaEyeSlash />}
                         </div>
@@ -1192,8 +1190,8 @@ const register = () => {
                       endAdornment: (
                         <div
                           className={styles.passwordToggleIcon}
-                          onClick={togglePasswordVisibility}
-                          style={{ color: "#A7A3FF" }}
+                          onClick={togglePasswordVisibility1}
+                          style={{ color: "#A7A3FF", cursor:"pointer" }}
                         >
                           {showPassword ? <FaEye /> : <FaEyeSlash />}
                         </div>

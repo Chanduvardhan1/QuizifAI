@@ -4,6 +4,7 @@ import styles from "./dashboard.module.css";
 import Navigation from "../navbar/navbar.jsx";
 import LogoutBar from "../logoutbar/logoutbar.jsx";
 import { Line } from "rc-progress";
+import { useNavigate } from 'react-router-dom';
 
 // import LogoutBar from "./logoutbar";
 // import { useRouter } from "next/router";
@@ -88,6 +89,7 @@ const Dashboard = () => {
 
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
   const [username, setUsername] = useState(localStorage.getItem("user_name"));
+  const navigate = useNavigate();
   useEffect(() => {
     // const storedUsername = sessionStorage.getItem('userName');
     // if (storedUsername) {
@@ -141,6 +143,11 @@ const Dashboard = () => {
     fetchQuizData();
   }, [userId, username]);
 
+  const handleStartQuiz = (quizId) => {
+    // navigate(`/quizaccess/${quizId}`);
+    localStorage.setItem('quiz_id', quizId); // Store quiz_id in local storage
+    navigate(`/quizaccess`);
+  };
   // const calculateTotalMinutes = (day) => {
   //   return timeData
   //     .filter((item) => item.day_of_week.toLowerCase() === day.toLowerCase())
@@ -558,7 +565,7 @@ const Dashboard = () => {
                           src={Start_button}
                           alt="Play icon"
                         />
-                        <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                        <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black"  onClick={() => handleStartQuiz(latestquizzes[0].quiz_id)}>
                           Start
                         </span>
                       </div>
@@ -701,7 +708,7 @@ const Dashboard = () => {
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black"  onClick={() => handleStartQuiz(latestquizzes[1].quiz_id)}>
                         Start
                       </span>
                       <img
@@ -833,7 +840,7 @@ const Dashboard = () => {
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black" onClick={() => handleStartQuiz(latestquizzes[2].quiz_id)}>
                         Start
                       </span>
                       <img
@@ -962,7 +969,7 @@ const Dashboard = () => {
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black"  onClick={() => handleStartQuiz(latestquizzes[3].quiz_id)}>
                         Start
                       </span>
                       <img
@@ -1092,7 +1099,7 @@ const Dashboard = () => {
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black" onClick={() => handleStartQuiz(latestquizzes[4].quiz_id)}>
                         Start
                       </span>
                       <img
@@ -1221,7 +1228,7 @@ const Dashboard = () => {
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black" onClick={() => handleStartQuiz(latestquizzes[5].quiz_id)}>
                         Start
                       </span>
                       <img
@@ -1361,7 +1368,7 @@ const Dashboard = () => {
                               src={Start_button}
                               alt="Play icon"
                             />
-                            <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                            <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black"  onClick={() => handleStartQuiz(latestquizzes[6].quiz_id)}>
                               Start
                             </span>
                             <img
@@ -1494,7 +1501,7 @@ const Dashboard = () => {
                               src={Start_button}
                               alt="Play icon"
                             />
-                            <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                            <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black" onClick={() => handleStartQuiz(latestquizzes[7].quiz_id)}>
                               Start
                             </span>
                             <img
@@ -1626,7 +1633,7 @@ const Dashboard = () => {
                               src={Start_button}
                               alt="Play icon"
                             />
-                            <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                            <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black" onClick={() => handleStartQuiz(latestquizzes[8].quiz_id)}>
                               Start
                             </span>
                             <img
@@ -2398,7 +2405,7 @@ const Dashboard = () => {
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black" onClick={() => handleStartQuiz(popularquizzes[0].quiz_id)}>
                         Start
                       </span>
                       <img
@@ -2529,7 +2536,7 @@ const Dashboard = () => {
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black"onClick={() => handleStartQuiz(popularquizzes[1].quiz_id)}>
                         Start
                       </span>
                       <img
@@ -2659,7 +2666,7 @@ const Dashboard = () => {
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black"onClick={() => handleStartQuiz(popularquizzes[2].quiz_id)}>
                         Start
                       </span>
                       <img
@@ -2789,7 +2796,7 @@ const Dashboard = () => {
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black"onClick={() => handleStartQuiz(popularquizzes[3].quiz_id)}>
                         Start
                       </span>
                       <img
@@ -2919,7 +2926,7 @@ const Dashboard = () => {
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black"onClick={() => handleStartQuiz(popularquizzes[4].quiz_id)}>
                         Start
                       </span>
                       <img
@@ -3049,7 +3056,7 @@ const Dashboard = () => {
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black"onClick={() => handleStartQuiz(popularquizzes[5].quiz_id)}>
                         Start
                       </span>
                       <img

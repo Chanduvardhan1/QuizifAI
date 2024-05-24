@@ -940,7 +940,7 @@ export default function quiztype() {
                     </option>
                   ))}
                 </select>  */}
-                  <select
+       <select
         className="w-[260px] text-[12px]  border-solid border-[#B8BBC2] px-3 py-3 rounded-md cursor-pointer"
         onChange={handleSelectSubCategory}
         value={selectedSubCategory}

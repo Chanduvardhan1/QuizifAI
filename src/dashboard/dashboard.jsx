@@ -10,6 +10,8 @@ import { useNavigate } from 'react-router-dom';
 // import { useRouter } from "next/router";
 // import Head from "next/head";
 // import Image from "next/image";
+import Plus from "../../src/assets/Images/dashboard/Plus.png";
+import Admin_User from "../../src/assets/Images/dashboard/Admin-User.png";
 import searchIcon from "../../src/assets/Images/images/dashboard/searchBar.png";
 import Start_button from "../../public/images/dashboard/Start-button.png";
 import Share_button from "../../public/images/dashboard/Share-button.png";
@@ -80,9 +82,9 @@ const Dashboard = () => {
 
   const [getMoreQuizzes, setGetMoreQuizzes] = useState(false);
 
-  // const [notAttemptedQuizzes, setNotAttemptedQuizzes] = useState([]);
+  const [notAttemptedQuizzes, setNotAttemptedQuizzes] = useState([]);
   const [latestquizzes, setLatestquizzes] = useState([]);
-  // const [attemptedQuizzes, setAttemptedQuizzes] = useState([]);
+  const [attemptedQuizzes, setAttemptedQuizzes] = useState([]);
   const [popularquizzes, setPopularquizzes] = useState([]);
   const [attemptedquizzes, setAttemptedquizzes] = useState([]);
   const [allquizzes, setAllquizzes] = useState([]);
@@ -129,8 +131,7 @@ const Dashboard = () => {
         setAverageScorePercentage(data.average_score_percentage);
 
         setLatestquizzes(data.latest_quizzes);
-        // setAttemptedQuizzes(data.latest_attempted_quizzes);
-        // setTopScoredQuizzes(data.top_scored_quizzes);
+        setAttemptedQuizzes(data.latest_attempted_quizzes);
         setPopularquizzes(data.popular_quizzes);
         setAttemptedquizzes(data.attempted_quiz_details);
         setAllquizzes(data.all_quizes);
@@ -271,7 +272,31 @@ const Dashboard = () => {
           <p>Welcome {username}</p>
 
           <div className={styles.headerRight}>
-            <div>{getFormattedDate()}</div>
+            {/* <div>{getFormattedDate()}</div> */}
+            <div className="w-[99px] h-[41px] absolute mr-[160px] -mt-2 rounded-[10px] bg-[rgb(254,202,249)]">
+            <div className="flex">
+              <img
+                className="w-[25px] h-[25px] ml-2 mt-2"
+                src={Admin_User}
+                alt="Plus Icon"
+              />
+              <a href="./create-quiz" className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3">
+                User
+              </a>
+            </div>
+          </div>
+            <div className="w-[99px] h-[41px] absolute mr-[390px] -mt-2 rounded-[10px] bg-[#FFEDCD]">
+            <div className="flex">
+              <img
+                className="w-[25px] h-[25px] ml-2 mt-2"
+                src={Plus}
+                alt="Plus Icon"
+              />
+              <a href="./create-quiz" className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3">
+                Quiz
+              </a>
+            </div>
+          </div>
             <div className={styles.searchIconContainer}>
               <img
                 src={searchIcon}

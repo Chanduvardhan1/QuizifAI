@@ -45,7 +45,12 @@ const Quiz = () => {
   const maxValue1 = 100; 
   const currentValue2 = 30;
   const maxValue2 = 80; 
-  
+
+
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedSubCategory, setSelectedSubCategory] = useState('');
+  const [subCategories, setSubCategories] = useState([]);
   const [complexity, setComplexity] = useState("");
   const [complexities, setComplexities] = useState([]);
   const [selectedComplexity, setSelectedComplexity] = useState("");
@@ -53,11 +58,9 @@ const Quiz = () => {
   const [timeData, setTimeData] = useState([]);
   const [weeklyQuizCount, setWeeklyQuizCount] = useState(0);
   const [averageScorePercentage, setAverageScorePercentage] = useState(0);
-  const [notAttemptedQuizzes, setNotAttemptedQuizzes] = useState([]);
-  const [attemptedQuizzes, setAttemptedQuizzes] = useState([]);
-  const [topScoredQuizzes, setTopScoredQuizzes] = useState([]);
   const [allquizzes, setAllquizzes] = useState([]);
   const [getMoreQuizzes, setGetMoreQuizzes] = useState(false);
+  const [topScoredQuizzes, setTopScoredQuizzes] = useState([]);
 
 
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
@@ -78,32 +81,6 @@ const Quiz = () => {
   const [isNavbarOpen16, setIsNavbarOpen16] = useState(false);
 
 
-
-
-
-  {/*const router = useRouter();
-
-  const handleBackToDashboard = () => {
-    router.push('/dashboard');
-  };
-
-  const handleBackToQuiz = () => {
-    router.push('/quiz');
-  };
-
-  const handleBackToNotification = () => {
-    router.push('/notification');
-  };
-
-  const handleBackToProfile = () => {
-    router.push('/profile');
-  };*/}
-
-
- // const BasicProgressBar = ({ currentValue, maxValue }) => (
-   // <progress value={currentValue} max={maxValue}>{currentValue}%</progress>
-  //);
-
   const BasicProgressBar = ({ currentValue, maxValue }) => (
     <progress
       value={currentValue}
@@ -113,6 +90,39 @@ const Quiz = () => {
       {currentValue}%
     </progress>
   );
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('https://quizifai.com:8010/categories&sub_categories/');
+      const data = await response.json();
+      if (data.response === 'success') {
+        setCategories(data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
+   // Handle category selection
+   const handleSelectCategory = (event) => {
+    const selectedCategory = event.target.value;
+    setSelectedCategory(selectedCategory);
+    // Filter subcategories based on the selected category
+    const category = categories.find(cat => cat.category_name === selectedCategory);
+    if (category) {
+      setSubCategories(category.sub_categories.map(subCat => subCat.sub_category_name));
+    }
+  };
+
+  // Handle subcategory selection
+  const handleSelectSubCategory = (event) => {
+    const selectedSubCategory = event.target.value;
+    setSelectedSubCategory(selectedSubCategory);
+  };
   
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -137,17 +147,19 @@ const Quiz = () => {
           throw new Error('Failed to fetch quiz data');
         }
         const data = await response.json();
+        console.log("Data received:", data);
         setTimeData(data.time_spent);
         setLatestResults(data.latest_results);
         setWeeklyQuizCount(data.weekly_quiz_count);
         setAverageScorePercentage(data.average_score_percentage);
-        setNotAttemptedQuizzes(data.latest_not_attempted_quizzes);
-        setAttemptedQuizzes(data.latest_attempted_quizzes);
+        // setNotAttemptedQuizzes(data.latest_not_attempted_quizzes);
+        // setAttemptedQuizzes(data.latest_attempted_quizzes);
         setTopScoredQuizzes(data.top_scored_quizzes);
-        setAllquizzes(data.all_quizes);
+        setAllquizzes(data.allquizes);
       } catch (error) {
         console.error('Error fetching quiz data:', error);
       }
+      
     };
 
     fetchQuizData();
@@ -1522,7 +1534,7 @@ const Quiz = () => {
                     style={{ paddingTop: "8px" }}
                   >
                     <span className={styles.title}>
-                      {allquizzes[11]?.quiz_name}
+                      {topScoredQuizzes[0]?.quiz_name}
                     </span>
                     <div className={styles.iconContainer}>
                       <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
@@ -1582,19 +1594,19 @@ const Quiz = () => {
                     </div>
                     <div className={styles.category}>
                       <span className={styles.category1}>
-                        {allquizzes[11]?.category}
-                        <span className={styles.category11}>{allquizzes[11]?.category}</span>
+                        {topScoredQuizzes[0]?.category}
+                        <span className={styles.category11}>{topScoredQuizzes[0]?.category}</span>
                       </span>
                       <p className={styles.line}>|</p>
                       <span className={styles.category2}>
-                        {allquizzes[11]?.sub_category}
-                        <span className={styles.category22}>{allquizzes[11]?.sub_category}</span>
+                        {topScoredQuizzes[0]?.sub_category}
+                        <span className={styles.category22}>{topScoredQuizzes[0]?.sub_category}</span>
                       </span>
                     </div>
 
                     <div className={styles.description}>
-                      <span className={styles.description1}>{allquizzes[11]?.quiz_description}
-                      <span className={styles.subdescription}>{allquizzes[11]?.quiz_description}</span>
+                      <span className={styles.description1}>{topScoredQuizzes[0]?.quiz_description}
+                      <span className={styles.subdescription}>{topScoredQuizzes[0]?.quiz_description}</span>
                       </span>
                     </div>
                     <div
@@ -1614,7 +1626,7 @@ const Quiz = () => {
                             width={10}
                             height={10}
                           />
-                          <p>{allquizzes[11]?.quiz_attempts}</p>
+                          <p>{topScoredQuizzes[0]?.quiz_attempts_count}</p>
                           <span className="text-[6px] ml-1">attempts</span>
                         </div>
                       </div>
@@ -1627,7 +1639,7 @@ const Quiz = () => {
                           width={15}
                           height={10}
                         />{" "}
-                        {allquizzes[11]?.number_of_questions}
+                        {topScoredQuizzes[0]?.total_questions}
                         <span className="text-[6px] ml-[1px]">questions</span>
                       </span>
                       <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
@@ -1638,7 +1650,7 @@ const Quiz = () => {
                           width={14}
                           height={14}
                         />{" "}
-                        {allquizzes[11]?.quiz_duration}
+                        {topScoredQuizzes[0]?.quiz_duration}
                         <span className="text-[6px] -ml-[0.5px]">minutes</span>
                       </span>
                       <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
@@ -1649,7 +1661,7 @@ const Quiz = () => {
                           width={15}
                           height={9}
                         />{" "}
-                        {allquizzes[11]?.complexity}
+                        {topScoredQuizzes[0]?.quiz_complexity_name}
                       </span>
                     </div>
             </div>
@@ -1658,7 +1670,7 @@ const Quiz = () => {
                     style={{ paddingTop: "8px" }}
                   >
                     <span className={styles.title}>
-                      {allquizzes[12]?.quiz_name}
+                      {topScoredQuizzes[1]?.quiz_name}
                     </span>
                     <div className={styles.iconContainer}>
                       <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
@@ -1718,19 +1730,19 @@ const Quiz = () => {
                     </div>
                     <div className={styles.category}>
                       <span className={styles.category1}>
-                        {allquizzes[12]?.category}
-                        <span className={styles.category11}>{allquizzes[12]?.category}</span>
+                        {topScoredQuizzes[1]?.category}
+                        <span className={styles.category11}>{topScoredQuizzes[1]?.category}</span>
                       </span>
                       <p className={styles.line}>|</p>
                       <span className={styles.category2}>
-                        {allquizzes[12]?.sub_category}
-                        <span className={styles.category22}>{allquizzes[12]?.sub_category}</span>
+                        {topScoredQuizzes[1]?.sub_category}
+                        <span className={styles.category22}>{topScoredQuizzes[1]?.sub_category}</span>
                       </span>
                     </div>
 
                     <div className={styles.description}>
-                      <span className={styles.description1}>{allquizzes[12]?.quiz_description}
-                      <span className={styles.subdescription}>{allquizzes[12]?.quiz_description}</span>
+                      <span className={styles.description1}>{topScoredQuizzes[1]?.quiz_description}
+                      <span className={styles.subdescription}>{topScoredQuizzes[1]?.quiz_description}</span>
                       </span>
                     </div>
                     <div
@@ -1750,7 +1762,7 @@ const Quiz = () => {
                             width={10}
                             height={10}
                           />
-                          <p>{allquizzes[12]?.quiz_attempts}</p>
+                          <p>{topScoredQuizzes[1]?.quiz_attempts_count}</p>
                           <span className="text-[6px] ml-1">attempts</span>
                         </div>
                       </div>
@@ -1763,7 +1775,7 @@ const Quiz = () => {
                           width={15}
                           height={10}
                         />{" "}
-                        {allquizzes[12]?.number_of_questions}
+                        {topScoredQuizzes[1]?.total_questions}
                         <span className="text-[6px] ml-[1px]">questions</span>
                       </span>
                       <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
@@ -1774,7 +1786,7 @@ const Quiz = () => {
                           width={14}
                           height={14}
                         />{" "}
-                        {allquizzes[12]?.quiz_duration}
+                        {topScoredQuizzes[1]?.quiz_duration}
                         <span className="text-[6px] -ml-[0.5px]">minutes</span>
                       </span>
                       <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
@@ -1785,7 +1797,7 @@ const Quiz = () => {
                           width={15}
                           height={9}
                         />{" "}
-                        {allquizzes[12]?.complexity}
+                        {topScoredQuizzes[12]?.quiz_complexity_name}
                       </span>
                     </div>
              </div>
@@ -1794,7 +1806,7 @@ const Quiz = () => {
                     style={{ paddingTop: "8px"}}
                   >
                     <span className={styles.title}>
-                      {allquizzes[10]?.quiz_name}
+                      {topScoredQuizzes[2]?.quiz_name}
                     </span>
                     <div className={styles.iconContainer}>
                       <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
@@ -1854,19 +1866,19 @@ const Quiz = () => {
                     </div>
                     <div className={styles.category}>
                       <span className={styles.category1}>
-                        {allquizzes[10]?.category}
-                        <span className={styles.category11}>{allquizzes[10]?.category}</span>
+                        {topScoredQuizzes[2]?.category}
+                        <span className={styles.category11}>{topScoredQuizzes[2]?.category}</span>
                       </span>
                       <p className={styles.line}>|</p>
                       <span className={styles.category2}>
-                        {allquizzes[10]?.sub_category}
-                        <span className={styles.category22}>{allquizzes[10]?.sub_category}</span>
+                        {topScoredQuizzes[2]?.sub_category}
+                        <span className={styles.category22}>{topScoredQuizzes[2]?.sub_category}</span>
                       </span>
                     </div>
 
                     <div className={styles.description}>
-                      <span className={styles.description1}>{allquizzes[10]?.quiz_description}
-                      <span className={styles.subdescription}>{allquizzes[10]?.quiz_description}</span>
+                      <span className={styles.description1}>{topScoredQuizzes[2]?.quiz_description}
+                      <span className={styles.subdescription}>{topScoredQuizzes[2]?.quiz_description}</span>
                       </span>
                     </div>
                     <div
@@ -1886,7 +1898,7 @@ const Quiz = () => {
                             width={10}
                             height={10}
                           />
-                          <p>{allquizzes[10]?.quiz_attempts}</p>
+                          <p>{topScoredQuizzes[2]?.quiz_attempts_count}</p>
                           <span className="text-[6px] ml-1">attempts</span>
                         </div>
                       </div>
@@ -1899,7 +1911,7 @@ const Quiz = () => {
                           width={15}
                           height={10}
                         />{" "}
-                        {allquizzes[10]?.number_of_questions}
+                        {topScoredQuizzes[2]?.total_questions}
                         <span className="text-[6px] ml-[1px]">questions</span>
                       </span>
                       <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
@@ -1910,7 +1922,7 @@ const Quiz = () => {
                           width={14}
                           height={14}
                         />{" "}
-                        {allquizzes[10]?.quiz_duration}
+                        {topScoredQuizzes[10]?.quiz_duration}
                         <span className="text-[6px] -ml-[0.5px]">minutes</span>
                       </span>
                       <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
@@ -1921,7 +1933,7 @@ const Quiz = () => {
                           width={15}
                           height={9}
                         />{" "}
-                        {allquizzes[10]?.complexity}
+                        {topScoredQuizzes[10]?.quiz_complexity_name}
                       </span>
                     </div>
                   </div>
@@ -1931,26 +1943,26 @@ const Quiz = () => {
 
   <select
         className="w-[234px] p-2 rounded-md ml-5 cursor-pointer text-[15px]"
-        onChange={handleSelectComplexity}
-        value={selectedComplexity}
+        value={selectedCategory}
+        onChange={handleSelectCategory}
       >
         <option value="" disabled>Topic</option>
-        {complexities.map((complexity, index) => (
-          <option key={index} value={complexity}>
-            {complexity}
+        {categories.map(category => (
+          <option key={category.category_id} value={category.category_name}>
+            {category.category_name}
           </option>
         ))}
       </select>
 
     <select
         className="w-[234px] p-2 rounded-md ml-6 cursor-pointer text-[15px]"
-        onChange={handleSelectComplexity}
-        value={selectedComplexity}
+        onChange={handleSelectSubCategory}
+        value={selectedSubCategory}
       >
         <option value="" disabled>Sub_topic</option>
-        {complexities.map((complexity, index) => (
-          <option key={index} value={complexity}>
-            {complexity}
+        {subCategories.map((subCategory, index) => (
+          <option key={index} value={subCategory}>
+            {subCategory}
           </option>
         ))}
       </select>

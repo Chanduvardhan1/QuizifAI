@@ -69,6 +69,8 @@ const register = () => {
   const [submitted, setSubmitted] = useState(false);
   const [countdown, setCountdown] = useState(5); 
 
+
+
   const signupDetails = useLocation();
   const { emailMobOption, emailMob } = signupDetails.state || {};
 
@@ -377,6 +379,7 @@ const register = () => {
   const navigate = useNavigate();
 
   const handleBackToDashboard = () => {
+    localStorage.setItem('occupation_name', occupationname);
     navigate("/login");
   };
 

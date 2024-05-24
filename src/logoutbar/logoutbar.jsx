@@ -41,11 +41,13 @@ const LogoutBar = () => {
 
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
   const [username, setUsername] = useState(localStorage.getItem("user_name"));
+  const [occupationname, setoccupationname] = useState(localStorage.getItem("occupation_name"));
   
   useEffect(() => {
     const fetchQuizData = async () => {
       console.log("User ID:", userId);
       console.log("User Name:", username);
+      console.log("occupation name:", occupationname);
 
       try {
         const response = await fetch(
@@ -70,7 +72,7 @@ const LogoutBar = () => {
     };
 
     fetchQuizData();
-  }, [userId, username]); 
+  }, [userId, username,occupationname]); 
   return (
     <div className={styles.logout}>
         <div style={{ marginTop: "40px", display: "flex", alignItems: "center" , marginLeft:"20px"}}>
@@ -119,7 +121,7 @@ const LogoutBar = () => {
               color: "#9696BB",
             }}
           >
-            Profession
+            {occupationname}
           </p>
           <p
           style={{

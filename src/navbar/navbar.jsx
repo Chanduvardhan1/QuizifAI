@@ -70,7 +70,7 @@ const Navigation = () => {
         </div>
         <div className={styles.pageItem} onClick={() => handleNavigation('/quiz')}>
           <img src={quizIcon} alt="Icon 2" className={styles.pageIcon} />
-          <span className={styles.pageLink}>Quiz's</span>
+          <span className={styles.pageLink}>Quizzes</span>
         </div>
         {/* <div className={styles.pageItem} onClick={() => handleNavigation('/history')}>
           <img src={historyIcon} alt="Icon 1" className={styles.pageIcon} />

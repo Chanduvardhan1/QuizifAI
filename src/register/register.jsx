@@ -738,9 +738,7 @@ const register = () => {
         state_name: "",
       });
 
-      // if (!response.ok) {
-      //   throw new Error("Network response was not ok");
-      // }
+      
 
       const responseData = await response.json();
 
@@ -763,6 +761,9 @@ const register = () => {
           // Display a general alert for other errors
           alert(responseData.data);
         }
+      }
+      if (!response.ok) {
+        alert("Network response was not ok");
       }
     } catch (error) {
       console.error("Error:", error);

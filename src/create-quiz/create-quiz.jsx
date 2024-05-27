@@ -106,7 +106,7 @@ export default function createquiz() {
         <main className="">
             <div className="w-[752px] h-[71px] absolute top-[110px] left-[647px]">
                <h1>
-                <span className="font-poppins font-bold text-[30px] leading-[45px] text-[#F25822]">Create a New question paper</span> <br/>
+                <span className="font-poppins font-bold text-[30px] leading-[45px] text-[#F25822]">Create a new Question Paper</span> <br/>
                 <span className="font-poppins font-light text-[21px] leading-[31.5px] text-[#214082]">(You can choose any of the options below)</span>
               </h1>          
             </div>

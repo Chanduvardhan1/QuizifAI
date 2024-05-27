@@ -269,6 +269,7 @@ const FreeProfile = () => {
     const storedUserName = localStorage.getItem("user_name");
     setUserName(storedUserName);
   }, []);
+  
   return (
     <div className={styles.container}>
       {/*<Head>

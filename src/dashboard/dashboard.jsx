@@ -18,7 +18,6 @@ import Share_button from "../../public/images/dashboard/Share-button.png";
 import leaderboard_button from "../../public/images/dashboard/leaderboard-button.png";
 import Edit_button from "../../src/assets/Images/dashboard/Edit-button.png";
 import download from "../../src/assets/Images/dashboard/download.png";
-// import view from "../../src/assets/Images/dashboard/view.png"
 import high_score from "../../src/assets/Images/dashboard/high-score.png";
 import eye from "../../src/assets/Images/dashboard/eye.png";
 import Attempt1 from "../../public/images/dashboard/Attempt1.png";
@@ -26,7 +25,6 @@ import NoOfQuestion from "../../public/images/dashboard/NoOfQuestion.png";
 import Easy from "../../public/images/dashboard/Easy.png";
 import Clock from "../../public/images/dashboard/Clock.png";
 
-// import Clock from "../../public/images/dashboard/Clock.png";
 import moreArrow from "../../src/assets/Images/images/dashboard/moreArrow.png";
 import infoIcon from "../../src/assets/Images/images/dashboard/infoIcon.png";
 import topicIcon from "../../src/assets/Images/images/dashboard/topicNew.png";
@@ -56,9 +54,8 @@ const Dashboard = () => {
   const maxValue1 = 100;
   const currentValue2 = 30;
   const maxValue2 = 80;
-  // const [timespent, setTimespent] = useState([]);
+
   const [latestResult, setLatestResult] = useState([]);
-  // const [grade, setGrade] = useState([]);
   const [timeData, setTimeData] = useState([]);
   const [weeklyQuizCount, setWeeklyQuizCount] = useState(0);
   const [averageScorePercentage, setAverageScorePercentage] = useState(0);
@@ -72,6 +69,9 @@ const Dashboard = () => {
   const [isNavbarOpen6, setIsNavbarOpen6] = useState(false);
   const [isNavbarOpen7, setIsNavbarOpen7] = useState(false);
   const [isNavbarOpen8, setIsNavbarOpen8] = useState(false);
+  const [isNavbarOpen9, setIsNavbarOpen9] = useState(false);
+  const [isNavbarOpen10, setIsNavbarOpen10] = useState(false);
+  const [isNavbarOpen101, setIsNavbarOpen101] = useState(false);
 
   const [isNavbarOpen11, setIsNavbarOpen11] = useState(false);
   const [isNavbarOpen12, setIsNavbarOpen12] = useState(false);
@@ -84,7 +84,7 @@ const Dashboard = () => {
 
   const [notAttemptedQuizzes, setNotAttemptedQuizzes] = useState([]);
   const [latestquizzes, setLatestquizzes] = useState([]);
-  const [attemptedQuizzes, setAttemptedQuizzes] = useState([]);
+  // const [attemptedQuizzes, setAttemptedQuizzes] = useState([]);
   const [popularquizzes, setPopularquizzes] = useState([]);
   const [attemptedquizzes, setAttemptedquizzes] = useState([]);
   const [allquizzes, setAllquizzes] = useState([]);
@@ -131,7 +131,7 @@ const Dashboard = () => {
         setAverageScorePercentage(data.average_score_percentage);
 
         setLatestquizzes(data.latest_quizzes);
-        setAttemptedQuizzes(data.latest_attempted_quizzes);
+        // setAttemptedQuizzes(data.latest_attempted_quizzes);
         setPopularquizzes(data.popular_quizzes);
         setAttemptedquizzes(data.attempted_quiz_details);
         setAllquizzes(data.all_quizes);
@@ -149,29 +149,7 @@ const Dashboard = () => {
     localStorage.setItem('quiz_id', quizId); // Store quiz_id in local storage
     navigate(`/quizaccess`);
   };
-  // const calculateTotalMinutes = (day) => {
-  //   return timeData
-  //     .filter((item) => item.day_of_week.toLowerCase() === day.toLowerCase())
-  //     .reduce(
-  //       (total, item) => total + parseInt(item.time_spent.split(" ")[0]),
-  //       0
-  //     );
-  // };
-
-  // Function to format time duration
-  // const formatTime = (minutes) => {
-  //   if (minutes >= 60) {
-  //     const hours = Math.floor(minutes / 60);
-  //     const remainingMinutes = minutes % 60;
-  //     if (remainingMinutes === 0) {
-  //       return `${hours}h`;
-  //     } else {
-  //       return `${hours}h ${remainingMinutes}m`;
-  //     }
-  //   } else {
-  //     return `${minutes} min`;
-  //   }
-  // };
+ 
   const toggleNavbar = () => {
     setIsNavbarOpen((prevState) => !prevState);
   };
@@ -198,6 +176,15 @@ const Dashboard = () => {
   };
   const toggleNavbar8 = () => {
     setIsNavbarOpen8((prevState) => !prevState);
+  };
+  const toggleNavbar9 = () => {
+    setIsNavbarOpen9((prevState) => !prevState);
+  };
+  const toggleNavbar10 = () => {
+    setIsNavbarOpen10((prevState) => !prevState);
+  };
+  const toggleNavbar101 = () => {
+    setIsNavbarOpen101((prevState) => !prevState);
   };
   // -------------------------------------------------
   const toggleNavbar11 = () => {
@@ -316,7 +303,7 @@ const Dashboard = () => {
               className={styles.latestResult}
               style={{ paddingTop: "12px", paddingBottom: "13px" }}
             >
-              Latest Result
+              Latest Results
               {/* <span className={styles.moreButton} style={{marginLeft:"170px"}}>
                 More <img src={arrow1} alt="More" width={15} height={8} />
               </span> */}
@@ -648,7 +635,7 @@ const Dashboard = () => {
               </div>
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "20px" }}
+                style={{ marginTop: "40px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -781,7 +768,7 @@ const Dashboard = () => {
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "20px" }}
+                style={{ marginTop: "35px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -911,7 +898,7 @@ const Dashboard = () => {
               </div>
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "20px" }}
+                style={{ marginTop: "35px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -1041,7 +1028,7 @@ const Dashboard = () => {
               </div>
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "20px" }}
+                style={{ marginTop: "35px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -1170,7 +1157,7 @@ const Dashboard = () => {
               </div>
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "20px" }}
+                style={{ marginTop: "35px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -1301,7 +1288,7 @@ const Dashboard = () => {
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "20px" }}
+                style={{ marginTop: "35px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -1359,7 +1346,7 @@ const Dashboard = () => {
               <div className=" ">
                 <div className="flex">
                   <div
-                    className={styles.card}
+                    className={`${styles.card} ${styles.highlightedCard}`}
                     style={{
                       paddingTop: "8px",
                       backgroundColor: "#CFFCFF",
@@ -1439,7 +1426,7 @@ const Dashboard = () => {
                     </div>
                     <div
                       className={styles.additionalInfo}
-                      style={{ marginTop: "20px" }}
+                      style={{ marginTop: "35px" }}
                     >
                       <div
                         className={styles.infoIcon}
@@ -1572,7 +1559,7 @@ const Dashboard = () => {
                     </div>
                     <div
                       className={styles.additionalInfo}
-                      style={{ marginTop: "20px" }}
+                      style={{ marginTop: "45px" }}
                     >
                       <div
                         className={styles.infoIcon}
@@ -1704,7 +1691,7 @@ const Dashboard = () => {
                     </div>
                     <div
                       className={styles.additionalInfo}
-                      style={{ marginTop: "20px" }}
+                      style={{ marginTop: "45px" }}
                     >
                       <div
                         className={styles.infoIcon}
@@ -1768,7 +1755,7 @@ const Dashboard = () => {
                     }}
                   >
                     <span className={styles.title} style={{width:"210px"}}>
-                      {allquizzes[85]?.quiz_name}
+                    {attemptedquizzes[0]?.quiz_name}
                     </span>
                     <div className={styles.iconContainer}>
                       <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
@@ -1779,16 +1766,16 @@ const Dashboard = () => {
                           stroke-width="1.5"
                           stroke="currentColor"
                           class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                          onClick={toggleNavbar6}
+                          onClick={toggleNavbar9}
                         >
                           <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
                             d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                           />
-                          {isNavbarOpen6 ? "Close Navbar" : "Open Navbar"}
+                          {isNavbarOpen9 ? "Close Navbar" : "Open Navbar"}
                         </svg>
-                        {isNavbarOpen6 && (
+                        {isNavbarOpen9 && (
                           <div className={styles.infoIcons}>
                             <img
                               className="absolute h-[1px] w-[1px] left-[6px] top-1"
@@ -1837,8 +1824,8 @@ const Dashboard = () => {
                     </div>
 
                     <div className={styles.description}>
-                      <span>{allquizzes[85]?.quiz_description}
-                      <span className={styles.subdescription}>{allquizzes[85]?.quiz_description}</span></span>
+                      <span>{attemptedquizzes[0]?.quiz_description}
+                      <span className={styles.subdescription}>{attemptedquizzes[0]?.quiz_description}</span></span>
                     </div>
 
                     {/* attaempted ranks */}
@@ -1858,7 +1845,7 @@ const Dashboard = () => {
                     </div>
                     <div
                       className={styles.additionalInfo}
-                      style={{ marginTop: "10px" }}
+                      style={{ marginTop: "25px" }}
                     >
                       <div
                         className={styles.infoIcon}
@@ -1951,7 +1938,7 @@ const Dashboard = () => {
                     }}
                   >
                     <span className={styles.title}>
-                      {latestquizzes[6]?.quiz_name}
+                      {attemptedquizzes[1]?.quiz_name}
                     </span>
                     <div className={styles.iconContainer}>
                       <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
@@ -1962,16 +1949,16 @@ const Dashboard = () => {
                           stroke-width="1.5"
                           stroke="currentColor"
                           class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                          onClick={toggleNavbar6}
+                          onClick={toggleNavbar10}
                         >
                           <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
                             d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                           />
-                          {isNavbarOpen6 ? "Close Navbar" : "Open Navbar"}
+                          {isNavbarOpen10 ? "Close Navbar" : "Open Navbar"}
                         </svg>
-                        {isNavbarOpen6 && (
+                        {isNavbarOpen10 && (
                           <div className={styles.infoIcons}>
                             <img
                               className="absolute h-[1px] w-[1px] left-[6px] top-1"
@@ -2011,35 +1998,36 @@ const Dashboard = () => {
                     </div>
                     <div className={styles.category}>
                       <span className={styles.category1}>
-                        {latestquizzes[6]?.category}
+                        {attemptedquizzes[1]?.category}
                       </span>
                       <p className="px-[2px] font-normal">|</p>
                       <span className={styles.category1}>
-                        {latestquizzes[6]?.sub_category}
+                        {attemptedquizzes[1]?.sub_category}
                       </span>
                     </div>
 
                     <div className={styles.description}>
-                      <span>{latestquizzes[6]?.quiz_description}</span>
+                      <span>{attemptedquizzes[1]?.quiz_description}</span>
                     </div>
 
                     {/* attaempted ranks */}
-                    <div className="text-[6px] font-normal pl-[15px] relative top-[48px]">
-                      <span>pass</span>
+                    <div className="text-[6px] font-normal pl-[15px] relative top-[40px]">
+                      <span>Pass</span>
                       <span className="px-[2px]">|</span>
                       <span>
-                        8 <sup>th</sup>fastest
+                      {attemptedquizzes[1]?.speed_rank}<sup>th</sup>Fastest
                       </span>
                       <span className="px-[2px]">|</span>
                       <span>
-                        4 <sup>th</sup>height
+                      {attemptedquizzes[1]?.score_rank} <sup>th</sup>Highest
                       </span>
                       <span className="px-[2px]">|</span>
-                      <span>grade</span>
+                      <span>{attemptedquizzes[1]?.attempt_percentage}% Score</span><br/>
+                      <span>{attemptedquizzes[1]?.quiz_grade} Grade</span>
                     </div>
                     <div
                       className={styles.additionalInfo}
-                      style={{ marginTop: "23px" }}
+                      style={{ marginTop: "30px" }}
                     >
                       <div
                         className={styles.infoIcon}
@@ -2134,7 +2122,7 @@ const Dashboard = () => {
                     }}
                   >
                     <span className={styles.title}>
-                      {latestquizzes[6]?.quiz_name}
+                      {attemptedquizzes[2]?.quiz_name}
                     </span>
                     <div className={styles.iconContainer}>
                       <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
@@ -2145,16 +2133,16 @@ const Dashboard = () => {
                           stroke-width="1.5"
                           stroke="currentColor"
                           class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                          onClick={toggleNavbar6}
+                          onClick={toggleNavbar101}
                         >
                           <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
                             d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                           />
-                          {isNavbarOpen6 ? "Close Navbar" : "Open Navbar"}
+                          {isNavbarOpen101 ? "Close Navbar" : "Open Navbar"}
                         </svg>
-                        {isNavbarOpen6 && (
+                        {isNavbarOpen101 && (
                           <div className={styles.infoIcons}>
                             <img
                               className="absolute h-[1px] w-[1px] left-[6px] top-1"
@@ -2194,35 +2182,36 @@ const Dashboard = () => {
                     </div>
                     <div className={styles.category}>
                       <span className={styles.category1}>
-                        {latestquizzes[6]?.category}
+                        {attemptedquizzes[2]?.category}
                       </span>
                       <p className="px-[2px] font-normal">|</p>
                       <span className={styles.category1}>
-                        {latestquizzes[6]?.sub_category}
+                        {attemptedquizzes[2]?.sub_category}
                       </span>
                     </div>
 
                     <div className={styles.description}>
-                      <span>{latestquizzes[6]?.quiz_description}</span>
+                      <span>{attemptedquizzes[2]?.quiz_description}</span>
                     </div>
 
                     {/* attaempted ranks */}
-                    <div className="text-[6px] font-normal pl-[15px] relative top-[48px]">
-                      <span>pass</span>
+                    <div className="text-[6px] font-normal pl-[15px] relative top-[40px]">
+                      <span>Pass</span>
                       <span className="px-[2px]">|</span>
                       <span>
-                        8 <sup>th</sup>fastest
+                      {attemptedquizzes[2]?.speed_rank}<sup>th</sup>Fastest
                       </span>
                       <span className="px-[2px]">|</span>
                       <span>
-                        4 <sup>th</sup>height
+                      {attemptedquizzes[2]?.score_rank} <sup>th</sup>Highest
                       </span>
                       <span className="px-[2px]">|</span>
-                      <span>grade</span>
+                      <span>{attemptedquizzes[2]?.attempt_percentage}% Score</span><br/>
+                      <span>{attemptedquizzes[2]?.quiz_grade} Grade</span>
                     </div>
                     <div
                       className={styles.additionalInfo}
-                      style={{ marginTop: "23px" }}
+                      style={{ marginTop: "50px" }}
                     >
                       <div
                         className={styles.infoIcon}
@@ -2237,7 +2226,7 @@ const Dashboard = () => {
                             width={10}
                             height={10}
                           />
-                          <p>{latestquizzes[6]?.quiz_attempts}</p>
+                          <p>{attemptedquizzes[2]?.quiz_attempts}</p>
                           <span
                             title="number of times quiz attempted"
                             className="text-[6px] ml-1 cursor-pointer"
@@ -2255,7 +2244,7 @@ const Dashboard = () => {
                           width={15}
                           height={10}
                         />{" "}
-                       {attemptedquizzes[3]?.attained_score}/{attemptedquizzes[3]?.total_score}
+                       {attemptedquizzes[2]?.attained_score}/{attemptedquizzes[2]?.total_score}
                         <div
                           title="attained score/total score"
                           className="cursor-pointer text-[6px]"
@@ -2272,7 +2261,7 @@ const Dashboard = () => {
                           width={14}
                           height={14}
                         />{" "}
-                        {attemptedquizzes[3]?.attempted_questions}/{attemptedquizzes[3]?.total_questions}
+                        {attemptedquizzes[2]?.attempted_questions}/{attemptedquizzes[2]?.total_questions}
                         <div
                           title="attempted qustions/total questions"
                           className="cursor-pointer text-[6px]"
@@ -2289,7 +2278,7 @@ const Dashboard = () => {
                           width={14}
                           height={14}
                         />{" "}
-                        {attemptedquizzes[3]?.attempt_duration_mins}/{attemptedquizzes[3]?.quiz_duration}{latestquizzes[6]?.quiz_duration}
+                        {attemptedquizzes[2]?.attempt_duration_mins}/{attemptedquizzes[2]?.quiz_duration}{latestquizzes[2]?.quiz_duration}
                         <div
                           title="time taken for attempted/total duration of quiz "
                           className="cursor-pointer text-[6px]"
@@ -2298,101 +2287,11 @@ const Dashboard = () => {
                           <span className=" ml-[1px]">duration</span>
                         </div>
                       </span>
-                      {/* <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                  <img
-                    className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
-                    src={Easy}
-                    alt="Challenge Icon"
-                    width={15}
-                    height={9}
-                  />{" "}
-                  {latestquizzes[6]?.complexity}
-                </span> */}
+                     
                     </div>
                   </div>
                 </div>
 
-                {/* <div className="flex">
-                 
-                 <div className={styles.card} style={{paddingTop:"13px",backgroundColor:"#CFFCFF"}}>
-              <span className={styles.title}>
-              {latestquizzes[9]?.quiz_name}
-              </span>
-              <div className={styles.infoBox} style={{marginTop:"15px"}}>
-                <span className="h-[50px] w-[50px] text-[8px] ">
-                  {latestquizzes[9]?.quiz_description}
-                </span>
-                
-                <div className="flex relative top-[40px]">
-                <span className="text-nowrap w-[121.5px]">{latestquizzes[9]?.category}</span>
-                <p className="relative px-4 ">|</p>
-                <span className="w-[90px]  text-nowrap">{latestquizzes[9]?.sub_category}</span>
-                </div>
-
-                <div className={styles.additionalInfo} style={{marginTop:"38px"}} >
-                  
-                  <div className="">
-                    <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[12px] -top-[90px] hover:text-black hover:underline underline-offset-2 cursor-pointer">
-                      <img
-                        className="h-[15px] w-[13px] pl-[3px] pb-1 mr-[3px]"
-                        src={Attempt1}
-                        alt="Attempts Icon"
-                        width={10}
-                        height={10}
-                      />
-                      <p>{latestquizzes[9]?.quiz_attempts}</p>
-                    </div>
-                  </div>
-
-                  <span className="flex -pl-1 pt-1 -mt-[86.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black hover:underline underline-offset-2 cursor-pointer">
-                    <img className="pb-[1px] -mt-1  -pt-[10px] relative bottom-[2px]"
-                      src={NoOfQuestion}
-                      alt="Number of question Icon"
-                      width={17}
-                      height={16}
-                    />{" "}
-                    {latestquizzes[9]?.number_of_questions}
-                  </span>
-                  <span className="flex pl-[1px] pt-[5px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[10px] hover:text-black hover:underline underline-offset-2 cursor-pointer">
-                    <img 
-                      className="pb-[1px] mr-[4px] relative left-[1px] "
-                      src={Clock}
-                      alt="Time Icon"
-                      width={10}
-                      height={5}
-                    />{" "}
-                    {latestquizzes[9]?.quiz_duration}
-                  </span>
-                  <span className="flex pt-1 -mt-[0.5px] gap-[5px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black hover:underline underline-offset-2 cursor-pointer">
-                    <img
-                      className="pl-[2px] pt-[2px] pb-[2px] pr-[3px]"
-                      src={Easy}
-                      alt="Challenge Icon"
-                      width={15}
-                      height={9}
-                    />{" "}
-                    {latestquizzes[9]?.complexity}
-                  </span>
-                  <div className={styles.iconContainer}> 
-                    <div className=" pt-[4px] mb-[2px] px-[20px] rounded relative -left-[10px] -top-[6px] py-[4.5px]">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-4 -ml-[23px]  cursor-pointer hover:bg-slate-200" onClick={toggleNavbar}>
-                     <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                      </svg>
-                      {isNavbarOpen && (
-                      <div className=" pl-[6px]  pt-[2px] -mt-[16px] ml-[10px] absolute ">
-                        <img className="absolute h-[3px] w-[3px] -left-[10px] top-1" src={Start_button} alt="Play icon"/>
-                    <span className=" pl-[2px] -ml-[7px] cursor-pointer hover:text-black">Play</span>
-                    <img className="absolute h-[10px] w-[10px]  left-[32px] -ml-2 top-[5px]" src={Edit_button} alt="Play icon"/>
-                    <span  className=" ml-[18px] absolute top-[2.5px] cursor-pointer hover:text-black">Edit</span>
-                      </div>
-                     )}
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> 
-                </div> */}
               </div>
             )}
           </div>
@@ -2478,7 +2377,7 @@ const Dashboard = () => {
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "20px" }}
+                style={{ marginTop: "30px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -2608,7 +2507,7 @@ const Dashboard = () => {
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "20px" }}
+                style={{ marginTop: "30px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -2738,7 +2637,7 @@ const Dashboard = () => {
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "20px" }}
+                style={{ marginTop: "40px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -2868,7 +2767,7 @@ const Dashboard = () => {
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "20px" }}
+                style={{ marginTop: "30px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -2998,7 +2897,7 @@ const Dashboard = () => {
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "20px" }}
+                style={{ marginTop: "45px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -3128,7 +3027,7 @@ const Dashboard = () => {
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "20px" }}
+                style={{ marginTop: "35px" }}
               >
                 <div
                   className={styles.infoIcon}

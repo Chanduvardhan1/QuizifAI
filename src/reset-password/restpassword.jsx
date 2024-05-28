@@ -58,7 +58,7 @@ const resetpassword = () => {
     navigate("/login");
   };
   const handlecancel = () => {
-    navigate("/");
+    navigate("/login");
   };
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -66,8 +66,8 @@ const resetpassword = () => {
 
   const handleSignUp2 = () => {
     const userData = {
-      reset_option: email1,
-      email_or_mobile: email,
+      reset_option: loginMethod,
+      email_or_mobile: loginMethod === "email" ? email : mobile,
       otp: otp,
       new_password: password,
       confirm_new_password: confirmpassword,
@@ -107,7 +107,20 @@ const resetpassword = () => {
         console.error("Error signing up:", error);
       });
   };
-
+  const handleLoginMethodChange = (method) => {
+    setLoginMethod(method);
+    setShowPassword(false);
+    setIsContentSelected(true);
+    if (method === "gmail") {
+      setShowGmailPopup(true);
+    }
+  };
+  const handleMobileChange1 = (e) => {
+    const inputValue = e.target.value;
+    if (/^\d*$/.test(inputValue)) {
+      setMobile(inputValue);
+    }
+  };
   return (
     <div className={styles.container}>
       <div className={styles.mainContent}>
@@ -119,7 +132,7 @@ const resetpassword = () => {
         <div className={styles.rightSection}>
           {/* Registration success message */}
           {showRegistrationSuccess && (
-            <div className={styles.registrationSuccess}>
+            <div className={styles.registrationSuccess5}  style={{ fontWeight: 700 }}>
               <h2>Password reset Successfully</h2>
               <img
                 src={successImage}
@@ -127,7 +140,7 @@ const resetpassword = () => {
                 width={145.4}
                 height={145.4}
               />
-              <p className={styles.redirectText} style={{ fontWeight: 700 }}>
+              <p className={styles.redirectText}>
                 Password has been successfully reset Now you can login
               </p>
               <p className={styles.redirectLink}>
@@ -162,7 +175,7 @@ const resetpassword = () => {
               </div> */}
 
               <div className={styles.toggleOptions}>
-                {/* <label className={styles.toggleLabel}>
+                <label className={styles.toggleLabel}>
                   <input
                     type="radio"
                     name="contactMethod"
@@ -175,9 +188,9 @@ const resetpassword = () => {
                     <img src={icon1} alt="Logo" width={24} height={24} />
                   </div>
                   Email
-                </label> */}
+                </label>
 
-                {/* <label className={styles.toggleLabel}>
+                <label className={styles.toggleLabel}>
                   <input
                     type="radio"
                     name="contactMethod"
@@ -190,7 +203,7 @@ const resetpassword = () => {
                     <img src={icon2} alt="Logo" width={30} height={30} />
                   </div>
                   Mobile
-                </label> */}
+                </label>
               </div>
               {/*  email content */}
               {loginMethod === "email" && (
@@ -215,6 +228,46 @@ const resetpassword = () => {
                           InputProps={{
                             style: {
                               backgroundImage: `url('/images/email/mail.png')`,
+                              backgroundSize: "19px 16px",
+                              backgroundPosition: "296px center",
+                              backgroundRepeat: "no-repeat",
+                              width: "325px",
+                              height: "50px",
+                              // backgroundColor: "#F0EFFF",
+                              border: "none",
+                              fontFamily: "poppins",
+                              paddingLeft: "0px",
+                              borderRadius: "10px",
+                            },
+                            autoComplete: "off",
+                          }}
+                        />
+                      </div>
+                      {errors.emailOrMobile && (
+                        <p className={styles.errormessage}>
+                          {errors.emailOrMobile}
+                        </p>
+                      )}
+                    </div>
+                    <div className={styles.inputWrapper}>
+                      <div
+                        className={styles.inputWithIcon}
+                        style={{ marginTop: "0px", marginRight: "90px" }}
+                      >
+                        <TextField
+                          id="OTP"
+                          label="OTP"
+                          value={otp}
+                          onChange={(e) => setOtp(e.target.value)}
+                          variant="outlined"
+                          className={styles.inputField}
+                          style={{ width: "325px", height: "50px" }}
+                          InputLabelProps={{
+                            style: { fontFamily: "poppins" },
+                          }}
+                          InputProps={{
+                            style: {
+                              // backgroundImage: `url('/images/email/mail.png')`,
                               backgroundSize: "19px 16px",
                               backgroundPosition: "296px center",
                               backgroundRepeat: "no-repeat",
@@ -337,7 +390,7 @@ const resetpassword = () => {
               )}
 
               {/* Mobile content */}
-              {/* {loginMethod === "mobile" && (
+              {loginMethod === "mobile" && (
                 <div className={styles.mobileContent}>
                   <p
                     style={{
@@ -348,47 +401,7 @@ const resetpassword = () => {
                     }}
                   >    
                   </p>
-                  {!showOtpField && (
-                  <div className={styles.inputWrapper}>
-                    <div
-                      className={styles.inputWithIcon}
-                      style={{ marginTop: "20px", marginRight: "90px" }}
-                    >
-                      <TextField
-                        id="name"
-                        label="Name"
-                        type="text"
-                        variant="outlined"
-                        className={styles.inputField}
-                        style={{ width: "325px", height: "50px" }}
-                        InputLabelProps={{
-                          style: { fontFamily: "poppins" },
-                        }}
-                        InputProps={{
-                          style: {
-                            backgroundImage: `url('/images/contact/first.png')`,
-                            backgroundSize: "25px 25px",
-                            backgroundPosition: "290px center",
-                            backgroundRepeat: "no-repeat",
-                            width: "325px",
-                            height: "50px",
-                            // backgroundColor: "#F0EFFF",
-                            border: "none",
-                            fontFamily: "poppins",
-                            paddingLeft: "0px",
-                            borderRadius: "10px",
-                          },
-                          autoComplete: "off",
-                        }}
-                        name="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                      />
-                    </div>
-                    {errors.name && <p className={styles.errormessage}>{errors.name}</p>}
-
-                  </div>
-                  )}
+               
                          {!showOtpField && (
                   <div className={styles.inputWrapper}>
                     <div
@@ -437,6 +450,47 @@ const resetpassword = () => {
 
                   </div>
                          )}
+                            {!showOtpField && (
+                  <div className={styles.inputWrapper}>
+                    <div
+                      className={styles.inputWithIcon}
+                      style={{ marginTop: "20px", marginRight: "90px" }}
+                    >
+                      <TextField
+                        id="otp"
+                        label="OTP"
+                        type="text"
+                        variant="outlined"
+                        className={styles.inputField}
+                        style={{ width: "325px", height: "50px" }}
+                        InputLabelProps={{
+                          style: { fontFamily: "poppins" },
+                        }}
+                        InputProps={{
+                          style: {
+                            // backgroundImage: `url('/images/contact/first.png')`,
+                            backgroundSize: "25px 25px",
+                            backgroundPosition: "290px center",
+                            backgroundRepeat: "no-repeat",
+                            width: "325px",
+                            height: "50px",
+                            // backgroundColor: "#F0EFFF",
+                            border: "none",
+                            fontFamily: "poppins",
+                            paddingLeft: "0px",
+                            borderRadius: "10px",
+                          },
+                          autoComplete: "off",
+                        }}
+                        name="name"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value)}
+                      />
+                    </div>
+                    {errors.name && <p className={styles.errormessage}>{errors.name}</p>}
+
+                  </div>
+                  )}
                   {showOtpField && (
                   <div className={styles.inputWrapper}>
                     <div
@@ -479,7 +533,7 @@ const resetpassword = () => {
                           autoComplete: "off",
                         }}
                       />
-                       {!showOtpField && ( 
+                       {/* {!showOtpField && ( 
                       <button className={styles1.button}
                         onClick={handleSignUp2}
                         // style={{
@@ -498,7 +552,7 @@ const resetpassword = () => {
                       >
                         Send OTP
                       </button>
-                       )}
+                       )} */}
                     </div>
                     {errors.mobile && <p className={styles.errormessage}>{errors.mobile}</p>}
 
@@ -596,7 +650,7 @@ const resetpassword = () => {
                       </div>
                     </div>
                   )}
-                  {showOtpField && (
+                  {/* {showOtpField && (
                     <div className={styles.inputWrapper}>
                       <div
                         className={styles.inputWithIcon}
@@ -637,9 +691,9 @@ const resetpassword = () => {
                       </div>
                      
                     </div>
-                  )}
+                  )} */}
                 </div>
-              )} */}
+              )}
 
               {/* <p
                 className={`${styles.signUpText} ${

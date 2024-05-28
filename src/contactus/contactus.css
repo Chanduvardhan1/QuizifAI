@@ -54,7 +54,7 @@
   }
   
   .navigation ul li:last-child {
-    margin-right: 100px;
+    /* margin-right: 100px; */
   }
 
   .navigation ul li:nth-child(-n+2):hover{
@@ -129,36 +129,6 @@
     
   }
   
-  .line1 {
-    font-family: Poppins;
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 50px;
-    letter-spacing: 0em;
-    text-align: left;
-    color: #555555;
-    margin-left: 790px;
-    position: absolute;
-    top: 280px;
-  }
-
-  .line2 {
-    font-family: Poppins;
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 50px;
-    letter-spacing: 0em;
-    text-align: left;
-    color: #555555;
-    margin-left: 780px;
-    position: absolute;
-    top: 320px;
-  }
-  
-  .line1,
-  .line2 {
-    font-size: 18px;
-  }
   
   .line3 {
     font-family: Poppins;
@@ -219,10 +189,7 @@
     cursor: pointer;
   } */
   
-  .line3Container {
-    display: flex; 
-    align-items: flex-start; 
-  }
+ 
   
   .text-content .line3 {
     font-family: Poppins;
@@ -237,13 +204,7 @@ left: -100px !important;
 
   }
 
-  .homeImage {
-    width: 800px;
-    height: 546px;
-    position: absolute;
-    top: 156px;
-    left: 45px;
-  }
+
 
   .outerBox {
     position: absolute;

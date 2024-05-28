@@ -33,12 +33,36 @@ import three3Icon from "../../src/assets/Images/images/quizview/three3.png";
 import four4Icon from "../../src/assets/Images/images/quizview/four4.png";
 import { useLocation } from 'react-router-dom';
 
+
 const quizresults = () => {
   const [quizData, setQuizData] = useState(null);
   const location = useLocation();
   const { quizId, attemptNo } = location.state || {};
   const [loading, setLoading] = useState(true); // To manage loading state
   const [error, setError] = useState(null);
+  const [leaderboardData, setLeaderboardData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://quizifai.com:8010/leaderboard_result', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json'
+          },
+          body: ''
+        });
+        const result = await response.json();
+        if (result.response === 'success') {
+          setLeaderboardData(result.data);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const userId = localStorage.getItem("user_id");
@@ -74,7 +98,8 @@ const quizresults = () => {
     return <div>Loading...</div>;
   }
 
- 
+  const topThree = leaderboardData.slice(0, 3);
+
   return (
 
     <div className={styles.container}>
@@ -94,7 +119,7 @@ const quizresults = () => {
   alt="User Icon"
   className={styles.icon1}
 />
-          <span>Title of the Quiz</span>
+          <span>{quizData.quiz_name}</span>
         </div>
         <div className={styles.infoContainer}>
         <img
@@ -111,7 +136,7 @@ const quizresults = () => {
     alt="Description Icon"
     className={styles.description}
   />
-      <span className={styles.descriptionText}>Description of the Quiz Description of the Quiz Description of <br></br>the Quiz  Description of the Quiz Description of the Quiz </span>
+      <span className={styles.descriptionText}>{quizData.quiz_description}</span>
       </div>
      
       <div className={styles.horizontalLine}></div>
@@ -184,11 +209,8 @@ const quizresults = () => {
     alt="Icon 1"
     className={styles.verticalicon1}
   />
-         <img
-    src={rankScoreIcon} 
-    alt="Icon 2"
-    className={styles.verticalicon2}
-  />
+  <h1 className={styles.rank1}>Your rank</h1>
+     <h1  className={styles.verticalicon2} >{quizData.rank}</h1>
       </div>
         </div>
         <div className={styles.horizontalLine} style={{marginTop:"0px"}}></div>
@@ -215,7 +237,7 @@ const quizresults = () => {
     className={styles.rankicon3}
   />
         </div>
-        <div className={styles.innerBoxes}>
+        {/* <div className={styles.innerBoxes}>
         <div className={styles.innerBox1} style={{width:"122px", height:"93px", marginTop:"150px", marginLeft:"-200px"}}>
         <img
     src={greybox1Image} 
@@ -238,68 +260,67 @@ const quizresults = () => {
   />
             <span className={styles.textOverImage2}>Username<br></br>99</span>
           </div>
-        </div>
+        </div> */}
         
         </div>
-        <div className={styles.columns}>
+        {/* <div  className={styles.columns1}>
+        {/* <div className={styles.columns}>
     <span className={styles.column}>Rank</span>
     <span className={styles.column}>User Name</span>
     <span className={styles.column}>Score</span>
     <span className={styles.column}>Attempts</span>
     <span className={styles.column}>Duration</span>
-  </div>
-        
-  <div className={styles.values}>
-    <div className={styles.value}>1</div>
-    <div className={styles.value}>User Name</div>
-    <div className={styles.value}>100</div>
-    <div className={styles.value}>1</div>
-    <div className={styles.value}>15 Min</div>
-  </div>
-  <div className={styles.values}>
-    <div className={styles.value}>2</div>
-    <div className={styles.value}>User Name</div>
-    <div className={styles.value}>100</div>
-    <div className={styles.value}>1</div>
-    <div className={styles.value}>15.2 Min</div>
-  </div>
-  <div className={styles.values}>
-    <div className={styles.value}>3</div>
-    <div className={styles.value}>User Name</div>
-    <div className={styles.value}>100</div>
-    <div className={styles.value}>1</div>
-    <div className={styles.value}>15.5 Min</div>
-  </div>
-  <div className={styles.values}>
-    <div className={styles.value}>4</div>
-    <div className={styles.value}>User Name</div>
-    <div className={styles.value}>100</div>
-    <div className={styles.value}>1</div>
-    <div className={styles.value}>15.8 Min</div>
-  </div>
-  <div className={styles.values}>
-    <div className={styles.value}>5</div>
-    <div className={styles.value}>User Name</div>
-    <div className={styles.value}>100</div>
-    <div className={styles.value}>1</div>
-    <div className={styles.value}>16.2 Min</div>
-  </div>
-  <div className={styles.values}>
-    <div className={styles.value}>6</div>
-    <div className={styles.value}>User Name</div>
-    <div className={styles.value}>100</div>
-    <div className={styles.value}>1</div>
-    <div className={styles.value}>16.8 Min</div>
-  </div>
-  <div className={styles.values}>
-    <div className={styles.value}>7</div>
-    <div className={styles.value}>You</div>
-    <div className={styles.value}>89</div>
-    <div className={styles.value}>1</div>
-    <div className={styles.value}>23 Min</div>
-  </div>
-        
+  </div> */}
+ 
+  {/* <div>
+      {leaderboardData.map((entry, index) => (
+        <div key={index} className={styles.values}>
+          <div className={styles.value}>{entry.rank}</div>
+          <div className={styles.value}>{entry.user_name}</div>
+          <div className={styles.value}>{entry.score}</div>
+          <div className={styles.value}>{entry.attempts}</div>
+          <div className={styles.value}>{entry.duration}</div>
+        </div>
+      ))}
+    </div> */}
+    {/* </div>  */}
+    <div>
+      <div className={styles.innerBoxes}>
+        {topThree.map((entry, index) => {
+          const boxStyles = [
+            { width: "122px", height: "93px", marginTop: "-218px", marginLeft: "-730px" },
+            { width: "122px", height: "93px", marginTop: "-117px", marginLeft: "40px" },
+            { width: "122px", height: "93px", marginTop: "-45px", marginLeft: "280px" }
+          ];
+          
+          const textStyles = [
+            { marginTop: "0px", marginLeft: "0px" },
+            {},
+            {}
+          ];
 
+          const images = [greybox1Image, greybox2Image, greybox3Image];
+
+          return (
+            <div key={entry.rank} className={styles[`innerBox${index + 1}`]} style={boxStyles[index]}>
+              <img src={images[index]} alt={`img ${index + 1}`} />
+              <span className={styles[`textOverImage${index + 1}`]} style={textStyles[index]}>
+                {entry.user_name}<br />{entry.score}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+      {leaderboardData.slice(3).map((entry, index) => (
+        <div key={entry.rank} className={styles.values}>
+          <div className={styles.value}>{entry.rank}</div>
+          <div className={styles.value}>{entry.user_name}</div>
+          <div className={styles.value}>{entry.score}</div>
+          <div className={styles.value}>{entry.attempts}</div>
+          <div className={styles.value}>{entry.duration}</div>
+        </div>
+      ))}
+    </div>
         <div className={styles.boxContainer}>
           
 <div className={styles.parentContainer}>

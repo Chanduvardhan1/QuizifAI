@@ -250,6 +250,7 @@ function contact() {
       </header>
       <div className="content">
           <div className="contactContent">
+          <div className="contactContent">
             <img
               src={Lady}
               alt="Image Description"
@@ -345,6 +346,8 @@ function contact() {
               #92, 3rd Main, Virgo Nagar, Post, <br></br>Seegehalli, Bengaluru,
               Karnataka 560049
             </p> */}
+            </div>
+            <div className="outerBox1">
             <h1
               style={{
                 position: "absolute",
@@ -742,6 +745,7 @@ function contact() {
                     Send
                   </button>
                   {/* </Navigate> */}
+                  </div>
                 </div>
               </div>
             </div>

@@ -1526,7 +1526,7 @@ const Quiz = () => {
                )}
              </div>
             ):(
-              <div className="pl-[110px] font-light">No quizzes are available right now</div>
+              <div className="pl-[110px] font-light my-2">No quizzes are available right now</div>
             )}
          
           <div className={styles.topScoredHeader}>
@@ -1535,7 +1535,9 @@ const Quiz = () => {
           <div className={styles.infoCards}>
             
             {/* Info cards content */}
-            <div
+            {topScoredQuizzes && topScoredQuizzes.length>0 ?(
+              <div className="flex">
+                <div
                     className={styles.card}
                     style={{ paddingTop: "8px" }}
                   >
@@ -1671,6 +1673,9 @@ const Quiz = () => {
                       </span>
                     </div>
             </div>
+
+            {topScoredQuizzes === topScoredQuizzes[1] ? (
+           <div>
             <div
                     className={styles.card}
                     style={{ paddingTop: "8px" }}
@@ -1807,7 +1812,15 @@ const Quiz = () => {
                       </span>
                     </div>
              </div>
-             <div
+           </div>
+            ):(
+              <div></div>
+            )}
+
+            {topScoredQuizzes === topScoredQuizzes[2] ? 
+            (
+              <div>
+                 <div
                     className={styles.card}
                     style={{ paddingTop: "8px"}}
                   >
@@ -1943,6 +1956,15 @@ const Quiz = () => {
                       </span>
                     </div>
             </div>
+              </div>
+            ):(
+              <div></div>
+            )}
+              </div>
+            ):(
+            <div className="pl-[110px] font-light my-2">No top quizzes are available right now</div>
+            )}
+            
 
  <div className={styles.sortBy}>
   <p className="ml-8 my-3 font-Poppins font-medium">Sort by:</p>
@@ -1988,7 +2010,10 @@ const Quiz = () => {
       </select>
   </div>
 </div>
-<div
+
+{allquizzes && allquizzes.length > 0 ?(
+  <div className="flex">
+    <div
                     className={styles.card}
                     style={{ paddingTop: "8px"}}
                   >
@@ -2123,8 +2148,8 @@ const Quiz = () => {
                         {allquizzes[13]?.complexity}
                       </span>
                     </div>
-                  </div>
-                  <div
+    </div>
+    <div
                     className={styles.card}
                     style={{ paddingTop: "8px"}}
                   >
@@ -2259,8 +2284,8 @@ const Quiz = () => {
                         {allquizzes[14]?.complexity}
                       </span>
                     </div>
-                  </div>
-                  <div
+    </div>
+    <div
                     className={styles.card}
                     style={{ paddingTop: "8px"}}
                   >
@@ -2395,11 +2420,15 @@ const Quiz = () => {
                         {allquizzes[15]?.complexity}
                       </span>
                     </div>
-                  </div>
+    </div>
+  </div>
+):(
+  <div className="pl-[110px] font-light my-2">No quizzes are available right now</div>
+)}
             
-           </div>
-           </div>
-           </div>
+    </div>
+    </div>
+    </div>
       <LogoutBar/>
     </div>
   );

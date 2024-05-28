@@ -98,6 +98,7 @@ border: none;
   /* margin-right: -50px; */
 }
 .highlightedCard {
+  cursor: pointer;
   border: 2px solid #ffcc00; /* Highlighting border color */
   box-shadow: 0 0 10px rgba(255, 204, 0, 0.5); /* Highlighting shadow */
 }

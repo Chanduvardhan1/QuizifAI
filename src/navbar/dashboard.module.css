@@ -62,13 +62,31 @@ border: none;
   height: 15px; 
   margin-right: 20px; 
 }
-
-.pageLink {
+.verticalline {
+  border-left: 3px solid #F5F5FB; /* Default color */
+  height: 20px;
+  position: absolute;
+  left: 216px; /* Adjust this as needed */
+  transition: border-color 0.3s; /* Smooth transition */
+}
+.verticalline.active {
+  border-left-color: #708FF4; /* Color when active */
+}
+.verticalline:visited{
+  border-left-color: #F5F5FB;
+}
+.pageLink{
+  cursor: pointer;
+  color: #9696BB;
+}
+.pageLink.active{
   text-decoration: none;
   color: #000; 
   cursor: pointer;
 }
-
+.pageLink:visited{
+  border-left-color: #F5F5FB;
+}
 .logoutIcon{
   margin-left: 140px;
 

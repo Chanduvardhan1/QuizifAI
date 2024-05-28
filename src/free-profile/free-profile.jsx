@@ -455,6 +455,26 @@ const FreeProfile = () => {
                 value={postalCode}
                 onChange={(e) => setPostalCode(e.target.value)}
               />
+               <div
+                    className={styles.searchicon}
+                    onClick={handleSubmit1}
+                    style={{
+                      backgroundImage: `url('images/signup/LineIcon.png'),url('images/signup/searchIcon.png')`,
+                      backgroundRepeat: "no-repeat",
+                      width: "40px",
+                      height: "25px",
+                      right: "-110px",
+                      top:"-29px",
+
+                      position: "relative",
+                     
+
+                      // border: "1px solid #c2c2c2",
+                      backgroundPosition:
+                        "0px center, right 10px center, right 40px center",
+                      cours: "pointer",
+                    }}
+                  ></div>
               {/* <div
                     className={styles.searchicon}
                     onClick={handleSubmit1}

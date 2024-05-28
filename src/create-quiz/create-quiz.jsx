@@ -134,7 +134,7 @@ export default function createquiz() {
             <h1 className="font-Poppins font-light text-[15px] leading-[22.5px] text-[#575757]">
                   <span className="mt-2 flex justify-center">Save your time and create<br/></span>
                   <span className="flex justify-center">forms faster our Al will</span>
-                  <span className="flex justify-center">create the first draftl</span>
+                  <span className="flex justify-center">create the first draft</span>
                   </h1>
             </div>
 

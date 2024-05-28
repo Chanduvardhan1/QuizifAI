@@ -41,17 +41,17 @@ const LogoutBar = () => {
 
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
   const [username, setUsername] = useState(localStorage.getItem("user_name"));
-  const [occupationname, setoccupationname] = useState(localStorage.getItem("occupation_name"));
+  const [occupation, setOccupation] = useState(localStorage.getItem("occupation_name"));
   
   useEffect(() => {
     const fetchQuizData = async () => {
       console.log("User ID:", userId);
       console.log("User Name:", username);
-      console.log("occupation name:", occupationname);
+      console.log("occupation:", occupation);
 
       try {
         const response = await fetch(
-          `https://quizifai.com:8010/get_prfl_dtls?user_id=${userId}&username=${username}`,
+          `https://quizifai.com:8010/get_prfl_dtls?user_id=${userId}`,
           {
             method: "POST",
             headers: {
@@ -72,7 +72,7 @@ const LogoutBar = () => {
     };
 
     fetchQuizData();
-  }, [userId, username,occupationname]); 
+  }, [userId, username,occupation]); 
   return (
     <div className={styles.logout}>
         <div style={{ marginTop: "40px", display: "flex", alignItems: "center" , marginLeft:"20px"}}>
@@ -121,7 +121,7 @@ const LogoutBar = () => {
               color: "#9696BB",
             }}
           >
-            {occupationname}
+            {occupation}
           </p>
           <p
           style={{

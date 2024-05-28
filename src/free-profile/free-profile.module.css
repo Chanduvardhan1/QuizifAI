@@ -12,6 +12,9 @@
   .body {
     font-family: "Poppins";
   }
+  .searchicon{
+    cursor:pointer;
+  }
   
   .toggleButtonsContainer {
     display: flex;

@@ -278,33 +278,34 @@ function Home() {
         </nav>
       </header>
       <div className="content">
+      <div className="homeImage">
+        <div className="homeImage1"> 
+
+              <img src={homeImage} alt="home Image" width={550} height={496}   />
+        </div>
+            </div>
         {activeSection === "home" && (
-          <div className="textContent">
+           <div className="textContent">
+          <div className="textContent1">
             <h1>
               <span className="line1">Exploring online resources for</span>
               <br />
               <span className="line2">AI-generated Exams and Quizzes?</span>
             </h1>
-            <div className="line3Container" style={{ position: "relative" }}>
+            <div className="line3Container">
             <Link to={"/signup"}>
               <button
                 className="backgroundButton"
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+               
                   width: "103px",
                   height: "36px",
-                  position: "absolute",
-                  zIndex: 1,
+                 
                   backgroundColor: "darkblue",
                   borderRadius: "10px",
                   border: "none",
                   cursor: "pointer",
-                  left: "-30px",
-                  textAlign: "center",
-                  marginTop: "230px",
-                  marginLeft: "930px",
+               
                 
                 }}
               >
@@ -322,9 +323,7 @@ function Home() {
                 {/* <img src={aiImage} alt="AI Image" width={380} height={346} /> */}
               </div>
             </div>
-            <div className="homeImage">
-              <img src={homeImage} alt="home Image" width={550} height={496} />
-            </div>
+          </div>
           </div>
         )}
 

@@ -628,7 +628,13 @@ margin-top: -3px;
 .registrationSuccess{
   margin-top: 130px;
 }
-
+.registrationSuccess5{
+  margin-top: 130px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
 .registrationSuccess h2{
   font-size: 28px;
   color: #454B60;

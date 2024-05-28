@@ -529,7 +529,7 @@ export default function quiztype() {
   };
   const handleNext = async () => {
     try {
-      const user_id = localStorage.getItem('user_id');
+         const user_id = localStorage.getItem('user_id');
 
       // Check if user_id is retrieved successfully
       if (!user_id) {
@@ -812,7 +812,7 @@ export default function quiztype() {
 
               <div className=" rounded-lg absolute top-[99px] left-[1144px]">
                 <input
-                  type="number"
+                  // type="number"
                   className="w-[135px] border-solid border-[#B8BBC2] border-[1.8px] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer"
                   placeholder="No of question "
                   value={numQuestions}
@@ -885,7 +885,7 @@ export default function quiztype() {
     </option>
   ))}
                 </select>  */}
-      <select
+                      <select
         className="w-[260px] h-[41.6px] border-solid border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer text-[12px]"
         value={selectedCategory}
         onChange={handleSelectCategory}
@@ -940,7 +940,7 @@ export default function quiztype() {
                     </option>
                   ))}
                 </select>  */}
-       <select
+                  <select
         className="w-[260px] text-[12px]  border-solid border-[#B8BBC2] px-3 py-3 rounded-md cursor-pointer"
         onChange={handleSelectSubCategory}
         value={selectedSubCategory}
@@ -1297,7 +1297,7 @@ export default function quiztype() {
             </div>
 
             {/* Questions and options */}
-            <div className="absolute top-[210px] left-[298px] w-[1212px] h-[450px]  flex flex-col overflow-auto">
+            <div className="absolute top-[210px] left-[298px] w-[1212px] h-[450px] ">
             {questions.map((question, questionIndex) => (
   <div key={questionIndex} className="mb-8 ">
     {/* Input field for question */}
@@ -1429,25 +1429,21 @@ export default function quiztype() {
   </div>
 ))}
 
-            </div>
+<div className=" flex justify-between items-center pr-[55px] ">
+                <button
+                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1B1852] text-white"
+                  onClick={handleNext2}
+                >
+                  Back
+                </button>
 
-            {/* Submit button */}
-            <div className="absolute top-[687px] left-[308px]">
-              <button
-                className="w-[123px] h-[32px] rounded-[10px] bg-[#1B1852] text-white"
-                onClick={handleNext2}
-              >
-                Back
-              </button>
-            </div>
-
-            <div className="absolute top-[687px] left-[775px]">
-              <button
-                className="w-[123px] h-[32px] rounded-[10px] bg-[#1B1852] text-white"
-                onClick={handleNext}
-              >
-                Create
-              </button>
+                <button
+                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1B1852] text-white"
+                  onClick={handleNext}
+                >
+                  Create
+                </button>
+              </div>
             </div>
           </main>
         )}

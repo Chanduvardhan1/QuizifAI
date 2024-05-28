@@ -262,15 +262,11 @@ const LoginPage = () => {
   
   
   const handleForgotPasswordSubmit = () => {
-    // if (!termsChecked) {
-    //   setErrorMessage("Please agree to the terms and conditions");
-    //   return;
-    // }
-    const forgotOption = email.includes("@") ? "email" : "mobile";
+    // const forgotOption = email.includes("@") ? "email" : "mobile";
     // Prepare the request body
     const requestBody = JSON.stringify({
-      Forogot_option:  forgotOption,
-      email_or_mobile:forgotOption === "email" ? email : mobile,
+      Forogot_option:  loginMethod,
+      email_or_mobile:loginMethod === "email" ? email : mobile,
     });
 
     // Make a POST request to the forgot password endpoint using fetch
@@ -294,10 +290,12 @@ const LoginPage = () => {
       if (data.response === "success") {
         console.log("Email Sent Successfully");
         // Handle success response
-        setShowThankYou(true); // Set state to show thank you message or handle as per your requirement
+        setShowThankYou(true); 
+        navigate("/resetpassword");// Set state to show thank you message or handle as per your requirement
       } else {
         // Handle other response scenarios
         console.error("Unexpected response:", data);
+        alert(data.response)
       }
     })
     .catch((error) => {
@@ -317,9 +315,9 @@ const LoginPage = () => {
     navigate("/signup");
   };
   return (
-    <div className={styles.container}>
-      <div className={styles.mainContent}>
+    <div>
         <Navbarhome/>
+      <div className="container" style={{display:"flex"}}>
         <div className={styles.leftSection}>
           <div className={styles.logo1}>
             <img src={quizifailogo} alt="Logo"  width={500} height={500}

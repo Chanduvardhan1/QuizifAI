@@ -235,6 +235,7 @@ const QuizQuestions = () => {
   const filteredQuizData = quizData.data.filter(item => item.question_id);
   const currentQuestion = quizData.data.filter(item => item.question_id)[currentQuestionIndex];
   const optionLabels = ['A', 'B', 'C', 'D'];
+  const optionKeys = ['quiz_ans_option_1_text', 'quiz_ans_option_2_text', 'quiz_ans_option_3_text', 'quiz_ans_option_4_text'];
 
   return (
     <div className={styles.container}>
@@ -371,26 +372,23 @@ const QuizQuestions = () => {
             </div>
           </div>
           <div className={styles.boxesContainer}>
-            <ul>
-              {Object.keys(currentQuestion).map((key, index) => {
-                if (key.startsWith('quiz_ans_option_') && key.endsWith('_text')) {
-                  const optionId = currentQuestion[key.replace('_text', '_id')];
-                  const optionLabel = optionLabels[index % optionLabels.length]; 
-                  return (
-                    <li key={optionId}>
-                      <button
-                        className={styles.box}
-                        onClick={() => handleOptionSelect(optionId)}
-                        style={{ fontWeight: selectedOptions[currentQuestionIndex] === optionId ? 'bold' : 'normal' }}
-                      >
-                        {`${optionLabel}. ${currentQuestion[key]}`}
-                      </button>
-                    </li>
-                  );
-                }
-                return null;
-              })}
-            </ul>
+          <ul>
+          {optionKeys.map((key, index) => {
+            const optionId = currentQuestion[key.replace('_text', '_id')];
+            const optionLabel = optionLabels[index];
+            return (
+              <li key={optionId}>
+                <button
+                  className={styles.box}
+                  onClick={() => handleOptionSelect(optionId)}
+                  style={{ fontWeight: selectedOptions[currentQuestionIndex] === optionId ? 'bold' : 'normal' }}
+                >
+                  {`${optionLabel}. ${currentQuestion[key]}`}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
           </div>
         </>
       )}
@@ -434,7 +432,7 @@ const QuizQuestions = () => {
       <div className={styles.sentence3} style={{ marginTop: "230px" }}>
         {formatTime(elapsedTime)}
       </div>
-          <div className={styles.sentence4} style={{marginTop:"290px", marginLeft:"-140px"}}>Quiz timer: </div>
+          {/* <div className={styles.sentence4} style={{marginTop:"290px", marginLeft:"-140px"}}>Quiz timer: </div>
           <div className={styles.imageContainer} style={{marginTop: "350px", marginLeft: "-100px"}}>
     <img
       src={clockIcon} 
@@ -443,7 +441,7 @@ const QuizQuestions = () => {
       height={100}
       className={styles.clockIcon}
     />
-  </div>
+  </div> */}
       </div>
     
   );

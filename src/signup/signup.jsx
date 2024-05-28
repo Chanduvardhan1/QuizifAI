@@ -702,9 +702,9 @@ const Signup = () => {
   };
 
   return (
-    <div className={styles.container}>
-    <div className={styles.mainContent}>
+    <div>
       <Navbarhome />
+    <div className="container" style={{display:"flex"}}>
 
         <div className={styles.leftSection}>
           <div className={styles1.logo2}>

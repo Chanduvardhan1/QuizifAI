@@ -150,6 +150,10 @@ const Dashboard = () => {
     navigate(`/quizaccess`);
   };
  
+  const leaderboard = () => {
+    navigate(`/quiz-results1`);
+  };
+
   const toggleNavbar = () => {
     setIsNavbarOpen((prevState) => !prevState);
   };
@@ -599,7 +603,7 @@ const Dashboard = () => {
                           src={leaderboard_button}
                           alt="Play icon"
                         />
-                        <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                        <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
                           Leaderboard
                         </span>
                       </div>
@@ -736,7 +740,7 @@ const Dashboard = () => {
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img
@@ -868,7 +872,7 @@ const Dashboard = () => {
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img
@@ -997,7 +1001,7 @@ const Dashboard = () => {
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img
@@ -1127,7 +1131,7 @@ const Dashboard = () => {
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img
@@ -1256,7 +1260,7 @@ const Dashboard = () => {
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img
@@ -1396,7 +1400,7 @@ const Dashboard = () => {
                               src={leaderboard_button}
                               alt="Play icon"
                             />
-                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
                               Leaderboard
                             </span>
                             <img
@@ -1529,7 +1533,7 @@ const Dashboard = () => {
                               src={leaderboard_button}
                               alt="Play icon"
                             />
-                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
                               Leaderboard
                             </span>
                             <img
@@ -1661,7 +1665,7 @@ const Dashboard = () => {
                               src={leaderboard_button}
                               alt="Play icon"
                             />
-                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
                               Leaderboard
                             </span>
                             <img
@@ -1798,7 +1802,7 @@ const Dashboard = () => {
                               src={leaderboard_button}
                               alt="Play icon"
                             />
-                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
                               Leaderboard
                             </span>
                             <img
@@ -1981,7 +1985,7 @@ const Dashboard = () => {
                               src={leaderboard_button}
                               alt="Play icon"
                             />
-                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
                               Leaderboard
                             </span>
                             <img
@@ -2165,7 +2169,7 @@ const Dashboard = () => {
                               src={leaderboard_button}
                               alt="Play icon"
                             />
-                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
                               Leaderboard
                             </span>
                             <img
@@ -2345,7 +2349,7 @@ const Dashboard = () => {
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img
@@ -2476,7 +2480,7 @@ const Dashboard = () => {
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img
@@ -2606,7 +2610,7 @@ const Dashboard = () => {
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img
@@ -2736,7 +2740,7 @@ const Dashboard = () => {
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img
@@ -2866,7 +2870,7 @@ const Dashboard = () => {
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img
@@ -2996,7 +3000,7 @@ const Dashboard = () => {
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black">
+                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black"onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img

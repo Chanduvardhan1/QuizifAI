@@ -288,9 +288,9 @@ const quizresults = () => {
       <div className={styles.innerBoxes}>
         {topThree.map((entry, index) => {
           const boxStyles = [
-            { width: "122px", height: "93px", marginTop: "-218px", marginLeft: "-730px" },
-            { width: "122px", height: "93px", marginTop: "-117px", marginLeft: "40px" },
-            { width: "122px", height: "93px", marginTop: "-45px", marginLeft: "280px" }
+            { width: "122px", height: "93px", marginTop: "-115px", marginLeft: "-715px" },
+            { width: "122px", height: "93px", marginTop: "-140px", marginLeft: "-470px" },
+            { width: "122px", height: "93px", marginTop: "-93px", marginLeft: "-226px" }
           ];
           
           const textStyles = [
@@ -305,7 +305,7 @@ const quizresults = () => {
             <div key={entry.rank} className={styles[`innerBox${index + 1}`]} style={boxStyles[index]}>
               <img src={images[index]} alt={`img ${index + 1}`} />
               <span className={styles[`textOverImage${index + 1}`]} style={textStyles[index]}>
-                {entry.user_name}<br />{entry.score}
+                {entry.user_name}<br />{entry.Percentage}
               </span>
             </div>
           );
@@ -315,7 +315,7 @@ const quizresults = () => {
         <div key={entry.rank} className={styles.values}>
           <div className={styles.value}>{entry.rank}</div>
           <div className={styles.value}>{entry.user_name}</div>
-          <div className={styles.value}>{entry.score}</div>
+          <div className={styles.value}>{entry.Percentage}</div>
           <div className={styles.value}>{entry.attempts}</div>
           <div className={styles.value}>{entry.duration}</div>
         </div>
@@ -323,10 +323,10 @@ const quizresults = () => {
     </div>
         <div className={styles.boxContainer}>
           
-<div className={styles.parentContainer}>
+{/* <div className={styles.parentContainer}>
 
         {/* Content inside the box container */}
-        <div className={styles.sentencesContainer1} style={{marginLeft:"30px", marginTop:"40px"}}>
+        {/* <div className={styles.sentencesContainer1} style={{marginLeft:"30px", marginTop:"40px"}}>
         <div className={styles.sentence}>
         <img
     src={one1Image} 
@@ -344,7 +344,7 @@ const quizresults = () => {
         </div>
         
         {/* Box 1 */}
-        <div className={styles.box}>
+        {/* <div className={styles.box}>
     <div className={styles.iconA}>
     <img
     src={iconA} 
@@ -387,8 +387,8 @@ const quizresults = () => {
   />
         <span className={styles.iconText}>Wrong Answer</span>
     </div>
-</div>
-<span className={styles.newContainer}>
+</div> */}
+{/* <span className={styles.newContainer}>
     <span className={styles.iconContainer}>
     <img
     src={answerTimerIcon} 
@@ -406,10 +406,10 @@ const quizresults = () => {
       <p>Description of the Answer Description of the <br></br>Answer Description of the Answer Description<br></br> of the Answer Description of the Answer <br></br>Description of the Answer</p>
     </span>
   </span>
-</div>
-</div>
+</div>  */}
+{/* </div>  */}
 
-<div className={styles.sentencesContainer1} style={{marginLeft:"30px", marginTop:"40px"}}>
+{/* <div className={styles.sentencesContainer1} style={{marginLeft:"30px", marginTop:"40px"}}>
         <div className={styles.sentence}>
         <img
     src={two2Icon} 
@@ -426,7 +426,7 @@ const quizresults = () => {
   </span>
         </div>
         {/* Box 1 */}
-        <div className={styles.box}>
+        {/* <div className={styles.box}>
     <div className={styles.iconA}>
     <img
     src={iconA} 
@@ -436,8 +436,8 @@ const quizresults = () => {
   />
         <span className={styles.iconText}>Wrong Answer</span>
     </div>
-</div>
-<div className={styles.box} style={{backgroundColor:"#A9FFB7"}}>
+</div> */}
+{/* <div className={styles.box} style={{backgroundColor:"#A9FFB7"}}>
     <div className={styles.iconB}>
     <img
     src={iconB} 
@@ -447,8 +447,8 @@ const quizresults = () => {
   />
         <span className={styles.iconText}>Correct Answer</span>
     </div>
-</div>
-<div className={styles.box}>
+</div> */}
+{/* <div className={styles.box}>
     <div className={styles.iconC}>
     <img
     src={iconC} 
@@ -487,10 +487,10 @@ const quizresults = () => {
       <p>Answered in 53 Sec</p>
       <p>Description of the Answer Description of the <br></br>Answer Description of the Answer Description<br></br> of the Answer Description of the Answer <br></br>Description of the Answer</p>
     </span>
-  </span>
+  </span> */}
 
-</div>
-<div className={styles.sentencesContainer1} style={{marginLeft:"30px", marginTop:"40px"}}>
+{/* </div>  */}
+{/* <div className={styles.sentencesContainer1} style={{marginLeft:"30px", marginTop:"40px"}}>
         <div className={styles.sentence}>
         <img
     src={three3Icon} 
@@ -507,7 +507,7 @@ const quizresults = () => {
   </span>
         </div>
         {/* Box 1 */}
-        <div className={styles.box}>
+        {/* <div className={styles.box}>
     <div className={styles.iconA}>
     <img
     src={iconA}
@@ -568,10 +568,10 @@ const quizresults = () => {
       <p>Answered in 53 Sec</p>
       <p>Description of the Answer Description of the <br></br>Answer Description of the Answer Description<br></br> of the Answer Description of the Answer <br></br>Description of the Answer</p>
     </span>
-  </span>
+  </span> */}
 
-</div>
-<div className={styles.sentencesContainer1} style={{marginLeft:"30px", marginTop:"40px"}}>
+{/* </div>  */}
+{/* <div className={styles.sentencesContainer1} style={{marginLeft:"30px", marginTop:"40px"}}>
         <div className={styles.sentence}>
         <img
     src={four4Icon} 
@@ -588,7 +588,7 @@ const quizresults = () => {
   </span>
         </div>
         {/* Box 1 */}
-        <div className={styles.box}>
+        {/* <div className={styles.box}>
     <div className={styles.iconA}>
     <img
     src={iconA}
@@ -649,8 +649,8 @@ const quizresults = () => {
       <p>Answered in 53 Sec</p>
       <p>Description of the Answer Description of the <br></br>Answer Description of the Answer Description<br></br> of the Answer Description of the Answer <br></br>Description of the Answer</p>
     </span>
-  </span>
-</div>
+  </span> */}
+{/* </div>  */}
 
 
 

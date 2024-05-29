@@ -490,15 +490,15 @@ margin-left: -50px;
   .rankicon1 {
     width: 68px;
     height: 68px;
-    margin-top: 130px;
-    margin-left: -110px;
+    margin-top: 101px;
+    margin-left: -77px;
     z-index: 1;
     /* Adjust icon styles as needed */
   }
   .rankicon2 {
     width: 82px;
     height: 82px;
-    margin-top: 100px;
+    margin-top: 78px;
     margin-left: 50px;
     z-index: 1;
     /* Adjust icon styles as needed */
@@ -506,7 +506,7 @@ margin-left: -50px;
   .rankicon3 {
     width: 68px;
     height: 68px;
-    margin-top: 150px;
+    margin-top: 118px;
     margin-left: 50px;
     z-index: 1;
     /* Adjust icon styles as needed */
@@ -551,8 +551,23 @@ font-weight: 500;
     color: black; /* Set text color */
     font-size: 14px; /* Set font size */
     z-index: 2;
-    margin-top: 90px;
-    margin-left: 140px;
+    margin-top: 20px;
+    margin-left: 0px;
+    font-size: 14px;
+font-weight: 500;
+
+    /* Add additional styles as needed */
+  }
+  .textOverImage3 {
+    position: absolute;
+    top: 50%; /* Adjust as needed to center vertically */
+    left: 50%; /* Adjust as needed to center horizontally */
+    transform: translate(-50%, -50%); /* Center the text */
+    color: black; /* Set text color */
+    font-size: 14px; /* Set font size */
+    z-index: 2;
+    margin-top: -6px;
+    margin-left: 0px;
     font-size: 14px;
 font-weight: 500;
 

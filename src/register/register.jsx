@@ -891,7 +891,7 @@ const register = () => {
   return (
     <div>
       <Navbarhome/>
-    <div className={styles.container}>
+    <div className="container">
       <div className={styles.mainContent}>
         <div className={styles.leftSection}>
           <div className={styles1.logo}>
@@ -944,7 +944,7 @@ const register = () => {
             
               <div
                 className={styles.registrationForm}
-                style={{ marginRight: "20px",marginLeft:"45px" }}
+                style={{ display:"flex",flexDirection:"column",alignItems:"end",paddingRight:"35px"}}
               >
                 {/* First Name, Middle Name, Last Name */}
                 <div className={styles.FirstMiddleLast}>
@@ -1596,12 +1596,10 @@ const register = () => {
                     //     : ""
                     // }
                     className={styles.iconInput1}
-                    // style={{
-                    //   width: "200px",
-                    //   height: "64px",
-                    //   marginTop: "10px",
-                    //   marginBottom: "20px",
-                    // }}
+                    style={{
+                     position:"relative",
+                     right:"220px"
+                    }}
                     InputLabelProps={{
                       style: { fontFamily: "poppins" },
                     }}
@@ -1652,8 +1650,7 @@ const register = () => {
                       backgroundRepeat: "no-repeat",
                       width: "40px",
                       height: "50px",
-                      right: "40px",
-
+                      right: "257px",
                       position: "relative",
                      
 
@@ -1665,8 +1662,8 @@ const register = () => {
                   ></div>
                 </div>
                 <div className={styles1.selected1}>
-                  <div className={styles.selected1}>
-                    <div className={styles.selected1}>
+                  <div className={styles.selected1} >
+                    <div className={styles.selected1}  style={{ display: "flex",flexDirection:"column",alignItems:"end" }}>
                       <label>
                         <TextField
                           id="outlined-select-currency-native"
@@ -1744,7 +1741,7 @@ const register = () => {
                             marginBottom: "20px",
                             position: "relative",
                             top: "-143px",
-                            left: "179px",
+                            left: "",
                           }}
                           InputLabelProps={{
                             style: { fontFamily: "poppins" },
@@ -1807,6 +1804,7 @@ const register = () => {
                               marginBottom: "20px",
                               position: "relative",
                               top: "-77px",
+                              left: "172px",
                             }}
                             InputLabelProps={{
                               style: { fontFamily: "poppins" },
@@ -1869,7 +1867,7 @@ const register = () => {
                               marginBottom: "20px",
                               position: "relative",
                               top: "-151px",
-                              left: "256px",
+                              left: "426px",
                             }}
                             InputLabelProps={{
                               style: { fontFamily: "poppins" },

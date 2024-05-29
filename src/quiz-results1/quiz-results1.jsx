@@ -1,6 +1,7 @@
 //import Head from 'next/head';
 //import img from "next/image";
 import styles from './quizresults1.module.css';
+import React, { useEffect, useState } from 'react';
 import ranksIcon from "../assets/Images/images/quizresults/ranks.png"; 
 import rank1Icon from "../assets/Images/images/quizresults/rank1.png";
 import rank2Icon from "../assets/Images/images/quizresults/rank2.png";
@@ -41,6 +42,31 @@ import startIcon from "../assets/Images/images/quiz-Access/start.png";
 import LeftBar from "../leftbar/leftbar";
 
 const Questions = () => {
+  const [leaderboardData, setLeaderboardData] = useState([]);
+  useEffect(() => {
+    const fetchLeaderboardData = async () => {
+      try {
+        const response = await fetch('https://quizifai.com:8010/leaderboard_result', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json'
+          },
+          body: '' // Include any necessary body data here
+        });
+        const result = await response.json();
+        if (result.response === 'success') {
+          setLeaderboardData(result.data);
+        }
+      } catch (error) {
+        console.error('Error fetching leaderboard data:', error);
+      }
+    };
+
+    fetchLeaderboardData();
+  }, []);
+const topThree = leaderboardData.slice(0, 3);
+  const remaining = leaderboardData.slice(3);
+
   return (
     <div className={styles.container}>
       {/*<Head>
@@ -53,115 +79,62 @@ const Questions = () => {
       <div className={styles.mainContent}>
        
         <div className={styles.boxContainer1}>
+
         <div className={styles.titles}>
         <p className={styles.title}>Leaderboard</p>
         </div>
-        
         <div className={styles.ranksiconsContainer}>
-        <img
-    src={rank1Icon} 
-    alt="Icon 1"
-    className={styles.rankicon1}
-  />
-         <img
-    src={FirstRank} 
-    alt="First Rank" 
-    className={styles.firstRank}
-  />
-         <img
-    src={rank2Icon} 
-    alt="" 
-    className={styles.rankicon2}
-  />
-           <img
-    src={rank3Icon} 
-    alt="Rank 3 Icon"
-    className={styles.rankicon3}
-  />
+          <img src={rank1Icon} alt="Icon 1" className={styles.rankicon1} />
+          <img src={FirstRank} alt="First Rank" className={styles.firstRank} />
+          <img src={rank2Icon} alt="" className={styles.rankicon2} />
+          <img src={rank3Icon} alt="Rank 3 Icon" className={styles.rankicon3} />
         </div>
         <div className={styles.innerBoxes}>
-        <div className={styles.innerBox1} style={{width:"122px", height:"93px", marginTop:"150px", marginLeft:"-200px"}}>
-        <img
-    src={greybox1Image} 
-    alt="img 1"
-  />
-            <span className={styles.textOverImage} style={{marginTop:"-50px", marginLeft:"20px"}}>Username<br></br><span style={{ color: "#009BD6", marginLeft:"20px" }}>99.5</span></span>
-            
-          </div>
-          <div className={styles.innerBox2} style={{width:"122px", height:"93px", marginTop:"-117px", marginLeft:"40px"}}>
-          <img
-    src={greybox2Image} 
-    alt="img 1"
-  />
-            <span className={styles.textOverImage1} style={{marginTop:"-70px", marginLeft:"20px"}}>Username<br></br><span style={{ color: "#FB9639",marginLeft:"30px" }}>100</span></span>
-          </div>
-          <div className={styles.innerBox3} style={{width:"122px", height:"93px", marginTop:"-45px", marginLeft:"280px"}}>
-          <img
-    src={greybox3Image} 
-    alt="img 1"
-  />
-            <span className={styles.textOverImage2}style={{marginTop:"-50px", marginLeft:"20px"}}>Username<br></br><span style={{ color: "#00D95F",marginLeft:"30px" }}>99</span></span>
-          </div>
+        {topThree.map((item, index) => (
+            <div
+              key={index}
+              className={styles[`innerBox${index + 1}`]}
+              style={{
+                width: "122px",
+                height: "93px",
+                marginTop: index === 0 ? "150px" : index === 1 ? "-117px" : "-45px",
+                marginLeft: index === 0 ? "-200px" : index === 1 ? "40px" : "280px"
+              }}
+            >
+              <img
+                src={index === 0 ? greybox1Image : index === 1 ? greybox2Image : greybox3Image}
+                alt={`img ${index + 1}`}
+              />
+              <span
+                className={styles[`textOverImage${index + 1}`]}
+                style={{ width: "100px" }}
+              >
+                {item.user_name}<br />
+                <span style={{ color: index === 0 ? "#009BD6" : index === 1 ? "#FB9639" : "#00D95F" }}>{item.Percentage}</span>
+              </span>
+            </div>
+          ))}
         </div>
+       
         
         </div>
         <div className={styles.columns}>
     <span className={styles.column}>Rank</span>
     <span className={styles.column}>User Name</span>
-    <span className={styles.column}>Score</span>
+    <span className={styles.column}>Percentage</span>
     <span className={styles.column}>Attempts</span>
     <span className={styles.column}>Duration</span>
   </div>
         
-  <div className={styles.values}>
-    <div className={styles.value}>1</div>
-    <div className={styles.value}>User Name</div>
-    <div className={styles.value}>100</div>
-    <div className={styles.value}>1</div>
-    <div className={styles.value}>15 Min</div>
-  </div>
-  <div className={styles.values}>
-    <div className={styles.value}>2</div>
-    <div className={styles.value}>User Name</div>
-    <div className={styles.value}>100</div>
-    <div className={styles.value}>1</div>
-    <div className={styles.value}>15.2 Min</div>
-  </div>
-  <div className={styles.values}>
-    <div className={styles.value}>3</div>
-    <div className={styles.value}>User Name</div>
-    <div className={styles.value}>100</div>
-    <div className={styles.value}>1</div>
-    <div className={styles.value}>15.5 Min</div>
-  </div>
-  <div className={styles.values}>
-    <div className={styles.value}>4</div>
-    <div className={styles.value}>User Name</div>
-    <div className={styles.value}>100</div>
-    <div className={styles.value}>1</div>
-    <div className={styles.value}>15.8 Min</div>
-  </div>
-  <div className={styles.values}>
-    <div className={styles.value}>5</div>
-    <div className={styles.value}>User Name</div>
-    <div className={styles.value}>100</div>
-    <div className={styles.value}>1</div>
-    <div className={styles.value}>16.2 Min</div>
-  </div>
-  <div className={styles.values}>
-    <div className={styles.value}>6</div>
-    <div className={styles.value}>User Name</div>
-    <div className={styles.value}>100</div>
-    <div className={styles.value}>1</div>
-    <div className={styles.value}>16.8 Min</div>
-  </div>
-  <div className={styles.values}>
-    <div className={styles.value}>7</div>
-    <div className={styles.value}>You</div>
-    <div className={styles.value}>89</div>
-    <div className={styles.value}>1</div>
-    <div className={styles.value}>23 Min</div>
-  </div>
+  {remaining.map((item, index) => (
+        <div className={styles.values} key={index + 3}>
+          <div className={styles.value}>{item.rank}</div>
+          <div className={styles.value}>{item.user_name}</div>
+          <div className={styles.value}>{item.Percentage}</div>
+          <div className={styles.value}>{item.attempts}</div>
+          <div className={styles.value}>{item.duration}</div>
+        </div>
+      ))}
         
   <span className={styles.boticonContainer}>
   <img
@@ -170,7 +143,7 @@ const Questions = () => {
     className={styles.boticon}
   />
   </span>
-  <div className={styles.header}>
+  {/* <div className={styles.header}>
         <div className={styles.titleContainer}>
         <img
       src={titleIcon} 
@@ -310,7 +283,7 @@ const Questions = () => {
     alt="Calendar Icon"
   />
         </button>
-      </div>
+      </div> */}
         </div>
         
          

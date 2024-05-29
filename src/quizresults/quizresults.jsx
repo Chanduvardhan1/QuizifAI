@@ -198,8 +198,17 @@ const quizresults = () => {
     alt="Calendar Icon"
     className={styles.icon2}
   />
-          <span>{quizData.attained_score} correct answers</span>
+          <span>{quizData.attained_score} attained score</span>
         </div>
+        
+        </div>
+        <div className={styles.sentence1}>
+        <img
+    src={dateIcon} 
+    alt="Calendar Icon"
+    className={styles.icon2}
+  />
+          <span>{quizData.correct_answers} correct answers</span>
         </div>
         </div>
         <div className={styles.verticalLine}></div>

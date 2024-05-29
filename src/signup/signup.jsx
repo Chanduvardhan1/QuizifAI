@@ -69,6 +69,7 @@ const Signup = () => {
   const [resendTime, setResendTime] = useState(10 * 60);
   const [showSecondButton, setShowSecondButton] = useState(false);
   const [countdown, setCountdown] = useState(5); // Initial countdown value
+  const [terms, setTerms] = useState("");
 
   const navigate = useNavigate();
   const handleBackToDashboard = () => {
@@ -134,7 +135,7 @@ const Signup = () => {
 
   const handleSignUp1 = () => {
     if (!termsChecked) {
-      setResponseMessage("Please agree to the terms and conditions");
+      setTerms("Please agree to the terms and conditions");
       return;
     }
     setSubmitted(true);
@@ -206,6 +207,7 @@ const Signup = () => {
         }
       });
   };
+ 
   const sendOTP = () => {
     setShowOtpField(true);
   };
@@ -253,7 +255,7 @@ const Signup = () => {
     setSubmitted(true);
 
     if (!termsChecked) {
-      setResponseMessage("Please agree to the terms and conditions");
+      setTerms("Please agree to the terms and conditions");
       return;
     }
     setResendAvailable(false); // Disable resend button after sending OTP
@@ -261,7 +263,7 @@ const Signup = () => {
     const userData = {
       signup_option: loginMethod,
       user_name: name,
-      email_or_mobile: emailOrMobile,
+      email_or_mobile: mobile,
       
     };
 
@@ -325,7 +327,7 @@ const Signup = () => {
   };
   const handleVerification = async () => {
     if (!termsChecked) {
-      setResponseMessage("Please agree to the terms and conditions");
+      setTerms("Please agree to the terms and conditions");
       return;
     }
     try {
@@ -337,7 +339,7 @@ const Signup = () => {
         },
         body: JSON.stringify({
           verify_option: loginMethod,
-          email_or_mobile: emailOrMobile,
+          email_or_mobile: mobile,
           otp: otp,
         }),
       });
@@ -509,7 +511,7 @@ const Signup = () => {
   const handleMobileChange1 = (e) => {
     const inputValue = e.target.value;
     if (/^\d*$/.test(inputValue)) {
-      setemailOrMobile(inputValue);
+      setMobile(inputValue);
     }
   };
   const handleMobileChange2 = (e) => {
@@ -1004,8 +1006,8 @@ const Signup = () => {
                             label="Mobile Number"
                             type="tel"
                             required
-                            error={submitted && emailOrMobile.trim() === ""}
-                            value={emailOrMobile}
+                            error={submitted && mobile.trim() === ""}
+                            value={mobile}
                             onChange={handleMobileChange1}
                             variant="outlined"
                             className={styles.inputField}
@@ -1103,6 +1105,7 @@ const Signup = () => {
                           </div>
                         </div>
                       )}
+                   
                       {/* {showOtpField && (
       <div className={styles.sendOTP}>
         <button
@@ -1343,7 +1346,10 @@ const Signup = () => {
                     </div>
                   </div>
                 )}
-
+   {responseMessage && (
+                  <p className={styles1.responseMessage1}>{responseMessage}</p>
+                )}
+              
                 {/* {errorMessage && (
                         <p className={styles.errormessage}>{errorMessage}</p>
                       )} */}
@@ -1504,21 +1510,7 @@ alt="Google Logo"
               Don't have an account yet?{" "}
               <span className={styles.diffColor}>Sign up</span>{" "}
             </p> */}
-                <p
-                  className={`${styles.signUpText1} ${
-                    !isContentSelected || loginMethod === "gmail"
-                      ? styles.withMarginTop
-                      : ""
-                  }`}
-                >
-                  Already having an account?{" "}
-                  <span
-                    className={styles.diffColor}
-                    onClick={handleBackToDashboard}
-                  > 
-                   login
-                  </span>
-                </p>
+              
                 <div className={styles1.checkbox1}>
                   <input
                     type="checkbox"
@@ -1547,9 +1539,24 @@ alt="Google Logo"
                 I agree with the terms and conditions
               </label> */}
                 </div>
+                <p
+                  className={`${styles.signUpText1} ${
+                    !isContentSelected || loginMethod === "gmail"
+                      ? styles.withMarginTop
+                      : ""
+                  }`}
+                >
+                  Already having an account?{" "}
+                  <span
+                    className={styles.diffColor}
+                    onClick={handleBackToDashboard}
+                  > 
+                   login
+                  </span>
+                </p>
 
-                {responseMessage && (
-                  <p className={styles1.responseMessage}>{responseMessage}</p>
+                {terms && (
+                  <p className={styles1.responseMessage}>{terms}</p>
                 )}
                 {loginMethod === "email" && (
                   // <button

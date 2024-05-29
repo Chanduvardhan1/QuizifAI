@@ -153,7 +153,12 @@ const Dashboard = () => {
   const leaderboard = () => {
     navigate(`/quiz-results1`);
   };
-
+ 
+  const Edit = (quizId) => {
+    // navigate(`/quizaccess/${quizId}`);
+    localStorage.setItem('quiz_id', quizId); // Store quiz_id in local storage
+    navigate(`/create-editquiz`);
+  };
   const toggleNavbar = () => {
     setIsNavbarOpen((prevState) => !prevState);
   };
@@ -592,7 +597,7 @@ const Dashboard = () => {
                           src={Edit_button}
                           alt="Play icon"
                         />
-                        <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                        <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black"  onClick={() => Edit(latestquizzes[0].quiz_id)}>
                           Edit
                         </span>
                       </div>

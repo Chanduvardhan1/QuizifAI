@@ -180,7 +180,20 @@
   text-align: left;
   
     }
-    
+    .sentence1 {
+      display: flex;
+      align-items: center;
+      margin-right: 30px;
+      font-family: Poppins;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 23px;
+  letter-spacing: 0em;
+  text-align: left;
+  margin-top: 21px;
+  margin-left: 50px
+  
+    }
     .sentence span {
       margin-left: 5px; /* Adjust margin left for text */
     }

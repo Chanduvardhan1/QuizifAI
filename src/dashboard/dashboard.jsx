@@ -153,7 +153,12 @@ const Dashboard = () => {
   const leaderboard = () => {
     navigate(`/quiz-results1`);
   };
-
+ 
+  const Edit = (quizId) => {
+    // navigate(`/quizaccess/${quizId}`);
+    localStorage.setItem('quiz_id', quizId); // Store quiz_id in local storage
+    navigate(`/create-editquiz`);
+  };
   const toggleNavbar = () => {
     setIsNavbarOpen((prevState) => !prevState);
   };

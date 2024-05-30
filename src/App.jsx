@@ -77,6 +77,12 @@ import Termsandconditions from "./termsandconditions/termsandconditions.jsx";
 
 
 import Quizcreated2 from "./quizcreated-textbook/quizcreated2.jsx";
+import Createeditquiz from "./create-editquiz/create-editquiz.jsx";
+import Editmanuly from "./edit-manuly/editmanuly.jsx";
+import Editexcel from "./edit-excel/editexcel.jsx";
+import Editpdf from "./edit-pdf/editpdf.jsx";
+import Edittextbook from "./edit-textbook/edittextbook.jsx";
+
 // import Home from "./pages/Home.jsx";
 // import ContactUs from "./pages/ContactUs.jsx";
 // import NoPage from "./pages/NoPage.jsx";
@@ -191,65 +197,65 @@ import Quizcreated2 from "./quizcreated-textbook/quizcreated2.jsx";
 // }
   
  
-function VerificationHandler() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const email = searchParams.get("email");
+// function VerificationHandler() {
+//   const navigate = useNavigate();
+//   const location = useLocation();
+//   const searchParams = new URLSearchParams(location.search);
+//   const email = searchParams.get("email");
 
-  useEffect(() => {
-    const handleVerification = async (email) => {
-      try {
-        // Assuming 'method' and 'otp' are defined elsewhere in your code
-        const method = "email"; // or whichever method you're using for verification
-        const otp = "123456"; // or the OTP you're using for verification
+//   useEffect(() => {
+//     const handleVerification = async (email) => {
+//       try {
+//         // Assuming 'method' and 'otp' are defined elsewhere in your code
+//         const method = "email"; // or whichever method you're using for verification
+//         const otp = "123456"; // or the OTP you're using for verification
 
-        const response = await fetch("https://quizifai.com:8010/verification", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            accept: "application/json",
-          },
-          body: JSON.stringify({
-            verify_option: method,
-            email_or_mobile: email,
-            otp: otp,
-          }),
-        });
+//         const response = await fetch("https://quizifai.com:8010/verification", {
+//           method: "POST",
+//           headers: {
+//             "Content-Type": "application/json",
+//             accept: "application/json",
+//           },
+//           body: JSON.stringify({
+//             verify_option: method,
+//             email_or_mobile: email,
+//             otp: otp,
+//           }),
+//         });
 
-        const data = await response.json();
-      console.log(data);
-      if (response.ok) {
-        // Redirect to the Register page
-        navigate("/Register");
-      } else {
-        // Handle other responses
-        if (response.response === "fail" && data.detail === "Link has expried") {
-          // Handle expired link
-          alert("Verification link expired");
-          navigate("/"); 
-          // Redirect or display a message indicating that the link has expired
-        } else {
-          // Handle other errors
-          console.error("Error:", data.error || "Unknown error");
-          // Redirect or display a generic error message
-          navigate("/"); // Redirect to the home page for example
-        }
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+//         const data = await response.json();
+//       console.log(data);
+//       if (response.ok) {
+//         // Redirect to the Register page
+//         navigate("/Register");
+//       } else {
+//         // Handle other responses
+//         if (response.response === "fail" && data.detail === "Link has expried") {
+//           // Handle expired link
+//           alert("Verification link expired");
+//           navigate("/"); 
+//           // Redirect or display a message indicating that the link has expired
+//         } else {
+//           // Handle other errors
+//           console.error("Error:", data.error || "Unknown error");
+//           // Redirect or display a generic error message
+//           navigate("/"); // Redirect to the home page for example
+//         }
+//       }
+//     } catch (error) {
+//       console.error("Error:", error);
+//     }
+//   };
 
-    if (email) {
-      handleVerification(email);
-    } else {
-      console.error("Email is undefined");
-    }
-  }, [email, navigate]);
+//     if (email) {
+//       handleVerification(email);
+//     } else {
+//       console.error("Email is undefined");
+//     }
+//   }, [email, navigate]);
 
-  return null; // This component doesn't render anything
-}
+//   return null; // This component doesn't render anything
+// }
     function App() {
   return (
     <>
@@ -325,10 +331,18 @@ function VerificationHandler() {
             <Route path="superadmin" element={<Superadmins/>} />
             <Route path="superadmin1" element={<Superadmin1/>} />
             <Route path="resetpassword" element={<Resetpassword/>} />
+
+            <Route path="create-editquiz" element={<Createeditquiz/>} />
+
+            <Route path="editmanuly" element={<Editmanuly/>} />
+            <Route path="editexcel" element={<Editexcel/>} />
+            <Route path="editpdf" element={<Editpdf/>} />
+            <Route path="edittextbook" element={<Edittextbook/>} />
+
             
           </Route>
         </Routes>
-        <VerificationHandler />
+        {/* <VerificationHandler /> */}
       </BrowserRouter>
     </>
   );

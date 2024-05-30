@@ -540,12 +540,13 @@ export default function editmanuly() {
       }
       const questionDuration = calculateQuizDuration();
       
-      const response = await fetch(`https://quizifai.com:8010/crt_quiz_mnlly`, {
+      const response = await fetch(`https://quizifai.com:8010/edit_quiz_mnlly/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          quiz_id: 2146,
           quiz_title: title,
           num_questions: numQuestions,
           quiz_description: description,
@@ -563,12 +564,11 @@ export default function editmanuly() {
           available_from: availablefrom,
           disabled_on: disabledon,
           quiz_total_marks: quiztotalmarks,
-          user_id:user_id,
           questions: questions.map((question) => ({
             question_text: question.question_text,
-            question_weightage: calculateWeightage(numQuestions, quiztotalmarks),
+            question_weightage: question.question_weightage,
             multi_answer_flag: multiAnswer,
-            question_duration: questionDuration,
+            question_duration: question.question_duration,
             options: question.options.map((option) => ({
               answer_option_text: option.answer_option_text,
               correct_answer_flag: option.correct_answer_flag,
@@ -637,8 +637,19 @@ export default function editmanuly() {
 
           setdisabledon(data.data.disabled_on);
           // setQuizTotalMarks(data.data.retake_flag);
-          // setPublicAccess(data.data.quiz_public_access);
-          setQuestions(data.data.questions || []);        }
+          setquiztotalmarks(data.data.quiz_total_marks);
+          const processedQuestions = data.data.questions.map(question => ({
+            ...question,
+            options: [
+              { answer_option_text: question.quiz_ans_option_1_text, correct_answer_flag: question.correct_option_text === question.quiz_ans_option_1_text },
+              { answer_option_text: question.quiz_ans_option_2_text, correct_answer_flag: question.correct_option_text === question.quiz_ans_option_2_text },
+              { answer_option_text: question.quiz_ans_option_3_text, correct_answer_flag: question.correct_option_text === question.quiz_ans_option_3_text },
+              { answer_option_text: question.quiz_ans_option_4_text, correct_answer_flag: question.correct_option_text === question.quiz_ans_option_4_text }
+            ]
+          }));
+  
+          setQuestions(processedQuestions); 
+              }
       } catch (error) {
         console.error('Error fetching quiz data', error);
       }
@@ -1351,106 +1362,83 @@ export default function editmanuly() {
             {/* Questions and options */}
             <div className="absolute top-[210px] left-[298px] w-[1212px] h-[450px] ">
             {questions.map((question, questionIndex) => (
-                <div key={questionIndex} className="mb-8 ">
-                  {/* Input field for question */}
-                  <div className="flex items-center mb-4">
-                    <div className="mr-2 text-xl font-normal">
-                      {questionIndex + 1}.
-                    </div>
-                    <input
-                      type="text"
-                      placeholder={`Question`}
-                      className="w-[70%] h-[50px] rounded-[20px] border-solid border-[#B8BBC2] border-[1.8px] p-[15px] "
-                      value={question.question_text}
-                      onChange={(e) => {
-                        const newQuestions = [...questions];
-                        newQuestions[questionIndex].question_text =
-                          e.target.value;
-                        setQuestions(newQuestions);
-                      }}
-                    />
+  <div key={questionIndex} className="mb-8">
+    {/* Input field for question */}
+    <div className="flex items-center mb-4">
+      <div className="mr-2 text-xl font-normal">
+        {questionIndex + 1}.
+      </div>
+      <input
+        type="text"
+        placeholder="Question"
+        className="w-[70%] h-[50px] rounded-[20px] border-solid border-[#B8BBC2] border-[1.8px] p-[15px]"
+        value={question.question_text}
+        onChange={(e) => {
+          const newQuestions = [...questions];
+          newQuestions[questionIndex].question_text = e.target.value;
+          setQuestions(newQuestions);
+        }}
+      />
 
-                    {/* Input field for question weightage */}
-                    <input
-                      type="number"
-                      placeholder="Weightage"
-                      className="w-[130px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
-                      value={question.question_weightage}
-                      onChange={(e) => {
-                        const value = parseInt(e.target.value);
-                        const updatedQuestions = questions.map((q, index) => {
-                          if (index === questionIndex) {
-                            return { ...q, question_weightage: value };
-                          }
-                          return q;
-                        });
-                        setQuestions(updatedQuestions);
-                      }}
-                    />
+      {/* Input field for question weightage */}
+      <input
+        type="number"
+        placeholder="Weightage"
+        className="w-[130px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
+        value={question.question_weightage}
+        onChange={(e) => {
+          const value = parseInt(e.target.value);
+          const updatedQuestions = questions.map((q, index) => {
+            if (index === questionIndex) {
+              return { ...q, question_weightage: value };
+            }
+            return q;
+          });
+          setQuestions(updatedQuestions);
+        }}
+      />
 
-                    {/* Input field for question duration */}
-                    <input
-                      type="text"
-                      placeholder="Duration"
-                      className="w-[130px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
-                      value={question.question_duration}
-                      onChange={(e) => {
-                        const value = parseInt(e.target.value) * 60;
-                        const updatedQuestions = [...questions];
-                        updatedQuestions[questionIndex].question_duration =
-                          value;
-                        setQuestions(updatedQuestions);
-                      }}
-                    />
-                    {/* <input
-  type="number"
-  placeholder="Duration"
-  className="w-[130px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
-  value={question.question_duration}
-  onChange={(e) => {
-    const value = parseInt(e.target.value); // Parse input value to integer
-    if (!isNaN(value)) { // Check if value is a valid number
-      const updatedQuestions = questions.map((q, index) => {
-        if (index === questionIndex) {
-          return { ...q, question_duration: value };
-        }
-        return q;
-      });
-      setQuestions(updatedQuestions);
-    }
-  }}
-/> */}
-                  </div>
-                  {/* Input fields for options */}
-                  {questions.length > 0 && questions.map((question, questionIndex) => (
+      {/* Input field for question duration */}
+      <input
+        type="text"
+        placeholder="Duration"
+        className="w-[130px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
+        value={question.question_duration}
+        onChange={(e) => {
+          const value = parseInt(e.target.value) * 60;
+          const updatedQuestions = [...questions];
+          updatedQuestions[questionIndex].question_duration = value;
+          setQuestions(updatedQuestions);
+        }}
+      />
+    </div>
 
-  <div key={questionIndex}>
-    <p>{question.question_text}</p>
-    {question.options && question.options.map((option, optionIndex) => (
+    {/* Input fields for options */}
+    {question.options.map((option, optionIndex) => (
       <div key={optionIndex} className="flex items-center mb-2">
+        {/* Option input field */}
         <div className="mr-2 text-xl font-normal">
           {String.fromCharCode(97 + optionIndex)}.
         </div>
         <input
           type="text"
-          placeholder={`Option Text`}
+          placeholder="Option Text"
           className="w-[339px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[15px] font-normal"
-          value={option.quiz_ans_option_1_text} // You need to access the correct property from your option object
+          value={option.answer_option_text}
           onChange={(e) => {
             const newOptions = [...question.options];
-            newOptions[optionIndex].quiz_ans_option_1_text = e.target.value; // Adjust according to your option object structure
+            newOptions[optionIndex].answer_option_text = e.target.value;
             const newQuestions = [...questions];
             newQuestions[questionIndex].options = newOptions;
             setQuestions(newQuestions);
           }}
         />
+        {/* Add correct answer flag input */}
         <button
           className={`mr-2 ${
             option.correct_answer_flag ? "bg-green-500" : "bg-gray-300"
           } rounded-full w-10 h-[20px] transition-colors duration-300 focus:outline-none`}
-          onClick={() =>
-            handleToggleButton(questionIndex, optionIndex)
-          }
+          onClick={() => handleToggleButton(questionIndex, optionIndex)}
         >
           <span
             className={`block ${
@@ -1464,8 +1452,6 @@ export default function editmanuly() {
     ))}
   </div>
 ))}
-                </div>
-              ))}
 
 <div className=" flex justify-between items-center pr-[55px] ">
                 <button

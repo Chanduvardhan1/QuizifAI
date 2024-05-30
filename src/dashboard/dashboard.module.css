@@ -398,6 +398,41 @@ text-align: left;
 .start:hover{
   background-color: #cccecf;
 }
+.startimage{
+  position: absolute;
+  height: 1px;
+  width: 1px;
+  left: 6px;
+  top: 4px;
+}
+.starttext{
+  font-size: 7px;
+  padding-left: 27px;
+  margin-left: -9px;
+  cursor: pointer;
+}
+.starttext:hover{
+  color: black;
+}
+.editimage{
+ position: absolute;
+ height: 10px;
+ width: 10px;
+ left: 14px;
+ margin-left: -8px;
+ top: 15px;
+}
+.edittext{
+  font-size: 7px;
+  margin-left: -18px;
+  position: absolute;
+  top: 15px;
+  left: 36px;
+  cursor: pointer;
+}
+.edittext:hover{
+  color: black;
+}
 .edit{
   transition-duration: 1s;
   transition-timing-function: linear; 
@@ -405,12 +440,50 @@ text-align: left;
 .edit:hover{
   background-color: #cccecf;
 }
+.leaderboardimage{
+  height: 10px;
+  width: 10px;
+  position: absolute;
+  left: 14px;
+  top: 26px;
+  margin-left: -8px;
+}
+.leaderboardtext{
+  font-size: 7px;
+  margin-right: -18px;
+  position: absolute;
+  top: 26px;
+  left: 18px;
+  cursor: pointer;
+}
+.leaderboardtext:hover{
+  color: black;
+}
 .leaderboard{
   transition-duration: 1s;
   transition-timing-function: linear; 
 }
 .leaderboard:hover{
   background-color: #cccecf;
+}
+.shareimage{
+  height: 10px;
+  width: 10px;
+  position: absolute;
+  left: 14px;
+  top: 37px;
+  margin-left: -8px;
+}
+.sharetext{
+  font-size: 7px;
+  margin-left: -18px;
+  position: absolute;
+  top: 37px;
+  left: 36px;
+  cursor: pointer;
+}
+.sharetext:hover{
+  color: black;
 }
 .share{
   transition-duration: 1s;
@@ -432,13 +505,13 @@ padding-top: 10px;
 }
 .infoIcons{
   border-radius: 5px;
-  height: 50px;
-  width: 80px;
+  height: 52px;
+  width: 90px;
   padding-top: 6px;
   font-size: 8px;
   padding-top: 2px;
-  margin-top: -17px;
-  margin-left: -102px;
+  margin-top: -20px;
+  margin-left: -112px;
   position: absolute;
   background-color: #e2e8f0;
   clip-path: polygon(0% 0%, 80% 0, 81% 16%, 95% 26%, 81% 34%, 81% 100%, 0 100%);

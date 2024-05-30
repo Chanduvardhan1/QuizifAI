@@ -6,8 +6,15 @@
    
   .searchIconContainer {
     position: relative;
-   
     margin-left: 10px;
+  }
+  .notificationsettingsContainer{
+    position: relative;
+    margin-left: 20px;
+  }
+  .notificationsettings{
+    height: 40px;
+    width: 40px;
   }
   .body {
     font-family: "Poppins";

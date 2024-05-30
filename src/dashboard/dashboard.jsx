@@ -271,7 +271,7 @@ const Dashboard = () => {
                 src={Admin_User}
                 alt="Plus Icon"
               />
-              <a href="./create-quiz" className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3">
+              <a href="./quizadmin" className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3">
                 User
               </a>
             </div>
@@ -374,9 +374,9 @@ const Dashboard = () => {
                     {latestResult[1]?.attempt_date}
                     <span className="relative group">
                 <span className="absolute ml-3 w-[110px] cursor-pointer z-0 truncate">
-                        {latestResult[0]?.quiz_name}
+                        {latestResult[1]?.quiz_name}
                      <span className="hidden absolute w-[200px] top-full left-0 z-20 truncate group-hover:block bg-white p-1 border border-gray-300">
-                        {latestResult[0]?.quiz_name}
+                        {latestResult[1]?.quiz_name}
                               </span>
                      </span>
                 </span>
@@ -577,33 +577,33 @@ const Dashboard = () => {
                       {/* start */}
                       <div className={styles.start}>
                         <img
-                          className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                          className={styles.startimage}
                           src={Start_button}
                           alt="Play icon"
                         />
-                        <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black"  onClick={() => handleStartQuiz(latestquizzes[0].quiz_id)}>
+                        <span className={styles.starttext} onClick={() => handleStartQuiz(latestquizzes[0].quiz_id)}>
                           Start
                         </span>
                       </div>
                       {/* Edit  */}
                       <div className={styles.edit}>
                         <img
-                          className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                          className={styles.editimage}
                           src={Edit_button}
                           alt="Play icon"
                         />
-                        <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                        <span className={styles.edittext}>
                           Edit
                         </span>
                       </div>
                       {/* Leaderboard */}
                       <div className={styles.leaderboard}>
                         <img
-                          className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                          className={styles.leaderboardimage}
                           src={leaderboard_button}
                           alt="Play icon"
                         />
-                        <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
+                        <span className={styles.leaderboardtext} onClick={leaderboard}>
                           Leaderboard
                         </span>
                       </div>
@@ -611,11 +611,11 @@ const Dashboard = () => {
 
                       <div className={styles.share}>
                         <img
-                          className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
+                          className={styles.shareimage}
                           src={Share_button}
                           alt="Play icon"
                         />
-                        <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
+                        <span className={styles.sharetext}>
                           Share
                         </span>
                       </div>
@@ -655,7 +655,7 @@ const Dashboard = () => {
                       height={10}
                     />
                     <p>{latestquizzes[0]?.quiz_attempts}</p>
-                    <span className="text-[6px] ml-1">attempts</span>
+                    <span className="text-[7px] ml-1">attempts</span>
                   </div>
                 </div>
 
@@ -668,7 +668,7 @@ const Dashboard = () => {
                     height={10}
                   />{" "}
                   {latestquizzes[0]?.number_of_questions}
-                  <span className="text-[6px] ml-[1px]">questions</span>
+                  <span className="text-[7px] ml-[1px]">questions</span>
                 </span>
                 <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
                   <img
@@ -679,9 +679,9 @@ const Dashboard = () => {
                     height={14}
                   />{" "}
                   {latestquizzes[0]?.quiz_duration}
-                  <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                  <span className="text-[7px] -ml-[0.5px]">minutes</span>
                 </span>
-                <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                <span className="flex text-[8px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                   <img
                     className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
                     src={Easy}
@@ -720,37 +720,37 @@ const Dashboard = () => {
                   {isNavbarOpen1 && (
                     <div className={styles.infoIcons}>
                       <img
-                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                        className={styles.startimage}
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black"  onClick={() => handleStartQuiz(latestquizzes[1].quiz_id)}>
+                      <span className={styles.starttext}  onClick={() => handleStartQuiz(latestquizzes[1].quiz_id)}>
                         Start
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        className={styles.editimage}
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                      <span className={styles.edittext}>
                         Edit
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        className={styles.leaderboardimage}
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
+                      <span className={styles.leaderboardtext} onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                        src={Share_button}
-                        alt="Play icon"
-                      />
-                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                        Share
-                      </span>
+                          className={styles.shareimage}
+                          src={Share_button}
+                          alt="Play icon"
+                        />
+                        <span className={styles.sharetext}>
+                          Share
+                        </span>
                     </div>
                   )}
                 </div>
@@ -852,37 +852,37 @@ const Dashboard = () => {
                   {isNavbarOpen2 && (
                     <div className={styles.infoIcons}>
                       <img
-                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                       className={styles.startimage}
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black" onClick={() => handleStartQuiz(latestquizzes[2].quiz_id)}>
+                      <span className={styles.starttext} onClick={() => handleStartQuiz(latestquizzes[2].quiz_id)}>
                         Start
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        className={styles.editimage}
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                      <span className={styles.edittext}>
                         Edit
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        className={styles.leaderboardimage}
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
+                      <span className={styles.leaderboardtext} onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                        src={Share_button}
-                        alt="Play icon"
-                      />
-                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                        Share
-                      </span>
+                          className={styles.shareimage}
+                          src={Share_button}
+                          alt="Play icon"
+                        />
+                        <span className={styles.sharetext}>
+                          Share
+                        </span>
                     </div>
                   )}
                 </div>
@@ -981,37 +981,37 @@ const Dashboard = () => {
                   {isNavbarOpen3 && (
                     <div className={styles.infoIcons}>
                       <img
-                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                        className={styles.startimage}
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black"  onClick={() => handleStartQuiz(latestquizzes[3].quiz_id)}>
+                      <span className={styles.starttext}  onClick={() => handleStartQuiz(latestquizzes[3].quiz_id)}>
                         Start
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        className={styles.editimage}
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                      <span className={styles.edittext}>
                         Edit
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        className={styles.leaderboardimage}
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
+                      <span className={styles.leaderboardtext} onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                        src={Share_button}
-                        alt="Play icon"
-                      />
-                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                        Share
-                      </span>
+                          className={styles.shareimage}
+                          src={Share_button}
+                          alt="Play icon"
+                        />
+                        <span className={styles.sharetext}>
+                          Share
+                        </span>
                     </div>
                   )}
                 </div>
@@ -1111,37 +1111,37 @@ const Dashboard = () => {
                   {isNavbarOpen4 && (
                     <div className={styles.infoIcons}>
                       <img
-                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                        className={styles.startimage}
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black" onClick={() => handleStartQuiz(latestquizzes[4].quiz_id)}>
+                      <span className={styles.starttext} onClick={() => handleStartQuiz(latestquizzes[4].quiz_id)}>
                         Start
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        className={styles.editimage}
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                      <span className={styles.edittext}>
                         Edit
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        className={styles.leaderboardimage}
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
+                      <span className={styles.leaderboardtext} onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                        src={Share_button}
-                        alt="Play icon"
-                      />
-                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                        Share
-                      </span>
+                          className={styles.shareimage}
+                          src={Share_button}
+                          alt="Play icon"
+                        />
+                        <span className={styles.sharetext}>
+                          Share
+                        </span>
                     </div>
                   )}
                 </div>
@@ -1240,37 +1240,37 @@ const Dashboard = () => {
                   {isNavbarOpen5 && (
                     <div className={styles.infoIcons}>
                       <img
-                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                        className={styles.startimage}
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black" onClick={() => handleStartQuiz(latestquizzes[5].quiz_id)}>
+                      <span className={styles.starttext} onClick={() => handleStartQuiz(latestquizzes[5].quiz_id)}>
                         Start
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        className={styles.editimage}
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                      <span className={styles.edittext}>
                         Edit
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        className={styles.leaderboardimage}
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
+                      <span className={styles.leaderboardtext} onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                        src={Share_button}
-                        alt="Play icon"
-                      />
-                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                        Share
-                      </span>
+                          className={styles.shareimage}
+                          src={Share_button}
+                          alt="Play icon"
+                        />
+                        <span className={styles.sharetext}>
+                          Share
+                        </span>
                     </div>
                   )}
                 </div>
@@ -1380,37 +1380,37 @@ const Dashboard = () => {
                         {isNavbarOpen6 && (
                           <div className={styles.infoIcons}>
                             <img
-                              className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                              className={styles.startimage}
                               src={Start_button}
                               alt="Play icon"
                             />
-                            <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black"  onClick={() => handleStartQuiz(latestquizzes[6].quiz_id)}>
+                            <span className={styles.starttext}  onClick={() => handleStartQuiz(latestquizzes[6].quiz_id)}>
                               Start
                             </span>
                             <img
-                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                              className={styles.editimage}
                               src={Edit_button}
                               alt="Play icon"
                             />
-                            <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                            <span className={styles.edittext}>
                               Edit
                             </span>
                             <img
-                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                              className={styles.leaderboardimage}
                               src={leaderboard_button}
                               alt="Play icon"
                             />
-                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
+                            <span className={styles.leaderboardtext} onClick={leaderboard}>
                               Leaderboard
                             </span>
                             <img
-                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                              src={Share_button}
-                              alt="Play icon"
-                            />
-                            <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                              Share
-                            </span>
+                          className={styles.shareimage}
+                          src={Share_button}
+                          alt="Play icon"
+                        />
+                        <span className={styles.sharetext}>
+                          Share
+                        </span>
                           </div>
                         )}
                       </div>
@@ -1486,7 +1486,7 @@ const Dashboard = () => {
                   </div>
 
                   <div
-                    className={styles.card}
+                    className={`${styles.card} ${styles.highlightedCard}`}
                     style={{ paddingTop: "8px", backgroundColor: "#CFFCFF" }}
                   >
                     <span className={styles.title}>
@@ -1513,37 +1513,37 @@ const Dashboard = () => {
                         {isNavbarOpen7 && (
                           <div className={styles.infoIcons}>
                             <img
-                              className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                              className={styles.startimage}
                               src={Start_button}
                               alt="Play icon"
                             />
-                            <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black" onClick={() => handleStartQuiz(latestquizzes[7].quiz_id)}>
+                            <span className={styles.starttext} onClick={() => handleStartQuiz(latestquizzes[7].quiz_id)}>
                               Start
                             </span>
                             <img
-                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                              className={styles.editimage}
                               src={Edit_button}
                               alt="Play icon"
                             />
-                            <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                            <span className={styles.edittext}>
                               Edit
                             </span>
                             <img
-                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                              className={styles.leaderboardimage}
                               src={leaderboard_button}
                               alt="Play icon"
                             />
-                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
+                            <span className={styles.leaderboardtext} onClick={leaderboard}>
                               Leaderboard
                             </span>
                             <img
-                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                              src={Share_button}
-                              alt="Play icon"
-                            />
-                            <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                              Share
-                            </span>
+                          className={styles.shareimage}
+                          src={Share_button}
+                          alt="Play icon"
+                        />
+                        <span className={styles.sharetext}>
+                          Share
+                        </span>
                           </div>
                         )}
                       </div>
@@ -1618,7 +1618,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                   <div
-                    className={styles.card}
+                    className={`${styles.card} ${styles.highlightedCard}`}
                     style={{ paddingTop: "8px", backgroundColor: "#CFFCFF" }}
                   >
                     <span className={styles.title}>
@@ -1645,37 +1645,37 @@ const Dashboard = () => {
                         {isNavbarOpen8 && (
                           <div className={styles.infoIcons}>
                             <img
-                              className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                              className={styles.startimage}
                               src={Start_button}
                               alt="Play icon"
                             />
-                            <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black" onClick={() => handleStartQuiz(latestquizzes[8].quiz_id)}>
+                            <span className={styles.starttext} onClick={() => handleStartQuiz(latestquizzes[8].quiz_id)}>
                               Start
                             </span>
                             <img
-                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                              className={styles.editimage}
                               src={Edit_button}
                               alt="Play icon"
                             />
-                            <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                            <span className={styles.edittext}>
                               Edit
                             </span>
                             <img
-                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                              className={styles.leaderboardimage}
                               src={leaderboard_button}
                               alt="Play icon"
                             />
-                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
+                            <span className={styles.leaderboardtext} onClick={leaderboard}>
                               Leaderboard
                             </span>
                             <img
-                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                              src={Share_button}
-                              alt="Play icon"
-                            />
-                            <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                              Share
-                            </span>
+                          className={styles.shareimage}
+                          src={Share_button}
+                          alt="Play icon"
+                        />
+                        <span className={styles.sharetext}>
+                          Share
+                        </span>
                           </div>
                         )}
                       </div>
@@ -1798,21 +1798,21 @@ const Dashboard = () => {
                               Download
                             </span>
                             <img
-                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                              className={styles.leaderboardimage}
                               src={leaderboard_button}
                               alt="Play icon"
                             />
-                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
+                            <span className={styles.leaderboardtext} onClick={leaderboard}>
                               Leaderboard
                             </span>
                             <img
-                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                              src={Share_button}
-                              alt="Play icon"
-                            />
-                            <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                              Share
-                            </span>
+                          className={styles.shareimage}
+                          src={Share_button}
+                          alt="Play icon"
+                        />
+                        <span className={styles.sharetext}>
+                          Share
+                        </span>
                           </div>
                         )}
                       </div>
@@ -1981,21 +1981,21 @@ const Dashboard = () => {
                               Download
                             </span>
                             <img
-                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                              className={styles.leaderboardimage}
                               src={leaderboard_button}
                               alt="Play icon"
                             />
-                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
+                            <span className={styles.leaderboardtext} onClick={leaderboard}>
                               Leaderboard
                             </span>
                             <img
-                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                              src={Share_button}
-                              alt="Play icon"
-                            />
-                            <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                              Share
-                            </span>
+                          className={styles.shareimage}
+                          src={Share_button}
+                          alt="Play icon"
+                        />
+                        <span className={styles.sharetext}>
+                          Share
+                        </span>
                           </div>
                         )}
                       </div>
@@ -2165,21 +2165,21 @@ const Dashboard = () => {
                               Download
                             </span>
                             <img
-                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                              className={styles.leaderboardimage}
                               src={leaderboard_button}
                               alt="Play icon"
                             />
-                            <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
+                            <span className={styles.leaderboardtext} onClick={leaderboard}>
                               Leaderboard
                             </span>
                             <img
-                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                              src={Share_button}
-                              alt="Play icon"
-                            />
-                            <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                              Share
-                            </span>
+                          className={styles.shareimage}
+                          src={Share_button}
+                          alt="Play icon"
+                        />
+                        <span className={styles.sharetext}>
+                          Share
+                        </span>
                           </div>
                         )}
                       </div>
@@ -2329,37 +2329,37 @@ const Dashboard = () => {
                   {isNavbarOpen11 && (
                     <div className={styles.infoIcons}>
                       <img
-                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                        className={styles.startimage}
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black" onClick={() => handleStartQuiz(popularquizzes[0].quiz_id)}>
+                      <span className={styles.starttext} onClick={() => handleStartQuiz(popularquizzes[0].quiz_id)}>
                         Start
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        className={styles.editimage}
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                      <span className={styles.edittext}>
                         Edit
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        className={styles.leaderboardimage}
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
+                      <span className={styles.leaderboardtext} onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                        src={Share_button}
-                        alt="Play icon"
-                      />
-                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                        Share
-                      </span>
+                          className={styles.shareimage}
+                          src={Share_button}
+                          alt="Play icon"
+                        />
+                        <span className={styles.sharetext}>
+                          Share
+                        </span>
                     </div>
                   )}
                 </div>
@@ -2460,37 +2460,37 @@ const Dashboard = () => {
                   {isNavbarOpen12 && (
                     <div className={styles.infoIcons}>
                       <img
-                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                       className={styles.startimage}
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black"onClick={() => handleStartQuiz(popularquizzes[1].quiz_id)}>
+                      <span className={styles.starttext} onClick={() => handleStartQuiz(popularquizzes[1].quiz_id)}>
                         Start
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        className={styles.editimage}
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                      <span className={styles.edittext}>
                         Edit
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        className={styles.leaderboardimage}
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
+                      <span className={styles.leaderboardtext} onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                        src={Share_button}
-                        alt="Play icon"
-                      />
-                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                        Share
-                      </span>
+                          className={styles.shareimage}
+                          src={Share_button}
+                          alt="Play icon"
+                        />
+                        <span className={styles.sharetext}>
+                          Share
+                        </span>
                     </div>
                   )}
                 </div>
@@ -2590,37 +2590,37 @@ const Dashboard = () => {
                   {isNavbarOpen13 && (
                     <div className={styles.infoIcons}>
                       <img
-                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                        className={styles.startimage}
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black"onClick={() => handleStartQuiz(popularquizzes[2].quiz_id)}>
+                      <span className={styles.starttext} onClick={() => handleStartQuiz(popularquizzes[2].quiz_id)}>
                         Start
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        className={styles.editimage}
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                      <span className={styles.edittext}>
                         Edit
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        className={styles.leaderboardimage}
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
+                      <span className={styles.leaderboardtext} onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                        src={Share_button}
-                        alt="Play icon"
-                      />
-                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                        Share
-                      </span>
+                          className={styles.shareimage}
+                          src={Share_button}
+                          alt="Play icon"
+                        />
+                        <span className={styles.sharetext}>
+                          Share
+                        </span>
                     </div>
                   )}
                 </div>
@@ -2720,37 +2720,37 @@ const Dashboard = () => {
                   {isNavbarOpen14 && (
                     <div className={styles.infoIcons}>
                       <img
-                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                        className={styles.startimage}
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black"onClick={() => handleStartQuiz(popularquizzes[3].quiz_id)}>
+                      <span className={styles.starttext} onClick={() => handleStartQuiz(popularquizzes[3].quiz_id)}>
                         Start
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        className={styles.editimage}
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                      <span className={styles.edittext}>
                         Edit
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        className={styles.leaderboardimage}
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
+                      <span className={styles.leaderboardtext} onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                        src={Share_button}
-                        alt="Play icon"
-                      />
-                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                        Share
-                      </span>
+                          className={styles.shareimage}
+                          src={Share_button}
+                          alt="Play icon"
+                        />
+                        <span className={styles.sharetext}>
+                          Share
+                        </span>
                     </div>
                   )}
                 </div>
@@ -2850,37 +2850,37 @@ const Dashboard = () => {
                   {isNavbarOpen15 && (
                     <div className={styles.infoIcons}>
                       <img
-                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                        className={styles.startimage}
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black"onClick={() => handleStartQuiz(popularquizzes[4].quiz_id)}>
+                      <span className={styles.starttext} onClick={() => handleStartQuiz(popularquizzes[4].quiz_id)}>
                         Start
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        className={styles.editimage}
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                      <span className={styles.edittext}>
                         Edit
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        className={styles.leaderboardimage}
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black" onClick={leaderboard}>
+                      <span className={styles.leaderboardtext} onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                        src={Share_button}
-                        alt="Play icon"
-                      />
-                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                        Share
-                      </span>
+                          className={styles.shareimage}
+                          src={Share_button}
+                          alt="Play icon"
+                        />
+                        <span className={styles.sharetext}>
+                          Share
+                        </span>
                     </div>
                   )}
                 </div>
@@ -2980,37 +2980,37 @@ const Dashboard = () => {
                   {isNavbarOpen16 && (
                     <div className={styles.infoIcons}>
                       <img
-                        className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                        className={styles.startimage}
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black"onClick={() => handleStartQuiz(popularquizzes[5].quiz_id)}>
+                      <span className={styles.starttext} onClick={() => handleStartQuiz(popularquizzes[5].quiz_id)}>
                         Start
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
+                        className={styles.editimage}
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                      <span className={styles.edittext}>
                         Edit
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[26px] "
+                        className={styles.leaderboardimage}
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className="text-[5px] -ml-[18px] absolute top-[26px] left-[36px]  cursor-pointer hover:text-black"onClick={leaderboard}>
+                      <span className={styles.leaderboardtext} onClick={leaderboard}>
                         Leaderboard
                       </span>
                       <img
-                        className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[37px] "
-                        src={Share_button}
-                        alt="Play icon"
-                      />
-                      <span className="text-[5px] -ml-[18px] absolute top-[37px] left-[36px] cursor-pointer hover:text-black">
-                        Share
-                      </span>
+                          className={styles.shareimage}
+                          src={Share_button}
+                          alt="Play icon"
+                        />
+                        <span className={styles.sharetext}>
+                          Share
+                        </span>
                     </div>
                   )}
                 </div>

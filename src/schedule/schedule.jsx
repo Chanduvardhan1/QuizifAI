@@ -109,7 +109,7 @@ function Schedule(){
             <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
               Quiz Schedule on
             </h1>
-            <h1 className="font-Poppins font-light text-[12px] leading-[18px]">
+            <h1 className="font-Poppins font-light text-[13px] leading-[18px]">
               Click on the date to select your Schedule
             </h1>
           </div>
@@ -125,9 +125,11 @@ function Schedule(){
             <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
               Quizzes assigned to you for today
             </h1>
-            
-            {/* first-three-cards */}
-            <div className="flex">
+
+            {quizAssignedtoyou && quizAssignedtoyou >0 ?(
+            <div>
+              {/* first-three-cards */}
+            <div className="flex"> 
             {/* first-box */}
             <div className={styles.card}
              style={{ paddingTop: "8px",
@@ -277,11 +279,13 @@ function Schedule(){
                 </span>
               </div>
             </div>
-
-            {/* second-box  */}
+    
+            {quizAssignedtoyou === quizAssignedtoyou[1] ?(
+           <div>
+             {/* second-box  */}
            <div className={styles.card} style={{ paddingTop: "8px",marginTop:"25px" }}>
-           <p className={styles.title}>{quizAssignedtoyou[0]?.title}
-              <p className={styles.subtitle}>{quizAssignedtoyou[0]?.title}</p></p>
+           <p className={styles.title}>{quizAssignedtoyou[1]?.title}
+              <p className={styles.subtitle}>{quizAssignedtoyou[1]?.title}</p></p>
 
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded ">
@@ -356,17 +360,17 @@ function Schedule(){
 
               <div className={styles.category}>
                 <span className={styles.category1}>
-                  {quizAssignedtoyou[0]?.category}
+                  {quizAssignedtoyou[1]?.category}
                 </span>
                 <p className="px-[2px] font-normal">|</p>
                 <span className={styles.category1}>
-                  {quizAssignedtoyou[0]?.sub_category}
+                  {quizAssignedtoyou[1]?.sub_category}
                 </span>
               </div>
 
               <div className={styles.description}>
-                <span>{quizAssignedtoyou[0]?.quiz_description}
-                <span className={styles.subdescription}>{quizAssignedtoyou[0]?.quiz_description}</span></span>
+                <span>{quizAssignedtoyou[1]?.quiz_description}
+                <span className={styles.subdescription}>{quizAssignedtoyou[1]?.quiz_description}</span></span>
               </div>
               <div
                 className={styles.additionalInfo}
@@ -385,7 +389,7 @@ function Schedule(){
                       width={10}
                       height={10}
                     />
-                    <p>{quizAssignedtoyou[0]?.quiz_attempts_count}</p>
+                    <p>{quizAssignedtoyou[1]?.quiz_attempts_count}</p>
                     <span className="text-[6px] ml-1">attempts</span>
                   </div>
                 </div>
@@ -398,7 +402,7 @@ function Schedule(){
                     width={15}
                     height={10}
                   />{" "}
-                  {quizAssignedtoyou[0]?.total_questions}
+                  {quizAssignedtoyou[1]?.total_questions}
                   <span className="text-[6px] ml-[1px]">questions</span>
                 </span>
                 <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
@@ -409,7 +413,7 @@ function Schedule(){
                     width={14}
                     height={14}
                   />{" "}
-                  {quizAssignedtoyou[0]?.quiz_duration}
+                  {quizAssignedtoyou[1]?.quiz_duration}
                   <span className="text-[6px] -ml-[0.5px]">minutes</span>
                 </span>
                 <span className="flex text-[8px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
@@ -420,15 +424,21 @@ function Schedule(){
                     width={15}
                     height={9}
                   />{" "}
-                  {quizAssignedtoyou[0]?.quiz_complexity}
+                  {quizAssignedtoyou[1]?.quiz_complexity}
                 </span>
               </div>
             </div>
-
-            {/* Third-box  */}
+           </div>
+            ):(
+              <div></div>
+            )}
+           
+           {quizAssignedtoyou === quizAssignedtoyou[2] ?(
+            <div>
+              {/* Third-box  */}
             <div className={styles.card} style={{ paddingTop: "8px",marginTop:"25px" }}>
-            <p className={styles.title}>{quizAssignedtoyou[0]?.title}
-              <p className={styles.subtitle}>{quizAssignedtoyou[0]?.title}</p></p>
+            <p className={styles.title}>{quizAssignedtoyou[2]?.title}
+              <p className={styles.subtitle}>{quizAssignedtoyou[2]?.title}</p></p>
 
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded ">
@@ -503,17 +513,17 @@ function Schedule(){
 
               <div className={styles.category}>
                 <span className={styles.category1}>
-                  {quizAssignedtoyou[0]?.category}
+                  {quizAssignedtoyou[2]?.category}
                 </span>
                 <p className="px-[2px] font-normal">|</p>
                 <span className={styles.category1}>
-                  {quizAssignedtoyou[0]?.sub_category}
+                  {quizAssignedtoyou[2]?.sub_category}
                 </span>
               </div>
 
               <div className={styles.description}>
-                <span>{quizAssignedtoyou[0]?.quiz_description}
-                <span className={styles.subdescription}>{quizAssignedtoyou[0]?.quiz_description}</span></span>
+                <span>{quizAssignedtoyou[2]?.quiz_description}
+                <span className={styles.subdescription}>{quizAssignedtoyou[2]?.quiz_description}</span></span>
               </div>
               <div
                 className={styles.additionalInfo}
@@ -532,7 +542,7 @@ function Schedule(){
                       width={10}
                       height={10}
                     />
-                    <p>{quizAssignedtoyou[0]?.quiz_attempts_count}</p>
+                    <p>{quizAssignedtoyou[2]?.quiz_attempts_count}</p>
                     <span className="text-[6px] ml-1">attempts</span>
                   </div>
                 </div>
@@ -545,7 +555,7 @@ function Schedule(){
                     width={15}
                     height={10}
                   />{" "}
-                  {quizAssignedtoyou[0]?.total_questions}
+                  {quizAssignedtoyou[2]?.total_questions}
                   <span className="text-[6px] ml-[1px]">questions</span>
                 </span>
                 <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
@@ -556,7 +566,7 @@ function Schedule(){
                     width={14}
                     height={14}
                   />{" "}
-                  {quizAssignedtoyou[0]?.quiz_duration}
+                  {quizAssignedtoyou[2]?.quiz_duration}
                   <span className="text-[6px] -ml-[0.5px]">minutes</span>
                 </span>
                 <span className="flex text-[8px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
@@ -567,21 +577,28 @@ function Schedule(){
                     width={15}
                     height={9}
                   />{" "}
-                  {quizAssignedtoyou[0]?.quiz_complexity}
+                  {quizAssignedtoyou[2]?.quiz_complexity}
                 </span>
               </div>
             </div>
-            
+            </div>
+           ):(
+            <div></div>
+           )}
           </div>
+
+
            {/* second-three-cards */}
           <div className="flex">
-            {/* first-box */}
+            {quizAssignedtoyou === quizAssignedtoyou[3] ?(
+              <div>
+                {/* first-box */}
             <div className={styles.card}
              style={{ paddingTop: "8px",
              marginTop:"8px",
              marginLeft:"-18px" }}>
-              <p className={styles.title}>{quizAssignedtoyou[0]?.title}
-              <p className={styles.subtitle}>{quizAssignedtoyou[0]?.title}</p></p>
+              <p className={styles.title}>{quizAssignedtoyou[3]?.title}
+              <p className={styles.subtitle}>{quizAssignedtoyou[3]?.title}</p></p>
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded ">
                   <svg
@@ -655,17 +672,17 @@ function Schedule(){
 
               <div className={styles.category}>
                 <span className={styles.category1}>
-                  {quizAssignedtoyou[0]?.category}
+                  {quizAssignedtoyou[3]?.category}
                 </span>
                 <p className="px-[2px] font-normal">|</p>
                 <span className={styles.category1}>
-                  {quizAssignedtoyou[0]?.sub_category}
+                  {quizAssignedtoyou[3]?.sub_category}
                 </span>
               </div>
 
               <div className={styles.description}>
-                <span>{quizAssignedtoyou[0]?.quiz_description}
-                <span className={styles.subdescription1}>{quizAssignedtoyou[0]?.quiz_description}</span></span>
+                <span>{quizAssignedtoyou[3]?.quiz_description}
+                <span className={styles.subdescription1}>{quizAssignedtoyou[3]?.quiz_description}</span></span>
               </div>
               <div
                 className={styles.additionalInfo}
@@ -684,7 +701,7 @@ function Schedule(){
                       width={10}
                       height={10}
                     />
-                    <p>{quizAssignedtoyou[0]?.quiz_attempts_count}</p>
+                    <p>{quizAssignedtoyou[3]?.quiz_attempts_count}</p>
                     <span className="text-[6px] ml-1">attempts</span>
                   </div>
                 </div>
@@ -697,7 +714,7 @@ function Schedule(){
                     width={15}
                     height={10}
                   />{" "}
-                  {quizAssignedtoyou[0]?.total_questions}
+                  {quizAssignedtoyou[3]?.total_questions}
                   <span className="text-[6px] ml-[1px]">questions</span>
                 </span>
                 <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
@@ -708,7 +725,7 @@ function Schedule(){
                     width={14}
                     height={14}
                   />{" "}
-                  {quizAssignedtoyou[0]?.quiz_duration}
+                  {quizAssignedtoyou[3]?.quiz_duration}
                   <span className="text-[6px] -ml-[0.5px]">mintes</span>
                 </span>
                 <span className="flex text-[8px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
@@ -719,15 +736,21 @@ function Schedule(){
                     width={15}
                     height={9}
                   />{" "}
-                  {quizAssignedtoyou[0]?.quiz_complexity}
+                  {quizAssignedtoyou[3]?.quiz_complexity}
                 </span>
               </div>
             </div>
-
-            {/* second-box  */}
+              </div>
+            ):(
+              <div></div>
+            )}
+      
+           {quizAssignedtoyou === quizAssignedtoyou[4] ?(
+            <div>
+              {/* second-box  */}
            <div className={styles.card} style={{ paddingTop: "8px",marginTop:"8px" }}>
-           <p className={styles.title}>{quizAssignedtoyou[0]?.title}
-              <p className={styles.subtitle}>{quizAssignedtoyou[0]?.title}</p></p>
+           <p className={styles.title}>{quizAssignedtoyou[4]?.title}
+              <p className={styles.subtitle}>{quizAssignedtoyou[4]?.title}</p></p>
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded ">
                   <svg
@@ -801,16 +824,16 @@ function Schedule(){
 
               <div className={styles.category}>
                 <span className={styles.category1}>
-                  {quizAssignedtoyou[0]?.category}
+                  {quizAssignedtoyou[4]?.category}
                 </span>
                 <p className="px-[2px] font-normal">|</p>
                 <span className={styles.category1}>
-                  {quizAssignedtoyou[0]?.sub_category}
+                  {quizAssignedtoyou[4]?.sub_category}
                 </span>
               </div>
 
               <div className={styles.description}>
-                <span>{quizAssignedtoyou[0]?.quiz_description}</span>
+                <span>{quizAssignedtoyou[4]?.quiz_description}</span>
               </div>
               <div
                 className={styles.additionalInfo}
@@ -829,7 +852,7 @@ function Schedule(){
                       width={10}
                       height={10}
                     />
-                    <p>{quizAssignedtoyou[0]?.quiz_attempts_count}</p>
+                    <p>{quizAssignedtoyou[4]?.quiz_attempts_count}</p>
                     <span className="text-[6px] ml-1">attempts</span>
                   </div>
                 </div>
@@ -842,7 +865,7 @@ function Schedule(){
                     width={15}
                     height={10}
                   />{" "}
-                  {quizAssignedtoyou[0]?.total_questions}
+                  {quizAssignedtoyou[4]?.total_questions}
                   <span className="text-[6px] ml-[1px]">questions</span>
                 </span>
                 <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
@@ -853,7 +876,7 @@ function Schedule(){
                     width={14}
                     height={14}
                   />{" "}
-                  {quizAssignedtoyou[0]?.quiz_duration}
+                  {quizAssignedtoyou[4]?.quiz_duration}
                   <span className="text-[6px] -ml-[0.5px]">minutes</span>
                 </span>
                 <span className="flex text-[8px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
@@ -864,15 +887,21 @@ function Schedule(){
                     width={15}
                     height={9}
                   />{" "}
-                  {quizAssignedtoyou[0]?.quiz_complexity}
+                  {quizAssignedtoyou[4]?.quiz_complexity}
                 </span>
               </div>
             </div>
+            </div>
+           ):(
+            <div></div>
+           )}
 
+           {quizAssignedtoyou === quizAssignedtoyou[5] ?(
+            <div>
             {/* Third-box  */}
             <div className={styles.card} style={{ paddingTop: "8px",marginTop:"8px" }}>
-            <p className={styles.title}>{quizAssignedtoyou[0]?.title}
-              <p className={styles.subtitle}>{quizAssignedtoyou[0]?.title}</p></p>
+            <p className={styles.title}>{quizAssignedtoyou[5]?.title}
+              <p className={styles.subtitle}>{quizAssignedtoyou[5]?.title}</p></p>
 
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded ">
@@ -947,16 +976,16 @@ function Schedule(){
 
               <div className={styles.category}>
                 <span className={styles.category1}>
-                  {quizAssignedtoyou[0]?.category}
+                  {quizAssignedtoyou[5]?.category}
                 </span>
                 <p className="px-[2px] font-normal">|</p>
                 <span className={styles.category1}>
-                  {quizAssignedtoyou[0]?.sub_category}
+                  {quizAssignedtoyou[5]?.sub_category}
                 </span>
               </div>
 
               <div className={styles.description}>
-                <span>{quizAssignedtoyou[0]?.quiz_description}</span>
+                <span>{quizAssignedtoyou[5]?.quiz_description}</span>
               </div>
               <div
                 className={styles.additionalInfo}
@@ -975,7 +1004,7 @@ function Schedule(){
                       width={10}
                       height={10}
                     />
-                    <p>{quizAssignedtoyou[0]?.quiz_attempts_count}</p>
+                    <p>{quizAssignedtoyou[5]?.quiz_attempts_count}</p>
                     <span className="text-[6px] ml-1">attempts</span>
                   </div>
                 </div>
@@ -988,7 +1017,7 @@ function Schedule(){
                     width={15}
                     height={10}
                   />{" "}
-                  {quizAssignedtoyou[0]?.total_questions}
+                  {quizAssignedtoyou[5]?.total_questions}
                   <span className="text-[6px] ml-[1px]">questions</span>
                 </span>
                 <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
@@ -999,7 +1028,7 @@ function Schedule(){
                     width={14}
                     height={14}
                   />{" "}
-                  {quizAssignedtoyou[0]?.quiz_duration}
+                  {quizAssignedtoyou[5]?.quiz_duration}
                   <span className="text-[6px] -ml-[0.5px]">minutes</span>
                 </span>
                 <span className="flex text-[8px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
@@ -1010,18 +1039,23 @@ function Schedule(){
                     width={15}
                     height={9}
                   />{" "}
-                  {quizAssignedtoyou[0]?.quiz_complexity}
+                  {quizAssignedtoyou[5]?.quiz_complexity}
                 </span>
               </div>
             </div>
+            </div>
+           ):(
+            <div></div>
+           )}
+
             
           </div>
-
+            </div>
+            ):(
+            <div className="pl-[3px] font-light font-Poppins text-[13px] leading-[18px]">No quizzes are available right now</div>
+             )}
           </div>
-          
-        
         </main>
-       
         <LogoutBar />
       </div>
     </>

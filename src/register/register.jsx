@@ -1652,9 +1652,7 @@ const register = () => {
                       height: "50px",
                       right: "257px",
                       position: "relative",
-                     
-
-                      // border: "1px solid #c2c2c2",
+                     // border: "1px solid #c2c2c2",
                       backgroundPosition:
                         "0px center, right 10px center, right 40px center",
                       cours: "pointer",

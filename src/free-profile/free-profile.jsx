@@ -10,6 +10,7 @@ import logoutArrowIcon from "../assets/Images/images/dashboard/logoutArrow1.png"
 //import Head from "next/head";
 //import img from "next/img";
 import searchIcon from "../assets/Images/images/dashboard/searchBar.png";
+import notificationsettings from "../assets/Images/images/dashboard/notification-settings.png";
 import profileimg from "../assets/Images/images/profile/profileImage.png";
 import rankingimg from "../assets/Images/images/profile/ranking.png";
 import infoIcon from "../assets/Images/images/dashboard/infoIcon.png";
@@ -31,6 +32,7 @@ import MobileIcon from "../assets/Images/images/mobile/mob.png";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { Progress } from "react-sweet-progress";
 import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
 import "react-sweet-progress/lib/style.css";
 
 const FreeProfile = () => {
@@ -292,6 +294,13 @@ const FreeProfile = () => {
                 className={styles.searchIcon}
               />
             </div>
+            <div className={styles.notificationsettingsContainer}>
+              <img
+                src={notificationsettings}
+                alt="notificationsettings Icon"
+                className={styles.notificationsettings}
+              />
+            </div>
           </div>
         </div>
         <div className={styles.contentContainer} style={{ marginLeft: "80px" }}>
@@ -465,14 +474,11 @@ const FreeProfile = () => {
                       height: "25px",
                       right: "-110px",
                       top:"-29px",
-
                       position: "relative",
-                     
-
                       // border: "1px solid #c2c2c2",
                       backgroundPosition:
                         "0px center, right 10px center, right 40px center",
-                      cours: "pointer",
+                      cursor: "pointer",
                     }}
                   ></div>
               {/* <div
@@ -528,6 +534,21 @@ const FreeProfile = () => {
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
               />
+              {/* <option value=""  disabled selected>District</option> */}
+               {responseData &&
+                            responseData.data &&
+                            Array.isArray(responseData.data[0]) &&
+                            [
+                              ...new Set(
+                                responseData.data[0].map(
+                                  (location) => location.Districtname
+                                )
+                              ),
+                            ].map((districtName, index) => (
+                              <MenuItem key={index} value={districtName}>
+                                {districtName}
+                              </MenuItem>
+                            ))}
             </div>
             <div className={styles.inputGroup}>
               <label htmlFor="state">State</label>
@@ -538,6 +559,21 @@ const FreeProfile = () => {
                 value={state}
                 onChange={(e) => setState(e.target.value)}
               />
+               {/* <option value=""  disabled selected>State</option> */}
+               {responseData &&
+                              responseData.data &&
+                              Array.isArray(responseData.data[0]) &&
+                              [
+                                ...new Set(
+                                  responseData.data[0].map(
+                                    (location) => location.Statename
+                                  )
+                                ),
+                              ].map((stateName, index) => (
+                                <MenuItem key={index} value={stateName}>
+                                  {stateName}
+                                </MenuItem>
+                              ))}
             </div>
             <div className={styles.inputGroup}>
               <label htmlFor="country">Country</label>
@@ -548,6 +584,21 @@ const FreeProfile = () => {
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
               />
+              {/* <option value=""  disabled selected>Country</option> */}
+              {responseData &&
+                              responseData.data &&
+                              Array.isArray(responseData.data[0]) &&
+                              [
+                                ...new Set(
+                                  responseData.data[0].map(
+                                    (location) => location.country_name
+                                  )
+                                ),
+                              ].map((countryName, index) => (
+                                <MenuItem key={index} value={countryName}>
+                                  {countryName}
+                                </MenuItem>
+                              ))}
             </div>
           </div>
 

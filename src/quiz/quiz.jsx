@@ -1110,7 +1110,7 @@ const Quiz = () => {
                  <div className=" ">
                    <div className="flex">
                      <div
-                       className={styles.card}
+                       className={`${styles.card} ${styles.highlightedCard}`}
                        style={{
                          paddingTop: "8px",
                          backgroundColor: "#CFFCFF",
@@ -1250,7 +1250,7 @@ const Quiz = () => {
                      </div>
    
                      <div
-                       className={styles.card}
+                       className={`${styles.card} ${styles.highlightedCard}`}
                        style={{ paddingTop: "8px", backgroundColor: "#CFFCFF" }}
                      >
                        <span className={styles.title}>
@@ -1385,7 +1385,7 @@ const Quiz = () => {
                        </div>
                      </div>
                      <div
-                       className={styles.card}
+                       className={`${styles.card} ${styles.highlightedCard}`}
                        style={{ paddingTop: "8px", backgroundColor: "#CFFCFF" }}
                      >
                        <span className={styles.title}>
@@ -1967,7 +1967,7 @@ const Quiz = () => {
             
 
  <div className={styles.sortBy}>
-  <p className="ml-8 my-3 font-Poppins font-medium">Sort by:</p>
+  {/* <p className="ml-8 my-3 font-Poppins font-medium">Sort by:</p> */}
   <div className="gap-2 mb-3">
 
   <select

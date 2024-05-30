@@ -468,6 +468,11 @@ padding-top: 10px;
   background-color: #e2e8f0;
   clip-path: polygon(0% 0%, 80% 0, 81% 16%, 95% 26%, 81% 34%, 81% 100%, 0 100%);
 }
+.highlightedCard {
+  cursor: pointer;
+  border: 2px solid #ffcc00; /* Highlighting border color */
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.5); /* Highlighting shadow */
+}
 
 .additionalInfo {
   display: flex;

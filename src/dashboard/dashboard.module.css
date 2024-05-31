@@ -306,7 +306,7 @@ margin-left: 20px;
 }
 
 
-.latestQuizHeader + .infoCards > .card:nth-child(-n+8) {
+.latestQuizHeader + .infoCards > .card:nth-child(-n+9) {
   background-color: #CFFCFF; 
 }
 
@@ -324,10 +324,10 @@ text-align: left;
 .moreLink {
   color: black;
   cursor: pointer;
-  margin-right: 40px;
+  margin-right: -540px;
   display: inline-flex;
 align-items: center;
-
+user-select: none;
 }
 .moreLink:hover{
   text-decoration: underline;

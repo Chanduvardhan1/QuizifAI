@@ -192,6 +192,12 @@ const FreeProfile = () => {
         console.error("Error fetching profile data:", error);
       });
   }, []);
+
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  const toggleEditMode =() =>{
+    setIsEditMode(!isEditMode);
+  }
   // useEffect(() => {
 
   //   const fetchQuizData = async () => {
@@ -258,6 +264,7 @@ const FreeProfile = () => {
       ) {
         setstatename(data.data[0][0].Statename);
         setcountryname(data.data[0][0].country_name);
+
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -284,7 +291,7 @@ const FreeProfile = () => {
       <div className={styles.mainContent}>
         <div className={styles.header}>
           {/* Header content */}
-          <p>Welcome {userName}</p>
+          <p className="relative top-[67px]">Welcome {userName}</p>
           <div className={styles.headerRight}>
             <div>{getFormattedDate()}</div>
             <div className={styles.searchIconContainer}>
@@ -294,13 +301,13 @@ const FreeProfile = () => {
                 className={styles.searchIcon}
               />
             </div>
-            <div className={styles.notificationsettingsContainer}>
+            {/* <div className={styles.notificationsettingsContainer}>
               <img
                 src={notificationsettings}
                 alt="notificationsettings Icon"
                 className={styles.notificationsettings}
               />
-            </div>
+            </div> */}
           </div>
         </div>
         <div className={styles.contentContainer} style={{ marginLeft: "80px" }}>
@@ -386,6 +393,8 @@ const FreeProfile = () => {
 
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
+                readOnly={!isEditMode}
+                className={!isEditMode ? styles.readOnlyInput : ""}
                 // label="First Name"
                 // style={{ width: "150px", height: "50px" }}
                 // InputLabelProps={{
@@ -417,6 +426,8 @@ const FreeProfile = () => {
                 placeholder="Middle Name"
                 value={middleName}
                 onChange={(e) => setMiddleName(e.target.value)}
+                readOnly={!isEditMode}
+                className={!isEditMode ? styles.readOnlyInput : ""}
               />
             </div>
             <div className={styles.inputGroup}>
@@ -427,6 +438,8 @@ const FreeProfile = () => {
                 placeholder="Last Name"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
+                readOnly={!isEditMode}
+                className={!isEditMode ? styles.readOnlyInput : ""}
               />
             </div>
          
@@ -439,6 +452,8 @@ const FreeProfile = () => {
                 id="gender"
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
+                readOnly={!isEditMode}
+                className={!isEditMode ? styles.readOnlyInput : ""}
               >
                 {/* <option  className={styles.SelectGender} value="">Select Gender</option> */}
                 <option value="male">Male</option>
@@ -453,6 +468,8 @@ const FreeProfile = () => {
                 placeholder="Select your date of birth"
                 value={dob}
                 onChange={(e) => setDob(e.target.value)}
+                readOnly={!isEditMode}
+                className={!isEditMode ? styles.readOnlyInput : ""}
               />
             </div>
             <div className={styles.inputGroup}>
@@ -463,8 +480,10 @@ const FreeProfile = () => {
                 placeholder="Postal Code"
                 value={postalCode}
                 onChange={(e) => setPostalCode(e.target.value)}
+                readOnly={!isEditMode}
+                className={!isEditMode ? styles.readOnlyInput : ""}
               />
-               <div
+               {/* <div
                     className={styles.searchicon}
                     onClick={handleSubmit1}
                     style={{
@@ -480,7 +499,7 @@ const FreeProfile = () => {
                         "0px center, right 10px center, right 40px center",
                       cursor: "pointer",
                     }}
-                  ></div>
+                  ></div> */}
               {/* <div
                     className={styles.searchicon}
                     onClick={handleSubmit1}
@@ -533,6 +552,8 @@ const FreeProfile = () => {
                 placeholder="City Name"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
+                readOnly={!isEditMode}
+                className={!isEditMode ? styles.readOnlyInput : ""}
               />
               {/* <option value=""  disabled selected>District</option> */}
                {responseData &&
@@ -558,6 +579,8 @@ const FreeProfile = () => {
                 placeholder="State Name"
                 value={state}
                 onChange={(e) => setState(e.target.value)}
+                readOnly={!isEditMode}
+                className={!isEditMode ? styles.readOnlyInput : ""}
               />
                {/* <option value=""  disabled selected>State</option> */}
                {responseData &&
@@ -583,6 +606,8 @@ const FreeProfile = () => {
                 placeholder="Country Name"
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
+                readOnly={!isEditMode}
+                className={!isEditMode ? styles.readOnlyInput : ""}
               />
               {/* <option value=""  disabled selected>Country</option> */}
               {responseData &&
@@ -655,6 +680,8 @@ const FreeProfile = () => {
                 placeholder="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                readOnly={!isEditMode}
+                className={!isEditMode ? styles.readOnlyInput : ""}
               />
             </div>
             <div className={styles.inputGroup}>
@@ -678,12 +705,15 @@ const FreeProfile = () => {
                 placeholder="mobileNumber"
                 value={mobileNumber}
                 onChange={(e) => setMobileNumber(e.target.value)}
+                readOnly={!isEditMode}
+                className={!isEditMode ? styles.readOnlyInput : ""}
               />
               <div className={styles.buttonContainer}>
                 <button className={styles.customButton}>Verify</button>
-                <button className={styles.customButton} onClick={handleSubmit}>
-                  Edit
+                <button className={styles.customButton} onClick={toggleEditMode}>
+                  {isEditMode ? 'save':'edit'}
                 </button>
+                <button className={styles.customButton} onClick={handleSubmit}>save</button>
               </div>
             </div>
           </div>

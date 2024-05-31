@@ -80,7 +80,7 @@ const Dashboard = () => {
   const [isNavbarOpen15, setIsNavbarOpen15] = useState(false);
   const [isNavbarOpen16, setIsNavbarOpen16] = useState(false);
 
-  const [getMoreQuizzes, setGetMoreQuizzes] = useState(false);
+  const [getMoreQuizzes, setGetMoreQuizzes] = useState(true);
 
   const [notAttemptedQuizzes, setNotAttemptedQuizzes] = useState([]);
   const [latestquizzes, setLatestquizzes] = useState([]);
@@ -215,9 +215,9 @@ const Dashboard = () => {
     setIsNavbarOpen16((prevState) => !prevState);
   };
 
-  const toggleGetMoreQuizzes = () => {
-    setGetMoreQuizzes(true);
-  };
+  // const toggleGetMoreQuizzes = () => {
+  //   setGetMoreQuizzes(!getMoreQuizzes);
+  // };
 
   const formatTime = (minutes) => {
     const hours = Math.floor(minutes / 60);
@@ -542,16 +542,18 @@ const Dashboard = () => {
           >
             <p>Latest Quizzes</p>
 
-            <span className={styles.moreLink} onClick={toggleGetMoreQuizzes}>
+            <span className={styles.moreLink} onClick={() => setGetMoreQuizzes(true)}>
               More{" "}
-              <img
-                className="ml-2"
+             
+            </span>
+            <img
+                className="-rotate-90 cursor-pointer mr-[40px]"
                 src={moreArrow}
                 alt="More"
                 width={17}
-                height={10}
+                height={8}
+                onClick={() =>setGetMoreQuizzes(false)}
               />
-            </span>
           </div>
           <div className={styles.infoCards}>
             {/* Info cards content */}
@@ -1351,11 +1353,12 @@ const Dashboard = () => {
                 </span>
               </div>
             </div>
-            {getMoreQuizzes && (
-              <div className=" ">
-                <div className="flex">
-                  <div
-                    className={`${styles.card} ${styles.highlightedCard}`}
+            
+           
+     {getMoreQuizzes ? 
+         <div className=" ">
+          <div className="flex">
+            <div className={styles.card} style={{ paddingTop: "8px" }}
                     style={{
                       paddingTop: "8px",
                       backgroundColor: "#CFFCFF",
@@ -1488,12 +1491,8 @@ const Dashboard = () => {
                         {latestquizzes[6]?.complexity}
                       </span>
                     </div>
-                  </div>
-
-                  <div
-                    className={`${styles.card} ${styles.highlightedCard}`}
-                    style={{ paddingTop: "8px", backgroundColor: "#CFFCFF" }}
-                  >
+            </div>
+            <div className={styles.card} style={{ paddingTop: "8px" }}>
                     <span className={styles.title}>
                       {latestquizzes[7]?.quiz_name}
                     </span>
@@ -1621,11 +1620,8 @@ const Dashboard = () => {
                         {latestquizzes[7]?.complexity}
                       </span>
                     </div>
-                  </div>
-                  <div
-                    className={`${styles.card} ${styles.highlightedCard}`}
-                    style={{ paddingTop: "8px", backgroundColor: "#CFFCFF" }}
-                  >
+            </div>
+            <div className={styles.card} style={{ paddingTop: "8px" }}  >
                     <span className={styles.title}>
                       {latestquizzes[8]?.quiz_name}
                     </span>
@@ -1753,8 +1749,8 @@ const Dashboard = () => {
                         {latestquizzes[8]?.complexity}
                       </span>
                     </div>
-                  </div>
-                </div>
+            </div>
+          </div>
                 {/* attempted-quiz  */}
                 <div className="flex">
                   <div
@@ -2302,7 +2298,8 @@ const Dashboard = () => {
                 </div>
 
               </div>
-            )}
+            :null
+            }
           </div>
           <div className={styles.topScoredHeader}>
             <p>Most Popular</p>

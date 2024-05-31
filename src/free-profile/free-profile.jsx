@@ -196,7 +196,7 @@ const FreeProfile = () => {
   const [isEditMode, setIsEditMode] = useState(false);
 
   const toggleEditMode =() =>{
-    setIsEditMode(!isEditMode);
+    setIsEditMode(prev => !prev);
   }
   // useEffect(() => {
 
@@ -291,7 +291,7 @@ const FreeProfile = () => {
       <div className={styles.mainContent}>
         <div className={styles.header}>
           {/* Header content */}
-          <p className="relative top-[67px]">Welcome {userName}</p>
+          <p className="relative top-[67px]">{userName}</p>
           <div className={styles.headerRight}>
             <div>{getFormattedDate()}</div>
             <div className={styles.searchIconContainer}>
@@ -385,104 +385,195 @@ const FreeProfile = () => {
         <div className={styles.inputContainer}>
           <div className={styles.inputRow}>
             <div className={styles.inputGroup}>
-              <label htmlFor="firstName">First Name</label>
-              <input
-                type="text"
+              <TextField
                 id="firstName"
-                placeholder="First Name"
-
+                label="First Name"
+                variant="outlined"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                readOnly={!isEditMode}
-                className={!isEditMode ? styles.readOnlyInput : ""}
-                // label="First Name"
-                // style={{ width: "150px", height: "50px" }}
-                // InputLabelProps={{
-                //   style: { fontFamily: "poppins" },
-                // }}
-                // InputProps={{
-                //   style: {
-                //     // backgroundImage: `url('/images/email/mail.png')`,
-                //     // backgroundSize: "19px 16px",
-                //     // backgroundPosition: "295px center",
-                //     // backgroundRepeat: "no-repeat",
-                //     width: "150px",
-                //     height: "50px",
-                //     backgroundColor: "white",
-                //     border: "none",
-                //     fontFamily: "poppins",
-                //     paddingLeft: "0px",
-                //     borderRadius: "10px",
-                //   },
-                //   autoComplete: "off",
-                // }}
+                
+                InputProps={{
+                  readOnly: !isEditMode,
+                  style: {
+                    width: "160px",
+                    height: "50px",
+                    border: "none",
+                    fontFamily: "poppins",
+                    fontSize: "15px",
+                    borderRadius: "10px",
+                    paddingRight: "30px", // Ensure the text doesn't overlap with the icon
+                  },
+                  autoComplete: "off",
+                }}
+                className={`${styles.iconInput} ${!isEditMode ? styles.readOnlyInput : ""}`}
+                sx={{
+                  width: "150px", // Apply styles directly using sx
+                  height: "44px",
+                }}
               />
             </div>
+    <div className={styles.inputGroup}>
+      <TextField
+        id="middleName"
+        label="Middle Name"
+        variant="outlined"
+        value={middleName}
+        onChange={(e) => setMiddleName(e.target.value)}
+        InputLabelProps={{
+          style: { fontFamily: "poppins" },
+        }}
+        InputProps={{
+          readOnly: !isEditMode,
+          style: {
+            width: "160px",
+            height: "50px",
+            border: "none",
+            fontFamily: "poppins",
+            fontSize: "15px",
+            borderRadius: "10px",
+            paddingRight: "30px", // Ensure the text doesn't overlap with the icon
+          },
+          autoComplete: "off",
+        }}
+        className={`${styles.iconInput} ${!isEditMode ? styles.readOnlyInput : ""}`}
+        sx={{
+          width: "150px", // Apply styles directly using sx
+          height: "44px",
+        }}
+      />
+      {/* <button onClick={() => setIsEditMode(!isEditMode)}>
+        {isEditMode ? 'Save' : 'Edit'}
+      </button> */}
+    </div>
             <div className={styles.inputGroup}>
-              <label htmlFor="middleName">Middle Name</label>
-              <input
-                type="text"
-                id="middleName"
-                placeholder="Middle Name"
-                value={middleName}
-                onChange={(e) => setMiddleName(e.target.value)}
-                readOnly={!isEditMode}
-                className={!isEditMode ? styles.readOnlyInput : ""}
-              />
-            </div>
-            <div className={styles.inputGroup}>
-              <label htmlFor="lastName">Last Name</label>
-              <input
-                type="text"
+              <TextField
                 id="lastName"
-                placeholder="Last Name"
+                label="Last Name"
+                variant="outlined"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                readOnly={!isEditMode}
-                className={!isEditMode ? styles.readOnlyInput : ""}
+
+                InputLabelProps={{
+                  style: { fontFamily: "poppins" },
+                }}
+                InputProps={{
+                  readOnly: !isEditMode,
+                  style: {
+                    width: "160px",
+                    height: "50px",
+                    border: "none",
+                    fontFamily: "poppins",
+                    fontSize: "15px",
+                    borderRadius: "10px",
+                    paddingRight: "30px", // Ensure the text doesn't overlap with the icon
+                  },
+                  autoComplete: "off",
+                }}
+                className={`${styles.iconInput} ${!isEditMode ? styles.readOnlyInput : ""}`}
+                sx={{
+                  width: "150px", // Apply styles directly using sx
+                  height: "44px",
+                }}
               />
+              {/* <button onClick={() => setIsEditMode(!isEditMode)}>
+                {isEditMode ? 'Save' : 'Edit'}
+              </button> */}
+        
             </div>
          
           </div>
 
-          <div className={styles.inputRow}>
-          <div className={styles.inputGroup}>
-              <label htmlFor="gender">Gender</label>
-              <select
-                id="gender"
-                value={gender}
-                onChange={(e) => setGender(e.target.value)}
-                readOnly={!isEditMode}
-                className={!isEditMode ? styles.readOnlyInput : ""}
-              >
-                {/* <option  className={styles.SelectGender} value="">Select Gender</option> */}
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-              </select>
-            </div>
+   <div className={styles.inputRow}>
+  <div className={styles.inputGroup}>
+  <TextField
+    id="gender"
+    select
+    label="Gender"
+    value={gender}
+    onChange={(e) => setGender(e.target.value)}
+    readOnly={!isEditMode}
+    className={!isEditMode ? styles.readOnlyInput : ""}
+    InputLabelProps={{
+      style: { fontFamily: "poppins" },
+    }}
+    InputProps={{
+      style: {
+        width: "160px",
+        height: "45px",
+        fontFamily: "poppins",
+        paddingLeft: "0px",
+        borderRadius: "10px",
+        fontSize:"12px",
+        color:"#214082",
+      },
+      autoComplete: "off",
+    }} 
+  >
+    <MenuItem value="male">Male</MenuItem>
+    <MenuItem value="female">Female</MenuItem>
+  </TextField>
+</div>
+
+<div className={styles.inputGroup}>
+<TextField
+        id="dob"
+        type="date"
+        label="Date of Birth"
+        value={dob}
+        onChange={(e) => setDob(e.target.value)}
+        readOnly={!isEditMode}
+        className={!isEditMode ? styles.readOnlyInput : ""}
+        InputLabelProps={{
+          shrink: true,
+          style: { fontFamily: "poppins" },
+        }}
+        InputProps={{
+          style: {
+            width: "160px",
+            height: "45px",
+            fontFamily: "poppins",
+            paddingLeft: "0px",
+            borderRadius: "10px",
+          },
+          autoComplete: "off",
+          readOnly: !isEditMode, // Add readOnly prop conditionally
+        }}
+      />
+</div>
             <div className={styles.inputGroup}>
-              <label htmlFor="dob">Date of Birth</label>
-              <input
-                type="date"
-                id="dob"
-                placeholder="Select your date of birth"
-                value={dob}
-                onChange={(e) => setDob(e.target.value)}
-                readOnly={!isEditMode}
-                className={!isEditMode ? styles.readOnlyInput : ""}
-              />
-            </div>
-            <div className={styles.inputGroup}>
-              <label htmlFor="postalCode">Postal Code</label>
-              <input
+              <TextField
                 type="text"
                 id="postalCode"
-                placeholder="Postal Code"
+                label="Postal code"
+                variant="outlined"
                 value={postalCode}
                 onChange={(e) => setPostalCode(e.target.value)}
-                readOnly={!isEditMode}
-                className={!isEditMode ? styles.readOnlyInput : ""}
-              />
+
+                InputLabelProps={{
+          style: { fontFamily: "poppins" },
+        }}
+        InputProps={{
+          readOnly: !isEditMode,
+          style: {
+            backgroundImage: `url('/images/signup/middleNameIcon.png')`,
+            backgroundPosition: "150px center",
+            backgroundRepeat: "no-repeat",
+            width: "150px",
+            height: "50px",
+            border: "none",
+            fontFamily: "poppins",
+            fontSize: "15px",
+            borderRadius: "10px",
+            paddingRight: "30px", // Ensure the text doesn't overlap with the icon
+          },
+          autoComplete: "off",
+        }}
+        className={`${styles.iconInput} ${!isEditMode ?       styles.readOnlyInput : ""}`}
+        sx={{
+          width: "150px", // Apply styles directly using sx
+          height: "44px",
+        }}
+      />
                <div
                     className={styles.searchicon}
                     onClick={handleSubmit1}
@@ -492,7 +583,7 @@ const FreeProfile = () => {
                       width: "40px",
                       height: "25px",
                       right: "-110px",
-                      top:"-29px",
+                      top:"-32px",
                       position: "relative",
                       // border: "1px solid #c2c2c2",
                       backgroundPosition:
@@ -545,15 +636,34 @@ const FreeProfile = () => {
 
           <div className={styles.inputRow}>
             <div className={styles.inputGroup}>
-              <label htmlFor="city">City</label>
-              <input
+              <TextField
                 type="text"
                 id="city"
-                placeholder="City Name"
+                variant="outlined"
+                label="City Name"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                readOnly={!isEditMode}
-                className={!isEditMode ? styles.readOnlyInput : ""}
+                InputLabelProps={{
+                  style: { fontFamily: "poppins" },
+                }}
+                InputProps={{
+                  readOnly: !isEditMode,
+                  style: {
+                    width: "160px",
+                    height: "50px",
+                    border: "none",
+                    fontFamily: "poppins",
+                    fontSize: "15px",
+                    borderRadius: "10px",
+                    paddingRight: "30px", // Ensure the text doesn't overlap with the icon
+                  },
+                  autoComplete: "off",
+                }}
+                className={`${styles.iconInput} ${!isEditMode ?       styles.readOnlyInput : ""}`}
+                sx={{
+                  width: "150px", // Apply styles directly using sx
+                  height: "44px",
+                }}
               />
               {/* <option value=""  disabled selected>District</option> */}
                {responseData &&
@@ -572,15 +682,37 @@ const FreeProfile = () => {
                             ))}
             </div>
             <div className={styles.inputGroup}>
-              <label htmlFor="state">State</label>
-              <input
+              <TextField
                 type="text"
                 id="state"
-                placeholder="State Name"
+                label="State Name"
+                variant="outlined"
                 value={state}
                 onChange={(e) => setState(e.target.value)}
-                readOnly={!isEditMode}
-                className={!isEditMode ? styles.readOnlyInput : ""}
+                InputLabelProps={{
+                  style: { fontFamily: "poppins" },
+                }}
+                InputProps={{
+                  readOnly: !isEditMode,
+                  style: {
+                    backgroundImage: `url('/images/signup/middleNameIcon.png')`,
+                    backgroundPosition: "150px center",
+                    backgroundRepeat: "no-repeat",
+                    width: "150px",
+                    height: "50px",
+                    border: "none",
+                    fontFamily: "poppins",
+                    fontSize: "15px",
+                    borderRadius: "10px",
+                    paddingRight: "30px", // Ensure the text doesn't overlap with the icon
+                  },
+                  autoComplete: "off",
+                }}
+                className={`${styles.iconInput} ${!isEditMode ?       styles.readOnlyInput : ""}`}
+                sx={{
+                  width: "150px", // Apply styles directly using sx
+                  height: "44px",
+                }}
               />
                {/* <option value=""  disabled selected>State</option> */}
                {responseData &&
@@ -599,15 +731,36 @@ const FreeProfile = () => {
                               ))}
             </div>
             <div className={styles.inputGroup}>
-              <label htmlFor="country">Country</label>
-              <input
+              <TextField
                 type="text"
                 id="country"
-                placeholder="Country Name"
+                label="Country Name"
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
-                readOnly={!isEditMode}
-                className={!isEditMode ? styles.readOnlyInput : ""}
+                InputLabelProps={{
+                  style: { fontFamily: "poppins" },
+                }}
+                InputProps={{
+                  readOnly: !isEditMode,
+                  style: {
+                    backgroundImage: `url('/images/signup/middleNameIcon.png')`,
+                    backgroundPosition: "150px center",
+                    backgroundRepeat: "no-repeat",
+                    width: "150px",
+                    height: "50px",
+                    border: "none",
+                    fontFamily: "poppins",
+                    fontSize: "15px",
+                    borderRadius: "10px",
+                    paddingRight: "30px", // Ensure the text doesn't overlap with the icon
+                  },
+                  autoComplete: "off",
+                }}
+                className={`${styles.iconInput} ${!isEditMode ?       styles.readOnlyInput : ""}`}
+                sx={{
+                  width: "150px", // Apply styles directly using sx
+                  height: "44px",
+                }}
               />
               {/* <option value=""  disabled selected>Country</option> */}
               {responseData &&
@@ -711,7 +864,7 @@ const FreeProfile = () => {
               <div className={styles.buttonContainer}>
                 <button className={styles.customButton}>Verify</button>
                 <button className={styles.customButton} onClick={toggleEditMode}>
-                  {isEditMode ? 'save':'edit'}
+                  {isEditMode ? 'Save':'Edit'}
                 </button>
                 {/* <button className={styles.customButton} onClick={handleSubmit}>save</button> */}
               </div>

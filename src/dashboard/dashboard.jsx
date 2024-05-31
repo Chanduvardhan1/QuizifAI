@@ -547,7 +547,7 @@ const Dashboard = () => {
              
             </span>
             <img
-                className="-rotate-90 cursor-pointer mr-[40px]"
+                className="cursor-pointer mr-[40px]"
                 src={moreArrow}
                 alt="More"
                 width={17}

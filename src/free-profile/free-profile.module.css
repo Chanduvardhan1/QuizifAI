@@ -717,7 +717,7 @@ color: #214082;
   .inputRow {
     display: flex;
     align-items: center;
-    gap: 120px;
+    gap: 140px;
     border: none;
     outline: none;
   }
@@ -761,12 +761,12 @@ text-align: left;
     font-family: "Inter";
   }
   
-  /* .inputGroup select option {
+  .inputGroup select option {
     color: #718EBF; 
-  } */
+  }
   
   .inputGroup select option {
-    font-size: 12px; 
+    font-size: 10px; 
   }
   .SelectGender{
     color: #718EBF; 
@@ -774,12 +774,12 @@ text-align: left;
   
   .inputGroup input {
     width: 150px;
-    height: 33px;
+    height: 30px;
     padding: 8px;
     color: #214082;
     font-size:12px;
     border-radius: 10px;
-    border: 1px solid #DFEAF2
+    /* border: 1px solid #DFEAF2 */
   }
 
   .inputGroup select {

@@ -483,7 +483,7 @@ const FreeProfile = () => {
                 readOnly={!isEditMode}
                 className={!isEditMode ? styles.readOnlyInput : ""}
               />
-               {/* <div
+               <div
                     className={styles.searchicon}
                     onClick={handleSubmit1}
                     style={{
@@ -499,7 +499,7 @@ const FreeProfile = () => {
                         "0px center, right 10px center, right 40px center",
                       cursor: "pointer",
                     }}
-                  ></div> */}
+                  ></div>
               {/* <div
                     className={styles.searchicon}
                     onClick={handleSubmit1}
@@ -713,7 +713,7 @@ const FreeProfile = () => {
                 <button className={styles.customButton} onClick={toggleEditMode}>
                   {isEditMode ? 'save':'edit'}
                 </button>
-                <button className={styles.customButton} onClick={handleSubmit}>save</button>
+                {/* <button className={styles.customButton} onClick={handleSubmit}>save</button> */}
               </div>
             </div>
           </div>

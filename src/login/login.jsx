@@ -198,6 +198,7 @@ const LoginPage = () => {
     // }
     try {
       console.log("email - ", email);
+    
       const response = await fetch(`https://quizifai.com:8010/login`, {
         method: "POST",
         headers: {
@@ -209,7 +210,6 @@ const LoginPage = () => {
           password: password,
         }),
       });
-  
       const responseData = await response.json();
       console.log("API Response:", responseData);
   
@@ -262,7 +262,19 @@ const LoginPage = () => {
     }
   };
   
-  
+  const validateEmail1 = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+  const handleEmailChange = (e) => {
+    const email = e.target.value;
+    setEmail(email);
+    if (validateEmail(email)) {
+      setErrorMessage('');
+    } else {
+      setErrorMessage('Email is not valid.');
+    }
+  };
   const handleForgotPasswordSubmit = () => {
     // const forgotOption = email.includes("@") ? "email" : "mobile";
     // Prepare the request body
@@ -306,9 +318,9 @@ const LoginPage = () => {
     });
 };
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
+  // const handleEmailChange = (event) => {
+  //   setEmail(event.target.value);
+  // };
 
   // const handleMobileChange = (event) => {
   //   setMobile(event.target.value);

@@ -179,6 +179,7 @@ const Edit = (quizId) => {
                     className="w-[885px] absolute top-[325px] left-[277px]"
                     src={HorizontalLine}
                   />
+                 
                 </div>
 
                 <div className="flex">
@@ -248,6 +249,12 @@ const Edit = (quizId) => {
                     src={HorizontalLine}
                   />
                 </div>
+                <div className="w-[223px] h-[32px] absolute top-[432px] left-[994px]">
+                    <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
+                    quiz_id:{" "}
+                      {quizData[0].quiz_id}
+                    </h1>
+                  </div>
 
                 <div className="flex">
                   <img

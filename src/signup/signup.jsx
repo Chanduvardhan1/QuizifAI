@@ -76,6 +76,8 @@ const Signup = () => {
   const [terms, setTerms] = useState("");
   const [showVerifyButton, setShowVerifyButton] = useState(false); 
   const [showVerifyButton1, setShowVerifyButton1] = useState(false); 
+  const [responseMessage1, setResponseMessage1] = useState("");
+
   const navigate = useNavigate();
   const handleBackToDashboard = () => {
     navigate("/login");
@@ -87,7 +89,7 @@ const Signup = () => {
   // const dataa = {
   //   data: { email1 },
   // };
-  // // const handleOpenGmail = () => {
+  //  const handleOpenGmail = () => {
   //   history.push({
   //     pathname: '/register',
   //     state: dataa,
@@ -152,80 +154,91 @@ const Signup = () => {
     const minutes = Math.floor(seconds / 60);
     return (minutes / 10) * 360; // Convert minutes to degrees
   };
-
+  const validateName = (name) => {
+    const nameRegex = /^[A-Za-z\s]+$/; // Only alphabetic characters and spaces
+    return nameRegex.test(name);
+  };
   const handleSignUp1 = () => {
-    if (!termsChecked) {
-      setTerms("Please agree to the terms and conditions");
-      return;
+    let hasError = false;
+  
+    if (name.trim() === "" || emailOrMobile.trim() === "") {
+      setResponseMessage1("Please enter all fields");
+      hasError = true;
+    } else if (!validateName(name.trim())) {
+      setResponseMessage1("Names can only contain alphabetic characters");
+      hasError = true;
+    } else {
+      setResponseMessage1("");
     }
-    setSubmitted(true);
+  
+  if (!hasError) {
+    if (!termsChecked) {
+        setTerms("Please agree to the terms and conditions");
+        hasError = true;
+    } else {
+        setTerms("");
+    }
+}
 
+if (hasError) {
+    return;
+}
     setResendAvailable(false); // Disable resend button after sending OTP
     setResendTime(10 * 60);
     const userData = {
       signup_option: loginMethod,
       user_name: name,
       email_or_mobile: emailOrMobile,
-      // password: password,
-      // confirm_password: confirmpassword,
     };
 
-    fetch("https://quizifai.com:8010/signup", {
-      method: "POST",
+    fetch('https://quizifai.com:8010/signup', {
+      method: 'POST',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(userData),
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Failed to sign up");
+          throw new Error('Failed to sign up');
         }
         return response.json();
       })
       .then((data) => {
-        console.log("Sign-up successful:", data);
+        console.log('Sign-up successful:', data);
 
-        if (loginMethod === "email" && data.response === "success") {
+        if (loginMethod === 'email' && data.response === 'success') {
           setResponseMessage(data.data);
-          // setShowRegistrationSuccess(true);
           setShowOtpField(true);
-          setShowVerifyButton(true); 
+          setShowVerifyButton(true);
         } else if (
-          data.response === "fail" &&
-          data.data === "Email is already registered. Please verify your email."
+          data.response === 'fail' &&
+          data.data === 'Email is already registered. Please verify your email.'
         ) {
-          // Email is already registered, handle accordingly (for example, show an error message)
-          // setErrorMessage(data.data); // Set error message to display on the same page
           setResponseMessage(data.data);
-          // setShowRegistrationSuccess(true);
           setShowOtpField(true);
-          setShowVerifyButton(true); 
+          setShowVerifyButton(true);
         } else if (
-          data.response === "fail" &&
-          data.data === "Email is already registered. You can log in."
+          data.response === 'fail' &&
+          data.data === 'Email is already registered. You can log in.'
         ) {
-          alert(data.data);
-          navigate("/login", {
-            state: { emailMobOption: loginMethod, emailMob: emailOrMobile },
-          });
+          setTerms(data.data);
         } else {
-          alert(data.data);
+          setResponseMessage(data.data);
         }
-
       })
       .catch((error) => {
-        console.error("Error signing up:", error);
+        console.error('Error signing up:', error);
         if (error.detail && Array.isArray(error.detail) && error.detail.length > 0) {
           const detail = error.detail[0];
-          if (detail.type === "value_error" && detail.loc.includes("user_name")) {
+          if (detail.type === 'value_error' && detail.loc.includes('user_name')) {
             setResponseMessage(detail.msg);
           } else {
-            setResponseMessage("Failed to sign up Names can only contain alphabetic characters");
+            setResponseMessage('');
           }
         } else {
-          setResponseMessage("Failed to sign up Names can only contain alphabetic characters");
+          setResponseMessage(' Names can only contain alphabetic characters');
         }
       });
   };
@@ -233,7 +246,19 @@ const Signup = () => {
   const sendOTP = () => {
     setShowOtpField(true);
   };
- 
+  const handleInputChange = (field, value) => {
+    if (field === 'emailOrMobile') {
+      setemailOrMobile(value);
+    } else if (field === 'name') {
+      if (validateName(value.trim())) {
+        setResponseMessage1("");
+      }
+      setName(value);
+    } else if (field === 'termsChecked') {
+        setTermsChecked(value);
+        setTerms("");
+    }
+};
   //   let valid = true;
   //   const newErrors = {};
 
@@ -274,12 +299,30 @@ const Signup = () => {
   // };
   const handleSignUp2 = () => {
   
-    setSubmitted1(true);
-
-    if (!termsChecked) {
-      setTerms("Please agree to the terms and conditions");
-      return;
+    let hasError = false;
+  
+    if (name1.trim() === "" || mobile.trim() === "") {
+      setResponseMessage1("Please enter all fields");
+      hasError = true;
+    } else if (!validateName(name1.trim())) {
+      setResponseMessage1("Names can only contain alphabetic characters");
+      hasError = true;
+    } else {
+      setResponseMessage1("");
     }
+  
+  if (!hasError) {
+    if (!termsChecked) {
+        setTerms("Please agree to the terms and conditions");
+        hasError = true;
+    } else {
+        setTerms("");
+    }
+}
+
+if (hasError) {
+    return;
+}
     setResendAvailable1(false); // Disable resend button after sending OTP
     setResendTime1(1 * 60);
     const userData = {
@@ -332,14 +375,14 @@ const Signup = () => {
         } else if (
           data.response === "fail" &&
           data.data ===
-            "400: Mobile Number is already registered. You can log in."
+            "Mobile Number is already registered. You can log in."
           
         ) {
-          alert(data.data);
+          setTerms(data.data);
           // navigate("/Register");
-          navigate("/login", {
-            state: { emailMobOption: loginMethod, emailMob: mobile },
-          });
+          // navigate("/login", {
+          //   state: { emailMobOption: loginMethod, emailMob: mobile },
+          // });
         }else if (
           data.response === "fail" &&
           data.data ===
@@ -350,14 +393,26 @@ const Signup = () => {
           setResponseMessage(data.data);
         }
          else {
-          alert(data.data);
-          handleOpenGmail(loginMethod,mobile);
+          setTerms(data.data);
         }
       })
       .catch((error) => {
         console.error("Error signing up:", error);
       });
   };
+  const handleInputChange1 = (field, value) => {
+    if (field === 'mobile') {
+      setMobile(value);
+    } else if (field === 'name1') {
+      if (validateName(value.trim())) {
+        setResponseMessage1("");
+      }
+      setName1(value);
+    } else if (field === 'termsChecked') {
+        setTermsChecked(value);
+        setTerms("");
+    }
+};
   const handleVerification = async () => {
     if (!termsChecked) {
       setTerms("Please agree to the terms and conditions");
@@ -386,6 +441,7 @@ const Signup = () => {
       if (data.response === "success") {
         // setShowSecondButton(true);
         setShowRegistrationSuccess(true);
+        handleOpenGmail(loginMethod,mobile);
       } else if (
         data.response === "fail" &&
         data.data ===
@@ -432,7 +488,15 @@ const Signup = () => {
       if (data.response === "success") {
         // setShowSecondButton(true);
         setShowRegistrationSuccess(true);
-      } else {
+      }  else if (
+        data.response === "fail" &&
+        data.detail ===
+          "Invalid or incorrect OTP."
+        
+      ) {
+     
+        setResponseMessage(data.detail);
+      }else {
         console.log("Response other than success:", data.response);
       }
   
@@ -586,10 +650,10 @@ const Signup = () => {
       );
     }
   };
-  const handleMobileChange1 = (e) => {
-    const inputValue = e.target.value;
+  const handleMobileChange1 = (inputValue) => {
     if (/^\d*$/.test(inputValue)) {
       setMobile(inputValue);
+      handleInputChange('mobile', inputValue); // Assuming 'mobile' is the input type
     }
   };
   const handleMobileChange2 = (e) => {
@@ -875,9 +939,9 @@ const Signup = () => {
                             label="Name"
                             required
                             variant="outlined"
-                            error={submitted && name.trim() === ""}
+                            error={submitted && responseMessage1}
                             value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            onChange={(e) => handleInputChange('name', e.target.value)}
                             className={styles.inputField}
                             style={{ width: "325px", height: "50px" }}
                             InputLabelProps={{
@@ -914,9 +978,9 @@ const Signup = () => {
                             id="email"
                             required
                             label="Email"
-                            error={submitted && emailOrMobile.trim() === ""}
+                            error={submitted && responseMessage1}
                             value={emailOrMobile}
-                            onChange={(e) => setemailOrMobile(e.target.value)}
+                            onChange={(e) => handleInputChange('emailOrMobile', e.target.value)}
                             variant="outlined"
                             className={styles.inputField}
                             style={{ width: "325px", height: "50px" }}
@@ -947,37 +1011,6 @@ const Signup = () => {
                           </p>
                         )}
                       </div>
-                      {!showOtpField ? (
-                        <div className={styles.sendOTP}>
-                          <button
-                            onClick={handleSignUp1}
-                            className={styles.sendOTP1}
-                          >
-                            Send OTP
-                          </button>
-                        </div>
-                      ) : (
-                        <div className={styles.sendOTP}>
-                          <span className={styles.resendAvailable}>
-                            {" "}
-                            {resendAvailable
-                              ? ""
-                              : ` (${formatTime(resendTime)})`}
-                          </span>
-                          <button
-                            onClick={handleSignUp1}
-                            disabled={!resendAvailable}
-                            className={
-                              resendAvailable
-                                ? styles.sendOTP1
-                                : styles.disabledButton
-                            }
-                          >
-                            {resendAvailable ? "Resend OTP" : `Resend OTP `}
-                          </button>
-                        </div>
-                      )}
-                    
                       {showOtpField && (
                         <div className={styles.verification}>
                           <div className={styles.verificationcode}>
@@ -1011,6 +1044,68 @@ const Signup = () => {
                           </div>
                         </div>
                       )}
+                           {responseMessage1 && (
+                  <p className={styles1.responseMessage1} style={{ color: 'red' }}>{responseMessage1}</p>
+                )}
+                        {responseMessage && (
+                  <p className={styles1.responseMessage1}>{responseMessage}</p>
+                )}
+
+{submitted && !!errors && <div style={{ color: 'red' }}>{errors}</div>}
+                      <div className={styles1.checkbox1}> 
+                  <input
+                    type="checkbox"
+                    id="termsCheckbox"
+                    className={styles.checkboxInput1}
+                    style={{
+                      width: "15px",
+                      height: "15px",
+                    }}
+                    checked={termsChecked}
+                    onChange={(e) => handleInputChange('termsChecked', e.target.checked)}
+                  />
+                  <span className={styles.span1}>
+                    {" "}
+                    I agree with the{" "}
+                    <a className={styles.terms} href="/termsandconditions">
+                      terms and conditions
+                    </a>
+                  </span>
+
+                
+                </div>
+                      {!showOtpField ? (
+                        <div className={styles.sendOTP}>
+                          <button
+                            onClick={handleSignUp1}
+                            className={styles.sendOTP1}
+                          >
+                            Send OTP
+                          </button>
+                        </div>
+                      ) : (
+                        <div className={styles.sendOTP}>
+                          <span className={styles.resendAvailable}>
+                            {" "}
+                            {resendAvailable
+                              ? ""
+                              : ` (${formatTime(resendTime)})`}
+                          </span>
+                          <button
+                            onClick={handleSignUp1}
+                            disabled={!resendAvailable}
+                            className={
+                              resendAvailable
+                                ? styles.sendOTP1
+                                : styles.disabledButton
+                            }
+                          >
+                            {resendAvailable ? "Resend OTP" : `Resend OTP `}
+                          </button>
+                        </div>
+                      )}
+                    
+                   
                      
                     </div>
                   </div>
@@ -1040,7 +1135,7 @@ const Signup = () => {
                             label="Name"
                             type="text"
                             variant="outlined"
-                            error={submitted1 && name1.trim() === ""}
+                            error={submitted1 && responseMessage1}
                             className={styles.inputField}
                             style={{ width: "325px", height: "50px" }}
                             InputLabelProps={{
@@ -1064,11 +1159,11 @@ const Signup = () => {
                             }}
                             name="name"
                             value={name1}
-                            onChange={(e) => setName1(e.target.value)}
+                            onChange={(e) => handleInputChange1('name1', e.target.value)}
                           />
                         </div>
-                        {errors.name && (
-                          <p className={styles.errormessage}>{errors.name}</p>
+                        {errors.name1 && (
+                          <p className={styles.errormessage}>{errors.name1}</p>
                         )}
                       </div>
 
@@ -1084,9 +1179,9 @@ const Signup = () => {
                             label="Mobile Number"
                             type="tel"
                             required
-                            error={submitted1 && mobile.trim() === ""}
+                            error={submitted1 && responseMessage1}
                             value={mobile}
-                            onChange={handleMobileChange1}
+                            onChange={(e) => handleMobileChange1(e.target.value)} 
                             variant="outlined"
                             className={styles.inputField}
                             style={{
@@ -1120,36 +1215,6 @@ const Signup = () => {
                           </p>
                         )}
                       </div>
-                      {!showOtpField1 ? (
-                        <div className={styles.sendOTP}>
-                          <button
-                            onClick={handleSignUp2}
-                            className={styles.sendOTP1}
-                          >
-                            Send OTP
-                          </button>
-                        </div>
-                      ) : (
-                        <div className={styles.sendOTP}>
-                          <span className={styles.resendAvailable}>
-                            {" "}
-                            {resendAvailable1
-                              ? ""
-                              : ` (${formatTime(resendTime1)})`}
-                          </span>
-                          <button
-                            onClick={handleSignUp2}
-                            disabled={!resendAvailable1}
-                            className={
-                              resendAvailable1
-                                ? styles.sendOTP1
-                                : styles.disabledButton
-                            }
-                          >
-                            {resendAvailable1 ? "Resend OTP" : `Resend OTP `}
-                          </button>
-                        </div>
-                      )}
                       {showOtpField1 && (
                         <div className={styles.verification}>
                           <div className={styles.verificationcode}>
@@ -1183,6 +1248,65 @@ const Signup = () => {
                           </div>
                         </div>
                       )}
+                              {responseMessage1 && (
+                  <p className={styles1.responseMessage1} style={{ color: 'red' }}>{responseMessage1}</p>
+                )}
+                              {responseMessage && (
+                  <p className={styles1.responseMessage1} >{responseMessage}</p>
+                )}
+                    <div className={styles1.checkbox1}> 
+                  <input
+                    type="checkbox"
+                    id="termsCheckbox"
+                    className={styles.checkboxInput1}
+                    style={{
+                      width: "15px",
+                      height: "15px",
+                    }}
+                    checked={termsChecked}
+                    onChange={(e) => handleInputChange1('termsChecked', e.target.checked)}
+                  />
+                  <span className={styles.span1}>
+                    {" "}
+                    I agree with the{" "}
+                    <a className={styles.terms} href="/termsandconditions">
+                      terms and conditions
+                    </a>
+                  </span>
+
+                
+                </div>
+                      {!showOtpField1 ? (
+                        <div className={styles.sendOTP}>
+                          <button
+                            onClick={handleSignUp2}
+                            className={styles.sendOTP1}
+                          >
+                            Send OTP
+                          </button>
+                        </div>
+                      ) : (
+                        <div className={styles.sendOTP}>
+                          <span className={styles.resendAvailable}>
+                            {" "}
+                            {resendAvailable1
+                              ? ""
+                              : ` (${formatTime(resendTime1)})`}
+                          </span>
+                          <button
+                            onClick={handleSignUp2}
+                            disabled={!resendAvailable1}
+                            className={
+                              resendAvailable1
+                                ? styles.sendOTP1
+                                : styles.disabledButton
+                            }
+                          >
+                            {resendAvailable1 ? "Resend OTP" : `Resend OTP `}
+                          </button>
+                        </div>
+                      )}
+                   
                    
                       {/* {showOtpField && (
       <div className={styles.sendOTP}>
@@ -1424,9 +1548,7 @@ const Signup = () => {
                     </div>
                   </div>
                 )}
-   {responseMessage && (
-                  <p className={styles1.responseMessage1}>{responseMessage}</p>
-                )}
+ 
               
                 {/* {errorMessage && (
                         <p className={styles.errormessage}>{errorMessage}</p>
@@ -1589,7 +1711,7 @@ alt="Google Logo"
               <span className={styles.diffColor}>Sign up</span>{" "}
             </p> */}
               
-                <div className={styles1.checkbox1}>
+               {/* <div className={styles1.checkbox1}> 
                   <input
                     type="checkbox"
                     id="termsCheckbox"
@@ -1616,7 +1738,7 @@ alt="Google Logo"
               >
                 I agree with the terms and conditions
               </label> */}
-                </div>
+                {/* </div>  */}
                 <p
                   className={`${styles.signUpText1} ${
                     !isContentSelected || loginMethod === "gmail"
@@ -1631,7 +1753,7 @@ alt="Google Logo"
                   > 
                    login
                   </span>
-                </p>
+                </p> 
 
                 {terms && (
                   <p className={styles1.responseMessage}>{terms}</p>

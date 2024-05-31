@@ -168,18 +168,18 @@ const quizresults = () => {
         
       </div>
 
-      <div className={styles.sentencesContainer}>
-        <div className={styles.sentence}>
+      {/* <div className={styles.sentencesContainer}>
+        {/* <div className={styles.sentence}>
         <img
     src={categoryIcon} 
     alt="Category Icon"
     className={styles.icon2}
   />
           <span>1st attempt, You have 2 more attempts</span>
-        </div>
+        </div> */}
        
         
-      </div>
+      {/* </div>  */}
       
       <div className={styles.sentencesContainer}>
         <div className={styles.sentence}>
@@ -208,7 +208,7 @@ const quizresults = () => {
     alt="Calendar Icon"
     className={styles.icon2}
   />
-          <span>{quizData.correct_answers} correct answers</span>
+          <span>{quizData.correct_answers} correct answer</span>
         </div>
         </div>
         <div className={styles.verticalLine}></div>
@@ -320,7 +320,14 @@ const quizresults = () => {
           );
         })}
       </div>
-      {leaderboardData.slice(3).map((entry, index) => (
+      <div className={styles.columns}>
+    <span className={styles.column}>Rank</span>
+    <span className={styles.column}>User Name</span>
+    <span className={styles.column}>Percentage</span>
+    <span className={styles.column}>Attempts</span>
+    <span className={styles.column}>Duration</span>
+  </div>
+      {leaderboardData.slice(3,10).map((entry, index) => (
         <div key={entry.rank} className={styles.values}>
           <div className={styles.value}>{entry.rank}</div>
           <div className={styles.value}>{entry.user_name}</div>

@@ -59,18 +59,23 @@ const Signup = () => {
   const [statename, setstatename] = useState("");
   const [data, setdata] = useState("");
   const [showOtpField, setShowOtpField] = useState(false);
+  const [showOtpField1, setShowOtpField1] = useState(false);
   const [responseMessage, setResponseMessage] = useState("");
   const [termsChecked, setTermsChecked] = useState(false);
   const [errors, setErrors] = useState({});
   const [mobile, setMobile] = useState("");
   const [mobile1, setMobile1] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [submitted1, setSubmitted1] = useState(false);
   const [resendAvailable, setResendAvailable] = useState(true);
+  const [resendAvailable1, setResendAvailable1] = useState(true);
   const [resendTime, setResendTime] = useState(10 * 60);
+  const [resendTime1, setResendTime1] = useState(1 * 60);
   const [showSecondButton, setShowSecondButton] = useState(false);
   const [countdown, setCountdown] = useState(5); // Initial countdown value
   const [terms, setTerms] = useState("");
-
+  const [showVerifyButton, setShowVerifyButton] = useState(false); 
+  const [showVerifyButton1, setShowVerifyButton1] = useState(false); 
   const navigate = useNavigate();
   const handleBackToDashboard = () => {
     navigate("/login");
@@ -107,6 +112,21 @@ const Signup = () => {
       clearTimeout(timer);
     };
   }, [resendTime]);
+
+  useEffect(() => {
+    let timer;
+    if (resendTime1 > 0) {
+      timer = setTimeout(() => {
+        setResendTime1((prevTime) => prevTime - 1);
+      }, 1000);
+    } else {
+      setResendAvailable1(true);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [resendTime1]);
 
   useEffect(() => {
     if (showRegistrationSuccess && countdown > 0) {
@@ -171,6 +191,7 @@ const Signup = () => {
           setResponseMessage(data.data);
           // setShowRegistrationSuccess(true);
           setShowOtpField(true);
+          setShowVerifyButton(true); 
         } else if (
           data.response === "fail" &&
           data.data === "Email is already registered. Please verify your email."
@@ -180,6 +201,7 @@ const Signup = () => {
           setResponseMessage(data.data);
           // setShowRegistrationSuccess(true);
           setShowOtpField(true);
+          setShowVerifyButton(true); 
         } else if (
           data.response === "fail" &&
           data.data === "Email is already registered. You can log in."
@@ -252,17 +274,17 @@ const Signup = () => {
   // };
   const handleSignUp2 = () => {
   
-    setSubmitted(true);
+    setSubmitted1(true);
 
     if (!termsChecked) {
       setTerms("Please agree to the terms and conditions");
       return;
     }
-    setResendAvailable(false); // Disable resend button after sending OTP
-    setResendTime(10 * 60);
+    setResendAvailable1(false); // Disable resend button after sending OTP
+    setResendTime1(1 * 60);
     const userData = {
       signup_option: loginMethod,
-      user_name: name,
+      user_name: name1,
       email_or_mobile: mobile,
       
     };
@@ -291,7 +313,8 @@ const Signup = () => {
           "Mobile Number is already registered.Please verify your"
         ) {
           setResponseMessage(data.output);
-          setShowOtpField(true);
+          setShowOtpField1(true);
+          setShowVerifyButton1(true); 
         } else if (
           data.response === "success" &&
           data.output &&
@@ -299,7 +322,8 @@ const Signup = () => {
         ) {
           const sanitizedOutput = data.output.replace(/\d{6}\s?/, ""); // Removes the OTP (6 digits followed by optional space)
           setResponseMessage(sanitizedOutput);
-          setShowOtpField(true);
+          setShowOtpField1(true);
+          setShowVerifyButton1(true); 
         } else if (
           data.response === "fail" &&
           data.data === "400: Mobile Number is Invalid."
@@ -314,11 +338,20 @@ const Signup = () => {
           alert(data.data);
           // navigate("/Register");
           navigate("/login", {
-            state: { emailMobOption: loginMethod, emailMob: emailOrMobile },
+            state: { emailMobOption: loginMethod, emailMob: mobile },
           });
-        } else {
+        }else if (
+          data.response === "fail" &&
+          data.data ===
+            "Mobile Number is Invalid."
+          
+        ) {
+       
+          setResponseMessage(data.data);
+        }
+         else {
           alert(data.data);
-          handleOpenGmail(loginMethod,emailOrMobile);
+          handleOpenGmail(loginMethod,mobile);
         }
       })
       .catch((error) => {
@@ -353,6 +386,52 @@ const Signup = () => {
       if (data.response === "success") {
         // setShowSecondButton(true);
         setShowRegistrationSuccess(true);
+      } else if (
+        data.response === "fail" &&
+        data.data ===
+          "Invalid or incorrect OTP."
+        
+      ) {
+     
+        setResponseMessage(data.data);
+      }else {
+        console.log("Response other than success:", data.response);
+      }
+  
+    } catch (error) {
+      console.error("Error:", error);
+      // Optionally show an error message to the user
+      // alert("An error occurred during OTP verification");
+    }
+  };
+  const handleVerification1 = async () => {
+    if (!termsChecked) {
+      setTerms("Please agree to the terms and conditions");
+      return;
+    }
+    try {
+      const response = await fetch("https://quizifai.com:8010/verification", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          verify_option: loginMethod,
+          email_or_mobile: emailOrMobile,
+          otp: otp,
+        }),
+      });
+
+      // Checking if response is successful
+      if (!response.ok) {
+        throw new Error("Failed to verify OTP. Status: " + response.status);
+      }
+      const data = await response.json();
+
+      if (data.response === "success") {
+        // setShowSecondButton(true);
+        setShowRegistrationSuccess(true);
       } else {
         console.log("Response other than success:", data.response);
       }
@@ -363,7 +442,6 @@ const Signup = () => {
       // alert("An error occurred during OTP verification");
     }
   };
-
 
   //   try {
   //     const response = await fetch("https://quizifai.com:8010/verification", {
@@ -962,7 +1040,7 @@ const Signup = () => {
                             label="Name"
                             type="text"
                             variant="outlined"
-                            error={submitted && name.trim() === ""}
+                            error={submitted1 && name1.trim() === ""}
                             className={styles.inputField}
                             style={{ width: "325px", height: "50px" }}
                             InputLabelProps={{
@@ -985,8 +1063,8 @@ const Signup = () => {
                               autoComplete: "off",
                             }}
                             name="name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            value={name1}
+                            onChange={(e) => setName1(e.target.value)}
                           />
                         </div>
                         {errors.name && (
@@ -1006,7 +1084,7 @@ const Signup = () => {
                             label="Mobile Number"
                             type="tel"
                             required
-                            error={submitted && mobile.trim() === ""}
+                            error={submitted1 && mobile.trim() === ""}
                             value={mobile}
                             onChange={handleMobileChange1}
                             variant="outlined"
@@ -1042,7 +1120,7 @@ const Signup = () => {
                           </p>
                         )}
                       </div>
-                      {!showOtpField ? (
+                      {!showOtpField1 ? (
                         <div className={styles.sendOTP}>
                           <button
                             onClick={handleSignUp2}
@@ -1055,24 +1133,24 @@ const Signup = () => {
                         <div className={styles.sendOTP}>
                           <span className={styles.resendAvailable}>
                             {" "}
-                            {resendAvailable
+                            {resendAvailable1
                               ? ""
-                              : ` (${formatTime(resendTime)})`}
+                              : ` (${formatTime(resendTime1)})`}
                           </span>
                           <button
                             onClick={handleSignUp2}
-                            disabled={!resendAvailable}
+                            disabled={!resendAvailable1}
                             className={
-                              resendAvailable
+                              resendAvailable1
                                 ? styles.sendOTP1
                                 : styles.disabledButton
                             }
                           >
-                            {resendAvailable ? "Resend OTP" : `Resend OTP `}
+                            {resendAvailable1 ? "Resend OTP" : `Resend OTP `}
                           </button>
                         </div>
                       )}
-                      {showOtpField && (
+                      {showOtpField1 && (
                         <div className={styles.verification}>
                           <div className={styles.verificationcode}>
                             <TextField
@@ -1558,7 +1636,7 @@ alt="Google Logo"
                 {terms && (
                   <p className={styles1.responseMessage}>{terms}</p>
                 )}
-                {loginMethod === "email" && (
+                {loginMethod === "email" && showVerifyButton && (
                   // <button
                   //   onClick={handleSignUp1}
                   //   // onSubmit={handleVerification}
@@ -1568,7 +1646,7 @@ alt="Google Logo"
                   // </button>
                   <div className={styles.veriflybutton}>
                     <button
-                      onClick={handleVerification}
+                      onClick={handleVerification1}
                       className={styles.verifly}
                       // style={{ display: showSecondButton ? 'none' : 'inline-block' }}
                     >
@@ -1586,7 +1664,7 @@ alt="Google Logo"
               Sign Up
             </button> */}
 
-                {loginMethod === "mobile" && (
+                {loginMethod === "mobile" && showVerifyButton1 && (
                   // <button
                   //   onClick={handleSignUp2}
                   //   className={styles1.loginButton}

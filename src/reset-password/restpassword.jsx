@@ -323,6 +323,7 @@ const resetpassword = () => {
                               <div
                                 className={styles.passwordToggleIcon}
                                 onClick={togglePasswordVisibility}
+                                style={{cursor: "pointer",color: "#A7A3FF"}}
                               >
                                 {showPassword ? <FaEye /> : <FaEyeSlash />}
                               </div>
@@ -369,6 +370,7 @@ const resetpassword = () => {
                                 <div
                                   className={styles.passwordToggleIcon}
                                   onClick={togglePasswordVisibility}
+                                  style={{cursor: "pointer",color: "#A7A3FF"}}
                                 >
                                   {showPassword ? <FaEye /> : <FaEyeSlash />}
                                 </div>

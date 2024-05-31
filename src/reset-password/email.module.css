@@ -759,6 +759,7 @@ margin-top: -3px;
   }
   .passwordToggleIcon {
     margin-left: 350px;
+    cursor: pointer;
   }
 
   .emailContent .inputWrapper:nth-child(2) .forgot-password {

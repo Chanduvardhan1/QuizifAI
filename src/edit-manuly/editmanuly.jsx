@@ -532,6 +532,7 @@ export default function editmanuly() {
   const handleNext = async () => {
     try {
          const user_id = localStorage.getItem('user_id');
+         const quiz_id = localStorage.getItem('quiz_id');
 
       // Check if user_id is retrieved successfully
       if (!user_id) {
@@ -546,7 +547,7 @@ export default function editmanuly() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          quiz_id: 2146,
+          quiz_id: quiz_id,
           quiz_title: title,
           num_questions: numQuestions,
           quiz_description: description,
@@ -597,6 +598,9 @@ export default function editmanuly() {
   };
   useEffect(() => {
     const fetchQuizData = async () => {
+      const user_id = localStorage.getItem('user_id');
+      const quiz_id = localStorage.getItem('quiz_id');
+
       try {
         const response = await fetch('https://quizifai.com:8010/access_quiz_for_master', {
           method: 'POST',
@@ -605,8 +609,8 @@ export default function editmanuly() {
             'accept': 'application/json'
           },
           body: JSON.stringify({
-            quiz_id: 2146,
-            user_id: 466
+            quiz_id: quiz_id,
+            user_id: user_id
           })
         });
 

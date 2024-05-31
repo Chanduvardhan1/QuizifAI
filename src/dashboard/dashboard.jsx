@@ -597,7 +597,7 @@ const Dashboard = () => {
                           src={Edit_button}
                           alt="Play icon"
                         />
-                        <span className={styles.edittext}>
+                        <span className={styles.edittext} onClick={() => Edit(latestquizzes[0].quiz_id)}>
                           Edit
                         </span>
                       </div>
@@ -737,7 +737,7 @@ const Dashboard = () => {
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className={styles.edittext}>
+                      <span className={styles.edittext}onClick={() => Edit(latestquizzes[1].quiz_id)}>
                         Edit
                       </span>
                       <img
@@ -869,7 +869,7 @@ const Dashboard = () => {
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className={styles.edittext}>
+                      <span className={styles.edittext} onClick={() => Edit(latestquizzes[2].quiz_id)}>
                         Edit
                       </span>
                       <img
@@ -998,7 +998,7 @@ const Dashboard = () => {
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className={styles.edittext}>
+                      <span className={styles.edittext} onClick={() => Edit(latestquizzes[3].quiz_id)}>
                         Edit
                       </span>
                       <img
@@ -1128,7 +1128,7 @@ const Dashboard = () => {
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className={styles.edittext}>
+                      <span className={styles.edittext} onClick={() => Edit(latestquizzes[4].quiz_id)}>
                         Edit
                       </span>
                       <img
@@ -1257,7 +1257,7 @@ const Dashboard = () => {
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className={styles.edittext}>
+                      <span className={styles.edittext} onClick={() => Edit(latestquizzes[5].quiz_id)}>
                         Edit
                       </span>
                       <img
@@ -1397,7 +1397,7 @@ const Dashboard = () => {
                               src={Edit_button}
                               alt="Play icon"
                             />
-                            <span className={styles.edittext}>
+                            <span className={styles.edittext} onClick={() => Edit(latestquizzes[6].quiz_id)}>
                               Edit
                             </span>
                             <img
@@ -1530,7 +1530,7 @@ const Dashboard = () => {
                               src={Edit_button}
                               alt="Play icon"
                             />
-                            <span className={styles.edittext}>
+                            <span className={styles.edittext} onClick={() => Edit(latestquizzes[7].quiz_id)}>
                               Edit
                             </span>
                             <img
@@ -1662,7 +1662,7 @@ const Dashboard = () => {
                               src={Edit_button}
                               alt="Play icon"
                             />
-                            <span className={styles.edittext}>
+                            <span className={styles.edittext} onClick={() => Edit(latestquizzes[8].quiz_id)}>
                               Edit
                             </span>
                             <img

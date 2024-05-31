@@ -65,7 +65,7 @@ const Questions = () => {
     fetchLeaderboardData();
   }, []);
 const topThree = leaderboardData.slice(0, 3);
-  const remaining = leaderboardData.slice(3);
+  const remaining = leaderboardData.slice(3,10);
 
   return (
     <div className={styles.container}>

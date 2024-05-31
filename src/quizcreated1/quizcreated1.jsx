@@ -55,6 +55,11 @@ function quizcreated1() {
 const Preview = () => {
   navigate("/quizview1", { state: { quizData: quizData } });
 };
+const Edit = (quizId) => {
+  // navigate(`/quizaccess/${quizId}`);
+  localStorage.setItem('quiz_id', quizId); // Store quiz_id in local storage
+  navigate(`/editmanuly`);
+};
   return (
     <>
       <div>
@@ -314,7 +319,7 @@ const Preview = () => {
               Preview
             </button>
             <div className="absolute top-[729px] left-[524px]">
-              <a href="/quiz-type">
+              <a onClick={() => Edit(quizData.quiz_id)}>
                 <button className="w-[123px] h-[32px] rounded-[10px] bg-[#214082] text-white">
                   Edit
                 </button>

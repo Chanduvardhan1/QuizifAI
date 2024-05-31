@@ -1358,10 +1358,11 @@ const Dashboard = () => {
      {getMoreQuizzes ? 
          <div className=" ">
           <div className="flex">
-            <div className={styles.card} style={{ paddingTop: "8px" }}
+            <div className={styles.card} 
                     style={{
                       paddingTop: "8px",
                       backgroundColor: "#CFFCFF",
+                      paddingTop: "8px"
                     }}
                   >
                     <span className={styles.title}>

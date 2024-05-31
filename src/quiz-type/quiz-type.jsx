@@ -1399,7 +1399,7 @@ export default function quiztype() {
         <input
           type="text"
           placeholder={`Option Text`}
-          className="w-[339px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[15px] font-normal"
+          className="w-[70%] h-[50px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[15px] font-normal"
           value={option.answer_option_text}
           onChange={(e) => {
             const newOptions = [...questions[questionIndex].options];

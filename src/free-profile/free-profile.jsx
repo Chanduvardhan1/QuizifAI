@@ -244,7 +244,7 @@ const FreeProfile = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            pincode: pincode,
+            pincode: postalCode,
           }),
         }
       );
@@ -264,6 +264,7 @@ const FreeProfile = () => {
       ) {
         setstatename(data.data[0][0].Statename);
         setcountryname(data.data[0][0].country_name);
+        setCity(data.data[0][0].cityname);
 
       }
     } catch (error) {

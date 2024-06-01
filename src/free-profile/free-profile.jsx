@@ -228,7 +228,6 @@ const FreeProfile = () => {
   const [countryname, setcountryname] = useState("");
   const [statename, setstatename] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
   const [responseData, setResponseData] = useState(null);
 
   const handleSubmit1 = async (e) => {
@@ -244,7 +243,7 @@ const FreeProfile = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            pincode: pincode,
+            pincode: postalCode,
           }),
         }
       );
@@ -264,6 +263,7 @@ const FreeProfile = () => {
       ) {
         setstatename(data.data[0][0].Statename);
         setcountryname(data.data[0][0].country_name);
+        setCity(data.data[0][0].Cityname);
 
       }
     } catch (error) {
@@ -271,6 +271,7 @@ const FreeProfile = () => {
       setErrorMessage("Failed to submit form. Please try again.");
     }
   };
+  
   const [userName, setUserName] = useState("");
 
   useEffect(() => {
@@ -568,11 +569,11 @@ const FreeProfile = () => {
           },
           autoComplete: "off",
         }}
-        className={`${styles.iconInput} ${!isEditMode ?       styles.readOnlyInput : ""}`}
-        sx={{
-          width: "150px", // Apply styles directly using sx
-          height: "44px",
-        }}
+        className={`${styles.iconInput} ${!isEditMode ? styles.readOnlyInput : ""}`}
+          sx={{
+            width: "150px", // Apply styles directly using sx
+            height: "44px",
+          }}
       />
                <div
                     className={styles.searchicon}
@@ -659,7 +660,7 @@ const FreeProfile = () => {
                   },
                   autoComplete: "off",
                 }}
-                className={`${styles.iconInput} ${!isEditMode ?       styles.readOnlyInput : ""}`}
+                className={`${styles.iconInput} ${!isEditMode ? styles.readOnlyInput : ""}`}
                 sx={{
                   width: "150px", // Apply styles directly using sx
                   height: "44px",
@@ -681,6 +682,8 @@ const FreeProfile = () => {
                               </MenuItem>
                             ))}
             </div>
+           {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+
             <div className={styles.inputGroup}>
               <TextField
                 type="text"
@@ -862,10 +865,10 @@ const FreeProfile = () => {
                 className={!isEditMode ? styles.readOnlyInput : ""}
               />
               <div className={styles.buttonContainer}>
-                <button className={styles.customButton}>Verify</button>
-                <button className={styles.customButton} onClick={toggleEditMode}>
+              <button className={styles.customButton} onClick={toggleEditMode}>
                   {isEditMode ? 'Save':'Edit'}
                 </button>
+                <button className={styles.customButton}>Verify</button>
                 {/* <button className={styles.customButton} onClick={handleSubmit}>save</button> */}
               </div>
             </div>

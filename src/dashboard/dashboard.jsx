@@ -644,14 +644,11 @@ const Dashboard = () => {
               <div className={styles.description}>
                 <span>{latestquizzes[0]?.quiz_description}</span>
               </div>
+              
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "40px" }}
+                style={{ marginTop: "65px" }}
               >
-                <div
-                  className={styles.infoIcon}
-                  style={{ marginTop: "20px" }}
-                ></div>
                 <div className="z-0">
                   <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
                     <img
@@ -662,11 +659,11 @@ const Dashboard = () => {
                       height={10}
                     />
                     <p>{latestquizzes[0]?.quiz_attempts}</p>
-                    <span className="text-[7px] ml-1">attempts</span>
+                    <span className="text-[7px] ml-[2px]">attempts</span>
                   </div>
                 </div>
 
-                <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
+                <div className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
                   <img
                     className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
                     src={NoOfQuestion}
@@ -676,8 +673,9 @@ const Dashboard = () => {
                   />{" "}
                   {latestquizzes[0]?.number_of_questions}
                   <span className="text-[7px] ml-[1px]">questions</span>
-                </span>
-                <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                </div>
+
+                <div className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
                   <img
                     className="pb-[1px] mr-[1px] relative left-[3px] "
                     src={Clock}
@@ -687,8 +685,9 @@ const Dashboard = () => {
                   />{" "}
                   {latestquizzes[0]?.quiz_duration}
                   <span className="text-[7px] -ml-[0.5px]">minutes</span>
-                </span>
-                <span className="flex text-[8px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                </div>
+
+                <div className="flex text-[8px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                   <img
                     className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
                     src={Easy}
@@ -697,7 +696,8 @@ const Dashboard = () => {
                     height={9}
                   />{" "}
                   {latestquizzes[0]?.complexity}
-                </span>
+                </div>
+                
               </div>
             </div>
 

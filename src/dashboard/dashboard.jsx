@@ -4,7 +4,7 @@ import styles from "./dashboard.module.css";
 import Navigation from "../navbar/navbar.jsx";
 import LogoutBar from "../logoutbar/logoutbar.jsx";
 import { Line } from "rc-progress";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 // import LogoutBar from "./logoutbar";
 // import { useRouter } from "next/router";
@@ -135,7 +135,6 @@ const Dashboard = () => {
         setPopularquizzes(data.popular_quizzes);
         setAttemptedquizzes(data.attempted_quiz_details);
         setAllquizzes(data.all_quizes);
-
       } catch (error) {
         console.error("Error fetching quiz data:", error);
       }
@@ -144,19 +143,29 @@ const Dashboard = () => {
     fetchQuizData();
   }, [userId, username]);
 
+  const card = ({ latestquizzes, attemptedquizzes }) => {
+    const cardStyle = {
+      backgroundColor: latestquizzes
+        ? "#CFFCFF"
+        : attemptedquizzes
+        ? "#F5F5F5"
+        : "#FFFFFF", // Grey for latest, blue for attempted
+    };
+  };
+
   const handleStartQuiz = (quizId) => {
     // navigate(`/quizaccess/${quizId}`);
-    localStorage.setItem('quiz_id', quizId); // Store quiz_id in local storage
+    localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     navigate(`/quizaccess`);
   };
- 
+
   const leaderboard = () => {
     navigate(`/quiz-results1`);
   };
- 
+
   const Edit = (quizId) => {
     // navigate(`/quizaccess/${quizId}`);
-    localStorage.setItem('quiz_id', quizId); // Store quiz_id in local storage
+    localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     navigate(`/create-editquiz`);
   };
   const toggleNavbar = () => {
@@ -270,29 +279,35 @@ const Dashboard = () => {
           <div className={styles.headerRight}>
             {/* <div>{getFormattedDate()}</div> */}
             <div className="w-[99px] h-[41px] absolute mr-[160px] -mt-2 rounded-[10px] bg-[rgb(254,202,249)]">
-            <div className="flex">
-              <img
-                className="w-[25px] h-[25px] ml-2 mt-2"
-                src={Admin_User}
-                alt="Plus Icon"
-              />
-              <a href="./quizadmin" className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3">
-                User
-              </a>
+              <div className="flex">
+                <img
+                  className="w-[25px] h-[25px] ml-2 mt-2"
+                  src={Admin_User}
+                  alt="Plus Icon"
+                />
+                <a
+                  href="./quizadmin"
+                  className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
+                >
+                  User
+                </a>
+              </div>
             </div>
-          </div>
             <div className="w-[99px] h-[41px] absolute mr-[390px] -mt-2 rounded-[10px] bg-[#FFEDCD]">
-            <div className="flex">
-              <img
-                className="w-[25px] h-[25px] ml-2 mt-2"
-                src={Plus}
-                alt="Plus Icon"
-              />
-              <a href="./create-quiz" className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3">
-                Quiz
-              </a>
+              <div className="flex">
+                <img
+                  className="w-[25px] h-[25px] ml-2 mt-2"
+                  src={Plus}
+                  alt="Plus Icon"
+                />
+                <a
+                  href="./create-quiz"
+                  className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
+                >
+                  Quiz
+                </a>
+              </div>
             </div>
-          </div>
             <div className={styles.searchIconContainer}>
               <img
                 src={searchIcon}
@@ -316,183 +331,193 @@ const Dashboard = () => {
               {/* <span className={styles.moreButton} style={{marginLeft:"170px"}}>
                 More <img src={arrow1} alt="More" width={15} height={8} />
               </span> */}
-
-               {latestResult.length === 0 ? (
+              {latestResult.length === 0 ? (
                 <p className="">No quizzes attempted till now.</p>
-            ) : (
-              <div className={styles.resultInfo}>
-                <div className={styles.infoLine}>
-                  <span
-                    className={styles.info}
-                    style={{
-                      fontSize: "10px",
-                      color: "grey",
-                      textWrap: "nowrap",
+              ) : (
+                <div className={styles.resultInfo}>
+                  <div className={styles.infoLine}>
+                    <span
+                      className={styles.info}
+                      style={{
+                        fontSize: "10px",
+                        color: "grey",
+                        textWrap: "nowrap",
+                      }}
+                    >
+                      {latestResult[0]?.attempt_date}
 
-                    }}
-                  >
-                    {latestResult[0]?.attempt_date}
-                
-                <span className="relative group">
-                <span className="absolute ml-3 w-[110px] cursor-pointer z-0 truncate">
-                        {latestResult[0]?.quiz_name}
-                     <span className="hidden absolute w-[200px] top-full left-0 z-20 truncate group-hover:block bg-white p-1 border border-gray-300">
-                        {latestResult[0]?.quiz_name}
-                              </span>
-                     </span>
-                </span>
-                    
-                    {/* - {latestResults[0]?.quiz_category} */}
-                  </span>
-                  <span
-                    style={{
-                      marginLeft: "10px",
-                      width: "130px",
-                      height: "8px",
-                      fontSize: "8px",
-                      marginTop: "7px",
-                      marginRight: "15px",
-                    }}
-                  >
-                    <Line
-                      percent={latestResult[0]?.quiz_percentage}
-                      strokeWidth={4}
-                      strokeColor={getColorPercentage(
-                        latestResult[0]?.quiz_percentage
-                      )}
-                    />
-                    {/* <Progress percent={latestResults[0]?.attained_percentage} /> */}
-                  </span>
-                  <span
-                    className={`text-[10px]  `}
-                    style={{ color: textColorClass, marginTop: "5px" }}
-                  >
-                    {latestResult[0]?.quiz_percentage}%
-                  </span>
-                </div>
-                <hr className={styles.divider} />
-                <div className={styles.infoLine}>
-                  <span
-                    className={styles.info}
-                    style={{ fontSize: "10px", color: "grey",textWrap:"nowrap" }}
-                  >
-                    {latestResult[1]?.attempt_date}
-                    <span className="relative group">
-                <span className="absolute ml-3 w-[110px] cursor-pointer z-0 truncate">
-                        {latestResult[1]?.quiz_name}
-                     <span className="hidden absolute w-[200px] top-full left-0 z-20 truncate group-hover:block bg-white p-1 border border-gray-300">
-                        {latestResult[1]?.quiz_name}
-                              </span>
-                     </span>
-                </span>
-                    {/* - {latestResults[1]?.quiz_category} */}
-                  </span>
-                  <span
-                    style={{
-                      marginLeft: "10px",
-                      width: "130px",
-                      height: "8px",
-                      fontSize: "8px",
-                      marginTop: "7px",
-                      marginRight: "15px",
-                    }}
-                  >
-                    <Line
-                      percent={latestResult[1]?.quiz_percentage}
-                      strokeWidth={4}
-                      strokeColor={getColorPercentage(
-                        latestResult[1]?.quiz_percentage
-                      )}
-                    />
+                      <span className="relative group">
+                        <span className="absolute ml-3 w-[110px] cursor-pointer z-0 truncate">
+                          {latestResult[0]?.quiz_name}
+                          <span className="hidden absolute w-[200px] top-full left-0 z-20 truncate group-hover:block bg-white p-1 border border-gray-300">
+                            {latestResult[0]?.quiz_name}
+                          </span>
+                        </span>
+                      </span>
 
-                    {/* <Progress percent={latestResults[1]?.attained_percentage} /> */}
-                  </span>
-                  <span
-                    className={`text-[10px] `}
-                    style={{ color: textColorClass1 }}
-                  >
-                    {latestResult[1]?.quiz_percentage}%
-                  </span>
-                </div>
-                <hr className={styles.divider} />
-                <div className={styles.infoLine} style={{ fontSize: "10px" }}>
-                  <span
-                    className={styles.info}
-                    style={{ fontSize: "10px", color: "grey",textWrap:"nowrap" }}
-                  >
-                    {latestResult[2]?.attempt_date}{" "}
-                    <span className={styles.titlename}>
-                      {latestResult[2]?.quiz_name}
+                      {/* - {latestResults[0]?.quiz_category} */}
                     </span>
-                    {/* - {latestResults[2]?.quiz_category} */}
-                  </span>
-                  <span
-                    style={{
-                      marginLeft: "10px",
-                      width: "130px",
-                      height: "8px",
-                      fontSize: "8px",
-                      marginTop: "7px",
-                      marginRight: "15px",
-                    }}
-                  >
-                    <Line
-                      percent={latestResult[2]?.quiz_percentage}
-                      strokeWidth={4}
-                      strokeColor={getColorPercentage(
-                        latestResult[2]?.quiz_percentage
-                      )}
-                    />
-
-                    {/* <Progress percent={latestResults[2]?.attained_percentage} /> */}
-                  </span>
-                  <span
-                    className={`text-[10px] `}
-                    style={{ color: textColorClass2 }}
-                  >
-                    {latestResult[2]?.quiz_percentage}%
-                  </span>
-                </div>
-                <hr className={styles.divider} />
-                <div className={styles.infoLine} style={{ fontSize: "10px" }}>
-                  <span
-                    className={styles.info}
-                    style={{ fontSize: "10px", color: "grey",textWrap:"nowrap" }}
-                  >
-                    {latestResult[3]?.attempt_date}{" "}
-                    <span className={styles.titlename}>
-                      {latestResult[3]?.quiz_name}
+                    <span
+                      style={{
+                        marginLeft: "10px",
+                        width: "130px",
+                        height: "8px",
+                        fontSize: "8px",
+                        marginTop: "7px",
+                        marginRight: "15px",
+                      }}
+                    >
+                      <Line
+                        percent={latestResult[0]?.quiz_percentage}
+                        strokeWidth={4}
+                        strokeColor={getColorPercentage(
+                          latestResult[0]?.quiz_percentage
+                        )}
+                      />
+                      {/* <Progress percent={latestResults[0]?.attained_percentage} /> */}
                     </span>
-                    {/* - {latestResults[2]?.quiz_category} */}
-                  </span>
-                  <span
-                    style={{
-                      marginLeft: "10px",
-                      width: "130px",
-                      height: "8px",
-                      fontSize: "8px",
-                      marginTop: "6px",
-                      marginRight: "15px",
-                    }}
-                  >
-                    <Line
-                      percent={latestResult[3]?.quiz_percentage}
-                      strokeWidth={4}
-                      strokeColor={getColorPercentage(
-                        latestResult[3]?.quiz_percentage
-                      )}
-                    />
-                    {/* <Progress percent={latestResults[2]?.attained_percentage} /> */}
-                  </span>
-                  <span
-                    className={`text-[10px]`}
-                    style={{ color: textColorClass3 }}
-                  >
-                    {latestResult[3]?.quiz_percentage}%
-                  </span>
+                    <span
+                      className={`text-[10px]  `}
+                      style={{ color: textColorClass, marginTop: "5px" }}
+                    >
+                      {latestResult[0]?.quiz_percentage}%
+                    </span>
+                  </div>
+                  <hr className={styles.divider} />
+                  <div className={styles.infoLine}>
+                    <span
+                      className={styles.info}
+                      style={{
+                        fontSize: "10px",
+                        color: "grey",
+                        textWrap: "nowrap",
+                      }}
+                    >
+                      {latestResult[1]?.attempt_date}
+                      <span className="relative group">
+                        <span className="absolute ml-3 w-[110px] cursor-pointer z-0 truncate">
+                          {latestResult[1]?.quiz_name}
+                          <span className="hidden absolute w-[200px] top-full left-0 z-20 truncate group-hover:block bg-white p-1 border border-gray-300">
+                            {latestResult[1]?.quiz_name}
+                          </span>
+                        </span>
+                      </span>
+                      {/* - {latestResults[1]?.quiz_category} */}
+                    </span>
+                    <span
+                      style={{
+                        marginLeft: "10px",
+                        width: "130px",
+                        height: "8px",
+                        fontSize: "8px",
+                        marginTop: "7px",
+                        marginRight: "15px",
+                      }}
+                    >
+                      <Line
+                        percent={latestResult[1]?.quiz_percentage}
+                        strokeWidth={4}
+                        strokeColor={getColorPercentage(
+                          latestResult[1]?.quiz_percentage
+                        )}
+                      />
+
+                      {/* <Progress percent={latestResults[1]?.attained_percentage} /> */}
+                    </span>
+                    <span
+                      className={`text-[10px] `}
+                      style={{ color: textColorClass1 }}
+                    >
+                      {latestResult[1]?.quiz_percentage}%
+                    </span>
+                  </div>
+                  <hr className={styles.divider} />
+                  <div className={styles.infoLine} style={{ fontSize: "10px" }}>
+                    <span
+                      className={styles.info}
+                      style={{
+                        fontSize: "10px",
+                        color: "grey",
+                        textWrap: "nowrap",
+                      }}
+                    >
+                      {latestResult[2]?.attempt_date}{" "}
+                      <span className={styles.titlename}>
+                        {latestResult[2]?.quiz_name}
+                      </span>
+                      {/* - {latestResults[2]?.quiz_category} */}
+                    </span>
+                    <span
+                      style={{
+                        marginLeft: "10px",
+                        width: "130px",
+                        height: "8px",
+                        fontSize: "8px",
+                        marginTop: "7px",
+                        marginRight: "15px",
+                      }}
+                    >
+                      <Line
+                        percent={latestResult[2]?.quiz_percentage}
+                        strokeWidth={4}
+                        strokeColor={getColorPercentage(
+                          latestResult[2]?.quiz_percentage
+                        )}
+                      />
+
+                      {/* <Progress percent={latestResults[2]?.attained_percentage} /> */}
+                    </span>
+                    <span
+                      className={`text-[10px] `}
+                      style={{ color: textColorClass2 }}
+                    >
+                      {latestResult[2]?.quiz_percentage}%
+                    </span>
+                  </div>
+                  <hr className={styles.divider} />
+                  <div className={styles.infoLine} style={{ fontSize: "10px" }}>
+                    <span
+                      className={styles.info}
+                      style={{
+                        fontSize: "10px",
+                        color: "grey",
+                        textWrap: "nowrap",
+                      }}
+                    >
+                      {latestResult[3]?.attempt_date}{" "}
+                      <span className={styles.titlename}>
+                        {latestResult[3]?.quiz_name}
+                      </span>
+                      {/* - {latestResults[2]?.quiz_category} */}
+                    </span>
+                    <span
+                      style={{
+                        marginLeft: "10px",
+                        width: "130px",
+                        height: "8px",
+                        fontSize: "8px",
+                        marginTop: "6px",
+                        marginRight: "15px",
+                      }}
+                    >
+                      <Line
+                        percent={latestResult[3]?.quiz_percentage}
+                        strokeWidth={4}
+                        strokeColor={getColorPercentage(
+                          latestResult[3]?.quiz_percentage
+                        )}
+                      />
+                      {/* <Progress percent={latestResults[2]?.attained_percentage} /> */}
+                    </span>
+                    <span
+                      className={`text-[10px]`}
+                      style={{ color: textColorClass3 }}
+                    >
+                      {latestResult[3]?.quiz_percentage}%
+                    </span>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
             </div>
           </div>
 
@@ -542,827 +567,906 @@ const Dashboard = () => {
           >
             <p>Latest Quizzes</p>
 
-            <span className={styles.moreLink} onClick={() => setGetMoreQuizzes(true)}>
+            <span
+              className={styles.moreLink}
+              onClick={() => setGetMoreQuizzes(true)}
+            >
               More{" "}
-             
             </span>
             <img
-                className="cursor-pointer mr-[40px]"
-                src={moreArrow}
-                alt="More"
-                width={17}
-                height={8}
-                onClick={() =>setGetMoreQuizzes(false)}
-              />
+              className="cursor-pointer mr-[40px]"
+              src={moreArrow}
+              alt="More"
+              width={17}
+              height={8}
+              onClick={() => setGetMoreQuizzes(false)}
+            />
           </div>
           <div className={styles.infoCards}>
             {/* Info cards content */}
-            <div className={styles.card} style={{ paddingTop: "8px" }}>
-              <p className={styles.title}>{latestquizzes[0]?.quiz_name}</p>
 
-              <div className={styles.iconContainer}>
-                <div className="z-40 mb-[2px] pl-[36px] font-normal rounded ">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                    onClick={toggleNavbar}
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                    />
-                    {isNavbarOpen ? "Close Navbar" : "Open Navbar"}
-                  </svg>
+            <div className="flex">
+              {/* {latestquizzes.map((quiz, index) => {
+                const latestquizzes = index === 0;
+                const attemptedquizzes = quiz.quiz_attempts > 0;
 
-                  {isNavbarOpen && (
-                    <div className={styles.infoIcons}>
-                      {/* start */}
-                      <div className={styles.start}>
+                return (
+                  <Card
+                    key={quiz.quiz_id}
+                    quiz={quiz}
+                    isLatest={isLatest}
+                    isAttempted={isAttempted}
+                  />
+                );
+              })} */}
+              {/* latest-first-first-card  */}
+              <div className={styles.card} style={{ paddingTop: "8px" }}>
+                <p className={styles.title}>{latestquizzes[0]?.quiz_name}</p>
+
+                <div className={styles.iconContainer}>
+                  <div className="z-40 mb-[2px] pl-[36px] font-normal rounded ">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                      onClick={toggleNavbar}
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                      />
+                      {isNavbarOpen ? "Close Navbar" : "Open Navbar"}
+                    </svg>
+
+                    {isNavbarOpen && (
+                      <div className={styles.infoIcons}>
+                        {/* start */}
+                        <div className={styles.start}>
+                          <img
+                            className={styles.startimage}
+                            src={Start_button}
+                            alt="Play icon"
+                          />
+                          <span
+                            className={styles.starttext}
+                            onClick={() =>
+                              handleStartQuiz(latestquizzes[0].quiz_id)
+                            }
+                          >
+                            Start
+                          </span>
+                        </div>
+                        {/* Edit  */}
+                        <div className={styles.edit}>
+                          <img
+                            className={styles.editimage}
+                            src={Edit_button}
+                            alt="Play icon"
+                          />
+                          <span
+                            className={styles.edittext}
+                            onClick={() => Edit(latestquizzes[0].quiz_id)}
+                          >
+                            Edit
+                          </span>
+                        </div>
+                        {/* Leaderboard */}
+                        <div className={styles.leaderboard}>
+                          <img
+                            className={styles.leaderboardimage}
+                            src={leaderboard_button}
+                            alt="Play icon"
+                          />
+                          <span
+                            className={styles.leaderboardtext}
+                            onClick={leaderboard}
+                          >
+                            Leaderboard
+                          </span>
+                        </div>
+                        {/* Share */}
+
+                        <div className={styles.share}>
+                          <img
+                            className={styles.shareimage}
+                            src={Share_button}
+                            alt="Play icon"
+                          />
+                          <span className={styles.sharetext}>Share</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className={styles.category}>
+                  <span className={styles.category1}>
+                    {latestquizzes[0]?.category}
+                  </span>
+                  <p className="px-[2px] font-normal">|</p>
+                  <span className={styles.category1}>
+                    {latestquizzes[0]?.sub_category}
+                  </span>
+                </div>
+
+                <div className={styles.description}>
+                  <span>{latestquizzes[0]?.quiz_description}</span>
+                </div>
+
+                <div
+                  className={styles.additionalInfo}
+                  style={{ marginTop: "65px" }}
+                >
+                  <div className="z-0">
+                    <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
+                      <img
+                        className="h-[15px] w-[13px] pl-[3px] pb-1"
+                        src={Attempt1}
+                        alt="Attempts Icon"
+                        width={10}
+                        height={10}
+                      />
+                      <p>{latestquizzes[0]?.quiz_attempts}</p>
+                      <span className="text-[7px] ml-[2px]">attempts</span>
+                    </div>
+                  </div>
+
+                  <div className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
+                    <img
+                      className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                      src={NoOfQuestion}
+                      alt="Number of question Icon"
+                      width={15}
+                      height={10}
+                    />{" "}
+                    {latestquizzes[0]?.number_of_questions}
+                    <span className="text-[7px] ml-[1px]">questions</span>
+                  </div>
+
+                  <div className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                    <img
+                      className="pb-[1px] mr-[1px] relative left-[3px] "
+                      src={Clock}
+                      alt="Time Icon"
+                      width={14}
+                      height={14}
+                    />{" "}
+                    {latestquizzes[0]?.quiz_duration}
+                    <span className="text-[7px] -ml-[0.5px]">minutes</span>
+                  </div>
+
+                  <div className="flex text-[8px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                    <img
+                      className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                      src={Easy}
+                      alt="Challenge Icon"
+                      width={15}
+                      height={9}
+                    />{" "}
+                    {latestquizzes[0]?.complexity}
+                  </div>
+                </div>
+              </div>
+              {/* latest-first-second-card  */}
+              <div className={styles.card} style={{ paddingTop: "8px" }}>
+                <span className={styles.title}>
+                  {latestquizzes[1]?.quiz_name}
+                </span>
+
+                <div className={styles.iconContainer}>
+                  <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                      onClick={toggleNavbar1}
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                      />
+                      {isNavbarOpen ? "Close Navbar" : "Open Navbar"}
+                    </svg>
+                    {isNavbarOpen1 && (
+                      <div className={styles.infoIcons}>
                         <img
                           className={styles.startimage}
                           src={Start_button}
                           alt="Play icon"
                         />
-                        <span className={styles.starttext} onClick={() => handleStartQuiz(latestquizzes[0].quiz_id)}>
+                        <span
+                          className={styles.starttext}
+                          onClick={() =>
+                            handleStartQuiz(latestquizzes[1].quiz_id)
+                          }
+                        >
                           Start
                         </span>
-                      </div>
-                      {/* Edit  */}
-                      <div className={styles.edit}>
                         <img
                           className={styles.editimage}
                           src={Edit_button}
                           alt="Play icon"
                         />
-                        <span className={styles.edittext} onClick={() => Edit(latestquizzes[0].quiz_id)}>
+                        <span
+                          className={styles.edittext}
+                          onClick={() => Edit(latestquizzes[1].quiz_id)}
+                        >
                           Edit
                         </span>
-                      </div>
-                      {/* Leaderboard */}
-                      <div className={styles.leaderboard}>
                         <img
                           className={styles.leaderboardimage}
                           src={leaderboard_button}
                           alt="Play icon"
                         />
-                        <span className={styles.leaderboardtext} onClick={leaderboard}>
+                        <span
+                          className={styles.leaderboardtext}
+                          onClick={leaderboard}
+                        >
                           Leaderboard
                         </span>
-                      </div>
-                      {/* Share */}
-
-                      <div className={styles.share}>
                         <img
                           className={styles.shareimage}
                           src={Share_button}
                           alt="Play icon"
                         />
-                        <span className={styles.sharetext}>
-                          Share
-                        </span>
+                        <span className={styles.sharetext}>Share</span>
                       </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className={styles.category}>
-                <span className={styles.category1}>
-                  {latestquizzes[0]?.category}
-                </span>
-                <p className="px-[2px] font-normal">|</p>
-                <span className={styles.category1}>
-                  {latestquizzes[0]?.sub_category}
-                </span>
-              </div>
-
-              <div className={styles.description}>
-                <span>{latestquizzes[0]?.quiz_description}</span>
-              </div>
-              
-              <div
-                className={styles.additionalInfo}
-                style={{ marginTop: "65px" }}
-              >
-                <div className="z-0">
-                  <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                    <img
-                      className="h-[15px] w-[13px] pl-[3px] pb-1"
-                      src={Attempt1}
-                      alt="Attempts Icon"
-                      width={10}
-                      height={10}
-                    />
-                    <p>{latestquizzes[0]?.quiz_attempts}</p>
-                    <span className="text-[7px] ml-[2px]">attempts</span>
+                    )}
                   </div>
                 </div>
 
-                <div className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                  <img
-                    className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
-                    src={NoOfQuestion}
-                    alt="Number of question Icon"
-                    width={15}
-                    height={10}
-                  />{" "}
-                  {latestquizzes[0]?.number_of_questions}
-                  <span className="text-[7px] ml-[1px]">questions</span>
+                <div className={styles.category}>
+                  <span className={styles.category1}>
+                    {latestquizzes[1]?.category}
+                  </span>
+                  <p className="px-[2px] font-normal">|</p>
+                  <span className={styles.category1}>
+                    {latestquizzes[1]?.sub_category}
+                  </span>
                 </div>
 
-                <div className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                  <img
-                    className="pb-[1px] mr-[1px] relative left-[3px] "
-                    src={Clock}
-                    alt="Time Icon"
-                    width={14}
-                    height={14}
-                  />{" "}
-                  {latestquizzes[0]?.quiz_duration}
-                  <span className="text-[7px] -ml-[0.5px]">minutes</span>
+                <div className={styles.description}>
+                  <span>{latestquizzes[1]?.quiz_description}</span>
                 </div>
 
-                <div className="flex text-[8px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                  <img
-                    className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
-                    src={Easy}
-                    alt="Challenge Icon"
-                    width={15}
-                    height={9}
-                  />{" "}
-                  {latestquizzes[0]?.complexity}
+                <div
+                  className={styles.additionalInfo}
+                  style={{ marginTop: "35px" }}
+                >
+                  <div
+                    className={styles.infoIcon}
+                    style={{ marginTop: "20px" }}
+                  ></div>
+                  <div className="z-0">
+                    <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
+                      <img
+                        className="h-[15px] w-[13px] pl-[3px] pb-1"
+                        src={Attempt1}
+                        alt="Attempts Icon"
+                        width={10}
+                        height={10}
+                      />
+                      <p>{latestquizzes[1]?.quiz_attempts}</p>
+                      <span className="text-[6px] ml-1">attempts</span>
+                    </div>
+                  </div>
+
+                  <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
+                    <img
+                      className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                      src={NoOfQuestion}
+                      alt="Number of question Icon"
+                      width={15}
+                      height={10}
+                    />{" "}
+                    {latestquizzes[1]?.number_of_questions}
+                    <span className="text-[6px] ml-[1px]">questions</span>
+                  </span>
+                  <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                    <img
+                      className="pb-[1px] mr-[1px] relative left-[3px] "
+                      src={Clock}
+                      alt="Time Icon"
+                      width={14}
+                      height={14}
+                    />{" "}
+                    {latestquizzes[1]?.quiz_duration}
+                    <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                  </span>
+                  <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                    <img
+                      className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                      src={Easy}
+                      alt="Challenge Icon"
+                      width={15}
+                      height={9}
+                    />{" "}
+                    {latestquizzes[1]?.complexity}
+                  </span>
                 </div>
-                
               </div>
-            </div>
+              {/* latest-first-third-card  */}
+              <div className={styles.card} style={{ paddingTop: "8px" }}>
+                <span className={styles.title}>
+                  {latestquizzes[2]?.quiz_name}
+                </span>
 
-            <div className={styles.card} style={{ paddingTop: "8px" }}>
-              <span className={styles.title}>
-                {latestquizzes[1]?.quiz_name}
-              </span>
-
-              <div className={styles.iconContainer}>
-                <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                    onClick={toggleNavbar1}
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                    />
-                    {isNavbarOpen ? "Close Navbar" : "Open Navbar"}
-                  </svg>
-                  {isNavbarOpen1 && (
-                    <div className={styles.infoIcons}>
-                      <img
-                        className={styles.startimage}
-                        src={Start_button}
-                        alt="Play icon"
+                <div className={styles.iconContainer}>
+                  <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                      onClick={toggleNavbar2}
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                       />
-                      <span className={styles.starttext}  onClick={() => handleStartQuiz(latestquizzes[1].quiz_id)}>
-                        Start
-                      </span>
-                      <img
-                        className={styles.editimage}
-                        src={Edit_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.edittext}onClick={() => Edit(latestquizzes[1].quiz_id)}>
-                        Edit
-                      </span>
-                      <img
-                        className={styles.leaderboardimage}
-                        src={leaderboard_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.leaderboardtext} onClick={leaderboard}>
-                        Leaderboard
-                      </span>
-                      <img
+                      {isNavbarOpen2 ? "Close Navbar" : "Open Navbar"}
+                    </svg>
+                    {isNavbarOpen2 && (
+                      <div className={styles.infoIcons}>
+                        <img
+                          className={styles.startimage}
+                          src={Start_button}
+                          alt="Play icon"
+                        />
+                        <span
+                          className={styles.starttext}
+                          onClick={() =>
+                            handleStartQuiz(latestquizzes[2].quiz_id)
+                          }
+                        >
+                          Start
+                        </span>
+                        <img
+                          className={styles.editimage}
+                          src={Edit_button}
+                          alt="Play icon"
+                        />
+                        <span
+                          className={styles.edittext}
+                          onClick={() => Edit(latestquizzes[2].quiz_id)}
+                        >
+                          Edit
+                        </span>
+                        <img
+                          className={styles.leaderboardimage}
+                          src={leaderboard_button}
+                          alt="Play icon"
+                        />
+                        <span
+                          className={styles.leaderboardtext}
+                          onClick={leaderboard}
+                        >
+                          Leaderboard
+                        </span>
+                        <img
                           className={styles.shareimage}
                           src={Share_button}
                           alt="Play icon"
                         />
-                        <span className={styles.sharetext}>
-                          Share
-                        </span>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className={styles.category}>
-                <span className={styles.category1}>
-                  {latestquizzes[1]?.category}
-                </span>
-                <p className="px-[2px] font-normal">|</p>
-                <span className={styles.category1}>
-                  {latestquizzes[1]?.sub_category}
-                </span>
-              </div>
-
-              <div className={styles.description}>
-                <span>{latestquizzes[1]?.quiz_description}</span>
-              </div>
-
-              <div
-                className={styles.additionalInfo}
-                style={{ marginTop: "35px" }}
-              >
-                <div
-                  className={styles.infoIcon}
-                  style={{ marginTop: "20px" }}
-                ></div>
-                <div className="z-0">
-                  <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                    <img
-                      className="h-[15px] w-[13px] pl-[3px] pb-1"
-                      src={Attempt1}
-                      alt="Attempts Icon"
-                      width={10}
-                      height={10}
-                    />
-                    <p>{latestquizzes[1]?.quiz_attempts}</p>
-                    <span className="text-[6px] ml-1">attempts</span>
+                        <span className={styles.sharetext}>Share</span>
+                      </div>
+                    )}
                   </div>
                 </div>
+                <div className={styles.category}>
+                  <span className={styles.category1}>
+                    {latestquizzes[2]?.category}
+                  </span>
+                  <p className="px-1 font-normal">|</p>
+                  <span className={styles.category1}>
+                    {latestquizzes[2]?.sub_category}
+                  </span>
+                </div>
 
-                <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                  <img
-                    className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
-                    src={NoOfQuestion}
-                    alt="Number of question Icon"
-                    width={15}
-                    height={10}
-                  />{" "}
-                  {latestquizzes[1]?.number_of_questions}
-                  <span className="text-[6px] ml-[1px]">questions</span>
-                </span>
-                <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                  <img
-                    className="pb-[1px] mr-[1px] relative left-[3px] "
-                    src={Clock}
-                    alt="Time Icon"
-                    width={14}
-                    height={14}
-                  />{" "}
-                  {latestquizzes[1]?.quiz_duration}
-                  <span className="text-[6px] -ml-[0.5px]">minutes</span>
-                </span>
-                <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                  <img
-                    className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
-                    src={Easy}
-                    alt="Challenge Icon"
-                    width={15}
-                    height={9}
-                  />{" "}
-                  {latestquizzes[1]?.complexity}
-                </span>
+                <div className={styles.description}>
+                  <span>{latestquizzes[2]?.quiz_description}</span>
+                </div>
+                <div
+                  className={styles.additionalInfo}
+                  style={{ marginTop: "35px" }}
+                >
+                  <div
+                    className={styles.infoIcon}
+                    style={{ marginTop: "20px" }}
+                  ></div>
+                  <div className="z-0">
+                    <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
+                      <img
+                        className="h-[15px] w-[13px] pl-[3px] pb-1"
+                        src={Attempt1}
+                        alt="Attempts Icon"
+                        width={10}
+                        height={10}
+                      />
+                      <p>{latestquizzes[2]?.quiz_attempts}</p>
+                      <span className="text-[6px] ml-1">attempts</span>
+                    </div>
+                  </div>
+
+                  <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
+                    <img
+                      className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                      src={NoOfQuestion}
+                      alt="Number of question Icon"
+                      width={15}
+                      height={10}
+                    />{" "}
+                    {latestquizzes[2]?.number_of_questions}
+                    <span className="text-[6px] ml-[1px]">questions</span>
+                  </span>
+                  <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                    <img
+                      className="pb-[1px] mr-[1px] relative left-[3px] "
+                      src={Clock}
+                      alt="Time Icon"
+                      width={14}
+                      height={14}
+                    />{" "}
+                    {latestquizzes[2]?.quiz_duration}
+                    <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                  </span>
+                  <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                    <img
+                      className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                      src={Easy}
+                      alt="Challenge Icon"
+                      width={15}
+                      height={9}
+                    />{" "}
+                    {latestquizzes[2]?.complexity}
+                  </span>
+                </div>
               </div>
             </div>
-            <div className={styles.card} style={{ paddingTop: "8px" }}>
-              <span className={styles.title}>
-                {latestquizzes[2]?.quiz_name}
-              </span>
 
-              <div className={styles.iconContainer}>
-                <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                    onClick={toggleNavbar2}
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                    />
-                    {isNavbarOpen2 ? "Close Navbar" : "Open Navbar"}
-                  </svg>
-                  {isNavbarOpen2 && (
-                    <div className={styles.infoIcons}>
-                      <img
-                       className={styles.startimage}
-                        src={Start_button}
-                        alt="Play icon"
+            <div className="flex">
+              {/* latest-second-first-card  */}
+              <div className={styles.card} style={{ paddingTop: "8px" }}>
+                <span className={styles.title}>
+                  {latestquizzes[3]?.quiz_name}
+                </span>
+                <div className={styles.iconContainer}>
+                  <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                      onClick={toggleNavbar3}
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                       />
-                      <span className={styles.starttext} onClick={() => handleStartQuiz(latestquizzes[2].quiz_id)}>
-                        Start
-                      </span>
-                      <img
-                        className={styles.editimage}
-                        src={Edit_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.edittext} onClick={() => Edit(latestquizzes[2].quiz_id)}>
-                        Edit
-                      </span>
-                      <img
-                        className={styles.leaderboardimage}
-                        src={leaderboard_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.leaderboardtext} onClick={leaderboard}>
-                        Leaderboard
-                      </span>
-                      <img
+                      {isNavbarOpen3 ? "Close Navbar" : "Open Navbar"}
+                    </svg>
+                    {isNavbarOpen3 && (
+                      <div className={styles.infoIcons}>
+                        <img
+                          className={styles.startimage}
+                          src={Start_button}
+                          alt="Play icon"
+                        />
+                        <span
+                          className={styles.starttext}
+                          onClick={() =>
+                            handleStartQuiz(latestquizzes[3].quiz_id)
+                          }
+                        >
+                          Start
+                        </span>
+                        <img
+                          className={styles.editimage}
+                          src={Edit_button}
+                          alt="Play icon"
+                        />
+                        <span
+                          className={styles.edittext}
+                          onClick={() => Edit(latestquizzes[3].quiz_id)}
+                        >
+                          Edit
+                        </span>
+                        <img
+                          className={styles.leaderboardimage}
+                          src={leaderboard_button}
+                          alt="Play icon"
+                        />
+                        <span
+                          className={styles.leaderboardtext}
+                          onClick={leaderboard}
+                        >
+                          Leaderboard
+                        </span>
+                        <img
                           className={styles.shareimage}
                           src={Share_button}
                           alt="Play icon"
                         />
-                        <span className={styles.sharetext}>
-                          Share
-                        </span>
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className={styles.category}>
-                <span className={styles.category1}>
-                  {latestquizzes[2]?.category}
-                </span>
-                <p className="px-1 font-normal">|</p>
-                <span className={styles.category1}>
-                  {latestquizzes[2]?.sub_category}
-                </span>
-              </div>
-
-              <div className={styles.description}>
-                <span>{latestquizzes[2]?.quiz_description}</span>
-              </div>
-              <div
-                className={styles.additionalInfo}
-                style={{ marginTop: "35px" }}
-              >
-                <div
-                  className={styles.infoIcon}
-                  style={{ marginTop: "20px" }}
-                ></div>
-                <div className="z-0">
-                  <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                    <img
-                      className="h-[15px] w-[13px] pl-[3px] pb-1"
-                      src={Attempt1}
-                      alt="Attempts Icon"
-                      width={10}
-                      height={10}
-                    />
-                    <p>{latestquizzes[2]?.quiz_attempts}</p>
-                    <span className="text-[6px] ml-1">attempts</span>
+                        <span className={styles.sharetext}>Share</span>
+                      </div>
+                    )}
                   </div>
                 </div>
 
-                <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                  <img
-                    className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
-                    src={NoOfQuestion}
-                    alt="Number of question Icon"
-                    width={15}
-                    height={10}
-                  />{" "}
-                  {latestquizzes[2]?.number_of_questions}
-                  <span className="text-[6px] ml-[1px]">questions</span>
-                </span>
-                <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                  <img
-                    className="pb-[1px] mr-[1px] relative left-[3px] "
-                    src={Clock}
-                    alt="Time Icon"
-                    width={14}
-                    height={14}
-                  />{" "}
-                  {latestquizzes[2]?.quiz_duration}
-                  <span className="text-[6px] -ml-[0.5px]">minutes</span>
-                </span>
-                <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                  <img
-                    className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
-                    src={Easy}
-                    alt="Challenge Icon"
-                    width={15}
-                    height={9}
-                  />{" "}
-                  {latestquizzes[2]?.complexity}
-                </span>
+                <div className={styles.category}>
+                  <span className={styles.category1}>
+                    {latestquizzes[3]?.category}
+                  </span>
+                  <p className="px-[2px] font-normal">|</p>
+                  <span className={styles.category1}>
+                    {latestquizzes[3]?.sub_category}
+                  </span>
+                </div>
+
+                <div className={styles.description}>
+                  <span>{latestquizzes[3]?.quiz_description}</span>
+                </div>
+                <div
+                  className={styles.additionalInfo}
+                  style={{ marginTop: "35px" }}
+                >
+                  <div
+                    className={styles.infoIcon}
+                    style={{ marginTop: "20px" }}
+                  ></div>
+                  <div className="z-0">
+                    <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
+                      <img
+                        className="h-[15px] w-[13px] pl-[3px] pb-1"
+                        src={Attempt1}
+                        alt="Attempts Icon"
+                        width={10}
+                        height={10}
+                      />
+                      <p>{latestquizzes[3]?.quiz_attempts}</p>
+                      <span className="text-[6px] ml-1">attempts</span>
+                    </div>
+                  </div>
+
+                  <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
+                    <img
+                      className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                      src={NoOfQuestion}
+                      alt="Number of question Icon"
+                      width={15}
+                      height={10}
+                    />{" "}
+                    {latestquizzes[3]?.number_of_questions}
+                    <span className="text-[6px] ml-[1px]">questions</span>
+                  </span>
+                  <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                    <img
+                      className="pb-[1px] mr-[1px] relative left-[3px] "
+                      src={Clock}
+                      alt="Time Icon"
+                      width={14}
+                      height={14}
+                    />{" "}
+                    {latestquizzes[3]?.quiz_duration}
+                    <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                  </span>
+                  <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                    <img
+                      className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                      src={Easy}
+                      alt="Challenge Icon"
+                      width={15}
+                      height={9}
+                    />{" "}
+                    {latestquizzes[3]?.complexity}
+                  </span>
+                </div>
               </div>
-            </div>
-            <div className={styles.card} style={{ paddingTop: "8px" }}>
-              <span className={styles.title}>
-                {latestquizzes[3]?.quiz_name}
-              </span>
-              <div className={styles.iconContainer}>
-                <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                    onClick={toggleNavbar3}
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                    />
-                    {isNavbarOpen3 ? "Close Navbar" : "Open Navbar"}
-                  </svg>
-                  {isNavbarOpen3 && (
-                    <div className={styles.infoIcons}>
-                      <img
-                        className={styles.startimage}
-                        src={Start_button}
-                        alt="Play icon"
+              {/* latest-second-second-card  */}
+              <div className={styles.card} style={{ paddingTop: "8px" }}>
+                <span className={styles.title}>
+                  {latestquizzes[4]?.quiz_name}
+                </span>
+                <div className={styles.iconContainer}>
+                  <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                      onClick={toggleNavbar4}
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                       />
-                      <span className={styles.starttext}  onClick={() => handleStartQuiz(latestquizzes[3].quiz_id)}>
-                        Start
-                      </span>
-                      <img
-                        className={styles.editimage}
-                        src={Edit_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.edittext} onClick={() => Edit(latestquizzes[3].quiz_id)}>
-                        Edit
-                      </span>
-                      <img
-                        className={styles.leaderboardimage}
-                        src={leaderboard_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.leaderboardtext} onClick={leaderboard}>
-                        Leaderboard
-                      </span>
-                      <img
+                      {isNavbarOpen4 ? "Close Navbar" : "Open Navbar"}
+                    </svg>
+                    {isNavbarOpen4 && (
+                      <div className={styles.infoIcons}>
+                        <img
+                          className={styles.startimage}
+                          src={Start_button}
+                          alt="Play icon"
+                        />
+                        <span
+                          className={styles.starttext}
+                          onClick={() =>
+                            handleStartQuiz(latestquizzes[4].quiz_id)
+                          }
+                        >
+                          Start
+                        </span>
+                        <img
+                          className={styles.editimage}
+                          src={Edit_button}
+                          alt="Play icon"
+                        />
+                        <span
+                          className={styles.edittext}
+                          onClick={() => Edit(latestquizzes[4].quiz_id)}
+                        >
+                          Edit
+                        </span>
+                        <img
+                          className={styles.leaderboardimage}
+                          src={leaderboard_button}
+                          alt="Play icon"
+                        />
+                        <span
+                          className={styles.leaderboardtext}
+                          onClick={leaderboard}
+                        >
+                          Leaderboard
+                        </span>
+                        <img
                           className={styles.shareimage}
                           src={Share_button}
                           alt="Play icon"
                         />
-                        <span className={styles.sharetext}>
-                          Share
-                        </span>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className={styles.category}>
-                <span className={styles.category1}>
-                  {latestquizzes[3]?.category}
-                </span>
-                <p className="px-[2px] font-normal">|</p>
-                <span className={styles.category1}>
-                  {latestquizzes[3]?.sub_category}
-                </span>
-              </div>
-
-              <div className={styles.description}>
-                <span>{latestquizzes[3]?.quiz_description}</span>
-              </div>
-              <div
-                className={styles.additionalInfo}
-                style={{ marginTop: "35px" }}
-              >
-                <div
-                  className={styles.infoIcon}
-                  style={{ marginTop: "20px" }}
-                ></div>
-                <div className="z-0">
-                  <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                    <img
-                      className="h-[15px] w-[13px] pl-[3px] pb-1"
-                      src={Attempt1}
-                      alt="Attempts Icon"
-                      width={10}
-                      height={10}
-                    />
-                    <p>{latestquizzes[3]?.quiz_attempts}</p>
-                    <span className="text-[6px] ml-1">attempts</span>
+                        <span className={styles.sharetext}>Share</span>
+                      </div>
+                    )}
                   </div>
                 </div>
+                <div className={styles.category}>
+                  <span className={styles.category1}>
+                    {latestquizzes[4]?.category}
+                  </span>
+                  <p className="px-[2px] font-normal">|</p>
+                  <span className={styles.category1}>
+                    {latestquizzes[4]?.sub_category}
+                  </span>
+                </div>
 
-                <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                  <img
-                    className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
-                    src={NoOfQuestion}
-                    alt="Number of question Icon"
-                    width={15}
-                    height={10}
-                  />{" "}
-                  {latestquizzes[3]?.number_of_questions}
-                  <span className="text-[6px] ml-[1px]">questions</span>
-                </span>
-                <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                  <img
-                    className="pb-[1px] mr-[1px] relative left-[3px] "
-                    src={Clock}
-                    alt="Time Icon"
-                    width={14}
-                    height={14}
-                  />{" "}
-                  {latestquizzes[3]?.quiz_duration}
-                  <span className="text-[6px] -ml-[0.5px]">minutes</span>
-                </span>
-                <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                  <img
-                    className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
-                    src={Easy}
-                    alt="Challenge Icon"
-                    width={15}
-                    height={9}
-                  />{" "}
-                  {latestquizzes[3]?.complexity}
-                </span>
+                <div className={styles.description}>
+                  <span>{latestquizzes[4]?.quiz_description}</span>
+                </div>
+                <div
+                  className={styles.additionalInfo}
+                  style={{ marginTop: "35px" }}
+                >
+                  <div
+                    className={styles.infoIcon}
+                    style={{ marginTop: "20px" }}
+                  ></div>
+                  <div className="z-0">
+                    <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
+                      <img
+                        className="h-[15px] w-[13px] pl-[3px] pb-1"
+                        src={Attempt1}
+                        alt="Attempts Icon"
+                        width={10}
+                        height={10}
+                      />
+                      <p>{latestquizzes[4]?.quiz_attempts}</p>
+                      <span className="text-[6px] ml-1">attempts</span>
+                    </div>
+                  </div>
+
+                  <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
+                    <img
+                      className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                      src={NoOfQuestion}
+                      alt="Number of question Icon"
+                      width={15}
+                      height={10}
+                    />{" "}
+                    {latestquizzes[4]?.number_of_questions}
+                    <span className="text-[6px] ml-[1px]">questions</span>
+                  </span>
+                  <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                    <img
+                      className="pb-[1px] mr-[1px] relative left-[3px] "
+                      src={Clock}
+                      alt="Time Icon"
+                      width={14}
+                      height={14}
+                    />{" "}
+                    {latestquizzes[4]?.quiz_duration}
+                    <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                  </span>
+                  <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                    <img
+                      className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                      src={Easy}
+                      alt="Challenge Icon"
+                      width={15}
+                      height={9}
+                    />{" "}
+                    {latestquizzes[4]?.complexity}
+                  </span>
+                </div>
               </div>
-            </div>
-            <div className={styles.card} style={{ paddingTop: "8px" }}>
-              <span className={styles.title}>
-                {latestquizzes[4]?.quiz_name}
-              </span>
-              <div className={styles.iconContainer}>
-                <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                    onClick={toggleNavbar4}
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                    />
-                    {isNavbarOpen4 ? "Close Navbar" : "Open Navbar"}
-                  </svg>
-                  {isNavbarOpen4 && (
-                    <div className={styles.infoIcons}>
-                      <img
-                        className={styles.startimage}
-                        src={Start_button}
-                        alt="Play icon"
+              {/* latest-second-third-card  */}
+              <div className={styles.card} style={{ paddingTop: "8px" }}>
+                <span className={styles.title}>
+                  {latestquizzes[5]?.quiz_name}
+                </span>
+                <div className={styles.iconContainer}>
+                  <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                      onClick={toggleNavbar5}
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                       />
-                      <span className={styles.starttext} onClick={() => handleStartQuiz(latestquizzes[4].quiz_id)}>
-                        Start
-                      </span>
-                      <img
-                        className={styles.editimage}
-                        src={Edit_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.edittext} onClick={() => Edit(latestquizzes[4].quiz_id)}>
-                        Edit
-                      </span>
-                      <img
-                        className={styles.leaderboardimage}
-                        src={leaderboard_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.leaderboardtext} onClick={leaderboard}>
-                        Leaderboard
-                      </span>
-                      <img
+                      {isNavbarOpen5 ? "Close Navbar" : "Open Navbar"}
+                    </svg>
+                    {isNavbarOpen5 && (
+                      <div className={styles.infoIcons}>
+                        <img
+                          className={styles.startimage}
+                          src={Start_button}
+                          alt="Play icon"
+                        />
+                        <span
+                          className={styles.starttext}
+                          onClick={() =>
+                            handleStartQuiz(latestquizzes[5].quiz_id)
+                          }
+                        >
+                          Start
+                        </span>
+                        <img
+                          className={styles.editimage}
+                          src={Edit_button}
+                          alt="Play icon"
+                        />
+                        <span
+                          className={styles.edittext}
+                          onClick={() => Edit(latestquizzes[5].quiz_id)}
+                        >
+                          Edit
+                        </span>
+                        <img
+                          className={styles.leaderboardimage}
+                          src={leaderboard_button}
+                          alt="Play icon"
+                        />
+                        <span
+                          className={styles.leaderboardtext}
+                          onClick={leaderboard}
+                        >
+                          Leaderboard
+                        </span>
+                        <img
                           className={styles.shareimage}
                           src={Share_button}
                           alt="Play icon"
                         />
-                        <span className={styles.sharetext}>
-                          Share
-                        </span>
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className={styles.category}>
-                <span className={styles.category1}>
-                  {latestquizzes[4]?.category}
-                </span>
-                <p className="px-[2px] font-normal">|</p>
-                <span className={styles.category1}>
-                  {latestquizzes[4]?.sub_category}
-                </span>
-              </div>
-
-              <div className={styles.description}>
-                <span>{latestquizzes[4]?.quiz_description}</span>
-              </div>
-              <div
-                className={styles.additionalInfo}
-                style={{ marginTop: "35px" }}
-              >
-                <div
-                  className={styles.infoIcon}
-                  style={{ marginTop: "20px" }}
-                ></div>
-                <div className="z-0">
-                  <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                    <img
-                      className="h-[15px] w-[13px] pl-[3px] pb-1"
-                      src={Attempt1}
-                      alt="Attempts Icon"
-                      width={10}
-                      height={10}
-                    />
-                    <p>{latestquizzes[4]?.quiz_attempts}</p>
-                    <span className="text-[6px] ml-1">attempts</span>
+                        <span className={styles.sharetext}>Share</span>
+                      </div>
+                    )}
                   </div>
                 </div>
 
-                <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                  <img
-                    className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
-                    src={NoOfQuestion}
-                    alt="Number of question Icon"
-                    width={15}
-                    height={10}
-                  />{" "}
-                  {latestquizzes[4]?.number_of_questions}
-                  <span className="text-[6px] ml-[1px]">questions</span>
-                </span>
-                <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                  <img
-                    className="pb-[1px] mr-[1px] relative left-[3px] "
-                    src={Clock}
-                    alt="Time Icon"
-                    width={14}
-                    height={14}
-                  />{" "}
-                  {latestquizzes[4]?.quiz_duration}
-                  <span className="text-[6px] -ml-[0.5px]">minutes</span>
-                </span>
-                <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                  <img
-                    className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
-                    src={Easy}
-                    alt="Challenge Icon"
-                    width={15}
-                    height={9}
-                  />{" "}
-                  {latestquizzes[4]?.complexity}
-                </span>
-              </div>
-            </div>
-            <div className={styles.card} style={{ paddingTop: "8px" }}>
-              <span className={styles.title}>
-                {latestquizzes[5]?.quiz_name}
-              </span>
-              <div className={styles.iconContainer}>
-                <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                    onClick={toggleNavbar5}
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                    />
-                    {isNavbarOpen5 ? "Close Navbar" : "Open Navbar"}
-                  </svg>
-                  {isNavbarOpen5 && (
-                    <div className={styles.infoIcons}>
-                      <img
-                        className={styles.startimage}
-                        src={Start_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.starttext} onClick={() => handleStartQuiz(latestquizzes[5].quiz_id)}>
-                        Start
-                      </span>
-                      <img
-                        className={styles.editimage}
-                        src={Edit_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.edittext} onClick={() => Edit(latestquizzes[5].quiz_id)}>
-                        Edit
-                      </span>
-                      <img
-                        className={styles.leaderboardimage}
-                        src={leaderboard_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.leaderboardtext} onClick={leaderboard}>
-                        Leaderboard
-                      </span>
-                      <img
-                          className={styles.shareimage}
-                          src={Share_button}
-                          alt="Play icon"
-                        />
-                        <span className={styles.sharetext}>
-                          Share
-                        </span>
-                    </div>
-                  )}
+                <div className={styles.category}>
+                  <span className={styles.category1}>
+                    {latestquizzes[5]?.category}
+                  </span>
+                  <p className="px-[2px] font-normal">|</p>
+                  <span className={styles.category1}>
+                    {latestquizzes[5]?.sub_category}
+                  </span>
                 </div>
-              </div>
 
-              <div className={styles.category}>
-                <span className={styles.category1}>
-                  {latestquizzes[5]?.category}
-                </span>
-                <p className="px-[2px] font-normal">|</p>
-                <span className={styles.category1}>
-                  {latestquizzes[5]?.sub_category}
-                </span>
-              </div>
+                <div className={styles.description}>
+                  <span>{latestquizzes[5]?.quiz_description}</span>
+                </div>
 
-              <div className={styles.description}>
-                <span>{latestquizzes[5]?.quiz_description}</span>
-              </div>
-
-              <div
-                className={styles.additionalInfo}
-                style={{ marginTop: "35px" }}
-              >
                 <div
-                  className={styles.infoIcon}
-                  style={{ marginTop: "20px" }}
-                ></div>
-                <div className="z-0">
-                  <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                    <img
-                      className="h-[15px] w-[13px] pl-[3px] pb-1"
-                      src={Attempt1}
-                      alt="Attempts Icon"
-                      width={10}
-                      height={10}
-                    />
-                    <p>{latestquizzes[5]?.quiz_attempts}</p>
-                    <span className="text-[6px] ml-1">attempts</span>
+                  className={styles.additionalInfo}
+                  style={{ marginTop: "35px" }}
+                >
+                  <div
+                    className={styles.infoIcon}
+                    style={{ marginTop: "20px" }}
+                  ></div>
+                  <div className="z-0">
+                    <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
+                      <img
+                        className="h-[15px] w-[13px] pl-[3px] pb-1"
+                        src={Attempt1}
+                        alt="Attempts Icon"
+                        width={10}
+                        height={10}
+                      />
+                      <p>{latestquizzes[5]?.quiz_attempts}</p>
+                      <span className="text-[6px] ml-1">attempts</span>
+                    </div>
                   </div>
-                </div>
 
-                <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                  <img
-                    className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
-                    src={NoOfQuestion}
-                    alt="Number of question Icon"
-                    width={15}
-                    height={10}
-                  />{" "}
-                  {latestquizzes[5]?.number_of_questions}
-                  <span className="text-[6px] ml-[1px]">questions</span>
-                </span>
-                <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                  <img
-                    className="pb-[1px] mr-[1px] relative left-[3px] "
-                    src={Clock}
-                    alt="Time Icon"
-                    width={14}
-                    height={14}
-                  />{" "}
-                  {latestquizzes[5]?.quiz_duration}
-                  <span className="text-[6px] -ml-[0.5px]">minutes</span>
-                </span>
-                <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                  <img
-                    className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
-                    src={Easy}
-                    alt="Challenge Icon"
-                    width={15}
-                    height={9}
-                  />{" "}
-                  {latestquizzes[5]?.complexity}
-                </span>
+                  <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
+                    <img
+                      className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                      src={NoOfQuestion}
+                      alt="Number of question Icon"
+                      width={15}
+                      height={10}
+                    />{" "}
+                    {latestquizzes[5]?.number_of_questions}
+                    <span className="text-[6px] ml-[1px]">questions</span>
+                  </span>
+                  <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                    <img
+                      className="pb-[1px] mr-[1px] relative left-[3px] "
+                      src={Clock}
+                      alt="Time Icon"
+                      width={14}
+                      height={14}
+                    />{" "}
+                    {latestquizzes[5]?.quiz_duration}
+                    <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                  </span>
+                  <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                    <img
+                      className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                      src={Easy}
+                      alt="Challenge Icon"
+                      width={15}
+                      height={9}
+                    />{" "}
+                    {latestquizzes[5]?.complexity}
+                  </span>
+                </div>
               </div>
             </div>
-            
-           
-     {getMoreQuizzes ? 
-         <div className=" ">
-          <div className="flex">
-            <div className={styles.card} 
+
+            {getMoreQuizzes ? (
+              <div className=" ">
+                <div className="flex">
+                  <div
+                    className={styles.card}
                     style={{
                       paddingTop: "8px",
                       backgroundColor: "#CFFCFF",
-                      paddingTop: "8px"
+                      paddingTop: "8px",
                     }}
                   >
                     <span className={styles.title}>
@@ -1393,7 +1497,12 @@ const Dashboard = () => {
                               src={Start_button}
                               alt="Play icon"
                             />
-                            <span className={styles.starttext}  onClick={() => handleStartQuiz(latestquizzes[6].quiz_id)}>
+                            <span
+                              className={styles.starttext}
+                              onClick={() =>
+                                handleStartQuiz(latestquizzes[6].quiz_id)
+                              }
+                            >
                               Start
                             </span>
                             <img
@@ -1401,7 +1510,10 @@ const Dashboard = () => {
                               src={Edit_button}
                               alt="Play icon"
                             />
-                            <span className={styles.edittext} onClick={() => Edit(latestquizzes[6].quiz_id)}>
+                            <span
+                              className={styles.edittext}
+                              onClick={() => Edit(latestquizzes[6].quiz_id)}
+                            >
                               Edit
                             </span>
                             <img
@@ -1409,17 +1521,18 @@ const Dashboard = () => {
                               src={leaderboard_button}
                               alt="Play icon"
                             />
-                            <span className={styles.leaderboardtext} onClick={leaderboard}>
+                            <span
+                              className={styles.leaderboardtext}
+                              onClick={leaderboard}
+                            >
                               Leaderboard
                             </span>
                             <img
-                          className={styles.shareimage}
-                          src={Share_button}
-                          alt="Play icon"
-                        />
-                        <span className={styles.sharetext}>
-                          Share
-                        </span>
+                              className={styles.shareimage}
+                              src={Share_button}
+                              alt="Play icon"
+                            />
+                            <span className={styles.sharetext}>Share</span>
                           </div>
                         )}
                       </div>
@@ -1492,8 +1605,9 @@ const Dashboard = () => {
                         {latestquizzes[6]?.complexity}
                       </span>
                     </div>
-            </div>
-            <div className={styles.card} style={{ paddingTop: "8px" }}>
+                  </div>
+
+                  <div className={styles.card} style={{ paddingTop: "8px" }}>
                     <span className={styles.title}>
                       {latestquizzes[7]?.quiz_name}
                     </span>
@@ -1522,7 +1636,12 @@ const Dashboard = () => {
                               src={Start_button}
                               alt="Play icon"
                             />
-                            <span className={styles.starttext} onClick={() => handleStartQuiz(latestquizzes[7].quiz_id)}>
+                            <span
+                              className={styles.starttext}
+                              onClick={() =>
+                                handleStartQuiz(latestquizzes[7].quiz_id)
+                              }
+                            >
                               Start
                             </span>
                             <img
@@ -1530,7 +1649,10 @@ const Dashboard = () => {
                               src={Edit_button}
                               alt="Play icon"
                             />
-                            <span className={styles.edittext} onClick={() => Edit(latestquizzes[7].quiz_id)}>
+                            <span
+                              className={styles.edittext}
+                              onClick={() => Edit(latestquizzes[7].quiz_id)}
+                            >
                               Edit
                             </span>
                             <img
@@ -1538,17 +1660,18 @@ const Dashboard = () => {
                               src={leaderboard_button}
                               alt="Play icon"
                             />
-                            <span className={styles.leaderboardtext} onClick={leaderboard}>
+                            <span
+                              className={styles.leaderboardtext}
+                              onClick={leaderboard}
+                            >
                               Leaderboard
                             </span>
                             <img
-                          className={styles.shareimage}
-                          src={Share_button}
-                          alt="Play icon"
-                        />
-                        <span className={styles.sharetext}>
-                          Share
-                        </span>
+                              className={styles.shareimage}
+                              src={Share_button}
+                              alt="Play icon"
+                            />
+                            <span className={styles.sharetext}>Share</span>
                           </div>
                         )}
                       </div>
@@ -1621,8 +1744,8 @@ const Dashboard = () => {
                         {latestquizzes[7]?.complexity}
                       </span>
                     </div>
-            </div>
-            <div className={styles.card} style={{ paddingTop: "8px" }}  >
+                  </div>
+                  <div className={styles.card} style={{ paddingTop: "8px" }}>
                     <span className={styles.title}>
                       {latestquizzes[8]?.quiz_name}
                     </span>
@@ -1651,7 +1774,12 @@ const Dashboard = () => {
                               src={Start_button}
                               alt="Play icon"
                             />
-                            <span className={styles.starttext} onClick={() => handleStartQuiz(latestquizzes[8].quiz_id)}>
+                            <span
+                              className={styles.starttext}
+                              onClick={() =>
+                                handleStartQuiz(latestquizzes[8].quiz_id)
+                              }
+                            >
                               Start
                             </span>
                             <img
@@ -1659,7 +1787,10 @@ const Dashboard = () => {
                               src={Edit_button}
                               alt="Play icon"
                             />
-                            <span className={styles.edittext} onClick={() => Edit(latestquizzes[8].quiz_id)}>
+                            <span
+                              className={styles.edittext}
+                              onClick={() => Edit(latestquizzes[8].quiz_id)}
+                            >
                               Edit
                             </span>
                             <img
@@ -1667,17 +1798,18 @@ const Dashboard = () => {
                               src={leaderboard_button}
                               alt="Play icon"
                             />
-                            <span className={styles.leaderboardtext} onClick={leaderboard}>
+                            <span
+                              className={styles.leaderboardtext}
+                              onClick={leaderboard}
+                            >
                               Leaderboard
                             </span>
                             <img
-                          className={styles.shareimage}
-                          src={Share_button}
-                          alt="Play icon"
-                        />
-                        <span className={styles.sharetext}>
-                          Share
-                        </span>
+                              className={styles.shareimage}
+                              src={Share_button}
+                              alt="Play icon"
+                            />
+                            <span className={styles.sharetext}>Share</span>
                           </div>
                         )}
                       </div>
@@ -1750,8 +1882,8 @@ const Dashboard = () => {
                         {latestquizzes[8]?.complexity}
                       </span>
                     </div>
-            </div>
-          </div>
+                  </div>
+                </div>
                 {/* attempted-quiz  */}
                 <div className="flex">
                   <div
@@ -1760,8 +1892,8 @@ const Dashboard = () => {
                       paddingTop: "8px",
                     }}
                   >
-                    <span className={styles.title} style={{width:"210px"}}>
-                    {attemptedquizzes[0]?.quiz_name}
+                    <span className={styles.title} style={{ width: "210px" }}>
+                      {attemptedquizzes[0]?.quiz_name}
                     </span>
                     <div className={styles.iconContainer}>
                       <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
@@ -1804,17 +1936,18 @@ const Dashboard = () => {
                               src={leaderboard_button}
                               alt="Play icon"
                             />
-                            <span className={styles.leaderboardtext} onClick={leaderboard}>
+                            <span
+                              className={styles.leaderboardtext}
+                              onClick={leaderboard}
+                            >
                               Leaderboard
                             </span>
                             <img
-                          className={styles.shareimage}
-                          src={Share_button}
-                          alt="Play icon"
-                        />
-                        <span className={styles.sharetext}>
-                          Share
-                        </span>
+                              className={styles.shareimage}
+                              src={Share_button}
+                              alt="Play icon"
+                            />
+                            <span className={styles.sharetext}>Share</span>
                           </div>
                         )}
                       </div>
@@ -1830,8 +1963,12 @@ const Dashboard = () => {
                     </div>
 
                     <div className={styles.description}>
-                      <span>{attemptedquizzes[0]?.quiz_description}
-                      <span className={styles.subdescription}>{attemptedquizzes[0]?.quiz_description}</span></span>
+                      <span>
+                        {attemptedquizzes[0]?.quiz_description}
+                        <span className={styles.subdescription}>
+                          {attemptedquizzes[0]?.quiz_description}
+                        </span>
+                      </span>
                     </div>
 
                     {/* attaempted ranks */}
@@ -1839,14 +1976,18 @@ const Dashboard = () => {
                       <span>Pass</span>
                       <span className="px-[2px]">|</span>
                       <span>
-                      {attemptedquizzes[0]?.speed_rank}<sup>th</sup>Fastest
+                        {attemptedquizzes[0]?.speed_rank}
+                        <sup>th</sup>Fastest
                       </span>
                       <span className="px-[2px]">|</span>
                       <span>
-                      {attemptedquizzes[0]?.score_rank} <sup>th</sup>Highest
+                        {attemptedquizzes[0]?.score_rank} <sup>th</sup>Highest
                       </span>
                       <span className="px-[2px]">|</span>
-                      <span>{attemptedquizzes[0]?.attempt_percentage}% Score</span><br/>
+                      <span>
+                        {attemptedquizzes[0]?.attempt_percentage}% Score
+                      </span>
+                      <br />
                       <span>{attemptedquizzes[0]?.quiz_grade} Grade</span>
                     </div>
                     <div
@@ -1884,7 +2025,8 @@ const Dashboard = () => {
                           width={15}
                           height={10}
                         />{" "}
-                        {attemptedquizzes[0]?.attained_score}/{attemptedquizzes[0]?.total_score}
+                        {attemptedquizzes[0]?.attained_score}/
+                        {attemptedquizzes[0]?.total_score}
                         <div
                           title="attained score/total score"
                           className="cursor-pointer text-[6px]"
@@ -1900,7 +2042,8 @@ const Dashboard = () => {
                           width={14}
                           height={14}
                         />{" "}
-                        {attemptedquizzes[0]?.attempted_questions}/{attemptedquizzes[0]?.total_questions}
+                        {attemptedquizzes[0]?.attempted_questions}/
+                        {attemptedquizzes[0]?.total_questions}
                         <div
                           title="attempted qustions/total questions"
                           className="cursor-pointer text-[6px]"
@@ -1916,7 +2059,8 @@ const Dashboard = () => {
                           width={14}
                           height={14}
                         />{" "}
-                        {attemptedquizzes[0]?.attempt_duration_mins}/{attemptedquizzes[0]?.quiz_duration}
+                        {attemptedquizzes[0]?.attempt_duration_mins}/
+                        {attemptedquizzes[0]?.quiz_duration}
                         <div
                           title="time taken for attempted/total duration of quiz "
                           className="cursor-pointer text-[6px]"
@@ -1987,17 +2131,18 @@ const Dashboard = () => {
                               src={leaderboard_button}
                               alt="Play icon"
                             />
-                            <span className={styles.leaderboardtext} onClick={leaderboard}>
+                            <span
+                              className={styles.leaderboardtext}
+                              onClick={leaderboard}
+                            >
                               Leaderboard
                             </span>
                             <img
-                          className={styles.shareimage}
-                          src={Share_button}
-                          alt="Play icon"
-                        />
-                        <span className={styles.sharetext}>
-                          Share
-                        </span>
+                              className={styles.shareimage}
+                              src={Share_button}
+                              alt="Play icon"
+                            />
+                            <span className={styles.sharetext}>Share</span>
                           </div>
                         )}
                       </div>
@@ -2021,14 +2166,18 @@ const Dashboard = () => {
                       <span>Pass</span>
                       <span className="px-[2px]">|</span>
                       <span>
-                      {attemptedquizzes[1]?.speed_rank}<sup>th</sup>Fastest
+                        {attemptedquizzes[1]?.speed_rank}
+                        <sup>th</sup>Fastest
                       </span>
                       <span className="px-[2px]">|</span>
                       <span>
-                      {attemptedquizzes[1]?.score_rank} <sup>th</sup>Highest
+                        {attemptedquizzes[1]?.score_rank} <sup>th</sup>Highest
                       </span>
                       <span className="px-[2px]">|</span>
-                      <span>{attemptedquizzes[1]?.attempt_percentage}% Score</span><br/>
+                      <span>
+                        {attemptedquizzes[1]?.attempt_percentage}% Score
+                      </span>
+                      <br />
                       <span>{attemptedquizzes[1]?.quiz_grade} Grade</span>
                     </div>
                     <div
@@ -2066,12 +2215,12 @@ const Dashboard = () => {
                           width={15}
                           height={10}
                         />{" "}
-                      {attemptedquizzes[1]?.attained_score}/{attemptedquizzes[1]?.total_score}
+                        {attemptedquizzes[1]?.attained_score}/
+                        {attemptedquizzes[1]?.total_score}
                         <div
                           title="attained score/total score"
                           className="cursor-pointer text-[6px]"
                         >
-                        
                           <span className=" ml-[1px]">score</span>
                         </div>
                       </span>
@@ -2083,12 +2232,12 @@ const Dashboard = () => {
                           width={14}
                           height={14}
                         />{" "}
-                        {attemptedquizzes[1]?.attempted_questions}/{attemptedquizzes[1]?.total_questions}
+                        {attemptedquizzes[1]?.attempted_questions}/
+                        {attemptedquizzes[1]?.total_questions}
                         <div
                           title="attempted qustions/total questions"
                           className="cursor-pointer text-[6px]"
                         >
-                          
                           <span className=" ml-[1px]">attemped</span>
                         </div>
                       </span>
@@ -2100,7 +2249,8 @@ const Dashboard = () => {
                           width={14}
                           height={14}
                         />{" "}
-                       {attemptedquizzes[2]?.attempt_duration_mins}/{attemptedquizzes[2]?.quiz_duration}
+                        {attemptedquizzes[2]?.attempt_duration_mins}/
+                        {attemptedquizzes[2]?.quiz_duration}
                         <div
                           title="time taken for attempted/total duration of quiz "
                           className="cursor-pointer text-[6px]"
@@ -2171,17 +2321,18 @@ const Dashboard = () => {
                               src={leaderboard_button}
                               alt="Play icon"
                             />
-                            <span className={styles.leaderboardtext} onClick={leaderboard}>
+                            <span
+                              className={styles.leaderboardtext}
+                              onClick={leaderboard}
+                            >
                               Leaderboard
                             </span>
                             <img
-                          className={styles.shareimage}
-                          src={Share_button}
-                          alt="Play icon"
-                        />
-                        <span className={styles.sharetext}>
-                          Share
-                        </span>
+                              className={styles.shareimage}
+                              src={Share_button}
+                              alt="Play icon"
+                            />
+                            <span className={styles.sharetext}>Share</span>
                           </div>
                         )}
                       </div>
@@ -2205,14 +2356,18 @@ const Dashboard = () => {
                       <span>Pass</span>
                       <span className="px-[2px]">|</span>
                       <span>
-                      {attemptedquizzes[2]?.speed_rank}<sup>th</sup>Fastest
+                        {attemptedquizzes[2]?.speed_rank}
+                        <sup>th</sup>Fastest
                       </span>
                       <span className="px-[2px]">|</span>
                       <span>
-                      {attemptedquizzes[2]?.score_rank} <sup>th</sup>Highest
+                        {attemptedquizzes[2]?.score_rank} <sup>th</sup>Highest
                       </span>
                       <span className="px-[2px]">|</span>
-                      <span>{attemptedquizzes[2]?.attempt_percentage}% Score</span><br/>
+                      <span>
+                        {attemptedquizzes[2]?.attempt_percentage}% Score
+                      </span>
+                      <br />
                       <span>{attemptedquizzes[2]?.quiz_grade} Grade</span>
                     </div>
                     <div
@@ -2250,12 +2405,12 @@ const Dashboard = () => {
                           width={15}
                           height={10}
                         />{" "}
-                       {attemptedquizzes[2]?.attained_score}/{attemptedquizzes[2]?.total_score}
+                        {attemptedquizzes[2]?.attained_score}/
+                        {attemptedquizzes[2]?.total_score}
                         <div
                           title="attained score/total score"
                           className="cursor-pointer text-[6px]"
                         >
-                          
                           <span className=" ml-[1px]">score</span>
                         </div>
                       </span>
@@ -2267,12 +2422,12 @@ const Dashboard = () => {
                           width={14}
                           height={14}
                         />{" "}
-                        {attemptedquizzes[2]?.attempted_questions}/{attemptedquizzes[2]?.total_questions}
+                        {attemptedquizzes[2]?.attempted_questions}/
+                        {attemptedquizzes[2]?.total_questions}
                         <div
                           title="attempted qustions/total questions"
                           className="cursor-pointer text-[6px]"
                         >
-                         
                           <span className=" ml-[1px]">attemped</span>
                         </div>
                       </span>
@@ -2284,23 +2439,21 @@ const Dashboard = () => {
                           width={14}
                           height={14}
                         />{" "}
-                        {attemptedquizzes[2]?.attempt_duration_mins}/{attemptedquizzes[2]?.quiz_duration}{latestquizzes[2]?.quiz_duration}
+                        {attemptedquizzes[2]?.attempt_duration_mins}/
+                        {attemptedquizzes[2]?.quiz_duration}
+                        {latestquizzes[2]?.quiz_duration}
                         <div
                           title="time taken for attempted/total duration of quiz "
                           className="cursor-pointer text-[6px]"
                         >
-                       
                           <span className=" ml-[1px]">duration</span>
                         </div>
                       </span>
-                     
                     </div>
                   </div>
                 </div>
-
               </div>
-            :null
-            }
+            ) : null}
           </div>
           <div className={styles.topScoredHeader}>
             <p>Most Popular</p>
@@ -2336,7 +2489,12 @@ const Dashboard = () => {
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className={styles.starttext} onClick={() => handleStartQuiz(popularquizzes[0].quiz_id)}>
+                      <span
+                        className={styles.starttext}
+                        onClick={() =>
+                          handleStartQuiz(popularquizzes[0].quiz_id)
+                        }
+                      >
                         Start
                       </span>
                       <img
@@ -2344,25 +2502,24 @@ const Dashboard = () => {
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className={styles.edittext}>
-                        Edit
-                      </span>
+                      <span className={styles.edittext}>Edit</span>
                       <img
                         className={styles.leaderboardimage}
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className={styles.leaderboardtext} onClick={leaderboard}>
+                      <span
+                        className={styles.leaderboardtext}
+                        onClick={leaderboard}
+                      >
                         Leaderboard
                       </span>
                       <img
-                          className={styles.shareimage}
-                          src={Share_button}
-                          alt="Play icon"
-                        />
-                        <span className={styles.sharetext}>
-                          Share
-                        </span>
+                        className={styles.shareimage}
+                        src={Share_button}
+                        alt="Play icon"
+                      />
+                      <span className={styles.sharetext}>Share</span>
                     </div>
                   )}
                 </div>
@@ -2463,11 +2620,16 @@ const Dashboard = () => {
                   {isNavbarOpen12 && (
                     <div className={styles.infoIcons}>
                       <img
-                       className={styles.startimage}
+                        className={styles.startimage}
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className={styles.starttext} onClick={() => handleStartQuiz(popularquizzes[1].quiz_id)}>
+                      <span
+                        className={styles.starttext}
+                        onClick={() =>
+                          handleStartQuiz(popularquizzes[1].quiz_id)
+                        }
+                      >
                         Start
                       </span>
                       <img
@@ -2475,25 +2637,24 @@ const Dashboard = () => {
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className={styles.edittext}>
-                        Edit
-                      </span>
+                      <span className={styles.edittext}>Edit</span>
                       <img
                         className={styles.leaderboardimage}
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className={styles.leaderboardtext} onClick={leaderboard}>
+                      <span
+                        className={styles.leaderboardtext}
+                        onClick={leaderboard}
+                      >
                         Leaderboard
                       </span>
                       <img
-                          className={styles.shareimage}
-                          src={Share_button}
-                          alt="Play icon"
-                        />
-                        <span className={styles.sharetext}>
-                          Share
-                        </span>
+                        className={styles.shareimage}
+                        src={Share_button}
+                        alt="Play icon"
+                      />
+                      <span className={styles.sharetext}>Share</span>
                     </div>
                   )}
                 </div>
@@ -2597,7 +2758,12 @@ const Dashboard = () => {
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className={styles.starttext} onClick={() => handleStartQuiz(popularquizzes[2].quiz_id)}>
+                      <span
+                        className={styles.starttext}
+                        onClick={() =>
+                          handleStartQuiz(popularquizzes[2].quiz_id)
+                        }
+                      >
                         Start
                       </span>
                       <img
@@ -2605,25 +2771,24 @@ const Dashboard = () => {
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className={styles.edittext}>
-                        Edit
-                      </span>
+                      <span className={styles.edittext}>Edit</span>
                       <img
                         className={styles.leaderboardimage}
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className={styles.leaderboardtext} onClick={leaderboard}>
+                      <span
+                        className={styles.leaderboardtext}
+                        onClick={leaderboard}
+                      >
                         Leaderboard
                       </span>
                       <img
-                          className={styles.shareimage}
-                          src={Share_button}
-                          alt="Play icon"
-                        />
-                        <span className={styles.sharetext}>
-                          Share
-                        </span>
+                        className={styles.shareimage}
+                        src={Share_button}
+                        alt="Play icon"
+                      />
+                      <span className={styles.sharetext}>Share</span>
                     </div>
                   )}
                 </div>
@@ -2727,7 +2892,12 @@ const Dashboard = () => {
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className={styles.starttext} onClick={() => handleStartQuiz(popularquizzes[3].quiz_id)}>
+                      <span
+                        className={styles.starttext}
+                        onClick={() =>
+                          handleStartQuiz(popularquizzes[3].quiz_id)
+                        }
+                      >
                         Start
                       </span>
                       <img
@@ -2735,25 +2905,24 @@ const Dashboard = () => {
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className={styles.edittext}>
-                        Edit
-                      </span>
+                      <span className={styles.edittext}>Edit</span>
                       <img
                         className={styles.leaderboardimage}
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className={styles.leaderboardtext} onClick={leaderboard}>
+                      <span
+                        className={styles.leaderboardtext}
+                        onClick={leaderboard}
+                      >
                         Leaderboard
                       </span>
                       <img
-                          className={styles.shareimage}
-                          src={Share_button}
-                          alt="Play icon"
-                        />
-                        <span className={styles.sharetext}>
-                          Share
-                        </span>
+                        className={styles.shareimage}
+                        src={Share_button}
+                        alt="Play icon"
+                      />
+                      <span className={styles.sharetext}>Share</span>
                     </div>
                   )}
                 </div>
@@ -2857,7 +3026,12 @@ const Dashboard = () => {
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className={styles.starttext} onClick={() => handleStartQuiz(popularquizzes[4].quiz_id)}>
+                      <span
+                        className={styles.starttext}
+                        onClick={() =>
+                          handleStartQuiz(popularquizzes[4].quiz_id)
+                        }
+                      >
                         Start
                       </span>
                       <img
@@ -2865,25 +3039,24 @@ const Dashboard = () => {
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className={styles.edittext}>
-                        Edit
-                      </span>
+                      <span className={styles.edittext}>Edit</span>
                       <img
                         className={styles.leaderboardimage}
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className={styles.leaderboardtext} onClick={leaderboard}>
+                      <span
+                        className={styles.leaderboardtext}
+                        onClick={leaderboard}
+                      >
                         Leaderboard
                       </span>
                       <img
-                          className={styles.shareimage}
-                          src={Share_button}
-                          alt="Play icon"
-                        />
-                        <span className={styles.sharetext}>
-                          Share
-                        </span>
+                        className={styles.shareimage}
+                        src={Share_button}
+                        alt="Play icon"
+                      />
+                      <span className={styles.sharetext}>Share</span>
                     </div>
                   )}
                 </div>
@@ -2987,7 +3160,12 @@ const Dashboard = () => {
                         src={Start_button}
                         alt="Play icon"
                       />
-                      <span className={styles.starttext} onClick={() => handleStartQuiz(popularquizzes[5].quiz_id)}>
+                      <span
+                        className={styles.starttext}
+                        onClick={() =>
+                          handleStartQuiz(popularquizzes[5].quiz_id)
+                        }
+                      >
                         Start
                       </span>
                       <img
@@ -2995,25 +3173,24 @@ const Dashboard = () => {
                         src={Edit_button}
                         alt="Play icon"
                       />
-                      <span className={styles.edittext}>
-                        Edit
-                      </span>
+                      <span className={styles.edittext}>Edit</span>
                       <img
                         className={styles.leaderboardimage}
                         src={leaderboard_button}
                         alt="Play icon"
                       />
-                      <span className={styles.leaderboardtext} onClick={leaderboard}>
+                      <span
+                        className={styles.leaderboardtext}
+                        onClick={leaderboard}
+                      >
                         Leaderboard
                       </span>
                       <img
-                          className={styles.shareimage}
-                          src={Share_button}
-                          alt="Play icon"
-                        />
-                        <span className={styles.sharetext}>
-                          Share
-                        </span>
+                        className={styles.shareimage}
+                        src={Share_button}
+                        alt="Play icon"
+                      />
+                      <span className={styles.sharetext}>Share</span>
                     </div>
                   )}
                 </div>

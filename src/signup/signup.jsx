@@ -61,6 +61,7 @@ const Signup = () => {
   const [showOtpField, setShowOtpField] = useState(false);
   const [showOtpField1, setShowOtpField1] = useState(false);
   const [responseMessage, setResponseMessage] = useState("");
+  const [green, setGreen] = useState("");
   const [termsChecked, setTermsChecked] = useState(false);
   const [errors, setErrors] = useState({});
   const [mobile, setMobile] = useState("");
@@ -70,7 +71,7 @@ const Signup = () => {
   const [resendAvailable, setResendAvailable] = useState(true);
   const [resendAvailable1, setResendAvailable1] = useState(true);
   const [resendTime, setResendTime] = useState(10 * 60);
-  const [resendTime1, setResendTime1] = useState(1 * 60);
+  const [resendTime1, setResendTime1] = useState(10 * 60);
   const [showSecondButton, setShowSecondButton] = useState(false);
   const [countdown, setCountdown] = useState(5); // Initial countdown value
   const [terms, setTerms] = useState("");
@@ -160,7 +161,10 @@ const Signup = () => {
   };
   const handleSignUp1 = () => {
     let hasError = false;
-  
+   
+    setResponseMessage("");
+    setResponseMessage1("");
+    setTerms("");
     if (name.trim() === "" || emailOrMobile.trim() === "") {
       setResponseMessage1("Please enter all fields");
       hasError = true;
@@ -300,7 +304,9 @@ if (hasError) {
   const handleSignUp2 = () => {
   
     let hasError = false;
-  
+    setResponseMessage("");
+    setResponseMessage1("");
+    setTerms("");
     if (name1.trim() === "" || mobile.trim() === "") {
       setResponseMessage1("Please enter all fields");
       hasError = true;
@@ -324,7 +330,7 @@ if (hasError) {
     return;
 }
     setResendAvailable1(false); // Disable resend button after sending OTP
-    setResendTime1(1 * 60);
+    setResendTime1(10 * 60);
     const userData = {
       signup_option: loginMethod,
       user_name: name1,
@@ -355,7 +361,7 @@ if (hasError) {
           data.output ===
           "Mobile Number is already registered.Please verify your"
         ) {
-          setResponseMessage(data.output);
+          setResponseMessage("Mobile Number is registered. Please verify your OTP");
           setShowOtpField1(true);
           setShowVerifyButton1(true); 
         } else if (
@@ -363,8 +369,10 @@ if (hasError) {
           data.output &&
           data.output.includes("Please verify your OTP")
         ) {
-          const sanitizedOutput = data.output.replace(/\d{6}\s?/, ""); // Removes the OTP (6 digits followed by optional space)
-          setResponseMessage(sanitizedOutput);
+          // const sanitizedOutput = data.output.replace(/\d{6}\s?/, ""); // Removes the OTP (6 digits followed by optional space)
+          // setResponseMessage(sanitizedOutput);
+          setResponseMessage("Account Has Been Created OTP Successfully Sent Please verify your OTP")
+          // setGreen("Account Has Been Created OTP Successfully Sent Please verify your OTP")
           setShowOtpField1(true);
           setShowVerifyButton1(true); 
         } else if (
@@ -397,7 +405,17 @@ if (hasError) {
         }
       })
       .catch((error) => {
-        console.error("Error signing up:", error);
+        console.error('Error signing up:', error);
+        if (error.detail && Array.isArray(error.detail) && error.detail.length > 0) {
+          const detail = error.detail[0];
+          if (detail.type === 'value_error' && detail.loc.includes('user_name')) {
+            setResponseMessage(detail.msg);
+          } else {
+            setResponseMessage('');
+          }
+        } else {
+          setResponseMessage(' Names can only contain alphabetic characters');
+        }
       });
   };
   const handleInputChange1 = (field, value) => {
@@ -1248,6 +1266,9 @@ if (hasError) {
                           </div>
                         </div>
                       )}
+                          {green && (
+                  <p className={styles1.responseMessage1} style={{ color: 'green' }}>{green}</p>
+                )}
                               {responseMessage1 && (
                   <p className={styles1.responseMessage1} style={{ color: 'red' }}>{responseMessage1}</p>
                 )}

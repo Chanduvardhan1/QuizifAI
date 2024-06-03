@@ -443,7 +443,7 @@ margin-bottom:20px;
   
 }
 
-.registerButton {
+/* .registerButton {
   width: 104px;
   height: 41px;
   background-color:#223F80;
@@ -453,13 +453,30 @@ margin-bottom:20px;
   border: none;
   margin-left: 160px;
   
+} */
+.registerButton {
+  width: 80px;
+  height: 30px;
+  border-radius: 20px;
+  background: #3B61C8;
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 30px;
+  letter-spacing: 0em;
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  margin-right: 6px;
+  margin-left: 4px;
+  
 }
-.resendButton:hover{
+.registerButton:hover{
   background-color:rgb(239,81,48); /* Change background color on hover */
   transform: scale(1.1); /* Zoom effect on hover */
   transition: transform 0.3s ease;
 }
-.resendButton{
+/* .resendButton{
   width: 104px;
   height: 41px;
   background-color:#223F80;
@@ -470,7 +487,7 @@ margin-bottom:20px;
   margin-right: 200px;
   margin-top: 20px;
 
-}
+} */
 
 .narmtechIcon{
   margin-top: 50px;
@@ -659,15 +676,22 @@ margin-top: -30px;
   color: red;
   font-size: 15px;
 }
-
+.state{
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  height:5px;
+}
 .registrationSuccess{
   display: flex;
-  margin-top: 140px;
-  margin-right: 200px;
+  /* margin-top: 140px; */
+  /* margin-right: 200px; */
   flex-direction: column;
   justify-content: center;
-  align-items:center;
+  align-items: center;
   /* width: 350px; */
+  padding-right: 50px;
+  padding-bottom: 190px;
 }
 
 .registrationSuccess h2{

@@ -216,9 +216,13 @@ const LoginPage = () => {
       if (response.ok) {
         if (Array.isArray(responseData) && responseData[0]) {
           if (responseData[0].response === "fail") {
-            const errorMessage = responseData[0].message || "An unknown error occurred while logging in.";
-            setErrorMessage(errorMessage);
-            console.error(errorMessage);
+              const errorMessage = responseData[0].message || "An unknown error occurred while logging in.";
+              if (responseData[0].message === "Password is incorrect.Please try again or Forgot your password? Click on Reset Password.") {
+                  setErrorMessage("Oops! That password doesn't seem to be right. Try again, or click Forgot Password");
+              } else {
+                  setErrorMessage(errorMessage);
+              }
+              console.error(errorMessage);
           } else {
             // Assuming successful response structure in array form
             localStorage.setItem('user_id', responseData[0].user_id[0]);

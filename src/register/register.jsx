@@ -1781,7 +1781,7 @@ const register = () => {
                             ))}
                         </TextField>
                       </label>
-                      <div className={styles1.option1}>
+                      <div className={styles.state}>
                         <label>
                           <TextField
                             id="outlined-select-currency"
@@ -1802,7 +1802,7 @@ const register = () => {
                               marginBottom: "20px",
                               position: "relative",
                               top: "-77px",
-                              left: "172px",
+                              left: "-55px",
                             }}
                             InputLabelProps={{
                               style: { fontFamily: "poppins" },
@@ -1865,7 +1865,7 @@ const register = () => {
                               marginBottom: "20px",
                               position: "relative",
                               top: "-151px",
-                              left: "426px",
+                              left: "194px",
                             }}
                             InputLabelProps={{
                               style: { fontFamily: "poppins" },

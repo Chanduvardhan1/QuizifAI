@@ -803,6 +803,11 @@ text-align: left;
     color: #FFFFFF;
     
   }
+ .customButton:hover{
+  background-color:rgb(239,81,48); /* Change background color on hover */
+  transform: scale(1.1); /* Zoom effect on hover */
+  transition: transform 0.3s ease;
+  }
   .customButton:first-child {
     margin-right: 8px;
     margin-left: -84px; 

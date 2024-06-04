@@ -13,6 +13,7 @@ import timeSpentIcon from "../assets/Images/images/dashboard/timeSpent.png";
 import notifyIcon from "../assets/Images/images/dashboard/notify.png";
 import todayTopicIcon from "../assets/Images/images/dashboard/todayTopic.png";
 import subTopicIcon from "../assets/Images/images/dashboard/subTopic.png";
+import questionmark from "../assets/Images/images/dashboard/questionmark.png";
 
 
 const currentValue1 = 50; 
@@ -128,10 +129,29 @@ const LogoutBar = () => {
             fontSize: "12px",
             margin: "0",
             fontWeight: 500,
-            color: "rgb(94,129,244)",
+            color: "#5E81F4",
+            marginLeft: "10px",
           }}>
-            User id : {userId}
+            User ID : {userId}
           </p>
+
+          <div className="relative group inline-block">
+          <img 
+          src={questionmark}
+          alt="question mark icon"
+          style={{
+            height: "15px",
+            width: "15px",
+            marginLeft:"120px",
+            marginTop:"-35px",
+            cursor:"pointer",
+          }}
+          />
+          <span className="hidden group-hover:inline-block h-[60px] absolute -left-[33px] -top-[55px] -translate-x-1/2 bottom-full mb-1 w-[300px] px-2 py-1 bg-black text-white text-xs rounded">
+          Your unique identification number helps our support team locate your account when you need help through QuizifAI's support channels.
+           </span>
+          </div>
+          
           <div style={{ marginTop: "10px" }}>
             <div style={{ marginTop: "40px", marginLeft: "20px" }}>
               <div

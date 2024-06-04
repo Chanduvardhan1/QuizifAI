@@ -541,6 +541,32 @@ const FreeProfile = () => {
         }}
       />
 </div>
+<div className={styles.inputGroup}>
+<TextField
+        id="occupation"
+        type="text"
+        label="Occupation"
+        value={professions}
+        onChange={(e) => setProfession(e.target.value)}
+        readOnly={!isEditMode}
+        className={!isEditMode ? styles.readOnlyInput : ""}
+        InputLabelProps={{
+          shrink: true,
+          style: { fontFamily: "poppins" },
+        }}
+        InputProps={{
+          style: {
+            width: "160px",
+            height: "45px",
+            fontFamily: "poppins",
+            paddingLeft: "0px",
+            borderRadius: "10px",
+          },
+          autoComplete: "off",
+          readOnly: !isEditMode, // Add readOnly prop conditionally
+        }}
+      />
+</div>
             <div className={styles.inputGroup}>
               <TextField
                 type="text"

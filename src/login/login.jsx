@@ -844,12 +844,7 @@ const LoginPage = () => {
                   I agree with the terms and conditions
                 </label> */}
               {/* </div>  */}
-              {errorMessage && (
-                <>
-                  {console.log("Error message:", errorMessage)}
-                  <p className={styles.displayError}>{errorMessage}</p>
-                </>
-              )}
+              
               <button
                 onClick={() =>
                   handleLogin(loginMethod, email, mobile, password)
@@ -859,6 +854,12 @@ const LoginPage = () => {
                 Login
               </button>
               </div>
+              {errorMessage && (
+                <>
+                  {console.log("Error message:", errorMessage)}
+                  <p className={styles.displayError}>{errorMessage}</p>
+                </>
+              )}
               </div>
               {/* {loginMethod === "mobile" && (
                 <button

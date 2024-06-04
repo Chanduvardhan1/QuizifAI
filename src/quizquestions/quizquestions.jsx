@@ -11,6 +11,8 @@ import clockIcon from "../assets/Images/images/questions/clock.png";
 import LeftBar from "../leftbar/leftbar";
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { MdOutlineCancel } from "react-icons/md";
+import { useLocation } from 'react-router-dom';
 
 
 const QuizQuestions = () => {
@@ -123,6 +125,10 @@ const QuizQuestions = () => {
   const [elapsedTime, setElapsedTime] = useState(0);
   const timerRef = useRef(null);
   const { quizId } = useParams();
+  const location = useLocation();
+  const {quiz_title, quiz_description } = location.state;
+
+
 
   useEffect(() => {
     const quizId = localStorage.getItem("quiz_id");
@@ -237,17 +243,39 @@ const QuizQuestions = () => {
   const optionLabels = ['A', 'B', 'C', 'D'];
   const optionKeys = ['quiz_ans_option_1_text', 'quiz_ans_option_2_text', 'quiz_ans_option_3_text', 'quiz_ans_option_4_text'];
 
+  const Back = () => {
+    
+    navigate("/quizaccess");
+  
+};
+
   return (
     <div className={styles.container}>
       {/*<Head>
         <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600;700&display=swap"
-          rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600;700&display=swap"
+        rel="stylesheet"
         />
-  </Head>*/}
+      </Head>*/}
       <LeftBar/>
       <div className={styles.mainContent}>
-          <h1 className={styles.quizTitle}>{quizData.data.quiz_title}</h1>
+      <div>
+        <h1 className={styles.quiztitle}>{quiz_title}</h1>
+        <p className={styles.quizdescription}>{quiz_description}</p>
+        <div className={styles.Createdbyandupdated}>
+        <div className={styles.Createdby}>
+
+        <span className={styles.Created} >Created By:</span>{" "}
+          <span className={styles.username} >{`${quizData.user_name}`}</span>
+        </div>
+        <div>
+
+        <span className={styles.Created} >Created ON:</span>{" "}
+          <span className={styles.username} >{`${quizData.user_name}`}</span>
+        </div>
+        </div>
+      </div>
+          {/* <h1 className={styles.quizTitle}>{quizData.data.quiz_title}</h1> */}
           {/* <div className={styles.imageContainer}>
           {/* <img
     src={numberIcon} 
@@ -407,7 +435,7 @@ const QuizQuestions = () => {
                   alignItems: 'center',
                   fontWeight: isSelected ? 'bold' : 'normal',
                   backgroundColor: isSelected ? 'lightyellow' : 'transparent',
-                  width: '400px', // Ensure the button takes full width
+                  width: '550px', // Ensure the button takes full width
                   padding: '10px', // Adds padding for better click area
                   border: isSelected ? '2px solid #FEBB42' : '1px solid #ccc', // Highlights selected option
                   borderRadius: '5px', // Rounds corners of buttons
@@ -423,6 +451,7 @@ const QuizQuestions = () => {
       )}
              <div className={styles.buttonsContainer}>
             {currentQuestionIndex > 0 && (
+              <div className={styles.button1}>
                 <button
                     className={styles.button}
                     style={{ color: '#FFFFFF', backgroundColor: '#FEBB42', height: '52px', borderRadius: '10px', border: 'none' }}
@@ -430,24 +459,29 @@ const QuizQuestions = () => {
                 >
                     Previous
                 </button>
+                </div>
             )}
             {currentQuestionIndex < quizData.data.filter(item => item.question_id).length - 1 && (
-                <button
+               <div className={styles.button2}>
+              <button
                     className={styles.button}
                     style={{ backgroundColor: '#8453FC', height: '52px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
                     onClick={handleNextQuestion}
                 >
                     Next
                 </button>
+                </div>
             )}
             {currentQuestionIndex === quizData.data.filter(item => item.question_id).length - 1 && (
-                <button
+              <div className={styles.button3}>
+             <button
                     className={styles.button}
                     style={{ marginLeft: '50px', backgroundColor: 'rgb(11 87 208)', height: '52px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
                     onClick={handleSubmit}
                 >
                     Submit
                 </button>
+                </div>
             )}
         </div>
 
@@ -474,6 +508,8 @@ const QuizQuestions = () => {
       className={styles.clockIcon}
     />
   </div> */}
+        <div className={styles.back1} onClick={Back}><MdOutlineCancel /></div>
+
       </div>
     
   );

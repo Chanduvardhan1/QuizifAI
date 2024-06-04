@@ -95,12 +95,23 @@ const quizAccess = () => {
   const navigate = useNavigate();
   const [quizData, setQuizData] = useState(null);
   // const { quizId } = useParams();
+  // const handleStartQuiz = () => {
+  //   if (quizData && quizData.quiz_id) {
+  //     navigate(`/quizquestions/${quizData.quiz_id}`);
+  //   }
+  // };
   const handleStartQuiz = () => {
-    if (quizData && quizData.quiz_id) {
-      navigate(`/quizquestions/${quizData.quiz_id}`);
+    if (quizData && quizData.quiz_title && quizData.quiz_id) {
+      navigate(`/quizquestions/${quizData.quiz_id}`, {
+        state: { 
+          quiz_id: quizData.quiz_id,
+          quiz_title: quizData.quiz_title,
+          quiz_description: quizData.quiz_description 
+        }
+      });
     }
   };
-
+  
   const Back = () => {
     
       navigate("/dashboard");

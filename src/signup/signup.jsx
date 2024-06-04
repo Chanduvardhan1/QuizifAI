@@ -228,7 +228,13 @@ if (hasError) {
           data.data === 'Email is already registered. You can log in.'
         ) {
           setTerms(data.data);
-        } else {
+        }  else if (
+          data.response === 'fail' &&
+          data.data === 'Email is not valid,Make sure email should have atleast 8 characters.'
+        ) {
+          setTerms("Email is not valid");
+        } 
+        else {
           setResponseMessage(data.data);
         }
       })
@@ -398,7 +404,7 @@ if (hasError) {
           
         ) {
        
-          setResponseMessage(data.data);
+          setTerms(data.data);
         }
          else {
           setTerms(data.data);
@@ -1062,14 +1068,7 @@ if (hasError) {
                           </div>
                         </div>
                       )}
-                           {responseMessage1 && (
-                  <p className={styles1.responseMessage1} style={{ color: 'red' }}>{responseMessage1}</p>
-                )}
-                        {responseMessage && (
-                  <p className={styles1.responseMessage1}>{responseMessage}</p>
-                )}
-
-{submitted && !!errors && <div style={{ color: 'red' }}>{errors}</div>}
+                
                       <div className={styles1.checkbox1}> 
                   <input
                     type="checkbox"
@@ -1266,15 +1265,7 @@ if (hasError) {
                           </div>
                         </div>
                       )}
-                          {green && (
-                  <p className={styles1.responseMessage1} style={{ color: 'green' }}>{green}</p>
-                )}
-                              {responseMessage1 && (
-                  <p className={styles1.responseMessage1} style={{ color: 'red' }}>{responseMessage1}</p>
-                )}
-                              {responseMessage && (
-                  <p className={styles1.responseMessage1} >{responseMessage}</p>
-                )}
+                
                     <div className={styles1.checkbox1}> 
                   <input
                     type="checkbox"
@@ -1775,10 +1766,16 @@ alt="Google Logo"
                    login
                   </span>
                 </p> 
-
-                {terms && (
-                  <p className={styles1.responseMessage}>{terms}</p>
-                )}
+             
+                          {/* {green && (
+                  <p className={styles1.responseMessage1} style={{ color: 'red' }}>{green}</p>
+                )} */}
+                              {/* {responseMessage1 && (
+                  <p className={styles1.responseMessage1} style={{ color: 'red' }}>{responseMessage1}</p>
+                )} */}
+                              {/* {responseMessage && (
+                  <p className={styles1.responseMessage1} style={{ color: 'red' }} >{responseMessage}</p>
+                )} */}
                 {loginMethod === "email" && showVerifyButton && (
                   // <button
                   //   onClick={handleSignUp1}
@@ -1823,6 +1820,16 @@ alt="Google Logo"
                       Verify
                     </button>
                   </div>
+                )}
+                   {responseMessage1 && (
+                  <p className={styles1.responseMessage1} style={{ color: 'red' }}>{responseMessage1}</p>
+                )}
+                        {responseMessage && (
+                  <p className={styles1.responseMessage1} style={{ color: '#19ae0c' }}>{responseMessage}</p>
+                )}
+{submitted && !!errors && <div style={{ color: 'red' }}>{errors}</div>}
+                {terms && (
+                  <p className={styles1.responseMessage}>{terms}</p>
                 )}
                 {/* {loginMethod === "mobile" && !showOtpField && (
                   <button className={styles1.button} onClick={handleSignUp2}>

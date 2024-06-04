@@ -88,12 +88,13 @@
     display: flex;
     flex-direction: column;
   
-    background: linear-gradient(
+    /* background: linear-gradient(
     0deg,
     rgba(206, 228, 255, 0.5) -23.93%,
     rgba(226, 239, 255, 0.5) 43.85%,
     rgba(238, 246, 255, 0.5) 97.11%
-  );
+  ); */
+  height: 700px;
     /* Add any other styles you need for your main content */
     padding: 20px;
     /* Example padding, adjust as needed */
@@ -324,10 +325,11 @@ text-align: left;
   }
   .buttonContainer {
     display: flex;
-    justify-content: end;
+    /* justify-content: end; */
     margin-top: 36px;
     margin-bottom: 80px;
-    padding-right: 130px;
+    margin-left: 845px;
+    /* padding-right: 130px; */
   }
   
   .imageButton {

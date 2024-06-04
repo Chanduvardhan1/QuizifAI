@@ -24,7 +24,7 @@ import historyIcon from '../../src/assets/Images/images/dashboard/history.png';
 import scheduleIcon from '../../src/assets/Images/images/dashboard/schedule.png';
 import notificationIcon from '../../src/assets/Images/images/dashboard/notification.png';
 import profileIcon from '../../src/assets/Images/images/questions/profile1.png';
-
+import configure from '../../src/assets/Images/images/dashboard/configure.png'
 
 const leftBar = () => {
 
@@ -55,7 +55,7 @@ const leftBar = () => {
           height="20"
         />
       </div>
-      <div className={styles.pageItem} onClick={() => handleNavigation('/quiz')}>
+      {/* <div className={styles.pageItem} onClick={() => handleNavigation('/quiz')}>
         <img
           src={quizIcon}
           alt="Icon 2"
@@ -63,19 +63,29 @@ const leftBar = () => {
           width="20"
           height="20"
         />
-      </div>
+      </div> */}
       <div className={styles.pageItem} onClick={() => handleNavigation('/history')}>
         <img
-          src={historyIcon}
+          src={quizIcon}
           alt="Icon 1"
           className={styles.pageIcon}
           width="20"
           height="20"
         />
       </div>
-      <div className={styles.pageItem} onClick={() => handleNavigation('/schedule')}>
+      {/* <div className={styles.pageItem} onClick={() => handleNavigation('/schedule')}>
         <img
           src={scheduleIcon}
+          alt="Icon 2"
+          className={styles.pageIcon}
+          width="20"
+          height="20"
+        />
+      </div> */}
+     
+      <div className={styles.pageItem} onClick={() => handleNavigation('/free-profile')}>
+        <img
+          src={profileIcon}
           alt="Icon 2"
           className={styles.pageIcon}
           width="20"
@@ -84,17 +94,8 @@ const leftBar = () => {
       </div>
       <div className={styles.pageItem} onClick={() => handleNavigation('/notification')}>
         <img
-          src={notificationIcon}
+          src={configure}
           alt="Icon 1"
-          className={styles.pageIcon}
-          width="20"
-          height="20"
-        />
-      </div>
-      <div className={styles.pageItem} onClick={() => handleNavigation('/free-profile')}>
-        <img
-          src={profileIcon}
-          alt="Icon 2"
           className={styles.pageIcon}
           width="20"
           height="20"

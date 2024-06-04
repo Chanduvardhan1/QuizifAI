@@ -302,13 +302,6 @@ const FreeProfile = () => {
                 className={styles.searchIcon}
               />
             </div>
-            {/* <div className={styles.notificationsettingsContainer}>
-              <img
-                src={notificationsettings}
-                alt="notificationsettings Icon"
-                className={styles.notificationsettings}
-              />
-            </div> */}
           </div>
         </div>
         <div className={styles.contentContainer} style={{ marginLeft: "80px" }}>
@@ -568,7 +561,7 @@ const FreeProfile = () => {
       />
 </div>
             <div className={styles.inputGroup}>
-              <TextField
+              {/* <TextField
                 type="text"
                 id="postalCode"
                 label="Postal code"
@@ -591,17 +584,17 @@ const FreeProfile = () => {
             fontFamily: "poppins",
             fontSize: "15px",
             borderRadius: "10px",
-            paddingRight: "30px", // Ensure the text doesn't overlap with the icon
+            paddingRight: "30px",
           },
           autoComplete: "off",
         }}
         className={`${styles.iconInput} ${!isEditMode ? styles.readOnlyInput : ""}`}
           sx={{
-            width: "150px", // Apply styles directly using sx
+            width: "150px",
             height: "44px",
           }}
-      />
-               <div
+      /> */}
+               {/* <div
                     className={styles.searchicon}
                     onClick={handleSubmit1}
                     style={{
@@ -617,7 +610,7 @@ const FreeProfile = () => {
                         "0px center, right 10px center, right 40px center",
                       cursor: "pointer",
                     }}
-                  ></div>
+                  ></div> */}
               {/* <div
                     className={styles.searchicon}
                     onClick={handleSubmit1}
@@ -1485,7 +1478,7 @@ const FreeProfile = () => {
           </div>
         </div>  */}
       </div>
-      <div className={styles.logout}>
+      {/* <div className={styles.logout}>
         <div
           style={{
             marginTop: "60px",
@@ -1688,7 +1681,8 @@ const FreeProfile = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+       <LogoutBar />
     </div>
   );
 };

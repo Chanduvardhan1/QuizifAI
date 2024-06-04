@@ -1948,7 +1948,7 @@ const Dashboard = () => {
                 
                 {/* attempted-quiz  */}
                 <div className="flex">
-                  <div
+                  {/* <div
                     className={styles.card}
                     style={{
                       paddingTop: "8px",
@@ -2129,9 +2129,9 @@ const Dashboard = () => {
                         </div>
                       </span>
                     </div>
-                  </div>
+                  </div> */}
                   {/* second-card  */}
-                  <div
+                  {/* <div
                     className={styles.card}
                     style={{
                       paddingTop: "8px",
@@ -2308,9 +2308,9 @@ const Dashboard = () => {
                         </div>
                       </span>
                     </div>
-                  </div>
+                  </div> */}
                   {/* third-card  */}
-                  <div
+                  {/* <div
                     className={styles.card}
                     style={{
                       paddingTop: "8px",
@@ -2488,7 +2488,7 @@ const Dashboard = () => {
                         </div>
                       </span>
                     </div>
-                  </div>
+                  </div> */}
 
                 </div>
               </div>

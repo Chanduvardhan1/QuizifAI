@@ -86,7 +86,7 @@ font-weight: 700;
 line-height: 27px;
 letter-spacing: 0em;
 text-align: left;
-color: #F4774B;
+color: #214082;
 
 
 }
@@ -167,7 +167,7 @@ color: #F4774B;
 .verticalLine {
     width: 1px;
     height: 593px;
-    margin-top: 50px;
+    margin-top: 100px;
     background-color: black; /* Adjust as needed */
     margin-right: 20px; /* Adjust as needed */
     margin-left: 200px;
@@ -191,7 +191,7 @@ font-weight: 500;
 line-height: 30px;
 letter-spacing: 0em;
 text-align: left;
-color: #000000;
+color: #F4774B;
 margin-top: 130px;
 margin-left: -100px;
 
@@ -204,7 +204,7 @@ font-size: 30px;
 font-weight: 500;
 line-height: 45px;
 letter-spacing: 0em;
-margin-left: -110px;
+
 text-align: left;
 color:#CBCBCB;
 

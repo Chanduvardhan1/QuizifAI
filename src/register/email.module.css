@@ -731,13 +731,13 @@ margin-top: -30px;
   .rightSection {
     margin-right: 240px;
   }
-  .rightSection1 {
+  /* .rightSection1 {
     margin-right: 180px;
-  }
-  .logo{
+  } */
+  /* .logo{
     position:relative;
     right:30px;
-  }
+  } */
   .registrationSuccess{
     width:350px;
     /* position: relative;

@@ -120,11 +120,11 @@ const  [isActiveConfig, setIsActiveConfig] = useState(false);
           <img src={historyIcon} alt="Icon 1" className={styles.pageIcon} />
           <span className={styles.pageLink} >History</span>
         </div> */}
-        <div className={styles.pageItem}  onClick={handleNavigation2}>
+        {/* <div className={styles.pageItem}  onClick={handleNavigation2}>
           <img src={iconSchedule} alt="Icon 2" className={styles.pageIcon} />
           <div className={`${styles.verticalline} ${isActiveSchedule ? styles.active : ''}`}></div>
           <span className={styles.pageLink} >Schedule</span>
-        </div>
+        </div> */}
         {/* <div className={styles.pageItem} onClick={() => handleNavigation('/notification')}>
           <img src={notificationIcon} alt="Icon 1" className={styles.pageIcon} />
           <span className={styles.pageLink}>Notification</span>

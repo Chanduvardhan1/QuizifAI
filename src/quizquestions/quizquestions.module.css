@@ -86,7 +86,7 @@ font-weight: 700;
 line-height: 27px;
 letter-spacing: 0em;
 text-align: left;
-color: #F4774B;
+color: #214082;
 
 
 }
@@ -156,10 +156,18 @@ color: #F4774B;
 .button {
     width: 123px;
 }
+.button1{
 
+}
+.button2{
+
+}
+.button3{
+
+}
 .buttonsContainer {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     margin-top: 50px;
     margin-bottom: 10px; /* Adjust as needed */
 }
@@ -167,44 +175,77 @@ color: #F4774B;
 .verticalLine {
     width: 1px;
     height: 593px;
-    margin-top: 50px;
+    margin-top: 100px;
     background-color: black; /* Adjust as needed */
     margin-right: 20px; /* Adjust as needed */
-    margin-left: 200px;
+    margin-left: 170px;
 }
 .sentence1{
     font-family: Poppins;
     margin-top: 100px;
-font-size: 20px;
+font-size: 18px;
 font-weight: 700;
 line-height: 30px;
 letter-spacing: 0em;
 text-align: left;
-color: #214082;
-
+color: #F4774B;
+width: 150px;
 }
-
+.quiztitle{
+    font-family: Poppins;
+    font-size: 18px;
+    font-weight: 700;   
+    display: flex;
+    align-items: center;
+}
+.quizdescription{
+    width: 650px;
+}
+.Createdbyandupdated{
+    display: flex;
+    gap: 240px;
+}
+.Created{
+    align-items: center;
+    font-family: Poppins;
+    font-size: 15px;
+    font-weight: 600;
+}
+.quizdescription{
+    font-family: Poppins;
+    font-size: 15px;
+}
 .sentence2{
     font-family: Poppins;
-font-size: 20px;
+font-size: 18px;
 font-weight: 500;
 line-height: 30px;
 letter-spacing: 0em;
 text-align: left;
-color: #000000;
+color: #214082;
 margin-top: 130px;
 margin-left: -100px;
 
-
+width: 285px;
 }
-
+.back1{
+    display: flex;
+    cursor: pointer;
+    justify-content: end;
+    margin-left: 95px;
+    z-index: 1;
+    justify-items: end;
+    /* flex-direction: column; */
+    margin-top: 10;
+    margin-top: 17px;
+  }
 .sentence3{
     font-family: Poppins;
-font-size: 30px;
+font-size: 18px;
 font-weight: 500;
 line-height: 45px;
 letter-spacing: 0em;
-margin-left: -110px;
+
 text-align: left;
 color:#CBCBCB;
 

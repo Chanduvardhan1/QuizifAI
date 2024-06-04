@@ -28,7 +28,7 @@ import { Progress } from "react-sweet-progress";
 import "react-sweet-progress/lib/style.css";
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-
+import { MdOutlineCancel } from "react-icons/md";
 
 const dashboardLogo = "/images/dashboard/quizifaiDashboard.png";
 const dashboardIcon = "/images/dashboard/dashboard.png";
@@ -95,11 +95,29 @@ const quizAccess = () => {
   const navigate = useNavigate();
   const [quizData, setQuizData] = useState(null);
   // const { quizId } = useParams();
+  // const handleStartQuiz = () => {
+  //   if (quizData && quizData.quiz_id) {
+  //     navigate(`/quizquestions/${quizData.quiz_id}`);
+  //   }
+  // };
   const handleStartQuiz = () => {
-    if (quizData && quizData.quiz_id) {
-      navigate(`/quizquestions/${quizData.quiz_id}`);
+    if (quizData && quizData.quiz_title && quizData.quiz_id) {
+      navigate(`/quizquestions/${quizData.quiz_id}`, {
+        state: { 
+          quiz_id: quizData.quiz_id,
+          quiz_title: quizData.quiz_title,
+          quiz_description: quizData.quiz_description 
+        }
+      });
     }
   };
+  
+  const Back = () => {
+    
+      navigate("/dashboard");
+    
+  };
+
   useEffect(() => {
     const userId = localStorage.getItem("user_id");
     const quizId = localStorage.getItem("quiz_id");
@@ -231,117 +249,210 @@ const quizAccess = () => {
 </div> */}
 <Navigation/>
       <div className={styles.mainContent}>
+        <div className={styles.back} onClick={Back}><MdOutlineCancel /></div>
       {quizData && (
         <>
       <div className={styles.header}>
         <div className={styles.titleContainer}>
-        <img
+        {/* <img
   src={titleIcon} 
   alt="User Icon"
   className={styles.icon1}
-/>
+/> */}
           <span>{quizData.quiz_title}</span>
         </div>
-        <div className={styles.infoContainer}>
-        <img
-  src={createdIcon} 
-  alt="Calendar Icon"
-  className={styles.icon2}
-/>
-          <span>{`Quiz created by ${quizData.user_name} on ${quizData.created_date}`}</span>
-        </div>
+      
       </div>
       <div className={styles.descriptionContainer}>
-      <img
+      {/* <img
     src={descriptionIcon} 
     alt="Description Icon"
     className={styles.description}
-  />
+  /> */}
       <span className={styles.descriptionText}>{quizData.quiz_description}</span>
       </div>
+      <div className={styles.infoContainer}>
+        <div className={styles.sentence4}>
+        {/* <img
+  src={createdIcon} 
+  alt="Calendar Icon"
+  className={styles.icon2}
+/> */}
+          <span className={styles.sentence5} >Created By:</span>{" "}
+          <span className={styles.sentence3} >{`${quizData.user_name}`}</span>
+          </div>
+          <div className={styles.sentence4}>
+        {/* <img
+  src={createdIcon} 
+  alt="Calendar Icon"
+  className={styles.icon2}
+/> */}
+          <span className={styles.sentence5}>Created On:</span>
+          <span className={styles.sentence3}>{`${quizData.created_date}`}</span>
+          </div>
+        </div>
       <div className={styles.horizontalLine}></div>
-      <div className={styles.sentencesContainer}>
-        <div className={styles.sentence}>
-        <img
-    src={percentIcon} 
-    alt="Calendar Icon"
+      <div className={styles.sentencesContainer2}>
+        <div className={styles.sentence4}>
+        {/* <img
+    src={categoryIcon} 
     className={styles.icon2}
-  />
-          <span>{`${quizData.pass_percentage}% is the pass score`}</span>
+  /> */}
+            <span className={styles.sentence5}>Category:</span>
+          <span className={styles.sentence3}>{`${quizData.quiz_category_name}`}</span>
+          
         </div>
-        <div className={styles.sentence}>
-        <img
-    src={createdIcon} 
-    alt="Calendar Icon"
+        <div className={styles.sentence4}>
+        {/* <img
+    src={categoryIcon} 
     className={styles.icon2}
-  />
-          <span>{`Complexity: ${quizData.quiz_complexity_name}`}</span>
-        </div>
-        <div className={styles.sentence}>
-        <img
-    src={questionsIcon} 
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span>{`${quizData.num_questions} questions`}</span>
+  /> */}
+          <span  className={styles.sentence5}>Sub Category:</span>
+          <span  className={styles.sentence3}>{`${quizData.quiz_sub_category_name}`}</span>
         </div>
         
       </div>
-      <div className={styles.horizontalLine}></div>
       <div className={styles.sentencesContainer}>
-        <div className={styles.sentence}>
-        <img
-    src={categoryIcon} 
-    className={styles.icon2}
-  />
-          <span>{`Sub Category: ${quizData.quiz_sub_category_name}`}</span>
-        </div>
-        <div className={styles.sentence}>
-        <img
+  
+        <div className={styles.sentence4}>
+        {/* <img
     src={timeIcon} 
     alt="Calendar Icon"
     className={styles.icon2}
-  />
-          <span>{`Total ${quizData.quiz_duration} mins of ${quizData.quiz_time_bounded_questions ? 'time bounded' : 'unlimited time'} for each question`}</span>
+  /> */}
+          <span className={styles.sentence5}>Complexity:</span>
+          <span className={styles.sentence3}>{`${quizData.quiz_complexity_name}`}</span>
+        </div>
+        <div className={styles.sentence4}>
+        {/* <img
+    src={percentIcon} 
+    alt="Calendar Icon"
+    className={styles.icon2}
+  /> */}
+          <span  className={styles.sentence5}>Pass Score:</span>
+          <span  className={styles.sentence3}>{`${quizData.pass_percentage}%`}</span>
+        </div>
+        <div className={styles.sentence4}>
+        {/* <img
+    src={timeIcon} 
+    alt="Calendar Icon"
+    className={styles.icon2}
+  /> */}
+          <span className={styles.sentence5}>Duration:</span>
+          <span className={styles.sentence3}>{`${quizData.quiz_duration} mints`}</span>
+        </div>
+        <div className={styles.sentence4}>
+        {/* <img
+    src={questionsIcon} 
+    alt="Calendar Icon"
+    className={styles.icon2}
+  /> */}
+          <span className={styles.sentence5}>Question Count:</span>
+          <span className={styles.sentence3}>{`${quizData.num_questions}`}</span>
+        </div>
+      </div>
+      <div className={styles.sentencesContainer1}>
+        
+     
+        <div className={styles.sentence2}>
+        {/* <img
+    src={createdIcon} 
+    alt="Calendar Icon"
+    className={styles.icon2}
+  /> */}
+          <span className={styles.sentence5}>Course:</span>
+          <span className={styles.sentence3}>{`${quizData.course_name}`}</span>
+        </div>
+        <div className={styles.sentence1}>
+        {/* <img
+    src={createdIcon} 
+    alt="Calendar Icon"
+    className={styles.icon2}
+  /> */}
+          <span className={styles.sentence5}>Class:</span>
+          <span className={styles.sentence3}>{`${quizData.class_name}`}</span>
         </div>
         
       </div>
+      {/* <div className={styles.horizontalLine}></div> */}
+ 
       <div className={styles.horizontalLine}></div>
-      <div className={styles.sentencesContainer}>
+      <div className={styles.sentencesContainer3}>
         <div className={styles.sentence}>
-        <img
+        {/* <img
     src={user1Icon} 
     alt="Calendar Icon"
     className={styles.icon2}
-  />
-          <span>{`${quizData.attendees_today_count} accessed today`}</span>
+  /> */}
+          <span className={styles.sentence5} >Total Attempts:</span>
+          <span >{`${quizData.attendees_today_count}`}</span>
         </div>
         <div className={styles.sentence}>
-        <img
+        {/* <img
     src={user3Icon} 
     alt="Calendar Icon"
     className={styles.icon2}
-  />
-          <span>{`${quizData.attendees_now_count} accessing now`}</span>
+  /> */}
+   <span className={styles.sentence5} >Your Attempts:</span>
+          <span>{`${quizData.attendees_now_count}`}</span>
         </div>
         <div className={styles.sentence}>
-        <img
+        {/* <img
     src={user4Icon} 
     alt="Calendar Icon"
     className={styles.icon2}
-  />
+  /> */}  <span className={styles.sentence5}>Highest Score:</span>
+          <span>{`${quizData.quiz_score}`}</span>
+        </div>
+       
+        </div>
+        <div className={styles.sentencesContainer4}>
+     
+        <div className={styles.sentence}>
+        {/* <img
+    src={user4Icon} 
+    alt="Calendar Icon"
+    className={styles.icon2}
+  /> */}
+   <span className={styles.sentence5}>Quickest completion time: </span>
           <span>{`${quizData.quiz_score}`}</span>
         </div>
         </div>
-        <div className={styles.sentencesContainer}>
+      {/* <div className={styles.sentencesContainer}>
         <div className={styles.sentence}>
-        <img
+        {/* <img
+    src={user1Icon} 
+    alt="Calendar Icon"
+    className={styles.icon2}
+  /> */}
+          {/* <span>{`${quizData.attendees_today_count} accessed today`}</span> */}
+        {/* </div> */}
+        {/* <div className={styles.sentence}>
+        {/* <img
+    src={user3Icon} 
+    alt="Calendar Icon"
+    className={styles.icon2}
+  /> */}
+          {/* <span>{`${quizData.attendees_now_count} accessing now`}</span> */}
+        {/* </div>  */}
+        {/* <div className={styles.sentence}> */}
+        {/* <img
+    src={user4Icon} 
+    alt="Calendar Icon"
+    className={styles.icon2}
+  /> */}
+          {/* <span>{`${quizData.quiz_score}`}</span> */}
+        {/* </div> */}
+        {/* </div>  */}
+        <div className={styles.sentencesContainer}>
+        {/* <div className={styles.sentence}>
+        {/* <img
     src={scoringIcon}
     alt="Calendar Icon"
     className={styles.icon2}
-  />
-          <span>256 people have attended this</span>
-        </div>
+  /> */}
+          {/* <span>256 people have attended this</span> */}
+        {/* </div>  */}
         </div>
         <div className={styles.buttonContainer}>
        

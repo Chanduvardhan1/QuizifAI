@@ -166,7 +166,7 @@ const Dashboard = () => {
   const Edit = (quizId) => {
     // navigate(`/quizaccess/${quizId}`);
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
-    navigate(`/create-editquiz`);
+    navigate(`/editmanuly`);
   };
   const toggleNavbar = () => {
     setIsNavbarOpen((prevState) => !prevState);

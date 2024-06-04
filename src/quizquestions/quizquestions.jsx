@@ -372,53 +372,85 @@ const QuizQuestions = () => {
             </div>
           </div>
           <div className={styles.boxesContainer}>
-          <ul>
-          {optionKeys.map((key, index) => {
-            const optionId = currentQuestion[key.replace('_text', '_id')];
-            const optionLabel = optionLabels[index];
-            return (
-              <li key={optionId}>
-                <button
-                  className={styles.box}
-                  onClick={() => handleOptionSelect(optionId)}
-                  style={{ fontWeight: selectedOptions[currentQuestionIndex] === optionId ? 'bold' : 'normal' }}
-                >
-                  {`${optionLabel}. ${currentQuestion[key]}`}
-                </button>
-              </li>
-            );
-          })}
-        </ul>
+          <ul style={{ listStyleType: 'none', padding: 0 }}>
+        {optionKeys.map((key, index) => {
+          const optionId = currentQuestion[key.replace('_text', '_id')];
+          const optionLabel = optionLabels[index];
+          const isSelected = selectedOptions[currentQuestionIndex] === optionId;
+          return (
+            <li key={optionId} style={{ marginBottom: '10px' }}>
+              <button
+                className={styles.box}
+                onClick={() => handleOptionSelect(optionId)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  backgroundColor: 'transparent',
+                  width: '100%',
+                  padding: '10px',
+                  border: 'none',
+                  textAlign: 'left',
+                  cursor: 'pointer'
+                }}
+              >
+                <div style={{
+                  width: '40px',
+                  marginRight: '10px',
+                  padding: '10px',
+                  textAlign: 'center' ,
+                  border: '1px solid #ccc',
+                  borderRadius: '5px',
+                  backgroundColor: '#f9f9f9',
+                }}>{optionLabel}</div>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  fontWeight: isSelected ? 'bold' : 'normal',
+                  backgroundColor: isSelected ? 'lightyellow' : 'transparent',
+                  width: '400px', // Ensure the button takes full width
+                  padding: '10px', // Adds padding for better click area
+                  border: isSelected ? '2px solid #FEBB42' : '1px solid #ccc', // Highlights selected option
+                  borderRadius: '5px', // Rounds corners of buttons
+                  textAlign: 'left' // Align text to the left for better readability
+                }}>{currentQuestion[key]}</div>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
           </div>
         </>
       )}
-      <div className={styles.buttonsContainer}>
-        <button
-          className={styles.button}
-          style={{ color: '#FFFFFF', backgroundColor: '#FEBB42', height: '52px', borderRadius: '10px', border: 'none' }}
-          onClick={handlePreviousQuestion}
-          disabled={currentQuestionIndex === 0}
-        >
-          Previous
-        </button>
-        {currentQuestionIndex === quizData.data.filter(item => item.question_id).length - 1 && (
-          <button
-            className={styles.button}
-            style={{ marginLeft: '50px', backgroundColor: '#8453FC', height: '52px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
-            onClick={handleSubmit}
-          >
-            Submit
-          </button>
-        )}
-        <button
-          className={styles.button}
-          style={{ marginLeft: '50px', backgroundColor: '#8453FC', height: '52px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
-          onClick={handleNextQuestion}
-          disabled={currentQuestionIndex === quizData.data.filter(item => item.question_id).length - 1}
-        >
-          Next
-        </button>
-      </div>
+             <div className={styles.buttonsContainer}>
+            {currentQuestionIndex > 0 && (
+                <button
+                    className={styles.button}
+                    style={{ color: '#FFFFFF', backgroundColor: '#FEBB42', height: '52px', borderRadius: '10px', border: 'none' }}
+                    onClick={handlePreviousQuestion}
+                >
+                    Previous
+                </button>
+            )}
+            {currentQuestionIndex < quizData.data.filter(item => item.question_id).length - 1 && (
+                <button
+                    className={styles.button}
+                    style={{ backgroundColor: '#8453FC', height: '52px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
+                    onClick={handleNextQuestion}
+                >
+                    Next
+                </button>
+            )}
+            {currentQuestionIndex === quizData.data.filter(item => item.question_id).length - 1 && (
+                <button
+                    className={styles.button}
+                    style={{ marginLeft: '50px', backgroundColor: 'rgb(11 87 208)', height: '52px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
+                    onClick={handleSubmit}
+                >
+                    Submit
+                </button>
+            )}
+        </div>
+
      
     </div>
           </div>
@@ -427,10 +459,10 @@ const QuizQuestions = () => {
         {`${currentQuestionIndex + 1} out of ${filteredQuizData.length}`}
       </div>
       <div className={styles.sentence2} style={{ marginTop: "170px" }}>
-        Total timer:
+        Total timer: <span className={styles.sentence3}>{formatTime(elapsedTime)}</span> 
       </div>
       <div className={styles.sentence3} style={{ marginTop: "230px" }}>
-        {formatTime(elapsedTime)}
+        {/* {formatTime(elapsedTime)} */}
       </div>
           {/* <div className={styles.sentence4} style={{marginTop:"290px", marginLeft:"-140px"}}>Quiz timer: </div>
           <div className={styles.imageContainer} style={{marginTop: "350px", marginLeft: "-100px"}}>

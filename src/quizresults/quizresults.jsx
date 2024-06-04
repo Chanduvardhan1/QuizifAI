@@ -38,37 +38,68 @@ const quizresults = () => {
   const [quizData, setQuizData] = useState(null);
   const location = useLocation();
   const { quizId, attemptNo } = location.state || {};
-  const [loading, setLoading] = useState(true); // To manage loading state
-  const [error, setError] = useState(null);
   const [leaderboardData, setLeaderboardData] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('https://quizifai.com:8010/leaderboard_result', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json'
-          },
-          body: ''
-        });
-        const result = await response.json();
-        if (result.response === 'success') {
-          setLeaderboardData(result.data);
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   useEffect(() => {
     const userId = localStorage.getItem("user_id");
 
+    const fetchQuizReport = async () => {
+      try {
+        const response = await fetch('https://quizifai.com:8010/quiz_report', {
+          method: 'POST',
+          headers: {
+            'accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            quiz_id: quizId,
+            user_id: userId,
+            attempt_no: attemptNo
+          })
+        });
+        const data = await response.json();
+        setQuizData(data.data);
+      } catch (error) {
+        console.error('Error fetching quiz report:', error);
+      }
+    };
 
-    const sendData = async () => {
+    fetchQuizReport();
+  }, [quizId, attemptNo]);
+
+  useEffect(() => {
+    const fetchLeaderboardData = async () => {
+      try {
+        const response = await fetch('https://quizifai.com:8010/leaderboard_result', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            quiz_id: quizId
+          })
+        });
+
+        const result = await response.json();
+
+        if (result.response === 'success') {
+          setLeaderboardData(result.data);
+        } else {
+          console.error('Failed to fetch leaderboard data:', result.message);
+        }
+      } catch (error) {
+        console.error('Error fetching leaderboard data:', error);
+      }
+    };
+
+    fetchLeaderboardData();
+  }, [quizId]);
+
+  useEffect(() => {
+    const userId = localStorage.getItem("user_id");
+
+    const sendQuizResult = async () => {
       try {
         const response = await fetch('https://quizifai.com:8010/quiz_result', {
           method: 'POST',
@@ -90,14 +121,17 @@ const quizresults = () => {
         console.error('Error submitting quiz result:', error);
       }
     };
+
     if (quizId && attemptNo) {
-      sendData(); // Trigger the POST request only if quizId and attemptNo are available
-    } // Trigger the POST request when the component mounts
+      sendQuizResult(); // Trigger the POST request only if quizId and attemptNo are available
+    }
   }, [quizId, attemptNo]);
+
   if (!quizData) {
     return <div>Loading...</div>;
   }
 
+  const questions = quizData.questions;
   const topThree = leaderboardData.slice(0, 3);
 
   return (
@@ -314,7 +348,7 @@ const quizresults = () => {
             <div key={entry.rank} className={styles[`innerBox${index + 1}`]} style={boxStyles[index]}>
               <img src={images[index]} alt={`img ${index + 1}`} />
               <span className={styles[`textOverImage${index + 1}`]} style={textStyles[index]}>
-                {entry.user_name}<br />{entry.Percentage}
+                {entry.user_name}<br />{entry.attained_percentage}
               </span>
             </div>
           );
@@ -329,349 +363,19 @@ const quizresults = () => {
   </div>
       {leaderboardData.slice(3,10).map((entry, index) => (
         <div key={entry.rank} className={styles.values}>
-          <div className={styles.value}>{entry.rank}</div>
+          <div className={styles.value}>{entry.score_rank}</div>
           <div className={styles.value}>{entry.user_name}</div>
-          <div className={styles.value}>{entry.Percentage}</div>
-          <div className={styles.value}>{entry.attempts}</div>
-          <div className={styles.value}>{entry.duration}</div>
+          <div className={styles.value}>{entry.attained_percentage}</div>
+          <div className={styles.value}>{entry.attempts_count}</div>
+          <div className={styles.value}>{entry.attempt_duration_mins}</div>
         </div>
       ))}
     </div>
-        <div className={styles.boxContainer}>
-          
-{/* <div className={styles.parentContainer}>
-
-        {/* Content inside the box container */}
-        {/* <div className={styles.sentencesContainer1} style={{marginLeft:"30px", marginTop:"40px"}}>
-        <div className={styles.sentence}>
-        <img
-    src={one1Image} 
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span style={{color:"#F4774B"}}>Capital of INDIA Capital of INDIA</span>
-          <span className={styles.iconContainer}>
-          <img
-    src={rightIcon} 
-    alt="Your Icon"
-    className={styles.righticon}
-  />
-  </span>
-        </div>
-        
-        {/* Box 1 */}
-        {/* <div className={styles.box}>
-    <div className={styles.iconA}>
-    <img
-    src={iconA} 
-    alt="Icon 1"
-    width={15}
-    height={15}
-  />
-        <span className={styles.iconText}>Wrong Answer</span>
-    </div>
-</div>
-<div className={styles.box} style={{backgroundColor:"#A9FFB7"}}>
-    <div className={styles.iconB}>
-    <img
-    src={iconB} 
-    alt="Icon 1"
-    width={10}
-    height={10}
-  />
-        <span className={styles.iconText}>Correct Answer</span>
-    </div>
-</div>
-<div className={styles.box}>
-    <div className={styles.iconC}>
-    <img
-    src={iconC} 
-    alt="Icon 1"
-    width={10}
-    height={10}
-  />
-        <span className={styles.iconText}>Wrong Answer</span>
-    </div>
-</div>
-<div className={styles.box}>
-    <div className={styles.iconD}>
-    <img
-    src={iconD} 
-    alt="Icon 1"
-    width={10}
-    height={10}
-  />
-        <span className={styles.iconText}>Wrong Answer</span>
-    </div>
-</div> */}
-{/* <span className={styles.newContainer}>
-    <span className={styles.iconContainer}>
-    <img
-    src={answerTimerIcon} 
-    alt="Icon 1"
-    className={styles.icon5}
-  />
-  <img
-    src={rightIcon1} 
-    alt="Icon 2"
-    className={styles.icon6}
-  />
-    </span>
-    <span className={styles.textContainer}>
-      <p>Answered in 53 Sec</p>
-      <p>Description of the Answer Description of the <br></br>Answer Description of the Answer Description<br></br> of the Answer Description of the Answer <br></br>Description of the Answer</p>
-    </span>
-  </span>
-</div>  */}
-{/* </div>  */}
-
-{/* <div className={styles.sentencesContainer1} style={{marginLeft:"30px", marginTop:"40px"}}>
-        <div className={styles.sentence}>
-        <img
-    src={two2Icon} 
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span style={{color:"#F4774B"}}>Capital of INDIA Capital of INDIA </span>
-          <span className={styles.iconContainer}>
-          <img
-    src={wrongIcon} 
-    alt="Your Icon"
-    className={styles.righticon}
-  />
-  </span>
-        </div>
-        {/* Box 1 */}
-        {/* <div className={styles.box}>
-    <div className={styles.iconA}>
-    <img
-    src={iconA} 
-    alt="Icon 1"
-    width={15}
-    height={15}
-  />
-        <span className={styles.iconText}>Wrong Answer</span>
-    </div>
-</div> */}
-{/* <div className={styles.box} style={{backgroundColor:"#A9FFB7"}}>
-    <div className={styles.iconB}>
-    <img
-    src={iconB} 
-    alt="Icon 1"
-    width={10}
-    height={10}
-  />
-        <span className={styles.iconText}>Correct Answer</span>
-    </div>
-</div> */}
-{/* <div className={styles.box}>
-    <div className={styles.iconC}>
-    <img
-    src={iconC} 
-    alt="Icon 1"
-    width={10}
-    height={10}
-  />
-        <span className={styles.iconText}>Wrong Answer</span>
-    </div>
-</div>
-<div className={styles.box}>
-    <div className={styles.iconD}>
-    <img
-    src={iconD} 
-    alt="Icon 1"
-    width={10}
-    height={10}
-  />
-        <span className={styles.iconText}>Wrong Answer</span>
-    </div>
-</div>
-<span className={styles.newContainer}>
-    <span className={styles.iconContainer}>
-    <img
-    src={answerTimerIcon} 
-    alt="Icon 1"
-    className={styles.icon5}
-  />
-  <img
-    src={wrongIcon1} 
-    alt="Icon 2"
-    className={styles.icon7}
-  />
-    </span>
-    <span className={styles.textContainer}>
-      <p>Answered in 53 Sec</p>
-      <p>Description of the Answer Description of the <br></br>Answer Description of the Answer Description<br></br> of the Answer Description of the Answer <br></br>Description of the Answer</p>
-    </span>
-  </span> */}
-
-{/* </div>  */}
-{/* <div className={styles.sentencesContainer1} style={{marginLeft:"30px", marginTop:"40px"}}>
-        <div className={styles.sentence}>
-        <img
-    src={three3Icon} 
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span style={{color:"#F4774B"}}>Capital of INDIA Capital of INDIA </span>
-          <span className={styles.iconContainer}>
-          <img
-    src={rightIcon}
-    alt="Your Icon"
-    className={styles.righticon}
-  />
-  </span>
-        </div>
-        {/* Box 1 */}
-        {/* <div className={styles.box}>
-    <div className={styles.iconA}>
-    <img
-    src={iconA}
-    alt="Icon 1"
-    width={15}
-    height={15}
-  />
-        <span className={styles.iconText}>Wrong Answer</span>
-    </div>
-</div>
-<div className={styles.box} >
-    <div className={styles.iconB}>
-    <img
-    src={iconB}
-    alt="Icon 2"
-    width={10}
-    height={10}
-  />
-        <span className={styles.iconText}>Wrong Answer</span>
-    </div>
-</div>
-<div className={styles.box}>
-    <div className={styles.iconC}>
-    <img
-    src={iconC}
-    alt="Icon 3"
-    width={10}
-    height={10}
-  />
-        <span className={styles.iconText}>Wrong Answer</span>
-    </div>
-</div>
-<div className={styles.box} style={{backgroundColor:"#A9FFB7"}}>
-    <div className={styles.iconD} >
-    <img
-    src={iconD}
-    alt="Icon 4"
-    width={10}
-    height={10}
-  />
-        <span className={styles.iconText}>Correct Answer</span>
-    </div>
-</div>
-<span className={styles.newContainer}>
-    <span className={styles.iconContainer}>
-    <img
-    src={answerTimerIcon} 
-    alt="Icon 1"
-    className={styles.icon5}
-  />
-  <img
-    src={rightIcon1} 
-    alt="Icon 2"
-    className={styles.icon6}
-  />
-    </span>
-    <span className={styles.textContainer}>
-      <p>Answered in 53 Sec</p>
-      <p>Description of the Answer Description of the <br></br>Answer Description of the Answer Description<br></br> of the Answer Description of the Answer <br></br>Description of the Answer</p>
-    </span>
-  </span> */}
-
-{/* </div>  */}
-{/* <div className={styles.sentencesContainer1} style={{marginLeft:"30px", marginTop:"40px"}}>
-        <div className={styles.sentence}>
-        <img
-    src={four4Icon} 
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span style={{color:"#F4774B"}}>Capital of INDIA Capital of INDIA </span>
-          <span className={styles.iconContainer}>
-          <img
-    src={wrongIcon} 
-    alt="Your Icon"
-    className={styles.righticon}
-  />
-  </span>
-        </div>
-        {/* Box 1 */}
-        {/* <div className={styles.box}>
-    <div className={styles.iconA}>
-    <img
-    src={iconA}
-    alt="Icon 1"
-    width={15}
-    height={15}
-  />
-        <span className={styles.iconText}>Wrong Answer</span>
-    </div>
-</div>
-<div className={styles.box} >
-    <div className={styles.iconB}>
-    <img
-    src={iconB}
-    alt="Icon 2"
-    width={10}
-    height={10}
-  />
-        <span className={styles.iconText}>Wrong Answer</span>
-    </div>
-</div>
-<div className={styles.box}style={{backgroundColor:"#A9FFB7"}}>
-    <div className={styles.iconC}>
-    <img
-    src={iconC}
-    alt="Icon 3"
-    width={10}
-    height={10}
-  />
-        <span className={styles.iconText}>Correct Answer</span>
-    </div>
-</div>
-<div className={styles.box}style={{backgroundColor:"#A9FFB7"}}>
-    <div className={styles.iconD}>
-    <img
-    src={iconD}
-    alt="Icon 4"
-    width={10}
-    height={10}
-  />
-        <span className={styles.iconText}>Correct Answer</span>
-    </div>
-</div>
-<span className={styles.newContainer}>
-    <span className={styles.iconContainer}>
-    <img
-    src={answerTimerIcon} 
-    alt="Icon 1"
-    className={styles.icon5}
-  />
-  <img
-    src={wrongIcon1} 
-    alt="Icon 2"
-    className={styles.icon7}
-  />
-    </span>
-    <span className={styles.textContainer}>
-      <p>Answered in 53 Sec</p>
-      <p>Description of the Answer Description of the <br></br>Answer Description of the Answer Description<br></br> of the Answer Description of the Answer <br></br>Description of the Answer</p>
-    </span>
-  </span> */}
-{/* </div>  */}
-
-
-
-
+    <div className={styles.boxContainer}>
+      <div className={styles.parentContainer}>
+     
       </div>
+    </div>
       
         </div>
          

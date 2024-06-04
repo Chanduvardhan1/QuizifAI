@@ -159,7 +159,8 @@ const Dashboard = () => {
     navigate(`/quizaccess`);
   };
 
-  const leaderboard = () => {
+  const leaderboard = (quizId) => {
+    localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     navigate(`/quiz-results1`);
   };
 
@@ -682,7 +683,7 @@ const Dashboard = () => {
                           />
                           <span
                             className={styles.leaderboardtext}
-                            onClick={leaderboard}
+                            onClick={() => leaderboard(latestquizzes[0].quiz_id)}
                           >
                             Leaderboard
                           </span>
@@ -827,7 +828,7 @@ const Dashboard = () => {
                         />
                         <span
                           className={styles.leaderboardtext}
-                          onClick={leaderboard}
+                          onClick={() => leaderboard(latestquizzes[0].quiz_id)}
                         >
                           Leaderboard
                         </span>
@@ -969,7 +970,7 @@ const Dashboard = () => {
                         />
                         <span
                           className={styles.leaderboardtext}
-                          onClick={leaderboard}
+                          onClick={() => leaderboard(latestquizzes[0].quiz_id)}
                         >
                           Leaderboard
                         </span>
@@ -1111,7 +1112,7 @@ const Dashboard = () => {
                         />
                         <span
                           className={styles.leaderboardtext}
-                          onClick={leaderboard}
+                          onClick={() => leaderboard(latestquizzes[0].quiz_id)}
                         >
                           Leaderboard
                         </span>
@@ -1251,7 +1252,7 @@ const Dashboard = () => {
                         />
                         <span
                           className={styles.leaderboardtext}
-                          onClick={leaderboard}
+                          onClick={() => leaderboard(latestquizzes[0].quiz_id)}
                         >
                           Leaderboard
                         </span>
@@ -1390,7 +1391,7 @@ const Dashboard = () => {
                         />
                         <span
                           className={styles.leaderboardtext}
-                          onClick={leaderboard}
+                          onClick={() => leaderboard(latestquizzes[0].quiz_id)}
                         >
                           Leaderboard
                         </span>
@@ -1542,7 +1543,7 @@ const Dashboard = () => {
                             />
                             <span
                               className={styles.leaderboardtext}
-                              onClick={leaderboard}
+                              onClick={() => leaderboard(latestquizzes[0].quiz_id)}
                             >
                               Leaderboard
                             </span>
@@ -1681,7 +1682,7 @@ const Dashboard = () => {
                             />
                             <span
                               className={styles.leaderboardtext}
-                              onClick={leaderboard}
+                              onClick={() => leaderboard(latestquizzes[0].quiz_id)}
                             >
                               Leaderboard
                             </span>
@@ -1819,7 +1820,7 @@ const Dashboard = () => {
                             />
                             <span
                               className={styles.leaderboardtext}
-                              onClick={leaderboard}
+                              onClick={() => leaderboard(latestquizzes[0].quiz_id)}
                             >
                               Leaderboard
                             </span>
@@ -1957,7 +1958,7 @@ const Dashboard = () => {
                             />
                             <span
                               className={styles.leaderboardtext}
-                              onClick={leaderboard}
+                              onClick={() => leaderboard(latestquizzes[0].quiz_id)}
                             >
                               Leaderboard
                             </span>
@@ -2152,7 +2153,7 @@ const Dashboard = () => {
                             />
                             <span
                               className={styles.leaderboardtext}
-                              onClick={leaderboard}
+                              onClick={() => leaderboard(latestquizzes[0].quiz_id)}
                             >
                               Leaderboard
                             </span>
@@ -2342,7 +2343,7 @@ const Dashboard = () => {
                             />
                             <span
                               className={styles.leaderboardtext}
-                              onClick={leaderboard}
+                              onClick={() => leaderboard(latestquizzes[0].quiz_id)}
                             >
                               Leaderboard
                             </span>
@@ -2529,7 +2530,7 @@ const Dashboard = () => {
                       />
                       <span
                         className={styles.leaderboardtext}
-                        onClick={leaderboard}
+                        onClick={() => leaderboard(latestquizzes[0].quiz_id)}
                       >
                         Leaderboard
                       </span>
@@ -2664,7 +2665,7 @@ const Dashboard = () => {
                       />
                       <span
                         className={styles.leaderboardtext}
-                        onClick={leaderboard}
+                        onClick={() => leaderboard(latestquizzes[0].quiz_id)}
                       >
                         Leaderboard
                       </span>
@@ -2798,7 +2799,7 @@ const Dashboard = () => {
                       />
                       <span
                         className={styles.leaderboardtext}
-                        onClick={leaderboard}
+                        onClick={() => leaderboard(latestquizzes[0].quiz_id)}
                       >
                         Leaderboard
                       </span>
@@ -2932,7 +2933,7 @@ const Dashboard = () => {
                       />
                       <span
                         className={styles.leaderboardtext}
-                        onClick={leaderboard}
+                        onClick={() => leaderboard(latestquizzes[0].quiz_id)}
                       >
                         Leaderboard
                       </span>
@@ -3066,7 +3067,7 @@ const Dashboard = () => {
                       />
                       <span
                         className={styles.leaderboardtext}
-                        onClick={leaderboard}
+                        onClick={() => leaderboard(latestquizzes[0].quiz_id)}
                       >
                         Leaderboard
                       </span>
@@ -3200,7 +3201,7 @@ const Dashboard = () => {
                       />
                       <span
                         className={styles.leaderboardtext}
-                        onClick={leaderboard}
+                        onClick={() => leaderboard(latestquizzes[0].quiz_id)}
                       >
                         Leaderboard
                       </span>

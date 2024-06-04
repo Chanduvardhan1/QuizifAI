@@ -44,25 +44,33 @@ import LeftBar from "../leftbar/leftbar";
 const Questions = () => {
   const [leaderboardData, setLeaderboardData] = useState([]);
   useEffect(() => {
-    const fetchLeaderboardData = async () => {
+    const quizId = localStorage.getItem("quiz_id");
+    const fetchData = async () => {
       try {
         const response = await fetch('https://quizifai.com:8010/leaderboard_result', {
           method: 'POST',
           headers: {
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
           },
-          body: '' // Include any necessary body data here
+          body: JSON.stringify({
+            quiz_id: quizId
+          })
         });
+
         const result = await response.json();
+
         if (result.response === 'success') {
           setLeaderboardData(result.data);
+        } else {
+          console.error('Failed to fetch leaderboard data:', result.message);
         }
       } catch (error) {
-        console.error('Error fetching leaderboard data:', error);
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchLeaderboardData();
+    fetchData();
   }, []);
 const topThree = leaderboardData.slice(0, 3);
   const remaining = leaderboardData.slice(3,10);
@@ -110,7 +118,7 @@ const topThree = leaderboardData.slice(0, 3);
                 style={{ width: "100px" }}
               >
                 {item.user_name}<br />
-                <span style={{ color: index === 0 ? "#009BD6" : index === 1 ? "#FB9639" : "#00D95F" }}>{item.Percentage}</span>
+                <span style={{ color: index === 0 ? "#009BD6" : index === 1 ? "#FB9639" : "#00D95F" }}>{item.attained_percentage}</span>
               </span>
             </div>
           ))}
@@ -128,11 +136,11 @@ const topThree = leaderboardData.slice(0, 3);
         
   {remaining.map((item, index) => (
         <div className={styles.values} key={index + 3}>
-          <div className={styles.value}>{item.rank}</div>
+          <div className={styles.value}>{item.score_rank}</div>
           <div className={styles.value}>{item.user_name}</div>
-          <div className={styles.value}>{item.Percentage}</div>
-          <div className={styles.value}>{item.attempts}</div>
-          <div className={styles.value}>{item.duration}</div>
+          <div className={styles.value}>{item.attained_percentage}</div>
+          <div className={styles.value}>{item.attempts_count}</div>
+          <div className={styles.value}>{item.attempt_duration_mins}</div>
         </div>
       ))}
         

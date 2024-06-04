@@ -15,8 +15,7 @@
 
 
 .navigation {
-  height: auto;
-  width: 219px;
+  width: 218px;
   background-color: #F5F5FB;
   font-weight: 500;
   
@@ -37,10 +36,8 @@
   font-size: 15px;
   font-weight: 500;
   margin-left: 40px;
-  margin-right: 20px; 
+  margin-right: 30px; 
 }
-
-
 .infoLine {
 display: flex;
 align-items: center;
@@ -76,6 +73,7 @@ border: none;
   border-left-color: #F5F5FB;
 }
 .pageLink{
+  margin-right: 10px;
   cursor: pointer;
   color: #9696BB;
 }

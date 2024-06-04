@@ -620,158 +620,166 @@ const Dashboard = () => {
                 );
               })} */}
               {/* latest-first-first-card  */}
-              <div className={styles.card} style={{ paddingTop: "8px" }}>
-                <p className={styles.title}>{latestquizzes[0]?.quiz_name}</p>
 
-                <div className={styles.iconContainer}>
-                  <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                      onClick={toggleNavbar}
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                      />
-                      {isNavbarOpen ? "Close Navbar" : "Open Navbar"}
-                    </svg>
+              { latestquizzes && latestquizzes[0] ?(
+               <div className={styles.card} style={{ paddingTop: "8px" }}>
+               <p className={styles.title}>{latestquizzes[0]?.quiz_name}</p>
 
-                    {isNavbarOpen && (
-                      <div className={styles.infoIcons}>
-                        {/* start */}
-                        <div className={styles.start}>
-                          <img
-                            className={styles.startimage}
-                            src={Start_button}
-                            alt="Play icon"
-                          />
-                          <span
-                            className={styles.starttext}
-                            onClick={() =>
-                              handleStartQuiz(latestquizzes[0].quiz_id)
-                            }
-                          >
-                            Start
-                          </span>
-                        </div>
-                        {/* Edit  */}
-                        <div className={styles.edit}>
-                          <img
-                            className={styles.editimage}
-                            src={Edit_button}
-                            alt="Play icon"
-                          />
-                          <span
-                            className={styles.edittext}
-                            onClick={() => Edit(latestquizzes[0].quiz_id)}
-                          >
-                            Edit
-                          </span>
-                        </div>
-                        {/* Leaderboard */}
-                        <div className={styles.leaderboard}>
-                          <img
-                            className={styles.leaderboardimage}
-                            src={leaderboard_button}
-                            alt="Play icon"
-                          />
-                          <span
-                            className={styles.leaderboardtext}
-                            onClick={() => leaderboard(latestquizzes[0].quiz_id)}
-                          >
-                            Leaderboard
-                          </span>
-                        </div>
-                        {/* Share */}
+               <div className={styles.iconContainer}>
+                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
+                   <svg
+                     xmlns="http://www.w3.org/2000/svg"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke-width="1.5"
+                     stroke="currentColor"
+                     class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                     onClick={toggleNavbar}
+                   >
+                     <path
+                       stroke-linecap="round"
+                       stroke-linejoin="round"
+                       d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                     />
+                     {isNavbarOpen ? "Close Navbar" : "Open Navbar"}
+                   </svg>
 
-                        <div className={styles.share}>
-                          <img
-                            className={styles.shareimage}
-                            src={Share_button}
-                            alt="Play icon"
-                          />
-                          <span className={styles.sharetext}>Share</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                   {isNavbarOpen && (
+                     <div className={styles.infoIcons}>
+                       {/* start */}
+                       <div className={styles.start}>
+                         <img
+                           className={styles.startimage}
+                           src={Start_button}
+                           alt="Play icon"
+                         />
+                         <span
+                           className={styles.starttext}
+                           onClick={() =>
+                             handleStartQuiz(latestquizzes[0].quiz_id)
+                           }
+                         >
+                           Start
+                         </span>
+                       </div>
+                       {/* Edit  */}
+                       <div className={styles.edit}>
+                         <img
+                           className={styles.editimage}
+                           src={Edit_button}
+                           alt="Play icon"
+                         />
+                         <span
+                           className={styles.edittext}
+                           onClick={() => Edit(latestquizzes[0].quiz_id)}
+                         >
+                           Edit
+                         </span>
+                       </div>
+                       {/* Leaderboard */}
+                       <div className={styles.leaderboard}>
+                         <img
+                           className={styles.leaderboardimage}
+                           src={leaderboard_button}
+                           alt="Play icon"
+                         />
+                         <span
+                           className={styles.leaderboardtext}
+                           onClick={leaderboard}
+                         >
+                           Leaderboard
+                         </span>
+                       </div>
+                       {/* Share */}
 
-                <div className={styles.category}>
-                  <span className={styles.category1}>
-                    {latestquizzes[0]?.category}
-                  </span>
-                  <p className="px-[2px] font-normal">|</p>
-                  <span className={styles.category1}>
-                    {latestquizzes[0]?.sub_category}
-                  </span>
-                </div>
+                       <div className={styles.share}>
+                         <img
+                           className={styles.shareimage}
+                           src={Share_button}
+                           alt="Play icon"
+                         />
+                         <span className={styles.sharetext}>Share</span>
+                       </div>
+                     </div>
+                   )}
+                 </div>
+               </div>
 
-                <div className={styles.description}>
-                  <span>{latestquizzes[0]?.quiz_description}</span>
-                </div>
+               <div className={styles.category}>
+                 <span className={styles.category1}>
+                   {latestquizzes[0]?.category}
+                 </span>
+                 <p className="px-[2px] font-normal">|</p>
+                 <span className={styles.category1}>
+                   {latestquizzes[0]?.sub_category}
+                 </span>
+               </div>
 
-                <div
-                  className={styles.additionalInfo}
-                  style={{ marginTop: "65px" }}
-                >
-                  <div className="z-0">
-                    <div className="flex gap-[5px] h-[18px] w-[80px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black">
-                      <img
-                        className={styles.attemptsimage}
-                        src={Attempt1}
-                        alt="Attempts Icon"
-                        width={10}
-                        height={10}
-                      />
-                      <p>{latestquizzes[0]?.quiz_attempts}</p>
-                      <span className={styles.attemptstext}>attempts</span>
-                    </div>
-                  </div>
+               <div className={styles.description}>
+                 <span>{latestquizzes[0]?.quiz_description}</span>
+               </div>
 
-                  <div className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                    <img
-                      className={styles.questionimage}
-                      src={NoOfQuestion}
-                      alt="Number of question Icon"
-                      width={15}
-                      height={10}
-                    />{" "}
-                    {latestquizzes[0]?.number_of_questions}
-                    <span className={styles.questiontext}>questions</span>
-                  </div>
+               <div
+                 className={styles.additionalInfo}
+                 style={{ marginTop: "65px" }}
+               >
+                 <div className="z-0">
+                   <div className="flex gap-[5px] h-[18px] w-[80px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black">
+                     <img
+                       className={styles.attemptsimage}
+                       src={Attempt1}
+                       alt="Attempts Icon"
+                       width={10}
+                       height={10}
+                     />
+                     <p>{latestquizzes[0]?.quiz_attempts}</p>
+                     <span className={styles.attemptstext}>attempts</span>
+                   </div>
+                 </div>
 
-                  <div className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                    <img
-                      className={styles.minutesimage}
-                      src={Clock}
-                      alt="Time Icon"
-                      width={14}
-                      height={14}
-                    />{" "}
-                    {latestquizzes[0]?.quiz_duration}
-                    <span className={styles.minutestext}>minutes</span>
-                  </div>
+                 <div className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
+                   <img
+                     className={styles.questionimage}
+                     src={NoOfQuestion}
+                     alt="Number of question Icon"
+                     width={15}
+                     height={10}
+                   />{" "}
+                   {latestquizzes[0]?.number_of_questions}
+                   <span className={styles.questiontext}>questions</span>
+                 </div>
 
-                  <div className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                    <img
-                      className={styles.complexityimage}
-                      src={Easy}
-                      alt="Challenge Icon"
-                      width={15}
-                      height={9}
-                    />{" "}
-                    {latestquizzes[0]?.complexity}
-                  </div>
-                </div>
-              </div>
+                 <div className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                   <img
+                     className={styles.minutesimage}
+                     src={Clock}
+                     alt="Time Icon"
+                     width={14}
+                     height={14}
+                   />{" "}
+                   {latestquizzes[0]?.quiz_duration}
+                   <span className={styles.minutestext}>minutes</span>
+                 </div>
+
+                 <div className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                   <img
+                     className={styles.complexityimage}
+                     src={Easy}
+                     alt="Challenge Icon"
+                     width={15}
+                     height={9}
+                   />{" "}
+                   {latestquizzes[0]?.complexity}
+                 </div>
+               </div>
+             </div>
+              ):
+              (
+                <div></div>
+              )}
+              
               {/* latest-first-second-card  */}
+              { latestquizzes && latestquizzes[1] ?(
               <div className={styles.card} style={{ paddingTop: "8px" }}>
                 <span className={styles.title}>
                   {latestquizzes[1]?.quiz_name}
@@ -901,7 +909,7 @@ const Dashboard = () => {
                     {latestquizzes[1]?.quiz_duration}
                     <span className={styles.minutestext}>minutes</span>
                   </span>
-                  <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                  <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                     <img
                       className={styles.complexityimage}
                       src={Easy}
@@ -913,7 +921,11 @@ const Dashboard = () => {
                   </span>
                 </div>
               </div>
+              ):(
+                <div></div>
+              )}
               {/* latest-first-third-card  */}
+              { latestquizzes && latestquizzes[2] ?(
               <div className={styles.card} style={{ paddingTop: "8px" }}>
                 <span className={styles.title}>
                   {latestquizzes[2]?.quiz_name}
@@ -1041,7 +1053,7 @@ const Dashboard = () => {
                     {latestquizzes[2]?.quiz_duration}
                     <span className={styles.minutestext}>minutes</span>
                   </span>
-                  <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                  <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                     <img
                       className={styles.complexityimage}
                       src={Easy}
@@ -1053,10 +1065,14 @@ const Dashboard = () => {
                   </span>
                 </div>
               </div>
+              ):(
+                <div></div>
+              )}
             </div>
 
             <div className="flex">
               {/* latest-second-first-card  */}
+              { latestquizzes && latestquizzes[3] ?(
               <div className={styles.card} style={{ paddingTop: "8px" }}>
                 <span className={styles.title}>
                   {latestquizzes[3]?.quiz_name}
@@ -1184,7 +1200,7 @@ const Dashboard = () => {
                     {latestquizzes[3]?.quiz_duration}
                     <span className={styles.minutestext}>minutes</span>
                   </span>
-                  <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                  <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                     <img
                       className={styles.complexityimage}
                       src={Easy}
@@ -1196,7 +1212,13 @@ const Dashboard = () => {
                   </span>
                 </div>
               </div>
+              ):(
+                <div>
+
+                </div>
+              )}
               {/* latest-second-second-card  */}
+              { latestquizzes && latestquizzes[4] ?(
               <div className={styles.card} style={{ paddingTop: "8px" }}>
                 <span className={styles.title}>
                   {latestquizzes[4]?.quiz_name}
@@ -1323,7 +1345,7 @@ const Dashboard = () => {
                     {latestquizzes[4]?.quiz_duration}
                     <span className={styles.minutestext}>minutes</span>
                   </span>
-                  <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                  <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                     <img
                       className={styles.complexityimage}
                       src={Easy}
@@ -1335,7 +1357,11 @@ const Dashboard = () => {
                   </span>
                 </div>
               </div>
+              ):(
+                <div></div>
+              )}
               {/* latest-second-third-card  */}
+              { latestquizzes && latestquizzes[5] ?(
               <div className={styles.card} style={{ paddingTop: "8px" }}>
                 <span className={styles.title}>
                   {latestquizzes[5]?.quiz_name}
@@ -1464,7 +1490,7 @@ const Dashboard = () => {
                     {latestquizzes[5]?.quiz_duration}
                     <span className={styles.minutestext}>minutes</span>
                   </span>
-                  <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                  <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                     <img
                       className={styles.complexityimage}
                       src={Easy}
@@ -1476,11 +1502,16 @@ const Dashboard = () => {
                   </span>
                 </div>
               </div>
+              ):(
+                <div></div>
+              )}
             </div>
 
             {getMoreQuizzes ? (
               <div className=" ">
                 <div className="flex">
+                  {/* fisrt-card  */}
+                { latestquizzes && latestquizzes[6] ?(
                   <div
                     className={styles.card}
                     style={{
@@ -1626,7 +1657,11 @@ const Dashboard = () => {
                       </span>
                     </div>
                   </div>
-
+                ):(
+                  <div></div>
+                )}
+                {/* second-card  */}
+                { latestquizzes && latestquizzes[7] ?(
                   <div className={styles.card} style={{ paddingTop: "8px" }}>
                     <span className={styles.title}>
                       {latestquizzes[7]?.quiz_name}
@@ -1765,6 +1800,11 @@ const Dashboard = () => {
                       </span>
                     </div>
                   </div>
+                ):(
+                  <div></div>
+                )}
+                {/* third-card  */}
+                { latestquizzes && latestquizzes[8] ?(
                   <div className={styles.card} style={{ paddingTop: "8px" }}>
                     <span className={styles.title}>
                       {latestquizzes[8]?.quiz_name}
@@ -1903,10 +1943,14 @@ const Dashboard = () => {
                       </span>
                     </div>
                   </div>
+                ):(
+                  <div></div>
+                )}
                 </div>
+                
                 {/* attempted-quiz  */}
                 <div className="flex">
-                  <div
+                  {/* <div
                     className={styles.card}
                     style={{
                       paddingTop: "8px",
@@ -1990,8 +2034,6 @@ const Dashboard = () => {
                         </span>
                       </span>
                     </div>
-
-                    {/* attaempted ranks */}
                     <div className="text-[6px] font-normal pl-[15px] relative top-[40px]">
                       <span>Pass</span>
                       <span className="px-[2px]">|</span>
@@ -2088,20 +2130,10 @@ const Dashboard = () => {
                           <span className="-ml-[2px]">duration</span>
                         </div>
                       </span>
-                      {/* <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                  <img
-                    className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
-                    src={Easy}
-                    alt="Challenge Icon"
-                    width={15}
-                    height={9}
-                  />{" "}
-                  {latestquizzes[6]?.complexity}
-                </span> */}
                     </div>
-                  </div>
+                  </div> */}
                   {/* second-card  */}
-                  <div
+                  {/* <div
                     className={styles.card}
                     style={{
                       paddingTop: "8px",
@@ -2181,7 +2213,6 @@ const Dashboard = () => {
                       <span>{attemptedquizzes[1]?.quiz_description}</span>
                     </div>
 
-                    {/* attaempted ranks */}
                     <div className="text-[6px] font-normal pl-[15px] relative top-[40px]">
                       <span>Pass</span>
                       <span className="px-[2px]">|</span>
@@ -2278,20 +2309,10 @@ const Dashboard = () => {
                           <span className=" ml-[1px]">duration</span>
                         </div>
                       </span>
-                      {/* <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                  <img
-                    className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
-                    src={Easy}
-                    alt="Challenge Icon"
-                    width={15}
-                    height={9}
-                  />{" "}
-                  {latestquizzes[6]?.complexity}
-                </span> */}
                     </div>
-                  </div>
+                  </div> */}
                   {/* third-card  */}
-                  <div
+                  {/* <div
                     className={styles.card}
                     style={{
                       paddingTop: "8px",
@@ -2371,7 +2392,6 @@ const Dashboard = () => {
                       <span>{attemptedquizzes[2]?.quiz_description}</span>
                     </div>
 
-                    {/* attaempted ranks */}
                     <div className="text-[6px] font-normal pl-[15px] relative top-[40px]">
                       <span>Pass</span>
                       <span className="px-[2px]">|</span>
@@ -2470,7 +2490,8 @@ const Dashboard = () => {
                         </div>
                       </span>
                     </div>
-                  </div>
+                  </div> */}
+
                 </div>
               </div>
             ) : null}
@@ -2480,6 +2501,7 @@ const Dashboard = () => {
           </div>
           <div className={styles.infoCards}>
             {/* Info cards content */}
+            <div className="flex">
             <div className={styles.card} style={{ paddingTop: "8px" }}>
               <span className={styles.title}>
                 {popularquizzes[0]?.quiz_name}
@@ -2882,7 +2904,10 @@ const Dashboard = () => {
                   {popularquizzes[2]?.complexity}
                 </span>
               </div>
+            </div> 
             </div>
+            
+            <div className="flex">
             <div className={styles.card} style={{ paddingTop: "8px" }}>
               <span className={styles.title}>
                 {popularquizzes[3]?.quiz_name}
@@ -3285,6 +3310,8 @@ const Dashboard = () => {
                 </span>
               </div>
             </div>
+            </div>
+            
           </div>
         </div>
       </div>

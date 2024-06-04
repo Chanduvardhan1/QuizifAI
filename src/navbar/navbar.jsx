@@ -137,7 +137,7 @@ const  [isActiveConfig, setIsActiveConfig] = useState(false);
         <div className={styles.pageItem} onClick={handleNavigation4}>
           <img src={configure} alt="Icon 2" className={styles.pageIcon} />
           <div className={`${styles.verticalline} ${isActiveConfig ? styles.active : ''}`}></div>
-          <span className={styles.pageLink} >Configure</span>
+          <span className={styles.pageLink} >Settings</span>
         </div>
       </div>
     </div>

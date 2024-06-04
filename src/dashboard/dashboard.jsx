@@ -238,13 +238,13 @@ const Dashboard = () => {
     if (grade === "A") {
       return "#15803d"; //Green Color
     } else if (grade === "B") {
-      return "#F6970D"; //Orange
+      return "#F5E23F"; //yellow
     } else if (grade === "C") {
-      return "#F5E23F"; //Yellow
+      return "#F6970D"; //orenge
     } else if (grade === "D") {
-      return "#808080"; // Gray
+      return "#F34747"; // red
     } else {
-      return "#F34747";
+      return "#808080";//grey
     }
   }
 
@@ -254,9 +254,9 @@ const Dashboard = () => {
     } else if (percentData <= 60) {
       return "#F34747"; // Red color
     } else if (percentData > 60 && percentData < 80) {
-      return "#F5E23F"; // Yellow
+      return "#F5E23F"; // yellow
     } else if (percentData >= 81 && percentData < 90) {
-      return "#F6970D"; // Orange
+      return "#F6970D"; // orenge
     } else {
       return "#15803d"; // Green Color
     }
@@ -347,9 +347,9 @@ const Dashboard = () => {
                       {latestResult[0]?.attempt_date}
 
                       <span className="relative group">
-                        <span className="absolute ml-3 w-[110px] cursor-pointer z-0 truncate">
+                        <span className="absolute ml-[10px] w-[100px] cursor-pointer z-0 truncate">
                           {latestResult[0]?.quiz_name}
-                          <span className="hidden absolute w-[200px] top-full left-0 z-20 truncate group-hover:block bg-white p-1 border border-gray-300">
+                          <span className="hidden left-0 -top-[2px] z-30 truncate group-hover:block rounded bg-black text-white px-1 border relative border-black-300">
                             {latestResult[0]?.quiz_name}
                           </span>
                         </span>
@@ -395,9 +395,9 @@ const Dashboard = () => {
                     >
                       {latestResult[1]?.attempt_date}
                       <span className="relative group">
-                        <span className="absolute ml-3 w-[110px] cursor-pointer z-0 truncate">
+                        <span className="absolute ml-[10px] w-[100px] cursor-pointer z-0 truncate">
                           {latestResult[1]?.quiz_name}
-                          <span className="hidden absolute w-[200px] top-full left-0 z-20 truncate group-hover:block bg-white p-1 border border-gray-300">
+                          <span className="hidden left-0 -top-[2px] z-30 truncate group-hover:block rounded bg-black text-white px-1 border relative border-black-300">
                             {latestResult[1]?.quiz_name}
                           </span>
                         </span>
@@ -442,8 +442,13 @@ const Dashboard = () => {
                       }}
                     >
                       {latestResult[2]?.attempt_date}{" "}
-                      <span className={styles.titlename}>
-                        {latestResult[2]?.quiz_name}
+                      <span className="relative group">
+                        <span className="absolute ml-[10px] w-[100px] cursor-pointer z-0 truncate">
+                          {latestResult[2]?.quiz_name}
+                          <span className="hidden left-0 -top-[2px] z-30 truncate group-hover:block rounded bg-black text-white px-1 border relative border-black-300">
+                            {latestResult[2]?.quiz_name}
+                          </span>
+                        </span>
                       </span>
                       {/* - {latestResults[2]?.quiz_category} */}
                     </span>
@@ -485,8 +490,13 @@ const Dashboard = () => {
                       }}
                     >
                       {latestResult[3]?.attempt_date}{" "}
-                      <span className={styles.titlename}>
-                        {latestResult[3]?.quiz_name}
+                      <span className="relative group">
+                        <span className="absolute ml-[10px] w-[100px] cursor-pointer z-0 truncate">
+                          {latestResult[3]?.quiz_name}
+                          <span className="hidden left-0 -top-[2px] z-30 truncate group-hover:block rounded bg-black text-white px-1 border relative border-black-300">
+                            {latestResult[3]?.quiz_name}
+                          </span>
+                        </span>
                       </span>
                       {/* - {latestResults[2]?.quiz_category} */}
                     </span>
@@ -521,43 +531,52 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className={styles.resultWrapper}>
-            <div className={styles.timeSpent} style={{ paddingTop: "10px" }}>
-              Time Spent (Last 7 Days)
-              <span className={styles.moreButton}>
-                {/* <img src={arrow3} alt="More" width={11} height={5} /> */}
-              </span>
-              <div className={styles.progressBar}>
-                {Array.isArray(timeData) && timeData.length > 0 ? (
-                  timeData.map((item, index) => (
-                    <div className={styles.progressBarItem} key={index}>
-                      <div className={styles.day}>{item.cal_date}</div>
-                      <div className={styles.progress}>
-                        <div
-                          className={styles.progressFill}
-                          style={{
-                            height: `${item.timespent * 2}px`,
-                          }}
-                        ></div>
-                      </div>
-                      <div
-                        className={styles.time}
-                        style={{
-                          fontSize: "8px",
-                          marginTop: "5px",
-                          textWrap: "nowrap",
-                        }}
-                      >
-                        {formatTime(item.timespent)}
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div>No data available</div>
-                )}
+  <div className={styles.resultWrapper}>
+  <div className={styles.timeSpent} style={{ paddingTop: "10px" }}>
+    Time Spent (Last 7 Days)
+    <span className={styles.moreButton}>
+      {/* <img src={arrow3} alt="More" width={11} height={5} /> */}
+    </span>
+    <div className={styles.progressBar}>
+      {Array.isArray(timeData) && timeData.length > 0 ? (
+        timeData.map((item, index) => {
+          // Create a new Date object from item.cal_date
+          const date = new Date(item.cal_date);
+          // Get the month abbreviation
+          const monthAbbreviation = date.toLocaleString('default', { month: 'short' });
+          // Get the day of the month
+          const day = date.getDate();
+
+          return (
+            <div className={styles.progressBarItem} key={index}>
+              <div className={styles.day}>{`${monthAbbreviation} ${day}`}</div>
+              <div className={styles.progress}>
+                <div
+                  className={styles.progressFill}
+                  style={{
+                    height: `${item.timespent * 2}px`,
+                  }}
+                ></div>
+              </div>
+              <div
+                className={styles.time}
+                style={{
+                  fontSize: "8px",
+                  marginTop: "5px",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {formatTime(item.timespent)}
               </div>
             </div>
-          </div>
+          );
+        })
+      ) : (
+        <div>No data available</div>
+      )}
+    </div>
+  </div>
+</div>
         </div>
 
         <div className={styles.contentWrapper1}>
@@ -604,7 +623,7 @@ const Dashboard = () => {
                 <p className={styles.title}>{latestquizzes[0]?.quiz_name}</p>
 
                 <div className={styles.iconContainer}>
-                  <div className="z-40 mb-[2px] pl-[36px] font-normal rounded ">
+                  <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -702,46 +721,46 @@ const Dashboard = () => {
                   style={{ marginTop: "65px" }}
                 >
                   <div className="z-0">
-                    <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
+                    <div className="flex gap-[5px] h-[18px] w-[80px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black">
                       <img
-                        className="h-[15px] w-[13px] pl-[3px] pb-1"
+                        className={styles.attemptsimage}
                         src={Attempt1}
                         alt="Attempts Icon"
                         width={10}
                         height={10}
                       />
                       <p>{latestquizzes[0]?.quiz_attempts}</p>
-                      <span className="text-[7px] ml-[2px]">attempts</span>
+                      <span className={styles.attemptstext}>attempts</span>
                     </div>
                   </div>
 
                   <div className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
                     <img
-                      className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                      className={styles.questionimage}
                       src={NoOfQuestion}
                       alt="Number of question Icon"
                       width={15}
                       height={10}
                     />{" "}
                     {latestquizzes[0]?.number_of_questions}
-                    <span className="text-[7px] ml-[1px]">questions</span>
+                    <span className={styles.questiontext}>questions</span>
                   </div>
 
                   <div className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
                     <img
-                      className="pb-[1px] mr-[1px] relative left-[3px] "
+                      className={styles.minutesimage}
                       src={Clock}
                       alt="Time Icon"
                       width={14}
                       height={14}
                     />{" "}
                     {latestquizzes[0]?.quiz_duration}
-                    <span className="text-[7px] -ml-[0.5px]">minutes</span>
+                    <span className={styles.minutestext}>minutes</span>
                   </div>
 
-                  <div className="flex text-[8px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                  <div className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                     <img
-                      className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                      className={styles.complexityimage}
                       src={Easy}
                       alt="Challenge Icon"
                       width={15}
@@ -848,42 +867,42 @@ const Dashboard = () => {
                   <div className="z-0">
                     <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
                       <img
-                        className="h-[15px] w-[13px] pl-[3px] pb-1"
+                        className={styles.attemptsimage}
                         src={Attempt1}
                         alt="Attempts Icon"
                         width={10}
                         height={10}
                       />
                       <p>{latestquizzes[1]?.quiz_attempts}</p>
-                      <span className="text-[6px] ml-1">attempts</span>
+                      <span className={styles.attemptstext}>attempts</span>
                     </div>
                   </div>
 
                   <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
                     <img
-                      className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                      className={styles.questionimage}
                       src={NoOfQuestion}
                       alt="Number of question Icon"
                       width={15}
                       height={10}
                     />{" "}
                     {latestquizzes[1]?.number_of_questions}
-                    <span className="text-[6px] ml-[1px]">questions</span>
+                    <span className={styles.questiontext}>questions</span>
                   </span>
                   <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
                     <img
-                      className="pb-[1px] mr-[1px] relative left-[3px] "
+                      className={styles.minutesimage}
                       src={Clock}
                       alt="Time Icon"
                       width={14}
                       height={14}
                     />{" "}
                     {latestquizzes[1]?.quiz_duration}
-                    <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                    <span className={styles.minutestext}>minutes</span>
                   </span>
                   <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                     <img
-                      className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                      className={styles.complexityimage}
                       src={Easy}
                       alt="Challenge Icon"
                       width={15}
@@ -988,42 +1007,42 @@ const Dashboard = () => {
                   <div className="z-0">
                     <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
                       <img
-                        className="h-[15px] w-[13px] pl-[3px] pb-1"
+                        className={styles.attemptsimage}
                         src={Attempt1}
                         alt="Attempts Icon"
                         width={10}
                         height={10}
                       />
                       <p>{latestquizzes[2]?.quiz_attempts}</p>
-                      <span className="text-[6px] ml-1">attempts</span>
+                      <span className={styles.attemptstext}>attempts</span>
                     </div>
                   </div>
 
                   <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
                     <img
-                      className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                      className={styles.questionimage}
                       src={NoOfQuestion}
                       alt="Number of question Icon"
                       width={15}
                       height={10}
                     />{" "}
                     {latestquizzes[2]?.number_of_questions}
-                    <span className="text-[6px] ml-[1px]">questions</span>
+                    <span className={styles.questiontext}>questions</span>
                   </span>
                   <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
                     <img
-                      className="pb-[1px] mr-[1px] relative left-[3px] "
+                      className={styles.minutesimage}
                       src={Clock}
                       alt="Time Icon"
                       width={14}
                       height={14}
                     />{" "}
                     {latestquizzes[2]?.quiz_duration}
-                    <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                    <span className={styles.minutestext}>minutes</span>
                   </span>
                   <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                     <img
-                      className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                      className={styles.complexityimage}
                       src={Easy}
                       alt="Challenge Icon"
                       width={15}
@@ -1131,42 +1150,42 @@ const Dashboard = () => {
                   <div className="z-0">
                     <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
                       <img
-                        className="h-[15px] w-[13px] pl-[3px] pb-1"
+                        className={styles.attemptsimage}
                         src={Attempt1}
                         alt="Attempts Icon"
                         width={10}
                         height={10}
                       />
                       <p>{latestquizzes[3]?.quiz_attempts}</p>
-                      <span className="text-[6px] ml-1">attempts</span>
+                      <span className={styles.attemptstext}>attempts</span>
                     </div>
                   </div>
 
                   <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
                     <img
-                      className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                      className={styles.questionimage}
                       src={NoOfQuestion}
                       alt="Number of question Icon"
                       width={15}
                       height={10}
                     />{" "}
                     {latestquizzes[3]?.number_of_questions}
-                    <span className="text-[6px] ml-[1px]">questions</span>
+                    <span className={styles.questiontext}>questions</span>
                   </span>
                   <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
                     <img
-                      className="pb-[1px] mr-[1px] relative left-[3px] "
+                      className={styles.minutesimage}
                       src={Clock}
                       alt="Time Icon"
                       width={14}
                       height={14}
                     />{" "}
                     {latestquizzes[3]?.quiz_duration}
-                    <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                    <span className={styles.minutestext}>minutes</span>
                   </span>
                   <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                     <img
-                      className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                      className={styles.complexityimage}
                       src={Easy}
                       alt="Challenge Icon"
                       width={15}
@@ -1270,42 +1289,42 @@ const Dashboard = () => {
                   <div className="z-0">
                     <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
                       <img
-                        className="h-[15px] w-[13px] pl-[3px] pb-1"
+                        className={styles.attemptsimage}
                         src={Attempt1}
                         alt="Attempts Icon"
                         width={10}
                         height={10}
                       />
                       <p>{latestquizzes[4]?.quiz_attempts}</p>
-                      <span className="text-[6px] ml-1">attempts</span>
+                      <span className={styles.attemptstext}>attempts</span>
                     </div>
                   </div>
 
                   <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
                     <img
-                      className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                      className={styles.questionimage}
                       src={NoOfQuestion}
                       alt="Number of question Icon"
                       width={15}
                       height={10}
                     />{" "}
                     {latestquizzes[4]?.number_of_questions}
-                    <span className="text-[6px] ml-[1px]">questions</span>
+                    <span className={styles.questiontext}>questions</span>
                   </span>
                   <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
                     <img
-                      className="pb-[1px] mr-[1px] relative left-[3px] "
+                      className={styles.minutesimage}
                       src={Clock}
                       alt="Time Icon"
                       width={14}
                       height={14}
                     />{" "}
                     {latestquizzes[4]?.quiz_duration}
-                    <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                    <span className={styles.minutestext}>minutes</span>
                   </span>
                   <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                     <img
-                      className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                      className={styles.complexityimage}
                       src={Easy}
                       alt="Challenge Icon"
                       width={15}
@@ -1411,42 +1430,42 @@ const Dashboard = () => {
                   <div className="z-0">
                     <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
                       <img
-                        className="h-[15px] w-[13px] pl-[3px] pb-1"
+                        className={styles.attemptsimage}
                         src={Attempt1}
                         alt="Attempts Icon"
                         width={10}
                         height={10}
                       />
                       <p>{latestquizzes[5]?.quiz_attempts}</p>
-                      <span className="text-[6px] ml-1">attempts</span>
+                      <span className={styles.attemptstext}>attempts</span>
                     </div>
                   </div>
 
                   <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
                     <img
-                      className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                      className={styles.questionimage}
                       src={NoOfQuestion}
                       alt="Number of question Icon"
                       width={15}
                       height={10}
                     />{" "}
                     {latestquizzes[5]?.number_of_questions}
-                    <span className="text-[6px] ml-[1px]">questions</span>
+                    <span className={styles.questiontext}>questions</span>
                   </span>
                   <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
                     <img
-                      className="pb-[1px] mr-[1px] relative left-[3px] "
+                      className={styles.minutesimage}
                       src={Clock}
                       alt="Time Icon"
                       width={14}
                       height={14}
                     />{" "}
                     {latestquizzes[5]?.quiz_duration}
-                    <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                    <span className={styles.minutestext}>minutes</span>
                   </span>
                   <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                     <img
-                      className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                      className={styles.complexityimage}
                       src={Easy}
                       alt="Challenge Icon"
                       width={15}
@@ -1561,42 +1580,42 @@ const Dashboard = () => {
                       <div className="z-0">
                         <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
                           <img
-                            className="h-[15px] w-[13px] pl-[3px] pb-1"
+                            className={styles.attemptsimage}
                             src={Attempt1}
                             alt="Attempts Icon"
                             width={10}
                             height={10}
                           />
                           <p>{latestquizzes[6]?.quiz_attempts}</p>
-                          <span className="text-[6px] ml-1">attempts</span>
+                          <span className={styles.attemptstext}>attempts</span>
                         </div>
                       </div>
 
                       <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
                         <img
-                          className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                          className={styles.questionimage}
                           src={NoOfQuestion}
                           alt="Number of question Icon"
                           width={15}
                           height={10}
                         />{" "}
                         {latestquizzes[6]?.number_of_questions}
-                        <span className="text-[6px] ml-[1px]">questions</span>
+                        <span className={styles.questiontext}>questions</span>
                       </span>
                       <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
                         <img
-                          className="pb-[1px] mr-[1px] relative left-[3px] "
+                          className={styles.minutesimage}
                           src={Clock}
                           alt="Time Icon"
                           width={14}
                           height={14}
                         />{" "}
                         {latestquizzes[6]?.quiz_duration}
-                        <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                        <span className={styles.minutestext}>minutes</span>
                       </span>
                       <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                         <img
-                          className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                          className={styles.complexityimage}
                           src={Easy}
                           alt="Challenge Icon"
                           width={15}
@@ -1700,42 +1719,42 @@ const Dashboard = () => {
                       <div className="z-0">
                         <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
                           <img
-                            className="h-[15px] w-[13px] pl-[3px] pb-1"
+                            className={styles.attemptsimage}
                             src={Attempt1}
                             alt="Attempts Icon"
                             width={10}
                             height={10}
                           />
                           <p>{latestquizzes[7]?.quiz_attempts}</p>
-                          <span className="text-[6px] ml-1">attempts</span>
+                          <span className={styles.attemptstext}>attempts</span>
                         </div>
                       </div>
 
                       <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
                         <img
-                          className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                          className={styles.questionimage}
                           src={NoOfQuestion}
                           alt="Number of question Icon"
                           width={15}
                           height={10}
                         />{" "}
                         {latestquizzes[7]?.number_of_questions}
-                        <span className="text-[6px] ml-[1px]">questions</span>
+                        <span className={styles.questiontext}>questions</span>
                       </span>
                       <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
                         <img
-                          className="pb-[1px] mr-[1px] relative left-[3px] "
+                          className={styles.minutesimage}
                           src={Clock}
                           alt="Time Icon"
                           width={14}
                           height={14}
                         />{" "}
                         {latestquizzes[7]?.quiz_duration}
-                        <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                        <span className={styles.minutestext}>minutes</span>
                       </span>
                       <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                         <img
-                          className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                          className={styles.complexityimage}
                           src={Easy}
                           alt="Challenge Icon"
                           width={15}
@@ -1838,42 +1857,42 @@ const Dashboard = () => {
                       <div className="z-0">
                         <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
                           <img
-                            className="h-[15px] w-[13px] pl-[3px] pb-1"
+                            className={styles.attemptsimage}
                             src={Attempt1}
                             alt="Attempts Icon"
                             width={10}
                             height={10}
                           />
                           <p>{latestquizzes[8]?.quiz_attempts}</p>
-                          <span className="text-[6px] ml-1">attempts</span>
+                          <span className={styles.attemptstext}>attempts</span>
                         </div>
                       </div>
 
                       <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
                         <img
-                          className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                          className={styles.questionimage}
                           src={NoOfQuestion}
                           alt="Number of question Icon"
                           width={15}
                           height={10}
                         />{" "}
                         {latestquizzes[8]?.number_of_questions}
-                        <span className="text-[6px] ml-[1px]">questions</span>
+                        <span className={styles.questiontext}>questions</span>
                       </span>
                       <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
                         <img
-                          className="pb-[1px] mr-[1px] relative left-[3px] "
+                          className={styles.minutesimage}
                           src={Clock}
                           alt="Time Icon"
                           width={14}
                           height={14}
                         />{" "}
                         {latestquizzes[8]?.quiz_duration}
-                        <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                        <span className={styles.minutestext}>minutes</span>
                       </span>
                       <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                         <img
-                          className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                          className={styles.complexityimage}
                           src={Easy}
                           alt="Challenge Icon"
                           width={15}
@@ -2001,7 +2020,7 @@ const Dashboard = () => {
                       <div className="z-0">
                         <div className="text-[7px] flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
                           <img
-                            className="h-[15px] w-[13px] pl-[3px] pb-1"
+                            className={styles.attemptsimage}
                             src={Attempt1}
                             alt="Attempts Icon"
                             width={10}
@@ -2191,7 +2210,7 @@ const Dashboard = () => {
                       <div className="z-0">
                         <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
                           <img
-                            className="h-[15px] w-[13px] pl-[3px] pb-1"
+                            className={styles.attemptsimage}
                             src={Attempt1}
                             alt="Attempts Icon"
                             width={10}
@@ -2381,7 +2400,7 @@ const Dashboard = () => {
                       <div className="z-0">
                         <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
                           <img
-                            className="h-[15px] w-[13px] pl-[3px] pb-1"
+                            className={styles.attemptsimage}
                             src={Attempt1}
                             alt="Attempts Icon"
                             width={10}
@@ -2550,42 +2569,42 @@ const Dashboard = () => {
                 <div className="z-0">
                   <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
                     <img
-                      className="h-[15px] w-[13px] pl-[3px] pb-1"
+                      className={styles.attemptsimage}
                       src={Attempt1}
                       alt="Attempts Icon"
                       width={10}
                       height={10}
                     />
                     <p>{popularquizzes[0]?.quiz_attempts}</p>
-                    <span className="text-[6px] ml-1">attempts</span>
+                    <span className={styles.attemptstext}>attempts</span>
                   </div>
                 </div>
 
                 <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
                   <img
-                    className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                    className={styles.questionimage}
                     src={NoOfQuestion}
                     alt="Number of question Icon"
                     width={15}
                     height={10}
                   />{" "}
                   {popularquizzes[0]?.number_of_questions}
-                  <span className="text-[6px] ml-[1px]">questions</span>
+                  <span className={styles.questiontext}>questions</span>
                 </span>
                 <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
                   <img
-                    className="pb-[1px] mr-[1px] relative left-[3px] "
+                    className={styles.minutesimage}
                     src={Clock}
                     alt="Time Icon"
                     width={14}
                     height={14}
                   />{" "}
                   {popularquizzes[0]?.quiz_duration}
-                  <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                  <span className={styles.minutestext}>minutes</span>
                 </span>
                 <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                   <img
-                    className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                    className={styles.complexityimage}
                     src={Easy}
                     alt="Challenge Icon"
                     width={15}
@@ -2684,42 +2703,42 @@ const Dashboard = () => {
                 <div className="z-0">
                   <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
                     <img
-                      className="h-[15px] w-[13px] pl-[3px] pb-1"
+                      className={styles.attemptsimage}
                       src={Attempt1}
                       alt="Attempts Icon"
                       width={10}
                       height={10}
                     />
                     <p>{popularquizzes[1]?.quiz_attempts}</p>
-                    <span className="text-[6px] ml-1">attempts</span>
+                    <span className={styles.attemptstext}>attempts</span>
                   </div>
                 </div>
 
                 <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
                   <img
-                    className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                    className={styles.questionimage}
                     src={NoOfQuestion}
                     alt="Number of question Icon"
                     width={15}
                     height={10}
                   />{" "}
                   {popularquizzes[1]?.number_of_questions}
-                  <span className="text-[6px] ml-[1px]">questions</span>
+                  <span className={styles.questiontext}>questions</span>
                 </span>
                 <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
                   <img
-                    className="pb-[1px] mr-[1px] relative left-[3px] "
+                    className={styles.minutesimage}
                     src={Clock}
                     alt="Time Icon"
                     width={14}
                     height={14}
                   />{" "}
                   {popularquizzes[1]?.quiz_duration}
-                  <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                  <span className={styles.minutestext}>minutes</span>
                 </span>
                 <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                   <img
-                    className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                    className={styles.complexityimage}
                     src={Easy}
                     alt="Challenge Icon"
                     width={15}
@@ -2818,42 +2837,42 @@ const Dashboard = () => {
                 <div className="z-0">
                   <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
                     <img
-                      className="h-[15px] w-[13px] pl-[3px] pb-1"
+                      className={styles.attemptsimage}
                       src={Attempt1}
                       alt="Attempts Icon"
                       width={10}
                       height={10}
                     />
                     <p>{popularquizzes[2]?.quiz_attempts}</p>
-                    <span className="text-[6px] ml-1">attempts</span>
+                    <span className={styles.attemptstext}>attempts</span>
                   </div>
                 </div>
 
                 <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
                   <img
-                    className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                    className={styles.questionimage}
                     src={NoOfQuestion}
                     alt="Number of question Icon"
                     width={15}
                     height={10}
                   />{" "}
                   {popularquizzes[2]?.number_of_questions}
-                  <span className="text-[6px] ml-[1px]">questions</span>
+                  <span className={styles.questiontext}>questions</span>
                 </span>
                 <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
                   <img
-                    className="pb-[1px] mr-[1px] relative left-[3px] "
+                    className={styles.minutesimage}
                     src={Clock}
                     alt="Time Icon"
                     width={14}
                     height={14}
                   />{" "}
                   {popularquizzes[2]?.quiz_duration}
-                  <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                  <span className={styles.minutestext}>minutes</span>
                 </span>
                 <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                   <img
-                    className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                    className={styles.complexityimage}
                     src={Easy}
                     alt="Challenge Icon"
                     width={15}
@@ -2952,42 +2971,42 @@ const Dashboard = () => {
                 <div className="z-0">
                   <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
                     <img
-                      className="h-[15px] w-[13px] pl-[3px] pb-1"
+                      className={styles.attemptsimage}
                       src={Attempt1}
                       alt="Attempts Icon"
                       width={10}
                       height={10}
                     />
                     <p>{popularquizzes[3]?.quiz_attempts}</p>
-                    <span className="text-[6px] ml-1">attempts</span>
+                    <span className={styles.attemptstext}>attempts</span>
                   </div>
                 </div>
 
                 <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
                   <img
-                    className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                    className={styles.questionimage}
                     src={NoOfQuestion}
                     alt="Number of question Icon"
                     width={15}
                     height={10}
                   />{" "}
                   {popularquizzes[3]?.number_of_questions}
-                  <span className="text-[6px] ml-[1px]">questions</span>
+                  <span className={styles.questiontext}>questions</span>
                 </span>
                 <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
                   <img
-                    className="pb-[1px] mr-[1px] relative left-[3px] "
+                    className={styles.minutesimage}
                     src={Clock}
                     alt="Time Icon"
                     width={14}
                     height={14}
                   />{" "}
                   {popularquizzes[3]?.quiz_duration}
-                  <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                  <span className={styles.minutestext}>minutes</span>
                 </span>
                 <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                   <img
-                    className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                    className={styles.complexityimage}
                     src={Easy}
                     alt="Challenge Icon"
                     width={15}
@@ -3086,42 +3105,42 @@ const Dashboard = () => {
                 <div className="z-0">
                   <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
                     <img
-                      className="h-[15px] w-[13px] pl-[3px] pb-1"
+                      className={styles.attemptsimage}
                       src={Attempt1}
                       alt="Attempts Icon"
                       width={10}
                       height={10}
                     />
                     <p>{popularquizzes[4]?.quiz_attempts}</p>
-                    <span className="text-[6px] ml-1">attempts</span>
+                    <span className={styles.attemptstext}>attempts</span>
                   </div>
                 </div>
 
                 <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
                   <img
-                    className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                    className={styles.questionimage}
                     src={NoOfQuestion}
                     alt="Number of question Icon"
                     width={15}
                     height={10}
                   />{" "}
                   {popularquizzes[4]?.number_of_questions}
-                  <span className="text-[6px] ml-[1px]">questions</span>
+                  <span className={styles.questiontext}>questions</span>
                 </span>
                 <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
                   <img
-                    className="pb-[1px] mr-[1px] relative left-[3px] "
+                    className={styles.minutesimage}
                     src={Clock}
                     alt="Time Icon"
                     width={14}
                     height={14}
                   />{" "}
                   {popularquizzes[4]?.quiz_duration}
-                  <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                  <span className={styles.minutestext}>minutes</span>
                 </span>
                 <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                   <img
-                    className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                    className={styles.complexityimage}
                     src={Easy}
                     alt="Challenge Icon"
                     width={15}
@@ -3220,42 +3239,42 @@ const Dashboard = () => {
                 <div className="z-0">
                   <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
                     <img
-                      className="h-[15px] w-[13px] pl-[3px] pb-1"
+                      className={styles.attemptsimage}
                       src={Attempt1}
                       alt="Attempts Icon"
                       width={10}
                       height={10}
                     />
                     <p>{popularquizzes[5]?.quiz_attempts}</p>
-                    <span className="text-[6px] ml-1">attempts</span>
+                    <span className={styles.attemptstext}>attempts</span>
                   </div>
                 </div>
 
                 <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
                   <img
-                    className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                    className={styles.questionimage}
                     src={NoOfQuestion}
                     alt="Number of question Icon"
                     width={15}
                     height={10}
                   />{" "}
                   {popularquizzes[5]?.number_of_questions}
-                  <span className="text-[6px] ml-[1px]">questions</span>
+                  <span className={styles.questiontext}>questions</span>
                 </span>
                 <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
                   <img
-                    className="pb-[1px] mr-[1px] relative left-[3px] "
+                    className={styles.minutesimage}
                     src={Clock}
                     alt="Time Icon"
                     width={14}
                     height={14}
                   />{" "}
                   {popularquizzes[5]?.quiz_duration}
-                  <span className="text-[6px] -ml-[0.5px]">minutes</span>
+                  <span className={styles.minutestext}>minutes</span>
                 </span>
                 <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                   <img
-                    className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                    className={styles.complexityimage}
                     src={Easy}
                     alt="Challenge Icon"
                     width={15}

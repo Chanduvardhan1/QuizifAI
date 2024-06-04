@@ -14,6 +14,7 @@ import NewSchedule from "../assets/Images/images/dashboard/NewSchedule.png";
 import notificationIcon from "../assets/Images/images/dashboard/notification.png";
 import profileIcon from "../assets/Images/images/dashboard/profile.png";
 import NewProfile from "../assets/Images/images/dashboard/NewProfile.png";
+import configure from "../assets/Images/images/dashboard/configure.png";
 //import Head from "next/head";
 //import Image from "next/image";
 import searchIcon from "../assets/Images/images/dashboard/searchBar.png";
@@ -27,6 +28,7 @@ const  [isActive, setIsActive] = useState(false);
 const  [isActiveQuizzes, setIsActiveQuizzes] = useState(false);
 const  [isActiveSchedule, setIsActiveSchedule] = useState(false);
 const  [isActiveProfile, setIsActiveProfile] = useState(false);
+const  [isActiveConfig, setIsActiveConfig] = useState(false);
 
  
  const [iconDashboard, setIconDashboard] = useState(NewDashboard);
@@ -61,6 +63,10 @@ const  [isActiveProfile, setIsActiveProfile] = useState(false);
     setIsActiveProfile(true);
     navigate('/free-profile');
       };
+   const handleNavigation4 =() =>{
+    setIsActiveConfig(true);
+    navigate('/configure');
+   }    
 
   /*const router = useRouter();
 
@@ -127,6 +133,11 @@ const  [isActiveProfile, setIsActiveProfile] = useState(false);
           <img src={iconProfile} alt="Icon 2" className={styles.pageIcon} />
           <div className={`${styles.verticalline} ${isActiveProfile ? styles.active : ''}`}></div>
           <span className={styles.pageLink} >Profile</span>
+        </div>
+        <div className={styles.pageItem} onClick={handleNavigation4}>
+          <img src={configure} alt="Icon 2" className={styles.pageIcon} />
+          <div className={`${styles.verticalline} ${isActiveConfig ? styles.active : ''}`}></div>
+          <span className={styles.pageLink} >Configure</span>
         </div>
       </div>
     </div>

@@ -136,7 +136,7 @@ const topThree = leaderboardData.slice(0, 3);
         
   {remaining.map((item, index) => (
         <div className={styles.values} key={index + 3}>
-          <div className={styles.value}>{item.score_rank}</div>
+          <div className={styles.value}>{item.rank}</div>
           <div className={styles.value}>{item.user_name}</div>
           <div className={styles.value}>{item.attained_percentage}</div>
           <div className={styles.value}>{item.attempts_count}</div>

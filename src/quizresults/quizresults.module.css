@@ -89,14 +89,23 @@
     .titleContainer{
       font-family: Poppins;
   font-size: 18px;
-  font-weight: 700;
+  /* font-weight: 700; */
   line-height: 40px;
   letter-spacing: 0em;
   text-align: left;
   margin-left: 50px;
-  
+  display: flex;
+  flex-direction: column;
     }
-  
+    .Createdby{
+      font-family: Poppins;
+      font-size: 18px;
+      font-weight: 700;
+    }
+  .quizdescription{
+    width: 685px;
+    font-size: 15px;
+  }
     .infoContainer{
       font-family: Poppins;
   font-size: 15px;
@@ -108,7 +117,11 @@
   
   
     }
-  
+  .Createdbyupdated{
+    display: flex;
+    /* justify-content: space-between; */
+    gap: 270px; 
+  }
     .icon1{
       width: 51px;
   height: 37px;
@@ -493,7 +506,11 @@ margin-left: -50px;
     top: 284px;
     right: -71px;
   }
-  
+  .quizname{
+    font-family: Poppins;
+    font-size: 18px;
+    font-weight: 700;
+  }
   .innerBox1 img{
     width: 122px;
     height: 93px;

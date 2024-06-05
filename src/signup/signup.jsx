@@ -235,7 +235,7 @@ if (hasError) {
           setTerms("Email is not valid");
         } 
         else {
-          setResponseMessage(data.data);
+          setResponseMessage1(data.data);
         }
       })
       .catch((error) => {

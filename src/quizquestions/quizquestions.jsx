@@ -489,10 +489,10 @@ const QuizQuestions = () => {
     </div>
           </div>
           <div className={styles.verticalLine}></div>
-      <div className={styles.sentence1} style={{ marginTop: "110px" }}>
+      <div className={styles.sentence1} style={{ marginTop: "220px" }}>
         {`${currentQuestionIndex + 1} out of ${filteredQuizData.length}`}
       </div>
-      <div className={styles.sentence2} style={{ marginTop: "170px" }}>
+      <div className={styles.sentence2} style={{ marginTop: "265px" }}>
         Total timer: <span className={styles.sentence3}>{formatTime(elapsedTime)}</span> 
       </div>
       <div className={styles.sentence3} style={{ marginTop: "230px" }}>

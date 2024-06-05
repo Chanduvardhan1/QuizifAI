@@ -148,30 +148,43 @@ const quizresults = () => {
       <div className={styles.mainContent}>
         <div className={styles.header}>
         <div className={styles.titleContainer}>
-        <img
+        {/* <img
   src={titleIcon} 
   alt="User Icon"
   className={styles.icon1}
-/>
-          <span>{quizData.quiz_name}</span>
+/> */}
+          <span className={styles.quizname}>{quizData.quiz_name}</span>
+          <p className={styles.quizdescription}>{quizData.quiz_description}</p>
+          <div className={styles.Createdbyupdated}>
+        <div className={styles.Created}>
+
+        <span className={styles.Createdby} >Created By:</span>{" "}
+          <span className={styles.username} >{`${quizData.user_name}`}</span>
         </div>
-        <div className={styles.infoContainer}>
-        <img
+        <div>
+
+        <span className={styles.Createdby} >Created ON:</span>{" "}
+          <span className={styles.username} >{`${quizData.user_name}`}</span>
+        </div>
+        </div>
+        </div>
+        {/* <div className={styles.infoContainer}>
+        {/* <img
   src={createdIcon} 
   alt="Calendar Icon"
   className={styles.icon2}
-/>
-          <span>user name<br></br>date</span>
-        </div>
+/> */}
+          {/* <span>user name<br></br>date</span> */}
+        {/* </div>  */}
       </div>
-      <div className={styles.descriptionContainer}>
-      <img
+      {/* <div className={styles.descriptionContainer}>
+      {/* <img
     src={descriptionIcon} 
     alt="Description Icon"
     className={styles.description}
-  />
-      <span className={styles.descriptionText}>{quizData.quiz_description}</span>
-      </div>
+  /> */}
+      {/* <span className={styles.descriptionText}>{quizData.quiz_description}</span> */}
+      {/* </div>  */}
      
       <div className={styles.horizontalLine}></div>
       <div className={styles.wrapper}>
@@ -363,7 +376,7 @@ const quizresults = () => {
   </div>
       {leaderboardData.slice(3,10).map((entry, index) => (
         <div key={entry.rank} className={styles.values}>
-          <div className={styles.value}>{entry.score_rank}</div>
+          <div className={styles.value}>{entry.rank}</div>
           <div className={styles.value}>{entry.user_name}</div>
           <div className={styles.value}>{entry.attained_percentage}</div>
           <div className={styles.value}>{entry.attempts_count}</div>

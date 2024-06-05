@@ -257,18 +257,34 @@ export default function quiztype() {
   };
 
   // Handle course selection
+  // const handleSelectCourse = (event) => {
+  //   const selectedCourse = event.target.value;
+  //   setSelectedCourse(selectedCourse);
+  //   // Find the selected course and set its classes
+  //   const course = courses.find(
+  //     (course) => course.course_name === selectedCourse
+  //   );
+  //   if (course) {
+  //     setClasses(course.classes.map((cls) => cls.class_name));
+  //   }
+  // };
   const handleSelectCourse = (event) => {
     const selectedCourse = event.target.value;
     setSelectedCourse(selectedCourse);
-    // Find the selected course and set its classes
-    const course = courses.find(
-      (course) => course.course_name === selectedCourse
-    );
-    if (course) {
-      setClasses(course.classes.map((cls) => cls.class_name));
+  
+    if (selectedCourse === "") {
+      // Clear the selection
+      setClasses([]);
+    } else {
+      // Find the selected course and set its classes
+      const course = courses.find(
+        (course) => course.course_name === selectedCourse
+      );
+      if (course) {
+        setClasses(course.classes.map((cls) => cls.class_name));
+      }
     }
   };
-
   // Handle class selection
   const handleSelectClass = (event) => {
     const selectedClass = event.target.value;
@@ -497,7 +513,98 @@ export default function quiztype() {
     setUploadedFile(file);
   };
 
+  // const handleNext = async () => {
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("quiz_title", title);
+  //     formData.append("number_of_questions", numQuestions);
+  //     formData.append("quiz_description", description);
+  //     formData.append("quiz_category_name", selectedCategory);
+  //     formData.append("multi_answer", multiAnswer);
+  //     formData.append("quiz_sub_category_name", selectedSubCategory);
+  //     formData.append("class_name", selectedClass);
+  //     formData.append("pass_percentage", percentage);
+  //     formData.append("quiz_complexity_name", selectedComplexity);
+  //     formData.append("retake_flag", retake);
+  //     formData.append("quiz_duration", duration);
+  //     formData.append("course_name", selectedCourse);
+  //     formData.append("quiz_time_bounded_questions", timings);
+  //     formData.append("quiz_public_access", publicAccess);
+  //     formData.append("available_from", availablefrom);
+  //     formData.append("disabled_on", disabledon);
+  //     formData.append("quiz_total_marks", quiztotalmarks);
+  //     formData.append("file", uploadedFile); // Assuming you have a ref for file input
+
+  //     const response = await fetch(
+  //       "https://quizifai.com:8010/Upload quiz with PDF...../",
+  //       {
+  //         method: "POST",
+  //         body: formData,
+  //         onUploadProgress: (progressEvent) => {
+  //           const progress = Math.round(
+  //             (progressEvent.loaded / progressEvent.total) * 100
+  //           );
+  //           setUploadProgress(progress);
+  //         },
+  //       }
+  //     );
+  //     const responseData = await response.json();
+  //     console.log(responseData, "data");
+
+  //     if (response.ok && responseData.response === "success") {
+  //       // Assuming router and state setter are defined properly
+  //       setQuestions(responseData.data[0].questions);
+  //     } else {
+  //       if (
+  //         responseData.detail &&
+  //         responseData.detail[0].type === "missing" &&
+  //         responseData.detail[0].loc[1] === "body" &&
+  //         responseData.detail[0].loc[2] === "num_questions"
+  //       ) {
+  //         setErrorMessage(
+  //           "Please provide the number of questions for the quiz."
+  //         );
+  //       } else {
+  //         setErrorMessage(responseData.detail);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error("Type-Quiz failed:", error);
+  //     setErrorMessage("An error occurred while choosing the type of the quiz");
+  //   }
+  // };
+ 
   const handleNext = async () => {
+    if (!uploadedFile) {
+      alert("Please upload a file before proceeding.");
+      return; // Prevent further execution
+  }
+  const requiredFields = [
+    title,
+    numQuestions,
+    description,
+    selectedCategory,
+
+    selectedSubCategory,
+
+    percentage,
+    selectedComplexity,
+
+    duration,
+   
+    timings,
+  
+    availablefrom,
+    disabledon,
+    quiztotalmarks
+];
+
+const isAnyFieldEmpty = requiredFields.some(field => !field);
+
+if (isAnyFieldEmpty) {
+    alert("Please fill in all the required fields before proceeding.");
+    return; // Prevent further execution
+}
     try {
       const formData = new FormData();
       formData.append("quiz_title", title);
@@ -517,26 +624,63 @@ export default function quiztype() {
       formData.append("available_from", availablefrom);
       formData.append("disabled_on", disabledon);
       formData.append("quiz_total_marks", quiztotalmarks);
-      formData.append("file", uploadedFile); // Assuming you have a ref for file input
-
-      const response = await fetch(
+      formData.append("file", uploadedFile);
+  
+      const options = {
+        method: 'POST',
+        body: formData,
+      };
+  
+      const uploadFileWithSimulatedProgress = (url, options) => {
+        return new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.open(options.method, url);
+  
+          xhr.onload = () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+              resolve(xhr.response);
+            } else {
+              reject(xhr.statusText);
+            }
+          };
+  
+          xhr.onerror = () => reject(xhr.statusText);
+  
+          Object.keys(options.headers || {}).forEach(key => {
+            xhr.setRequestHeader(key, options.headers[key]);
+          });
+  
+          xhr.send(options.body);
+  
+          // Simulate progress
+          let progress = 0;
+          const interval = setInterval(() => {
+            if (progress < 95) {
+              progress += 1;
+              setUploadProgress(progress);
+            } else {
+              clearInterval(interval);
+            }
+          }, 100); // Update every 100ms
+  
+          xhr.onreadystatechange = () => {
+            if (xhr.readyState === 4) {
+              clearInterval(interval);
+              setUploadProgress(100); // Set to 100% on completion
+            }
+          };
+        });
+      };
+  
+      const responseText = await uploadFileWithSimulatedProgress(
         "https://quizifai.com:8010/Upload quiz with PDF...../",
-        {
-          method: "POST",
-          body: formData,
-          onUploadProgress: (progressEvent) => {
-            const progress = Math.round(
-              (progressEvent.loaded / progressEvent.total) * 100
-            );
-            setUploadProgress(progress);
-          },
-        }
+        options
       );
-      const responseData = await response.json();
+  
+      const responseData = JSON.parse(responseText);
       console.log(responseData, "data");
-
-      if (response.ok && responseData.response === "success") {
-        // Assuming router and state setter are defined properly
+  
+      if (responseData.response === "success") {
         setQuestions(responseData.data[0].questions);
       } else {
         if (
@@ -545,9 +689,7 @@ export default function quiztype() {
           responseData.detail[0].loc[1] === "body" &&
           responseData.detail[0].loc[2] === "num_questions"
         ) {
-          setErrorMessage(
-            "Please provide the number of questions for the quiz."
-          );
+          setErrorMessage("Please provide the number of questions for the quiz.");
         } else {
           setErrorMessage(responseData.detail);
         }
@@ -557,6 +699,7 @@ export default function quiztype() {
       setErrorMessage("An error occurred while choosing the type of the quiz");
     }
   };
+  
 
   const handleNext4 = async () => {
     try {
@@ -689,7 +832,33 @@ export default function quiztype() {
   function handleSelect9(event) {
     setMinutes(event.target.value);
   }
+  const sortedCategories = categories.sort((a, b) => 
+    a.category_name.localeCompare(b.category_name)
+  );
+  const getOptions = (options) => {
+    const correctOption = options.find(option => option.correct_answer_flag);
+    const incorrectOptions = options.filter(option => !option.correct_answer_flag);
 
+    let selectedOptions;
+    if (correctOption) {
+      selectedOptions = [correctOption, ...incorrectOptions.slice(0, 3)];
+    } else {
+      selectedOptions = options.slice(0, 4);
+    }
+
+    // Shuffle the selected options to randomize the position of the correct answer
+    for (let i = selectedOptions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [selectedOptions[i], selectedOptions[j]] = [selectedOptions[j], selectedOptions[i]];
+    }
+
+    return selectedOptions;
+  };
+  const handleOptionChange = (questionIndex, optionIndex, value) => {
+    const updatedQuestions = [...questions];
+    updatedQuestions[questionIndex].options[optionIndex].answer_option_text = value;
+    setQuestions(updatedQuestions);
+  };
   return (
     <>
       <div>
@@ -775,7 +944,7 @@ export default function quiztype() {
           <main className="w-max-auto">
             <div className="w-[844px] h-[48px] absolute top-[30px] left-[161px] rounded-[10px] bg-[#FCE7E7] z-0">
               <h1 className="font-Poppins font-semibold text-[25px] leading-[37.5px] text-[#555555] flex justify-center items-center mt-2 ml-20">
-                Configure and click next to import your CSV or Excel file
+                Configure and click next to import your pdf file
               </h1>
             </div>
             <div className="flex">
@@ -871,7 +1040,7 @@ export default function quiztype() {
                   <option value="" disabled>
                     Select a category
                   </option>
-                  {categories.map((category) => (
+                  {sortedCategories.map((category) => (
                     <option
                       key={category.category_id}
                       value={category.category_name}
@@ -937,20 +1106,21 @@ export default function quiztype() {
             </div> */}
 
             <div className="w-[260px]  absolute top-[309px] left-[500px]">
-              <select
-                className="w-[260px] h-[41.6px] border-solid  text-[12px] border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer"
-                value={selectedCourse}
-                onChange={handleSelectCourse}
-              >
-                <option value="" disabled>
-                  Select a course
-                </option>
-                {courses.map((course) => (
-                  <option key={course.course_id} value={course.course_name}>
-                    {course.course_name}
-                  </option>
-                ))}
-              </select>
+            <select
+  className="w-[260px] h-[41.6px] border-solid text-[12px] border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer"
+  value={selectedCourse}
+  onChange={handleSelectCourse}
+>
+  <option value="" disabled>
+    Select a course
+  </option>
+  <option value="">None</option> {/* Added this option */}
+  {courses.map((course) => (
+    <option key={course.course_id} value={course.course_name}>
+      {course.course_name}
+    </option>
+  ))}
+</select>
             </div>
 
             <div className="w-[109px] h-[27px] absolute top-[320px] left-[820px]">
@@ -1142,6 +1312,7 @@ export default function quiztype() {
 
             <div className="absolute top-[584px] left-[498px]">
               <input
+              type="date"
                 className="rounded-lg w-[166px] h-[43px] flex border-solid border-[#B8BBC2] border-[1.8px]
               text-[#9696BB] leading-[22.5px] text-[15p] font-medium bg-[#F4F4F4] px-4"
                 placeholder="YYYY-MM-DD"
@@ -1158,7 +1329,8 @@ export default function quiztype() {
 
             <div className=" absolute top-[584px] left-[1020px]">
               <input
-                className="rounded-lg w-[156px] h-[43px] flex border-solid border-[#B8BBC2] border-[1.8px]
+              type="date"
+                className="rounded-lg w-[166px] h-[43px] flex border-solid border-[#B8BBC2] border-[1.8px]
               text-[#9696BB] leading-[22.5px] text-[15p] font-medium bg-[#F4F4F4] px-4"
                 placeholder="YYYY-MM-DD"
                 value={disabledon}
@@ -1219,16 +1391,18 @@ export default function quiztype() {
                 />
               </label>
 
-              {/* <div className="w-[137.09px] h-[9.05px] absolute top-[740.11px] -mt-[680px]">
-        <Line percent={uploadProgress} strokeWidth={5} strokeColor="#B1FB9B" />
-      </div> */}
+            
               {/* <h1 className="font-Poppins font-normal text-[10px] leading-[15px] text-[#555555] mt-7 ml-5">{`Uploading ${uploadProgress}%`}</h1> */}
               <button
-                className="rounded-[10px] bg-[#1E4DE9] text-slate-50 mt-4 ml-9 p-2"
+                className="rounded-[10px] bg-[#1E4DE9] text-slate-50 mt-9 ml-9 p-2"
                 onClick={handleNext}
               >
                 Upload
               </button>
+                <div className="w-[137.09px] h-[9.05px] absolute top-[725.11px] -mt-[680px]">
+        <Line percent={uploadProgress} strokeWidth={5} strokeColor="#B1FB9B" />
+        <h1 className="font-Poppins font-normal text-[10px] leading-[15px] text-[#555555] mt-1 ml-8">{`Uploading ${uploadProgress}%`}</h1> 
+      </div>
             </div>
             <div className="w-[98px] h-[32px] absolute top-[840px] left-[1182px] rounded-[10px] bg-[#1E4DE9]">
               <button
@@ -1331,59 +1505,52 @@ export default function quiztype() {
 /> */}
                   </div>
                   {/* Input fields for options */}
-                  {question.options.map((option, optionIndex) => (
-                    <div key={optionIndex} className="flex items-center mb-2">
-                      {/* Option input field */}
-                      <div className="mr-2 text-xl font-normal">
-                        {String.fromCharCode(97 + optionIndex)}.
-                      </div>
-                      <input
-                        type="text"
-                        placeholder={`Option Text`}
-                        className="w-[339px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[15px] font-normal"
-                        value={option.answer_option_text}
-                        onChange={(e) => {
-                          const newOptions = [...question.options];
-                          newOptions[optionIndex].answer_option_text =
-                            e.target.value;
-                          const newQuestions = [...questions];
-                          newQuestions[questionIndex].options = newOptions;
-                          setQuestions(newQuestions);
-                        }}
-                      />
-                      {/* Add correct answer flag input */}
-                      <button
-                        className={`mr-2 ${
-                          option.correct_answer_flag
-                            ? "bg-green-500"
-                            : "bg-gray-300"
-                        } rounded-full w-10 h-[20px] transition-colors duration-300 focus:outline-none`}
-                        onClick={() =>
-                          handleToggleButton(questionIndex, optionIndex)
-                        }
-                      >
-                        <span
-                          className={`block ${
-                            option.correct_answer_flag
-                              ? "translate-x-5"
-                              : "translate-x-0"
-                          } transform -translate-y-1.5 w-[18px] h-[18px] relative top-[6px] bg-white rounded-full shadow-md transition-transform duration-300`}
-                        ></span>
-                      </button>
-                    </div>
-                  ))}
+                  {getOptions(question.options).map((option, optionIndex) => (
+              <div key={optionIndex} className="flex items-center mb-2">
+                <div className="mr-2 text-xl font-normal" style={{
+                  width: '40px',
+                  marginRight: '10px',
+                  padding: '3px',
+                  textAlign: 'center' ,
+                  border: '1px solid #ccc',
+                  borderRadius: '10px',
+                  backgroundColor: '#f9f9f9',
+                  justifycontent: 'center',
+                  display: 'flex',
+                  alignitems: 'center',
+                  justifycontent: 'center'
+                }}>
+                  {String.fromCharCode(97 + optionIndex)}.
+                </div>
+                <input
+                  type="text"
+                  placeholder="Option Text"
+                  className="w-[820px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[15px] font-normal"
+                  value={option.answer_option_text}
+                  onChange={(e) => handleOptionChange(questionIndex, optionIndex, e.target.value)}
+                />
+                <button
+                  className={`mr-2 ${option.correct_answer_flag ? "bg-green-500" : "bg-gray-300"} rounded-full w-10 h-[20px] transition-colors duration-300 focus:outline-none`}
+                  onClick={() => handleToggleButton(questionIndex, optionIndex)}
+                >
+                  <span
+                    className={`block ${option.correct_answer_flag ? "translate-x-5" : "translate-x-0"} transform -translate-y-1.5 w-[18px] h-[18px] relative top-[6px] bg-white rounded-full shadow-md transition-transform duration-300`}
+                  ></span>
+                </button>
+              </div>
+            ))}
                 </div>
               ))}
               <div className=" flex justify-between items-center pr-[55px] ">
                 <button
-                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1B1852] text-white"
+                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white"
                   onClick={handleNext2}
                 >
                   Back
                 </button>
 
                 <button
-                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1B1852] text-white"
+                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white"
                   onClick={handleNext4}
                 >
                   Create

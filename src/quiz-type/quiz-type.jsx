@@ -1431,14 +1431,14 @@ export default function quiztype() {
 
 <div className=" flex justify-between items-center pr-[55px] ">
                 <button
-                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1B1852] text-white"
+                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white"
                   onClick={handleNext2}
                 >
                   Back
                 </button>
 
                 <button
-                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1B1852] text-white"
+                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white"
                   onClick={handleNext}
                 >
                   Create

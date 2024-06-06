@@ -76,7 +76,7 @@ const LogoutBar = () => {
   }, [userId, username,occupation]); 
   return (
     <div className={styles.logout}>
-        <div style={{ marginTop: "40px", display: "flex", alignItems: "center" , marginLeft:"20px"}}>
+     <div style={{ marginTop: "40px", display: "flex", alignItems: "center" , marginLeft:"20px"}}>
   <span style={{ marginRight: "10px" }}>Logout</span>
 
 <div>
@@ -147,9 +147,8 @@ const LogoutBar = () => {
             cursor:"pointer",
           }}
           />
-          <span className="hidden group-hover:inline-block h-[60px] absolute -left-[33px] -top-[55px] -translate-x-1/2 bottom-full mb-1 w-[300px] px-2 py-1 bg-black text-white text-xs rounded">
-          Your unique identification number helps our support team locate your account when you need help through QuizifAI's support channels.
-           </span>
+          <span className="hidden group-hover:inline-block h-[70px] absolute -left-[33px] -top-[55px] -translate-x-1/2 bottom-full mb-1 w-[300px] px-2 py-1 bg-black text-white text-xs rounded">
+          This is your unique identification number. It will help our support team to identify your account when you need assistance through QuizifAI's support channels.           </span>
           </div>
           
           <div style={{ marginTop: "10px" }}>

@@ -1645,7 +1645,7 @@ const Dashboard = () => {
                         {latestquizzes[6]?.quiz_duration}
                         <span className={styles.minutestext}>minutes</span>
                       </span>
-                      <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                      <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                         <img
                           className={styles.complexityimage}
                           src={Easy}
@@ -1746,7 +1746,7 @@ const Dashboard = () => {
                     </div>
                     <div
                       className={styles.additionalInfo}
-                      style={{ marginTop: "45px" }}
+                      style={{ marginTop: "35px" }}
                     >
                       <div
                         className={styles.infoIcon}
@@ -1788,7 +1788,7 @@ const Dashboard = () => {
                         {latestquizzes[7]?.quiz_duration}
                         <span className={styles.minutestext}>minutes</span>
                       </span>
-                      <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                      <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                         <img
                           className={styles.complexityimage}
                           src={Easy}
@@ -1889,7 +1889,7 @@ const Dashboard = () => {
                     </div>
                     <div
                       className={styles.additionalInfo}
-                      style={{ marginTop: "45px" }}
+                      style={{ marginTop: "35px" }}
                     >
                       <div
                         className={styles.infoIcon}
@@ -1931,7 +1931,7 @@ const Dashboard = () => {
                         {latestquizzes[8]?.quiz_duration}
                         <span className={styles.minutestext}>minutes</span>
                       </span>
-                      <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                      <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                         <img
                           className={styles.complexityimage}
                           src={Easy}
@@ -2626,7 +2626,7 @@ const Dashboard = () => {
                   {popularquizzes[0]?.quiz_duration}
                   <span className={styles.minutestext}>minutes</span>
                 </span>
-                <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                   <img
                     className={styles.complexityimage}
                     src={Easy}
@@ -2760,7 +2760,7 @@ const Dashboard = () => {
                   {popularquizzes[1]?.quiz_duration}
                   <span className={styles.minutestext}>minutes</span>
                 </span>
-                <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                   <img
                     className={styles.complexityimage}
                     src={Easy}
@@ -2852,7 +2852,7 @@ const Dashboard = () => {
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "40px" }}
+                style={{ marginTop: "35px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -2894,7 +2894,7 @@ const Dashboard = () => {
                   {popularquizzes[2]?.quiz_duration}
                   <span className={styles.minutestext}>minutes</span>
                 </span>
-                <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                   <img
                     className={styles.complexityimage}
                     src={Easy}
@@ -3031,7 +3031,7 @@ const Dashboard = () => {
                   {popularquizzes[3]?.quiz_duration}
                   <span className={styles.minutestext}>minutes</span>
                 </span>
-                <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                   <img
                     className={styles.complexityimage}
                     src={Easy}
@@ -3123,7 +3123,7 @@ const Dashboard = () => {
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "45px" }}
+                style={{ marginTop: "25px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -3165,7 +3165,7 @@ const Dashboard = () => {
                   {popularquizzes[4]?.quiz_duration}
                   <span className={styles.minutestext}>minutes</span>
                 </span>
-                <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                   <img
                     className={styles.complexityimage}
                     src={Easy}
@@ -3257,7 +3257,7 @@ const Dashboard = () => {
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "35px" }}
+                style={{ marginTop: "25px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -3299,7 +3299,7 @@ const Dashboard = () => {
                   {popularquizzes[5]?.quiz_duration}
                   <span className={styles.minutestext}>minutes</span>
                 </span>
-                <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+                <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
                   <img
                     className={styles.complexityimage}
                     src={Easy}

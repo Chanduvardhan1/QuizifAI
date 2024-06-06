@@ -18,6 +18,7 @@
     "@mui/material": "^5.15.11",
     "@mui/x-date-pickers": "^7.2.0",
     "@ramonak/react-progress-bar": "^5.2.0",
+    "axios": "^1.7.2",
     "circular-json": "^0.5.9",
     "css": "^3.0.0",
     "html2canvas": "^1.4.1",

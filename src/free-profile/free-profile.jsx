@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 //import { useRouter } from 'next/router';
 import Navigation from "../navbar/navbar.jsx";
+import axios from "axios";
 import LogoutBar from "../logoutbar/logoutbar.jsx";
 
 import styles from "./free-profile.module.css";
@@ -91,6 +92,13 @@ const FreeProfile = () => {
     setInputValue(buttonName);
   };
 
+  const handleDateChange =(e) =>{
+    const dateValue = e.target.value;
+    const year = dateValue.split('-')[0];
+    if(year.length <= 4){
+      setDob(dateValue);
+    }
+  }
   // const BasicProgressBar = ({ currentValue, maxValue }) => (
   // <progress value={currentValue} max={maxValue}>{currentValue}%</progress>
   //);
@@ -194,10 +202,49 @@ const FreeProfile = () => {
   }, []);
 
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isVerifyDisabled, setIsVerifyDisabled] = useState(true);
+  const [shouldSendOtp, setShouldSendOtp] = useState(false);
 
-  const toggleEditMode =() =>{
-    setIsEditMode(prev => !prev);
-  }
+  const handleEdit =() =>{
+    setIsEditMode(true);
+    setIsVerifyDisabled(false);
+  };
+
+  const handleSave = () => {
+    setIsEditMode(false);
+    setIsVerifyDisabled(true); // Disable Verify button when exiting edit mode
+  };
+
+  const handleVerify = () =>{
+    setShouldSendOtp(true);
+  };
+  
+  useEffect(() => {
+    const userId = localStorage.getItem("user_id");
+    if (shouldSendOtp && email) {
+      const sendOtp = async () => {
+        try {
+          // Your API endpoint
+          const response = await axios.post("https://quizifai.com:8010/register_email_mobile", {
+            email: email,
+            user_id: userId,
+            mobile: mobileNumber,
+          });
+          if (response.status === 200) {
+            alert(`OTP sent to ${email}`);
+          } else {
+            alert('Failed to send OTP. Please try again.');
+          }
+        } catch (error) {
+          console.error('Error sending OTP:', error);
+          alert('Account already exists with the given field.');
+        }
+      };
+
+      sendOtp();
+      setShouldSendOtp(false); // Reset OTP trigger
+    }
+  }, [shouldSendOtp, email]);
   // useEffect(() => {
 
   //   const fetchQuizData = async () => {
@@ -410,7 +457,7 @@ const FreeProfile = () => {
                 }}
               />
             </div>
-    <div className={styles.inputGroup}>
+    <div className={styles.inputGroup} style={{marginLeft:"18px"}}>
       <TextField
         id="middleName"
         label="Middle Name"
@@ -445,7 +492,7 @@ const FreeProfile = () => {
         {isEditMode ? 'Save' : 'Edit'}
       </button> */}
     </div>
-            <div className={styles.inputGroup}>
+            <div className={styles.inputGroup} style={{marginLeft:"16px"}}>
               <TextField
                 id="lastName"
                 label="Last Name"
@@ -518,13 +565,13 @@ const FreeProfile = () => {
   </TextField>
 </div>
 
-<div className={styles.inputGroup}>
+<div className={styles.inputGroup} style={{marginLeft:"20px"}}>
 <TextField
         id="dob"
         type="date"
         label="Date of Birth"
         value={dob}
-        onChange={(e) => setDob(e.target.value)}
+        onChange={(handleDateChange)}
         readOnly={!isEditMode}
         className={!isEditMode ? styles.readOnlyInput : ""}
         InputLabelProps={{
@@ -546,7 +593,7 @@ const FreeProfile = () => {
         }}
       />
 </div>
-<div className={styles.inputGroup}>
+<div className={styles.inputGroup} style={{marginLeft:"15px"}}>
 <TextField
         id="occupation"
         type="text"
@@ -637,7 +684,7 @@ const FreeProfile = () => {
                       backgroundRepeat: "no-repeat",
                       width: "40px",
                       height: "25px",
-                      right: "-110px",
+                      right: "-100px",
                       top:"-32px",
                       position: "relative",
                       // border: "1px solid #c2c2c2",
@@ -647,7 +694,7 @@ const FreeProfile = () => {
                     }}
                   ></div>
             </div>
-            <div className={styles.inputGroup}>
+            <div className={styles.inputGroup} style={{marginLeft:"20px"}}>
               <TextField
                 type="text"
                 id="city"
@@ -697,7 +744,7 @@ const FreeProfile = () => {
             </div>
            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
 
-            <div className={styles.inputGroup}>
+            <div className={styles.inputGroup} style={{marginLeft:"15px"}}>
               <TextField
                 type="text"
                 id="state"
@@ -728,7 +775,7 @@ const FreeProfile = () => {
                   width: "150px", // Apply styles directly using sx
                   height: "44px",
                 }}
-              />
+              >
                {/* <option value=""  disabled selected>State</option> */}
                {responseData &&
                               responseData.data &&
@@ -744,6 +791,7 @@ const FreeProfile = () => {
                                   {stateName}
                                 </MenuItem>
                               ))}
+          </TextField>
             </div>
            
           </div>
@@ -796,37 +844,14 @@ const FreeProfile = () => {
                               ))}
             </div>
             <div className={styles.inputGroup}>
-            <TextField
-                type="text"
-                id="verification code"
-                label="Verification Code"
-                variant="outlined"
-                value={state}
-                onChange={(e) => setState(e.target.value)}
-                InputLabelProps={{
-                  style: { fontFamily: "poppins",fontSize: "13px",marginLeft:"12px",marginTop:"-20px" },
-                }}
-                InputProps={{
-                  readOnly: !isEditMode,
-                  style: {
-                    width: "160px",
-                    height: "45px",
-                    border: "none",
-                    fontFamily: "poppins",
-                    fontSize: "12px",
-                    borderRadius: "10px",
-                    marginLeft: "13px",
-                    marginTop: "-22px",
-                    paddingRight: "30px", // Ensure the text doesn't overlap with the icon
-                  },
-                  autoComplete: "off",
-                }}
-                className={`${styles.iconInput} ${!isEditMode ?       styles.readOnlyInput : ""}`}
-                sx={{
-                  width: "150px", // Apply styles directly using sx
-                  height: "44px",
-                }}
-              />
+            <input
+            type="text"
+            id="verification code"
+            onChange={(e) => {
+              setOtp(e.target.value);
+            }}
+            style={{border:"1px solid black",marginTop:"-20px",height:"43px",marginLeft:"35px"}}
+            placeholder="Verification code"/>
             </div>
           </div>
           
@@ -863,7 +888,7 @@ const FreeProfile = () => {
           {/* </div>  */}
 
           <div className={styles.inputRow}>
-            <div className={styles.inputGroup}>
+            <div className={styles.inputGroup} style={{marginLeft:"-20px",marginTop:"-15px"}}>
               {/* <label htmlFor="email">Email</label> */}
               <button
                 className={`${styles.toggleButton} ${
@@ -879,16 +904,20 @@ const FreeProfile = () => {
                 Email
               </button>
               <input
-                type="email"
-                id="email"
-                placeholder="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                readOnly={!isEditMode}
-                className={!isEditMode ? styles.readOnlyInput : ""}
-              />
+            type="email"
+            id="email"
+            placeholder="email"
+            style={{ marginLeft: "-5px", width: "250px", border: "1px solid black" }}
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setIsVerifyDisabled(false); // Enable Verify button if email is changed
+            }}
+            readOnly={!isEditMode}
+            className={!isEditMode ? styles.readOnlyInput : ""}
+          />
             </div>
-            <div className={styles.inputGroup}>
+            <div className={styles.inputGroup} style={{marginLeft:"55px",marginTop:"-15px"}}>
               {/* <label htmlFor="mobileNumber">Mobile Number</label> */}
               <button
                 className={`${styles.toggleButton} ${
@@ -907,20 +936,31 @@ const FreeProfile = () => {
                 type="tel"
                 id="mobileNumber"
                 placeholder="mobileNumber"
+                style={{marginLeft:"-5px",width:"250px",border:"1px solid black"}}
                 value={mobileNumber}
                 onChange={(e) => setMobileNumber(e.target.value)}
                 readOnly={!isEditMode}
                 className={!isEditMode ? styles.readOnlyInput : ""}
               />
-              <div className={styles.buttonContainer}>
-              <button className={styles.customButton} onClick={toggleEditMode}>
-                  {isEditMode ? 'Save':'Edit'}
-                </button>
-                <button className={styles.customButton}>Verify</button>
-                {/* <button className={styles.customButton} onClick={handleSubmit}>save</button> */}
-              </div>
             </div>
+            
           </div>
+          <div className={styles.buttonContainer} style={{marginTop:"20px",marginLeft:"60px"}}>
+          {!isEditMode && (
+          <button className={styles.customButton} onClick={handleEdit}>
+            Edit
+          </button>
+        )}
+        {isEditMode && (
+          <button className={styles.customButton} onClick={handleSubmit}>
+            Save
+          </button>
+        )}
+
+                <button className={`${styles.customButton} ${isVerifyDisabled ? styles.disabledButton : ''}`}
+                  disabled={isVerifyDisabled} onClick={handleVerify}>Verify
+                </button>
+              </div>
         </div>
 
         {/* <div className={styles.box}>

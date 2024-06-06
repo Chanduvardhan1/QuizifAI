@@ -321,7 +321,7 @@ text-align: left;
 .moreLink {
   color: black;
   cursor: pointer;
-  margin-right: -540px;
+  /* margin-right: -540px; */
   display: inline-flex;
 align-items: center;
 user-select: none;

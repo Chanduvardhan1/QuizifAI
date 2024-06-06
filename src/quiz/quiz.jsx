@@ -8,24 +8,6 @@ import Plus from "../../src/assets/Images/dashboard/Plus.png";
 //import { useRouter } from 'next/router';
 //import img from "next/image";
 import searchIcon from "../assets/Images/images/dashboard/searchBar.png";
-import arrow1 from "../assets/Images/images/dashboard/arrow1.png";
-import arrow3 from "../assets/Images/images/dashboard/arrow3.png";
-import moreArrow from "../assets/Images/images/dashboard/moreArrow.png";
-import infoIcon from "../assets/Images/images/dashboard/infoIcon.png";
-import topicIcon from "../assets/Images/images/dashboard/topicNew.png";
-import timerIcon from "../assets/Images/images/dashboard/timerNew.png";
-import difficultyIcon from "../assets/Images/images/dashboard/difficultyLevelNew.png";
-import img1Icon from "../assets/Images/images/dashboard/img1New.png";
-import img2Icon from "../assets/Images/images/dashboard/img2New.png";
-import img3Icon from "../assets/Images/images/dashboard/img3New.png";
-import img4Icon from "../assets/Images/images/dashboard/newImg4.png";
-import img5Icon from "../assets/Images/images/dashboard/img5New.png";
-import addQuizIcon from "../assets/Images/images/superadmin/add-quiz.png";
-import addUserIcon from "../assets/Images/images/superadmin/add-user.png";
-import switchUserIcon from "../assets/Images/images/superadmin/switch-user.png";
-import eyeIcon from "../assets/Images/images/dashboard/eyeIcon.png"; 
-import img3NewIcon from "../assets/Images/images/dashboard/img3New.png";
-import ProgressBar from "@ramonak/react-progress-bar";
 
 import Attempt1 from "../../public/images/dashboard/Attempt1.png";
 import NoOfQuestion from "../../public/images/dashboard/NoOfQuestion.png";
@@ -342,7 +324,7 @@ const Quiz = () => {
         value={selectedCategory}
         onChange={handleSelectCategory}
       >
-        <option value="" disabled>Topic</option>
+        <option value="" disabled>Category</option>
         {categories.map(category => (
           <option key={category.category_id} value={category.category_name}>
             {category.category_name}
@@ -355,7 +337,7 @@ const Quiz = () => {
         onChange={handleSelectSubCategory}
         value={selectedSubCategory}
       >
-        <option value="" disabled>Sub topic</option>
+        <option value="" disabled>Sub Category</option>
         {subCategories.map((subCategory, index) => (
           <option key={index} value={subCategory}>
             {subCategory}
@@ -368,7 +350,7 @@ const Quiz = () => {
         onChange={handleSelectComplexity}
         value={selectedComplexity}
       >
-        <option value="" disabled>Toughness</option>
+        <option value="" disabled>Complexity</option>
         {complexities.map((complexity, index) => (
           <option key={index} value={complexity}>
             {complexity}

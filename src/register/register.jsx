@@ -69,7 +69,13 @@ const register = () => {
   const [submitted, setSubmitted] = useState(false);
   const [countdown, setCountdown] = useState(5); 
 
-
+  const handleDateChange =(e) =>{
+    const dateValue = e.target.value;
+    const year = dateValue.split('-')[0];
+    if(year.length <= 4){
+      setdateofbirth(dateValue);
+    }
+  }
 
   const signupDetails = useLocation();
   const { emailMobOption, emailMob } = signupDetails.state || {};
@@ -1270,7 +1276,7 @@ const register = () => {
                     }}
                     name="date_of_birth"
                     value={dateofbirth}
-                    onChange={(e) => setdateofbirth(e.target.value)}
+                    onChange={(handleDateChange)}
                   />
                    <TextField
                     id="mobileNumber"

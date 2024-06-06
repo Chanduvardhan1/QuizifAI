@@ -284,8 +284,7 @@ display: flex;
 justify-content: space-between;
 align-items: center;
 margin-bottom: 0px;
-
-
+padding-left: 10px;
 }
 
 .infoIcon{
@@ -298,6 +297,7 @@ height: 12px;
   align-items: center;
   justify-content: space-between; 
   padding: 20px;
+  padding-left: 27px;
 font-size: 20px;
 font-weight: 500;
 line-height: 30px;

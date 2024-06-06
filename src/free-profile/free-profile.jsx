@@ -292,7 +292,7 @@ const FreeProfile = () => {
       <div className={styles.mainContent}>
         <div className={styles.header}>
           {/* Header content */}
-          <p className="relative top-[67px]">{userName}</p>
+          <p className="relative -left-[45px] top-[67px]">{userName}</p>
           <div className={styles.headerRight}>
             <div>{getFormattedDate()}</div>
             <div className={styles.searchIconContainer}>
@@ -304,7 +304,7 @@ const FreeProfile = () => {
             </div>
           </div>
         </div>
-        <div className={styles.contentContainer} style={{ marginLeft: "80px" }}>
+        <div className={styles.contentContainer} style={{ marginLeft: "30px" }}>
           <div className={styles.imgAndTextContainer}>
             <div className={styles.profileimgContainer}>
               <img
@@ -334,7 +334,7 @@ const FreeProfile = () => {
           <div className={styles.additionalTextContainer1}>
             <div
               className={styles.contentContainer1}
-              style={{ marginTop: "20px", marginLeft: "40px" }}
+              style={{ marginLeft: "10px" }}
             >
               <div className={styles.textAndimgContainer1}>
                 <div className={styles.textContainer1}>
@@ -378,24 +378,28 @@ const FreeProfile = () => {
         </div>
         <div className={styles.inputContainer}>
           <div className={styles.inputRow}>
-            <div className={styles.inputGroup}>
+            <div className={styles.inputGroup1}>
               <TextField
                 id="firstName"
                 label="First Name"
                 variant="outlined"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                
+                InputLabelProps={{
+                  style: { fontFamily: "poppins",fontSize:"13px"},
+                }}
                 InputProps={{
                   readOnly: !isEditMode,
                   style: {
                     width: "160px",
-                    height: "50px",
+                    height: "45px",
                     border: "none",
                     fontFamily: "poppins",
-                    fontSize: "15px",
+                    // fontSize: "15px",
                     borderRadius: "10px",
-                    paddingRight: "30px", // Ensure the text doesn't overlap with the icon
+                    fontSize: "13px",
+                    color:"#214082",
+                    marginLeft: "3px",
                   },
                   autoComplete: "off",
                 }}
@@ -414,17 +418,19 @@ const FreeProfile = () => {
         value={middleName}
         onChange={(e) => setMiddleName(e.target.value)}
         InputLabelProps={{
-          style: { fontFamily: "poppins" },
+          style: { fontFamily: "poppins"},
         }}
         InputProps={{
           readOnly: !isEditMode,
           style: {
             width: "160px",
-            height: "50px",
+            height: "45px",
             border: "none",
             fontFamily: "poppins",
-            fontSize: "15px",
             borderRadius: "10px",
+            fontSize: "13px",
+            color:"#214082",
+            marginLeft :"31px",
             paddingRight: "30px", // Ensure the text doesn't overlap with the icon
           },
           autoComplete: "off",
@@ -448,17 +454,20 @@ const FreeProfile = () => {
                 onChange={(e) => setLastName(e.target.value)}
 
                 InputLabelProps={{
-                  style: { fontFamily: "poppins" },
+                  style: { fontFamily: "poppins",paddingLeft: "40px" },
                 }}
                 InputProps={{
                   readOnly: !isEditMode,
                   style: {
                     width: "160px",
-                    height: "50px",
+                    height: "45px",
                     border: "none",
                     fontFamily: "poppins",
                     fontSize: "15px",
                     borderRadius: "10px",
+                    fontSize: "12px",
+                    color:"#214082",
+                    marginLeft: "60px",
                     paddingRight: "30px", // Ensure the text doesn't overlap with the icon
                   },
                   autoComplete: "off",
@@ -478,7 +487,7 @@ const FreeProfile = () => {
           </div>
 
    <div className={styles.inputRow}>
-  <div className={styles.inputGroup}>
+  <div className={styles.inputGroup4}>
   <TextField
     id="gender"
     select
@@ -488,7 +497,7 @@ const FreeProfile = () => {
     readOnly={!isEditMode}
     className={!isEditMode ? styles.readOnlyInput : ""}
     InputLabelProps={{
-      style: { fontFamily: "poppins" },
+      style: { fontFamily: "poppins",fontSize: "12px", },
     }}
     InputProps={{
       style: {
@@ -499,6 +508,7 @@ const FreeProfile = () => {
         borderRadius: "10px",
         fontSize:"12px",
         color:"#214082",
+        
       },
       autoComplete: "off",
     }} 
@@ -519,7 +529,7 @@ const FreeProfile = () => {
         className={!isEditMode ? styles.readOnlyInput : ""}
         InputLabelProps={{
           shrink: true,
-          style: { fontFamily: "poppins" },
+          style: { fontFamily: "poppins",marginLeft: "20px",marginTop:"2px" },
         }}
         InputProps={{
           style: {
@@ -528,6 +538,8 @@ const FreeProfile = () => {
             fontFamily: "poppins",
             paddingLeft: "0px",
             borderRadius: "10px",
+            marginLeft:"22px",
+            fontSize: "12px",
           },
           autoComplete: "off",
           readOnly: !isEditMode, // Add readOnly prop conditionally
@@ -545,7 +557,7 @@ const FreeProfile = () => {
         className={!isEditMode ? styles.readOnlyInput : ""}
         InputLabelProps={{
           shrink: true,
-          style: { fontFamily: "poppins" },
+          style: { fontFamily: "poppins",marginLeft:"18px",marginTop:"2px" },
         }}
         InputProps={{
           style: {
@@ -554,84 +566,14 @@ const FreeProfile = () => {
             fontFamily: "poppins",
             paddingLeft: "0px",
             borderRadius: "10px",
+            fontSize: "12px",
+            marginLeft: "20px",
           },
           autoComplete: "off",
           readOnly: !isEditMode, // Add readOnly prop conditionally
         }}
       />
 </div>
-            <div className={styles.inputGroup}>
-              {/* <TextField
-                type="text"
-                id="postalCode"
-                label="Postal code"
-                variant="outlined"
-                value={postalCode}
-                onChange={(e) => setPostalCode(e.target.value)}
-
-                InputLabelProps={{
-          style: { fontFamily: "poppins" },
-        }}
-        InputProps={{
-          readOnly: !isEditMode,
-          style: {
-            backgroundImage: `url('/images/signup/middleNameIcon.png')`,
-            backgroundPosition: "150px center",
-            backgroundRepeat: "no-repeat",
-            width: "150px",
-            height: "50px",
-            border: "none",
-            fontFamily: "poppins",
-            fontSize: "15px",
-            borderRadius: "10px",
-            paddingRight: "30px",
-          },
-          autoComplete: "off",
-        }}
-        className={`${styles.iconInput} ${!isEditMode ? styles.readOnlyInput : ""}`}
-          sx={{
-            width: "150px",
-            height: "44px",
-          }}
-      /> */}
-               {/* <div
-                    className={styles.searchicon}
-                    onClick={handleSubmit1}
-                    style={{
-                      backgroundImage: `url('images/signup/LineIcon.png'),url('images/signup/searchIcon.png')`,
-                      backgroundRepeat: "no-repeat",
-                      width: "40px",
-                      height: "25px",
-                      right: "-110px",
-                      top:"-32px",
-                      position: "relative",
-                      // border: "1px solid #c2c2c2",
-                      backgroundPosition:
-                        "0px center, right 10px center, right 40px center",
-                      cursor: "pointer",
-                    }}
-                  ></div> */}
-              {/* <div
-                    className={styles.searchicon}
-                    onClick={handleSubmit1}
-                    style={{
-                      backgroundImage: `url('images/signup/LineIcon.png'),url('images/signup/searchIcon.png')`,
-                      backgroundRepeat: "no-repeat",
-                      width: "40px",
-                      height: "20px",
-                      top: "450px",
-                      left: "190px",
-
-                      position: "absolute",
-                     
-
-                      // border: "1px solid #c2c2c2",
-                      backgroundPosition:
-                        "0px center, right 10px center, right 40px center",
-                      cours: "pointer",
-                    }}
-                  ></div> */}
-            </div>
             {/* <div className={styles.inputGroup}>
               <label htmlFor="address1">Address Line 1</label>
               <input
@@ -654,7 +596,57 @@ const FreeProfile = () => {
             </div> */}
           </div>
 
+
           <div className={styles.inputRow}>
+          <div className={styles.inputGroup}>
+              <TextField
+                type="text"
+                id="postalCode"
+                label="Postal code"
+                variant="outlined"
+                value={postalCode}
+                onChange={(e) => setPostalCode(e.target.value)}
+
+                InputLabelProps={{
+          style: { fontFamily: "poppins",marginLeft:"-18px" },
+        }}
+        InputProps={{
+          readOnly: !isEditMode,
+          style: {
+            width: "160px",
+            height: "50px",
+            border: "none",
+            fontFamily: "poppins",
+            fontSize: "15px",
+            borderRadius: "10px",
+            marginLeft: "-20px",
+          },
+          autoComplete: "off",
+        }}
+        className={`${styles.iconInput} ${!isEditMode ? styles.readOnlyInput : ""}`}
+          sx={{
+            width: "150px",
+            height: "44px",
+          }}
+      />
+               <div
+                    className={styles.searchicon}
+                    onClick={handleSubmit1}
+                    style={{
+                      backgroundImage: `url('images/signup/LineIcon.png'),url('images/signup/searchIcon.png')`,
+                      backgroundRepeat: "no-repeat",
+                      width: "40px",
+                      height: "25px",
+                      right: "-110px",
+                      top:"-32px",
+                      position: "relative",
+                      // border: "1px solid #c2c2c2",
+                      backgroundPosition:
+                        "0px center, right 10px center, right 40px center",
+                      cursor: "pointer",
+                    }}
+                  ></div>
+            </div>
             <div className={styles.inputGroup}>
               <TextField
                 type="text"
@@ -664,17 +656,19 @@ const FreeProfile = () => {
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 InputLabelProps={{
-                  style: { fontFamily: "poppins" },
+                  style: { fontFamily: "poppins",marginTop:"-10px",marginLeft:"13px" },
                 }}
                 InputProps={{
                   readOnly: !isEditMode,
                   style: {
-                    width: "160px",
-                    height: "50px",
+                    width: "157px",
+                    height: "45px",
                     border: "none",
                     fontFamily: "poppins",
                     fontSize: "15px",
                     borderRadius: "10px",
+                    marginLeft: "13px",
+                    marginTop: "-10px",
                     paddingRight: "30px", // Ensure the text doesn't overlap with the icon
                   },
                   autoComplete: "off",
@@ -712,20 +706,19 @@ const FreeProfile = () => {
                 value={state}
                 onChange={(e) => setState(e.target.value)}
                 InputLabelProps={{
-                  style: { fontFamily: "poppins" },
+                  style: { fontFamily: "poppins",marginLeft:"40px",marginTop:"-9px" },
                 }}
                 InputProps={{
                   readOnly: !isEditMode,
                   style: {
-                    backgroundImage: `url('/images/signup/middleNameIcon.png')`,
-                    backgroundPosition: "150px center",
-                    backgroundRepeat: "no-repeat",
-                    width: "150px",
-                    height: "50px",
+                    width: "160px",
+                    height: "45px",
                     border: "none",
                     fontFamily: "poppins",
-                    fontSize: "15px",
+                    fontSize: "12px",
                     borderRadius: "10px",
+                    marginLeft: "43px",
+                    marginTop: "-10px",
                     paddingRight: "30px", // Ensure the text doesn't overlap with the icon
                   },
                   autoComplete: "off",
@@ -752,7 +745,10 @@ const FreeProfile = () => {
                                 </MenuItem>
                               ))}
             </div>
-            <div className={styles.inputGroup}>
+           
+          </div>
+          <div className="flex">
+          <div className={styles.inputGroup}>
               <TextField
                 type="text"
                 id="country"
@@ -760,20 +756,19 @@ const FreeProfile = () => {
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
                 InputLabelProps={{
-                  style: { fontFamily: "poppins" },
+                  style: { fontFamily: "poppins",fontSize: "13px",marginLeft:"-20px",marginTop:"-20px" },
                 }}
                 InputProps={{
                   readOnly: !isEditMode,
                   style: {
-                    backgroundImage: `url('/images/signup/middleNameIcon.png')`,
-                    backgroundPosition: "150px center",
-                    backgroundRepeat: "no-repeat",
-                    width: "150px",
-                    height: "50px",
+                    width: "160px",
+                    height: "45px",
                     border: "none",
                     fontFamily: "poppins",
-                    fontSize: "15px",
+                    // fontSize: "13px",
                     borderRadius: "10px",
+                    marginLeft: "-20px",
+                    marginTop: "-20px",
                     paddingRight: "30px", // Ensure the text doesn't overlap with the icon
                   },
                   autoComplete: "off",
@@ -800,7 +795,41 @@ const FreeProfile = () => {
                                 </MenuItem>
                               ))}
             </div>
+            <div className={styles.inputGroup}>
+            <TextField
+                type="text"
+                id="verification code"
+                label="Verification Code"
+                variant="outlined"
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+                InputLabelProps={{
+                  style: { fontFamily: "poppins",fontSize: "13px",marginLeft:"12px",marginTop:"-20px" },
+                }}
+                InputProps={{
+                  readOnly: !isEditMode,
+                  style: {
+                    width: "160px",
+                    height: "45px",
+                    border: "none",
+                    fontFamily: "poppins",
+                    fontSize: "12px",
+                    borderRadius: "10px",
+                    marginLeft: "13px",
+                    marginTop: "-22px",
+                    paddingRight: "30px", // Ensure the text doesn't overlap with the icon
+                  },
+                  autoComplete: "off",
+                }}
+                className={`${styles.iconInput} ${!isEditMode ?       styles.readOnlyInput : ""}`}
+                sx={{
+                  width: "150px", // Apply styles directly using sx
+                  height: "44px",
+                }}
+              />
+            </div>
           </div>
+          
 
           {/* <div className={styles.toggleButtonsContainer}>
             {/* <button

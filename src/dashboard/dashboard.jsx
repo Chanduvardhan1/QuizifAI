@@ -578,7 +578,7 @@ const Dashboard = () => {
     </div>
   </div>
 </div>
-        </div>
+</div>
 
         <div className={styles.contentWrapper1}>
           <div
@@ -2496,6 +2496,7 @@ const Dashboard = () => {
               </div>
             ) : null}
           </div>
+          
           <div className={styles.topScoredHeader}>
             <p>Most Popular</p>
           </div>

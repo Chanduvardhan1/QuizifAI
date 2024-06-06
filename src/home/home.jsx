@@ -293,23 +293,24 @@ function Home() {
               <span className="line2">AI-generated Exams and Quizzes?</span>
             </h1>
             <div className="line3Container">
-            <Link to={"/signup"}>
+            <Link to={"/signup"} className="link">
               <button
                 className="backgroundButton"
-                style={{
+                // style={{
                
-                  width: "103px",
-                  height: "36px",
+                //   width: "103px",
+                //   height: "36px",
                  
-                  backgroundColor: "darkblue",
-                  borderRadius: "10px",
-                  border: "none",
-                  cursor: "pointer",
+                //   backgroundColor: "darkblue",
+                //   borderRadius: "10px",
+                //   border: "none",
+                //   cursor: "pointer",
                
                 
-                }}
+                // }}
               >
-                <span className="line3">Try QuizifAI</span>
+                Try QuizifAI
+                {/* <span className="line3">Try QuizifAI</span> */}
               </button>
               </Link>
               <div

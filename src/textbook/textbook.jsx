@@ -4,6 +4,8 @@ import { Line } from "rc-progress";
 import Switch from "react-switch";
 import { useNavigate } from "react-router-dom";
 import { FiAlertCircle } from "react-icons/fi";
+import { MdOutlineCancel } from "react-icons/md";
+
 // import ToggleButton from 'react-toggle-button'
 
 // Navbar-icons
@@ -556,6 +558,31 @@ export default function quiztype() {
 };
 
   const handleNext = async () => {
+       if (!uploadedFile) {
+      alert("Please upload a file before proceeding.");
+      return; // Prevent further execution
+  }
+  const requiredFields = [
+    title,
+    numQuestions,
+    description,
+    selectedCategory,
+    selectedSubCategory,
+    percentage,
+    selectedComplexity,
+    duration,
+    timings,
+    availablefrom,
+    disabledon,
+    quiztotalmarks
+];
+
+const isAnyFieldEmpty = requiredFields.some(field => !field);
+
+if (isAnyFieldEmpty) {
+    alert("Please fill in all the required fields before proceeding.");
+    return; // Prevent further execution
+}
     try {
       const formData = new FormData();
       formData.append("quiz_title", title);
@@ -763,6 +790,11 @@ export default function quiztype() {
   function handleSelect9(event) {
     setMinutes(event.target.value);
   }
+  const Back = () => {
+    
+    navigate("/create-quiz");
+  
+};
   return (
     
     <>
@@ -845,6 +877,8 @@ export default function quiztype() {
           </div> */}
           <Navigation/>
         </header>
+        <div className="absolute top-[30px] left-[1260px] cursor-pointer " onClick={Back}><MdOutlineCancel /></div>
+
         {!showRegistrationSuccess && (
         <main className="w-max-auto">
           <div className="w-[761px] h-[48px] absolute top-[30px] left-[161px] rounded-[10px] bg-[#FFEDCD] z-0">

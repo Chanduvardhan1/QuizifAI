@@ -122,12 +122,12 @@ const QuizQuestions = () => {
   const userId = localStorage.getItem("user_id");
  // Assuming quiz_id is 1592
   const [attemptNo, setAttemptNo] = useState(null);
-  const [elapsedTime, setElapsedTime] = useState(0);
-  const timerRef = useRef(null);
+  
   const { quizId } = useParams();
   const location = useLocation();
-  const {quiz_title, quiz_description } = location.state;
-
+  const {quiz_title, quiz_description,quiz_duration } = location.state;
+  const [elapsedTime, setElapsedTime] = useState(quiz_duration * 60); 
+  const timerRef = useRef(null);
 
 
   useEffect(() => {
@@ -153,18 +153,28 @@ const QuizQuestions = () => {
       console.log(data);
       setQuizData(data.data);
       setAttemptNo(data.data.data.find(d => d.quiz_level_attempt_id).quiz_level_attempt_id);
+      
+      // Start the countdown timer
+      timerRef.current = setInterval(() => {
+        setElapsedTime(prevTime => {
+          if (prevTime > 0) {
+            return prevTime - 1;
+          } else {
+            clearInterval(timerRef.current);
+            return 0;
+          }
+        });
+      }, 1000);
     })
     .catch(error => {
       console.error('There was a problem with your fetch operation:', error);
     });
-    timerRef.current = setInterval(() => {
-      setElapsedTime(prevTime => prevTime + 1);
-    }, 1000);
 
     return () => {
       clearInterval(timerRef.current);
     };
-  }, [quizId]);
+  }, [userId, quiz_duration]);
+
 
   const handleOptionSelect = (optionId) => {
     setSelectedOptions(prevOptions => ({
@@ -454,7 +464,7 @@ const QuizQuestions = () => {
               <div className={styles.button1}>
                 <button
                     className={styles.button}
-                    style={{ color: '#FFFFFF', backgroundColor: '#FEBB42', height: '52px', borderRadius: '10px', border: 'none' }}
+                    style={{ color: '#FFFFFF', backgroundColor: '#FEBB42', height: '40px', borderRadius: '10px', border: 'none' }}
                     onClick={handlePreviousQuestion}
                 >
                     Previous
@@ -465,7 +475,7 @@ const QuizQuestions = () => {
                <div className={styles.button2}>
               <button
                     className={styles.button}
-                    style={{ backgroundColor: '#8453FC', height: '52px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
+                    style={{ backgroundColor: '#8453FC', height: '40px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
                     onClick={handleNextQuestion}
                 >
                     Next
@@ -476,7 +486,7 @@ const QuizQuestions = () => {
               <div className={styles.button3}>
              <button
                     className={styles.button}
-                    style={{ marginLeft: '50px', backgroundColor: 'rgb(11 87 208)', height: '52px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
+                    style={{ marginLeft: '50px', backgroundColor: 'rgb(11 87 208)', height: '40px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
                     onClick={handleSubmit}
                 >
                     Submit

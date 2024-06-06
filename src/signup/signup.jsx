@@ -213,7 +213,7 @@ if (hasError) {
         console.log('Sign-up successful:', data);
 
         if (loginMethod === 'email' && data.response === 'success') {
-          setResponseMessage(data.data);
+          setResponseMessage("Email is successfully registered. Check your email for verification.");
           setShowOtpField(true);
           setShowVerifyButton(true);
         } else if (
@@ -438,6 +438,9 @@ if (hasError) {
     }
 };
   const handleVerification = async () => {
+    setResponseMessage("");
+    setResponseMessage1("");
+    setTerms("");
     if (!termsChecked) {
       setTerms("Please agree to the terms and conditions");
       return;
@@ -473,7 +476,7 @@ if (hasError) {
         
       ) {
      
-        setResponseMessage(data.data);
+        setTerms("Invalid or incorrect OTP.");
       }else {
         console.log("Response other than success:", data.response);
       }
@@ -485,6 +488,9 @@ if (hasError) {
     }
   };
   const handleVerification1 = async () => {
+    setResponseMessage("");
+    setResponseMessage1("");
+    setTerms("");
     if (!termsChecked) {
       setTerms("Please agree to the terms and conditions");
       return;
@@ -519,7 +525,7 @@ if (hasError) {
         
       ) {
      
-        setResponseMessage(data.detail);
+        setTerms( "Invalid or incorrect OTP.");
       }else {
         console.log("Response other than success:", data.response);
       }

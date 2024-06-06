@@ -32,6 +32,8 @@ import two2Icon from "../../src/assets/Images/images/quizview/two2.png";
 import three3Icon from "../../src/assets/Images/images/quizview/three3.png"; 
 import four4Icon from "../../src/assets/Images/images/quizview/four4.png";
 import { useLocation } from 'react-router-dom';
+import { MdOutlineCancel } from "react-icons/md";
+import { useNavigate } from 'react-router-dom';
 
 
 const quizresults = () => {
@@ -39,33 +41,33 @@ const quizresults = () => {
   const location = useLocation();
   const { quizId, attemptNo } = location.state || {};
   const [leaderboardData, setLeaderboardData] = useState([]);
+  const navigate = useNavigate();
+  // useEffect(() => {
+  //   const userId = localStorage.getItem("user_id");
 
-  useEffect(() => {
-    const userId = localStorage.getItem("user_id");
+  //   const fetchQuizReport = async () => {
+  //     try {
+  //       const response = await fetch('https://quizifai.com:8010/quiz_report', {
+  //         method: 'POST',
+  //         headers: {
+  //           'accept': 'application/json',
+  //           'Content-Type': 'application/json'
+  //         },
+  //         body: JSON.stringify({
+  //           quiz_id: quizId,
+  //           user_id: userId,
+  //           attempt_no: attemptNo
+  //         })
+  //       });
+  //       const data = await response.json();
+  //       setQuizData(data.data);
+  //     } catch (error) {
+  //       console.error('Error fetching quiz report:', error);
+  //     }
+  //   };
 
-    const fetchQuizReport = async () => {
-      try {
-        const response = await fetch('https://quizifai.com:8010/quiz_report', {
-          method: 'POST',
-          headers: {
-            'accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            quiz_id: quizId,
-            user_id: userId,
-            attempt_no: attemptNo
-          })
-        });
-        const data = await response.json();
-        setQuizData(data.data);
-      } catch (error) {
-        console.error('Error fetching quiz report:', error);
-      }
-    };
-
-    fetchQuizReport();
-  }, [quizId, attemptNo]);
+  //   fetchQuizReport();
+  // }, [quizId, attemptNo]);
 
   useEffect(() => {
     const fetchLeaderboardData = async () => {
@@ -130,7 +132,11 @@ const quizresults = () => {
   if (!quizData) {
     return <div>Loading...</div>;
   }
-
+  const Back = () => {
+    
+   /* fetch or store quizId */;
+  navigate(`/quizquestions/${quizId}`);
+};
   const questions = quizData.questions;
   const topThree = leaderboardData.slice(0, 3);
 
@@ -146,6 +152,8 @@ const quizresults = () => {
       <LeftBar/>
       
       <div className={styles.mainContent}>
+      <div className={styles.back1} onClick={Back}><MdOutlineCancel /></div>
+
         <div className={styles.header}>
         <div className={styles.titleContainer}>
         {/* <img
@@ -260,13 +268,13 @@ const quizresults = () => {
         </div>
         <div className={styles.verticalLine}></div>
         <div className={styles.verticaliconsContainer}>
+          <h1  className={styles.verticalicon2} >{quizData.rank}</h1>
         <img
     src={ranksIcon} 
     alt="Icon 1"
     className={styles.verticalicon1}
   />
   <h1 className={styles.rank1}>Your rank</h1>
-     <h1  className={styles.verticalicon2} >{quizData.rank}</h1>
       </div>
         </div>
         <div className={styles.horizontalLine} style={{marginTop:"0px"}}></div>

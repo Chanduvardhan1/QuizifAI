@@ -5,6 +5,8 @@ import Switch from "react-switch";
 import { useNavigate } from "react-router-dom";
 import Navigation from "../navbar/navbar";
 import { FiAlertCircle } from "react-icons/fi";
+import { MdOutlineCancel } from "react-icons/md";
+
 import PDF from "../assets/Images/quiz-type/PDF.png";
 import Next from "../assets/Images/quiz-type/Next.png";
 import QuizifAilogo from "../assets/Images/quiz-type/Quizifai 1.png";
@@ -584,16 +586,11 @@ export default function quiztype() {
     numQuestions,
     description,
     selectedCategory,
-
     selectedSubCategory,
-
     percentage,
     selectedComplexity,
-
     duration,
-   
     timings,
-  
     availablefrom,
     disabledon,
     quiztotalmarks
@@ -859,6 +856,11 @@ if (isAnyFieldEmpty) {
     updatedQuestions[questionIndex].options[optionIndex].answer_option_text = value;
     setQuestions(updatedQuestions);
   };
+  const Back = () => {
+    
+    navigate("/create-quiz");
+  
+};
   return (
     <>
       <div>
@@ -940,6 +942,8 @@ if (isAnyFieldEmpty) {
           </div> */}
           <Navigation />
         </header>
+        <div className="absolute top-[30px] left-[1260px] cursor-pointer " onClick={Back}><MdOutlineCancel /></div>
+
         {!showRegistrationSuccess && (
           <main className="w-max-auto">
             <div className="w-[844px] h-[48px] absolute top-[30px] left-[161px] rounded-[10px] bg-[#FCE7E7] z-0">
@@ -1394,10 +1398,10 @@ if (isAnyFieldEmpty) {
             
               {/* <h1 className="font-Poppins font-normal text-[10px] leading-[15px] text-[#555555] mt-7 ml-5">{`Uploading ${uploadProgress}%`}</h1> */}
               <button
-                className="rounded-[10px] bg-[#1E4DE9] text-slate-50 mt-9 ml-9 p-2"
+                className="w-[98px] h-[32px] font-Poppins font-medium text-[15px] leading-[20px] rounded-[10px] bg-[#1E4DE9] text-slate-50 mt-9 ml-5"
                 onClick={handleNext}
               >
-                Upload
+                submit
               </button>
                 <div className="w-[137.09px] h-[9.05px] absolute top-[725.11px] -mt-[680px]">
         <Line percent={uploadProgress} strokeWidth={5} strokeColor="#B1FB9B" />

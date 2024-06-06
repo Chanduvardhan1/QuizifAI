@@ -20,6 +20,7 @@ import QuizTitle from "../assets/Images/quiz-type/Quiz-Title.png";
 import QuizDiscription from "../assets/Images/quiz-type/Quiz-discription.png";
 import Next from "../assets/Images/quiz-type/Next.png";
 import { FiAlertCircle } from "react-icons/fi";
+import { MdOutlineCancel } from "react-icons/md";
 
 import CreateOrEdit from "../assets/Images/quiz-type/Create-Edit.png";
 import Line from "../assets/Images/quiz-type/Line.png";
@@ -690,6 +691,11 @@ export default function quiztype() {
     }
     return Math.ceil(duration / numQuestions) * 60;
   };
+  const Back = () => {
+    
+    navigate("/create-quiz");
+  
+};
   return (
     <>
       <div>
@@ -771,6 +777,8 @@ export default function quiztype() {
           </div> */}
           <Navigation />
         </header>
+        <div className="absolute top-[30px] left-[1260px] cursor-pointer " onClick={Back}><MdOutlineCancel /></div>
+
         {!showRegistrationSuccess && (
           <main className="w-max-auto">
             <div className="w-[719px] h-[48px] absolute top-[30px] left-[200px] rounded-[10px] bg-[#E0FFE8] z-0">

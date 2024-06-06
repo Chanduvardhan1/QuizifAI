@@ -55,12 +55,12 @@
       flex-direction: column;
       margin-left: 70px;
     
-      background: linear-gradient(
+      /* background: linear-gradient(
       0deg,
       rgba(206, 228, 255, 0.5) -23.93%,
       rgba(226, 239, 255, 0.5) 43.85%,
       rgba(238, 246, 255, 0.5) 97.11%
-    );
+    ); */
       /* Add any other styles you need for your main content */
       padding: 20px;
       /* Example padding, adjust as needed */
@@ -214,7 +214,7 @@
       margin-left: 100px;
       margin-top: -300px;
       z-index: 1;
-      gap: 10px;
+      gap: 0px;
     }
     
     .column {
@@ -232,7 +232,11 @@
       margin-top: 80px; /* Adjust margin top for spacing */
       margin-bottom: 80px;
     }
-    
+    .back1{
+      display: flex;
+      justify-content: end;
+      cursor: pointer;
+    } 
     .imageButton {
       background: none;
       border: none;
@@ -432,7 +436,7 @@
   }
   .verticalicon2 {
     width: 139px; /* Adjust size as needed */
-    height: 94.52px; /* Adjust size as needed */
+    height: 35.52px; /* Adjust size as needed */
     margin-top: 10px; /* Adjust margin as needed */
     font-size: 30px;
     font-weight: 800;
@@ -444,7 +448,7 @@
   .values {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
+    padding: 0px;
     border-bottom: 1px solid #ccc;
   }
   
@@ -539,7 +543,7 @@ margin-left: -50px;
   .rankicon1 {
     width: 68px;
     height: 68px;
-    margin-top: 86px;
+    margin-top: 85px;
     margin-left: -77px;
     z-index: 1;
     /* Adjust icon styles as needed */
@@ -555,7 +559,7 @@ margin-left: -50px;
   .rankicon3 {
     width: 68px;
     height: 68px;
-    margin-top: 118px;
+    margin-top: 108px;
     margin-left: 50px;
     z-index: 1;
     /* Adjust icon styles as needed */
@@ -601,10 +605,10 @@ font-weight: 500;
     font-size: 14px; /* Set font size */
     z-index: 2;
     margin-top: 20px;
-    margin-left: 0px;
-    font-size: 14px;
+    margin-left: -6px;
+    font-size: 12px;
 font-weight: 500;
-width: 40px;
+width: 55px;
     /* Add additional styles as needed */
   }
   .textOverImage3 {
@@ -617,7 +621,7 @@ width: 40px;
     z-index: 2;
     margin-top: -6px;
     margin-left: 0px;
-    font-size: 14px;
+    font-size: 10px;
 font-weight: 500;
 
     /* Add additional styles as needed */
@@ -641,7 +645,7 @@ font-weight: 500;
   .values {
     display: flex;
     flex-direction: row;
-    margin-left: 850px;
+    margin-left: 826px;
     z-index: 1;
     background: #FFFFFF;
     box-shadow: 0px 4px 4px 0px #00000040;

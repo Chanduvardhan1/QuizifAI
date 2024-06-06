@@ -4,6 +4,7 @@ import { Line } from "rc-progress";
 import Switch from "react-switch";
 import Navigation from "../navbar/navbar";
 import { FiAlertCircle } from "react-icons/fi";
+import { MdOutlineCancel } from "react-icons/md";
 
 import { useNavigate } from "react-router-dom";
 // import ToggleButton from 'react-toggle-button'
@@ -718,6 +719,11 @@ export default function quiztype() {
     newQuestions.splice(index, 1);
     setQuestions(newQuestions);
   };
+  const Back = () => {
+    
+    navigate("/create-quiz");
+  
+};
   return (
     <>
       <div>
@@ -799,6 +805,7 @@ export default function quiztype() {
           </div> */}
           <Navigation />
         </header>
+        <div className="absolute top-[30px] left-[1260px] cursor-pointer " onClick={Back}><MdOutlineCancel /></div>
         {!showRegistrationSuccess && (
           <main className="w-max-auto">
             <div className="w-[844px] h-[48px] absolute top-[30px] left-[125px] rounded-[10px] bg-[#FCE7E7] z-0">

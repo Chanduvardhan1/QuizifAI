@@ -90,7 +90,7 @@ const Edit = (quizId) => {
             </a>
           </div>
 
-          <div className="flex w-[13.87px] h-[15.41px] absolute top-[338px] left-[51px]">
+          {/* <div className="flex w-[13.87px] h-[15.41px] absolute top-[338px] left-[51px]">
             <img src={History} alt="History Image" />
             <a
               className="ml-5 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
@@ -98,9 +98,9 @@ const Edit = (quizId) => {
             >
               History
             </a>
-          </div>
+          </div> */}
 
-          <div className="flex w-[17px] h-4 absolute top-[394px] left-[51px]">
+          {/* <div className="flex w-[17px] h-4 absolute top-[394px] left-[51px]">
             <img src={Schedule} alt="Schedule Image" />
             <a
               className="ml-4 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
@@ -108,9 +108,9 @@ const Edit = (quizId) => {
             >
               Schedule
             </a>
-          </div>
+          </div> */}
 
-          <div className="flex w-4 h-[15px] absolute top-[453px] left-[51px]">
+          {/* <div className="flex w-4 h-[15px] absolute top-[453px] left-[51px]">
             <img src={Notification} alt="Notification Image" />
             <a
               className="ml-4 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
@@ -118,9 +118,9 @@ const Edit = (quizId) => {
             >
               Notification
             </a>
-          </div>
+          </div> */}
 
-          <div className="flex w-[25.46px] h-[27.87px] absolute top-[508px] left-[51px]">
+          {/* <div className="flex w-[25.46px] h-[27.87px] absolute top-[508px] left-[51px]">
             <img className="-ml-2.5" src={QuizAdmin} alt="QuizAdmin Image" />
             <a
               className="ml-4 text-Poppins font-medium text-[15px] leading-[15px] text-nowrap text-[#30304F]"
@@ -128,9 +128,9 @@ const Edit = (quizId) => {
             >
               Quiz Admin
             </a>
-          </div>
+          </div> */}
 
-          <div className="flex w-[17px] h-[17px] absolute top-[581px] left-[51px]">
+          <div className="flex w-[17px] h-[17px] absolute top-[335px] left-[51px]">
             <img src={Profile} alt="Profile Image" />
             <a
               className="ml-4 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
@@ -149,184 +149,258 @@ const Edit = (quizId) => {
               </h1>
             </div>
             {quizData && (
-              <div className="w-[948px] h-[464px]">
-                <div className="flex">
-                  <img
-                    className="w-[51px] h-[37px] absolute top-[180px] left-[295px]"
-                    src={QuizTitle}
-                  />
-                  <h1 className="font-Poppins text-[18px] font-bold leading-[40px] absolute top-[175px] left-[355px] text-[#555555] text-nowrap">
-                    {quizData[0].quiz_title}
-                  </h1>
-                  <img
-                    className="w-[30px] h-[30px] absolute top-[177px] left-[737px]"
-                    src={QuizCreatedBy}
-                  />
-                  <h1 className="font-Poppins text-[15px] font-medium leading-[40px] absolute top-[175px] left-[791px] text-nowrap">
-                    Quiz created by user name on date
-                  </h1>
+               <div className="w-[948px] h-[464px]">
+               <div className=" absolute top-[40px]">
+              <div className="flex">
+                {/* <img
+                  className="w-[51px] h-[37px] absolute top-[180px] left-[295px]"
+                  src={QuizTitle}
+                /> */}
+                <h1 className="font-Poppins text-[18px] font-bold leading-[40px] absolute top-[175px] left-[355px] text-[#555555] text-nowrap">
+                  {quizData[0].quiz_title}
+                </h1>
+                <h1 className="w-[760px] h-[49px] absolute top-[205px] left-[355px]">
+                  {quizData[0].quiz_description}
+                </h1>
+                {/* <img
+                  className="w-[30px] h-[30px] absolute top-[177px] left-[737px]"
+                  src={QuizCreatedBy}
+                /> */}
+                {/* <h1 className="font-Poppins text-[15px] font-medium leading-[40px] absolute top-[175px] left-[791px] text-nowrap">
+                  Quiz created by user name on date
+                </h1> */}
+              </div>
+              <div className="w-[760px] h-[49px] absolute top-[222px] left-[355px]">
+                <div className=" flex gap-[420px]">
+                <div className=" w-[300px">
+                  <span className="font-Poppins text-[15px] font-bold leading-[40px] ">created By:</span>
+                  <span>{quizData[0].quiz_username}</span>
                 </div>
-
-                <div className="flex">
-                  <img
-                    className="w-[43px] h-[43px] absolute top-[253px] left-[299px]"
-                    src={QuizDiscription}
-                  />
-                  <h1 className="w-[760px] h-[49px] absolute top-[252px] left-[355px]">
-                    {quizData[0].quiz_description}
-                  </h1>
-                  <img
-                    className="w-[885px] absolute top-[325px] left-[277px]"
-                    src={HorizontalLine}
-                  />
-                 
-                </div>
-
-                <div className="flex">
-                  <img
-                    className="w-[41px] h-[41px] absolute top-[346px] left-[300px]"
-                    src={Percentage}
-                  />
-                  <div className="w-[185px] h-[23px] absolute top-[356px] left-[356px]">
-                    <h1 className="font-Poppins font-semibold text-[15px] leading-[22.5px] text-[#555555]">
-                      {quizData[0].pass_percentage}% is the pass score
-                    </h1>
-                  </div>
-                  <img
-                    className="w-[31px] h-[16.41px] absolute top-[357px] left-[565px]"
-                    src={Easy}
-                  />
-
-                  <div className="w-[344px] h-[23px] absolute top-[356px] left-[604px]">
-                    <h1 className="font-Poppins font-semibold text-[15px] leading-[22.5px] text-[#555555]">
-                      Complexity:{quizData[0].quiz_complexity_name}
-                    </h1>
-                  </div>
-                  {/* <img className="w-[31px] h-[16.41px] absolute top-[336px] left-[784px]" src={Medium}/>
-             <img className="w-[31px] h-[16.41px] absolute top-[334px] left-[849px]" src={Complex}/> */}
-
-                  <img
-                    className="w-[26px] h-[26px] absolute top-[354px] left-[944px]"
-                    src={Hash}
-                  />
-                  <div className="w-[113px] h-[22px] absolute top-[356px] left-[978px]">
-                    <h1 className="font-Poppins font-semibold text-[15px] leading-[22.5px] text-[#555555]">
-                      {quizData[0].num_questions} questions
-                    </h1>
-                  </div>
-
-                  <img
-                    className="w-[885px] absolute top-[406px] left-[269px]"
-                    src={HorizontalLine}
-                  />
-                </div>
-
-                <div className="flex">
-                  <img
-                    className="w-[37px] h-[37px] absolute top-[433px] left-[300px]"
-                    src={Camera}
-                  />
-
-                  <div className="w-[164px] h-[32px] absolute top-[432px] left-[349px]">
-                    <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
-                      {" "}
-                      Retake this paper:{quizData[0].retake_flag}
-                    </h1>
-                  </div>
-                  <img
-                    className="w-[39px] h-[39px] absolute top-[430px] left-[548px]"
-                    src={MultipleAns}
-                  />
-
-                  <div className="w-[223px] h-[32px] absolute top-[432px] left-[594px]">
-                    <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
-                      Multiple Answers:{" "}
-                      {quizData[0].multi_answer ? "Yes" : "No"}
-                    </h1>
-                  </div>
-                  <img
-                    className="w-[885px] absolute top-[484px] left-[277px]"
-                    src={HorizontalLine}
-                  />
-                </div>
-                <div className="w-[223px] h-[32px] absolute top-[432px] left-[994px]">
-                    <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
-                    quiz_id:{" "}
-                      {quizData[0].quiz_id}
-                    </h1>
-                  </div>
-
-                <div className="flex">
-                  <img
-                    className="w-[50px] h-[53px] absolute top-[502px] left-[296px]"
-                    src={SubCategory}
-                  />
-                  <div className="w-[264px] h-[27px] absolute top-[514px] left-[355px]">
-                    <h1 className="font-Poppins font-semibold text-[15px] leading-[22.5px] text-[#555555]">
-                    {quizData[0].quiz_sub_category_name} from  {" "}{quizData[0].quiz_category_name}
-                     {" "}
-                    </h1>
-                  </div>
-                  <img
-                    className="w-[25px] h-[25px] absolute top-[514px] left-[647px]"
-                    src={Clock}
-                  />
-                  <div className="w-[329px] h-[27px] absolute top-[513px] left-[689px]">
-                    <h1 className="font-Poppins font-semibold text-[15px] leading-[22.5px] text-[#555555]">
-                 
-              {/* <p>Total Questions: {quiz.num_questions}</p> */}
-              <span>Total {quizData[0].quiz_duration} minutes</span> {" "}
-              <span>{quizData[0].quiz_duration * 60 / quizData[0].num_questions} seconds  for each questions</span>
-                     {" "}
-                    </h1>
-                  </div>
-                  <img
-                    className="w-[885px] absolute top-[576px] left-[277px]"
-                    src={HorizontalLine}
-                  />
-                </div>
-
-                <div className="flex">
-                  <img
-                    className="w-[35px] h-[35px] absolute top-[601px] left-[298px]"
-                    src={Calender}
-                  />
-                  <div className="w-[391px] h-[27px] absolute top-[599px] left-[355px]">
-                    <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
-                      Quiz will be live from: {quizData[0].available_from} to{" "}
-                      {quizData[0].disabled_on}
-                    </h1>
-                  </div>
-                  <img
-                    className="w-[32px] h-[32px] absolute top-[603px] left-[767px]"
-                    src={AiBot}
-                  />
-                  <div className="w-[182px] h-[27px] absolute top-[599px] left-[809px]">
-                    <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
-                      AI support needed: No
-                    </h1>
-                  </div>
-                  <img
-                    className="w-[38px] h-[38px] absolute top-[600px] left-[997px]"
-                    src={Globe}
-                  />
-                  <div className="w-[182px] h-[27px] absolute top-[599px] left-[1035px]">
-                    <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
-                      Public access:{" "}
-                      {quizData[0].quiz_public_access ? "Yes" : "No"}
-                    </h1>
-                  </div>
+                <div  className=" w-[300px">
+                <span className="font-Poppins text-[15px] font-bold leading-[40px] ">created ON:</span>
+                  <span>{quizData[0].quiz_username}</span>
                 </div>
               </div>
+              </div>
+              </div>
+              <div className="flex">
+                {/* <img
+                  className="w-[43px] h-[43px] absolute top-[253px] left-[299px]"
+                  src={QuizDiscription}
+                /> */}
+     
+                <img
+                  className="w-[885px] absolute top-[325px] left-[277px]"
+                  src={HorizontalLine}
+                />
+              </div>
+              <div className=" absolute top-[340px] left-[355px] flex gap-[207px]" >
+                <div  className=" w-[300px]">
+                  <span className="font-Poppins text-[15px] font-bold leading-[40px]  ">Category:</span>
+                  <span>{quizData[0].quiz_sub_category_name}</span>
+                </div>
+                <div className=" w-[300px]">
+                <span className="font-Poppins text-[15px] font-bold leading-[40px] ">Sub Category:</span>
+                  <span> {quizData[0].quiz_sub_category_name}</span>
+                </div>
+              </div>
+                <div className=" absolute top-[10px]">
+
+              <div className="flex">
+                {/* <img
+                  className="w-[41px] h-[41px] absolute top-[346px] left-[300px]"
+                  src={Percentage}
+                /> */}
+                <div className="w-[185px] h-[23px] absolute top-[356px] left-[355px]">
+                  {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[22.5px] text-[#555555]">
+                    {quizData[0].pass_percentage}% is the pass score
+                  </h1> */}
+                  <span className="font-Poppins text-[15px] font-bold leading-[40px]  ">Complexity:</span>
+                  <span> {quizData[0].quiz_complexity_name}</span>
+                </div>
+                {/* <img
+                  className="w-[31px] h-[16.41px] absolute top-[357px] left-[565px]"
+                  src={Easy}
+                /> */}
+
+                <div className="w-[344px] h-[23px] absolute top-[356px] left-[604px]">
+                  {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[22.5px] text-[#555555]">
+                    Complexity:{quizData[0].quiz_complexity_name}
+                  </h1> */}
+                  <span className="font-Poppins text-[15px] font-bold leading-[40px]  ">pass score:</span>
+                  <span> {quizData[0].pass_percentage}%</span>
+                </div>
+                {/* <img className="w-[31px] h-[16.41px] absolute top-[336px] left-[784px]" src={Medium}/>
+           <img className="w-[31px] h-[16.41px] absolute top-[334px] left-[849px]" src={Complex}/> */}
+{/* 
+                <img
+                  className="w-[26px] h-[26px] absolute top-[354px] left-[944px]"
+                  src={Hash}
+                /> */}
+                <div className="w-[113px] h-[22px] absolute top-[356px] left-[863px]">
+                  {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[22.5px] text-[#555555]">
+                    {quizData[0].num_questions} questions
+                  </h1> */}
+                  <span className="font-Poppins text-[15px] font-bold leading-[40px]  ">Duration:</span>
+                  <span> {quizData[0].quiz_duration}</span>
+                </div>
+                <div className="w-[180px] h-[22px] absolute top-[356px] left-[1045px]">
+                  {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[22.5px] text-[#555555]">
+                    {quizData[0].num_questions} questions
+                  </h1> */}
+                  <span className="font-Poppins text-[15px] font-bold leading-[40px]  ">Question Count:</span>
+                  <span> {quizData[0].num_questions}</span>
+                </div>
+
+                {/* <img
+                  className="w-[885px] absolute top-[406px] left-[269px]"
+                  src={HorizontalLine}
+                /> */}
+              </div>
+              </div>
+              <div className="flex absolute top-[-10px]">
+                {/* <img
+                  className="w-[37px] h-[37px] absolute top-[433px] left-[300px]"
+                  src={Camera}
+                /> */}
+
+                <div className="w-[164px] h-[32px] absolute top-[400px] left-[355px]">
+                  {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
+                    {" "}
+                    Retake this paper:{quizData[0].retake_flag}
+                  </h1> */}
+                  <span className="font-Poppins text-[15px] font-bold leading-[40px]  ">Course:</span>
+                  <span></span>
+                </div>
+                {/* <img
+                  className="w-[39px] h-[39px] absolute top-[430px] left-[548px]"
+                  src={MultipleAns}
+                /> */}
+
+                <div className="w-[223px] h-[32px] absolute top-[400px] left-[605px]">
+                  {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
+                    Multiple Answers:{" "}
+                    {quizData[0].multi_answer ? "Yes" : "No"}
+                  </h1> */}
+                  <span className="font-Poppins text-[15px] font-bold leading-[40px]  ">Class:</span>
+                  <span></span>
+                </div>
+                {/* <img
+                  className="w-[885px] absolute top-[484px] left-[277px]"
+                  src={HorizontalLine}
+                /> */}
+              </div>
+              <div className="flex absolute top-[-20px]">
+                {/* <img
+                  className="w-[37px] h-[37px] absolute top-[433px] left-[300px]"
+                  src={Camera}
+                /> */}
+
+                <div className="w-[164px] h-[32px] absolute top-[432px] left-[355px]">
+                  {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
+                    {" "}
+                    Retake this paper:{quizData[0].retake_flag}
+                  </h1> */}
+                  <span className="font-Poppins text-[15px] font-bold leading-[40px]  ">Retake this paper:</span>
+                  <span>{quizData[0].retake_flag}</span>
+                </div>
+                {/* <img
+                  className="w-[39px] h-[39px] absolute top-[430px] left-[548px]"
+                  src={MultipleAns}
+                /> */}
+
+                <div className="w-[223px] h-[32px] absolute top-[432px] left-[605px]">
+                  {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
+                    Multiple Answers:{" "}
+                    {quizData[0].multi_answer ? "Yes" : "No"}
+                  </h1> */}
+                  <span className="font-Poppins text-[15px] font-bold leading-[40px]  "> Multiple Answers:</span>
+                  <span>{quizData[0].multi_answer ? "Yes" : "No"}</span>
+                </div>
+                {/* <img
+                  className="w-[885px] absolute top-[484px] left-[277px]"
+                  src={HorizontalLine}
+                /> */}
+              </div>
+
+              {/* <div className="flex">
+                {/* <img
+                  className="w-[50px] h-[53px] absolute top-[502px] left-[296px]"
+                  src={SubCategory}
+                /> */}
+                {/* <div className="w-[264px] h-[27px] absolute top-[514px] left-[355px]">
+                  <h1 className="font-Poppins font-semibold text-[15px] leading-[22.5px] text-[#555555]">
+                  {quizData[0].quiz_sub_category_name} from  {" "}{quizData[0].quiz_category_name}
+                   {" "}
+                  </h1>
+                </div> */}
+                {/* <img
+                  className="w-[25px] h-[25px] absolute top-[514px] left-[647px]"
+                  src={Clock}
+                /> */}
+                {/* <div className="w-[329px] h-[27px] absolute top-[513px] left-[689px]">
+                  <h1 className="font-Poppins font-semibold text-[15px] leading-[22.5px] text-[#555555]">
+               
+            {/* <p>Total Questions: {quiz.num_questions}</p> */}
+            {/* <span>Total {quizData[0].quiz_duration} minutes</span> {" "}
+            <span>{quizData[0].quiz_duration * 60 / quizData[0].num_questions} seconds  for each questions</span>
+                   {" "}
+                  </h1> */}
+                {/* </div>  */}
+                <img
+                  className="w-[885px] absolute top-[465px] left-[277px]"
+                  src={HorizontalLine}
+                />
+              {/* </div>  */}
+
+              <div className="flex absolute top-[-120px]">
+                {/* <img
+                  className="w-[35px] h-[35px] absolute top-[601px] left-[298px]"
+                  src={Calender}
+                /> */}
+                <div className="w-[391px] h-[27px] absolute top-[599px] left-[355px]">
+                  {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
+                    Quiz will be live from: {quizData[0].available_from} to{" "}
+                    {quizData[0].disabled_on}
+                  </h1> */}
+                  <span className="font-Poppins text-[15px] font-bold leading-[40px]  "> Quiz will be live from:</span>
+                  <span> {quizData[0].available_from} to{" "}
+                    {quizData[0].disabled_on}</span>
+                </div>
+                {/* <img
+                  className="w-[32px] h-[32px] absolute top-[603px] left-[767px]"
+                  src={AiBot}
+                /> */}
+                <div className="w-[182px] h-[27px] absolute top-[599px] left-[809px]">
+                  {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
+                    AI support needed: No
+                  </h1> */}
+                  <span className="font-Poppins text-[15px] font-bold leading-[40px] ">AI support needed:</span>
+                  <span> No</span>
+                </div>
+                {/* <img
+                  className="w-[38px] h-[38px] absolute top-[600px] left-[997px]"
+                  src={Globe}
+                /> */}
+                <div className="w-[182px] h-[27px] absolute top-[599px] left-[1045px]">
+                  {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
+                    Public access:{" "}
+                    {quizData[0].quiz_public_access ? "Yes" : "No"}
+                  </h1> */}
+                  <span className="font-Poppins text-[15px] font-bold leading-[40px]  " >Public access:</span>
+                <span> {quizData[0].quiz_public_access ? "Yes" : "No"}</span>
+                </div>
+              </div>
+            </div>
             )}
           </div>
 
-          <div>
+          <div className=" absolute top-[-150px]">
             <button className="w-[123px] h-[32px] absolute top-[729px] left-[373px] rounded-[10px] bg-[#214082] text-white"onClick={Preview}>
               Preview
             </button>
             <div className="absolute top-[729px] left-[524px]">
-              <a onClick={() => Edit(quizData[0].quiz_id)}>
+              <a onClick={() => Edit(quizData[0][0].quiz_id)}>
                 <button className="w-[123px] h-[32px] rounded-[10px] bg-[#214082] text-white">
                   Edit
                 </button>

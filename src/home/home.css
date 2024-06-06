@@ -182,12 +182,12 @@
     color: white;
    
   }
-  .line3:hover{
+  /* .line3:hover{
     background-color: #F15A3D;
     padding: 9px;
     padding-left: 18px;
     border-radius: 10px;
-  }
+  } */
   .ContactMail1{
     position: absolute;
     top: 18px;
@@ -202,11 +202,37 @@
     left: 120px;
     top: 18px;
   }
-  /* .backgroundButton:hover{
-    background-color: orange;
-  } */
+  .backgroundButton:hover{
+    background-color: #F15A3D;
+  }
   
+.backgroundButton{
+  font-family: Poppins;
+  font-size: 13px;
+  font-weight: 700;
+  /* line-height: 40px; */
+  letter-spacing: 0em;
+  text-align: center;
+  color: white;
+  display: flex;
+ align-items: center;
+ justify-content: center;
+ width: 103px;
+ height: 36px;
 
+ background-color: darkblue;
+ border-Radius: 10px;
+ border: none;
+ cursor: pointer;
+}
+.backgroundButton:hover{
+  background-color: rgb(239,81,48); /* Change background color on hover */
+  transform: scale(1.1); /* Zoom effect on hover */
+  
+}
+/* .link:hover{
+  background-color: #F15A3D;
+} */
   .buttons {
     display: flex; 
   }

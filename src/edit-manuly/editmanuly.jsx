@@ -208,17 +208,20 @@ export default function editmanuly() {
   const [subCategory, setSubCategory] = useState("");
   const [complexities, setComplexities] = useState([]);
   const [selectedComplexity, setSelectedComplexity] = useState("");
-  const [categories, setCategories] = useState([]);
+
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSubCategory, setSelectedSubCategory] = useState('');
-  const [subCategories, setSubCategories] = useState([]);
+
 
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
-  const [classes, setClasses] = useState([]);
+
   const [quizData, setQuizData] = useState(null);
- 
+  const [subCategories, setSubCategories] = useState([]); // Initialize as empty array
+  const [classes, setClasses] = useState([]); // Initialize as empty array
+  const [categories, setCategories] = useState([]);
+
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -272,13 +275,19 @@ export default function editmanuly() {
   const handleSelectCourse = (event) => {
     const selectedCourse = event.target.value;
     setSelectedCourse(selectedCourse);
-    setcoursename(selectedCourse);
-    // Find the selected course and set its classes
-    const course = courses.find(course => course.course_name === selectedCourse);
-    if (course) {
-      setClasses(course.classes.map(cls => cls.class_name));
+  
+    if (selectedCourse === "") {
+      // Clear the selection
+      setClasses([]);
+    } else {
+      // Find the selected course and set its classes
+      const course = courses.find(
+        (course) => course.course_name === selectedCourse
+      );
+      if (course) {
+        setClasses(course.classes.map((cls) => cls.class_name));
+      }
     }
-    setSelectedClass('');
   };
 
   // Handle class selection
@@ -530,6 +539,30 @@ export default function editmanuly() {
     setQuestions(newQuestions);
   };
   const handleNext = async () => {
+    const requiredFields = [
+      title,
+      numQuestions,
+      description,
+      selectedCategory,
+      selectedSubCategory,
+      percentage,
+      selectedComplexity,
+      duration,
+      timings,
+      availablefrom,
+      disabledon,
+      quiztotalmarks,
+      selectedCourse,
+      selectedClass,
+
+  ];
+  
+  const isAnyFieldEmpty = requiredFields.some(field => !field);
+  
+  if (isAnyFieldEmpty) {
+      alert("Please fill in all the required fields before proceeding.");
+      return; // Prevent further execution
+  }
     try {
          const user_id = localStorage.getItem('user_id');
          const quiz_id = localStorage.getItem('quiz_id');
@@ -642,6 +675,13 @@ export default function editmanuly() {
           setdisabledon(data.data.disabled_on);
           // setQuizTotalMarks(data.data.retake_flag);
           setquiztotalmarks(data.data.quiz_total_marks);
+          console.log('Available classes:', data.data.class_name);
+          console.log('Available subcategories:', data.data.quiz_sub_category_name);
+
+          setClasses([data.data.class_name] || []); // Wrap in an array
+          setSubCategories([data.data.quiz_sub_category_name] || []); // Wrap in an array
+
+
           const processedQuestions = data.data.questions.map(question => ({
             ...question,
             options: [
@@ -1052,6 +1092,7 @@ export default function editmanuly() {
         onChange={handleSelectCourse}
       >
         <option value="" disabled>Select a course</option>
+        <option value="">None</option>
         {courses.map(course => (
           <option key={course.course_id} value={course.course_name}>
             {course.course_name}
@@ -1459,14 +1500,14 @@ export default function editmanuly() {
 
 <div className=" flex justify-between items-center pr-[55px] ">
                 <button
-                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1B1852] text-white"
+                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white"
                   onClick={handleNext2}
                 >
                   Back
                 </button>
 
                 <button
-                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1B1852] text-white"
+                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white"
                   onClick={handleNext}
                 >
                   Create

@@ -79,7 +79,6 @@ text-align: left;
     top: 15px; /* Adjust as needed */
     left: 0px; /* Adjust as needed */
     white-space: nowrap;
-    width: 317px;
     font-family: Poppins;
 font-size: 18px;
 font-weight: 700;
@@ -87,14 +86,17 @@ line-height: 27px;
 letter-spacing: 0em;
 text-align: left;
 color: #214082;
-
-
+white-space: pre-wrap; /* Preserves whitespace and allows text wrapping */
+word-wrap: break-word; /* Breaks long words to fit the container */
+width: 118%; /* Adjust as necessary */
+padding: 10px; 
+margin: 0;
 }
 
 .boxesContainer {
     display: flex;
     flex-direction: column;
-    margin-top: 60px; /* Adjust as needed */
+    margin-top: 85px; /* Adjust as needed */
 }
 
 .box {
@@ -154,7 +156,7 @@ color: #214082;
 
 
 .button {
-    width: 123px;
+    width: 110px;
 }
 .button1{
 
@@ -189,7 +191,7 @@ line-height: 30px;
 letter-spacing: 0em;
 text-align: left;
 color: #F4774B;
-width: 150px;
+width: 152px;
 }
 .quiztitle{
     font-family: Poppins;

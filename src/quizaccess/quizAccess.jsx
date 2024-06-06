@@ -106,7 +106,8 @@ const quizAccess = () => {
         state: { 
           quiz_id: quizData.quiz_id,
           quiz_title: quizData.quiz_title,
-          quiz_description: quizData.quiz_description 
+          quiz_description: quizData.quiz_description ,
+          quiz_duration: quizData.quiz_duration
         }
       });
     }

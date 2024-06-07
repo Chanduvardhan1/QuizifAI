@@ -346,15 +346,15 @@ const Dashboard = () => {
                       }}
                     >
                       {latestResult[0]?.attempt_date}
-
                       <span className="relative group">
-                        <span className="absolute ml-[10px] w-[100px] cursor-pointer z-0 truncate">
-                          {latestResult[0]?.quiz_name}
-                          <span className="hidden left-0 -top-[2px] z-30 truncate group-hover:block rounded bg-black text-white px-1 border relative border-black-300">
-                            {latestResult[0]?.quiz_name}
-                          </span>
-                        </span>
-                      </span>
+  <span className="absolute ml-[10px] w-[100px] cursor-pointer z-0 truncate">
+    {latestResult[0]?.quiz_name}
+  </span>
+  <span className="cursor-pointer hidden group-hover:inline-block absolute left-0 top-5 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+    {latestResult[0]?.quiz_name}
+  </span>
+</span>
+                      
 
                       {/* - {latestResults[0]?.quiz_category} */}
                     </span>
@@ -396,13 +396,13 @@ const Dashboard = () => {
                     >
                       {latestResult[1]?.attempt_date}
                       <span className="relative group">
-                        <span className="absolute ml-[10px] w-[100px] cursor-pointer z-0 truncate">
-                          {latestResult[1]?.quiz_name}
-                          <span className="hidden left-0 -top-[2px] z-30 truncate group-hover:block rounded bg-black text-white px-1 border relative border-black-300">
-                            {latestResult[1]?.quiz_name}
-                          </span>
-                        </span>
-                      </span>
+  <span className="absolute ml-[10px] w-[100px] cursor-pointer z-0 truncate">
+    {latestResult[1]?.quiz_name}
+  </span>
+  <span className="cursor-pointer hidden group-hover:inline-block absolute left-0 top-5 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+    {latestResult[1]?.quiz_name}
+  </span>
+</span>
                       {/* - {latestResults[1]?.quiz_category} */}
                     </span>
                     <span
@@ -444,13 +444,13 @@ const Dashboard = () => {
                     >
                       {latestResult[2]?.attempt_date}{" "}
                       <span className="relative group">
-                        <span className="absolute ml-[10px] w-[100px] cursor-pointer z-0 truncate">
-                          {latestResult[2]?.quiz_name}
-                          <span className="hidden left-0 -top-[2px] z-30 truncate group-hover:block rounded bg-black text-white px-1 border relative border-black-300">
-                            {latestResult[2]?.quiz_name}
-                          </span>
-                        </span>
-                      </span>
+  <span className="absolute ml-[10px] w-[100px] cursor-pointer z-0 truncate">
+    {latestResult[2]?.quiz_name}
+  </span>
+  <span className="cursor-pointer hidden group-hover:inline-block absolute left-0 top-5 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+    {latestResult[2]?.quiz_name}
+  </span>
+</span>
                       {/* - {latestResults[2]?.quiz_category} */}
                     </span>
                     <span
@@ -492,13 +492,13 @@ const Dashboard = () => {
                     >
                       {latestResult[3]?.attempt_date}{" "}
                       <span className="relative group">
-                        <span className="absolute ml-[10px] w-[100px] cursor-pointer z-0 truncate">
-                          {latestResult[3]?.quiz_name}
-                          <span className="hidden left-0 -top-[2px] z-30 truncate group-hover:block rounded bg-black text-white px-1 border relative border-black-300">
-                            {latestResult[3]?.quiz_name}
-                          </span>
-                        </span>
-                      </span>
+  <span className="absolute ml-[10px] w-[100px] cursor-pointer z-0 truncate">
+    {latestResult[3]?.quiz_name}
+  </span>
+  <span className="cursor-pointer hidden group-hover:inline-block absolute left-0 top-5 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+    {latestResult[3]?.quiz_name}
+  </span>
+</span>
                       {/* - {latestResults[2]?.quiz_category} */}
                     </span>
                     <span
@@ -594,7 +594,7 @@ const Dashboard = () => {
               More{" "}
             </span>
             <img
-              className="cursor-pointer mr-[40px]"
+              className="cursor-pointer mr-[40px] ml-1"
               src={moreArrow}
               alt="More"
               width={17}
@@ -623,7 +623,14 @@ const Dashboard = () => {
 
               { latestquizzes && latestquizzes[0] ?(
                <div className={styles.card} style={{ paddingTop: "8px" }}>
-               <p className={styles.title}>{latestquizzes[0]?.quiz_name}</p>
+                <span className="relative group">
+                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
+                  {latestquizzes[0]?.quiz_name}
+                </span>
+                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+                {latestquizzes[0]?.quiz_name}
+                </span>
+                </span>
 
                <div className={styles.iconContainer}>
                  <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
@@ -705,23 +712,40 @@ const Dashboard = () => {
                  </div>
                </div>
 
-               <div className={styles.category}>
-                 <span className={styles.category1}>
-                   {latestquizzes[0]?.category}
-                 </span>
-                 <p className="px-[2px] font-normal">|</p>
-                 <span className={styles.category1}>
-                   {latestquizzes[0]?.sub_category}
-                 </span>
-               </div>
+               <div className="flex mt-5">
+  <span className="relative group">
+    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {latestquizzes[0]?.category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {latestquizzes[0]?.category}
+    </span>  
+  </span>
 
-               <div className={styles.description}>
-                 <span>{latestquizzes[0]?.quiz_description}</span>
-               </div>
+  <p className="px-[2px] font-normal">|</p>
+  
+  <span className="relative group">
+    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {latestquizzes[0]?.sub_category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {latestquizzes[0]?.sub_category}
+    </span>  
+  </span>
+</div>
+
+<div className="relative group mt-1">
+  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
+    {latestquizzes[0]?.quiz_description}
+  </span>
+  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
+    {latestquizzes[0]?.quiz_description}
+  </span>
+</div>
 
                <div
                  className={styles.additionalInfo}
-                 style={{ marginTop: "65px" }}
+                 style={{ position:"relative",top:"95px" }}
                >
                  <div className="z-0">
                    <div className="flex gap-[5px] h-[18px] w-[80px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black">
@@ -781,8 +805,13 @@ const Dashboard = () => {
               {/* latest-first-second-card  */}
               { latestquizzes && latestquizzes[1] ?(
               <div className={styles.card} style={{ paddingTop: "8px" }}>
-                <span className={styles.title}>
+                <span className="relative group">
+                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
                   {latestquizzes[1]?.quiz_name}
+                </span>
+                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+                {latestquizzes[1]?.quiz_name}
+                </span>
                 </span>
 
                 <div className={styles.iconContainer}>
@@ -851,23 +880,39 @@ const Dashboard = () => {
                   </div>
                 </div>
 
-                <div className={styles.category}>
-                  <span className={styles.category1}>
-                    {latestquizzes[1]?.category}
-                  </span>
-                  <p className="px-[2px] font-normal">|</p>
-                  <span className={styles.category1}>
-                    {latestquizzes[1]?.sub_category}
-                  </span>
-                </div>
+                <div className="flex mt-5">
+  <span className="relative group">
+    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {latestquizzes[1]?.category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {latestquizzes[1]?.category}
+    </span>  
+  </span>
 
-                <div className={styles.description}>
-                  <span>{latestquizzes[1]?.quiz_description}</span>
-                </div>
+  <p className="px-[2px] font-normal">|</p>
+  
+  <span className="relative group">
+    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {latestquizzes[1]?.sub_category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {latestquizzes[1]?.sub_category}
+    </span>  
+  </span>
+</div>
 
+<div className="relative group mt-1">
+  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
+    {latestquizzes[1]?.quiz_description}
+  </span>
+  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
+    {latestquizzes[1]?.quiz_description}
+  </span>
+</div>
                 <div
                   className={styles.additionalInfo}
-                  style={{ marginTop: "35px" }}
+                  style={{ position:"relative",top:"65px" }}
                 >
                   <div
                     className={styles.infoIcon}
@@ -927,10 +972,14 @@ const Dashboard = () => {
               {/* latest-first-third-card  */}
               { latestquizzes && latestquizzes[2] ?(
               <div className={styles.card} style={{ paddingTop: "8px" }}>
-                <span className={styles.title}>
+                <span className="relative group">
+                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
                   {latestquizzes[2]?.quiz_name}
                 </span>
-
+                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+                {latestquizzes[2]?.quiz_name}
+                </span>
+                </span>
                 <div className={styles.iconContainer}>
                   <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
                     <svg
@@ -996,22 +1045,40 @@ const Dashboard = () => {
                     )}
                   </div>
                 </div>
-                <div className={styles.category}>
-                  <span className={styles.category1}>
-                    {latestquizzes[2]?.category}
-                  </span>
-                  <p className="px-1 font-normal">|</p>
-                  <span className={styles.category1}>
-                    {latestquizzes[2]?.sub_category}
-                  </span>
-                </div>
 
-                <div className={styles.description}>
-                  <span>{latestquizzes[2]?.quiz_description}</span>
-                </div>
+  <div className="flex mt-5">
+  <span className="relative group">
+    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {latestquizzes[2]?.category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {latestquizzes[2]?.category}
+    </span>  
+  </span>
+
+  <p className="px-[2px] font-normal">|</p>
+  
+  <span className="relative group">
+    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {latestquizzes[2]?.sub_category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {latestquizzes[2]?.sub_category}
+    </span>  
+  </span>
+</div>
+
+<div className="relative group mt-1">
+  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
+    {latestquizzes[2]?.quiz_description}
+  </span>
+  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
+    {latestquizzes[2]?.quiz_description}
+  </span>
+</div>
                 <div
                   className={styles.additionalInfo}
-                  style={{ marginTop: "35px" }}
+                  style={{ position:"relative",top:"65px" }}
                 >
                   <div
                     className={styles.infoIcon}
@@ -1074,8 +1141,13 @@ const Dashboard = () => {
               {/* latest-second-first-card  */}
               { latestquizzes && latestquizzes[3] ?(
               <div className={styles.card} style={{ paddingTop: "8px" }}>
-                <span className={styles.title}>
+               <span className="relative group">
+                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
                   {latestquizzes[3]?.quiz_name}
+                </span>
+                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+                {latestquizzes[3]?.quiz_name}
+                </span>
                 </span>
                 <div className={styles.iconContainer}>
                   <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
@@ -1143,22 +1215,39 @@ const Dashboard = () => {
                   </div>
                 </div>
 
-                <div className={styles.category}>
-                  <span className={styles.category1}>
-                    {latestquizzes[3]?.category}
-                  </span>
-                  <p className="px-[2px] font-normal">|</p>
-                  <span className={styles.category1}>
-                    {latestquizzes[3]?.sub_category}
-                  </span>
-                </div>
+                <div className="flex mt-5">
+  <span className="relative group">
+    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {latestquizzes[3]?.category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {latestquizzes[3]?.category}
+    </span>  
+  </span>
 
-                <div className={styles.description}>
-                  <span>{latestquizzes[3]?.quiz_description}</span>
-                </div>
+  <p className="px-[2px] font-normal">|</p>
+  
+  <span className="relative group">
+    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {latestquizzes[3]?.sub_category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {latestquizzes[3]?.sub_category}
+    </span>  
+  </span>
+</div>
+
+<div className="relative group mt-1">
+  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
+    {latestquizzes[3]?.quiz_description}
+  </span>
+  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
+    {latestquizzes[3]?.quiz_description}
+  </span>
+</div>
                 <div
                   className={styles.additionalInfo}
-                  style={{ marginTop: "35px" }}
+                  style={{ position:"relative",top:"65px" }}
                 >
                   <div
                     className={styles.infoIcon}
@@ -1220,8 +1309,13 @@ const Dashboard = () => {
               {/* latest-second-second-card  */}
               { latestquizzes && latestquizzes[4] ?(
               <div className={styles.card} style={{ paddingTop: "8px" }}>
-                <span className={styles.title}>
+               <span className="relative group">
+                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
                   {latestquizzes[4]?.quiz_name}
+                </span>
+                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+                {latestquizzes[4]?.quiz_name}
+                </span>
                 </span>
                 <div className={styles.iconContainer}>
                   <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
@@ -1288,22 +1382,40 @@ const Dashboard = () => {
                     )}
                   </div>
                 </div>
-                <div className={styles.category}>
-                  <span className={styles.category1}>
-                    {latestquizzes[4]?.category}
-                  </span>
-                  <p className="px-[2px] font-normal">|</p>
-                  <span className={styles.category1}>
-                    {latestquizzes[4]?.sub_category}
-                  </span>
-                </div>
 
-                <div className={styles.description}>
-                  <span>{latestquizzes[4]?.quiz_description}</span>
-                </div>
+                <div className="flex mt-5">
+  <span className="relative group">
+    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {latestquizzes[4]?.category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {latestquizzes[4]?.category}
+    </span>  
+  </span>
+
+  <p className="px-[2px] font-normal">|</p>
+  
+  <span className="relative group">
+    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {latestquizzes[4]?.sub_category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {latestquizzes[4]?.sub_category}
+    </span>  
+  </span>
+</div>
+
+<div className="relative group mt-1">
+  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
+    {latestquizzes[4]?.quiz_description}
+  </span>
+  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
+    {latestquizzes[4]?.quiz_description}
+  </span>
+</div>
                 <div
                   className={styles.additionalInfo}
-                  style={{ marginTop: "35px" }}
+                  style={{ position:"relative",top:"65px" }}
                 >
                   <div
                     className={styles.infoIcon}
@@ -1363,8 +1475,13 @@ const Dashboard = () => {
               {/* latest-second-third-card  */}
               { latestquizzes && latestquizzes[5] ?(
               <div className={styles.card} style={{ paddingTop: "8px" }}>
-                <span className={styles.title}>
+               <span className="relative group">
+                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
                   {latestquizzes[5]?.quiz_name}
+                </span>
+                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+                {latestquizzes[5]?.quiz_name}
+                </span>
                 </span>
                 <div className={styles.iconContainer}>
                   <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
@@ -1432,23 +1549,40 @@ const Dashboard = () => {
                   </div>
                 </div>
 
-                <div className={styles.category}>
-                  <span className={styles.category1}>
-                    {latestquizzes[5]?.category}
-                  </span>
-                  <p className="px-[2px] font-normal">|</p>
-                  <span className={styles.category1}>
-                    {latestquizzes[5]?.sub_category}
-                  </span>
-                </div>
+                <div className="flex mt-5">
+  <span className="relative group">
+    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {latestquizzes[5]?.category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {latestquizzes[5]?.category}
+    </span>  
+  </span>
 
-                <div className={styles.description}>
-                  <span>{latestquizzes[5]?.quiz_description}</span>
-                </div>
+  <p className="px-[2px] font-normal">|</p>
+  
+  <span className="relative group">
+    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {latestquizzes[5]?.sub_category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {latestquizzes[5]?.sub_category}
+    </span>  
+  </span>
+</div>
+
+<div className="relative group mt-1">
+  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
+    {latestquizzes[5]?.quiz_description}
+  </span>
+  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
+    {latestquizzes[5]?.quiz_description}
+  </span>
+</div>
 
                 <div
                   className={styles.additionalInfo}
-                  style={{ marginTop: "35px" }}
+                  style={{ position:"relative",top:"65px" }}
                 >
                   <div
                     className={styles.infoIcon}
@@ -1520,9 +1654,14 @@ const Dashboard = () => {
                       paddingTop: "8px",
                     }}
                   >
-                    <span className={styles.title}>
-                      {latestquizzes[6]?.quiz_name}
-                    </span>
+                    <span className="relative group">
+                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
+                  {latestquizzes[6]?.quiz_name}
+                </span>
+                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+                {latestquizzes[6]?.quiz_name}
+                </span>
+                </span>
                     <div className={styles.iconContainer}>
                       <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
                         <svg
@@ -1588,22 +1727,39 @@ const Dashboard = () => {
                         )}
                       </div>
                     </div>
-                    <div className={styles.category}>
-                      <span className={styles.category1}>
-                        {latestquizzes[6]?.category}
-                      </span>
-                      <p className="px-[2px] font-normal">|</p>
-                      <span className={styles.category1}>
-                        {latestquizzes[6]?.sub_category}
-                      </span>
-                    </div>
+                    <div className="flex mt-5">
+  <span className="relative group">
+    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {latestquizzes[6]?.category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {latestquizzes[6]?.category}
+    </span>  
+  </span>
 
-                    <div className={styles.description}>
-                      <span>{latestquizzes[6]?.quiz_description}</span>
-                    </div>
+  <p className="px-[2px] font-normal">|</p>
+  
+  <span className="relative group">
+    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {latestquizzes[6]?.sub_category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {latestquizzes[6]?.sub_category}
+    </span>  
+  </span>
+</div>
+
+<div className="relative group mt-1">
+  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
+    {latestquizzes[6]?.quiz_description}
+  </span>
+  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
+    {latestquizzes[6]?.quiz_description}
+  </span>
+</div>
                     <div
                       className={styles.additionalInfo}
-                      style={{ marginTop: "35px" }}
+                      style={{ position:"relative",top:"65px" }}
                     >
                       <div
                         className={styles.infoIcon}
@@ -1663,9 +1819,14 @@ const Dashboard = () => {
                 {/* second-card  */}
                 { latestquizzes && latestquizzes[7] ?(
                   <div className={styles.card} style={{ paddingTop: "8px" }}>
-                    <span className={styles.title}>
-                      {latestquizzes[7]?.quiz_name}
-                    </span>
+                    <span className="relative group">
+                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
+                  {latestquizzes[7]?.quiz_name}
+                </span>
+                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+                {latestquizzes[7]?.quiz_name}
+                </span>
+                </span>
                     <div className={styles.iconContainer}>
                       <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
                         <svg
@@ -1731,22 +1892,39 @@ const Dashboard = () => {
                         )}
                       </div>
                     </div>
-                    <div className={styles.category}>
-                      <span className={styles.category1}>
-                        {latestquizzes[7]?.category}
-                      </span>
-                      <p className="px-[2px] font-normal">|</p>
-                      <span className={styles.category1}>
-                        {latestquizzes[7]?.sub_category}
-                      </span>
-                    </div>
+                    <div className="flex mt-5">
+  <span className="relative group">
+    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {latestquizzes[7]?.category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {latestquizzes[7]?.category}
+    </span>  
+  </span>
 
-                    <div className={styles.description}>
-                      <span>{latestquizzes[7]?.quiz_description}</span>
-                    </div>
+  <p className="px-[2px] font-normal">|</p>
+  
+  <span className="relative group">
+    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {latestquizzes[7]?.sub_category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {latestquizzes[7]?.sub_category}
+    </span>  
+  </span>
+</div>
+
+<div className="relative group mt-1">
+  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
+    {latestquizzes[7]?.quiz_description}
+  </span>
+  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
+    {latestquizzes[7]?.quiz_description}
+  </span>
+</div>
                     <div
                       className={styles.additionalInfo}
-                      style={{ marginTop: "35px" }}
+                      style={{ position:"relative",top:"65px" }}
                     >
                       <div
                         className={styles.infoIcon}
@@ -1806,9 +1984,14 @@ const Dashboard = () => {
                 {/* third-card  */}
                 { latestquizzes && latestquizzes[8] ?(
                   <div className={styles.card} style={{ paddingTop: "8px" }}>
-                    <span className={styles.title}>
-                      {latestquizzes[8]?.quiz_name}
-                    </span>
+                   <span className="relative group">
+                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
+                  {latestquizzes[8]?.quiz_name}
+                </span>
+                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+                {latestquizzes[8]?.quiz_name}
+                </span>
+                </span>
                     <div className={styles.iconContainer}>
                       <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
                         <svg
@@ -1874,22 +2057,39 @@ const Dashboard = () => {
                         )}
                       </div>
                     </div>
-                    <div className={styles.category}>
-                      <span className={styles.category1}>
-                        {latestquizzes[8]?.category}
-                      </span>
-                      <p className="px-[2px] font-normal">|</p>
-                      <span className={styles.category1}>
-                        {latestquizzes[8]?.sub_category}
-                      </span>
-                    </div>
+                    <div className="flex mt-5">
+  <span className="relative group">
+    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {latestquizzes[8]?.category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {latestquizzes[8]?.category}
+    </span>  
+  </span>
 
-                    <div className={styles.description}>
-                      <span>{latestquizzes[8]?.quiz_description}</span>
-                    </div>
+  <p className="px-[2px] font-normal">|</p>
+  
+  <span className="relative group">
+    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {latestquizzes[8]?.sub_category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {latestquizzes[8]?.sub_category}
+    </span>  
+  </span>
+</div>
+
+<div className="relative group mt-1">
+  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
+    {latestquizzes[8]?.quiz_description}
+  </span>
+  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
+    {latestquizzes[8]?.quiz_description}
+  </span>
+</div>
                     <div
                       className={styles.additionalInfo}
-                      style={{ marginTop: "35px" }}
+                      style={{ position:"relative",top:"65px" }}
                     >
                       <div
                         className={styles.infoIcon}
@@ -2504,9 +2704,14 @@ const Dashboard = () => {
             {/* Info cards content */}
             <div className="flex">
             <div className={styles.card} style={{ paddingTop: "8px" }}>
-              <span className={styles.title}>
+            <span className="relative group">
+                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
+                  {popularquizzes[0]?.quiz_name}
+                </span>
+                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                 {popularquizzes[0]?.quiz_name}
-              </span>
+                </span>
+                </span>
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
                   <svg
@@ -2568,23 +2773,39 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              <div className={styles.category}>
-                <span className={styles.category1}>
-                  {popularquizzes[0]?.category}
-                </span>
-                <p className="px-[2px] font-normal">|</p>
-                <span className={styles.category1}>
-                  {popularquizzes[0]?.sub_category}
-                </span>
-              </div>
+              <div className="flex mt-5">
+  <span className="relative group">
+    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {popularquizzes[0]?.category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {popularquizzes[0]?.category}
+    </span>  
+  </span>
 
-              <div className={styles.description}>
-                <span>{popularquizzes[0]?.quiz_description}</span>
-              </div>
+  <p className="px-[2px] font-normal">|</p>
+  
+  <span className="relative group">
+    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {popularquizzes[0]?.sub_category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {popularquizzes[0]?.sub_category}
+    </span>  
+  </span>
+</div>
 
+<div className="relative group mt-1">
+  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
+    {popularquizzes[0]?.quiz_description}
+  </span>
+  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
+    {popularquizzes[0]?.quiz_description}
+  </span>
+</div>
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "30px" }}
+                style={{ position:"relative",top:"65px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -2639,9 +2860,14 @@ const Dashboard = () => {
               </div>
             </div>
             <div className={styles.card} style={{ paddingTop: "8px" }}>
-              <span className={styles.title}>
+            <span className="relative group">
+                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
+                  {popularquizzes[1]?.quiz_name}
+                </span>
+                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                 {popularquizzes[1]?.quiz_name}
-              </span>
+                </span>
+                </span>
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
                   <svg
@@ -2702,23 +2928,41 @@ const Dashboard = () => {
                   )}
                 </div>
               </div>
-              <div className={styles.category}>
-                <span className={styles.category1}>
-                  {popularquizzes[1]?.category}
-                </span>
-                <p className="px-[2px] font-normal">|</p>
-                <span className={styles.category1}>
-                  {popularquizzes[1]?.sub_category}
-                </span>
-              </div>
 
-              <div className={styles.description}>
-                <span>{popularquizzes[1]?.quiz_description}</span>
-              </div>
+              <div className="flex mt-5">
+  <span className="relative group">
+    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {popularquizzes[1]?.category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {popularquizzes[1]?.category}
+    </span>  
+  </span>
 
+  <p className="px-[2px] font-normal">|</p>
+  
+  <span className="relative group">
+    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {popularquizzes[1]?.sub_category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {popularquizzes[1]?.sub_category}
+    </span>  
+  </span>
+</div>
+
+
+<div className="relative group mt-1">
+  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
+    {popularquizzes[1]?.quiz_description}
+  </span>
+  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
+    {popularquizzes[1]?.quiz_description}
+  </span>
+</div>
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "30px" }}
+                style={{ position:"relative",top:"65px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -2773,9 +3017,14 @@ const Dashboard = () => {
               </div>
             </div>
             <div className={styles.card} style={{ paddingTop: "8px" }}>
-              <span className={styles.title}>
+            <span className="relative group">
+                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
+                  {popularquizzes[2]?.quiz_name}
+                </span>
+                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                 {popularquizzes[2]?.quiz_name}
-              </span>
+                </span>
+                </span>
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
                   <svg
@@ -2836,23 +3085,41 @@ const Dashboard = () => {
                   )}
                 </div>
               </div>
-              <div className={styles.category}>
-                <span className={styles.category1}>
-                  {popularquizzes[2]?.category}
-                </span>
-                <p className="px-[2px] font-normal">|</p>
-                <span className={styles.category1}>
-                  {popularquizzes[2]?.sub_category}
-                </span>
-              </div>
+              <div className="flex mt-5">
+  <span className="relative group">
+    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {popularquizzes[2]?.category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {popularquizzes[2]?.category}
+    </span>  
+  </span>
 
-              <div className={styles.description}>
-                <span>{popularquizzes[2]?.quiz_description}</span>
-              </div>
+  <p className="px-[2px] font-normal">|</p>
+  
+  <span className="relative group">
+    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {popularquizzes[2]?.sub_category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {popularquizzes[2]?.sub_category}
+    </span>  
+  </span>
+</div>
+
+
+<div className="relative group mt-1">
+  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
+    {popularquizzes[2]?.quiz_description}
+  </span>
+  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
+    {popularquizzes[2]?.quiz_description}
+  </span>
+</div>
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "35px" }}
+                style={{ position:"relative",top:"65px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -2910,9 +3177,14 @@ const Dashboard = () => {
             
             <div className="flex">
             <div className={styles.card} style={{ paddingTop: "8px" }}>
-              <span className={styles.title}>
+            <span className="relative group">
+                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
+                  {popularquizzes[3]?.quiz_name}
+                </span>
+                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                 {popularquizzes[3]?.quiz_name}
-              </span>
+                </span>
+                </span>
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
                   <svg
@@ -2973,23 +3245,41 @@ const Dashboard = () => {
                   )}
                 </div>
               </div>
-              <div className={styles.category}>
-                <span className={styles.category1}>
-                  {popularquizzes[3]?.category}
-                </span>
-                <p className=" px-[2px] font-normal">|</p>
-                <span className={styles.category1}>
-                  {popularquizzes[3]?.sub_category}
-                </span>
-              </div>
+              <div className="flex mt-5">
+  <span className="relative group">
+    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {popularquizzes[3]?.category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {popularquizzes[3]?.category}
+    </span>  
+  </span>
 
-              <div className={styles.description}>
-                <span>{popularquizzes[3]?.quiz_description}</span>
-              </div>
+  <p className="px-[2px] font-normal">|</p>
+  
+  <span className="relative group">
+    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {popularquizzes[3]?.sub_category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {popularquizzes[3]?.sub_category}
+    </span>  
+  </span>
+</div>
+
+
+<div className="relative group mt-1">
+  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
+    {popularquizzes[3]?.quiz_description}
+  </span>
+  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
+    {popularquizzes[3]?.quiz_description}
+  </span>
+</div>
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "30px" }}
+                style={{ position:"relative",top:"65px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -3044,9 +3334,14 @@ const Dashboard = () => {
               </div>
             </div>
             <div className={styles.card} style={{ paddingTop: "10px" }}>
-              <span className={styles.title}>
+            <span className="relative group">
+                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
+                  {popularquizzes[4]?.quiz_name}
+                </span>
+                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                 {popularquizzes[4]?.quiz_name}
-              </span>
+                </span>
+                </span>
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
                   <svg
@@ -3107,23 +3402,41 @@ const Dashboard = () => {
                   )}
                 </div>
               </div>
-              <div className={styles.category}>
-                <span className={styles.category1}>
-                  {popularquizzes[4]?.category}
-                </span>
-                <p className=" px-[2px] font-normal">|</p>
-                <span className={styles.category1}>
-                  {popularquizzes[4]?.sub_category}
-                </span>
-              </div>
+              <div className="flex mt-5">
+  <span className="relative group">
+    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {popularquizzes[4]?.category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {popularquizzes[4]?.category}
+    </span>  
+  </span>
 
-              <div className={styles.description}>
-                <span>{popularquizzes[4]?.quiz_description}</span>
-              </div>
+  <p className="px-[2px] font-normal">|</p>
+  
+  <span className="relative group">
+    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {popularquizzes[4]?.sub_category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {popularquizzes[4]?.sub_category}
+    </span>  
+  </span>
+</div>
+
+
+<div className="relative group mt-1">
+  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
+    {popularquizzes[4]?.quiz_description}
+  </span>
+  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
+    {popularquizzes[4]?.quiz_description}
+  </span>
+</div>
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "25px" }}
+                style={{ position:"relative",top:"65px" }}
               >
                 <div
                   className={styles.infoIcon}
@@ -3178,9 +3491,14 @@ const Dashboard = () => {
               </div>
             </div>
             <div className={styles.card} style={{ paddingTop: "10px" }}>
-              <span className={styles.title}>
+            <span className="relative group">
+                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
+                  {popularquizzes[5]?.quiz_name}
+                </span>
+                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                 {popularquizzes[5]?.quiz_name}
-              </span>
+                </span>
+                </span>
               <div className={styles.iconContainer}>
                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
                   <svg
@@ -3241,23 +3559,41 @@ const Dashboard = () => {
                   )}
                 </div>
               </div>
-              <div className={styles.category}>
-                <span className={styles.category1}>
-                  {popularquizzes[5]?.category}
-                </span>
-                <p className=" px-[2px] font-normal">|</p>
-                <span className={styles.category1}>
-                  {popularquizzes[5]?.sub_category}
-                </span>
-              </div>
+              <div className="flex mt-5">
+  <span className="relative group">
+    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {popularquizzes[5]?.category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {popularquizzes[5]?.category}
+    </span>  
+  </span>
 
-              <div className={styles.description}>
-                <span>{popularquizzes[5]?.quiz_description}</span>
-              </div>
+  <p className="px-[2px] font-normal">|</p>
+  
+  <span className="relative group">
+    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+      {popularquizzes[5]?.sub_category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+      {popularquizzes[5]?.sub_category}
+    </span>  
+  </span>
+</div>
+
+
+<div className="relative group mt-1">
+  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
+    {popularquizzes[5]?.quiz_description}
+  </span>
+  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
+    {popularquizzes[5]?.quiz_description}
+  </span>
+</div>
 
               <div
                 className={styles.additionalInfo}
-                style={{ marginTop: "25px" }}
+                style={{ position:"relative",top:"65px" }}
               >
                 <div
                   className={styles.infoIcon}

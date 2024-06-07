@@ -29,7 +29,7 @@ const configure = () => {
             <h1 className='text-[16px] underline underline-offset-4 cursor-pointer font-medium hover:no-underline'>Notification</h1>
         </div>
        </div>
-       <LogoutBar />
+       <LogoutBar /> 
     </div>
   )
 }

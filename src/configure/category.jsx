@@ -43,7 +43,7 @@ const category = () => {
    <button className='bg-gray-700 rounded-3xl my-2 px-6  text-white'>Add</button> 
     </div> */}
 
-    <div className='flex mt-[150px] pl-[15px] items-center h-[50px] border bg-[#2a4e9c] text-white gap-[20px] text-nowrap mr-auto'>
+    <div className='w-fit flex mt-[150px] pl-[15px] items-center h-[50px] border bg-[#2a4e9c] text-white gap-[20px] text-nowrap mr-auto'>
       <div className='flex'>
         <h1>Category Id</h1>
         <img className=' w-[7px] ml-[10px] relative left-[25px]' src={Line}/>

@@ -146,7 +146,7 @@ border: none;
     padding-left: 10px;
     margin-left: 5px;
     position: relative;
-    top: 5px;
+    top: 15px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -321,6 +321,7 @@ text-align: left;
 .moreLink {
   color: black;
   cursor: pointer;
+  margin-left: auto;
   /* margin-right: -540px; */
   display: inline-flex;
 align-items: center;
@@ -557,8 +558,9 @@ padding-top: 10px;
 .additionalInfo {
   display: flex;
   flex-direction: column; 
-  position: sticky;
-  top: 50px;
+  position: relative;
+  /* top: 93px; */
+  right: 5px;
   /* margin-top: -80px; */
   margin-left: 170px;
   font-family: Poppins;
@@ -619,8 +621,10 @@ margin-top: -60px;
 
 .iconContainer {
   display: flex;
-  justify-content: space-between; 
-  margin-top: -18px;
+  justify-content: space-between;
+  position: relative; 
+  top: 25px;
+  margin-top: -20px;
   margin-left: 210px;
 }
 .iconContainers{

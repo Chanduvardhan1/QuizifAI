@@ -3,6 +3,29 @@
   display: flex;
   font-family: "Poppins";
 }
+.container1 {
+  display: flex;
+  flex-wrap: wrap;
+}
+.card {
+  width: 238px;
+  height: 130px;
+  background-color: #F5F5F5;
+  font-weight: 600 ;
+  margin-left: 25px;
+  font-size: 10px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  margin: auto;
+}
+.line-clamp-3 {
+  max-height: 4 * (1em + 2px); /* Height of three lines including line height and padding */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4; /* Number of lines to display */
+  -webkit-box-orient: vertical;
+}
+
  
 .searchIconContainer {
   position: relative;
@@ -42,20 +65,6 @@
   margin-top: 7px;
 display: flex;
 align-items: center;
-}
-
-.info {
-flex: 1;
-}
-
-.divider {
-width: 273.83px;
-height: 2px;
-margin-top: 10px;
-margin-bottom: 3px;
-margin-left: 20px;
-background-color: #DCDCE5;
-border: none;
 }
 
 .pageIcon {
@@ -227,56 +236,6 @@ padding-top: -3px;
   display: inline-flex;
 align-items: center;
 }
-.latestResult {
-  width: 368px;
-  height: 200px;
-  background-color:#FFFFFF;
-  margin: 20px;
-  border-radius: 20px;
-  padding-left: 10px;
-  padding-right: 10px;
-border-radius: 20px;
-box-shadow: 0px 4px 4px 0px #00000040;
-font-family: Poppins;
-font-size: 15px;
-font-weight: 500;
-line-height: 23px;
-letter-spacing: 0em;
-text-align: left;
-
-
-}
-.line{
-  padding-right: 5px;
-  padding-right: 5px;
-  font-weight: 400;
-}
-/* .quiztitle::after{
-@apply content-[''] bg-pink-500 h-[3px] w-[30px] rounded-lg left-[300px] absolute top-[440px]
-
-} */
-
-.timeSpent {
-  width: 346px;
-  height: 200px;
-  background-color: #FFFFFF;
-  margin: 20px;
-  margin-left: 5px;
-  margin-right: 30px;
-  border-radius: 20px;
-  border-radius: 20px;
-  box-shadow: 0px 4px 4px 0px #00000040;
-  padding-left: 10px;
-  padding-right: 10px;
-
-font-family: Poppins;
-font-size: 15px;
-font-weight: 500;
-line-height: 23px;
-letter-spacing: 0em;
-text-align: left;
-
-}
 
 
 .latestQuizHeader {
@@ -307,44 +266,18 @@ margin-left: 20px;
 
 }
 
-/*.latestResult {
-  width: 291px;
-  height: 156px;
-  background-color: #e0e0e0;
-  margin: 20px;
-}
-
-.timeSpent {
-  width: 366px;
-  height: 156px;
-  background-color: #e0e0e0;
-  margin: 20px;
-}*/
-
 .infoCards {
   display: flex;
   flex-wrap: wrap;
   margin-left: 10px; 
   margin-right: 15px;
+  justify-content: space-between;
 }
 .infoCards1{
   display: flex;
   flex-wrap: wrap;
   margin-left: 20px;
   background-color: #CFFCFF ;
-}
-
-.card {
-  width: 238px;
-  height: 130px;
-  background-color: #F5F5F5;
-  font-weight: 600 ;
-  margin: 5px;
-  margin-left: 13px;
-  font-size: 10px;
-  border-radius: 10px;
-  margin-right: 5px;
-  
 }
 
 
@@ -533,11 +466,114 @@ margin-top: -60px;
   height: 7px; 
   margin-left: 5px; 
 }
+.start{
+  transition-duration: 1s;
+  transition-timing-function: linear;
+}
+.start:hover{
+  background-color: #cccecf;
+}
+.startimage{
+  position: absolute;
+  height: 1px;
+  width: 1px;
+  left: 6px;
+  top: 4px;
+}
+.starttext{
+  font-size: 8px;
+  padding-left: 27px;
+  margin-left: -9px;
+  cursor: pointer;
+}
+.starttext:hover{
+  color: black;
+}
+.editimage{
+  position: absolute;
+  height: 10px;
+  width: 10px;
+  left: 14px;
+  margin-left: -8px;
+  top: 15px;
+ }
+ .edittext{
+   font-size: 8px;
+   margin-left: -18px;
+   position: absolute;
+   top: 15px;
+   left: 36px;
+   cursor: pointer;
+ }
+ .edittext:hover{
+   color: black;
+ }
+ .edit{
+   transition-duration: 1s;
+   transition-timing-function: linear; 
+ }
+ .edit:hover{
+   background-color: #cccecf;
+ }
+ .leaderboardimage{
+  height: 10px;
+  width: 10px;
+  position: absolute;
+  left: 14px;
+  top: 26px;
+  margin-left: -8px;
+}
+.leaderboardtext{
+  font-size: 8px;
+  margin-right: -18px;
+  position: absolute;
+  top: 26px;
+  left: 18px;
+  cursor: pointer;
+}
+.leaderboardtext:hover{
+  color: black;
+}
+.leaderboard{
+  transition-duration: 1s;
+  transition-timing-function: linear; 
+}
+.leaderboard:hover{
+  background-color: #cccecf;
+}
+.shareimage{
+  height: 10px;
+  width: 10px;
+  position: absolute;
+  left: 14px;
+  top: 37px;
+  margin-left: -8px;
+}
+.sharetext{
+  font-size: 8px;
+  margin-left: -18px;
+  position: absolute;
+  top: 37px;
+  left: 36px;
+  cursor: pointer;
+}
+.sharetext:hover{
+  color: black;
+}
+.share{
+  transition-duration: 1s;
+  transition-timing-function: linear; 
+}
+.share:hover{
+  background-color: #cccecf;
+}
 
 .iconContainer {
   display: flex;
-  justify-content: space-between; 
-  margin-top: -18px;
+  justify-content: space-between;
+  position: relative; 
+  top: 25px;
+  margin-top: -20px;
   margin-left: 210px;
 }
 .iconContainers{
@@ -546,53 +582,4 @@ margin-top: -60px;
   border-radius: 10px;
 }
 
-.iconContainer img {
-  width: 8px; 
-  height: 8px; 
-  margin-right: 3px;
 
-}
-
-.progressBar{
-display: flex;
-flex-wrap: wrap;
-justify-content: space-between;
-margin-left: "40px";
-}
-
-.progressBarItem {
-position: relative; 
-width: calc(14% - 10px); 
-margin-bottom: 20px;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-}
-
-.day {
-margin-bottom: 10px;
-margin-top: 10px;
-font-size: 9px; 
-font-weight: bold; 
-color: #9696BB;
-
-}
-
-.progress {
-position: relative; 
-width: 3px;
-height: 90px; 
-background-color: #ddd; 
-border-radius: 5px; 
-margin-left: 5px;
-overflow: hidden; 
-}
-
-.progressFill {
-position: absolute; 
-bottom: 0; 
-left: 0; 
-width: 100%; 
-background-color: #214082; 
-}

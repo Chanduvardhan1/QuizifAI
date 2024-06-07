@@ -15,17 +15,7 @@ import notificationsettings from "../assets/Images/images/dashboard/notification
 import profileimg from "../assets/Images/images/profile/profileImage.png";
 import rankingimg from "../assets/Images/images/profile/ranking.png";
 import infoIcon from "../assets/Images/images/dashboard/infoIcon.png";
-import topicIcon from "../assets/Images/images/dashboard/topicNew.png";
-import timerIcon from "../assets/Images/images/dashboard/timerNew.png";
-import difficultyIcon from "../assets/Images/images/dashboard/difficultyLevelNew.png";
-import img1Icon from "../assets/Images/images/dashboard/img1New.png";
-import notifyIcon from "../assets/Images/images/dashboard/notify.png";
-import img2Icon from "../assets/Images/images/dashboard/img2New.png";
-import img3Icon from "../assets/Images/images/dashboard/img3New.png";
-import img4Icon from "../assets/Images/images/dashboard/newImg4.png";
-import img5Icon from "../assets/Images/images/dashboard/img5New.png";
-import todayTopicIcon from "../assets/Images/images/dashboard/todayTopic.png";
-import subTopicIcon from "../assets/Images/images/dashboard/subTopic.png";
+
 import infoph from "../assets/Images/images/profile/infoPh.png";
 import EmailIcon from "../assets/Images/images/email/mail.png";
 import GmailIcon from "../assets/Images/images/profile/icongmail.png";
@@ -90,6 +80,13 @@ const FreeProfile = () => {
   const handleButtonClick = (buttonName) => {
     setSelectedButton(buttonName);
     setInputValue(buttonName);
+  };
+  const handlePostalCodeChange = (e) => {
+    const value = e.target.value;
+    // Allow only digits and limit to 6 characters
+    if (/^\d{0,6}$/.test(value)) {
+      setPostalCode(value);
+    }
   };
 
   const handleDateChange =(e) =>{
@@ -277,7 +274,7 @@ const FreeProfile = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [responseData, setResponseData] = useState(null);
 
-  const handleSubmit1 = async (e) => {
+  const handleSearchClick = async (e) => {
     e.preventDefault();
 
     try {
@@ -308,10 +305,12 @@ const FreeProfile = () => {
         Array.isArray(data.data[0]) &&
         data.data[0].length > 0
       ) {
-        setstatename(data.data[0][0].Statename);
-        setcountryname(data.data[0][0].country_name);
-        setCity(data.data[0][0].Cityname);
-
+        setstatename(data.data[0][0].Statename || '');
+        setcountryname(data.data[0][0].country_name || '');
+        setCity(data.data[0][0].Cityname || '');
+        setErrorMessage('');
+      }else{
+        setErrorMessage("No data found for the given postal code");
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -644,7 +643,7 @@ const FreeProfile = () => {
           </div>
 
 
-          <div className={styles.inputRow}>
+      <div className={styles.inputRow}>
           <div className={styles.inputGroup}>
               <TextField
                 type="text"
@@ -652,8 +651,7 @@ const FreeProfile = () => {
                 label="Postal code"
                 variant="outlined"
                 value={postalCode}
-                onChange={(e) => setPostalCode(e.target.value)}
-
+                 onChange={handlePostalCodeChange}
                 InputLabelProps={{
           style: { fontFamily: "poppins",marginLeft:"-18px" },
         }}
@@ -676,9 +674,9 @@ const FreeProfile = () => {
             height: "44px",
           }}
       />
-               <div
+               <button
                     className={styles.searchicon}
-                    onClick={handleSubmit1}
+                    onClick={handleSearchClick}
                     style={{
                       backgroundImage: `url('images/signup/LineIcon.png'),url('images/signup/searchIcon.png')`,
                       backgroundRepeat: "no-repeat",
@@ -687,12 +685,11 @@ const FreeProfile = () => {
                       right: "-100px",
                       top:"-32px",
                       position: "relative",
-                      // border: "1px solid #c2c2c2",
                       backgroundPosition:
                         "0px center, right 10px center, right 40px center",
                       cursor: "pointer",
                     }}
-                  ></div>
+                  ></button>
             </div>
             <div className={styles.inputGroup} style={{marginLeft:"20px"}}>
               <TextField
@@ -701,7 +698,7 @@ const FreeProfile = () => {
                 variant="outlined"
                 label="City Name"
                 value={city}
-                onChange={(e) => setCity(e.target.value)}
+                // onChange={(e) => setCity(e.target.value)}
                 InputLabelProps={{
                   style: { fontFamily: "poppins",marginTop:"-10px",marginLeft:"13px" },
                 }}
@@ -725,7 +722,7 @@ const FreeProfile = () => {
                   width: "150px", // Apply styles directly using sx
                   height: "44px",
                 }}
-              />
+              >
               {/* <option value=""  disabled selected>District</option> */}
                {responseData &&
                             responseData.data &&
@@ -741,6 +738,7 @@ const FreeProfile = () => {
                                 {districtName}
                               </MenuItem>
                             ))}
+                  </TextField>          
             </div>
            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
 
@@ -813,7 +811,6 @@ const FreeProfile = () => {
                     height: "45px",
                     border: "none",
                     fontFamily: "poppins",
-                    // fontSize: "13px",
                     borderRadius: "10px",
                     marginLeft: "-20px",
                     marginTop: "-20px",
@@ -826,7 +823,7 @@ const FreeProfile = () => {
                   width: "150px", // Apply styles directly using sx
                   height: "44px",
                 }}
-              />
+              >
               {/* <option value=""  disabled selected>Country</option> */}
               {responseData &&
                               responseData.data &&
@@ -842,6 +839,7 @@ const FreeProfile = () => {
                                   {countryName}
                                 </MenuItem>
                               ))}
+                </TextField>
             </div>
             <div className={styles.inputGroup}>
             <input

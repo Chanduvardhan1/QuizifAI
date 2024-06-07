@@ -1476,8 +1476,8 @@ const Dashboard = () => {
               { latestquizzes && latestquizzes[5] ?(
               <div className={styles.card} style={{ paddingTop: "8px" }}>
                <span className="relative group">
-                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
-                  {latestquizzes[5]?.quiz_name}
+                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[200px] cursor-pointer z-0 truncate underline underline-offset-2">
+                 {latestquizzes[5]?.quiz_name}
                 </span>
                 <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                 {latestquizzes[5]?.quiz_name}
@@ -1562,8 +1562,8 @@ const Dashboard = () => {
   <p className="px-[2px] font-normal">|</p>
   
   <span className="relative group">
-    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {latestquizzes[5]?.sub_category}
+    <span className="mt-4 w-[100px] border cursor-pointer z-0 truncate text-[9px] font-normal">
+      {latestquizzes[5]?.sub_category} 
     </span>
     <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
       {latestquizzes[5]?.sub_category}

@@ -945,7 +945,7 @@ if (isAnyFieldEmpty) {
         <div className="absolute top-[30px] left-[1260px] cursor-pointer " onClick={Back}><MdOutlineCancel /></div>
 
         {!showRegistrationSuccess && (
-          <main className="w-max-auto">
+          <main className="w-max-auto mt-[100px]">
             <div className="w-[844px] h-[48px] absolute top-[30px] left-[161px] rounded-[10px] bg-[#FCE7E7] z-0">
               <h1 className="font-Poppins font-semibold text-[25px] leading-[37.5px] text-[#555555] flex justify-center items-center mt-2 ml-20">
                 Configure and click next to import your pdf file

@@ -55,12 +55,12 @@
       flex-direction: column;
       margin-left: 70px;
     
-      background: linear-gradient(
+      /* background: linear-gradient(
       0deg,
       rgba(206, 228, 255, 0.5) -23.93%,
       rgba(226, 239, 255, 0.5) 43.85%,
       rgba(238, 246, 255, 0.5) 97.11%
-    );
+    ); */
       
       padding: 20px;
       
@@ -394,29 +394,32 @@
   }
 
   .boxContainer1{
-    position: relative;
-    width: 471px;
-height: 582px;
+    /* position: relative; */
+     width: 625px;
+/* height: 582px; */ 
 
 margin-left: 70px;
 gap: 0px;
 border-radius: 20px;
 opacity: 0px;
-/* background: #FFFFFF; */
-/* box-shadow: 0px 4px 4px 0px #00000040; */
+background: #FFFFFF;
+box-shadow: 0px 4px 4px 0px #00000040;
+border-bottom: 1px solid #ccc;
 display: flex;
-  justify-content: center;
-  
+flex-direction: column;
+border: 1px solid #ccc;
   }
 
   .title {
     /* Style your title */
     font-family: Poppins;
-font-size: 20px;
-font-weight: 500;
-line-height: 30px;
-text-align: center;
-margin-left: -50px;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 30px;
+    text-align: center;
+    /* margin-left: -50px; */
+    display: flex;
+    justify-content: center;
 
 
   }
@@ -440,21 +443,28 @@ margin-left: -50px;
     height: 117px;
     
   }
-  .innerBox3 img{
+  /* .innerBox3 img{
     width: 122px;
     height: 70px;
     
+  } */
+
+  .innerBox3{
+    display: flex;
+    /* justify-content: end; */
+    align-items: end;
   }
   .titles {
 
   
-    margin-left: 150px;
+    /* margin-left: 150px; */
   }
   
   .ranksiconsContainer {
     display: flex;
-    justify-content: space-around;
-
+  
+    justify-content: center;
+    gap: 50px;
     
   }
   
@@ -462,36 +472,37 @@ margin-left: -50px;
     width: 68px;
     height: 68px;
     z-index: 1;
-    position: relative; 
+    position: relative;
+    top: 25px;
+    /* position: relative; 
     margin-top: 125px;
     margin-left: -232px;
-    right: 5px;
+    right: 5px; */
   }
   
   .rankicon2 {
     width: 82px;
     height: 82px;
     z-index: 1;
-    position: relative; 
+    /* position: relative; 
     margin-left: 50px;
     margin-top: 100px;
-    right: 7px;
+    right: 7px; */
   }
   .firstRank {
     
-    position: absolute;
-    width:34px;
-    height: 26px;
-    top: 75px;
-    left: 215px;
+    display: flex;
+    justify-content: center;
   }
   .rankicon3 {
     width: 68px;
     height: 68px;
     z-index: 1;
-    position: relative; 
+    position: relative;
+    top: 42px;
+    /* position: relative; 
     margin-top: 150px;
-    margin-left: 40px;
+    margin-left: 40px; */
   }
   
   .textOverImage {
@@ -518,15 +529,18 @@ margin-left: -50px;
     font-size: 14px;
     font-weight: 500;
   }
-  
+  .mainContent1{
+    display: flex;
+  }
   .columns {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-left: 100px;
-    margin-top: -300px;
+    /* margin-left: 100px; */
+    /* margin-top: -300px; */
     z-index: 1;
-    gap: 10px;
+    gap: 15px;
+    justify-content: center;
   }
   
   .column {
@@ -558,12 +572,12 @@ height: 23px;
   .values {
     display: flex;
     justify-content: space-between;
-    width: 47%;
+    /* width: 47%; */
     margin-bottom: 5px;
-    border-bottom: 1px solid #ddd;
+    /* border-bottom: 1px solid #ddd; */
     padding: 10px;
     z-index: 1;
-    margin-left: 59px;
+    /* margin-left: 59px; */
   }
   
   .value {
@@ -751,8 +765,8 @@ text-align: left;
   }
 
   .boticon{
-    margin-left: 720px;
-    margin-top: -714px;
+    /* margin-left: 720px;
+    margin-top: -714px; */
     width: 471px;
     height: 549px;
   }
@@ -768,8 +782,8 @@ text-align: left;
   }
   
   .textOverImage1 {
-    margin-top: -70px;
-    margin-left: 136px;
+    margin-top: 0px;
+    margin-left: 482px;
   }
   
   .textOverImage2 {
@@ -785,3 +799,7 @@ text-align: left;
     font-size: 12px;
   }
   
+ .innerBoxes1{
+  display: flex;
+  justify-content: center;
+ } 

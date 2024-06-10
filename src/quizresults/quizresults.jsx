@@ -8,7 +8,7 @@ import descriptionIcon from "../../src/assets/Images/images/quiz-Access/descript
 import percentIcon from "../../src/assets/Images/images/quiz-Access/percent.png"; 
 import titleIcon from "../../src/assets/Images/images/quiz-Access/title.png";
 import categoryIcon from "../../src/assets/Images/images/quiz-Access/category.png";
-import timeIcon from "../../src/assets/Images/images/quiz-Access/time.png";
+import timeIcon from "../../src/assets/Images/images/quizresults/Layer_1.png";
 import ranksIcon from "../../src/assets/Images/images/quizresults/ranks.png"; 
 import rank1Icon from "../../src/assets/Images/images/quizresults/rank1.png";
 import rank2Icon from "../../src/assets/Images/images/quizresults/rank2.png";
@@ -34,40 +34,61 @@ import four4Icon from "../../src/assets/Images/images/quizview/four4.png";
 import { useLocation } from 'react-router-dom';
 import { MdOutlineCancel } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
-
-
+import fistrank from '../../src/assets/Images/images/quizresults/FirstRank.png'
+import current from "../../src/assets/Images/images/quizresults/Vector.png"
+import vector from "../../src/assets/Images/images/quizresults/icon-park_check-correct.png"
 const quizresults = () => {
   const [quizData, setQuizData] = useState(null);
+  const [quizData1, setQuizData1] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const location = useLocation();
   const { quizId, attemptNo } = location.state || {};
   const [leaderboardData, setLeaderboardData] = useState([]);
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   const userId = localStorage.getItem("user_id");
+ 
+  const optionLabels = {
+    option1: 'A',
+    option2: 'B',
+    option3: 'C',
+    option4: 'D'
+  };
 
-  //   const fetchQuizReport = async () => {
-  //     try {
-  //       const response = await fetch('https://quizifai.com:8010/quiz_report', {
-  //         method: 'POST',
-  //         headers: {
-  //           'accept': 'application/json',
-  //           'Content-Type': 'application/json'
-  //         },
-  //         body: JSON.stringify({
-  //           quiz_id: quizId,
-  //           user_id: userId,
-  //           attempt_no: attemptNo
-  //         })
-  //       });
-  //       const data = await response.json();
-  //       setQuizData(data.data);
-  //     } catch (error) {
-  //       console.error('Error fetching quiz report:', error);
-  //     }
-  //   };
+ useEffect(() => {
+    const userId = localStorage.getItem("user_id");
 
-  //   fetchQuizReport();
-  // }, [quizId, attemptNo]);
+    const fetchQuizReport = async () => {
+      try {
+        const response = await fetch('https://quizifai.com:8010/quiz_report', {
+          method: 'POST',
+          headers: {
+            'accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            quiz_id: quizId,
+            user_id: userId,
+            attempt_no: attemptNo
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setQuizData1(data.data);
+      } catch (error) {
+        console.error('Error fetching quiz report:', error);
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQuizReport();
+  }, [quizId, attemptNo]);
+
 
   useEffect(() => {
     const fetchLeaderboardData = async () => {
@@ -132,12 +153,23 @@ const quizresults = () => {
   if (!quizData) {
     return <div>Loading...</div>;
   }
+  if (loading) {
+      return <div>Loading...</div>;
+    }
+  
+    if (error) {
+      return <div>Error loading quiz data: {error.message}</div>;
+    }
+  
+    if (!quizData1 || !quizData1.questions) {
+      return <div>No quiz data available</div>;
+    }
   const Back = () => {
     
    /* fetch or store quizId */;
-  navigate(`/quizquestions/${quizId}`);
+  navigate(`/dashboard`);
 };
-  const questions = quizData.questions;
+  const questions = quizData1.questions;
   const topThree = leaderboardData.slice(0, 3);
 
   return (
@@ -239,7 +271,7 @@ const quizresults = () => {
       <div className={styles.sentencesContainer}>
         <div className={styles.sentence}>
         <img
-    src={dateIcon}
+    src={current}
     alt="Calendar Icon"
     className={styles.icon2}
   />
@@ -259,7 +291,7 @@ const quizresults = () => {
         </div>
         <div className={styles.sentence1}>
         <img
-    src={dateIcon} 
+    src={vector} 
     alt="Calendar Icon"
     className={styles.icon2}
   />
@@ -282,7 +314,9 @@ const quizresults = () => {
           <div className={styles.titles}>
         <p className={styles.title}>Leaderboard</p>
         </div>
-        
+        <div className={styles.fistrank}>
+          <img src={fistrank} alt="" style={{width:"60px",height:"52px"}} />
+        </div>
         <div className={styles.ranksiconsContainer}>
         <img
     src={rank1Icon} 
@@ -301,32 +335,32 @@ const quizresults = () => {
     className={styles.rankicon3}
   />
         </div>
-        {/* <div className={styles.innerBoxes}>
-        <div className={styles.innerBox1} style={{width:"122px", height:"93px", marginTop:"150px", marginLeft:"-200px"}}>
+        <div className={styles.innerBoxes1}>
+        <div className={styles.innerBox1} style={{width:"122px", height:"93px",}}>
         <img
     src={greybox1Image} 
     alt="img 1"
   />
-            <span className={styles.textOverImage} style={{marginTop:"-40px", marginLeft:"50px"}}>Username<br></br>99.5</span>
+            {/* <span className={styles.textOverImage} style={{marginTop:"-40px", marginLeft:"50px"}}>Username<br></br>99.5</span> */}
             
           </div>
-          <div className={styles.innerBox2} style={{width:"122px", height:"93px", marginTop:"-117px", marginLeft:"40px"}}>
+          <div className={styles.innerBox2} style={{width:"122px", height:"118px", marginbottom:"23px"}}>
           <img
     src={greybox2Image} 
     alt="img 1"
   />
-            <span className={styles.textOverImage1}>Username<br></br>100</span>
+            {/* <span className={styles.textOverImage1}>Username<br></br>100</span> */}
           </div>
-          <div className={styles.innerBox3} style={{width:"122px", height:"93px", marginTop:"-45px", marginLeft:"280px"}}>
+          <div className={styles.innerBox3} style={{width:"122px", height:"93px",}}>
           <img
     src={greybox3Image} 
     alt="img 1"
   />
-            <span className={styles.textOverImage2}>Username<br></br>99</span>
+            {/* <span className={styles.textOverImage2}>Username<br></br>99</span> */}
           </div>
-        </div> */}
+        </div> 
         
-        </div>
+        
         {/* <div  className={styles.columns1}>
         {/* <div className={styles.columns}>
     <span className={styles.column}>Rank</span>
@@ -351,24 +385,24 @@ const quizresults = () => {
     <div>
       <div className={styles.innerBoxes}>
         {topThree.map((entry, index) => {
-          const boxStyles = [
-            { width: "122px", height: "93px", marginTop: "-115px", marginLeft: "-715px" },
-            { width: "122px", height: "93px", marginTop: "-140px", marginLeft: "-470px" },
-            { width: "122px", height: "93px", marginTop: "-93px", marginLeft: "-226px" }
-          ];
+          // const boxStyles = [
+          //   { width: "122px", height: "93px",  },
+          //   { width: "122px", height: "118px", marginbottom:"23px"},
+          //   { width: "122px", height: "93px", }
+          // ];
           
-          const textStyles = [
-            { marginTop: "0px", marginLeft: "0px" },
-            {},
-            {}
-          ];
+          // const textStyles = [
+          //   {},
+          //   {},
+          //   {}
+          // ];
 
-          const images = [greybox1Image, greybox2Image, greybox3Image];
+          // const images = [greybox1Image, greybox2Image, greybox3Image];
 
           return (
-            <div key={entry.rank} className={styles[`innerBox${index + 1}`]} style={boxStyles[index]}>
-              <img src={images[index]} alt={`img ${index + 1}`} />
-              <span className={styles[`textOverImage${index + 1}`]} style={textStyles[index]}>
+            <div key={entry.rank}  >
+              {/* <img src={images[index]} alt={`img ${index + 1}`} /> */}
+              <span className={styles[`textOverImage${index + 1}`]} >
                 {entry.user_name}<br />{entry.attained_percentage}
               </span>
             </div>
@@ -382,7 +416,7 @@ const quizresults = () => {
     <span className={styles.column}>Attempts</span>
     <span className={styles.column}>Duration</span>
   </div>
-      {leaderboardData.slice(3,10).map((entry, index) => (
+      {leaderboardData.slice(0,10).map((entry, index) => (
         <div key={entry.rank} className={styles.values}>
           <div className={styles.value}>{entry.rank}</div>
           <div className={styles.value}>{entry.user_name}</div>
@@ -392,9 +426,67 @@ const quizresults = () => {
         </div>
       ))}
     </div>
+    </div>
     <div className={styles.boxContainer}>
       <div className={styles.parentContainer}>
-     
+      {questions.map((question, index) => (
+        <div className={styles.sentencesContainer1} style={{ marginLeft: "30px", marginTop: "40px", height:"220px" }} key={index}>
+          <div className={styles.sentence}>
+            {/* <img
+              src={one1Image} // Replace with dynamic image selection if needed
+              alt="Calendar Icon"
+              className={styles.icon2}
+            /> */}
+             <span style={{ color: "#F4774B" }}>{index + 1}. {question.question_text}</span>
+            <span className={styles.iconContainer}>
+              <img
+                src={question.selected_option === question.correct_option ? rightIcon : wrongIcon}
+                alt="Result Icon"
+                className={styles.righticon}
+              />
+            </span>
+          </div>
+
+          {Object.keys(question.options).map((optionKey, idx) => {
+            const optionText = question.options[optionKey];
+            const isSelected = optionText === question.selected_option;
+            const isCorrect = optionText === question.correct_option;
+
+            return (
+              <div className={styles.box} key={idx} style={{ backgroundColor: isCorrect ? '#A9FFB7' : isSelected ? '#FFB7B7' : 'white' }}>
+                <div className={styles.iconA}>
+                  {/* <img
+                    src={optionKey === 'optionA' ? iconA : optionKey === 'optionB' ? iconB : optionKey === 'optionC' ? iconC : iconD}
+                    alt={`Icon ${idx + 1}`}
+                    width={15}
+                    height={15}
+                  /> */}
+                  <span className={styles.iconText}>{optionLabels[optionKey]}. {optionText}</span>
+                </div>
+              </div>
+            );
+          })}
+
+<span className={styles.newContainer}>
+            <span className={styles.iconContainer}>
+              <img
+                src={answerTimerIcon}
+                alt="Answer Timer Icon"
+                className={styles.icon5}
+              />
+              <img
+                src={question.selected_option === question.correct_option ? rightIcon1 : wrongIcon1}
+                alt="Answer Icon"
+                className={styles.icon6}
+              />
+            </span>
+            <span className={styles.textContainer}>
+              {/* <p>Answered in 53 Sec</p> */}
+              <p>{question.selected_option === question.correct_option ? 'Correct Answer' : 'Wrong Answer'}</p>
+            </span>
+          </span>
+        </div>
+      ))}
       </div>
     </div>
       

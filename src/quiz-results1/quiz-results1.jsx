@@ -40,11 +40,14 @@ import botIcon from "../assets/Images/images/quizview/bot.png";
 import publicIcon from "../assets/Images/images/quizview/public.png";
 import startIcon from "../assets/Images/images/quiz-Access/start.png";
 import LeftBar from "../leftbar/leftbar";
+import { useLocation } from 'react-router-dom';
 
 const Questions = () => {
+  const location = useLocation();
+  const { quizId } = location.state || {};
   const [leaderboardData, setLeaderboardData] = useState([]);
+  
   useEffect(() => {
-    const quizId = localStorage.getItem("quiz_id");
     const fetchData = async () => {
       try {
         const response = await fetch('https://quizifai.com:8010/leaderboard_result', {
@@ -70,10 +73,12 @@ const Questions = () => {
       }
     };
 
-    fetchData();
-  }, []);
+    if (quizId) {
+      fetchData();
+    }
+  }, [quizId]);
 const topThree = leaderboardData.slice(0, 3);
-  const remaining = leaderboardData.slice(3,10);
+  const remaining = leaderboardData.slice(0,10);
 
   return (
     <div className={styles.container}>
@@ -85,18 +90,45 @@ const topThree = leaderboardData.slice(0, 3);
   </Head>*/}
       <LeftBar/>
       <div className={styles.mainContent}>
-       
+       <div className={styles.mainContent1}>
         <div className={styles.boxContainer1}>
 
         <div className={styles.titles}>
         <p className={styles.title}>Leaderboard</p>
         </div>
+        <div className={styles.firstRank}>
+        <img src={FirstRank} alt="First Rank" style={{width:"60px",height:"52px"}} />
+        </div>
         <div className={styles.ranksiconsContainer}>
           <img src={rank1Icon} alt="Icon 1" className={styles.rankicon1} />
-          <img src={FirstRank} alt="First Rank" className={styles.firstRank} />
+      
           <img src={rank2Icon} alt="" className={styles.rankicon2} />
           <img src={rank3Icon} alt="Rank 3 Icon" className={styles.rankicon3} />
         </div>
+        <div className={styles.innerBoxes1}>
+        <div className={styles.innerBox1} style={{width:"122px", height:"93px",}}>
+        <img
+    src={greybox1Image} 
+    alt="img 1"
+  />
+            {/* <span className={styles.textOverImage} style={{marginTop:"-40px", marginLeft:"50px"}}>Username<br></br>99.5</span> */}
+            
+          </div>
+          <div className={styles.innerBox2} style={{width:"122px", height:"118px", marginTop:"-24px",}}>
+          <img
+    src={greybox2Image} 
+    alt="img 1"
+  />
+            {/* <span className={styles.textOverImage1}>Username<br></br>100</span> */}
+          </div>
+          <div className={styles.innerBox3} style={{width:"122px", height:"93px",}}>
+          <img
+    src={greybox3Image} 
+    alt="img 1"
+  />
+            {/* <span className={styles.textOverImage2}>Username<br></br>99</span> */}
+          </div>
+        </div> 
         <div className={styles.innerBoxes}>
         {topThree.map((item, index) => (
             <div
@@ -109,10 +141,10 @@ const topThree = leaderboardData.slice(0, 3);
                 marginLeft: index === 0 ? "-200px" : index === 1 ? "40px" : "280px"
               }}
             >
-              <img
+              {/* <img
                 src={index === 0 ? greybox1Image : index === 1 ? greybox2Image : greybox3Image}
                 alt={`img ${index + 1}`}
-              />
+              /> */}
               <span
                 className={styles[`textOverImage${index + 1}`]}
                 style={{ width: "100px" }}
@@ -125,7 +157,7 @@ const topThree = leaderboardData.slice(0, 3);
         </div>
        
         
-        </div>
+      
         <div className={styles.columns}>
     <span className={styles.column}>Rank</span>
     <span className={styles.column}>User Name</span>
@@ -143,7 +175,8 @@ const topThree = leaderboardData.slice(0, 3);
           <div className={styles.value}>{item.attempt_duration_mins}</div>
         </div>
       ))}
-        
+          </div>
+          <div>
   <span className={styles.boticonContainer}>
   <img
     src={bot2Icon} 
@@ -151,6 +184,8 @@ const topThree = leaderboardData.slice(0, 3);
     className={styles.boticon}
   />
   </span>
+  </div>
+  </div>
   {/* <div className={styles.header}>
         <div className={styles.titleContainer}>
         <img

@@ -261,6 +261,7 @@ line-height: 30px;
 letter-spacing: 0em;
 text-align: left;
 margin-left: 20px;
+color: #002366;
 
 }
 
@@ -319,12 +320,13 @@ text-align: left;
 }
 
 .moreLink {
-  color: black;
+  color: #EF5130;
   cursor: pointer;
+  font-size: 12px;
   margin-left: auto;
-  /* margin-right: -540px; */
   display: inline-flex;
 align-items: center;
+margin-right: 20px;
 user-select: none;
 }
 .moreLink:hover{
@@ -335,7 +337,7 @@ user-select: none;
 
 .completionInfo {
   width: 732px;
-  height: 50px;
+  height: 41px;
   background-color: #e0e0e0;
   margin: 20px;
   margin-left: 30px;
@@ -380,7 +382,7 @@ padding-left: 20px;
   justify-content: space-between;
   align-items: center;
   margin: 0 15px ; 
-  margin-left: 45px;
+  margin-left: 40px;
   font-family: Poppins;
 font-size: 15px;
 font-weight: 500;
@@ -617,6 +619,31 @@ margin-top: -60px;
   width: 12px; 
   height: 7px; 
   margin-left: 5px; 
+}
+.container1 {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 20px;
+}
+
+.card {
+  width: 240px;
+  height: 130px;
+  background-color: #F5F5F5;
+  font-weight: 600 ;
+  font-size: 10px;
+  margin-top: 15px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  margin: auto;
+}
+
+.line-clamp-3 {
+  max-height: 4 * (1em + 2px); /* Height of three lines including line height and padding */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4; /* Number of lines to display */
+  -webkit-box-orient: vertical;
 }
 
 .iconContainer {

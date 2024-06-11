@@ -137,8 +137,7 @@ const topThree = leaderboardData.slice(0, 3);
               style={{
                 width: "122px",
                 height: "93px",
-                marginTop: index === 0 ? "150px" : index === 1 ? "-117px" : "-45px",
-                marginLeft: index === 0 ? "-200px" : index === 1 ? "40px" : "280px"
+      
               }}
             >
               {/* <img

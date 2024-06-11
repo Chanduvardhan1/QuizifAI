@@ -36,37 +36,44 @@ const  [isActiveConfig, setIsActiveConfig] = useState(false);
  const [iconSchedule, setIconSchedule] = useState(scheduleIcon);
  const [iconProfile, setProfile] = useState(profileIcon);
 
+ const [activePage, setActivePage] = useState('dashboard');
+
+
   const navigate = useNavigate();
 
   const handleBackToHome = () => {
     navigate("/");
   };
-
-  const handleNavigation = () => {
-    setIconDashboard(dashboardIcon);
-    navigate(('/dashboard'));
-    setIsActive(true);
+  const handleNavigation = (page) => {
+    setActivePage(page);
+    navigate(`/${page}`);
   };
+  // const handleNavigation = () => {
+  //   setIconDashboard(dashboardIcon);
+  //   navigate(('/dashboard'));
+  //   // setIsActive(true);
+  //   setActivePage('dashboard');
+  // };
 
-  const handleNavigation1 =() =>{
-  setIconQuizzez(NewQuizzes);
-  setIsActiveQuizzes(true);
-   navigate('/quiz');
-  };
-  const handleNavigation2 =() =>{
-    setIconSchedule(NewSchedule);
-    setIsActiveSchedule(true);
-     navigate('/schedule');
-    };
-  const handleNavigation3 =() =>{
-    setProfile(NewProfile);
-    setIsActiveProfile(true);
-    navigate('/free-profile');
-      };
-   const handleNavigation4 =() =>{
-    setIsActiveConfig(true);
-    navigate('/configure');
-   }    
+  // const handleNavigation1 =() =>{
+  // setIconQuizzez(NewQuizzes);
+  // setIsActiveQuizzes(true);
+  //  navigate('/quiz');
+  // };
+  // const handleNavigation2 =() =>{
+  //   setIconSchedule(NewSchedule);
+  //   setIsActiveSchedule(true);
+  //    navigate('/schedule');
+  //   };
+  // const handleNavigation3 =() =>{
+  //   setProfile(NewProfile);
+  //   setIsActiveProfile(true);
+  //   navigate('/free-profile');
+  //     };
+  //  const handleNavigation4 =() =>{
+  //   setIsActiveConfig(true);
+  //   navigate('/configure');
+  //  }    
 
   /*const router = useRouter();
 
@@ -105,41 +112,28 @@ const  [isActiveConfig, setIsActiveConfig] = useState(false);
         height={160}
         className={styles.dashboardLogo}
       />
-      <div className={styles.pageList}>
-        <div className={styles.pageItem} onClick={handleNavigation}>
-          <img src={iconDashboard} alt="Icon 1" className={styles.pageIcon} />
-          <div className={`${styles.verticalline} ${isActive ? styles.active : ''}`}></div>
-          <span className={styles.pageLink} >Dashboard</span>
-        </div>
-        <div className={styles.pageItem} onClick={handleNavigation1}>
-          <img src={iconQuizzez} alt="Icon 2" className={styles.pageIcon} />
-          <div className={`${styles.verticalline} ${isActiveQuizzes ? styles.active : ''}`}></div>
-          <span className={styles.pageLink}>Quizzes</span>
-        </div>
-        {/* <div className={styles.pageItem} onClick={() => handleNavigation('/history')}>
-          <img src={historyIcon} alt="Icon 1" className={styles.pageIcon} />
-          <span className={styles.pageLink} >History</span>
-        </div> */}
-        {/* <div className={styles.pageItem}  onClick={handleNavigation2}>
-          <img src={iconSchedule} alt="Icon 2" className={styles.pageIcon} />
-          <div className={`${styles.verticalline} ${isActiveSchedule ? styles.active : ''}`}></div>
-          <span className={styles.pageLink} >Schedule</span>
-        </div> */}
-        {/* <div className={styles.pageItem} onClick={() => handleNavigation('/notification')}>
-          <img src={notificationIcon} alt="Icon 1" className={styles.pageIcon} />
-          <span className={styles.pageLink}>Notification</span>
-        </div> */}
-        <div className={styles.pageItem} onClick={handleNavigation3}>
-          <img src={iconProfile} alt="Icon 2" className={styles.pageIcon} />
-          <div className={`${styles.verticalline} ${isActiveProfile ? styles.active : ''}`}></div>
-          <span className={styles.pageLink} >Profile</span>
-        </div>
-        <div className={styles.pageItem} onClick={handleNavigation4}>
-          <img src={configure} alt="Icon 2" className={styles.pageIcon} />
-          <div className={`${styles.verticalline} ${isActiveConfig ? styles.active : ''}`}></div>
-          <span className={styles.pageLink} >Settings</span>
-        </div>
+       <div className={styles.pageList}>
+      <div className={`${styles.pageItem} ${activePage === 'dashboard' ? styles.active : ''}`} onClick={() => handleNavigation('dashboard')}>
+        <img src={iconDashboard} alt="Icon 1" className={styles.pageIcon} />
+        <div className={`${styles.verticalline} ${activePage === 'dashboard' ? styles.active : ''}`}></div>
+        <span className={styles.pageLink}>Dashboard</span>
       </div>
+      <div className={`${styles.pageItem} ${activePage === 'quizzes' ? styles.active : ''}`} onClick={() => handleNavigation('quiz')}>
+        <img src={iconQuizzez} alt="Icon 2" className={styles.pageIcon} />
+        <div className={`${styles.verticalline} ${activePage === 'quizzes' ? styles.active : ''}`}></div>
+        <span className={styles.pageLink}>Quizzes</span>
+      </div>
+      <div className={`${styles.pageItem} ${activePage === 'profile' ? styles.active : ''}`} onClick={() => handleNavigation('free-profile')}>
+        <img src={iconProfile} alt="Icon 2" className={styles.pageIcon} />
+        <div className={`${styles.verticalline} ${activePage === 'profile' ? styles.active : ''}`}></div>
+        <span className={styles.pageLink}>Profile</span>
+      </div>
+      <div className={`${styles.pageItem} ${activePage === 'settings' ? styles.active : ''}`} onClick={() => handleNavigation('configure')}>
+        <img src={configure} alt="Icon 2" className={styles.pageIcon} />
+        <div className={`${styles.verticalline} ${activePage === 'settings' ? styles.active : ''}`}></div>
+        <span className={styles.pageLink}>Settings</span>
+      </div>
+    </div>
     </div>
   );
 };

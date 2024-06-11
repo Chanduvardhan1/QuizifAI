@@ -37,6 +37,10 @@ import { useNavigate } from 'react-router-dom';
 import fistrank from '../../src/assets/Images/images/quizresults/FirstRank.png'
 import current from "../../src/assets/Images/images/quizresults/Vector.png"
 import vector from "../../src/assets/Images/images/quizresults/icon-park_check-correct.png"
+import Navigation from "../navbar/navbar.jsx";
+
+
+
 const quizresults = () => {
   const [quizData, setQuizData] = useState(null);
   const [quizData1, setQuizData1] = useState(null);
@@ -46,6 +50,8 @@ const quizresults = () => {
   const { quizId, attemptNo } = location.state || {};
   const [leaderboardData, setLeaderboardData] = useState([]);
   const navigate = useNavigate();
+  const [isQuizSubmitted, setIsQuizSubmitted] = useState(false); // State to track quiz submission
+
  
   const optionLabels = {
     option1: 'A',
@@ -90,6 +96,96 @@ const quizresults = () => {
   }, [quizId, attemptNo]);
 
 
+  // useEffect(() => {
+  //   const fetchLeaderboardData = async () => {
+  //     try {
+  //       const response = await fetch('https://quizifai.com:8010/leaderboard_result', {
+  //         method: 'POST',
+  //         headers: {
+  //           'Accept': 'application/json',
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({
+  //           quiz_id: quizId
+  //         })
+  //       });
+
+  //       const result = await response.json();
+
+  //       if (result.response === 'success') {
+  //         setLeaderboardData(result.data);
+  //       } else {
+  //         console.error('Failed to fetch leaderboard data:', result.message);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching leaderboard data:', error);
+  //     }
+  //   };
+
+  //   fetchLeaderboardData();
+  // }, [quizId]);
+
+  const userId = localStorage.getItem("user_id");
+  // useEffect(() => {
+
+  //   const sendQuizResult = async () => {
+  //     try {
+  //       const response = await fetch('https://quizifai.com:8010/quiz_result', {
+  //         method: 'POST',
+  //         headers: {
+  //           'accept': 'application/json',
+  //           'Content-Type': 'application/json'
+  //         },
+  //         body: JSON.stringify({
+  //           user_id: userId,
+  //           quiz_id: quizId,
+  //           attempt_id: attemptNo
+  //         })
+  //       });
+  //       const result = await response.json();
+  //       const data = result[0]?.data;
+  //       setQuizData(data);
+  //       console.log('Quiz result submitted:', data);
+  //     } catch (error) {
+  //       console.error('Error submitting quiz result:', error);
+  //     }
+  //   };
+
+  //   if (quizId && attemptNo) {
+  //     sendQuizResult(); // Trigger the POST request only if quizId and attemptNo are available
+  //   }
+  // }, [quizId, attemptNo]);
+  useEffect(() => {
+    const sendQuizResult = async () => {
+      try {
+        const response = await fetch('https://quizifai.com:8010/quiz_result', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            user_id: userId,
+            quiz_id: quizId,
+            attempt_id: attemptNo
+          })
+        });
+        const result = await response.json();
+        const data = result[0]?.data;
+        setQuizData(data);
+        console.log('Quiz result submitted:', data);
+        setIsQuizSubmitted(true); // Set the submission state to true after success
+      } catch (error) {
+        console.error('Error submitting quiz result:', error);
+        setIsQuizSubmitted(false); // Ensure it's false on error
+      }
+    };
+
+    if (quizId && attemptNo) {
+      sendQuizResult(); // Trigger the POST request only if quizId and attemptNo are available
+    }
+  }, [quizId, attemptNo, userId]);
+
   useEffect(() => {
     const fetchLeaderboardData = async () => {
       try {
@@ -116,39 +212,10 @@ const quizresults = () => {
       }
     };
 
-    fetchLeaderboardData();
-  }, [quizId]);
-
-  useEffect(() => {
-    const userId = localStorage.getItem("user_id");
-
-    const sendQuizResult = async () => {
-      try {
-        const response = await fetch('https://quizifai.com:8010/quiz_result', {
-          method: 'POST',
-          headers: {
-            'accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            user_id: userId,
-            quiz_id: quizId,
-            attempt_id: attemptNo
-          })
-        });
-        const result = await response.json();
-        const data = result[0]?.data;
-        setQuizData(data);
-        console.log('Quiz result submitted:', data);
-      } catch (error) {
-        console.error('Error submitting quiz result:', error);
-      }
-    };
-
-    if (quizId && attemptNo) {
-      sendQuizResult(); // Trigger the POST request only if quizId and attemptNo are available
+    if (isQuizSubmitted) { // Trigger fetch only if quiz result submission was successful
+      fetchLeaderboardData();
     }
-  }, [quizId, attemptNo]);
+  }, [quizId, isQuizSubmitted]);
 
   if (!quizData) {
     return <div>Loading...</div>;
@@ -181,7 +248,7 @@ const quizresults = () => {
           rel="stylesheet"
         />
       </Head> */}
-      <LeftBar/>
+      <Navigation/>
       
       <div className={styles.mainContent}>
       <div className={styles.back1} onClick={Back}><MdOutlineCancel /></div>
@@ -199,12 +266,12 @@ const quizresults = () => {
         <div className={styles.Created}>
 
         <span className={styles.Createdby} >Created By:</span>{" "}
-          <span className={styles.username} >{`${quizData.user_name}`}</span>
+          <span className={styles.username} >{`${quizData.created_by}`}</span>
         </div>
         <div>
 
         <span className={styles.Createdby} >Created ON:</span>{" "}
-          <span className={styles.username} >{`${quizData.user_name}`}</span>
+          <span className={styles.username} >{`${quizData.created_on}`}</span>
         </div>
         </div>
         </div>

@@ -53,7 +53,7 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      margin-left: 70px;
+      /* margin-left: 70px; */
     
       /* background: linear-gradient(
       0deg,
@@ -62,9 +62,10 @@
       rgba(238, 246, 255, 0.5) 97.11%
     ); */
       /* Add any other styles you need for your main content */
-      padding: 20px;
+      /* padding: 20px; */
       /* Example padding, adjust as needed */
       height: 1600px;
+      color: #214082;
     }
     .header {
       display: flex;
@@ -120,7 +121,7 @@
   .Createdbyupdated{
     display: flex;
     /* justify-content: space-between; */
-    gap: 130px; 
+    gap: 100px; 
   }
     .icon1{
       width: 51px;
@@ -252,13 +253,13 @@
       width: 724px;
       height: 1072px;
       position: absolute;
-      width: 650px;
+      width: 600px;
   top: 548px;
-  left: 133px;
+  left: 225px;
      
   
       border-radius: 20px;
-      background-color: #FFFFFF;
+      /* background-color: #FFFFFF; */
     }
     .box {
       width: 350px;
@@ -437,9 +438,9 @@
   }
   .verticalicon2 {
     width: 139px; /* Adjust size as needed */
-    height: 35.52px; /* Adjust size as needed */
-    margin-top: 10px; /* Adjust margin as needed */
-    font-size: 30px;
+    height: 105.52px; /* Adjust size as needed */
+    margin-top: 0px; /* Adjust margin as needed */
+    font-size: 100px;
     font-weight: 800;
     display: flex;
     flex-direction: column;
@@ -466,7 +467,7 @@
     width: 471px;
 /* height: 582px; */
 margin-top: -460px;
-margin-left: 720px;
+margin-left: 618px;
 gap: 0px;
 border-radius: 20px;
 opacity: 0px;

@@ -88,6 +88,7 @@ border: none;
   flex: 1;
   display: flex;
   flex-direction: column;
+  margin-top: 20px;
 }
 
 .contentWrapper {
@@ -241,7 +242,7 @@ text-align: left;
 display: flex;
 justify-content: space-between;
 align-items: center;
-margin-bottom: 0px;
+margin-bottom: 25px;
 
 }
 

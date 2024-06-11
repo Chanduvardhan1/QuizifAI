@@ -4,17 +4,21 @@ import styles from "./dashboard.module.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import quizifailogo from "../assets/Images/images/home/Quizifai3.png";
-import dashboardIcon from "../assets/Images/images/dashboard/dashboard.png";
+import dashboardIcon from "../assets/Images/images/dashboard/dashboard1.png";
 import NewDashboard from "../assets/Images/images/dashboard/NewDashboard.png";
-import quizIcon from "../assets/Images/images/dashboard/quiz.png";
+
+import quizIcon from "../assets/Images/images/dashboard/quiz1.png";
 import NewQuizzes from "../assets/Images/images/dashboard/NewQuizzes.png";
+
 import historyIcon from "../assets/Images/images/dashboard/history.png";
 import scheduleIcon from "../assets/Images/images/dashboard/schedule.png";
 import NewSchedule from "../assets/Images/images/dashboard/NewSchedule.png";
 import notificationIcon from "../assets/Images/images/dashboard/notification.png";
-import profileIcon from "../assets/Images/images/dashboard/profile.png";
+
+import profileIcon from "../assets/Images/images/dashboard/profile1.png";
 import NewProfile from "../assets/Images/images/dashboard/NewProfile.png";
-import configure from "../assets/Images/images/dashboard/configure.png";
+import Settings from "../assets/Images/images/dashboard/Settings1.png";
+import NewSettings from "../assets/Images/images/dashboard/NewSettings.png";
 //import Head from "next/head";
 //import Image from "next/image";
 import searchIcon from "../assets/Images/images/dashboard/searchBar.png";
@@ -35,6 +39,7 @@ const  [isActiveConfig, setIsActiveConfig] = useState(false);
  const [iconQuizzez, setIconQuizzez] = useState(quizIcon);
  const [iconSchedule, setIconSchedule] = useState(scheduleIcon);
  const [iconProfile, setProfile] = useState(profileIcon);
+ const [iconSettings, setSettings] = useState(Settings);
 
   const navigate = useNavigate();
 
@@ -63,7 +68,9 @@ const  [isActiveConfig, setIsActiveConfig] = useState(false);
     setIsActiveProfile(true);
     navigate('/free-profile');
       };
+
    const handleNavigation4 =() =>{
+    setSettings(NewSettings);
     setIsActiveConfig(true);
     navigate('/configure');
    }    
@@ -116,26 +123,13 @@ const  [isActiveConfig, setIsActiveConfig] = useState(false);
           <div className={`${styles.verticalline} ${isActiveQuizzes ? styles.active : ''}`}></div>
           <span className={styles.pageLink}>Quizzes</span>
         </div>
-        {/* <div className={styles.pageItem} onClick={() => handleNavigation('/history')}>
-          <img src={historyIcon} alt="Icon 1" className={styles.pageIcon} />
-          <span className={styles.pageLink} >History</span>
-        </div> */}
-        {/* <div className={styles.pageItem}  onClick={handleNavigation2}>
-          <img src={iconSchedule} alt="Icon 2" className={styles.pageIcon} />
-          <div className={`${styles.verticalline} ${isActiveSchedule ? styles.active : ''}`}></div>
-          <span className={styles.pageLink} >Schedule</span>
-        </div> */}
-        {/* <div className={styles.pageItem} onClick={() => handleNavigation('/notification')}>
-          <img src={notificationIcon} alt="Icon 1" className={styles.pageIcon} />
-          <span className={styles.pageLink}>Notification</span>
-        </div> */}
         <div className={styles.pageItem} onClick={handleNavigation3}>
           <img src={iconProfile} alt="Icon 2" className={styles.pageIcon} />
           <div className={`${styles.verticalline} ${isActiveProfile ? styles.active : ''}`}></div>
           <span className={styles.pageLink} >Profile</span>
         </div>
         <div className={styles.pageItem} onClick={handleNavigation4}>
-          <img src={configure} alt="Icon 2" className={styles.pageIcon} />
+          <img src={iconSettings} alt="Icon 2" className={styles.pageIcon} />
           <div className={`${styles.verticalline} ${isActiveConfig ? styles.active : ''}`}></div>
           <span className={styles.pageLink} >Settings</span>
         </div>

@@ -5,10 +5,12 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useState,useEffect } from "react";
 import styles from "./dashboard.module.css";
-import logoutArrowIcon from "../assets/Images/images/dashboard/logoutArrow1.png";
+// import logoutArrowIcon from "../assets/Images/images/dashboard/logoutArrow1.png";
+import Poweron from "../assets/Images/images/dashboard/power-on.png";
 import user2Icon from "../assets/Images/images/dashboard/user2.png";
 import userIcon from "../assets/Images/images/dashboard/user.png";
 import scoredIcon from "../assets/Images/images/dashboard/scored.png";
+// import rank from "../assets/Images/images/dashboard/rank.png";
 import timeSpentIcon from "../assets/Images/images/dashboard/timeSpent.png";
 import notifyIcon from "../assets/Images/images/dashboard/notify.png";
 import todayTopicIcon from "../assets/Images/images/dashboard/todayTopic.png";
@@ -73,21 +75,21 @@ const LogoutBar = () => {
     };
 
     fetchQuizData();
-  }, [userId, username,occupation]); 
+  }, []); 
   return (
     <div className={styles.logout}>
-     <div style={{ marginTop: "40px", display: "flex", alignItems: "center" , marginLeft:"20px"}}>
-  <span style={{ marginRight: "10px" }}>Logout</span>
+     <div style={{ marginTop: "20px", display: "flex", alignItems: "center" , marginLeft:"30px"}}>
+  
 
 <div>
 <img
-    src={logoutArrowIcon}
+    src={Poweron}
     onClick={handleBackToLogin}
     alt="Logout Icon"
-    style={{ width: "30px", height: "20px", marginLeft:"100px",cursor:"pointer" }}
+    style={{ width: "20px", height: "20px", marginLeft:"155px",cursor:"pointer" }}
   />
+  <span style={{ marginRight: "10px",fontSize:"10px",position:"relative",left:"148px" }}>Logout</span>
 </div>
- 
 
   </div>
         <div style={{ position: "relative", marginTop: "20px" }}>
@@ -111,7 +113,7 @@ const LogoutBar = () => {
         />
         </div>
         <div style={{ textAlign: "center" }}>
-          <p style={{ fontSize: "15px", marginBottom: "5px", fontWeight: 600 }}>
+          <p style={{ fontSize: "15px", marginBottom: "5px", fontWeight: 600 ,color:"#002366"}}>
             {username}
           </p>
           <p
@@ -119,7 +121,8 @@ const LogoutBar = () => {
               fontSize: "12px",
               margin: "0",
               fontWeight: 500,
-              color: "#9696BB",
+              color:"#EF5130",
+              marginTop:"-5px",
             }}
           >
             {occupation}
@@ -130,10 +133,15 @@ const LogoutBar = () => {
             margin: "0",
             fontWeight: 500,
             color: "#5E81F4",
-            marginLeft: "10px",
+            marginLeft: "9px",
           }}>
             User ID : {userId}
           </p>
+
+          <div className="flex text-[12px] ml-[92px] text-[#002366]">
+          <p>City , </p><p>Country</p>
+          </div>
+        
 
           <div className="relative group inline-block">
           <img 
@@ -143,13 +151,14 @@ const LogoutBar = () => {
             height: "15px",
             width: "15px",
             marginLeft:"120px",
-            marginTop:"-35px",
+            marginTop:"-52px",
             cursor:"pointer",
           }}
           />
           <span className="hidden group-hover:inline-block h-[70px] absolute -left-[33px] -top-[55px] -translate-x-1/2 bottom-full mb-1 w-[300px] px-2 py-1 bg-black text-white text-xs rounded">
           This is your unique identification number. It will help our support team to identify your account when you need assistance through QuizifAI's support channels.           </span>
           </div>
+          <div className="h-[5px] w-full bg-white"></div>
           
           <div style={{ marginTop: "10px" }}>
             <div style={{ marginTop: "40px", marginLeft: "20px" }}>
@@ -182,6 +191,9 @@ const LogoutBar = () => {
                   }}
                 />
                 </div>
+                {/* <div>
+                  <img src={rank}/>
+                </div> */}
                 <div
                   style={{
                     display: "flex",

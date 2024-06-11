@@ -212,7 +212,7 @@ const Quiz = () => {
           {/* Header content */}
           <p>Welcome {username}</p>
           <div className={styles.headerRight}>
-          <div className="w-[99px] h-[41px] absolute mr-[170px] -mt-2 rounded-[10px] bg-[#F0B8C1]">
+          <div className="w-[99px] h-[41px] absolute mr-[170px] -mt-2 rounded-[10px] bg-[#f3d0d5]">
             <div className="flex">
               <img
                 className="w-[25px] h-[25px] ml-2 mt-2"
@@ -233,7 +233,7 @@ const Quiz = () => {
             </div>
           </div>
         </div>
-        <div className={styles.completionInfo} style={{background:"#A5CCE3"}}>
+        <div className={styles.completionInfo} style={{background:"#30CDF040"}}>
         You've completed  {weeklyQuizCount} Quizzes this week with an average score of {averageScorePercentage}%
         </div>
        
@@ -245,9 +245,9 @@ const Quiz = () => {
   <div className={styles.infoCards}>
  <div className={styles.sortBy}>
   {/* <p className="ml-8 my-3 font-Poppins font-medium">Sort by:</p> */}
-  <div className="gap-1 mb-3 bg-[#F0B8C1] border-none px-2 ml-6 rounded-md">
+  <div className="gap-1 mb-3 bg-[#f3d0d5] border-none px-2 ml-6 -pl-[30px] rounded-md">
   <select
-        className="w-[100px] rounded-md ml-4 cursor-pointer text-[10px] bg-[#F0B8C1] border-none"
+        className="w-[90px] rounded-md ml-4 cursor-pointer text-[10px] bg-[#f3d0d5] border-none"
         style={{ border: "none", outline: "none" }}
         value={selectedCategory}
         onChange={handleSelectCategory}
@@ -260,7 +260,7 @@ const Quiz = () => {
         ))}
       </select>
       <select
-        className="w-[100px] p-2 rounded-md cursor-pointer text-[10px] bg-[#F0B8C1] border-none"
+        className="w-[90px] p-2 rounded-md cursor-pointer text-[10px] bg-[#f3d0d5] border-none"
         style={{ border: "none", outline: "none" }}
         value={selectedCategory}
         onChange={handleSelectCategory}
@@ -273,7 +273,7 @@ const Quiz = () => {
         ))}
       </select>
   <select
-        className="w-[100px] p-2 rounded-md ml-1 cursor-pointer text-[11px] bg-[#F0B8C1] border-none"
+        className="w-[90px] p-2 rounded-md ml-1 cursor-pointer text-[11px] bg-[#f3d0d5] border-none"
         style={{ border: "none", outline: "none" }}
         value={selectedCategory}
         onChange={handleSelectCategory}
@@ -287,7 +287,7 @@ const Quiz = () => {
       </select>
 
     <select
-        className="w-[100px] p-2 rounded-md ml-1 cursor-pointer text-[11px] bg-[#F0B8C1]"
+        className="w-[115px] p-2 rounded-md ml-1 cursor-pointer text-[11px] bg-[#f3d0d5]"
         style={{ border: "none", outline: "none" }}
         onChange={handleSelectSubCategory}
         value={selectedSubCategory}
@@ -301,7 +301,7 @@ const Quiz = () => {
       </select>
 
     <select
-        className="w-[100px] p-2 rounded-md ml-1 mt-2 cursor-pointer text-[11px] bg-[#F0B8C1]"
+        className="w-[100px] p-2 rounded-md ml-1 mt-2 cursor-pointer text-[11px] bg-[#f3d0d5]"
         style={{ border: "none", outline: "none" }}
         onChange={handleSelectComplexity}
         value={selectedComplexity}
@@ -314,7 +314,7 @@ const Quiz = () => {
         ))}
       </select>
       <select
-        className="w-[90px] p-2 rounded-md ml-1 cursor-pointer text-[11px] bg-[#F0B8C1]"
+        className="w-[90px] p-2 rounded-md ml-1 cursor-pointer text-[11px] bg-[#f3d0d5]"
         style={{ border: "none", outline: "none" }}
         value={selectedCources}
         onChange={handleSelectCource}
@@ -327,7 +327,7 @@ const Quiz = () => {
         ))}
       </select>
       <select
-        className="w-[90px] p-2 rounded-md ml-1 cursor-pointer text-[11px] bg-[#F0B8C1] pr-[15px]"
+        className="w-[90px] p-2 rounded-md ml-1 cursor-pointer text-[11px] bg-[#f3d0d5] pr-[15px] mr-[10px]"
         style={{ border: "none", outline: "none" }}
         onChange={handleSelectClass}
         value={selectedClasses}

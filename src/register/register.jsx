@@ -1370,7 +1370,7 @@ const register = () => {
                         borderRadius: "10px",
                       },
                       autoComplete: "off",
-                      // readOnly: true,
+                      // readOnly: true,occupation
                     }}
                     // value={email}
                     //onChange={(e) => handleEmailValidation(e.target.value)}

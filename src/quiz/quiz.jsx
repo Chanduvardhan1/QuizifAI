@@ -30,57 +30,38 @@ const Quiz = () => {
 
 
   const [cources, setCources] = useState([]);
-  const [selectedCources,setSelectedCources]=useState([]);
+  const [selectedCources,setSelectedCources]=useState("");
 
   const [classes, setClasses] = useState([]);
-  const [selectedClasses,setSelectedClasses]=useState([]);
+  const [selectedClasses,setSelectedClasses]=useState("");
 
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState("");
 
-  const [selectedSubCategory, setSelectedSubCategory] = useState('');
   const [subCategories, setSubCategories] = useState([]);
+  const [selectedSubCategory, setSelectedSubCategory] = useState("");
 
   const [complexity, setComplexity] = useState("");
   const [complexities, setComplexities] = useState([]);
 
   const [selectedComplexity, setSelectedComplexity] = useState("");
-  // const [latestResults, setLatestResults] = useState([]);
   const [timeData, setTimeData] = useState(null);
   const [weeklyQuizCount, setWeeklyQuizCount] = useState(null);
   const [averageScorePercentage, setAverageScorePercentage] = useState(null);
   const [allquizzes, setAllquizzes] = useState([]);
   const [getMoreQuizzes, setGetMoreQuizzes] = useState(false);
-  const [topScoredQuizzes, setTopScoredQuizzes] = useState([]);
-
-  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
-  const [isNavbarOpen1, setIsNavbarOpen1] = useState(false);
-  const [isNavbarOpen2, setIsNavbarOpen2] = useState(false);
-  const [isNavbarOpen3, setIsNavbarOpen3] = useState(false);
-  const [isNavbarOpen4, setIsNavbarOpen4] = useState(false);
-  const [isNavbarOpen5, setIsNavbarOpen5] = useState(false);
-  const [isNavbarOpen6, setIsNavbarOpen6] = useState(false);
-  const [isNavbarOpen7, setIsNavbarOpen7] = useState(false);
-  const [isNavbarOpen8, setIsNavbarOpen8] = useState(false);
-
-  const [isNavbarOpen11, setIsNavbarOpen11] = useState(false);
-  const [isNavbarOpen12, setIsNavbarOpen12] = useState(false);
-  const [isNavbarOpen13, setIsNavbarOpen13] = useState(false);
-  const [isNavbarOpen14, setIsNavbarOpen14] = useState(false);
-  const [isNavbarOpen15, setIsNavbarOpen15] = useState(false);
-  const [isNavbarOpen16, setIsNavbarOpen16] = useState(false);
-
-
-
-  const BasicProgressBar = ({ currentValue, maxValue }) => (
-    <progress
-      value={currentValue}
-      max={maxValue}
-      style={{ width: "100px" }} 
-    >
-      {currentValue}%
-    </progress>
-  );
+  const [isNavbarOpen, setIsNavbarOpen] = useState();
+ 
+  // Filtered quizzes based on selected dropdown options
+  const filteredQuizzes = allquizzes.filter((quizItem) => {
+    return (
+      (selectedCategory === "" || quizItem.category === selectedCategory) &&
+      (selectedSubCategory === "" || quizItem.sub_category === selectedSubCategory) &&
+      (selectedComplexity === "" || quizItem.complexity === selectedComplexity) &&
+      (selectedCources === "" || quizItem.course === selectedCources) &&
+      (selectedClasses === "" || quizItem.class === selectedClasses)
+    );
+  });
 
   useEffect(() => {
     fetchCategories();
@@ -162,7 +143,7 @@ const Quiz = () => {
             },
             body: JSON.stringify({
               user_id: userId,
-              username: username, // Ensure correct payload format
+              username: username,
               quiz_complexity_name: selectedComplexity,
             }),
           }
@@ -186,7 +167,7 @@ const Quiz = () => {
         setAverageScorePercentage(data.average_score_percentage);
         // setNotAttemptedQuizzes(data.latest_not_attempted_quizzes);
         // setAttemptedQuizzes(data.latest_attempted_quizzes);
-        setTopScoredQuizzes(data.top_scored_quizzes);
+        // setTopScoredQuizzes(data.top_scored_quizzes);
       } catch (error) {
         console.error('Error fetching quiz data:', error);
       } 
@@ -223,71 +204,15 @@ const Quiz = () => {
     setSelectedComplexity(event.target.value);
   }
 
-  // const toggleGetMoreQuizzes = () => {
-  //   setGetMoreQuizzes(true);
-  // };
-
-  // const toggleNavbar = () => {
-  //   setIsNavbarOpen((prevState) => !prevState);
-  // };
-  // const toggleNavbar1 = () => {
-  //   setIsNavbarOpen1((prevState) => !prevState);
-  // };
-  // const toggleNavbar2 = () => {
-  //   setIsNavbarOpen2((prevState) => !prevState);
-  // };
-  // const toggleNavbar3 = () => {
-  //   setIsNavbarOpen3((prevState) => !prevState);
-  // };
-  // const toggleNavbar4 = () => {
-  //   setIsNavbarOpen4((prevState) => !prevState);
-  // };
-  // const toggleNavbar5 = () => {
-  //   setIsNavbarOpen5((prevState) => !prevState);
-  // };
-  // const toggleNavbar6 = () => {
-  //   setIsNavbarOpen6((prevState) => !prevState);
-  // };
-  // const toggleNavbar7 = () => {
-  //   setIsNavbarOpen7((prevState) => !prevState);
-  // };
-  // const toggleNavbar8 = () => {
-  //   setIsNavbarOpen8((prevState) => !prevState);
-  // };
-  // const toggleNavbar11 = () => {
-  //   setIsNavbarOpen11((prevState) => !prevState);
-  // };
-  // const toggleNavbar12 = () => {
-  //   setIsNavbarOpen12((prevState) => !prevState);
-  // };
-  // const toggleNavbar13 = () => {
-  //   setIsNavbarOpen13((prevState) => !prevState);
-  // };
-  // const toggleNavbar14 = () => {
-  //   setIsNavbarOpen14((prevState) => !prevState);
-  // };
-  // const toggleNavbar15 = () => {
-  //   setIsNavbarOpen15((prevState) => !prevState);
-  // };
-  // const toggleNavbar16 = () => {
-  //   setIsNavbarOpen16((prevState) => !prevState);
-  // };
-
   return (
     <div className={styles.container}>
-      {/* <Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </Head> */}
       <Navigation/>
       <div className={styles.mainContent}>
         <div className={styles.header}>
           {/* Header content */}
           <p>Welcome {username}</p>
           <div className={styles.headerRight}>
-          <div className="w-[99px] h-[41px] absolute mr-[170px] -mt-2 rounded-[10px] bg-[#FFEDCD]">
+          <div className="w-[99px] h-[41px] absolute mr-[170px] -mt-2 rounded-[10px] bg-[#f3d0d5]">
             <div className="flex">
               <img
                 className="w-[25px] h-[25px] ml-2 mt-2"
@@ -308,21 +233,48 @@ const Quiz = () => {
             </div>
           </div>
         </div>
-        <div className={styles.completionInfo}>
+        <div className={styles.completionInfo} style={{background:"#30CDF040"}}>
         You've completed  {weeklyQuizCount} Quizzes this week with an average score of {averageScorePercentage}%
         </div>
        
         <div className={styles.contentWrapper1}>
-          <div className={styles.latestQuizHeader}>
+          {/* <div className={styles.latestQuizHeader}>
             <p className="text-[16px] font-Poppins -ml-[18.5px]">Sort by</p>
-          </div>
+          </div> */}
          
   <div className={styles.infoCards}>
  <div className={styles.sortBy}>
   {/* <p className="ml-8 my-3 font-Poppins font-medium">Sort by:</p> */}
-  <div className="gap-1 mb-3">
+  <div className="gap-1 mb-3 bg-[#f3d0d5] border-none px-2 ml-6 -pl-[30px] rounded-md">
   <select
-        className="w-[130px] p-2 rounded-md ml-7 cursor-pointer text-[14px]"
+        className="w-[90px] rounded-md ml-4 cursor-pointer text-[10px] bg-[#f3d0d5] border-none"
+        style={{ border: "none", outline: "none" }}
+        value={selectedCategory}
+        onChange={handleSelectCategory}
+      >
+        <option value="" disabled style={{background:"#A5CCE3"}}>Date Range</option>
+        {categories.map(category => (
+          <option key={category.category_id} value={category.category_name}>
+            {category.category_name}
+          </option>
+        ))}
+      </select>
+      <select
+        className="w-[90px] p-2 rounded-md cursor-pointer text-[10px] bg-[#f3d0d5] border-none"
+        style={{ border: "none", outline: "none" }}
+        value={selectedCategory}
+        onChange={handleSelectCategory}
+      >
+        <option value="" disabled style={{background:"#A5CCE3"}}>Popularity</option>
+        {categories.map(category => (
+          <option key={category.category_id} value={category.category_name}>
+            {category.category_name}
+          </option>
+        ))}
+      </select>
+  <select
+        className="w-[90px] p-2 rounded-md ml-1 cursor-pointer text-[11px] bg-[#f3d0d5] border-none"
+        style={{ border: "none", outline: "none" }}
         value={selectedCategory}
         onChange={handleSelectCategory}
       >
@@ -335,11 +287,12 @@ const Quiz = () => {
       </select>
 
     <select
-        className="w-[130px] p-2 rounded-md ml-5 cursor-pointer text-[14px]"
+        className="w-[115px] p-2 rounded-md ml-1 cursor-pointer text-[11px] bg-[#f3d0d5]"
+        style={{ border: "none", outline: "none" }}
         onChange={handleSelectSubCategory}
         value={selectedSubCategory}
       >
-        <option value="" disabled>Sub Category</option>
+        <option value="" disabled style={{background:"#A5CCE3"}}>Sub Category</option>
         {subCategories.map((subCategory, index) => (
           <option key={index} value={subCategory}>
             {subCategory}
@@ -348,11 +301,12 @@ const Quiz = () => {
       </select>
 
     <select
-        className="w-[130px] p-2 rounded-md ml-5 mt-2 cursor-pointer text-[14px]"
+        className="w-[100px] p-2 rounded-md ml-1 mt-2 cursor-pointer text-[11px] bg-[#f3d0d5]"
+        style={{ border: "none", outline: "none" }}
         onChange={handleSelectComplexity}
         value={selectedComplexity}
       >
-        <option value="" disabled>Complexity</option>
+        <option value="" disabled style={{background:"#A5CCE3"}}>Complexity</option>
         {complexities.map((complexity, index) => (
           <option key={index} value={complexity}>
             {complexity}
@@ -360,11 +314,12 @@ const Quiz = () => {
         ))}
       </select>
       <select
-        className="w-[130px] p-2 rounded-md ml-5 cursor-pointer text-[14px]"
+        className="w-[90px] p-2 rounded-md ml-1 cursor-pointer text-[11px] bg-[#f3d0d5]"
+        style={{ border: "none", outline: "none" }}
         value={selectedCources}
         onChange={handleSelectCource}
       >
-        <option value="" disabled>Cources</option>
+        <option value="" disabled>Courses</option>
         {cources.map(cource => (
           <option key={cource.course_id} value={cource.course_name}>
             {cource.course_name}
@@ -372,12 +327,13 @@ const Quiz = () => {
         ))}
       </select>
       <select
-        className="w-[120px] p-2 rounded-md ml-6 cursor-pointer text-[14px]"
+        className="w-[90px] p-2 rounded-md ml-1 cursor-pointer text-[11px] bg-[#f3d0d5] pr-[15px] mr-[10px]"
+        style={{ border: "none", outline: "none" }}
         onChange={handleSelectClass}
         value={selectedClasses}
       >
-        <option value="" disabled>Classes</option>
-        {subCategories.map((classes, index) => (
+        <option value="" disabled style={{background:"#A5CCE3"}}>Classes</option>
+        {classes.map((classes, index) => (
           <option key={index} value={classes}>
             {classes}
           </option>
@@ -388,11 +344,11 @@ const Quiz = () => {
 </div>
 
 <div className={styles.container1}>
-{Array.isArray(allquizzes) && allquizzes.length > 0 ?(
-    allquizzes.map((quizItem, index) =>(
+{filteredQuizzes.length > 0 ?(
+    filteredQuizzes.map((quizItem, index) =>(
       <div className={styles.infoCards}>
     {/* Info cards content */}
-    <div key={index} className={styles.card} style={{ paddingTop: "8px",marginTop:"15px" }}>
+    <div className={styles.card} key={index} style={{ paddingTop: "8px",marginTop:"15px" }}>
     <span className="relative group">
                 <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate underline underline-offset-2">
                 {quizItem.quiz_name}
@@ -400,7 +356,7 @@ const Quiz = () => {
                 <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                 {quizItem.quiz_name}
                 </span>
-                </span>
+    </span>
 
       <div className={styles.iconContainer}>
         <div className="z-40 mb-[2px] pl-[36px] font-normal rounded ">
@@ -481,7 +437,6 @@ const Quiz = () => {
           )}
         </div>
       </div>
-
       <div className="flex mt-5">
   <span className="relative group">
     <span className="ml-[10px] mt-4 w-[50px] cursor-pointer z-0 truncate text-[9px] font-normal">
@@ -502,15 +457,15 @@ const Quiz = () => {
     {quizItem.sub_category}
     </span>  
   </span>
-</div>
-<div className="relative group mt-1">
+      </div>
+      <div className="relative group mt-1">
   <span className="text-wrap text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate line-clamp-4">
     {quizItem.quiz_description}
   </span>
   <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-0 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
     {quizItem.quiz_description}
   </span>
-</div>
+      </div>
 
       <div
         className={styles.additionalInfo}
@@ -530,7 +485,7 @@ const Quiz = () => {
               height={10}
             />
             <p>{quizItem.quiz_attempts}</p>
-            <span className="text-[6px] ml-1">attempts</span>
+            <span className="text-[8px] ml-1">attempts</span>
           </div>
         </div>
 
@@ -543,7 +498,7 @@ const Quiz = () => {
             height={10}
           />{" "}
           {quizItem.number_of_questions}
-          <span className="text-[6px] ml-[1px]">questions</span>
+          <span className="text-[8px] ml-[1px]">questions</span>
         </span>
         <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
           <img
@@ -554,9 +509,9 @@ const Quiz = () => {
             height={14}
           />{" "}
           {quizItem.quiz_duration}
-          <span className="text-[6px] -ml-[0.5px]">minutes</span>
+          <span className="text-[8px] -ml-[0.5px]">minutes</span>
         </span>
-        <span className="flex text-[6px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
+        <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
           <img
             className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
             src={Easy}

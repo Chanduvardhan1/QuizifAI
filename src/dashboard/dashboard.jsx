@@ -80,7 +80,7 @@ const Dashboard = () => {
   const [isNavbarOpen15, setIsNavbarOpen15] = useState(false);
   const [isNavbarOpen16, setIsNavbarOpen16] = useState(false);
 
-  const [getMoreQuizzes, setGetMoreQuizzes] = useState(true);
+  const [getMoreQuizzes, setGetMoreQuizzes] = useState(false);
 
   const [notAttemptedQuizzes, setNotAttemptedQuizzes] = useState([]);
   const [latestquizzes, setLatestquizzes] = useState([]);
@@ -225,9 +225,10 @@ const Dashboard = () => {
     setIsNavbarOpen16((prevState) => !prevState);
   };
 
-  // const toggleGetMoreQuizzes = () => {
-  //   setGetMoreQuizzes(!getMoreQuizzes);
-  // };
+  const handleBackToQuizzes = () => {
+    navigate('/quiz');
+  };
+  const displayedQuizzes = getMoreQuizzes ? latestquizzes :latestquizzes.slice(0, 3);
 
   const formatTime = (minutes) => {
     const hours = Math.floor(minutes / 60);
@@ -279,7 +280,7 @@ const Dashboard = () => {
 
           <div className={styles.headerRight}>
             {/* <div>{getFormattedDate()}</div> */}
-            <div className="w-[99px] h-[41px] absolute mr-[160px] -mt-2 rounded-[10px] bg-[rgb(254,202,249)]">
+            {/* <div className="w-[99px] h-[41px] absolute mr-[160px] -mt-2 rounded-[10px] bg-[rgb(254,202,249)]">
               <div className="flex">
                 <img
                   className="w-[25px] h-[25px] ml-2 mt-2"
@@ -293,8 +294,8 @@ const Dashboard = () => {
                   User
                 </a>
               </div>
-            </div>
-            <div className="w-[99px] h-[41px] absolute mr-[390px] -mt-2 rounded-[10px] bg-[#FFEDCD]">
+            </div> */}
+            <div className="w-[99px] h-[41px] absolute mr-[80px] mb-2 pb-2 -mt-[35px] rounded-[10px] bg-[#fee2e2]">
               <div className="flex">
                 <img
                   className="w-[25px] h-[25px] ml-2 mt-2"
@@ -309,13 +310,13 @@ const Dashboard = () => {
                 </a>
               </div>
             </div>
-            <div className={styles.searchIconContainer}>
+            {/* <div className={styles.searchIconContainer}>
               <img
                 src={searchIcon}
                 alt="Search Icon"
                 className={styles.searchIcon}
               />
-            </div>
+            </div> */}
           </div>
         </div>
         <div className={styles.completionInfo}>
@@ -326,7 +327,7 @@ const Dashboard = () => {
           <div className={styles.resultWrapper}>
             <div
               className={styles.latestResult}
-              style={{ paddingTop: "12px", paddingBottom: "13px" }}
+              style={{ paddingTop: "12px", paddingBottom: "13px",color:"#002366" }}
             >
               Latest Results
               {/* <span className={styles.moreButton} style={{marginLeft:"170px"}}>
@@ -533,7 +534,7 @@ const Dashboard = () => {
           </div>
 
   <div className={styles.resultWrapper}>
-  <div className={styles.timeSpent} style={{ paddingTop: "10px" }}>
+  <div className={styles.timeSpent} style={{ paddingTop: "10px",color:"#002366" }}>
     Time Spent (Last 7 Days)
     <span className={styles.moreButton}>
       {/* <img src={arrow3} alt="More" width={11} height={5} /> */}
@@ -583,78 +584,447 @@ const Dashboard = () => {
         <div className={styles.contentWrapper1}>
           <div
             className={styles.latestQuizHeader}
-            style={{ marginLeft: "45px", marginTop: "" }}
+            style={{ marginLeft: "40px" }}
           >
-            <p>Latest Quizzes</p>
+            <p className="text-[#002366]">Latest Quizzes</p>
 
             <span
-              className={styles.moreLink}
-              onClick={() => setGetMoreQuizzes(true)}
+              className={styles.moreLink} style={{marginRight:"4px"}}
+              onClick={handleBackToQuizzes}
             >
               More{" "}
             </span>
-            <img
+            <p className="ml-[1px] mt-[1px] mr-[30px] text-[#EF5130]">></p>
+            {/* <img
               className="cursor-pointer mr-[40px] ml-1"
               src={moreArrow}
               alt="More"
               width={17}
               height={8}
-              onClick={() => setGetMoreQuizzes(false)}
-            />
+              onClick={() => toggleGetMoreQuizzes(false)}
+            /> */}
           </div>
           <div className={styles.infoCards}>
             {/* Info cards content */}
-
-            <div className="flex">
-              {/* {latestquizzes.map((quiz, index) => {
-                const latestquizzes = index === 0;
-                const attemptedquizzes = quiz.quiz_attempts > 0;
-
-                return (
-                  <Card
-                    key={quiz.quiz_id}
-                    quiz={quiz}
-                    isLatest={isLatest}
-                    isAttempted={isAttempted}
-                  />
-                );
-              })} */}
-              {/* latest-first-first-card  */}
-
-              { latestquizzes && latestquizzes[0] ?(
-               <div className={styles.card} style={{ paddingTop: "8px" }}>
-                <span className="relative group">
-                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
-                  {latestquizzes[0]?.quiz_name}
+            <div className={styles.container1} style={{marginLeft:"20px",marginTop:"-10px"}}>
+              {attemptedquizzes.length > 0 ?(
+                displayedQuizzes.map((quizItem, index) =>(
+                  <div
+                  className={styles.card}
+                  style={{
+                    paddingTop: "8px",
+                    marginRight:"10px",
+                    backgroundColor:"#fee2e2",
+                  }}
+                >
+                 <span className="relative group">
+                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate">
+                {quizItem.quiz_name}
                 </span>
                 <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-                {latestquizzes[0]?.quiz_name}
+                {quizItem.quiz_name}
                 </span>
+              </span>
+                  <div className={styles.iconContainer}>
+                    <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                        onClick={toggleNavbar9}
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                        />
+                        {isNavbarOpen9 ? "Close Navbar" : "Open Navbar"}
+                      </svg>
+                      {isNavbarOpen9 && (
+                        <div className={styles.infoIcons}>
+                          <img
+                            className="absolute h-[1px] w-[1px] left-[6px] top-1"
+                            src={eye}
+                            alt="Play icon"
+                          />
+                          <span className="text-[8px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                            View
+                          </span>
+                          <img
+                            className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[17px]"
+                            src={download}
+                            alt="download icon"
+                          />
+                          <span className="text-[8px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
+                            Download
+                          </span>
+                          <img
+                            className={styles.leaderboardimage} style={{marginTop:"1px"}}
+                            src={leaderboard_button}
+                            alt="Play icon"
+                          />
+                          <span
+                            className={styles.leaderboardtext}
+                            onClick={() => leaderboard(latestquizzes[0].quiz_id)}
+                          >
+                            Leaderboard
+                          </span>
+                          <img
+                            className={styles.shareimage} style={{marginTop:"2px"}}
+                            src={Share_button}
+                            alt="Play icon"
+                          />
+                          <span className={styles.sharetext}>Share</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex mt-5">
+  <span className="relative group">
+    <span className="text-[#002366] ml-[10px] mt-4 w-[50px] cursor-pointer z-0 truncate text-[9px] font-normal">
+    {quizItem.category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+    {quizItem.category}
+    </span>  
+  </span>
+
+  <p className="px-[2px] font-normal">|</p>
+  
+  <span className="relative group">
+    <span className="text-[#002366] w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+    {quizItem.sub_category}
+    </span>
+    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+    {quizItem.sub_category}
+    </span>  
+  </span>
+      </div>
+      
+      {/* <div className="h-[1px] w-full bg-white"></div> */}
+{/* <div className="h-[3px] w-full bg-white"></div> */}
+  <div className="relative group mt-1">
+  <span className="text-wrap mt-[6px] text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate line-clamp-4">
+    {quizItem.quiz_description}
+  </span>
+  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-0 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
+    {quizItem.quiz_description}
+  </span>
+      </div>
+      <div className="h-[2px] w-full bg-white"></div>
+
+      <div style={{ backgroundColor: "#F9F9F9", padding: "1px 0" }}>
+      <div className="h-[85px] rounded w-full bg-[#F5F5F5]">
+      <div className="text-[6px] font-normal pl-[12px] relative top-[73px]">
+                    <span>Pass</span>
+                    <span className="px-[4px]">|</span>
+                    <span>
+                      {quizItem.speed_rank}
+                      <sup>th</sup>Fastest
+                    </span>
+                    <span className="px-[3px]">|</span>
+                    <span>
+                      {quizItem.score_rank} <sup>th</sup>Highest
+                    </span>
+                    <span className="px-[3px]">|</span>
+                    <span>
+                      {quizItem.attempt_percentage}% Score
+                    </span>
+                    <span className="px-[3px]">|</span>
+                    <span>{quizItem.quiz_grade} Grade</span>
+                  </div>
+                  <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[50px] left-[12px]">
+                  <div>Created By :</div>
+                  {/* <div>Created On</div> */}
+                  </div>
+                  <div
+                    className={styles.additionalInfo}
+                    style={{ marginTop: "25px" }}
+                  >
+                    <div
+                      className={styles.infoIcon}
+                      style={{ marginTop: "37px" }}
+                    ></div>
+                    <div className="z-0">
+                      <div className="text-[7px] flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
+                        <img
+                          className={styles.attemptsimage}
+                          src={Attempt1}
+                          alt="Attempts Icon"
+                          width={10}
+                          height={10}
+                        />
+                        <p>{quizItem.attempts_count} </p>
+                        <span
+                          title="number of times quiz attempted"
+                          className="text-[8px] -ml-[1px] cursor-pointer"
+                        >
+                          quiz attempts
+                        </span>
+                      </div>
+                    </div>
+
+                    <span className="text-[8px] flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
+                      <img
+                        className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                        src={high_score}
+                        alt="Number of question Icon"
+                        width={15}
+                        height={10}
+                      />{" "}
+                      {quizItem.attained_score}/
+                      {quizItem.total_score}
+                      <div
+                        title="attained score/total score"
+                        className="cursor-pointer text-[6px]"
+                      >
+                        <span className="text-[8px] -ml-[1px]">score</span>
+                      </div>
+                    </span>
+                    <span className="text-[7px] flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                      <img
+                        className="pb-[1px] mr-[1px] relative left-[3px] "
+                        src={NoOfQuestion}
+                        alt="Time Icon"
+                        width={14}
+                        height={14}
+                      />{" "}
+                      {quizItem.attempted_questions}/
+                      {quizItem.total_questions}
+                      <div
+                        title="attempted qustions/total questions"
+                        className="cursor-pointer text-[6px]"
+                      >
+                        <span className="text-[8px] -ml-[1px]">attemped</span>
+                      </div>
+                    </span>
+                    <span className="text-[7px] flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                      <img
+                        className="pb-[1px] mr-[1px] relative left-[3px] "
+                        src={Clock}
+                        alt="Time Icon"
+                        width={14}
+                        height={14}
+                      />{" "}
+                      {quizItem.attempt_duration_mins}/
+                      {quizItem.quiz_duration}
+                      <div
+                        title="time taken for attempted/total duration of quiz "
+                        className="cursor-pointer text-[6px]"
+                      >
+                        <span className="text-[8px] -ml-[1px]">duration</span>
+                      </div>
+                    </span>
+                  </div>
+        </div>
+        </div>
+
+                  
+                </div>
+                ))
+              ):(
+                <div className="ml-[50px] text-red-500">No attempts quizzes available</div>
+              )}
+            
+            </div>
+            
+            <div className={styles.container1} style={{marginLeft:"10px",marginTop:"30px"}}>
+  {latestquizzes.length > 0 ? (
+    displayedQuizzes.map((quizItem, index) => (
+      <div className={styles.infoCards} key={index}>
+        <div className={styles.card} style={{ paddingTop: "8px", marginTop:"-15px", backgroundColor:"#CBF2FB" }}>
+          <span className="relative group">
+            <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate">
+              {quizItem.quiz_name}
+            </span>
+            <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+              {quizItem.quiz_name}
+            </span>
+          </span>
+
+          <div className={styles.iconContainer}>
+            <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                onClick={toggleNavbar}
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                />
+                {isNavbarOpen ? "Close Navbar" : "Open Navbar"}
+              </svg>
+
+              {isNavbarOpen && (
+                <div className={styles.infoIcons}>
+                  <div className={styles.start}>
+                    <img className={styles.startimage} src={Start_button} alt="Play icon" />
+                    <span className={styles.starttext} onClick={() => handleStartQuiz(latestquizzes[0].quiz_id)}>Start</span>
+                  </div>
+                  <div className={styles.edit}>
+                    <img className={styles.editimage} src={Edit_button} alt="Edit icon" />
+                    <span className={styles.edittext} onClick={() => Edit(latestquizzes[0].quiz_id)}>Edit</span>
+                  </div>
+                  <div className={styles.leaderboard}>
+                    <img className={styles.leaderboardimage} src={leaderboard_button} alt="Leaderboard icon" />
+                    <span className={styles.leaderboardtext} onClick={() => leaderboard(latestquizzes[0].quiz_id)}>Leaderboard</span>
+                  </div>
+                  <div className={styles.share}>
+                    <img className={styles.shareimage} src={Share_button} alt="Share icon" />
+                    <span className={styles.sharetext}>Share</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="flex mt-[10px] relative top-[9px]">
+            <span className="relative group">
+              <span className="text-[#002366] ml-[10px] w-[50px] cursor-pointer z-0 truncate text-[9px] font-normal">
+                {quizItem.category}
+              </span>
+              <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+                {quizItem.category}
+              </span>
+            </span>
+            <p className="px-[2px] font-normal">|</p>
+            <span className="relative group">
+              <span className="text-[#002366] mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+                {quizItem.sub_category}
+              </span>
+              <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+                {quizItem.sub_category}
+              </span>
+            </span>
+          </div>
+          <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[75px] left-[12px]">
+                  <div>Created By :</div>
+                  {/* <div>Created On</div> */}
+                  </div>
+          {/* <div style={{ backgroundColor: "#EFEFEF", padding: "2px 0" }}>
+            <div className="h-[10px] w-full bg-[#D9D9D9]"></div>
+          </div> */}
+
+          <div className="relative group mt-1 ">
+            <span className="mt-[6px] text-wrap text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate line-clamp-4">
+              {quizItem.quiz_description}
+            </span>
+            <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-0 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
+              {quizItem.quiz_description}
+            </span>
+          </div>
+          
+          <div className="h-[2px] w-full bg-white"></div>
+
+          <div style={{ backgroundColor: "#F9F9F9", padding: "1px 0" }}>
+            <div className="h-[85px] rounded w-full bg-[#F5F5F5]">
+
+            <div className={styles.additionalInfo} style={{ position: "relative", top: "55px" }}>
+            <div className={styles.infoIcon} style={{ marginTop: "25px" }}></div>
+            <div className="z-0">
+              <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366] relative -left-[10px] -top-[90px] hover:text-black">
+                <img className="h-[15px] w-[13px] pl-[3px] pb-1" src={Attempt1} alt="Attempts Icon" width={10} height={10} />
+                <p>{quizItem.quiz_attempts}</p>
+                <span className="text-[8px] ml-1">attempts</span>
+              </div>
+            </div>
+
+            <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded relative -left-[12px] hover:text-black">
+              <img className="pb-[1px] pt-[2px] -mt-1 relative bottom-[2px]" src={NoOfQuestion} alt="Number of question Icon" width={15} height={10} />
+              {quizItem.number_of_questions}
+              <span className="text-[8px] ml-[1px]">questions</span>
+            </span>
+            <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded relative -left-[14px] hover:text-black">
+              <img className="pb-[1px] mr-[1px] relative left-[3px]" src={Clock} alt="Time Icon" width={14} height={14} />
+              {quizItem.quiz_duration}
+              <span className="text-[8px] -ml-[0.5px]">minutes</span>
+            </span>
+            <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded relative -left-[10px] hover:text-black">
+              <img className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]" src={Easy} alt="Challenge Icon" width={15} height={9} />
+              {quizItem.complexity}
+            </span>
+          </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    ))
+  ) : (
+    <div className="ml-[50px] text-red-500">No quizzes available</div>
+  )}
+</div>
+
+          </div>
+          
+          <div className={styles.topScoredHeader} style={{marginTop:"15px"}}>
+            <p className="text-[#002366]">Most Popular</p>
+            <span
+              className={styles.moreLink} style={{marginRight:"4px"}}
+              onClick={handleBackToQuizzes}
+            >
+               More
+            </span>
+            <p className="ml-[1px] mt-[1px] mr-[18px] text-[#EF5130]">></p>
+            {/* <img
+              className="cursor-pointer mr-[20px] ml-1"
+              src={moreArrow}
+              alt="More"
+              width={17}
+              height={8}
+              onClick={() => toggleGetMoreQuizzes(false)}
+            /> */}
+          </div>
+
+ <div className={styles.container1}>
+   {popularquizzes.length > 0 ?(
+    displayedQuizzes.map((quizItem, index) =>(
+      <div className={styles.infoCards}>
+    {/* Info cards content */}
+    <div className={styles.card} key={index} style={{ paddingTop: "8px",marginTop:"15px",backgroundColor:"#CBF2FB" }}>
+    <span className="relative group">
+                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate">
+                {quizItem.quiz_name}
+                </span>
+                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+                {quizItem.quiz_name}
                 </span>
 
-               <div className={styles.iconContainer}>
-                 <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                   <svg
-                     xmlns="http://www.w3.org/2000/svg"
-                     fill="none"
-                     viewBox="0 0 24 24"
-                     stroke-width="1.5"
-                     stroke="currentColor"
-                     class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                     onClick={toggleNavbar}
-                   >
-                     <path
-                       stroke-linecap="round"
-                       stroke-linejoin="round"
-                       d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                     />
-                     {isNavbarOpen ? "Close Navbar" : "Open Navbar"}
-                   </svg>
+    </span>
 
-                   {isNavbarOpen && (
-                     <div className={styles.infoIcons}>
-                       {/* start */}
-                       <div className={styles.start}>
+      <div className={styles.iconContainer}>
+        <div className="z-40 mb-[2px] pl-[36px] font-normal rounded ">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+            onClick={toggleNavbar}
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+            />
+            {isNavbarOpen ? "Close Navbar" : "Open Navbar"}
+          </svg>
+
+          {isNavbarOpen && (
+            <div className={styles.infoIcons}>
+              {/* start */}
+              <div className={styles.start}>
                          <img
                            className={styles.startimage}
                            src={Start_button}
@@ -669,8 +1039,8 @@ const Dashboard = () => {
                            Start
                          </span>
                        </div>
-                       {/* Edit  */}
-                       <div className={styles.edit}>
+              {/* Edit  */}
+              <div className={styles.edit}>
                          <img
                            className={styles.editimage}
                            src={Edit_button}
@@ -683,8 +1053,8 @@ const Dashboard = () => {
                            Edit
                          </span>
                        </div>
-                       {/* Leaderboard */}
-                       <div className={styles.leaderboard}>
+              {/* Leaderboard */}
+              <div className={styles.leaderboard}>
                          <img
                            className={styles.leaderboardimage}
                            src={leaderboard_button}
@@ -692,14 +1062,14 @@ const Dashboard = () => {
                          />
                          <span
                            className={styles.leaderboardtext}
-                           onClick={() => leaderboard(latestquizzes[0].quiz_id)}
+                           
                          >
                            Leaderboard
                          </span>
                        </div>
-                       {/* Share */}
+              {/* Share */}
 
-                       <div className={styles.share}>
+              <div className={styles.share}>
                          <img
                            className={styles.shareimage}
                            src={Share_button}
@@ -707,2949 +1077,89 @@ const Dashboard = () => {
                          />
                          <span className={styles.sharetext}>Share</span>
                        </div>
-                     </div>
-                   )}
-                 </div>
-               </div>
-
-               <div className="flex mt-5">
-  <span className="relative group">
-    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {latestquizzes[0]?.category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {latestquizzes[0]?.category}
-    </span>  
-  </span>
-
-  <p className="px-[2px] font-normal">|</p>
-  
-  <span className="relative group">
-    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {latestquizzes[0]?.sub_category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {latestquizzes[0]?.sub_category}
-    </span>  
-  </span>
-</div>
-
-<div className="relative group mt-1">
-  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
-    {latestquizzes[0]?.quiz_description}
-  </span>
-  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
-    {latestquizzes[0]?.quiz_description}
-  </span>
-</div>
-
-               <div
-                 className={styles.additionalInfo}
-                 style={{ position:"relative",top:"95px" }}
-               >
-                 <div className="z-0">
-                   <div className="flex gap-[5px] h-[18px] w-[80px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black">
-                     <img
-                       className={styles.attemptsimage}
-                       src={Attempt1}
-                       alt="Attempts Icon"
-                       width={10}
-                       height={10}
-                     />
-                     <p>{latestquizzes[0]?.quiz_attempts}</p>
-                     <span className={styles.attemptstext}>attempts</span>
-                   </div>
-                 </div>
-
-                 <div className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                   <img
-                     className={styles.questionimage}
-                     src={NoOfQuestion}
-                     alt="Number of question Icon"
-                     width={15}
-                     height={10}
-                   />{" "}
-                   {latestquizzes[0]?.number_of_questions}
-                   <span className={styles.questiontext}>questions</span>
-                 </div>
-
-                 <div className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                   <img
-                     className={styles.minutesimage}
-                     src={Clock}
-                     alt="Time Icon"
-                     width={14}
-                     height={14}
-                   />{" "}
-                   {latestquizzes[0]?.quiz_duration}
-                   <span className={styles.minutestext}>minutes</span>
-                 </div>
-
-                 <div className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                   <img
-                     className={styles.complexityimage}
-                     src={Easy}
-                     alt="Challenge Icon"
-                     width={15}
-                     height={9}
-                   />{" "}
-                   {latestquizzes[0]?.complexity}
-                 </div>
-               </div>
-             </div>
-              ):
-              (
-                <div></div>
-              )}
-              
-              {/* latest-first-second-card  */}
-              { latestquizzes && latestquizzes[1] ?(
-              <div className={styles.card} style={{ paddingTop: "8px" }}>
-                <span className="relative group">
-                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
-                  {latestquizzes[1]?.quiz_name}
-                </span>
-                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-                {latestquizzes[1]?.quiz_name}
-                </span>
-                </span>
-
-                <div className={styles.iconContainer}>
-                  <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                      onClick={toggleNavbar1}
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                      />
-                      {isNavbarOpen ? "Close Navbar" : "Open Navbar"}
-                    </svg>
-                    {isNavbarOpen1 && (
-                      <div className={styles.infoIcons}>
-                        <img
-                          className={styles.startimage}
-                          src={Start_button}
-                          alt="Play icon"
-                        />
-                        <span
-                          className={styles.starttext}
-                          onClick={() =>
-                            handleStartQuiz(latestquizzes[1].quiz_id)
-                          }
-                        >
-                          Start
-                        </span>
-                        <img
-                          className={styles.editimage}
-                          src={Edit_button}
-                          alt="Play icon"
-                        />
-                        <span
-                          className={styles.edittext}
-                          onClick={() => Edit(latestquizzes[1].quiz_id)}
-                        >
-                          Edit
-                        </span>
-                        <img
-                          className={styles.leaderboardimage}
-                          src={leaderboard_button}
-                          alt="Play icon"
-                        />
-                        <span
-                          className={styles.leaderboardtext}
-                          onClick={() => leaderboard(latestquizzes[1].quiz_id)}
-                        >
-                          Leaderboard
-                        </span>
-                        <img
-                          className={styles.shareimage}
-                          src={Share_button}
-                          alt="Play icon"
-                        />
-                        <span className={styles.sharetext}>Share</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="flex mt-5">
-  <span className="relative group">
-    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {latestquizzes[1]?.category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {latestquizzes[1]?.category}
-    </span>  
-  </span>
-
-  <p className="px-[2px] font-normal">|</p>
-  
-  <span className="relative group">
-    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {latestquizzes[1]?.sub_category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {latestquizzes[1]?.sub_category}
-    </span>  
-  </span>
-</div>
-
-<div className="relative group mt-1">
-  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
-    {latestquizzes[1]?.quiz_description}
-  </span>
-  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
-    {latestquizzes[1]?.quiz_description}
-  </span>
-</div>
-                <div
-                  className={styles.additionalInfo}
-                  style={{ position:"relative",top:"65px" }}
-                >
-                  <div
-                    className={styles.infoIcon}
-                    style={{ marginTop: "20px" }}
-                  ></div>
-                  <div className="z-0">
-                    <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                      <img
-                        className={styles.attemptsimage}
-                        src={Attempt1}
-                        alt="Attempts Icon"
-                        width={10}
-                        height={10}
-                      />
-                      <p>{latestquizzes[1]?.quiz_attempts}</p>
-                      <span className={styles.attemptstext}>attempts</span>
-                    </div>
-                  </div>
-
-                  <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                    <img
-                      className={styles.questionimage}
-                      src={NoOfQuestion}
-                      alt="Number of question Icon"
-                      width={15}
-                      height={10}
-                    />{" "}
-                    {latestquizzes[1]?.number_of_questions}
-                    <span className={styles.questiontext}>questions</span>
-                  </span>
-                  <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                    <img
-                      className={styles.minutesimage}
-                      src={Clock}
-                      alt="Time Icon"
-                      width={14}
-                      height={14}
-                    />{" "}
-                    {latestquizzes[1]?.quiz_duration}
-                    <span className={styles.minutestext}>minutes</span>
-                  </span>
-                  <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                    <img
-                      className={styles.complexityimage}
-                      src={Easy}
-                      alt="Challenge Icon"
-                      width={15}
-                      height={9}
-                    />{" "}
-                    {latestquizzes[1]?.complexity}
-                  </span>
-                </div>
-              </div>
-              ):(
-                <div></div>
-              )}
-              {/* latest-first-third-card  */}
-              { latestquizzes && latestquizzes[2] ?(
-              <div className={styles.card} style={{ paddingTop: "8px" }}>
-                <span className="relative group">
-                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
-                  {latestquizzes[2]?.quiz_name}
-                </span>
-                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-                {latestquizzes[2]?.quiz_name}
-                </span>
-                </span>
-                <div className={styles.iconContainer}>
-                  <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                      onClick={toggleNavbar2}
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                      />
-                      {isNavbarOpen2 ? "Close Navbar" : "Open Navbar"}
-                    </svg>
-                    {isNavbarOpen2 && (
-                      <div className={styles.infoIcons}>
-                        <img
-                          className={styles.startimage}
-                          src={Start_button}
-                          alt="Play icon"
-                        />
-                        <span
-                          className={styles.starttext}
-                          onClick={() =>
-                            handleStartQuiz(latestquizzes[2].quiz_id)
-                          }
-                        >
-                          Start
-                        </span>
-                        <img
-                          className={styles.editimage}
-                          src={Edit_button}
-                          alt="Play icon"
-                        />
-                        <span
-                          className={styles.edittext}
-                          onClick={() => Edit(latestquizzes[2].quiz_id)}
-                        >
-                          Edit
-                        </span>
-                        <img
-                          className={styles.leaderboardimage}
-                          src={leaderboard_button}
-                          alt="Play icon"
-                        />
-                        <span
-                          className={styles.leaderboardtext}
-                          onClick={() => leaderboard(latestquizzes[2].quiz_id)}
-                        >
-                          Leaderboard
-                        </span>
-                        <img
-                          className={styles.shareimage}
-                          src={Share_button}
-                          alt="Play icon"
-                        />
-                        <span className={styles.sharetext}>Share</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-  <div className="flex mt-5">
-  <span className="relative group">
-    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {latestquizzes[2]?.category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {latestquizzes[2]?.category}
-    </span>  
-  </span>
-
-  <p className="px-[2px] font-normal">|</p>
-  
-  <span className="relative group">
-    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {latestquizzes[2]?.sub_category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {latestquizzes[2]?.sub_category}
-    </span>  
-  </span>
-</div>
-
-<div className="relative group mt-1">
-  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
-    {latestquizzes[2]?.quiz_description}
-  </span>
-  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
-    {latestquizzes[2]?.quiz_description}
-  </span>
-</div>
-                <div
-                  className={styles.additionalInfo}
-                  style={{ position:"relative",top:"65px" }}
-                >
-                  <div
-                    className={styles.infoIcon}
-                    style={{ marginTop: "20px" }}
-                  ></div>
-                  <div className="z-0">
-                    <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                      <img
-                        className={styles.attemptsimage}
-                        src={Attempt1}
-                        alt="Attempts Icon"
-                        width={10}
-                        height={10}
-                      />
-                      <p>{latestquizzes[2]?.quiz_attempts}</p>
-                      <span className={styles.attemptstext}>attempts</span>
-                    </div>
-                  </div>
-
-                  <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                    <img
-                      className={styles.questionimage}
-                      src={NoOfQuestion}
-                      alt="Number of question Icon"
-                      width={15}
-                      height={10}
-                    />{" "}
-                    {latestquizzes[2]?.number_of_questions}
-                    <span className={styles.questiontext}>questions</span>
-                  </span>
-                  <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                    <img
-                      className={styles.minutesimage}
-                      src={Clock}
-                      alt="Time Icon"
-                      width={14}
-                      height={14}
-                    />{" "}
-                    {latestquizzes[2]?.quiz_duration}
-                    <span className={styles.minutestext}>minutes</span>
-                  </span>
-                  <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                    <img
-                      className={styles.complexityimage}
-                      src={Easy}
-                      alt="Challenge Icon"
-                      width={15}
-                      height={9}
-                    />{" "}
-                    {latestquizzes[2]?.complexity}
-                  </span>
-                </div>
-              </div>
-              ):(
-                <div></div>
-              )}
             </div>
 
-            <div className="flex">
-              {/* latest-second-first-card  */}
-              { latestquizzes && latestquizzes[3] ?(
-              <div className={styles.card} style={{ paddingTop: "8px" }}>
-               <span className="relative group">
-                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
-                  {latestquizzes[3]?.quiz_name}
-                </span>
-                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-                {latestquizzes[3]?.quiz_name}
-                </span>
-                </span>
-                <div className={styles.iconContainer}>
-                  <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                      onClick={toggleNavbar3}
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                      />
-                      {isNavbarOpen3 ? "Close Navbar" : "Open Navbar"}
-                    </svg>
-                    {isNavbarOpen3 && (
-                      <div className={styles.infoIcons}>
-                        <img
-                          className={styles.startimage}
-                          src={Start_button}
-                          alt="Play icon"
-                        />
-                        <span
-                          className={styles.starttext}
-                          onClick={() =>
-                            handleStartQuiz(latestquizzes[3].quiz_id)
-                          }
-                        >
-                          Start
-                        </span>
-                        <img
-                          className={styles.editimage}
-                          src={Edit_button}
-                          alt="Play icon"
-                        />
-                        <span
-                          className={styles.edittext}
-                          onClick={() => Edit(latestquizzes[3].quiz_id)}
-                        >
-                          Edit
-                        </span>
-                        <img
-                          className={styles.leaderboardimage}
-                          src={leaderboard_button}
-                          alt="Play icon"
-                        />
-                        <span
-                          className={styles.leaderboardtext}
-                          onClick={() => leaderboard(latestquizzes[3].quiz_id)}
-                        >
-                          Leaderboard
-                        </span>
-                        <img
-                          className={styles.shareimage}
-                          src={Share_button}
-                          alt="Play icon"
-                        />
-                        <span className={styles.sharetext}>Share</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
+          )}
+        </div>
+      </div>
 
-                <div className="flex mt-5">
+
+    <div className="flex mt-[10px] relative top-[9px]">
+
   <span className="relative group">
-    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {latestquizzes[3]?.category}
+    <span className=" text-[#002366] ml-[10px] mt-4 w-[50px] cursor-pointer z-0 truncate text-[9px] font-normal">
+    {quizItem.category}
     </span>
     <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {latestquizzes[3]?.category}
+    {quizItem.category}
     </span>  
   </span>
 
   <p className="px-[2px] font-normal">|</p>
   
   <span className="relative group">
-    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {latestquizzes[3]?.sub_category}
+    <span className="text-[#002366] mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+    {quizItem.sub_category}
     </span>
     <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {latestquizzes[3]?.sub_category}
+    {quizItem.sub_category}
     </span>  
   </span>
-</div>
+      </div>
 
-<div className="relative group mt-1">
-  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
-    {latestquizzes[3]?.quiz_description}
-  </span>
-  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
-    {latestquizzes[3]?.quiz_description}
-  </span>
-</div>
-                <div
-                  className={styles.additionalInfo}
-                  style={{ position:"relative",top:"65px" }}
-                >
-                  <div
-                    className={styles.infoIcon}
-                    style={{ marginTop: "20px" }}
-                  ></div>
-                  <div className="z-0">
-                    <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                      <img
-                        className={styles.attemptsimage}
-                        src={Attempt1}
-                        alt="Attempts Icon"
-                        width={10}
-                        height={10}
-                      />
-                      <p>{latestquizzes[3]?.quiz_attempts}</p>
-                      <span className={styles.attemptstext}>attempts</span>
-                    </div>
+      <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[75px] left-[12px]">
+                  <div>Created By :</div>
+                  {/* <div>Created On</div> */}
                   </div>
+      {/* <div className="h-[3px] w-full bg-white"></div> */}
+      <div className="relative group mt-1">
+  <span className="text-wrap mt-[6px] text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate line-clamp-4">
+    {quizItem.quiz_description}
+  </span>
+  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-0 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
+    {quizItem.quiz_description}
+  </span>
+      </div>
+      <div className="h-[2px] w-full bg-white"></div>
 
-                  <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                    <img
-                      className={styles.questionimage}
-                      src={NoOfQuestion}
-                      alt="Number of question Icon"
-                      width={15}
-                      height={10}
-                    />{" "}
-                    {latestquizzes[3]?.number_of_questions}
-                    <span className={styles.questiontext}>questions</span>
-                  </span>
-                  <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                    <img
-                      className={styles.minutesimage}
-                      src={Clock}
-                      alt="Time Icon"
-                      width={14}
-                      height={14}
-                    />{" "}
-                    {latestquizzes[3]?.quiz_duration}
-                    <span className={styles.minutestext}>minutes</span>
-                  </span>
-                  <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                    <img
-                      className={styles.complexityimage}
-                      src={Easy}
-                      alt="Challenge Icon"
-                      width={15}
-                      height={9}
-                    />{" "}
-                    {latestquizzes[3]?.complexity}
-                  </span>
-                </div>
+      <div style={{ backgroundColor: "#F9F9F9", padding: "1px 0" }}>
+            <div className="h-[85px] rounded w-full bg-[#F5F5F5]">
+
+            <div className={styles.additionalInfo} style={{ position: "relative", top: "55px" }}>
+            <div className={styles.infoIcon} style={{ marginTop: "25px" }}></div>
+            <div className="z-0">
+              <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366] relative -left-[10px] -top-[90px] hover:text-black">
+                <img className="h-[15px] w-[13px] pl-[3px] pb-1" src={Attempt1} alt="Attempts Icon" width={10} height={10} />
+                <p>{quizItem.quiz_attempts}</p>
+                <span className="text-[8px] ml-1">attempts</span>
               </div>
-              ):(
-                <div>
-
-                </div>
-              )}
-              {/* latest-second-second-card  */}
-              { latestquizzes && latestquizzes[4] ?(
-              <div className={styles.card} style={{ paddingTop: "8px" }}>
-               <span className="relative group">
-                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
-                  {latestquizzes[4]?.quiz_name}
-                </span>
-                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-                {latestquizzes[4]?.quiz_name}
-                </span>
-                </span>
-                <div className={styles.iconContainer}>
-                  <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                      onClick={toggleNavbar4}
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                      />
-                      {isNavbarOpen4 ? "Close Navbar" : "Open Navbar"}
-                    </svg>
-                    {isNavbarOpen4 && (
-                      <div className={styles.infoIcons}>
-                        <img
-                          className={styles.startimage}
-                          src={Start_button}
-                          alt="Play icon"
-                        />
-                        <span
-                          className={styles.starttext}
-                          onClick={() =>
-                            handleStartQuiz(latestquizzes[4].quiz_id)
-                          }
-                        >
-                          Start
-                        </span>
-                        <img
-                          className={styles.editimage}
-                          src={Edit_button}
-                          alt="Play icon"
-                        />
-                        <span
-                          className={styles.edittext}
-                          onClick={() => Edit(latestquizzes[4].quiz_id)}
-                        >
-                          Edit
-                        </span>
-                        <img
-                          className={styles.leaderboardimage}
-                          src={leaderboard_button}
-                          alt="Play icon"
-                        />
-                        <span
-                          className={styles.leaderboardtext}
-                          onClick={() => leaderboard(latestquizzes[4].quiz_id)}
-                        >
-                          Leaderboard
-                        </span>
-                        <img
-                          className={styles.shareimage}
-                          src={Share_button}
-                          alt="Play icon"
-                        />
-                        <span className={styles.sharetext}>Share</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="flex mt-5">
-  <span className="relative group">
-    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {latestquizzes[4]?.category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {latestquizzes[4]?.category}
-    </span>  
-  </span>
-
-  <p className="px-[2px] font-normal">|</p>
-  
-  <span className="relative group">
-    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {latestquizzes[4]?.sub_category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {latestquizzes[4]?.sub_category}
-    </span>  
-  </span>
-</div>
-
-<div className="relative group mt-1">
-  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
-    {latestquizzes[4]?.quiz_description}
-  </span>
-  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
-    {latestquizzes[4]?.quiz_description}
-  </span>
-</div>
-                <div
-                  className={styles.additionalInfo}
-                  style={{ position:"relative",top:"65px" }}
-                >
-                  <div
-                    className={styles.infoIcon}
-                    style={{ marginTop: "20px" }}
-                  ></div>
-                  <div className="z-0">
-                    <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                      <img
-                        className={styles.attemptsimage}
-                        src={Attempt1}
-                        alt="Attempts Icon"
-                        width={10}
-                        height={10}
-                      />
-                      <p>{latestquizzes[4]?.quiz_attempts}</p>
-                      <span className={styles.attemptstext}>attempts</span>
-                    </div>
-                  </div>
-
-                  <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                    <img
-                      className={styles.questionimage}
-                      src={NoOfQuestion}
-                      alt="Number of question Icon"
-                      width={15}
-                      height={10}
-                    />{" "}
-                    {latestquizzes[4]?.number_of_questions}
-                    <span className={styles.questiontext}>questions</span>
-                  </span>
-                  <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                    <img
-                      className={styles.minutesimage}
-                      src={Clock}
-                      alt="Time Icon"
-                      width={14}
-                      height={14}
-                    />{" "}
-                    {latestquizzes[4]?.quiz_duration}
-                    <span className={styles.minutestext}>minutes</span>
-                  </span>
-                  <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                    <img
-                      className={styles.complexityimage}
-                      src={Easy}
-                      alt="Challenge Icon"
-                      width={15}
-                      height={9}
-                    />{" "}
-                    {latestquizzes[4]?.complexity}
-                  </span>
-                </div>
-              </div>
-              ):(
-                <div></div>
-              )}
-              {/* latest-second-third-card  */}
-              { latestquizzes && latestquizzes[5] ?(
-              <div className={styles.card} style={{ paddingTop: "8px" }}>
-               <span className="relative group">
-                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[200px] cursor-pointer z-0 truncate underline underline-offset-2">
-                 {latestquizzes[5]?.quiz_name}
-                </span>
-                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-                {latestquizzes[5]?.quiz_name}
-                </span>
-                </span>
-                <div className={styles.iconContainer}>
-                  <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                      onClick={toggleNavbar5}
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                      />
-                      {isNavbarOpen5 ? "Close Navbar" : "Open Navbar"}
-                    </svg>
-                    {isNavbarOpen5 && (
-                      <div className={styles.infoIcons}>
-                        <img
-                          className={styles.startimage}
-                          src={Start_button}
-                          alt="Play icon"
-                        />
-                        <span
-                          className={styles.starttext}
-                          onClick={() =>
-                            handleStartQuiz(latestquizzes[5].quiz_id)
-                          }
-                        >
-                          Start
-                        </span>
-                        <img
-                          className={styles.editimage}
-                          src={Edit_button}
-                          alt="Play icon"
-                        />
-                        <span
-                          className={styles.edittext}
-                          onClick={() => Edit(latestquizzes[5].quiz_id)}
-                        >
-                          Edit
-                        </span>
-                        <img
-                          className={styles.leaderboardimage}
-                          src={leaderboard_button}
-                          alt="Play icon"
-                        />
-                        <span
-                          className={styles.leaderboardtext}
-                          onClick={() => leaderboard(latestquizzes[5].quiz_id)}
-                        >
-                          Leaderboard
-                        </span>
-                        <img
-                          className={styles.shareimage}
-                          src={Share_button}
-                          alt="Play icon"
-                        />
-                        <span className={styles.sharetext}>Share</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="flex mt-5">
-  <span className="relative group">
-    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {latestquizzes[5]?.category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {latestquizzes[5]?.category}
-    </span>  
-  </span>
-
-  <p className="px-[2px] font-normal">|</p>
-  
-  <span className="relative group">
-    <span className="mt-4 w-[100px] border cursor-pointer z-0 truncate text-[9px] font-normal">
-      {latestquizzes[5]?.sub_category} 
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {latestquizzes[5]?.sub_category}
-    </span>  
-  </span>
-</div>
-
-<div className="relative group mt-1">
-  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
-    {latestquizzes[5]?.quiz_description}
-  </span>
-  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
-    {latestquizzes[5]?.quiz_description}
-  </span>
-</div>
-
-                <div
-                  className={styles.additionalInfo}
-                  style={{ position:"relative",top:"65px" }}
-                >
-                  <div
-                    className={styles.infoIcon}
-                    style={{ marginTop: "20px" }}
-                  ></div>
-                  <div className="z-0">
-                    <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                      <img
-                        className={styles.attemptsimage}
-                        src={Attempt1}
-                        alt="Attempts Icon"
-                        width={10}
-                        height={10}
-                      />
-                      <p>{latestquizzes[5]?.quiz_attempts}</p>
-                      <span className={styles.attemptstext}>attempts</span>
-                    </div>
-                  </div>
-
-                  <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                    <img
-                      className={styles.questionimage}
-                      src={NoOfQuestion}
-                      alt="Number of question Icon"
-                      width={15}
-                      height={10}
-                    />{" "}
-                    {latestquizzes[5]?.number_of_questions}
-                    <span className={styles.questiontext}>questions</span>
-                  </span>
-                  <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                    <img
-                      className={styles.minutesimage}
-                      src={Clock}
-                      alt="Time Icon"
-                      width={14}
-                      height={14}
-                    />{" "}
-                    {latestquizzes[5]?.quiz_duration}
-                    <span className={styles.minutestext}>minutes</span>
-                  </span>
-                  <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                    <img
-                      className={styles.complexityimage}
-                      src={Easy}
-                      alt="Challenge Icon"
-                      width={15}
-                      height={9}
-                    />{" "}
-                    {latestquizzes[5]?.complexity}
-                  </span>
-                </div>
-              </div>
-              ):(
-                <div></div>
-              )}
             </div>
 
-            {getMoreQuizzes ? (
-              <div className=" ">
-                <div className="flex">
-                  {/* fisrt-card  */}
-                { latestquizzes && latestquizzes[6] ?(
-                  <div
-                    className={styles.card}
-                    style={{
-                      paddingTop: "8px",
-                      backgroundColor: "#CFFCFF",
-                      paddingTop: "8px",
-                    }}
-                  >
-                    <span className="relative group">
-                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
-                  {latestquizzes[6]?.quiz_name}
-                </span>
-                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-                {latestquizzes[6]?.quiz_name}
-                </span>
-                </span>
-                    <div className={styles.iconContainer}>
-                      <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke-width="1.5"
-                          stroke="currentColor"
-                          class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                          onClick={toggleNavbar6}
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                          />
-                          {isNavbarOpen6 ? "Close Navbar" : "Open Navbar"}
-                        </svg>
-                        {isNavbarOpen6 && (
-                          <div className={styles.infoIcons}>
-                            <img
-                              className={styles.startimage}
-                              src={Start_button}
-                              alt="Play icon"
-                            />
-                            <span
-                              className={styles.starttext}
-                              onClick={() =>
-                                handleStartQuiz(latestquizzes[6].quiz_id)
-                              }
-                            >
-                              Start
-                            </span>
-                            <img
-                              className={styles.editimage}
-                              src={Edit_button}
-                              alt="Play icon"
-                            />
-                            <span
-                              className={styles.edittext}
-                              onClick={() => Edit(latestquizzes[6].quiz_id)}
-                            >
-                              Edit
-                            </span>
-                            <img
-                              className={styles.leaderboardimage}
-                              src={leaderboard_button}
-                              alt="Play icon"
-                            />
-                            <span
-                              className={styles.leaderboardtext}
-                              onClick={() => leaderboard(latestquizzes[6].quiz_id)}
-                            >
-                              Leaderboard
-                            </span>
-                            <img
-                              className={styles.shareimage}
-                              src={Share_button}
-                              alt="Play icon"
-                            />
-                            <span className={styles.sharetext}>Share</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex mt-5">
-  <span className="relative group">
-    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {latestquizzes[6]?.category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {latestquizzes[6]?.category}
-    </span>  
-  </span>
-
-  <p className="px-[2px] font-normal">|</p>
-  
-  <span className="relative group">
-    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {latestquizzes[6]?.sub_category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {latestquizzes[6]?.sub_category}
-    </span>  
-  </span>
-</div>
-
-<div className="relative group mt-1">
-  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
-    {latestquizzes[6]?.quiz_description}
-  </span>
-  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
-    {latestquizzes[6]?.quiz_description}
-  </span>
-</div>
-                    <div
-                      className={styles.additionalInfo}
-                      style={{ position:"relative",top:"65px" }}
-                    >
-                      <div
-                        className={styles.infoIcon}
-                        style={{ marginTop: "20px" }}
-                      ></div>
-                      <div className="z-0">
-                        <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                          <img
-                            className={styles.attemptsimage}
-                            src={Attempt1}
-                            alt="Attempts Icon"
-                            width={10}
-                            height={10}
-                          />
-                          <p>{latestquizzes[6]?.quiz_attempts}</p>
-                          <span className={styles.attemptstext}>attempts</span>
-                        </div>
-                      </div>
-
-                      <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                        <img
-                          className={styles.questionimage}
-                          src={NoOfQuestion}
-                          alt="Number of question Icon"
-                          width={15}
-                          height={10}
-                        />{" "}
-                        {latestquizzes[6]?.number_of_questions}
-                        <span className={styles.questiontext}>questions</span>
-                      </span>
-                      <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                        <img
-                          className={styles.minutesimage}
-                          src={Clock}
-                          alt="Time Icon"
-                          width={14}
-                          height={14}
-                        />{" "}
-                        {latestquizzes[6]?.quiz_duration}
-                        <span className={styles.minutestext}>minutes</span>
-                      </span>
-                      <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                        <img
-                          className={styles.complexityimage}
-                          src={Easy}
-                          alt="Challenge Icon"
-                          width={15}
-                          height={9}
-                        />{" "}
-                        {latestquizzes[6]?.complexity}
-                      </span>
-                    </div>
-                  </div>
-                ):(
-                  <div></div>
-                )}
-                {/* second-card  */}
-                { latestquizzes && latestquizzes[7] ?(
-                  <div className={styles.card} style={{ paddingTop: "8px" }}>
-                    <span className="relative group">
-                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
-                  {latestquizzes[7]?.quiz_name}
-                </span>
-                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-                {latestquizzes[7]?.quiz_name}
-                </span>
-                </span>
-                    <div className={styles.iconContainer}>
-                      <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke-width="1.5"
-                          stroke="currentColor"
-                          class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                          onClick={toggleNavbar7}
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                          />
-                          {isNavbarOpen7 ? "Close Navbar" : "Open Navbar"}
-                        </svg>
-                        {isNavbarOpen7 && (
-                          <div className={styles.infoIcons}>
-                            <img
-                              className={styles.startimage}
-                              src={Start_button}
-                              alt="Play icon"
-                            />
-                            <span
-                              className={styles.starttext}
-                              onClick={() =>
-                                handleStartQuiz(latestquizzes[7].quiz_id)
-                              }
-                            >
-                              Start
-                            </span>
-                            <img
-                              className={styles.editimage}
-                              src={Edit_button}
-                              alt="Play icon"
-                            />
-                            <span
-                              className={styles.edittext}
-                              onClick={() => Edit(latestquizzes[7].quiz_id)}
-                            >
-                              Edit
-                            </span>
-                            <img
-                              className={styles.leaderboardimage}
-                              src={leaderboard_button}
-                              alt="Play icon"
-                            />
-                            <span
-                              className={styles.leaderboardtext}
-                              onClick={() => leaderboard(latestquizzes[7].quiz_id)}
-                            >
-                              Leaderboard
-                            </span>
-                            <img
-                              className={styles.shareimage}
-                              src={Share_button}
-                              alt="Play icon"
-                            />
-                            <span className={styles.sharetext}>Share</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex mt-5">
-  <span className="relative group">
-    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {latestquizzes[7]?.category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {latestquizzes[7]?.category}
-    </span>  
-  </span>
-
-  <p className="px-[2px] font-normal">|</p>
-  
-  <span className="relative group">
-    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {latestquizzes[7]?.sub_category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {latestquizzes[7]?.sub_category}
-    </span>  
-  </span>
-</div>
-
-<div className="relative group mt-1">
-  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
-    {latestquizzes[7]?.quiz_description}
-  </span>
-  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
-    {latestquizzes[7]?.quiz_description}
-  </span>
-</div>
-                    <div
-                      className={styles.additionalInfo}
-                      style={{ position:"relative",top:"65px" }}
-                    >
-                      <div
-                        className={styles.infoIcon}
-                        style={{ marginTop: "20px" }}
-                      ></div>
-                      <div className="z-0">
-                        <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                          <img
-                            className={styles.attemptsimage}
-                            src={Attempt1}
-                            alt="Attempts Icon"
-                            width={10}
-                            height={10}
-                          />
-                          <p>{latestquizzes[7]?.quiz_attempts}</p>
-                          <span className={styles.attemptstext}>attempts</span>
-                        </div>
-                      </div>
-
-                      <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                        <img
-                          className={styles.questionimage}
-                          src={NoOfQuestion}
-                          alt="Number of question Icon"
-                          width={15}
-                          height={10}
-                        />{" "}
-                        {latestquizzes[7]?.number_of_questions}
-                        <span className={styles.questiontext}>questions</span>
-                      </span>
-                      <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                        <img
-                          className={styles.minutesimage}
-                          src={Clock}
-                          alt="Time Icon"
-                          width={14}
-                          height={14}
-                        />{" "}
-                        {latestquizzes[7]?.quiz_duration}
-                        <span className={styles.minutestext}>minutes</span>
-                      </span>
-                      <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                        <img
-                          className={styles.complexityimage}
-                          src={Easy}
-                          alt="Challenge Icon"
-                          width={15}
-                          height={9}
-                        />{" "}
-                        {latestquizzes[7]?.complexity}
-                      </span>
-                    </div>
-                  </div>
-                ):(
-                  <div></div>
-                )}
-                {/* third-card  */}
-                { latestquizzes && latestquizzes[8] ?(
-                  <div className={styles.card} style={{ paddingTop: "8px" }}>
-                   <span className="relative group">
-                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
-                  {latestquizzes[8]?.quiz_name}
-                </span>
-                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-                {latestquizzes[8]?.quiz_name}
-                </span>
-                </span>
-                    <div className={styles.iconContainer}>
-                      <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke-width="1.5"
-                          stroke="currentColor"
-                          class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                          onClick={toggleNavbar8}
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                          />
-                          {isNavbarOpen8 ? "Close Navbar" : "Open Navbar"}
-                        </svg>
-                        {isNavbarOpen8 && (
-                          <div className={styles.infoIcons}>
-                            <img
-                              className={styles.startimage}
-                              src={Start_button}
-                              alt="Play icon"
-                            />
-                            <span
-                              className={styles.starttext}
-                              onClick={() =>
-                                handleStartQuiz(latestquizzes[8].quiz_id)
-                              }
-                            >
-                              Start
-                            </span>
-                            <img
-                              className={styles.editimage}
-                              src={Edit_button}
-                              alt="Play icon"
-                            />
-                            <span
-                              className={styles.edittext}
-                              onClick={() => Edit(latestquizzes[8].quiz_id)}
-                            >
-                              Edit
-                            </span>
-                            <img
-                              className={styles.leaderboardimage}
-                              src={leaderboard_button}
-                              alt="Play icon"
-                            />
-                            <span
-                              className={styles.leaderboardtext}
-                              onClick={() => leaderboard(latestquizzes[8].quiz_id)}
-                            >
-                              Leaderboard
-                            </span>
-                            <img
-                              className={styles.shareimage}
-                              src={Share_button}
-                              alt="Play icon"
-                            />
-                            <span className={styles.sharetext}>Share</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex mt-5">
-  <span className="relative group">
-    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {latestquizzes[8]?.category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {latestquizzes[8]?.category}
-    </span>  
-  </span>
-
-  <p className="px-[2px] font-normal">|</p>
-  
-  <span className="relative group">
-    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {latestquizzes[8]?.sub_category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {latestquizzes[8]?.sub_category}
-    </span>  
-  </span>
-</div>
-
-<div className="relative group mt-1">
-  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
-    {latestquizzes[8]?.quiz_description}
-  </span>
-  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
-    {latestquizzes[8]?.quiz_description}
-  </span>
-</div>
-                    <div
-                      className={styles.additionalInfo}
-                      style={{ position:"relative",top:"65px" }}
-                    >
-                      <div
-                        className={styles.infoIcon}
-                        style={{ marginTop: "20px" }}
-                      ></div>
-                      <div className="z-0">
-                        <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                          <img
-                            className={styles.attemptsimage}
-                            src={Attempt1}
-                            alt="Attempts Icon"
-                            width={10}
-                            height={10}
-                          />
-                          <p>{latestquizzes[8]?.quiz_attempts}</p>
-                          <span className={styles.attemptstext}>attempts</span>
-                        </div>
-                      </div>
-
-                      <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                        <img
-                          className={styles.questionimage}
-                          src={NoOfQuestion}
-                          alt="Number of question Icon"
-                          width={15}
-                          height={10}
-                        />{" "}
-                        {latestquizzes[8]?.number_of_questions}
-                        <span className={styles.questiontext}>questions</span>
-                      </span>
-                      <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                        <img
-                          className={styles.minutesimage}
-                          src={Clock}
-                          alt="Time Icon"
-                          width={14}
-                          height={14}
-                        />{" "}
-                        {latestquizzes[8]?.quiz_duration}
-                        <span className={styles.minutestext}>minutes</span>
-                      </span>
-                      <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                        <img
-                          className={styles.complexityimage}
-                          src={Easy}
-                          alt="Challenge Icon"
-                          width={15}
-                          height={9}
-                        />{" "}
-                        {latestquizzes[8]?.complexity}
-                      </span>
-                    </div>
-                  </div>
-                ):(
-                  <div></div>
-                )}
-                </div>
-                
-                {/* attempted-quiz  */}
-                <div className="flex">
-                  {/* <div
-                    className={styles.card}
-                    style={{
-                      paddingTop: "8px",
-                    }}
-                  >
-                    <span className={styles.title} style={{ width: "210px" }}>
-                      {attemptedquizzes[0]?.quiz_name}
-                    </span>
-                    <div className={styles.iconContainer}>
-                      <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke-width="1.5"
-                          stroke="currentColor"
-                          class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                          onClick={toggleNavbar9}
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                          />
-                          {isNavbarOpen9 ? "Close Navbar" : "Open Navbar"}
-                        </svg>
-                        {isNavbarOpen9 && (
-                          <div className={styles.infoIcons}>
-                            <img
-                              className="absolute h-[1px] w-[1px] left-[6px] top-1"
-                              src={eye}
-                              alt="Play icon"
-                            />
-                            <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
-                              View
-                            </span>
-                            <img
-                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
-                              src={download}
-                              alt="download icon"
-                            />
-                            <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
-                              Download
-                            </span>
-                            <img
-                              className={styles.leaderboardimage}
-                              src={leaderboard_button}
-                              alt="Play icon"
-                            />
-                            <span
-                              className={styles.leaderboardtext}
-                              onClick={() => leaderboard(latestquizzes[0].quiz_id)}
-                            >
-                              Leaderboard
-                            </span>
-                            <img
-                              className={styles.shareimage}
-                              src={Share_button}
-                              alt="Play icon"
-                            />
-                            <span className={styles.sharetext}>Share</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <div className={styles.category}>
-                      <span className={styles.category1}>
-                        {attemptedquizzes[0]?.category}
-                      </span>
-                      <p className="px-[2px] font-normal">|</p>
-                      <span className={styles.category1}>
-                        {attemptedquizzes[0]?.sub_category}
-                      </span>
-                    </div>
-
-                    <div className={styles.description}>
-                      <span>
-                        {attemptedquizzes[0]?.quiz_description}
-                        <span className={styles.subdescription}>
-                          {attemptedquizzes[0]?.quiz_description}
-                        </span>
-                      </span>
-                    </div>
-                    <div className="text-[6px] font-normal pl-[15px] relative top-[40px]">
-                      <span>Pass</span>
-                      <span className="px-[2px]">|</span>
-                      <span>
-                        {attemptedquizzes[0]?.speed_rank}
-                        <sup>th</sup>Fastest
-                      </span>
-                      <span className="px-[2px]">|</span>
-                      <span>
-                        {attemptedquizzes[0]?.score_rank} <sup>th</sup>Highest
-                      </span>
-                      <span className="px-[2px]">|</span>
-                      <span>
-                        {attemptedquizzes[0]?.attempt_percentage}% Score
-                      </span>
-                      <br />
-                      <span>{attemptedquizzes[0]?.quiz_grade} Grade</span>
-                    </div>
-                    <div
-                      className={styles.additionalInfo}
-                      style={{ marginTop: "25px" }}
-                    >
-                      <div
-                        className={styles.infoIcon}
-                        style={{ marginTop: "20px" }}
-                      ></div>
-                      <div className="z-0">
-                        <div className="text-[7px] flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                          <img
-                            className={styles.attemptsimage}
-                            src={Attempt1}
-                            alt="Attempts Icon"
-                            width={10}
-                            height={10}
-                          />
-                          <p>{attemptedquizzes[0]?.attempts_count} </p>
-                          <span
-                            title="number of times quiz attempted"
-                            className="text-[6px] ml-2 cursor-pointer"
-                          >
-                            quiz attempts
-                          </span>
-                        </div>
-                      </div>
-
-                      <span className=" text-[7px] flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                        <img
-                          className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
-                          src={high_score}
-                          alt="Number of question Icon"
-                          width={15}
-                          height={10}
-                        />{" "}
-                        {attemptedquizzes[0]?.attained_score}/
-                        {attemptedquizzes[0]?.total_score}
-                        <div
-                          title="attained score/total score"
-                          className="cursor-pointer text-[6px]"
-                        >
-                          <span className=" ml-[8px]">score</span>
-                        </div>
-                      </span>
-                      <span className="text-[7px] flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                        <img
-                          className="pb-[1px] mr-[1px] relative left-[3px] "
-                          src={NoOfQuestion}
-                          alt="Time Icon"
-                          width={14}
-                          height={14}
-                        />{" "}
-                        {attemptedquizzes[0]?.attempted_questions}/
-                        {attemptedquizzes[0]?.total_questions}
-                        <div
-                          title="attempted qustions/total questions"
-                          className="cursor-pointer text-[6px]"
-                        >
-                          <span className=" ml-[6px]">attemped</span>
-                        </div>
-                      </span>
-                      <span className="text-[7px] flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                        <img
-                          className="pb-[1px] mr-[1px] relative left-[3px] "
-                          src={Clock}
-                          alt="Time Icon"
-                          width={14}
-                          height={14}
-                        />{" "}
-                        {attemptedquizzes[0]?.attempt_duration_mins}/
-                        {attemptedquizzes[0]?.quiz_duration}
-                        <div
-                          title="time taken for attempted/total duration of quiz "
-                          className="cursor-pointer text-[6px]"
-                        >
-                          <span className="-ml-[2px]">duration</span>
-                        </div>
-                      </span>
-                    </div>
-                  </div> */}
-                  {/* second-card  */}
-                  {/* <div
-                    className={styles.card}
-                    style={{
-                      paddingTop: "8px",
-                    }}
-                  >
-                    <span className={styles.title}>
-                      {attemptedquizzes[1]?.quiz_name}
-                    </span>
-                    <div className={styles.iconContainer}>
-                      <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke-width="1.5"
-                          stroke="currentColor"
-                          class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                          onClick={toggleNavbar10}
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                          />
-                          {isNavbarOpen10 ? "Close Navbar" : "Open Navbar"}
-                        </svg>
-                        {isNavbarOpen10 && (
-                          <div className={styles.infoIcons}>
-                            <img
-                              className="absolute h-[1px] w-[1px] left-[6px] top-1"
-                              src={eye}
-                              alt="Play icon"
-                            />
-                            <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
-                              View
-                            </span>
-                            <img
-                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
-                              src={download}
-                              alt="download icon"
-                            />
-                            <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
-                              Download
-                            </span>
-                            <img
-                              className={styles.leaderboardimage}
-                              src={leaderboard_button}
-                              alt="Play icon"
-                            />
-                            <span
-                              className={styles.leaderboardtext}
-                              onClick={() => leaderboard(latestquizzes[0].quiz_id)}
-                            >
-                              Leaderboard
-                            </span>
-                            <img
-                              className={styles.shareimage}
-                              src={Share_button}
-                              alt="Play icon"
-                            />
-                            <span className={styles.sharetext}>Share</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <div className={styles.category}>
-                      <span className={styles.category1}>
-                        {attemptedquizzes[1]?.category}
-                      </span>
-                      <p className="px-[2px] font-normal">|</p>
-                      <span className={styles.category1}>
-                        {attemptedquizzes[1]?.sub_category}
-                      </span>
-                    </div>
-
-                    <div className={styles.description}>
-                      <span>{attemptedquizzes[1]?.quiz_description}</span>
-                    </div>
-
-                    <div className="text-[6px] font-normal pl-[15px] relative top-[40px]">
-                      <span>Pass</span>
-                      <span className="px-[2px]">|</span>
-                      <span>
-                        {attemptedquizzes[1]?.speed_rank}
-                        <sup>th</sup>Fastest
-                      </span>
-                      <span className="px-[2px]">|</span>
-                      <span>
-                        {attemptedquizzes[1]?.score_rank} <sup>th</sup>Highest
-                      </span>
-                      <span className="px-[2px]">|</span>
-                      <span>
-                        {attemptedquizzes[1]?.attempt_percentage}% Score
-                      </span>
-                      <br />
-                      <span>{attemptedquizzes[1]?.quiz_grade} Grade</span>
-                    </div>
-                    <div
-                      className={styles.additionalInfo}
-                      style={{ marginTop: "30px" }}
-                    >
-                      <div
-                        className={styles.infoIcon}
-                        style={{ marginTop: "20px" }}
-                      ></div>
-                      <div className="z-0">
-                        <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                          <img
-                            className={styles.attemptsimage}
-                            src={Attempt1}
-                            alt="Attempts Icon"
-                            width={10}
-                            height={10}
-                          />
-                          <p>{latestquizzes[6]?.quiz_attempts}</p>
-                          <span
-                            title="number of times quiz attempted"
-                            className="text-[6px] ml-1 cursor-pointer"
-                          >
-                            quiz attempts
-                          </span>
-                        </div>
-                      </div>
-
-                      <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                        <img
-                          className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
-                          src={high_score}
-                          alt="Number of question Icon"
-                          width={15}
-                          height={10}
-                        />{" "}
-                        {attemptedquizzes[1]?.attained_score}/
-                        {attemptedquizzes[1]?.total_score}
-                        <div
-                          title="attained score/total score"
-                          className="cursor-pointer text-[6px]"
-                        >
-                          <span className=" ml-[1px]">score</span>
-                        </div>
-                      </span>
-                      <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                        <img
-                          className="pb-[1px] mr-[1px] relative left-[3px] "
-                          src={NoOfQuestion}
-                          alt="Time Icon"
-                          width={14}
-                          height={14}
-                        />{" "}
-                        {attemptedquizzes[1]?.attempted_questions}/
-                        {attemptedquizzes[1]?.total_questions}
-                        <div
-                          title="attempted qustions/total questions"
-                          className="cursor-pointer text-[6px]"
-                        >
-                          <span className=" ml-[1px]">attemped</span>
-                        </div>
-                      </span>
-                      <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                        <img
-                          className="pb-[1px] mr-[1px] relative left-[3px] "
-                          src={Clock}
-                          alt="Time Icon"
-                          width={14}
-                          height={14}
-                        />{" "}
-                        {attemptedquizzes[2]?.attempt_duration_mins}/
-                        {attemptedquizzes[2]?.quiz_duration}
-                        <div
-                          title="time taken for attempted/total duration of quiz "
-                          className="cursor-pointer text-[6px]"
-                        >
-                          <span className=" ml-[1px]">duration</span>
-                        </div>
-                      </span>
-                    </div>
-                  </div> */}
-                  {/* third-card  */}
-                  {/* <div
-                    className={styles.card}
-                    style={{
-                      paddingTop: "8px",
-                    }}
-                  >
-                    <span className={styles.title}>
-                      {attemptedquizzes[2]?.quiz_name}
-                    </span>
-                    <div className={styles.iconContainer}>
-                      <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke-width="1.5"
-                          stroke="currentColor"
-                          class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                          onClick={toggleNavbar101}
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                          />
-                          {isNavbarOpen101 ? "Close Navbar" : "Open Navbar"}
-                        </svg>
-                        {isNavbarOpen101 && (
-                          <div className={styles.infoIcons}>
-                            <img
-                              className="absolute h-[1px] w-[1px] left-[6px] top-1"
-                              src={eye}
-                              alt="Play icon"
-                            />
-                            <span className="text-[5px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
-                              View
-                            </span>
-                            <img
-                              className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[15px]"
-                              src={download}
-                              alt="download icon"
-                            />
-                            <span className="text-[5px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
-                              Download
-                            </span>
-                            <img
-                              className={styles.leaderboardimage}
-                              src={leaderboard_button}
-                              alt="Play icon"
-                            />
-                            <span
-                              className={styles.leaderboardtext}
-                              onClick={() => leaderboard(latestquizzes[0].quiz_id)}
-                            >
-                              Leaderboard
-                            </span>
-                            <img
-                              className={styles.shareimage}
-                              src={Share_button}
-                              alt="Play icon"
-                            />
-                            <span className={styles.sharetext}>Share</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <div className={styles.category}>
-                      <span className={styles.category1}>
-                        {attemptedquizzes[2]?.category}
-                      </span>
-                      <p className="px-[2px] font-normal">|</p>
-                      <span className={styles.category1}>
-                        {attemptedquizzes[2]?.sub_category}
-                      </span>
-                    </div>
-
-                    <div className={styles.description}>
-                      <span>{attemptedquizzes[2]?.quiz_description}</span>
-                    </div>
-
-                    <div className="text-[6px] font-normal pl-[15px] relative top-[40px]">
-                      <span>Pass</span>
-                      <span className="px-[2px]">|</span>
-                      <span>
-                        {attemptedquizzes[2]?.speed_rank}
-                        <sup>th</sup>Fastest
-                      </span>
-                      <span className="px-[2px]">|</span>
-                      <span>
-                        {attemptedquizzes[2]?.score_rank} <sup>th</sup>Highest
-                      </span>
-                      <span className="px-[2px]">|</span>
-                      <span>
-                        {attemptedquizzes[2]?.attempt_percentage}% Score
-                      </span>
-                      <br />
-                      <span>{attemptedquizzes[2]?.quiz_grade} Grade</span>
-                    </div>
-                    <div
-                      className={styles.additionalInfo}
-                      style={{ marginTop: "50px" }}
-                    >
-                      <div
-                        className={styles.infoIcon}
-                        style={{ marginTop: "20px" }}
-                      ></div>
-                      <div className="z-0">
-                        <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                          <img
-                            className={styles.attemptsimage}
-                            src={Attempt1}
-                            alt="Attempts Icon"
-                            width={10}
-                            height={10}
-                          />
-                          <p>{attemptedquizzes[2]?.quiz_attempts}</p>
-                          <span
-                            title="number of times quiz attempted"
-                            className="text-[6px] ml-1 cursor-pointer"
-                          >
-                            quiz attempts
-                          </span>
-                        </div>
-                      </div>
-
-                      <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                        <img
-                          className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
-                          src={high_score}
-                          alt="Number of question Icon"
-                          width={15}
-                          height={10}
-                        />{" "}
-                        {attemptedquizzes[2]?.attained_score}/
-                        {attemptedquizzes[2]?.total_score}
-                        <div
-                          title="attained score/total score"
-                          className="cursor-pointer text-[6px]"
-                        >
-                          <span className=" ml-[1px]">score</span>
-                        </div>
-                      </span>
-                      <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                        <img
-                          className="pb-[1px] mr-[1px] relative left-[3px] "
-                          src={NoOfQuestion}
-                          alt="Time Icon"
-                          width={14}
-                          height={14}
-                        />{" "}
-                        {attemptedquizzes[2]?.attempted_questions}/
-                        {attemptedquizzes[2]?.total_questions}
-                        <div
-                          title="attempted qustions/total questions"
-                          className="cursor-pointer text-[6px]"
-                        >
-                          <span className=" ml-[1px]">attemped</span>
-                        </div>
-                      </span>
-                      <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                        <img
-                          className="pb-[1px] mr-[1px] relative left-[3px] "
-                          src={Clock}
-                          alt="Time Icon"
-                          width={14}
-                          height={14}
-                        />{" "}
-                        {attemptedquizzes[2]?.attempt_duration_mins}/
-                        {attemptedquizzes[2]?.quiz_duration}
-                        {latestquizzes[2]?.quiz_duration}
-                        <div
-                          title="time taken for attempted/total duration of quiz "
-                          className="cursor-pointer text-[6px]"
-                        >
-                          <span className=" ml-[1px]">duration</span>
-                        </div>
-                      </span>
-                    </div>
-                  </div> */}
-
-                </div>
-              </div>
-            ) : null}
+            <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded relative -left-[12px] hover:text-black">
+              <img className="pb-[1px] pt-[2px] -mt-1 relative bottom-[2px]" src={NoOfQuestion} alt="Number of question Icon" width={15} height={10} />
+              {quizItem.number_of_questions}
+              <span className="text-[8px] ml-[1px]">questions</span>
+            </span>
+            <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded relative -left-[14px] hover:text-black">
+              <img className="pb-[1px] mr-[1px] relative left-[3px]" src={Clock} alt="Time Icon" width={14} height={14} />
+              {quizItem.quiz_duration}
+              <span className="text-[8px] -ml-[0.5px]">minutes</span>
+            </span>
+            <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded relative -left-[10px] hover:text-black">
+              <img className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]" src={Easy} alt="Challenge Icon" width={15} height={9} />
+              {quizItem.complexity}
+            </span>
           </div>
-          
-          <div className={styles.topScoredHeader}>
-            <p>Most Popular</p>
+            </div>
           </div>
-          <div className={styles.infoCards}>
-            {/* Info cards content */}
-            <div className="flex">
-            <div className={styles.card} style={{ paddingTop: "8px" }}>
-            <span className="relative group">
-                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
-                  {popularquizzes[0]?.quiz_name}
-                </span>
-                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-                {popularquizzes[0]?.quiz_name}
-                </span>
-                </span>
-              <div className={styles.iconContainer}>
-                <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                    onClick={toggleNavbar11}
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                    />
-                    {isNavbarOpen11 ? "Close Navbar" : "Open Navbar"}
-                  </svg>
-                  {isNavbarOpen11 && (
-                    <div className={styles.infoIcons}>
-                      <img
-                        className={styles.startimage}
-                        src={Start_button}
-                        alt="Play icon"
-                      />
-                      <span
-                        className={styles.starttext}
-                        onClick={() =>
-                          handleStartQuiz(popularquizzes[0].quiz_id)
-                        }
-                      >
-                        Start
-                      </span>
-                      <img
-                        className={styles.editimage}
-                        src={Edit_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.edittext}>Edit</span>
-                      <img
-                        className={styles.leaderboardimage}
-                        src={leaderboard_button}
-                        alt="Play icon"
-                      />
-                      <span
-                        className={styles.leaderboardtext}
-                        onClick={() => leaderboard(latestquizzes[0].quiz_id)}
-                      >
-                        Leaderboard
-                      </span>
-                      <img
-                        className={styles.shareimage}
-                        src={Share_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.sharetext}>Share</span>
-                    </div>
-                  )}
-                </div>
-              </div>
+    </div>
+  </div>
+    ))
+   ):(
+    <div className="ml-[50px] text-red-500">No quizzes available</div>
+   )}
+      </div>
 
-              <div className="flex mt-5">
-  <span className="relative group">
-    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {popularquizzes[0]?.category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {popularquizzes[0]?.category}
-    </span>  
-  </span>
-
-  <p className="px-[2px] font-normal">|</p>
-  
-  <span className="relative group">
-    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {popularquizzes[0]?.sub_category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {popularquizzes[0]?.sub_category}
-    </span>  
-  </span>
-</div>
-
-<div className="relative group mt-1">
-  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
-    {popularquizzes[0]?.quiz_description}
-  </span>
-  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
-    {popularquizzes[0]?.quiz_description}
-  </span>
-</div>
-              <div
-                className={styles.additionalInfo}
-                style={{ position:"relative",top:"65px" }}
-              >
-                <div
-                  className={styles.infoIcon}
-                  style={{ marginTop: "20px" }}
-                ></div>
-                <div className="z-0">
-                  <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                    <img
-                      className={styles.attemptsimage}
-                      src={Attempt1}
-                      alt="Attempts Icon"
-                      width={10}
-                      height={10}
-                    />
-                    <p>{popularquizzes[0]?.quiz_attempts}</p>
-                    <span className={styles.attemptstext}>attempts</span>
-                  </div>
-                </div>
-
-                <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                  <img
-                    className={styles.questionimage}
-                    src={NoOfQuestion}
-                    alt="Number of question Icon"
-                    width={15}
-                    height={10}
-                  />{" "}
-                  {popularquizzes[0]?.number_of_questions}
-                  <span className={styles.questiontext}>questions</span>
-                </span>
-                <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                  <img
-                    className={styles.minutesimage}
-                    src={Clock}
-                    alt="Time Icon"
-                    width={14}
-                    height={14}
-                  />{" "}
-                  {popularquizzes[0]?.quiz_duration}
-                  <span className={styles.minutestext}>minutes</span>
-                </span>
-                <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                  <img
-                    className={styles.complexityimage}
-                    src={Easy}
-                    alt="Challenge Icon"
-                    width={15}
-                    height={9}
-                  />{" "}
-                  {popularquizzes[0]?.complexity}
-                </span>
-              </div>
-            </div>
-            <div className={styles.card} style={{ paddingTop: "8px" }}>
-            <span className="relative group">
-                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
-                  {popularquizzes[1]?.quiz_name}
-                </span>
-                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-                {popularquizzes[1]?.quiz_name}
-                </span>
-                </span>
-              <div className={styles.iconContainer}>
-                <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                    onClick={toggleNavbar12}
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                    />
-                    {isNavbarOpen12 ? "Close Navbar" : "Open Navbar"}
-                  </svg>
-                  {isNavbarOpen12 && (
-                    <div className={styles.infoIcons}>
-                      <img
-                        className={styles.startimage}
-                        src={Start_button}
-                        alt="Play icon"
-                      />
-                      <span
-                        className={styles.starttext}
-                        onClick={() =>
-                          handleStartQuiz(popularquizzes[1].quiz_id)
-                        }
-                      >
-                        Start
-                      </span>
-                      <img
-                        className={styles.editimage}
-                        src={Edit_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.edittext}>Edit</span>
-                      <img
-                        className={styles.leaderboardimage}
-                        src={leaderboard_button}
-                        alt="Play icon"
-                      />
-                      <span
-                        className={styles.leaderboardtext}
-                        onClick={() => leaderboard(latestquizzes[1].quiz_id)}
-                      >
-                        Leaderboard
-                      </span>
-                      <img
-                        className={styles.shareimage}
-                        src={Share_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.sharetext}>Share</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="flex mt-5">
-  <span className="relative group">
-    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {popularquizzes[1]?.category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {popularquizzes[1]?.category}
-    </span>  
-  </span>
-
-  <p className="px-[2px] font-normal">|</p>
-  
-  <span className="relative group">
-    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {popularquizzes[1]?.sub_category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {popularquizzes[1]?.sub_category}
-    </span>  
-  </span>
-</div>
-
-
-<div className="relative group mt-1">
-  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
-    {popularquizzes[1]?.quiz_description}
-  </span>
-  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
-    {popularquizzes[1]?.quiz_description}
-  </span>
-</div>
-              <div
-                className={styles.additionalInfo}
-                style={{ position:"relative",top:"65px" }}
-              >
-                <div
-                  className={styles.infoIcon}
-                  style={{ marginTop: "20px" }}
-                ></div>
-                <div className="z-0">
-                  <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                    <img
-                      className={styles.attemptsimage}
-                      src={Attempt1}
-                      alt="Attempts Icon"
-                      width={10}
-                      height={10}
-                    />
-                    <p>{popularquizzes[1]?.quiz_attempts}</p>
-                    <span className={styles.attemptstext}>attempts</span>
-                  </div>
-                </div>
-
-                <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                  <img
-                    className={styles.questionimage}
-                    src={NoOfQuestion}
-                    alt="Number of question Icon"
-                    width={15}
-                    height={10}
-                  />{" "}
-                  {popularquizzes[1]?.number_of_questions}
-                  <span className={styles.questiontext}>questions</span>
-                </span>
-                <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                  <img
-                    className={styles.minutesimage}
-                    src={Clock}
-                    alt="Time Icon"
-                    width={14}
-                    height={14}
-                  />{" "}
-                  {popularquizzes[1]?.quiz_duration}
-                  <span className={styles.minutestext}>minutes</span>
-                </span>
-                <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                  <img
-                    className={styles.complexityimage}
-                    src={Easy}
-                    alt="Challenge Icon"
-                    width={15}
-                    height={9}
-                  />{" "}
-                  {popularquizzes[1]?.complexity}
-                </span>
-              </div>
-            </div>
-            <div className={styles.card} style={{ paddingTop: "8px" }}>
-            <span className="relative group">
-                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
-                  {popularquizzes[2]?.quiz_name}
-                </span>
-                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-                {popularquizzes[2]?.quiz_name}
-                </span>
-                </span>
-              <div className={styles.iconContainer}>
-                <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                    onClick={toggleNavbar13}
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                    />
-                    {isNavbarOpen13 ? "Close Navbar" : "Open Navbar"}
-                  </svg>
-                  {isNavbarOpen13 && (
-                    <div className={styles.infoIcons}>
-                      <img
-                        className={styles.startimage}
-                        src={Start_button}
-                        alt="Play icon"
-                      />
-                      <span
-                        className={styles.starttext}
-                        onClick={() =>
-                          handleStartQuiz(popularquizzes[2].quiz_id)
-                        }
-                      >
-                        Start
-                      </span>
-                      <img
-                        className={styles.editimage}
-                        src={Edit_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.edittext}>Edit</span>
-                      <img
-                        className={styles.leaderboardimage}
-                        src={leaderboard_button}
-                        alt="Play icon"
-                      />
-                      <span
-                        className={styles.leaderboardtext}
-                        onClick={() => leaderboard(latestquizzes[2].quiz_id)}
-                      >
-                        Leaderboard
-                      </span>
-                      <img
-                        className={styles.shareimage}
-                        src={Share_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.sharetext}>Share</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="flex mt-5">
-  <span className="relative group">
-    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {popularquizzes[2]?.category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {popularquizzes[2]?.category}
-    </span>  
-  </span>
-
-  <p className="px-[2px] font-normal">|</p>
-  
-  <span className="relative group">
-    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {popularquizzes[2]?.sub_category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {popularquizzes[2]?.sub_category}
-    </span>  
-  </span>
-</div>
-
-
-<div className="relative group mt-1">
-  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
-    {popularquizzes[2]?.quiz_description}
-  </span>
-  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
-    {popularquizzes[2]?.quiz_description}
-  </span>
-</div>
-
-              <div
-                className={styles.additionalInfo}
-                style={{ position:"relative",top:"65px" }}
-              >
-                <div
-                  className={styles.infoIcon}
-                  style={{ marginTop: "20px" }}
-                ></div>
-                <div className="z-0">
-                  <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                    <img
-                      className={styles.attemptsimage}
-                      src={Attempt1}
-                      alt="Attempts Icon"
-                      width={10}
-                      height={10}
-                    />
-                    <p>{popularquizzes[2]?.quiz_attempts}</p>
-                    <span className={styles.attemptstext}>attempts</span>
-                  </div>
-                </div>
-
-                <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                  <img
-                    className={styles.questionimage}
-                    src={NoOfQuestion}
-                    alt="Number of question Icon"
-                    width={15}
-                    height={10}
-                  />{" "}
-                  {popularquizzes[2]?.number_of_questions}
-                  <span className={styles.questiontext}>questions</span>
-                </span>
-                <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                  <img
-                    className={styles.minutesimage}
-                    src={Clock}
-                    alt="Time Icon"
-                    width={14}
-                    height={14}
-                  />{" "}
-                  {popularquizzes[2]?.quiz_duration}
-                  <span className={styles.minutestext}>minutes</span>
-                </span>
-                <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                  <img
-                    className={styles.complexityimage}
-                    src={Easy}
-                    alt="Challenge Icon"
-                    width={15}
-                    height={9}
-                  />{" "}
-                  {popularquizzes[2]?.complexity}
-                </span>
-              </div>
-            </div> 
-            </div>
-            
-            <div className="flex">
-            <div className={styles.card} style={{ paddingTop: "8px" }}>
-            <span className="relative group">
-                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
-                  {popularquizzes[3]?.quiz_name}
-                </span>
-                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-                {popularquizzes[3]?.quiz_name}
-                </span>
-                </span>
-              <div className={styles.iconContainer}>
-                <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                    onClick={toggleNavbar14}
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                    />
-                    {isNavbarOpen14 ? "Close Navbar" : "Open Navbar"}
-                  </svg>
-                  {isNavbarOpen14 && (
-                    <div className={styles.infoIcons}>
-                      <img
-                        className={styles.startimage}
-                        src={Start_button}
-                        alt="Play icon"
-                      />
-                      <span
-                        className={styles.starttext}
-                        onClick={() =>
-                          handleStartQuiz(popularquizzes[3].quiz_id)
-                        }
-                      >
-                        Start
-                      </span>
-                      <img
-                        className={styles.editimage}
-                        src={Edit_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.edittext}>Edit</span>
-                      <img
-                        className={styles.leaderboardimage}
-                        src={leaderboard_button}
-                        alt="Play icon"
-                      />
-                      <span
-                        className={styles.leaderboardtext}
-                        onClick={() => leaderboard(latestquizzes[3].quiz_id)}
-                      >
-                        Leaderboard
-                      </span>
-                      <img
-                        className={styles.shareimage}
-                        src={Share_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.sharetext}>Share</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="flex mt-5">
-  <span className="relative group">
-    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {popularquizzes[3]?.category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {popularquizzes[3]?.category}
-    </span>  
-  </span>
-
-  <p className="px-[2px] font-normal">|</p>
-  
-  <span className="relative group">
-    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {popularquizzes[3]?.sub_category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {popularquizzes[3]?.sub_category}
-    </span>  
-  </span>
-</div>
-
-
-<div className="relative group mt-1">
-  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
-    {popularquizzes[3]?.quiz_description}
-  </span>
-  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
-    {popularquizzes[3]?.quiz_description}
-  </span>
-</div>
-
-              <div
-                className={styles.additionalInfo}
-                style={{ position:"relative",top:"65px" }}
-              >
-                <div
-                  className={styles.infoIcon}
-                  style={{ marginTop: "20px" }}
-                ></div>
-                <div className="z-0">
-                  <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                    <img
-                      className={styles.attemptsimage}
-                      src={Attempt1}
-                      alt="Attempts Icon"
-                      width={10}
-                      height={10}
-                    />
-                    <p>{popularquizzes[3]?.quiz_attempts}</p>
-                    <span className={styles.attemptstext}>attempts</span>
-                  </div>
-                </div>
-
-                <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                  <img
-                    className={styles.questionimage}
-                    src={NoOfQuestion}
-                    alt="Number of question Icon"
-                    width={15}
-                    height={10}
-                  />{" "}
-                  {popularquizzes[3]?.number_of_questions}
-                  <span className={styles.questiontext}>questions</span>
-                </span>
-                <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                  <img
-                    className={styles.minutesimage}
-                    src={Clock}
-                    alt="Time Icon"
-                    width={14}
-                    height={14}
-                  />{" "}
-                  {popularquizzes[3]?.quiz_duration}
-                  <span className={styles.minutestext}>minutes</span>
-                </span>
-                <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                  <img
-                    className={styles.complexityimage}
-                    src={Easy}
-                    alt="Challenge Icon"
-                    width={15}
-                    height={9}
-                  />{" "}
-                  {popularquizzes[3]?.complexity}
-                </span>
-              </div>
-            </div>
-            <div className={styles.card} style={{ paddingTop: "10px" }}>
-            <span className="relative group">
-                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
-                  {popularquizzes[4]?.quiz_name}
-                </span>
-                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-                {popularquizzes[4]?.quiz_name}
-                </span>
-                </span>
-              <div className={styles.iconContainer}>
-                <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                    onClick={toggleNavbar15}
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                    />
-                    {isNavbarOpen15 ? "Close Navbar" : "Open Navbar"}
-                  </svg>
-                  {isNavbarOpen15 && (
-                    <div className={styles.infoIcons}>
-                      <img
-                        className={styles.startimage}
-                        src={Start_button}
-                        alt="Play icon"
-                      />
-                      <span
-                        className={styles.starttext}
-                        onClick={() =>
-                          handleStartQuiz(popularquizzes[4].quiz_id)
-                        }
-                      >
-                        Start
-                      </span>
-                      <img
-                        className={styles.editimage}
-                        src={Edit_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.edittext}>Edit</span>
-                      <img
-                        className={styles.leaderboardimage}
-                        src={leaderboard_button}
-                        alt="Play icon"
-                      />
-                      <span
-                        className={styles.leaderboardtext}
-                        onClick={() => leaderboard(latestquizzes[4].quiz_id)}
-                      >
-                        Leaderboard
-                      </span>
-                      <img
-                        className={styles.shareimage}
-                        src={Share_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.sharetext}>Share</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="flex mt-5">
-  <span className="relative group">
-    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {popularquizzes[4]?.category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {popularquizzes[4]?.category}
-    </span>  
-  </span>
-
-  <p className="px-[2px] font-normal">|</p>
-  
-  <span className="relative group">
-    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {popularquizzes[4]?.sub_category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {popularquizzes[4]?.sub_category}
-    </span>  
-  </span>
-</div>
-
-
-<div className="relative group mt-1">
-  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
-    {popularquizzes[4]?.quiz_description}
-  </span>
-  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
-    {popularquizzes[4]?.quiz_description}
-  </span>
-</div>
-
-              <div
-                className={styles.additionalInfo}
-                style={{ position:"relative",top:"65px" }}
-              >
-                <div
-                  className={styles.infoIcon}
-                  style={{ marginTop: "20px" }}
-                ></div>
-                <div className="z-0">
-                  <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                    <img
-                      className={styles.attemptsimage}
-                      src={Attempt1}
-                      alt="Attempts Icon"
-                      width={10}
-                      height={10}
-                    />
-                    <p>{popularquizzes[4]?.quiz_attempts}</p>
-                    <span className={styles.attemptstext}>attempts</span>
-                  </div>
-                </div>
-
-                <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                  <img
-                    className={styles.questionimage}
-                    src={NoOfQuestion}
-                    alt="Number of question Icon"
-                    width={15}
-                    height={10}
-                  />{" "}
-                  {popularquizzes[4]?.number_of_questions}
-                  <span className={styles.questiontext}>questions</span>
-                </span>
-                <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                  <img
-                    className={styles.minutesimage}
-                    src={Clock}
-                    alt="Time Icon"
-                    width={14}
-                    height={14}
-                  />{" "}
-                  {popularquizzes[4]?.quiz_duration}
-                  <span className={styles.minutestext}>minutes</span>
-                </span>
-                <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                  <img
-                    className={styles.complexityimage}
-                    src={Easy}
-                    alt="Challenge Icon"
-                    width={15}
-                    height={9}
-                  />{" "}
-                  {popularquizzes[4]?.complexity}
-                </span>
-              </div>
-            </div>
-            <div className={styles.card} style={{ paddingTop: "10px" }}>
-            <span className="relative group">
-                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[165px] cursor-pointer z-0 truncate underline underline-offset-2">
-                  {popularquizzes[5]?.quiz_name}
-                </span>
-                <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-                {popularquizzes[5]?.quiz_name}
-                </span>
-                </span>
-              <div className={styles.iconContainer}>
-                <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                    onClick={toggleNavbar16}
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                    />
-                    {isNavbarOpen16 ? "Close Navbar" : "Open Navbar"}
-                  </svg>
-                  {isNavbarOpen16 && (
-                    <div className={styles.infoIcons}>
-                      <img
-                        className={styles.startimage}
-                        src={Start_button}
-                        alt="Play icon"
-                      />
-                      <span
-                        className={styles.starttext}
-                        onClick={() =>
-                          handleStartQuiz(popularquizzes[5].quiz_id)
-                        }
-                      >
-                        Start
-                      </span>
-                      <img
-                        className={styles.editimage}
-                        src={Edit_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.edittext}>Edit</span>
-                      <img
-                        className={styles.leaderboardimage}
-                        src={leaderboard_button}
-                        alt="Play icon"
-                      />
-                      <span
-                        className={styles.leaderboardtext}
-                        onClick={() => leaderboard(latestquizzes[5].quiz_id)}
-                      >
-                        Leaderboard
-                      </span>
-                      <img
-                        className={styles.shareimage}
-                        src={Share_button}
-                        alt="Play icon"
-                      />
-                      <span className={styles.sharetext}>Share</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="flex mt-5">
-  <span className="relative group">
-    <span className="ml-[10px] mt-4 w-[200px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {popularquizzes[5]?.category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {popularquizzes[5]?.category}
-    </span>  
-  </span>
-
-  <p className="px-[2px] font-normal">|</p>
-  
-  <span className="relative group">
-    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
-      {popularquizzes[5]?.sub_category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-      {popularquizzes[5]?.sub_category}
-    </span>  
-  </span>
-</div>
-
-
-<div className="relative group mt-1">
-  <span className="text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate">
-    {popularquizzes[5]?.quiz_description}
-  </span>
-  <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-3 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
-    {popularquizzes[5]?.quiz_description}
-  </span>
-</div>
-
-              <div
-                className={styles.additionalInfo}
-                style={{ position:"relative",top:"65px" }}
-              >
-                <div
-                  className={styles.infoIcon}
-                  style={{ marginTop: "20px" }}
-                ></div>
-                <div className="z-0">
-                  <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                    <img
-                      className={styles.attemptsimage}
-                      src={Attempt1}
-                      alt="Attempts Icon"
-                      width={10}
-                      height={10}
-                    />
-                    <p>{popularquizzes[5]?.quiz_attempts}</p>
-                    <span className={styles.attemptstext}>attempts</span>
-                  </div>
-                </div>
-
-                <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                  <img
-                    className={styles.questionimage}
-                    src={NoOfQuestion}
-                    alt="Number of question Icon"
-                    width={15}
-                    height={10}
-                  />{" "}
-                  {popularquizzes[5]?.number_of_questions}
-                  <span className={styles.questiontext}>questions</span>
-                </span>
-                <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                  <img
-                    className={styles.minutesimage}
-                    src={Clock}
-                    alt="Time Icon"
-                    width={14}
-                    height={14}
-                  />{" "}
-                  {popularquizzes[5]?.quiz_duration}
-                  <span className={styles.minutestext}>minutes</span>
-                </span>
-                <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-                  <img
-                    className={styles.complexityimage}
-                    src={Easy}
-                    alt="Challenge Icon"
-                    width={15}
-                    height={9}
-                  />{" "}
-                  {popularquizzes[5]?.complexity}
-                </span>
-              </div>
-            </div>
-            </div>
-            
-          </div>
         </div>
       </div>
       <LogoutBar />

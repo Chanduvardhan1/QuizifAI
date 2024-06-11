@@ -227,7 +227,7 @@ if (hasError) {
           data.response === 'fail' &&
           data.data === 'Email is already registered. You can log in.'
         ) {
-          setTerms(data.data);
+          setResponseMessage(data.data);
         }  else if (
           data.response === 'fail' &&
           data.data === 'Email is not valid,Make sure email should have atleast 8 characters.'
@@ -258,17 +258,17 @@ if (hasError) {
   };
   const handleInputChange = (field, value) => {
     if (field === 'emailOrMobile') {
-      setemailOrMobile(value);
+        setemailOrMobile(value.trim());  // Trim spaces from email input
     } else if (field === 'name') {
-      if (validateName(value.trim())) {
-        setResponseMessage1("");
-      }
-      setName(value);
+        if (validateName(value.trim())) {
+            setResponseMessage1("");
+        }
+        setName(value);
     } else if (field === 'termsChecked') {
         setTermsChecked(value);
         setTerms("");
     }
-};
+}
   //   let valid = true;
   //   const newErrors = {};
 
@@ -392,7 +392,7 @@ if (hasError) {
             "Mobile Number is already registered. You can log in."
           
         ) {
-          setTerms(data.data);
+          setResponseMessage(data.data);
           // navigate("/Register");
           // navigate("/login", {
           //   state: { emailMobOption: loginMethod, emailMob: mobile },
@@ -488,7 +488,7 @@ if (hasError) {
     }
   };
   const handleVerification1 = async () => {
-    setResponseMessage("");
+    setResponseMessage(""); 
     setResponseMessage1("");
     setTerms("");
     if (!termsChecked) {
@@ -1128,7 +1128,7 @@ if (hasError) {
                         </div>
                       )}
                     
-                   
+                                      
                     </div>
                   </div>
                 )}

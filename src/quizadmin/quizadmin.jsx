@@ -51,37 +51,37 @@ function quizadmin() {
         {/* Navigation-icons */}
         <div className="flex w-[15px] h-[15px] absolute top-[231px] left-[51px]">
           <img src={Dashboard} alt="Dashborad Image"/>
-          <a className="ml-5 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]" for="">Dashboard</a>
+          <a className="ml-5 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]" for="" href="/dashboard">Dashboard</a>
         </div>
 
         <div className="flex w-[16px] h-[15px] absolute top-[285px] left-[51px]">
           <img src={Quiz} alt="Quiz's Image"/>
-          <a className="ml-5 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]" for="">Quiz</a>
+          <a className="ml-5 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]" for="" href="/quiz">Quiz</a>
         </div>
 
-        <div className="flex w-[13.87px] h-[15.41px] absolute top-[338px] left-[51px]">
+        {/* <div className="flex w-[13.87px] h-[15.41px] absolute top-[338px] left-[51px]">
           <img src={History} alt="History Image"/>
-          <a className="ml-5 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]" for="">History</a>
-        </div>
+          <a className="ml-5 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]" for="" href="/dashboard">History</a>
+        </div> */}
 
         <div className="flex w-[17px] h-4 absolute top-[394px] left-[51px]">
           <img src={Schedule} alt="Schedule Image"/>
-          <a className="ml-4 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]" for="">Schedule</a>
+          <a className="ml-4 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]" for="" href="/schedule">Schedule</a>
         </div>
-
+{/* 
         <div className="flex w-4 h-[15px] absolute top-[453px] left-[51px]">
           <img src={Notification} alt="Notification Image"/>
           <a className="ml-4 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]" for="">Notification</a>
-        </div>
-
+        </div> */}
+{/* 
         <div className="flex w-[25.46px] h-[27.87px] absolute top-[508px] left-[51px]">
           <img className="-ml-2.5" src={QuizAdmin} alt="QuizAdmin Image"/>
           <a className="ml-4 text-Poppins font-medium text-[15px] leading-[15px] text-nowrap text-[#30304F]" for="">Quiz Admin</a>
-        </div>
+        </div> */}
       
         <div className="flex w-[17px] h-[17px] absolute top-[581px] left-[51px]">
           <img src={Profile} alt="Profile Image"/>
-          <a className="ml-4 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]" for="">Profile</a>
+          <a className="ml-4 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]" for="" href="/free-profile">Profile</a>
         </div>
 
         </header>

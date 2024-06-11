@@ -161,7 +161,7 @@ const Dashboard = () => {
 
   const leaderboard = (quizId) => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
-    navigate(`/quiz-results1`);
+    navigate('/quiz-results1', { state: { quizId } })
   };
 
   const Edit = (quizId) => {
@@ -680,8 +680,10 @@ const Dashboard = () => {
                            alt="Play icon"
                          />
                          <span
-                           className={styles.leaderboardtext}
-                           
+                           className={styles.leaderboardtext}                          
+
+                           onClick={() => leaderboard(latestquizzes[0].quiz_id)}
+
                          >
                            Leaderboard
                          </span>
@@ -729,6 +731,7 @@ const Dashboard = () => {
     {quizItem.quiz_description}
   </span>
       </div>
+
 
       <div
         className={styles.additionalInfo}
@@ -827,6 +830,7 @@ const Dashboard = () => {
                 <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                 {quizItem.quiz_name}
                 </span>
+
     </span>
 
       <div className={styles.iconContainer}>
@@ -905,10 +909,14 @@ const Dashboard = () => {
                          <span className={styles.sharetext}>Share</span>
                        </div>
             </div>
+
           )}
         </div>
       </div>
-      <div className="flex mt-5">
+
+
+    <div className="flex mt-5">
+
   <span className="relative group">
     <span className="ml-[10px] mt-4 w-[50px] cursor-pointer z-0 truncate text-[9px] font-normal">
     {quizItem.category}
@@ -922,6 +930,7 @@ const Dashboard = () => {
   
   <span className="relative group">
     <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+
     {quizItem.sub_category}
     </span>
     <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
@@ -1000,6 +1009,7 @@ const Dashboard = () => {
     <div className="ml-[50px] text-red-500">No quizzes available</div>
    )}
       </div>
+
         </div>
       </div>
       <LogoutBar />

@@ -171,15 +171,15 @@ const Edit = (quizId) => {
                     Quiz created by user name on date
                   </h1> */}
                 </div>
-                <div className="w-[760px] h-[49px] absolute top-[222px] left-[355px]">
-                  <div className=" flex gap-[420px]">
-                  <div className=" w-[300px">
+                <div className="w-[900px] h-[49px] absolute top-[222px] left-[355px]">
+                  <div className=" flex gap-[208px]">
+                  <div className=" w-[300px]">
                     <span className="font-Poppins text-[15px] font-bold leading-[40px] ">created By:</span>
-                    <span>{quizData.quiz_username}</span>
+                    <span > {quizData.created_by}</span>
                   </div>
-                  <div  className=" w-[300px">
-                  <span className="font-Poppins text-[15px] font-bold leading-[40px] ">created ON:</span>
-                    <span>{quizData.quiz_username}</span>
+                  <div  className="w-[300px]">
+                  <span className="font-Poppins text-[15px] font-bold leading-[40px] ">Created ON:</span>
+                    <span> {quizData.created_on}</span>
                   </div>
                 </div>
                 </div>
@@ -270,8 +270,8 @@ const Edit = (quizId) => {
                       {" "}
                       Retake this paper:{quizData.retake_flag}
                     </h1> */}
-                    <span className="font-Poppins text-[15px] font-bold leading-[40px]  ">Course:</span>
-                    <span></span>
+                    <span className="font-Poppins text-[15px] font-bold leading-[40px]">Course:</span>
+                    <span> {quizData.course_name}</span>
                   </div>
                   {/* <img
                     className="w-[39px] h-[39px] absolute top-[430px] left-[548px]"
@@ -284,7 +284,7 @@ const Edit = (quizId) => {
                       {quizData.multi_answer ? "Yes" : "No"}
                     </h1> */}
                     <span className="font-Poppins text-[15px] font-bold leading-[40px]  ">Class:</span>
-                    <span></span>
+                    <span> {quizData.class_name}</span>
                   </div>
                   {/* <img
                     className="w-[885px] absolute top-[484px] left-[277px]"

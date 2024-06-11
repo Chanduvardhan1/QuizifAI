@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { MdOutlineCancel } from "react-icons/md";
 import { useLocation } from 'react-router-dom';
+import Navigation from "../navbar/navbar.jsx";
 
 
 const QuizQuestions = () => {
@@ -152,7 +153,7 @@ const QuizQuestions = () => {
     .then(data => {
       console.log(data);
       setQuizData(data.data);
-      setAttemptNo(data.data.data.find(d => d.quiz_level_attempt_id).quiz_level_attempt_id);
+      setAttemptNo(data.data.questions.find(d => d.quiz_level_attempt_id).quiz_level_attempt_id);
       
       // Start the countdown timer
       timerRef.current = setInterval(() => {
@@ -194,18 +195,18 @@ const QuizQuestions = () => {
   const navigate = useNavigate();
   const handleSubmit = () => {
     clearInterval(timerRef.current);
-    if (!quizData || !quizData.data) {
+    if (!quizData || !quizData.questions) {
       console.error('No quiz data available to submit');
       return;
     }
 
     const answers = Object.keys(selectedOptions).map(questionIndex => ({
-      question_id: quizData.data[questionIndex].question_id,
+      question_id: quizData.questions[questionIndex].question_id,
       options: {
-        option_1: selectedOptions[questionIndex] === quizData.data[questionIndex].quiz_ans_option_1_id,
-        option_2: selectedOptions[questionIndex] === quizData.data[questionIndex].quiz_ans_option_2_id,
-        option_3: selectedOptions[questionIndex] === quizData.data[questionIndex].quiz_ans_option_3_id,
-        option_4: selectedOptions[questionIndex] === quizData.data[questionIndex].quiz_ans_option_4_id
+        option_1: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_1_id,
+        option_2: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_2_id,
+        option_3: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_3_id,
+        option_4: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_4_id
       }
     }));
     // const quizId = localStorage.getItem("quiz_id");
@@ -245,11 +246,11 @@ const QuizQuestions = () => {
     return `${h}:${m}:${s}`;
   };
 
-  if (!quizData || !quizData.data) {
+  if (!quizData || !quizData.questions) {
     return <div>Loading...</div>;
   }
-  const filteredQuizData = quizData.data.filter(item => item.question_id);
-  const currentQuestion = quizData.data.filter(item => item.question_id)[currentQuestionIndex];
+  const filteredQuizData = quizData.questions.filter(item => item.question_id);
+  const currentQuestion = quizData.questions.filter(item => item.question_id)[currentQuestionIndex];
   const optionLabels = ['A', 'B', 'C', 'D'];
   const optionKeys = ['quiz_ans_option_1_text', 'quiz_ans_option_2_text', 'quiz_ans_option_3_text', 'quiz_ans_option_4_text'];
 
@@ -267,7 +268,7 @@ const QuizQuestions = () => {
         rel="stylesheet"
         />
       </Head>*/}
-      <LeftBar/>
+      <Navigation/>
       <div className={styles.mainContent}>
       <div>
         <h1 className={styles.quiztitle}>{quiz_title}</h1>
@@ -276,12 +277,12 @@ const QuizQuestions = () => {
         <div className={styles.Createdby}>
 
         <span className={styles.Created} >Created By:</span>{" "}
-          <span className={styles.username} >{`${quizData.user_name}`}</span>
+          <span className={styles.username} >{`${quizData.created_by}`}</span>
         </div>
         <div>
 
         <span className={styles.Created} >Created ON:</span>{" "}
-          <span className={styles.username} >{`${quizData.user_name}`}</span>
+          <span className={styles.username} >{`${quizData.created_on}`}</span>
         </div>
         </div>
       </div>
@@ -401,14 +402,14 @@ const QuizQuestions = () => {
     </div> */}
 
     {/* </div> */}
-    <div>
+    <div className={styles.currentQuestion}>
       {currentQuestion && (
         <>
-          <div className={styles.imageContainer}>
+          {/* <div className={styles.imageContainer}> */}
             <div className={styles.textContainer}>
               <p>{`${currentQuestionIndex + 1}. ${currentQuestion.question_text}`}</p>
             </div>
-          </div>
+          {/* </div> */}
           <div className={styles.boxesContainer}>
           <ul style={{ listStyleType: 'none', padding: 0 }}>
         {optionKeys.map((key, index) => {
@@ -471,7 +472,7 @@ const QuizQuestions = () => {
                 </button>
                 </div>
             )}
-            {currentQuestionIndex < quizData.data.filter(item => item.question_id).length - 1 && (
+            {currentQuestionIndex < quizData.questions.filter(item => item.question_id).length - 1 && (
                <div className={styles.button2}>
               <button
                     className={styles.button}
@@ -482,7 +483,7 @@ const QuizQuestions = () => {
                 </button>
                 </div>
             )}
-            {currentQuestionIndex === quizData.data.filter(item => item.question_id).length - 1 && (
+            {currentQuestionIndex === quizData.questions.filter(item => item.question_id).length - 1 && (
               <div className={styles.button3}>
              <button
                     className={styles.button}
@@ -499,11 +500,13 @@ const QuizQuestions = () => {
     </div>
           </div>
           <div className={styles.verticalLine}></div>
+      <div className={styles.Totaltimer}>
       <div className={styles.sentence1} style={{ marginTop: "220px" }}>
         {`${currentQuestionIndex + 1} out of ${filteredQuizData.length}`}
       </div>
-      <div className={styles.sentence2} style={{ marginTop: "265px" }}>
-        Total timer: <span className={styles.sentence3}>{formatTime(elapsedTime)}</span> 
+      <div className={styles.sentence2}>
+       <span> Total timer:</span> <span className={styles.sentence3}>{formatTime(elapsedTime)}</span> 
+      </div>
       </div>
       <div className={styles.sentence3} style={{ marginTop: "230px" }}>
         {/* {formatTime(elapsedTime)} */}

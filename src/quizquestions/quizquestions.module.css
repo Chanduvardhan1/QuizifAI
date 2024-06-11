@@ -1,6 +1,7 @@
 .container {
     display: flex;
     font-family: "Poppins";
+    /* gap: 40px; */
   }
    
 
@@ -18,11 +19,21 @@
   .pageList{
     margin-top: 100px;
   }
-  .mainContent{
+  /* .mainContent{
     margin-left: 150px;
     margin-top: 30px;
-  }
+  } */
   
+  .mainContent{
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+  }
+.currentQuestion{
+    display: flex;
+    flex-direction: column;
+    gap: 0px;  
+}
 
 .pageItem {
     display: flex;
@@ -75,9 +86,9 @@ text-align: left;
 }
 
 .textContainer {
-    position: absolute;
-    top: 15px; /* Adjust as needed */
-    left: 0px; /* Adjust as needed */
+    /* position: absolute; */
+    /* top: 15px; 
+    left: 0px; */
     white-space: nowrap;
     font-family: Poppins;
 font-size: 18px;
@@ -88,7 +99,7 @@ text-align: left;
 color: #214082;
 white-space: pre-wrap; /* Preserves whitespace and allows text wrapping */
 word-wrap: break-word; /* Breaks long words to fit the container */
-width: 118%; /* Adjust as necessary */
+width: 100%; /* Adjust as necessary */
 padding: 10px; 
 margin: 0;
 }
@@ -96,7 +107,7 @@ margin: 0;
 .boxesContainer {
     display: flex;
     flex-direction: column;
-    margin-top: 85px; /* Adjust as needed */
+    /* margin-top: 85px;  */
 }
 
 .box {
@@ -176,11 +187,14 @@ margin: 0;
 
 .verticalLine {
     width: 1px;
-    height: 593px;
-    margin-top: 220px;
+    height: 375px;
+    margin-top: 160px;
     background-color: black; /* Adjust as needed */
-    margin-right: 20px; /* Adjust as needed */
-    margin-left: 170px;
+    margin-right: 20px; 
+    /* margin-left: 170px; */
+}
+.Totaltimer{
+    /* width: 400px; */
 }
 .sentence1{
     font-family: Poppins;
@@ -205,7 +219,7 @@ width: 152px;
 }
 .Createdbyandupdated{
     display: flex;
-    gap: 240px;
+    gap: 200px;
 }
 .Created{
     align-items: center;
@@ -225,10 +239,11 @@ line-height: 30px;
 letter-spacing: 0em;
 text-align: left;
 color: #214082;
-margin-top: 130px;
+/* margin-top: 130px;
 margin-left: -100px;
 
-width: 285px;
+width: 285px; */
+width: 200px;
 }
 .back1{
     display: flex;
@@ -281,7 +296,7 @@ margin-left: -130px;
   .boxesContainer {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
   }
   
   .box {
@@ -296,8 +311,8 @@ margin-left: -130px;
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
-    padding-left: 25px;
-    padding-right: 25px;
+    padding-left: 10px;
+    padding-right: 130px;
   }
   
   .button {

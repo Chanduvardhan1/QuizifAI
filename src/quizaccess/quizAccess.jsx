@@ -118,7 +118,8 @@ const quizAccess = () => {
       navigate("/dashboard");
     
   };
-
+  const [createdBy, setCreatedBy] = useState('');
+  const [createdOn, setCreatedOn] = useState('');
   useEffect(() => {
     const userId = localStorage.getItem("user_id");
     const quizId = localStorage.getItem("quiz_id");
@@ -142,6 +143,8 @@ const quizAccess = () => {
     .then(data => {
       console.log(data);
       setQuizData(data.data);
+      setCreatedBy(data.created_by);
+      setCreatedOn(data.created_on);
     })
     .catch(error => {
       console.error('There was a problem with your fetch operation:', error);
@@ -280,7 +283,7 @@ const quizAccess = () => {
   className={styles.icon2}
 /> */}
           <span className={styles.sentence5} >Created By:</span>{" "}
-          <span className={styles.sentence3} >{`${quizData.user_name}`}</span>
+          <span className={styles.sentence3} >{createdBy}</span>
           </div>
           <div className={styles.sentence4}>
         {/* <img
@@ -289,7 +292,7 @@ const quizAccess = () => {
   className={styles.icon2}
 /> */}
           <span className={styles.sentence5}>Created On:</span>
-          <span className={styles.sentence3}>{`${quizData.created_date}`}</span>
+          <span className={styles.sentence3}>{createdOn}</span>
           </div>
         </div>
       <div className={styles.horizontalLine}></div>

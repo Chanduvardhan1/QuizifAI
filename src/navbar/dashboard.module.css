@@ -12,18 +12,29 @@
 .body {
   font-family: "Poppins";
 }
-
+.pageList{
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  gap: 30px;
+  padding-left: 10px;
+}
 
 .navigation {
   width: 218px;
   background-color: #F5F5FB;
   font-weight: 500;
-  
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  padding-right: 25px;
+  padding-left: 25px;
+  gap: 50px;
 }
 
 .dashboardLogo{
-  margin-left: 15px;
-  margin-top: 10px;
+  /* margin-left: 15px;
+  margin-top: 10px; */
   cursor: pointer;
 }
 
@@ -32,11 +43,16 @@
   display: flex;
   align-items: center;
   font-family: "poppins";
-  margin-top: 30px;
+  /* margin-top: 30px; */
   font-size: 15px;
   font-weight: 500;
-  margin-left: 40px;
-  margin-right: 30px; 
+  /* margin-left: 40px;
+  margin-right: 30px;  */
+  cursor: pointer;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+.pageItem:hover {
+  transform: scale(1.1);
 }
 .infoLine {
 display: flex;
@@ -60,11 +76,11 @@ border: none;
   margin-right: 20px; 
 }
 .verticalline {
-  border-left: 3px solid #F5F5FB; /* Default color */
+  /* border-left: 3px solid #F5F5FB; 
   height: 20px;
   position: absolute;
-  left: 215px; /* Adjust this as needed */
-  transition: border-color 0.3s; /* Smooth transition */
+  left: 215px; 
+  transition: border-color 0.3s;  */
 }
 .verticalline.active {
   border-left-color: #708FF4; /* Color when active */
@@ -72,10 +88,15 @@ border: none;
 .verticalline:visited{
   border-left-color: #F5F5FB;
 }
+.active {
+  /* transform: scale(1.2); */
+  color: blue; /* Change to your desired active color */
+}
 .pageLink{
   margin-right: 10px;
   cursor: pointer;
   color: #9696BB;
+  transition: color 0.3s ease;
 }
 .pageLink.active{
   text-decoration: none;

@@ -60,26 +60,6 @@ const Dashboard = () => {
   const [weeklyQuizCount, setWeeklyQuizCount] = useState(0);
   const [averageScorePercentage, setAverageScorePercentage] = useState(0);
 
-  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
-  const [isNavbarOpen1, setIsNavbarOpen1] = useState(false);
-  const [isNavbarOpen2, setIsNavbarOpen2] = useState(false);
-  const [isNavbarOpen3, setIsNavbarOpen3] = useState(false);
-  const [isNavbarOpen4, setIsNavbarOpen4] = useState(false);
-  const [isNavbarOpen5, setIsNavbarOpen5] = useState(false);
-  const [isNavbarOpen6, setIsNavbarOpen6] = useState(false);
-  const [isNavbarOpen7, setIsNavbarOpen7] = useState(false);
-  const [isNavbarOpen8, setIsNavbarOpen8] = useState(false);
-  const [isNavbarOpen9, setIsNavbarOpen9] = useState(false);
-  const [isNavbarOpen10, setIsNavbarOpen10] = useState(false);
-  const [isNavbarOpen101, setIsNavbarOpen101] = useState(false);
-
-  const [isNavbarOpen11, setIsNavbarOpen11] = useState(false);
-  const [isNavbarOpen12, setIsNavbarOpen12] = useState(false);
-  const [isNavbarOpen13, setIsNavbarOpen13] = useState(false);
-  const [isNavbarOpen14, setIsNavbarOpen14] = useState(false);
-  const [isNavbarOpen15, setIsNavbarOpen15] = useState(false);
-  const [isNavbarOpen16, setIsNavbarOpen16] = useState(false);
-
   const [getMoreQuizzes, setGetMoreQuizzes] = useState(false);
 
   const [notAttemptedQuizzes, setNotAttemptedQuizzes] = useState([]);
@@ -169,66 +149,39 @@ const Dashboard = () => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     navigate(`/editmanuly`);
   };
-  const toggleNavbar = () => {
-    setIsNavbarOpen((prevState) => !prevState);
+
+  const [cardStates, setCardStates] = useState(Array(attemptedquizzes.length).fill(false));
+  const toggleNavbar = (index) => {
+    setCardStates((prevState) => {
+      const updatedStates = [...prevState];
+      updatedStates[index] = !updatedStates[index];
+      return updatedStates;
+    });
   };
-  const toggleNavbar1 = () => {
-    setIsNavbarOpen1((prevState) => !prevState);
+
+  const [cardStatus, setCardStatus] = useState(Array(latestquizzes.length).fill(false));
+  const toggleNavbar1 = (index) => {
+    setCardStatus((prevState) => {
+      const updatedStates = [...prevState];
+      updatedStates[index] = !updatedStates[index];
+      return updatedStates;
+    });
   };
-  const toggleNavbar2 = () => {
-    setIsNavbarOpen2((prevState) => !prevState);
+
+  const [cardStatuses, setCardStatuses] = useState(Array(popularquizzes.length).fill(false));
+  const toggleNavbar2 = (index) => {
+    setCardStatuses((prevState) => {
+      const updatedStates = [...prevState];
+      updatedStates[index] = !updatedStates[index];
+      return updatedStates;
+    });
   };
-  const toggleNavbar3 = () => {
-    setIsNavbarOpen3((prevState) => !prevState);
-  };
-  const toggleNavbar4 = () => {
-    setIsNavbarOpen4((prevState) => !prevState);
-  };
-  const toggleNavbar5 = () => {
-    setIsNavbarOpen5((prevState) => !prevState);
-  };
-  const toggleNavbar6 = () => {
-    setIsNavbarOpen6((prevState) => !prevState);
-  };
-  const toggleNavbar7 = () => {
-    setIsNavbarOpen7((prevState) => !prevState);
-  };
-  const toggleNavbar8 = () => {
-    setIsNavbarOpen8((prevState) => !prevState);
-  };
-  const toggleNavbar9 = () => {
-    setIsNavbarOpen9((prevState) => !prevState);
-  };
-  const toggleNavbar10 = () => {
-    setIsNavbarOpen10((prevState) => !prevState);
-  };
-  const toggleNavbar101 = () => {
-    setIsNavbarOpen101((prevState) => !prevState);
-  };
-  // -------------------------------------------------
-  const toggleNavbar11 = () => {
-    setIsNavbarOpen11((prevState) => !prevState);
-  };
-  const toggleNavbar12 = () => {
-    setIsNavbarOpen12((prevState) => !prevState);
-  };
-  const toggleNavbar13 = () => {
-    setIsNavbarOpen13((prevState) => !prevState);
-  };
-  const toggleNavbar14 = () => {
-    setIsNavbarOpen14((prevState) => !prevState);
-  };
-  const toggleNavbar15 = () => {
-    setIsNavbarOpen15((prevState) => !prevState);
-  };
-  const toggleNavbar16 = () => {
-    setIsNavbarOpen16((prevState) => !prevState);
-  };
+  
 
   const handleBackToQuizzes = () => {
     navigate('/quiz');
   };
-  const displayedQuizzes = getMoreQuizzes ? latestquizzes :latestquizzes.slice(0, 3);
+  // const displayedQuizzes = getMoreQuizzes ? latestquizzes :latestquizzes.slice(0, 3);
 
   const formatTime = (minutes) => {
     const hours = Math.floor(minutes / 60);
@@ -264,11 +217,46 @@ const Dashboard = () => {
     }
   }
 
-  const textColorClass = getColor(latestResult[0]?.quiz_grade);
-  const textColorClass1 = getColor(latestResult[1]?.quiz_grade);
-  const textColorClass2 = getColor(latestResult[2]?.quiz_grade);
-  const textColorClass3 = getColor(latestResult[3]?.quiz_grade);
-  console.log("percentage - ", latestResult);
+  const results = latestResult.map((result, index) => {
+    const textColorClass = getColor(result?.quiz_grade);
+    return (
+        <div key={index}>
+            <div className={styles.infoLine}>
+                <span className={styles.info} style={{ fontSize: "10px", color: "grey", textWrap: "nowrap" }}>
+                    {result?.attempt_date}
+                    <span className="relative group">
+                        <span className="absolute ml-[10px] w-[100px] cursor-pointer z-0 truncate">
+                            {result?.quiz_name}
+                        </span>
+                        <span className="cursor-pointer hidden group-hover:inline-block absolute left-0 top-5 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+                            {result?.quiz_name}
+                        </span>
+                    </span>
+                </span>
+                <span
+                    style={{
+                        marginLeft: "10px",
+                        width: "130px",
+                        height: "8px",
+                        fontSize: "8px",
+                        marginTop: "7px",
+                        marginRight: "15px",
+                    }}
+                >
+                    <Line
+                        percent={result?.quiz_percentage}
+                        strokeWidth={4}
+                        strokeColor={getColorPercentage(result?.quiz_percentage)}
+                    />
+                </span>
+                <span className={`text-[10px]`} style={{ color: textColorClass }}>
+                    {result?.quiz_percentage}%
+                </span>
+            </div>
+            <hr className={styles.divider} />
+        </div>
+    );
+});
 
   return (
     <div className={styles.container}>
@@ -324,214 +312,19 @@ const Dashboard = () => {
           score of {averageScorePercentage}%
         </div>
         <div className={styles.contentWrapper}>
-          <div className={styles.resultWrapper}>
-            <div
-              className={styles.latestResult}
-              style={{ paddingTop: "12px", paddingBottom: "13px",color:"#002366" }}
-            >
-              Latest Results
-              {/* <span className={styles.moreButton} style={{marginLeft:"170px"}}>
-                More <img src={arrow1} alt="More" width={15} height={8} />
-              </span> */}
-              {latestResult.length === 0 ? (
-                <p className="">No quizzes attempted till now.</p>
-              ) : (
-                <div className={styles.resultInfo}>
-                  <div className={styles.infoLine}>
-                    <span
-                      className={styles.info}
-                      style={{
-                        fontSize: "10px",
-                        color: "grey",
-                        textWrap: "nowrap",
-                      }}
-                    >
-                      {latestResult[0]?.attempt_date}
-                      <span className="relative group">
-  <span className="absolute ml-[10px] w-[100px] cursor-pointer z-0 truncate">
-    {latestResult[0]?.quiz_name}
-  </span>
-  <span className="cursor-pointer hidden group-hover:inline-block absolute left-0 top-5 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-    {latestResult[0]?.quiz_name}
-  </span>
-</span>
-                      
 
-                      {/* - {latestResults[0]?.quiz_category} */}
-                    </span>
-                    <span
-                      style={{
-                        marginLeft: "10px",
-                        width: "130px",
-                        height: "8px",
-                        fontSize: "8px",
-                        marginTop: "7px",
-                        marginRight: "15px",
-                      }}
-                    >
-                      <Line
-                        percent={latestResult[0]?.quiz_percentage}
-                        strokeWidth={4}
-                        strokeColor={getColorPercentage(
-                          latestResult[0]?.quiz_percentage
-                        )}
-                      />
-                      {/* <Progress percent={latestResults[0]?.attained_percentage} /> */}
-                    </span>
-                    <span
-                      className={`text-[10px]  `}
-                      style={{ color: textColorClass, marginTop: "5px" }}
-                    >
-                      {latestResult[0]?.quiz_percentage}%
-                    </span>
-                  </div>
-                  <hr className={styles.divider} />
-                  <div className={styles.infoLine}>
-                    <span
-                      className={styles.info}
-                      style={{
-                        fontSize: "10px",
-                        color: "grey",
-                        textWrap: "nowrap",
-                      }}
-                    >
-                      {latestResult[1]?.attempt_date}
-                      <span className="relative group">
-  <span className="absolute ml-[10px] w-[100px] cursor-pointer z-0 truncate">
-    {latestResult[1]?.quiz_name}
-  </span>
-  <span className="cursor-pointer hidden group-hover:inline-block absolute left-0 top-5 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-    {latestResult[1]?.quiz_name}
-  </span>
-</span>
-                      {/* - {latestResults[1]?.quiz_category} */}
-                    </span>
-                    <span
-                      style={{
-                        marginLeft: "10px",
-                        width: "130px",
-                        height: "8px",
-                        fontSize: "8px",
-                        marginTop: "7px",
-                        marginRight: "15px",
-                      }}
-                    >
-                      <Line
-                        percent={latestResult[1]?.quiz_percentage}
-                        strokeWidth={4}
-                        strokeColor={getColorPercentage(
-                          latestResult[1]?.quiz_percentage
-                        )}
-                      />
-
-                      {/* <Progress percent={latestResults[1]?.attained_percentage} /> */}
-                    </span>
-                    <span
-                      className={`text-[10px] `}
-                      style={{ color: textColorClass1 }}
-                    >
-                      {latestResult[1]?.quiz_percentage}%
-                    </span>
-                  </div>
-                  <hr className={styles.divider} />
-                  <div className={styles.infoLine} style={{ fontSize: "10px" }}>
-                    <span
-                      className={styles.info}
-                      style={{
-                        fontSize: "10px",
-                        color: "grey",
-                        textWrap: "nowrap",
-                      }}
-                    >
-                      {latestResult[2]?.attempt_date}{" "}
-                      <span className="relative group">
-  <span className="absolute ml-[10px] w-[100px] cursor-pointer z-0 truncate">
-    {latestResult[2]?.quiz_name}
-  </span>
-  <span className="cursor-pointer hidden group-hover:inline-block absolute left-0 top-5 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-    {latestResult[2]?.quiz_name}
-  </span>
-</span>
-                      {/* - {latestResults[2]?.quiz_category} */}
-                    </span>
-                    <span
-                      style={{
-                        marginLeft: "10px",
-                        width: "130px",
-                        height: "8px",
-                        fontSize: "8px",
-                        marginTop: "7px",
-                        marginRight: "15px",
-                      }}
-                    >
-                      <Line
-                        percent={latestResult[2]?.quiz_percentage}
-                        strokeWidth={4}
-                        strokeColor={getColorPercentage(
-                          latestResult[2]?.quiz_percentage
-                        )}
-                      />
-
-                      {/* <Progress percent={latestResults[2]?.attained_percentage} /> */}
-                    </span>
-                    <span
-                      className={`text-[10px] `}
-                      style={{ color: textColorClass2 }}
-                    >
-                      {latestResult[2]?.quiz_percentage}%
-                    </span>
-                  </div>
-                  <hr className={styles.divider} />
-                  <div className={styles.infoLine} style={{ fontSize: "10px" }}>
-                    <span
-                      className={styles.info}
-                      style={{
-                        fontSize: "10px",
-                        color: "grey",
-                        textWrap: "nowrap",
-                      }}
-                    >
-                      {latestResult[3]?.attempt_date}{" "}
-                      <span className="relative group">
-  <span className="absolute ml-[10px] w-[100px] cursor-pointer z-0 truncate">
-    {latestResult[3]?.quiz_name}
-  </span>
-  <span className="cursor-pointer hidden group-hover:inline-block absolute left-0 top-5 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-    {latestResult[3]?.quiz_name}
-  </span>
-</span>
-                      {/* - {latestResults[2]?.quiz_category} */}
-                    </span>
-                    <span
-                      style={{
-                        marginLeft: "10px",
-                        width: "130px",
-                        height: "8px",
-                        fontSize: "8px",
-                        marginTop: "6px",
-                        marginRight: "15px",
-                      }}
-                    >
-                      <Line
-                        percent={latestResult[3]?.quiz_percentage}
-                        strokeWidth={4}
-                        strokeColor={getColorPercentage(
-                          latestResult[3]?.quiz_percentage
-                        )}
-                      />
-                      {/* <Progress percent={latestResults[2]?.attained_percentage} /> */}
-                    </span>
-                    <span
-                      className={`text-[10px]`}
-                      style={{ color: textColorClass3 }}
-                    >
-                      {latestResult[3]?.quiz_percentage}%
-                    </span>
-                  </div>
-                </div>
-              )}
+        <div className={styles.resultWrapper}>
+            <div className={styles.latestResult} style={{ paddingTop: "12px", paddingBottom: "13px", color: "#002366" }}>
+                Latest Results
+                {latestResult.length === 0 ? (
+                    <p className="">No quizzes attempted till now.</p>
+                ) : (
+                    <div className={styles.resultInfo}>
+                        {results}
+                    </div>
+                )}
             </div>
-          </div>
+        </div>
 
   <div className={styles.resultWrapper}>
   <div className={styles.timeSpent} style={{ paddingTop: "10px",color:"#002366" }}>
@@ -608,9 +401,9 @@ const Dashboard = () => {
             {/* Info cards content */}
             <div className={styles.container1} style={{marginLeft:"20px",marginTop:"-10px"}}>
               {attemptedquizzes.length > 0 ?(
-                displayedQuizzes.map((quizItem, index) =>(
+                attemptedquizzes.slice(0, 3).map((quizItem, index) =>(
                   <div
-                  className={styles.card}
+                  key={index} className={styles.card}
                   style={{
                     paddingTop: "8px",
                     marginRight:"10px",
@@ -634,16 +427,16 @@ const Dashboard = () => {
                         stroke-width="1.5"
                         stroke="currentColor"
                         class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                        onClick={toggleNavbar9}
+                        onClick={() => toggleNavbar(index)}
                       >
                         <path
                           stroke-linecap="round"
                           stroke-linejoin="round"
                           d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                         />
-                        {isNavbarOpen9 ? "Close Navbar" : "Open Navbar"}
+                        {cardStates[index] ? "Close Navbar" : "Open Navbar"}
                       </svg>
-                      {isNavbarOpen9 && (
+                      {cardStates[index]  && (
                         <div className={styles.infoIcons}>
                           <img
                             className="absolute h-[1px] w-[1px] left-[6px] top-1"
@@ -732,15 +525,18 @@ const Dashboard = () => {
                     </span>
                     <span className="px-[3px]">|</span>
                     <span>
-                      {quizItem.attempt_percentage}% Score
+                      {quizItem.attained_percentage}% Score
                     </span>
                     <span className="px-[3px]">|</span>
                     <span>{quizItem.quiz_grade} Grade</span>
                   </div>
                   <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[50px] left-[12px]">
-                  <div>Created By :</div>
+                  <div>Created By :
+                    <span className="pl-[2px]">{quizItem.full_name}</span>
+                  </div>
                   {/* <div>Created On</div> */}
                   </div>
+
                   <div
                     className={styles.additionalInfo}
                     style={{ marginTop: "25px" }}
@@ -834,7 +630,7 @@ const Dashboard = () => {
             
             <div className={styles.container1} style={{marginLeft:"10px",marginTop:"30px"}}>
   {latestquizzes.length > 0 ? (
-    displayedQuizzes.map((quizItem, index) => (
+    latestquizzes.slice(0, 3).map((quizItem, index) => (
       <div className={styles.infoCards} key={index}>
         <div className={styles.card} style={{ paddingTop: "8px", marginTop:"-15px", backgroundColor:"#CBF2FB" }}>
           <span className="relative group">
@@ -855,17 +651,17 @@ const Dashboard = () => {
                 stroke-width="1.5"
                 stroke="currentColor"
                 class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                onClick={toggleNavbar}
+                onClick={() => toggleNavbar1(index)}
               >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                 />
-                {isNavbarOpen ? "Close Navbar" : "Open Navbar"}
+                {cardStatus[index] ? "Close Navbar" : "Open Navbar"}
               </svg>
 
-              {isNavbarOpen && (
+              {cardStatus[index] && (
                 <div className={styles.infoIcons}>
                   <div className={styles.start}>
                     <img className={styles.startimage} src={Start_button} alt="Play icon" />
@@ -908,7 +704,9 @@ const Dashboard = () => {
             </span>
           </div>
           <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[75px] left-[12px]">
-                  <div>Created By :</div>
+          <div>Created By :
+                    <span className="pl-[2px]">{quizItem.full_name}</span>
+                  </div>
                   {/* <div>Created On</div> */}
                   </div>
           {/* <div style={{ backgroundColor: "#EFEFEF", padding: "2px 0" }}>
@@ -988,7 +786,7 @@ const Dashboard = () => {
 
  <div className={styles.container1}>
    {popularquizzes.length > 0 ?(
-    displayedQuizzes.map((quizItem, index) =>(
+    popularquizzes.slice(0, 3).map((quizItem, index) =>(
       <div className={styles.infoCards}>
     {/* Info cards content */}
     <div className={styles.card} key={index} style={{ paddingTop: "8px",marginTop:"15px",backgroundColor:"#CBF2FB" }}>
@@ -1011,17 +809,17 @@ const Dashboard = () => {
             stroke-width="1.5"
             stroke="currentColor"
             class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-            onClick={toggleNavbar}
+            onClick={() => toggleNavbar2(index)}
           >
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
               d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
             />
-            {isNavbarOpen ? "Close Navbar" : "Open Navbar"}
+             {cardStatuses[index] ? "Close Navbar" : "Open Navbar"}
           </svg>
 
-          {isNavbarOpen && (
+          {cardStatuses[index] && (
             <div className={styles.infoIcons}>
               {/* start */}
               <div className={styles.start}>
@@ -1108,7 +906,9 @@ const Dashboard = () => {
       </div>
 
       <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[75px] left-[12px]">
-                  <div>Created By :</div>
+                  <div>Created By :
+                    <span className="pl-[2px]">{quizItem.full_name}</span>
+                  </div>
                   {/* <div>Created On</div> */}
                   </div>
       {/* <div className="h-[3px] w-full bg-white"></div> */}

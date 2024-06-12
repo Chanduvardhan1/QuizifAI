@@ -50,15 +50,18 @@
   margin-right: 30px;  */
   cursor: pointer;
   transition: transform 0.3s ease, color 0.3s ease;
+  text-decoration: none; /* Remove default underline */
+  color: #333;
 }
-.pageItem:hover {
-  transform: scale(1.1);
-}
+
 .infoLine {
 display: flex;
 align-items: center;
 }
 
+.bold {
+  font-weight: bold;
+}
 .info {
 flex: 1;
 }
@@ -75,37 +78,15 @@ border: none;
   height: 15px; 
   margin-right: 20px; 
 }
-.verticalline {
-  /* border-left: 3px solid #F5F5FB; 
-  height: 20px;
-  position: absolute;
-  left: 215px; 
-  transition: border-color 0.3s;  */
-}
-.verticalline.active {
-  border-left-color: #708FF4; /* Color when active */
-}
-.verticalline:visited{
-  border-left-color: #F5F5FB;
-}
-.active {
-  /* transform: scale(1.2); */
-  color: blue; /* Change to your desired active color */
-}
+
+
 .pageLink{
   margin-right: 10px;
   cursor: pointer;
   color: #9696BB;
   transition: color 0.3s ease;
 }
-.pageLink.active{
-  text-decoration: none;
-  color: #000; 
-  cursor: pointer;
-}
-.pageLink:visited{
-  border-left-color: #F5F5FB;
-}
+
 .logoutIcon{
   margin-left: 140px;
 

@@ -7,7 +7,7 @@ import quizifailogo from "../assets/Images/images/home/Quizifai3.png";
 import Lady from "../assets/Images/images/contact/lady.png";
 import ContactMail from "../assets/Images/images/contact/ContactMail.png";
 import aiImage from "../../src/assets/Images/images/home/ai-img.png";
-import homeImage from "../../src/assets/Images/images/home/home-img.png";
+import homeImage from "../../src/assets/Images/images/home/home.jpg";
 // import Head from "next/head";
 import FirstNameIcon from "../../src/assets/Images/images/contact/first.png";
 import LastNameIcon from "../../src/assets/Images/images/contact/last.png";

@@ -10,7 +10,7 @@ import Poweron from "../assets/Images/images/dashboard/power-on.png";
 import user2Icon from "../assets/Images/images/dashboard/user2.png";
 import userIcon from "../assets/Images/images/dashboard/user.png";
 import scoredIcon from "../assets/Images/images/dashboard/scored.png";
-// import rank from "../assets/Images/images/dashboard/rank.png";
+// import Rank from "../assets/Images/images/dashboard/rank.png";
 import timeSpentIcon from "../assets/Images/images/dashboard/timeSpent.png";
 import notifyIcon from "../assets/Images/images/dashboard/notify.png";
 import todayTopicIcon from "../assets/Images/images/dashboard/todayTopic.png";
@@ -86,9 +86,9 @@ const LogoutBar = () => {
     src={Poweron}
     onClick={handleBackToLogin}
     alt="Logout Icon"
-    style={{ width: "20px", height: "20px", marginLeft:"155px",cursor:"pointer" }}
+    style={{ width: "20px", height: "20px", marginLeft:"165px",cursor:"pointer" }}
   />
-  <span style={{ marginRight: "10px",fontSize:"10px",position:"relative",left:"148px" }}>Logout</span>
+  <span style={{ marginRight: "10px",fontSize:"10px",position:"relative",left:"160px" }}>Logout</span>
 </div>
 
   </div>
@@ -160,6 +160,17 @@ const LogoutBar = () => {
           </div>
           <div className="h-[5px] w-full bg-white"></div>
           
+          {/* <div>
+            <img
+            src={Rank}
+            alt="Scored Icon"
+            style={{
+              width: "20px",
+              height: "20px",
+              objectFit: "cover",
+            }}
+            />
+          </div> */}
           <div style={{ marginTop: "10px" }}>
             <div style={{ marginTop: "40px", marginLeft: "20px" }}>
               <div
@@ -191,9 +202,7 @@ const LogoutBar = () => {
                   }}
                 />
                 </div>
-                {/* <div>
-                  <img src={rank}/>
-                </div> */}
+
                 <div
                   style={{
                     display: "flex",

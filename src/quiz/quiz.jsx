@@ -30,6 +30,12 @@ const Quiz = () => {
   const currentValue2 = 30;
   const maxValue2 = 80; 
 
+   
+  const [dataRanges, setDataRanges] = useState([]);
+  const [selectedDataRange,setSelectedDataRange]=useState("");
+
+  const [popularity, setPopularity] = useState([]);
+  const [selectedPopularity,setSelectedPopularity]=useState("");
 
   const [cources, setCources] = useState([]);
   const [selectedCources,setSelectedCources]=useState("");
@@ -52,7 +58,6 @@ const Quiz = () => {
   const [averageScorePercentage, setAverageScorePercentage] = useState(null);
   const [allquizzes, setAllquizzes] = useState([]);
   const [getMoreQuizzes, setGetMoreQuizzes] = useState(false);
-  const [isNavbarOpen, setIsNavbarOpen] = useState();
  
   // Filtered quizzes based on selected dropdown options
   const filteredQuizzes = allquizzes.filter((quizItem) => {
@@ -66,6 +71,41 @@ const Quiz = () => {
   });
 
   const navigate = useNavigate();
+  useEffect(() => {
+    fetchDataRange();
+  }, []);
+
+  const fetchDataRange = async () => {
+    try {
+      const response = await fetch('https://quizifai.com:8010/get_date_rnge/');
+      const data = await response.json();
+      if (data.response === 'success') {
+        setDataRanges(data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching DataRange:', error);
+    }
+  };
+
+   // Handle data range selection
+   const handleSelectDataRange = (event) => {
+    const selectedRange = event.target.value;
+    setSelectedDataRange(selectedRange);
+    // Filter subcategories based on the selected category
+    const range = dataRanges.find(dat => dat.DateRange === selectedRange);
+    if (range) {
+      setPopularity(range.Popularity.map(pop => pop.Popularity));
+    }else{
+      setPopularity([]);
+    }
+  };
+
+  // Handle subcategory selection
+  const handleSelectPopularity = (event) => {
+    const selectedPopularityValue = event.target.value;
+    setSelectedPopularity(selectedPopularityValue);
+  };
+
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -179,8 +219,13 @@ const Quiz = () => {
     fetchQuizData();
   }, [userId, username]);
 
-  const toggleNavbar =() =>{
-    setIsNavbarOpen(!isNavbarOpen);
+  const [cardStatus, setCardStatus] = useState(Array(filteredQuizzes.length).fill(false));
+  const toggleNavbar = (index) => {
+    setCardStatus((prevState) => {
+      const updatedStates = [...prevState];
+      updatedStates[index] = !updatedStates[index];
+      return updatedStates;
+    });
   };
 
   useEffect(() => {
@@ -267,26 +312,26 @@ const Quiz = () => {
   <select
         className="w-[90px] rounded-md ml-4 cursor-pointer text-[10px] bg-[#f3d0d5] border-none"
         style={{ border: "none", outline: "none" }}
-        value={selectedCategory}
-        onChange={handleSelectCategory}
+        value={selectedDataRange}
+        onChange={handleSelectDataRange}
       >
         <option value="" disabled style={{background:"#A5CCE3"}}>Date Range</option>
-        {categories.map(category => (
-          <option key={category.category_id} value={category.category_name}>
-            {category.category_name}
+        {dataRanges.map(range => (
+          <option key={range.DateRange} value={range.DateRange}>
+            {range.DateRange}
           </option>
         ))}
       </select>
       <select
         className="w-[90px] p-2 rounded-md cursor-pointer text-[10px] bg-[#f3d0d5] border-none"
         style={{ border: "none", outline: "none" }}
-        value={selectedCategory}
-        onChange={handleSelectCategory}
+        value={selectedPopularity}
+        onChange={handleSelectPopularity}
       >
-        <option value="" disabled style={{background:"#A5CCE3"}}>Popularity</option>
-        {categories.map(category => (
-          <option key={category.category_id} value={category.category_name}>
-            {category.category_name}
+       <option value="" disabled style={{background:"#A5CCE3"}}>Popularity</option>
+        {popularity.map((popularityValue, index) => (
+          <option key={index} value={popularityValue}>
+            {popularityValue}
           </option>
         ))}
       </select>
@@ -362,18 +407,19 @@ const Quiz = () => {
 </div>
 
 <div className={styles.container1}>
-{filteredQuizzes.length > 0 ?(
+   {filteredQuizzes.length > 0 ?(
     filteredQuizzes.map((quizItem, index) =>(
       <div className={styles.infoCards}>
     {/* Info cards content */}
-    <div className={styles.card} key={index} style={{ paddingTop: "8px",marginTop:"15px" }}>
+    <div className={styles.card} key={index} style={{ paddingTop: "8px",marginTop:"15px",backgroundColor:"#CBF2FB" }}>
     <span className="relative group">
-                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate underline underline-offset-2">
+                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate">
                 {quizItem.quiz_name}
                 </span>
                 <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                 {quizItem.quiz_name}
                 </span>
+
     </span>
 
       <div className={styles.iconContainer}>
@@ -385,17 +431,17 @@ const Quiz = () => {
             stroke-width="1.5"
             stroke="currentColor"
             class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-            onClick={toggleNavbar}
+            onClick={() => toggleNavbar(index)}
           >
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
               d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
             />
-            {isNavbarOpen ? "Close Navbar" : "Open Navbar"}
+             {cardStatus[index] ? "Close Navbar" : "Open Navbar"}
           </svg>
 
-          {isNavbarOpen && (
+          {cardStatus[index] && (
             <div className={styles.infoIcons}>
               {/* start */}
               <div className={styles.start}>
@@ -452,12 +498,16 @@ const Quiz = () => {
                          <span className={styles.sharetext}>Share</span>
                        </div>
             </div>
+
           )}
         </div>
       </div>
-      <div className="flex mt-5">
+
+
+    <div className="flex mt-[10px] relative top-[9px]">
+
   <span className="relative group">
-    <span className="ml-[10px] mt-4 w-[50px] cursor-pointer z-0 truncate text-[9px] font-normal">
+    <span className=" text-[#002366] ml-[10px] mt-4 w-[50px] cursor-pointer z-0 truncate text-[9px] font-normal">
     {quizItem.category}
     </span>
     <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
@@ -468,7 +518,7 @@ const Quiz = () => {
   <p className="px-[2px] font-normal">|</p>
   
   <span className="relative group">
-    <span className="mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+    <span className="text-[#002366] mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
     {quizItem.sub_category}
     </span>
     <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
@@ -476,70 +526,54 @@ const Quiz = () => {
     </span>  
   </span>
       </div>
+
+      <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[75px] left-[12px]">
+                  <div>Created By :
+                    <span className="pl-[2px]">{quizItem.full_name}</span>
+                  </div>
+                  {/* <div>Created On</div> */}
+                  </div>
+      {/* <div className="h-[3px] w-full bg-white"></div> */}
       <div className="relative group mt-1">
-  <span className="text-wrap text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate line-clamp-4">
+  <span className="text-wrap mt-[6px] text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate line-clamp-4">
     {quizItem.quiz_description}
   </span>
   <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-0 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
     {quizItem.quiz_description}
   </span>
       </div>
+      <div className="h-[2px] w-full bg-white"></div>
 
-      <div
-        className={styles.additionalInfo}
-        style={{ position:"relative",top:"55px" }}
-      >
-        <div
-          className={styles.infoIcon}
-          style={{ marginTop: "20px" }}
-        ></div>
-        <div className="z-0">
-          <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-            <img
-              className="h-[15px] w-[13px] pl-[3px] pb-1"
-              src={Attempt1}
-              alt="Attempts Icon"
-              width={10}
-              height={10}
-            />
-            <p>{quizItem.quiz_attempts}</p>
-            <span className="text-[8px] ml-1">attempts</span>
+      <div style={{ backgroundColor: "#F9F9F9", padding: "1px 0" }}>
+            <div className="h-[85px] rounded w-full bg-[#F5F5F5]">
+
+            <div className={styles.additionalInfo} style={{ position: "relative", top: "55px" }}>
+            <div className={styles.infoIcon} style={{ marginTop: "25px" }}></div>
+            <div className="z-0">
+              <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366] relative -left-[10px] -top-[90px] hover:text-black">
+                <img className="h-[15px] w-[13px] pl-[3px] pb-1" src={Attempt1} alt="Attempts Icon" width={10} height={10} />
+                <p>{quizItem.quiz_attempts}</p>
+                <span className="text-[8px] ml-1">attempts</span>
+              </div>
+            </div>
+
+            <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded relative -left-[12px] hover:text-black">
+              <img className="pb-[1px] pt-[2px] -mt-1 relative bottom-[2px]" src={NoOfQuestion} alt="Number of question Icon" width={15} height={10} />
+              {quizItem.number_of_questions}
+              <span className="text-[8px] ml-[1px]">questions</span>
+            </span>
+            <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded relative -left-[14px] hover:text-black">
+              <img className="pb-[1px] mr-[1px] relative left-[3px]" src={Clock} alt="Time Icon" width={14} height={14} />
+              {quizItem.quiz_duration}
+              <span className="text-[8px] -ml-[0.5px]">minutes</span>
+            </span>
+            <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded relative -left-[10px] hover:text-black">
+              <img className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]" src={Easy} alt="Challenge Icon" width={15} height={9} />
+              {quizItem.complexity}
+            </span>
           </div>
-        </div>
-
-        <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-          <img
-            className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
-            src={NoOfQuestion}
-            alt="Number of question Icon"
-            width={15}
-            height={10}
-          />{" "}
-          {quizItem.number_of_questions}
-          <span className="text-[8px] ml-[1px]">questions</span>
-        </span>
-        <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-          <img
-            className="pb-[1px] mr-[1px] relative left-[3px] "
-            src={Clock}
-            alt="Time Icon"
-            width={14}
-            height={14}
-          />{" "}
-          {quizItem.quiz_duration}
-          <span className="text-[8px] -ml-[0.5px]">minutes</span>
-        </span>
-        <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded  relative -left-[10px] hover:text-black">
-          <img
-            className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
-            src={Easy}
-            alt="Challenge Icon"
-            width={15}
-            height={9}
-          />{" "}
-          {quizItem.complexity}
-        </span>
-      </div>
+            </div>
+          </div>
     </div>
   </div>
     ))

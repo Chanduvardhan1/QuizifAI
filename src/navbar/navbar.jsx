@@ -136,7 +136,12 @@ const  [isActiveConfig, setIsActiveConfig] = useState(false);
         height={160}
         className={styles.dashboardLogo}
       />
-      </div>
+        <div className={styles.pageList}>
+      <div className={`${styles.pageItem} ${activePage === 'dashboard' ? styles.active : ''}`} onClick={() => handleNavigation('dashboard')}>
+        <img src={iconDashboard} alt="Icon 1" className={styles.pageIcon} />
+        <div className={`${styles.verticalline} ${activePage === 'dashboard' ? styles.active : ''}`}></div>
+        <span className={styles.pageLink}>Dashboard</span>
+        </div>
       <div className={`${styles.pageItem} ${activePage === 'quizzes' ? styles.active : ''}`} onClick={() => handleNavigation('quiz')}>
         <img src={iconQuizzez} alt="Icon 2" className={styles.pageIcon} />
         <div className={`${styles.verticalline} ${activePage === 'quizzes' ? styles.active : ''}`}></div>
@@ -148,12 +153,12 @@ const  [isActiveConfig, setIsActiveConfig] = useState(false);
         <span className={styles.pageLink}>Profile</span>
       </div>
       <div className={`${styles.pageItem} ${activePage === 'settings' ? styles.active : ''}`} onClick={() => handleNavigation('configure')}>
-        <img src={configure} alt="Icon 2" className={styles.pageIcon} />
+        <img src={iconSettings} alt="Icon 2" className={styles.pageIcon} />
         <div className={`${styles.verticalline} ${activePage === 'settings' ? styles.active : ''}`}></div>
         <span className={styles.pageLink}>Settings</span>
       </div>
-    </div>
-    </div>
+      </div>
+      </div>
   );
 };
 

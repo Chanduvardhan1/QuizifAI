@@ -8,6 +8,8 @@ import Plus from "../../src/assets/Images/dashboard/Plus.png";
 //import { useRouter } from 'next/router';
 //import img from "next/image";
 import searchIcon from "../assets/Images/images/dashboard/searchBar.png";
+import { useNavigate } from "react-router-dom";
+
 
 import Attempt1 from "../../public/images/dashboard/Attempt1.png";
 import NoOfQuestion from "../../public/images/dashboard/NoOfQuestion.png";
@@ -63,6 +65,7 @@ const Quiz = () => {
     );
   });
 
+  const navigate = useNavigate();
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -203,7 +206,22 @@ const Quiz = () => {
   function handleSelect6(event) {
     setSelectedComplexity(event.target.value);
   }
+  const handleStartQuiz = (quizId) => {
+    // navigate(`/quizaccess/${quizId}`);
+    localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
+    navigate(`/quizaccess`);
+  };
 
+  const leaderboard = (quizId) => {
+    localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
+    navigate('/quiz-results1', { state: { quizId } })
+  };
+
+  const Edit = (quizId) => {
+    // navigate(`/quizaccess/${quizId}`);
+    localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
+    navigate(`/editmanuly`);
+  };
   return (
     <div className={styles.container}>
       <Navigation/>
@@ -389,7 +407,7 @@ const Quiz = () => {
                          <span
                            className={styles.starttext}
                            onClick={() =>
-                             handleStartQuiz(latestquizzes[0].quiz_id)
+                             handleStartQuiz(quizItem.quiz_id)
                            }
                          >
                            Start
@@ -404,7 +422,7 @@ const Quiz = () => {
                          />
                          <span
                            className={styles.edittext}
-                           onClick={() => Edit(latestquizzes[0].quiz_id)}
+                           onClick={() => Edit(quizItem.quiz_id)}
                          >
                            Edit
                          </span>
@@ -418,7 +436,7 @@ const Quiz = () => {
                          />
                          <span
                            className={styles.leaderboardtext}
-                           
+                           onClick={() => leaderboard(quizItem.quiz_id)}
                          >
                            Leaderboard
                          </span>

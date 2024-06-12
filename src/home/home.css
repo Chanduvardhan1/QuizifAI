@@ -120,6 +120,7 @@
   flex-direction: column;
   justify-content: center;
   padding-right: 34px;
+  padding-top: 100px;
 }
 
   .navItem {
@@ -285,6 +286,7 @@ left: -100px !important;
     /* position: absolute;
     top: 156px;
     left: 45px; */
+    padding-left: 85px;
   }
 .homeImage1{
   width: 800px;

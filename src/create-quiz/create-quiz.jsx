@@ -104,14 +104,14 @@ export default function createquiz() {
           <Navigation/>
         </header>
         <main className="">
-            <div className="w-[752px] h-[71px] absolute top-[110px] left-[647px]">
+            <div className="w-[410px] h-[71px] absolute top-[40px] left-[540px]">
                <h1>
                 <span className="font-poppins font-bold text-[30px] leading-[45px] text-[#F25822]">Create a new Question Paper</span> <br/>
                 <span className="font-poppins font-light text-[21px] leading-[31.5px] text-[#214082]">(You can choose any of the options below)</span>
               </h1>          
             </div>
 
-            <div className="w-[350px] h-[262px] absolute top-[252px] left-[450px] rounded-[20px] bg-[#F8F4F4]">
+            <div className="w-[350px] h-[262px] absolute top-[170px] left-[380px] rounded-[20px] bg-[#F8F4F4]">
                 <div className="flex justify-center">
                 <img className=" w-[81px] h-[81px] ml-3 mt-5 -mb-3" src={createicon} alt="Create Your Own Quiz Icon"/> 
                 </div>
@@ -124,7 +124,7 @@ export default function createquiz() {
                   </h1>
             </div>
 
-            <div className="w-[350px] h-[262px] absolute top-[252px] left-[880px] rounded-[20px] bg-[#F8F4F4]">
+            <div className="w-[350px] h-[262px] absolute top-[170px] left-[810px] rounded-[20px] bg-[#F8F4F4]">
             <div className="flex justify-center">
             <img className=" w-[81px] h-[81px] ml-3 mt-5 -mb-3" src={CreateAi} alt="Create with Ai Icon"/> 
            </div>
@@ -139,7 +139,7 @@ export default function createquiz() {
             </div>
 
             <div className="flex">
-            <a href="/quiz-type" className="w-[140.02px] h-[142.72px] absolute top-[528px] left-[450.95px] rounded-[20px] bg-[#E0FFE8]">
+            <a href="/quiz-type" className="w-[140.02px] h-[142.72px] absolute top-[465px] left-[380.95px] rounded-[20px] bg-[#E0FFE8]">
   <div className="flex justify-center mx-12 mt-4">
     <img className="w-[36.47px] h-[36.47px] ml-2" src={TypeInUrQuiz} alt="create in your quiz icon"/>
   </div>
@@ -152,7 +152,7 @@ export default function createquiz() {
 </a>
 
 
-<a href="/csv" className="w-[150.02px] h-[142.72px] absolute top-[528px] left-[650.48px] rounded-[20px] bg-[#FCE7E7]">
+<a href="/csv" className="w-[150.02px] h-[142.72px] absolute top-[465px] left-[585.48px] rounded-[20px] bg-[#FCE7E7]">
   <div className="flex justify-center mx-12 mt-4">
     <img className="w-[36.47px] h-[36.47px] ml-2" src={Download} alt="Download icon"/>
   </div>
@@ -164,7 +164,7 @@ export default function createquiz() {
   </h1>
 </a>
 
-<a href="/pdf" className="w-[150.02px] h-[142.72px] absolute top-[528px] left-[879.95px] rounded-[20px] bg-[#B1FB9B]">
+<a href="/pdf" className="w-[150.02px] h-[142.72px] absolute top-[465px] left-[815.95px] rounded-[20px] bg-[#B1FB9B]">
   <div className="flex justify-center mx-12 mt-4">
     <img className="w-[36.47px] h-[36.47px] ml-2" src={Pdf} alt="Pdf icon"/>
   </div>
@@ -177,7 +177,7 @@ export default function createquiz() {
 </a>
 
 
-<a href="/textbook" className="w-[150.02px] h-[142.72px] absolute top-[528px] left-[1077.48px] rounded-[20px] bg-[#FFEDCD]">
+<a href="/textbook" className="w-[150.02px] h-[142.72px] absolute top-[465px] left-[1015.48px] rounded-[20px] bg-[#FFEDCD]">
   <div className="flex justify-center mx-12 mt-4">
     <img className="w-[36.47px] h-[36.47px] ml-2" src={Books} alt="Books icon"/>
   </div>

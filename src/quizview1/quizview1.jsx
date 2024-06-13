@@ -30,6 +30,8 @@ import four4Icon from "../../src/assets/Images/images/quizview/four4.png";
 import rightIcon from "../../src/assets/Images/images/quizresults/right.png"; 
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Navigation from "../navbar/navbar.jsx";
+
 // import LeftBar from "../pages/leftbar";
 
 // Assuming options have image properties
@@ -151,7 +153,7 @@ const quizview1 = () => {
           rel="stylesheet"
         />
       </Head> */}
-      <LeftBar/>
+      <Navigation/>
          {quizData && (
       // <div className={styles.mainContent}>
           <div>

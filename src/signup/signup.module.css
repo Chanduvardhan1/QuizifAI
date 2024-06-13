@@ -26,9 +26,10 @@
   }
   
   .logo2 {
-    width: 400px;
+    /* width: 613px; */
+    width:585px;
     /* height: 500px; */
-    margin-top: 50px;
+    margin-top: 0px;
     margin-left: 130px;
     /* position: relative;
     left: 130px; */

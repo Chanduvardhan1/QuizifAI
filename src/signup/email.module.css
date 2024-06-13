@@ -44,9 +44,10 @@
 
 }
 .logo1 {
-  width: 400px;
+  /* width: 613px; */
+  width:585px;
   /* height: 500px; */
-  margin-top: 50px;
+  margin-top: 0px;
   margin-left: 130px;
   /* position: relative;
   left: 130px; */
@@ -122,7 +123,8 @@
 
 .loginHeader{
   color: #454B60;
-  margin-right: 180px;
+  /* margin-right: 180px; */
+  margin-right: 145px;
 }
 .SignupTitle{
   /* margin-right: 200px; */
@@ -146,7 +148,8 @@
 
 .SignupHeader{
   color: #454B60;
-  margin-right:160px;
+  /* margin-right:160px; */
+  margin-right: 135px;
 }
 .resendAvailable{
   margin-right:10px;
@@ -162,7 +165,7 @@
   color: black;
   /* margin-right: 140px; */
   font-size: 16px;
-  margin-bottom:10px;
+  margin-bottom:20px;
   margin-left:20px;
 
 }
@@ -790,18 +793,27 @@ margin-top: -3px;
   background-color: blue; /* Color for the line under 'Mobile' */
 }
 .totalBox {
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow */
-  border: 1px solid #e0e0e0; /* Add border */
-  padding: 30px; /* Adjust padding as needed */
-  margin-top: 20px; /* Adjust margin as needed */
+  /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
+  border: 1px solid #e0e0e0;
+  padding: 30px; 
+  margin-top: 20px; 
   justify-content: center;
   display:flex;
   border-radius: 28px;
-  /* margin-right:80px; */
-  /* height: 400px; */
-  /* position: relative;
-  left: 120px; */
   width:450px;
+  padding-bottom: 45px; */
+}
+.totalBox{
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+  padding: 10px;
+  margin-top: 20px;
+  justify-content: center;
+  display: flex;
+  border-radius: 28px;
+  /* margin-right: 80px; */
+  /* height: 400px; */
+  width: 380px;
   padding-bottom: 45px;
 }
 .formContainer{
@@ -810,7 +822,8 @@ margin-top: -3px;
 }
 .formContainer1{
   width:330px;
-margin-left:40px; 
+/* margin-left:40px;  */
+margin-left:5px; 
 }
 .sendOTP{
   display: flex;
@@ -888,21 +901,30 @@ margin-left:40px;
   left: 90px; */
 }
 .totalBox1 {
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow */
-  border: 1px solid #e0e0e0; /* Add border */
-  padding: 20px; /* Adjust padding as needed */
-  margin-top: 20px; /* Adjust margin as needed */
+  /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
+  border: 1px solid #e0e0e0; 
+  padding: 20px; 
+  margin-top: 20px; 
   justify-content: center;
   width: 450px;
   border-radius: 28px;
-  height: 400px;
-  /* position: relative;
-  left: 125px; */
-   /* margin-right: 85px; */
-  /* position: relative;
-    left: 130px; */
-}
+  height: 378px; */
 
+}
+.totalBox1{
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+  padding: 10px;
+  margin-top: 20px;
+  justify-content: center;
+  width: 380px;
+  border-radius: 28px;
+  /* height: 378px; */
+  /* margin-right: 85px; */
+ 
+  display: flex;
+  padding-bottom: 40px;
+}
 /* @media screen and (max-width: 1280px) {
   
   .logo1{

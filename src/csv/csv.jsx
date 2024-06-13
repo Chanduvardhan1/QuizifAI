@@ -805,7 +805,7 @@ export default function quiztype() {
           </div> */}
           <Navigation />
         </header>
-        <div className="absolute top-[30px] left-[1260px] cursor-pointer " onClick={Back}><MdOutlineCancel /></div>
+        <div className="absolute top-[30px] left-[1260px] cursor-pointer text-[#eeb600f0] " onClick={Back}><MdOutlineCancel /></div>
         {!showRegistrationSuccess && (
           <main className="w-max-auto">
             <div className="w-[844px] h-[48px] absolute top-[30px] left-[125px] rounded-[10px] bg-[#FCE7E7] z-0">
@@ -821,7 +821,7 @@ export default function quiztype() {
                 {/* </div>  */}
 
                 <div className="w-[201px] h-[22px] absolute top-[111px] left-[284px]">
-                  <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                     Quiz Title
                   </h1>
                 </div>
@@ -835,13 +835,13 @@ export default function quiztype() {
                 </div>
 
                 <div className="w-[210px] h-[23px] absolute top-[110px] left-[941px] mb-10 justify-center items-center grid">
-                  <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                     Number of Questions
                   </h1>
-                  {/* <h1 className="font-Poppins font-semibold text-[15px] ml-5 leading-[22.5px]">
+                  {/* <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] ml-5 leading-[22.5px]">
                   of
                 </h1>
-                <h1 className="font-Poppins font-semibold text-[15px] leading-[22.5px]">
+                <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] leading-[22.5px]">
                   Question
                 </h1> */}
                 </div>
@@ -879,7 +879,7 @@ export default function quiztype() {
             </div> */}
 
                 <div className="w-[201px] h-[22px] absolute top-[174px] left-[284px]">
-                  <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                     Quiz Description
                   </h1>
                 </div>
@@ -895,7 +895,7 @@ export default function quiztype() {
 
               <div className="flex">
                 <div className="w-[201px] h-[27px] absolute top-[248px] left-[284px]">
-                  <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                     Quiz Category
                   </h1>
                 </div>
@@ -919,7 +919,7 @@ export default function quiztype() {
                 </div>
 
                 <div className="w-[164px] h-[30px] absolute top-[458px] left-[820px]">
-                  <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                     Multiple Answers
                   </h1>
                 </div>
@@ -939,7 +939,7 @@ export default function quiztype() {
 
               <div className="flex">
                 <div className="w-[201px] h-[27px] absolute top-[248px] left-[820px]">
-                  <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                     Sub Category
                   </h1>
                 </div>
@@ -964,7 +964,7 @@ export default function quiztype() {
               </div>
 
               <div className="w-[164px] h-[30px] absolute top-[314px] left-[284px]">
-                <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                   Course{" "}
                 </h1>
               </div>
@@ -988,7 +988,7 @@ export default function quiztype() {
               </div>
 
               <div className="w-[109px] h-[27px] absolute top-[320px] left-[820px]">
-                <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                   Classes
                 </h1>
               </div>
@@ -1009,7 +1009,7 @@ export default function quiztype() {
 
               <div className="flex">
                 <div className="w-[164px] h-[30px] absolute top-[383px] left-[284px]">
-                  <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                     Pass percentage
                   </h1>
                 </div>
@@ -1029,7 +1029,7 @@ export default function quiztype() {
                 </div>
 
                 <div className="w-[164px] h-[30px] absolute top-[383px] left-[820px]">
-                  <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                     Complexity{" "}
                   </h1>
                 </div>
@@ -1055,7 +1055,7 @@ export default function quiztype() {
 
               <div className="flex">
                 <div className="w-[164px] h-[30px] absolute top-[458px] left-[284px]">
-                  <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                     Retake Option
                   </h1>
                 </div>
@@ -1092,7 +1092,7 @@ export default function quiztype() {
 
               <div className="flex">
                 <div className="w-[174px] h-[30px] absolute top-[527px] left-[284px]">
-                  <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                     Quiz Duration
                   </h1>
                 </div>
@@ -1149,7 +1149,7 @@ export default function quiztype() {
                   </div>
                 </div>
                 <div className="w-[238px] h-[30px] absolute top-[527px] left-[820px]">
-                  <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                     Time bounded Questions{" "}
                   </h1>
                 </div>
@@ -1174,7 +1174,7 @@ export default function quiztype() {
               </div>
 
               <div className="w-[253px] h-[30px] absolute top-[590px] left-[284px]">
-                <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                   Quiz will be available from
                 </h1>
               </div>
@@ -1191,7 +1191,7 @@ export default function quiztype() {
               </div>
 
               <div className="w-[233px] h-[30px] absolute top-[590px] left-[820px]">
-                <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                   Quiz must be disable on{" "}
                 </h1>
               </div>
@@ -1209,7 +1209,7 @@ export default function quiztype() {
 
               <div className="flex">
                 <div className="w-[156px] h-[30px] absolute top-[660px] left-[284px]">
-                  <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                     Public access
                   </h1>
                 </div>
@@ -1224,7 +1224,7 @@ export default function quiztype() {
                 </div>
 
                 <div className="w-[174px] h-[30px] absolute top-[660px] left-[820px]">
-                  <h1 className="font-Poppins font-medium text-[15px] leading-[22.5px]">
+                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                     Quiz total marks{" "}
                   </h1>
                 </div>

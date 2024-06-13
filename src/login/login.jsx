@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "../signup/email.module.css";
-import quizifailogo from "../assets/Images/images/home/Quizifai4.jpg";
+import quizifailogo from "../../src/assets/Images/images/home/home.jpg";
 import butterflyImg from "../assets/Images/images/butterfly1.png";
 import icon1 from "../assets/Images/images/mdi_gmail.png";
 import icon2 from "../assets/Images/images/clarity_mobile-line.png";
@@ -338,7 +338,7 @@ const LoginPage = () => {
       <div className="container" style={{display:"flex"}}>
         <div className={styles.leftSection}>
           <div className={styles.logo1}>
-            <img src={quizifailogo} alt="Logo"  width={500} height={500}
+            <img src={quizifailogo} alt="Logo"  width={1000} height={1000}
                style={{marginTop:"20px"}}
             />
           </div>

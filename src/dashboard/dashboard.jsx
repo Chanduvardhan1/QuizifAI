@@ -831,7 +831,7 @@ const Dashboard = () => {
                          <span
                            className={styles.starttext}
                            onClick={() =>
-                             handleStartQuiz(latestquizzes[0].quiz_id)
+                             handleStartQuiz(quizItem.quiz_id)
                            }
                          >
                            Start
@@ -846,7 +846,7 @@ const Dashboard = () => {
                          />
                          <span
                            className={styles.edittext}
-                           onClick={() => Edit(latestquizzes[0].quiz_id)}
+                           onClick={() => Edit(quizItem.quiz_id)}
                          >
                            Edit
                          </span>
@@ -860,6 +860,7 @@ const Dashboard = () => {
                          />
                          <span
                            className={styles.leaderboardtext}
+                           onClick={() => leaderboard(quizItem.quiz_id)}
                            
                          >
                            Leaderboard

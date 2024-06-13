@@ -267,7 +267,7 @@ const Edit = (quizId) => {
                     src={Camera}
                   /> */}
 
-                  <div className="w-[164px] h-[32px] absolute top-[400px] left-[100px]">
+                  <div className="w-[255px] h-[32px] absolute top-[400px] left-[100px]">
                     {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
                       {" "}
                       Retake this paper:{quizData.retake_flag}

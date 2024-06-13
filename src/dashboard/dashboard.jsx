@@ -60,8 +60,6 @@ const Dashboard = () => {
   const [weeklyQuizCount, setWeeklyQuizCount] = useState(0);
   const [averageScorePercentage, setAverageScorePercentage] = useState(0);
 
-  const [getMoreQuizzes, setGetMoreQuizzes] = useState(false);
-
   const [notAttemptedQuizzes, setNotAttemptedQuizzes] = useState([]);
   const [latestquizzes, setLatestquizzes] = useState([]);
   // const [attemptedQuizzes, setAttemptedQuizzes] = useState([]);
@@ -181,7 +179,6 @@ const Dashboard = () => {
   const handleBackToQuizzes = () => {
     navigate('/quiz');
   };
-  // const displayedQuizzes = getMoreQuizzes ? latestquizzes :latestquizzes.slice(0, 3);
 
   const formatTime = (minutes) => {
     const hours = Math.floor(minutes / 60);
@@ -387,7 +384,7 @@ const Dashboard = () => {
             >
               More{" "}
             </span>
-            <p className="ml-[1px] mt-[1px] mr-[30px] text-[#EF5130]"></p>
+            <p className="ml-[1px] mt-[1px] mr-[30px] text-[#EF5130]">></p>
             {/* <img
               className="cursor-pointer mr-[40px] ml-1"
               src={moreArrow}
@@ -773,7 +770,7 @@ const Dashboard = () => {
             >
                More
             </span>
-            <p className="ml-[1px] mt-[1px] mr-[18px] text-[#EF5130]"></p>
+            <p className="ml-[1px] mt-[1px] mr-[18px] text-[#EF5130]">></p>
             {/* <img
               className="cursor-pointer mr-[20px] ml-1"
               src={moreArrow}

@@ -11,7 +11,10 @@ import user2Icon from "../assets/Images/images/dashboard/user2.png";
 import userIcon from "../assets/Images/images/dashboard/user.png";
 import scoredIcon from "../assets/Images/images/dashboard/scored.png";
 // import Rank from "../assets/Images/images/dashboard/rank.png";
+import ranks from "../assets/Images/images/dashboard/ranks.png";
+import infinity from "../assets/Images/images/dashboard/infinity.png"
 import timeSpentIcon from "../assets/Images/images/dashboard/timeSpent.png";
+import downArrow from "../assets/Images/images/dashboard/downArrow.png";
 import notifyIcon from "../assets/Images/images/dashboard/notify.png";
 import todayTopicIcon from "../assets/Images/images/dashboard/todayTopic.png";
 import subTopicIcon from "../assets/Images/images/dashboard/subTopic.png";
@@ -38,13 +41,26 @@ const BasicProgressBar = ({ currentValue, maxValue }) => (
 
 const LogoutBar = () => {
   const navigate = useNavigate();
+
+
   const handleBackToLogin = () => {
     navigate("/login");
   };
 
+ const handleToProfile =() =>{
+  navigate("/free-profile");
+ } 
+
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
   const [username, setUsername] = useState(localStorage.getItem("user_name"));
   const [occupation, setOccupation] = useState(localStorage.getItem("occupation_name"));
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
+  const [totalQuizzes, setTotalQuizzes] = useState("");
+  const [totalMinuutes, setTotalMinuutes] = useState("");
+  const [averageScorePercentage, setAverageScorePercentage] = useState("");
+  const [registeredOn, setRegisteredOn] = useState("");
+
   
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -54,20 +70,34 @@ const LogoutBar = () => {
 
       try {
         const response = await fetch(
-          `https://quizifai.com:8010/get_prfl_dtls?user_id=${userId}`,
+          `https://quizifai.com:8010/latest_quizes`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ user_id: userId }),
+            body: JSON.stringify({
+               user_id: userId ,
+              username:username,
+            }),
           }
         );
+        
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
         const data = await response.json();
         console.log("Data:", data);
+
+        const userDetails = data.user_details;
+         setCity(userDetails.location_name);
+         setCountry(userDetails.country_name);
+
+         const usermetrics = data.user_metrices;
+         setTotalQuizzes(usermetrics.total_quizzes);
+         setTotalMinuutes(usermetrics.total_minutes);
+         setAverageScorePercentage(usermetrics.avg_total_marks);
+         setRegisteredOn(usermetrics.created_date);
         // Assume you set the fetched data to the state as necessary
       } catch (error) {
         console.error("Error fetching quiz data:", error);
@@ -86,9 +116,9 @@ const LogoutBar = () => {
     src={Poweron}
     onClick={handleBackToLogin}
     alt="Logout Icon"
-    style={{ width: "20px", height: "20px", marginLeft:"165px",cursor:"pointer" }}
+    style={{ width: "20px", height: "20px", marginLeft:"181px",cursor:"pointer" }}
   />
-  <span style={{ marginRight: "10px",fontSize:"10px",position:"relative",left:"160px" }}>Logout</span>
+  <span style={{ marginRight: "10px",fontSize:"10px",position:"relative",left:"175px" }}>Logout</span>
 </div>
 
   </div>
@@ -138,10 +168,13 @@ const LogoutBar = () => {
             User ID : {userId}
           </p>
 
-          <div className="flex text-[12px] ml-[92px] text-[#002366]">
-          <p>City , </p><p>Country</p>
+          <div className="flex text-[12px] ml-[40px] text-[#002366] mx-5">
+          <p className="">{city} ,</p><p className="pl-1">{country}</p>
           </div>
-        
+         
+         <div className="h-[15px] w-[15px] rotate-[135deg] items-end relative left-[230px] top-5 cursor-pointer">
+          <img onClick={handleToProfile} src={downArrow}/>
+         </div>
 
           <div className="relative group inline-block">
           <img 
@@ -151,7 +184,7 @@ const LogoutBar = () => {
             height: "15px",
             width: "15px",
             marginLeft:"120px",
-            marginTop:"-52px",
+            marginTop:"-67px",
             cursor:"pointer",
           }}
           />
@@ -159,299 +192,50 @@ const LogoutBar = () => {
           This is your unique identification number. It will help our support team to identify your account when you need assistance through QuizifAI's support channels.           </span>
           </div>
           <div className="h-[5px] w-full bg-white"></div>
-          
-          {/* <div>
-            <img
-            src={Rank}
-            alt="Scored Icon"
-            style={{
-              width: "20px",
-              height: "20px",
-              objectFit: "cover",
-            }}
-            />
-          </div> */}
+
           <div style={{ marginTop: "10px" }}>
-            <div style={{ marginTop: "40px", marginLeft: "20px" }}>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: "5px",
-                }}
-              >
-                <div
-                  style={{
-                    backgroundColor: "white",
-                    width: "30px",
-                    height: "30px",
-                    borderRadius: "5px",
-                    marginRight: "5px",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <img
-                  src={scoredIcon}
-                  alt="Scored Icon"
-                  style={{
-                    width: "20px",
-                    height: "20px",
-                    objectFit: "cover",
-                  }}
-                />
-                </div>
-
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: "15px",
-                      fontWeight: 500,
-                      marginRight: "15px",
-                    }}
-                  >
-                    Scored
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "10px",
-                      color: "#9696BB",
-                      marginTop: "3px",
-                    }}
-                  >
-                    Intermediate
-                  </span>
-                </div>
-                <span style={{ marginLeft: "25px", width: "60px" }}>
-                <BasicProgressBar currentValue={currentValue1} maxValue={maxValue1} />
-                </span>
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginTop: "30px",
-                }}
-              >
-                <div
-                  style={{
-                    backgroundColor: "white",
-                    width: "30px",
-                    height: "30px",
-                    borderRadius: "5px",
-                    marginRight: "5px",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <img
-                src={timeSpentIcon}
-                alt="Time Spent Icon"
-                style={{
-                  width: "20px",
-                  height: "20px",
-                  objectFit: "cover",
-                }}
-              />
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <span style={{ fontSize: "15px", fontWeight: 500 }}>
-                    Time Spent
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "10px",
-                      color: "#9696BB",
-                      marginTop: "3px",
-                      marginRight: "30px",
-                    }}
-                  >
-                    Advanced
-                  </span>
-                </div>
-                <span style={{ marginLeft: "8px", width: "60px" }}>
-               <BasicProgressBar currentValue={currentValue2} maxValue={maxValue2} />
-               </span>
-              </div>
-
-              <div style={{ display: "flex", alignItems: "center", marginTop: "40px" }}>
-  <span style={{ fontSize: "15px", color: "#000000", fontWeight: 500 }}>
-    Notification
-  </span>
-  <img
-    src={notifyIcon}
-    alt="Notify Icon"
-    className={styles.notifyIcon}
-    style={{ marginLeft: "120px" }}
-  />
-</div>
-
+            
+            <div className="flex">
+              <img className="h[60px] w-[60px] ml-7 mt-1" src={ranks}/>
+              <h1 className="text-[30px] text-[#5E81F4] ml-3 mt-1 font-bold">28692</h1>
+              <h1 className="mt-[40px] -ml-[90px] font-Poppins">global rank</h1>
             </div>
+            <div className="h-[5px] w-full bg-white mt-[20px]"></div>
 
-            <div style={{ marginTop: "40px", marginLeft: "20px" }}>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: "5px",
-                }}
-              >
-                <div
-                  style={{
-                    backgroundColor: "#FFE8EE",
-                    width: "30px",
-                    height: "30px",
-                    borderRadius: "5px",
-                    marginRight: "5px",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                   <img
-                  src={todayTopicIcon}
-                  alt="Scored Icon"
-                  style={{ width: "15px", height: "15px" }}
-                />
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: "15px",
-                      fontWeight: 500,
-                      marginRight: "15px",
-                    }}
-                  >
-                    Today - Topic
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "10px",
-                      color: "#9696BB",
-                      marginTop: "3px",
-                    }}
-                  >
-                    23 Jan 2024, Tuesday
-                  </span>
-                </div>
-              </div>
+          <div className="flex">
+            <span className="text-[25px] text-[#E97132] ml-[35px] mt-[20px] font-semibold">{totalQuizzes}</span>
+            <h1 className="text-[13px] mt-[33px] ml-[5px] font-medium">quizzes</h1>
+          </div>
+          <div className="flex -mt-[15px]">
+            <span className="text-[25px] text-[#E97132] ml-[35px] mt-[20px] font-semibold">{totalMinuutes}</span>
+            <h1 className="mt-[33px] ml-[5px] text-[13px] text-nowrap font-normal">total minutes</h1>
 
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginTop: "30px",
-                }}
-              >
-                <div
-                  style={{
-                    backgroundColor: "#E4EBFF",
-                    width: "30px",
-                    height: "30px",
-                    borderRadius: "5px",
-                    marginRight: "5px",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <img
-                  src={subTopicIcon}
-                  alt="Time Spent Icon"
-                  style={{ width: "17px", height: "13px" }}
-                />
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <span style={{ fontSize: "15px", fontWeight: 500 }}>
-                    Topic - Sub Topic Title
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "10px",
-                      color: "#9696BB",
-                      marginTop: "3px",
-                      marginRight: "30px",
-                    }}
-                  >
-                    24 Jan 2024, Wednesday
-                  </span>
-                </div>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginTop: "30px",
-                }}
-              >
-                <div
-                  style={{
-                    backgroundColor: "#E4EBFF",
-                    width: "30px",
-                    height: "30px",
-                    borderRadius: "5px",
-                    marginRight: "5px",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <img
-                  src={subTopicIcon}
-                  alt="Time Spent Icon"
-                  style={{ width: "17px", height: "13px" }}
-                />
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <span style={{ fontSize: "15px", fontWeight: 500 }}>
-                    Topic - Sub Topic Title
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "10px",
-                      color: "#9696BB",
-                      marginTop: "3px",
-                      marginRight: "30px",
-                    }}
-                  >
-                    24 Jan 2024, Wednesday
-                  </span>
-                </div>
-              </div>
+          </div><div className="flex -mt-[15px]">
+            <span className="text-[25px] text-[#E97132] ml-[35px] mt-[20px] font-semibold">{averageScorePercentage}%</span>
+            <h1 className="mt-[33px] ml-[5px] text-[13px] font-normal">average</h1>
+          </div>
+          <div className="h-[5px] w-full bg-white mt-[20px]"></div>
+
+          <div>
+            <h1 className="font-bold mt-[10px]">Public User</h1>
+            <h1 className="text-[13px] mt-[10px] px-[1px]">Subscribed Date : <span className="text-[#5E81F4] text-nowrap">03rd june 2024</span></h1>
+            <h1 className="font-semibold mt-[10px]">Subscribed</h1>
+            
+            <div className="flex">
+            {/* <span className="text-[25px] text-[#5E81F4] ml-[20px] mt-[10px] font-semibold"></span> */}
+            <img className="h-[40px] w-[35px] ml-5 mt-2" src={infinity}/>
+            <h1 className="mt-[20px] ml-[10px] text-[13px] font-normal">days remaining</h1>
             </div>
+          </div>
+          <div className="h-[5px] w-full bg-white mt-[20px]"></div>
+        
+          <div className="mt-[15px] ml-2">
+            <h1 className="text-[13px] text-start">Registered On :<span className="text-[#5E81F4]">03 jun 2024</span></h1>
+            <h1 className="text-[13px] text-start">Last Login : <span className="text-[#5E81F4]">2024-6-2</span> <span className="text-[#5E81F4]">8:34PM</span></h1>
+            <h1 className="text-[13px] text-start">Password Changed : <span className="text-[#5E81F4]">03rd jun 2024</span></h1>
+          </div>
+                 
+            
           </div>
         </div>
       </div>

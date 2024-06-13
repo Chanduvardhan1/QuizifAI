@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { MdOutlineCancel } from "react-icons/md";
 import { useLocation } from 'react-router-dom';
 import Navigation from "../navbar/navbar.jsx";
+import LogoutBar from "../logoutbar/logoutbar.jsx";
 
 
 const QuizQuestions = () => {
@@ -522,7 +523,7 @@ const QuizQuestions = () => {
     />
   </div> */}
         <div className={styles.back1} onClick={Back}><MdOutlineCancel /></div>
-
+        <LogoutBar/>
       </div>
     
   );

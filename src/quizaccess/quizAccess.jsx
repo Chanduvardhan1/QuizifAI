@@ -3,6 +3,7 @@
 import React from "react";
 import { useEffect, useState } from 'react';
 import Navigation from "../navbar/navbar.jsx"
+import LogoutBar from "../logoutbar/logoutbar.jsx";
 import styles from "./quizAccess.module.css";
 // import { useRouter } from 'next/router';
 // import Head from "next/head";
@@ -471,6 +472,7 @@ const quizAccess = () => {
       </> 
         )}
         </div>
+        <LogoutBar />
       </div>
     
   );

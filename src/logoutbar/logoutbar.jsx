@@ -7,9 +7,11 @@ import { useState,useEffect } from "react";
 import styles from "./dashboard.module.css";
 // import logoutArrowIcon from "../assets/Images/images/dashboard/logoutArrow1.png";
 import Poweron from "../assets/Images/images/dashboard/power-on.png";
+import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 import user2Icon from "../assets/Images/images/dashboard/user2.png";
 import userIcon from "../assets/Images/images/dashboard/user.png";
 import scoredIcon from "../assets/Images/images/dashboard/scored.png";
+import expand from "../assets/Images/images/dashboard/expand.png";
 // import Rank from "../assets/Images/images/dashboard/rank.png";
 import ranks from "../assets/Images/images/dashboard/ranks.png";
 import infinity from "../assets/Images/images/dashboard/infinity.png"
@@ -50,16 +52,21 @@ const LogoutBar = () => {
  const handleToProfile =() =>{
   navigate("/free-profile");
  } 
-
+  
+ 
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
   const [username, setUsername] = useState(localStorage.getItem("user_name"));
   const [occupation, setOccupation] = useState(localStorage.getItem("occupation_name"));
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
+  const [globalRank, setGlobalRank] = useState("");
   const [totalQuizzes, setTotalQuizzes] = useState("");
   const [totalMinuutes, setTotalMinuutes] = useState("");
   const [averageScorePercentage, setAverageScorePercentage] = useState("");
   const [registeredOn, setRegisteredOn] = useState("");
+  const [lastLogin, setLastLogin] = useState("");
+  const [passwordChanged, setPasswordChanged] = useState("");
+  
 
   
   useEffect(() => {
@@ -92,12 +99,17 @@ const LogoutBar = () => {
         const userDetails = data.user_details;
          setCity(userDetails.location_name);
          setCountry(userDetails.country_name);
+         setGlobalRank(userDetails.global_rank);
+         setRegisteredOn(userDetails.created_date);
+         setLastLogin(userDetails.last_login_timestamp);
+         setPasswordChanged(userDetails.user_password_change_date);
 
          const usermetrics = data.user_metrices;
          setTotalQuizzes(usermetrics.total_quizzes);
          setTotalMinuutes(usermetrics.total_minutes);
-         setAverageScorePercentage(usermetrics.avg_total_marks);
-         setRegisteredOn(usermetrics.created_date);
+         setAverageScorePercentage(usermetrics.average_total_percentage);
+         setGlobalRank(usermetrics.global_rank);
+         
         // Assume you set the fetched data to the state as necessary
       } catch (error) {
         console.error("Error fetching quiz data:", error);
@@ -108,26 +120,31 @@ const LogoutBar = () => {
   }, []); 
   return (
     <div className={styles.logout}>
-     <div style={{ marginTop: "20px", display: "flex", alignItems: "center" , marginLeft:"30px"}}>
+     <div style={{ marginTop: "10px", display: "flex", alignItems: "center" , marginLeft:"30px"}}>
   
 
 <div>
 <img
-    src={Poweron}
+    src={LogoutIcon}
     onClick={handleBackToLogin}
     alt="Logout Icon"
-    style={{ width: "20px", height: "20px", marginLeft:"181px",cursor:"pointer" }}
+    style={{ width: "20px",
+             height: "20px",
+             cursor:"pointer",
+            marginLeft:"155px",
+          cursor:"pointer" }}
   />
-  <span style={{ marginRight: "10px",fontSize:"10px",position:"relative",left:"175px" }}>Logout</span>
+  <span style={{ marginRight: "5px",fontSize:"10px",position:"relative",left:"150px",top:"-5px" }}>Logout</span>
 </div>
 
   </div>
-        <div style={{ position: "relative", marginTop: "20px" }}>
+
+        <div style={{ position: "relative"}}>
           
         <img
           src={user2Icon}
           alt="Background Image"
-          style={{ display: "block", marginLeft: "60px", marginTop: "40px" }}
+          style={{ display: "block", marginLeft: "45px"}}
         />
 
 <img
@@ -157,25 +174,18 @@ const LogoutBar = () => {
           >
             {occupation}
           </p>
+
+          <div className="flex">
           <p
           style={{
             fontSize: "12px",
             margin: "0",
             fontWeight: 500,
             color: "#5E81F4",
-            marginLeft: "9px",
+            marginLeft: "75px",
           }}>
             User ID : {userId}
           </p>
-
-          <div className="flex text-[12px] ml-[40px] text-[#002366] mx-5">
-          <p className="">{city} ,</p><p className="pl-1">{country}</p>
-          </div>
-         
-         <div className="h-[15px] w-[15px] rotate-[135deg] items-end relative left-[230px] top-5 cursor-pointer">
-          <img onClick={handleToProfile} src={downArrow}/>
-         </div>
-
           <div className="relative group inline-block">
           <img 
           src={questionmark}
@@ -183,56 +193,68 @@ const LogoutBar = () => {
           style={{
             height: "15px",
             width: "15px",
-            marginLeft:"120px",
-            marginTop:"-67px",
             cursor:"pointer",
+            marginLeft:"5px",
           }}
           />
-          <span className="hidden group-hover:inline-block h-[70px] absolute -left-[33px] -top-[55px] -translate-x-1/2 bottom-full mb-1 w-[300px] px-2 py-1 bg-black text-white text-xs rounded">
-          This is your unique identification number. It will help our support team to identify your account when you need assistance through QuizifAI's support channels.           </span>
+         <span className="hidden group-hover:inline-block h-[70px] absolute -left-[150px] -top-[15px] -translate-x-1/2 bottom-full mb-1 w-[300px] px-2 py-1 bg-black text-white text-xs rounded">
+          This is your unique identification number. It will help our support team to identify your account when you need assistance through QuizifAI's support channels.</span>
           </div>
-          <div className="h-[5px] w-full bg-white"></div>
+          </div>
+         
+
+          <div className="text-[13px] ml-[30px] text-[#002366] mx-5">
+          <p>{city}</p><br/>
+          <p className="-pl-[10px] -mt-4">{country}</p>
+          </div>
+         
+         <div className="h-[15px] w-[15px] rotate-[90deg] cursor-pointer ml-[195px]">
+          <img className="-mt-1" onClick={handleToProfile} src={expand}/>
+         </div>
+
+         
+          <div className="h-[5px] w-full bg-white mt-2"></div>
 
           <div style={{ marginTop: "10px" }}>
             
             <div className="flex">
               <img className="h[60px] w-[60px] ml-7 mt-1" src={ranks}/>
-              <h1 className="text-[30px] text-[#5E81F4] ml-3 mt-1 font-bold">28692</h1>
-              <h1 className="mt-[40px] -ml-[90px] font-Poppins">global rank</h1>
+              <p className="text-[30px] text-[#5E81F4]  mt-1 font-bold">{globalRank}</p>
+              <h1 className="mt-[40px] relative -left-5 font-Poppins text-[13px]">global rank</h1>
             </div>
-            <div className="h-[5px] w-full bg-white mt-[20px]"></div>
+            <div className="h-[5px] w-full bg-white mt-[10px]"></div>
 
           <div className="flex">
-            <span className="text-[25px] text-[#E97132] ml-[35px] mt-[20px] font-semibold">{totalQuizzes}</span>
-            <h1 className="text-[13px] mt-[33px] ml-[5px] font-medium">quizzes</h1>
+            <span className="text-[25px] text-[#E97132] ml-[35px] mt-[5px] font-semibold">{totalQuizzes}</span>
+            <h1 className="text-[12px] mt-[20px] ml-[5px] font-medium">quizzes</h1>
           </div>
           <div className="flex -mt-[15px]">
-            <span className="text-[25px] text-[#E97132] ml-[35px] mt-[20px] font-semibold">{totalMinuutes}</span>
-            <h1 className="mt-[33px] ml-[5px] text-[13px] text-nowrap font-normal">total minutes</h1>
+            <span className="text-[25px] text-[#E97132] ml-[35px] mt-[10px] font-semibold">{totalMinuutes}</span>
+            <h1 className="mt-[23px] ml-[5px] text-[12px] text-nowrap font-normal">total minutes</h1>
 
           </div><div className="flex -mt-[15px]">
-            <span className="text-[25px] text-[#E97132] ml-[35px] mt-[20px] font-semibold">{averageScorePercentage}%</span>
-            <h1 className="mt-[33px] ml-[5px] text-[13px] font-normal">average</h1>
+            <span className="text-[25px] text-[#E97132] ml-[35px] mt-[10px] font-semibold">{averageScorePercentage}%</span>
+            <h1 className="mt-[23px] ml-[5px] text-[12px] font-normal">average</h1>
           </div>
-          <div className="h-[5px] w-full bg-white mt-[20px]"></div>
+          <div className="h-[5px] w-full bg-white mt-[10px]"></div>
 
           <div>
-            <h1 className="font-bold mt-[10px]">Public User</h1>
-            <h1 className="text-[13px] mt-[10px] px-[1px]">Subscribed Date : <span className="text-[#5E81F4] text-nowrap">03rd june 2024</span></h1>
-            <h1 className="font-semibold mt-[10px]">Subscribed</h1>
+            <h1 className="font-semibold mt-[10px] text-[15px]">Public User</h1>
+            <h1 className="text-[12px] mt-[5px] px-[1px]">Subscribed Date : <span className="text-[#5E81F4] text-nowrap">03rd june 2024</span></h1>
+            <h1 className="font-semibold -mt-[3px] text-[15px] pt-2">Subscribed</h1>
             
             <div className="flex">
             {/* <span className="text-[25px] text-[#5E81F4] ml-[20px] mt-[10px] font-semibold"></span> */}
-            <img className="h-[40px] w-[35px] ml-5 mt-2" src={infinity}/>
-            <h1 className="mt-[20px] ml-[10px] text-[13px] font-normal">days remaining</h1>
+            <img className="h-[40px] w-[35px] ml-5 -mt-2" src={infinity}/>
+            <h1 className="mt-[2px] ml-[10px] text-[13px] font-normal">days remaining</h1>
             </div>
           </div>
-          <div className="h-[5px] w-full bg-white mt-[20px]"></div>
+          <div className="h-[5px] w-full bg-white mt-[10px]"></div>
         
           <div className="mt-[15px] ml-2">
-            <h1 className="text-[13px] text-start">Registered On :<span className="text-[#5E81F4]">03 jun 2024</span></h1>
-            <h1 className="text-[13px] text-start">Last Login : <span className="text-[#5E81F4]">2024-6-2</span> <span className="text-[#5E81F4]">8:34PM</span></h1>
-            <h1 className="text-[13px] text-start">Password Changed : <span className="text-[#5E81F4]">03rd jun 2024</span></h1>
+            <h1 className="text-[13px] text-start">Registered On :<span className="text-[#5E81F4] pl-1">{registeredOn}</span></h1>
+            <h1 className="text-[13px] text-start">Last Login : <span className="text-[#5E81F4]">{lastLogin}</span></h1>
+            <h1 className="text-[13px] text-start">Password Changed : <span className="text-[#5E81F4]">{passwordChanged}</span></h1>
           </div>
                  
             

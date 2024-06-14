@@ -84,6 +84,7 @@ import Editmanuly from "./edit-manuly/editmanuly.jsx";
 import Editexcel from "./edit-excel/editexcel.jsx";
 import Editpdf from "./edit-pdf/editpdf.jsx";
 import Edittextbook from "./edit-textbook/edittextbook.jsx";
+import Quizresults1 from "./quizview_results/quiz_results.jsx";
 
 // import Home from "./pages/Home.jsx";
 // import ContactUs from "./pages/ContactUs.jsx";
@@ -297,6 +298,7 @@ import Edittextbook from "./edit-textbook/edittextbook.jsx";
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="quizcreated" element={<Quizcreated />} />
             <Route path="quizresults" element={<Quizresults />} />
+            <Route path="quizview_results" element={<Quizresults1 />} />
             <Route path="quizview" element={<Quizview />} />
             <Route path="quizmaster" element={<Quizmaster />} />
             <Route path="quizview1" element={<Quizview1 />} />

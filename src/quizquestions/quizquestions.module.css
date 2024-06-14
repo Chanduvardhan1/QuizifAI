@@ -100,8 +100,9 @@ color: #214082;
 white-space: pre-wrap; /* Preserves whitespace and allows text wrapping */
 word-wrap: break-word; /* Breaks long words to fit the container */
 width: 100%; /* Adjust as necessary */
-padding: 10px; 
+/* padding: 10px;  */
 margin: 0;
+padding-top: 10px;
 }
 
 .boxesContainer {
@@ -249,7 +250,7 @@ width: 200px;
     display: flex;
     cursor: pointer;
     justify-content: end;
-    margin-left: 95px;
+    /* margin-left: 95px; */
     z-index: 1;
     justify-items: end;
     /* flex-direction: column; */
@@ -288,7 +289,7 @@ margin-left: -130px;
   }
   
   .textContainer {
-    text-align: center;
+ 
     display: flex;
     align-items: start;
   }
@@ -301,7 +302,7 @@ margin-left: -130px;
   
   .box {
     margin: 10px 0;
-    padding: 10px 20px;
+    /* padding: 10px 20px; */
     border: 1px solid #ccc;
     border-radius: 5px;
     cursor: pointer;
@@ -311,8 +312,8 @@ margin-left: -130px;
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
-    padding-left: 10px;
-    padding-right: 130px;
+    /* padding-left: 10px;
+    padding-right: 130px; */
   }
   
   .button {

@@ -147,6 +147,24 @@ const Dashboard = () => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     navigate(`/editmanuly`);
   };
+  const quizresults = (quizId, attemptId) => {
+    localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
+    localStorage.setItem("quiz_level_attempt_id", attemptId); // Store attempt_id in local storage
+    navigate(`/quizview_results`);
+  };
+  
+  // const quizresults = () => {
+  //   if (quizData && quizData.quiz_title && quizData.quiz_id) {
+  //     navigate(`/quizquestions/${quizData.quiz_id}`, {
+  //       state: { 
+  //         quiz_id: quizData.quiz_id,
+  //         quiz_title: quizData.quiz_title,
+  //         quiz_description: quizData.quiz_description,
+  //         quiz_duration: quizData.quiz_duration
+  //       }
+  //     });
+  //   }
+  // };
 
   const [cardStates, setCardStates] = useState(Array(attemptedquizzes.length).fill(false));
   const toggleNavbar = (index) => {
@@ -380,7 +398,7 @@ const Dashboard = () => {
             >
               More{" "}
             </span>
-            <p className="ml-[1px] mt-[1px] mr-[30px] text-[#EF5130]">></p>
+            <p className="ml-[1px] mt-[1px] mr-[30px] text-[#EF5130]"></p>
             {/* <img
               className="cursor-pointer mr-[20px] ml-1"
               src={moreArrow}
@@ -438,7 +456,10 @@ const Dashboard = () => {
                             src={eye}
                             alt="Play icon"
                           />
-                          <span className="text-[8px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black">
+                          <span className="text-[8px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black"
+                          onClick={() =>
+                            quizresults(quizItem.quiz_id,quizItem.quiz_level_attempt_id)
+                          }>
                             View
                           </span>
                           <img
@@ -456,7 +477,7 @@ const Dashboard = () => {
                           />
                           <span
                             className={styles.leaderboardtext}
-                            onClick={() => leaderboard(latestquizzes[0].quiz_id)}
+                            onClick={() => leaderboard(quizItem.quiz_id)}
                           >
                             Leaderboard
                           </span>
@@ -662,15 +683,15 @@ const Dashboard = () => {
                 <div className={styles.infoIcons}>
                   <div className={styles.start}>
                     <img className={styles.startimage} src={Start_button} alt="Play icon" />
-                    <span className={styles.starttext} onClick={() => handleStartQuiz(latestquizzes[0].quiz_id)}>Start</span>
+                    <span className={styles.starttext} onClick={() => handleStartQuiz(quizItem.quiz_id)}>Start</span>
                   </div>
                   <div className={styles.edit}>
                     <img className={styles.editimage} src={Edit_button} alt="Edit icon" />
-                    <span className={styles.edittext} onClick={() => Edit(latestquizzes[0].quiz_id)}>Edit</span>
+                    <span className={styles.edittext} onClick={() => Edit(quizItem.quiz_id)}>Edit</span>
                   </div>
                   <div className={styles.leaderboard}>
                     <img className={styles.leaderboardimage} src={leaderboard_button} alt="Leaderboard icon" />
-                    <span className={styles.leaderboardtext} onClick={() => leaderboard(latestquizzes[0].quiz_id)}>Leaderboard</span>
+                    <span className={styles.leaderboardtext} onClick={() => leaderboard(quizItem.quiz_id)}>Leaderboard</span>
                   </div>
                   <div className={styles.share}>
                     <img className={styles.shareimage} src={Share_button} alt="Share icon" />
@@ -770,7 +791,7 @@ const Dashboard = () => {
             >
               More{" "}
             </span>
-            <p className="ml-[1px] mt-[1px] mr-[30px] text-[#EF5130]">></p>
+            <p className="ml-[1px] mt-[1px] mr-[30px] text-[#EF5130]">></p>           
             {/* <img
               className="cursor-pointer mr-[20px] ml-1"
               src={moreArrow}

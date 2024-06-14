@@ -447,7 +447,7 @@ const LoginPage = () => {
                           }}
                           InputProps={{
                             style: {
-                              backgroundImage: `url('/images/email/mail.png')`,
+                              // backgroundImage: `url('/images/email/mail.png')`,
                               backgroundSize: "19px 16px",
                               backgroundPosition: "295px center",
                               backgroundRepeat: "no-repeat",
@@ -459,6 +459,15 @@ const LoginPage = () => {
                               paddingLeft: "0px",
                               borderRadius: "10px",
                             },
+                            endAdornment: (
+                              <div
+                                className={styles.passwordToggleIcon}
+                               
+                                style={{ color: "#A7A3FF",cursor:"pointer",position:"relative",left:"10px" }}
+                              >
+                                <img src="images/email/mail.png" alt="" />
+                              </div>
+                            ),
                             autoComplete: "off",
                           }}
                         />

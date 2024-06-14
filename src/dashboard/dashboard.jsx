@@ -756,7 +756,7 @@ const Dashboard = () => {
       </div>
     ))
   ) : (
-    <div className="ml-[50px] text-red-500">No quizzes available</div>
+    <div className="ml-[50px] text-red-500">Loading...</div>
   )}
 </div>
 
@@ -954,7 +954,7 @@ const Dashboard = () => {
   </div>
     ))
    ):(
-    <div className="ml-[50px] text-red-500">No quizzes available</div>
+    <div className="ml-[50px] text-red-500">Loading...</div>
    )}
       </div>
 

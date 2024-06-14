@@ -578,7 +578,7 @@ const Quiz = () => {
   </div>
     ))
    ):(
-    <div className="ml-[50px] text-red-500">No quizzes available</div>
+    <div className="ml-[50px]">Loading....</div>
    )}
       </div>         
             

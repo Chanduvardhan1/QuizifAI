@@ -326,7 +326,7 @@ const Dashboard = () => {
           You've completed {weeklyQuizCount} Quizzes this week with an average
           score of {averageScorePercentage}%
         </div>
-        <div className={styles.contentWrapper}>
+        <div className="flex mx-auto">
 
         <div className={styles.resultWrapper}>
             <div className={styles.latestResult} style={{ paddingTop: "12px", paddingBottom: "13px", color: "#002366" }}>
@@ -389,22 +389,18 @@ const Dashboard = () => {
 </div>
 </div>
 
-        <div className={styles.contentWrapper1}>
-          <div
-            className={styles.latestQuizHeader}
-            style={{ marginLeft: "40px" }}
-          >
+        <div className="mx-auto">
+        <div className={styles.topScoredHeader} style={{marginTop:"-5px",marginBottom:"20px"}}>
             <p className="text-[#002366]">Latest Quizzes</p>
-
             <span
-              className={styles.moreLink} style={{marginRight:"4px"}}
+              className={styles.moreLink} style={{fontWeight:"600"}}
               onClick={handleBackToQuizzes}
             >
               More{" "}
             </span>
             <p className="ml-[1px] mt-[1px] mr-[30px] text-[#EF5130]"></p>
             {/* <img
-              className="cursor-pointer mr-[40px] ml-1"
+              className="cursor-pointer mr-[20px] ml-1"
               src={moreArrow}
               alt="More"
               width={17}
@@ -412,17 +408,19 @@ const Dashboard = () => {
               onClick={() => toggleGetMoreQuizzes(false)}
             /> */}
           </div>
-          <div className={styles.infoCards}>
+          <div className="flex flex-wrap mx-auto ml-[13px]">
             {/* Info cards content */}
-            <div className={styles.container1} style={{marginLeft:"20px",marginTop:"-10px"}}>
+            <div className={styles.container1} style={{marginTop:"-10px"}}>
               {attemptedquizzes.length > 0 ?(
                 attemptedquizzes.slice(0, 3).map((quizItem, index) =>(
                   <div
                   key={index} className={styles.card}
                   style={{
+                    width:"245px",
                     paddingTop: "8px",
                     marginRight:"10px",
                     backgroundColor:"#fee2e2",
+                  
                   }}
                 >
                  <span className="relative group">
@@ -525,13 +523,15 @@ const Dashboard = () => {
   <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-0 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
     {quizItem.quiz_description}
   </span>
-      </div>
-      <div className="h-[2px] w-full bg-white"></div>
+</div>
+<div className="h-[2px] w-full bg-white"></div>
 
       <div style={{ backgroundColor: "#F9F9F9", padding: "1px 0" }}>
       <div className="h-[85px] rounded w-full bg-[#F5F5F5]">
-      <div className="text-[6px] font-normal pl-[12px] relative top-[73px]">
-                    <span>Pass</span>
+      <div className="text-[7px] font-normal pl-[10px] relative top-[73px]">
+                    <span>
+                      {quizItem.pass_flag ? 'Pass' : 'Fail'}
+                      </span>
                     <span className="px-[4px]">|</span>
                     <span>
                       {quizItem.speed_rank}
@@ -548,7 +548,7 @@ const Dashboard = () => {
                     <span className="px-[3px]">|</span>
                     <span>{quizItem.quiz_grade} Grade</span>
                   </div>
-                  <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[50px] left-[12px]">
+                  <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[50px] left-[10px]">
                   <div>Created By :
                     <span className="pl-[2px]">{quizItem.full_name}</span>
                   </div>
@@ -646,11 +646,11 @@ const Dashboard = () => {
             
             </div>
             
-            <div className={styles.container1} style={{marginLeft:"10px",marginTop:"30px"}}>
+  <div className={styles.container1} style={{marginLeft:"20px",marginTop:"30px"}}>
   {latestquizzes.length > 0 ? (
     latestquizzes.slice(0, 3).map((quizItem, index) => (
       <div className={styles.infoCards} key={index}>
-        <div className={styles.card} style={{ paddingTop: "8px", marginTop:"-15px", backgroundColor:"#CBF2FB" }}>
+        <div className={styles.card} style={{ paddingTop: "8px",width:"245px", marginTop:"-15px",marginRight:"10px", backgroundColor:"#CBF2FB" }}>
           <span className="relative group">
             <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate">
               {quizItem.quiz_name}
@@ -786,12 +786,12 @@ const Dashboard = () => {
           <div className={styles.topScoredHeader} style={{marginTop:"15px"}}>
             <p className="text-[#002366]">Most Popular</p>
             <span
-              className={styles.moreLink} style={{marginRight:"4px"}}
+              className={styles.moreLink} style={{fontWeight:"600"}}
               onClick={handleBackToQuizzes}
             >
-               More
+              More{" "}
             </span>
-            <p className="ml-[1px] mt-[1px] mr-[18px] text-[#EF5130]"></p>
+            <p className="ml-[1px] mt-[1px] mr-[30px] text-[#EF5130]">></p>           
             {/* <img
               className="cursor-pointer mr-[20px] ml-1"
               src={moreArrow}
@@ -802,12 +802,12 @@ const Dashboard = () => {
             /> */}
           </div>
 
- <div className={styles.container1}>
+ <div className={styles.container1} style={{marginLeft:"32px"}}>
    {popularquizzes.length > 0 ?(
     popularquizzes.slice(0, 3).map((quizItem, index) =>(
       <div className={styles.infoCards}>
     {/* Info cards content */}
-    <div className={styles.card} key={index} style={{ paddingTop: "8px",marginTop:"15px",backgroundColor:"#CBF2FB" }}>
+    <div className={styles.card} key={index} style={{ paddingTop: "8px",width:"245px",marginTop:"15px",marginRight:"10px",backgroundColor:"#CBF2FB" }}>
     <span className="relative group">
                 <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate">
                 {quizItem.quiz_name}

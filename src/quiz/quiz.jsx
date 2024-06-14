@@ -79,28 +79,34 @@ const Quiz = () => {
     try {
       const response = await fetch('https://quizifai.com:8010/get_date_rnge/');
       const data = await response.json();
-      if (data.response === 'success') {
-        setDataRanges(data.data);
+      if (data.response === 'Success') {
+        const formattedData = data['Date Range'].map(range => ({
+          DateRange: range,
+          Popularity: data.Popularity // Assuming popularity is the same for all date ranges initially
+        }));
+        setDataRanges(formattedData);
+      } else {
+        console.error('Unexpected response format:', data);
       }
     } catch (error) {
       console.error('Error fetching DataRange:', error);
     }
   };
 
-   // Handle data range selection
-   const handleSelectDataRange = (event) => {
+  const handleSelectDataRange = (event) => {
     const selectedRange = event.target.value;
     setSelectedDataRange(selectedRange);
-    // Filter subcategories based on the selected category
-    const range = dataRanges.find(dat => dat.DateRange === selectedRange);
-    if (range) {
-      setPopularity(range.Popularity.map(pop => pop.Popularity));
-    }else{
+
+    // Find popularity based on selected date range
+    const selectedRangeData = dataRanges.find(range => range.DateRange === selectedRange);
+    if (selectedRangeData) {
+      setPopularity(selectedRangeData.Popularity);
+    } else {
       setPopularity([]);
     }
+    setSelectedPopularity('');
   };
 
-  // Handle subcategory selection
   const handleSelectPopularity = (event) => {
     const selectedPopularityValue = event.target.value;
     setSelectedPopularity(selectedPopularityValue);
@@ -311,24 +317,29 @@ const Quiz = () => {
   <div className="gap-1 mb-3 bg-[#f3d0d5] border-none px-2 ml-6 -pl-[30px] rounded-md">
   <select
         className="w-[90px] rounded-md ml-4 cursor-pointer text-[10px] bg-[#f3d0d5] border-none"
-        style={{ border: "none", outline: "none" }}
+        style={{ border: 'none', outline: 'none' }}
         value={selectedDataRange}
         onChange={handleSelectDataRange}
       >
-        <option value="" disabled style={{background:"#A5CCE3"}}>Date Range</option>
-        {dataRanges.map(range => (
-          <option key={range.DateRange} value={range.DateRange}>
+        <option value="" disabled style={{ background: '#A5CCE3' }}>
+          Date Range
+        </option>
+        {dataRanges.map((range, index) => (
+          <option key={index} value={range.DateRange}>
             {range.DateRange}
           </option>
         ))}
       </select>
       <select
-        className="w-[90px] p-2 rounded-md cursor-pointer text-[10px] bg-[#f3d0d5] border-none"
-        style={{ border: "none", outline: "none" }}
+        className="w-[90px] rounded-md ml-4 cursor-pointer text-[10px] bg-[#f3d0d5] border-none text-black"
+        style={{ border: 'none', outline: 'none' }}
         value={selectedPopularity}
         onChange={handleSelectPopularity}
+        disabled={!selectedDataRange}  // Disable until a date range is selected
       >
-       <option value="" disabled style={{background:"#A5CCE3"}}>Popularity</option>
+        <option value="" disabled style={{ background: '#A5CCE3' }}>
+          Popularity
+        </option>
         {popularity.map((popularityValue, index) => (
           <option key={index} value={popularityValue}>
             {popularityValue}

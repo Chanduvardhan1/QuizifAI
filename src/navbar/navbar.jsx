@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import styles from "./dashboard.module.css";
 import quizifailogo from "../assets/Images/images/home/Quizifai3.png";
 import dashboardIcon from "../assets/Images/images/dashboard/dashboard1.png";
@@ -16,14 +16,22 @@ const Navigation = () => {
     setActivePage(page);
   };
 
+  const navigate = useNavigate();
+
+  const handleBackToDashboard = () => {
+    navigate('/dashboard');
+  };
+  
   return (
     <div className={styles.navigation}>
       <img
+
         src={quizifailogo}
         alt="Logo"
         width={180}
         height={160}
-        className={styles.dashboardLogo}
+        className="cursor-pointer"
+        onClick={handleBackToDashboard}
       />
       <div className={styles.pageList}>
         <NavLink

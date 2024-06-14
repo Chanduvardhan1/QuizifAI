@@ -1,7 +1,7 @@
 // import Head from 'next/head';
 // import Image from "next/image";
 import React, { useEffect, useState } from 'react';
-import styles from './quizresults.module.css';
+import styles from './quiz_results.module.css';
 import LeftBar from '../leftbar/leftbar';
 import createdIcon from "../../src/assets/Images/images/quiz-Access/created.png";
 import descriptionIcon from "../../src/assets/Images/images/quiz-Access/description.png"; 
@@ -42,13 +42,13 @@ import LogoutBar from "../logoutbar/logoutbar.jsx";
 
 
 
-const quizresults = () => {
+const quiz_results = () => {
   const [quizData, setQuizData] = useState(null);
   const [quizData1, setQuizData1] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const location = useLocation();
-  const { quizId, attemptNo } = location.state || {};
+//   const { quizId, attemptNo } = location.state || {};
   const [leaderboardData, setLeaderboardData] = useState([]);
   const navigate = useNavigate();
   const [isQuizSubmitted, setIsQuizSubmitted] = useState(false); // State to track quiz submission
@@ -63,6 +63,8 @@ const quizresults = () => {
 
  useEffect(() => {
     const userId = localStorage.getItem("user_id");
+    const quizId = localStorage.getItem("quiz_id");
+    const attemptNo = localStorage.getItem("quiz_level_attempt_id");
 
     const fetchQuizReport = async () => {
       try {
@@ -94,7 +96,7 @@ const quizresults = () => {
     };
 
     fetchQuizReport();
-  }, [quizId, attemptNo]);
+  }, []);
 
 
   // useEffect(() => {
@@ -157,6 +159,9 @@ const quizresults = () => {
   //   }
   // }, [quizId, attemptNo]);
   useEffect(() => {
+    const quizId = localStorage.getItem("quiz_id");
+    const attemptNo = localStorage.getItem("quiz_level_attempt_id");
+
     const sendQuizResult = async () => {
       try {
         const response = await fetch('https://quizifai.com:8010/quiz_result', {
@@ -185,9 +190,11 @@ const quizresults = () => {
     if (quizId && attemptNo) {
       sendQuizResult(); // Trigger the POST request only if quizId and attemptNo are available
     }
-  }, [quizId, attemptNo, userId]);
+  }, [userId]);
 
   useEffect(() => {
+    const quizId = localStorage.getItem("quiz_id");
+
     const fetchLeaderboardData = async () => {
       try {
         const response = await fetch('https://quizifai.com:8010/leaderboard_result', {
@@ -216,7 +223,7 @@ const quizresults = () => {
     if (isQuizSubmitted) { // Trigger fetch only if quiz result submission was successful
       fetchLeaderboardData();
     }
-  }, [quizId, isQuizSubmitted]);
+  }, [isQuizSubmitted]);
 
   if (!quizData) {
     return <div>Loading...</div>;
@@ -566,4 +573,4 @@ const quizresults = () => {
   );
 };
 
-export default quizresults;
+export default quiz_results;

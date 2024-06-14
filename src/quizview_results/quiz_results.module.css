@@ -252,12 +252,12 @@
     .boxContainer {
       width: 724px;
       height: 1072px;
-      
+      /* position: absolute; */
       width: 600px;
-  /* top: 548px;
-  left: 225px; */
-     
+  /* top: 548px; */
+  /* left: 225px; */
   margin-left: 20px;
+  
       border-radius: 20px;
       /* background-color: #FFFFFF; */
     }
@@ -411,6 +411,7 @@
     display: flex;
     position: relative;
     width: 100%;
+    /* justify-content: center; */
   }
   
   .sentenceBox {

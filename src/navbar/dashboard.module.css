@@ -18,6 +18,7 @@
   /* justify-content: space-between; */
   gap: 30px;
   padding-left: 10px;
+  width: 165px;
 }
 
 .navigation {
@@ -30,6 +31,7 @@
   padding-right: 25px;
   padding-left: 25px;
   gap: 50px;
+  width: 200px;
 }
 
 .dashboardLogo{

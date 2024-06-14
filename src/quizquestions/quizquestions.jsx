@@ -272,17 +272,17 @@ const QuizQuestions = () => {
       <Navigation/>
       <div className={styles.mainContent}>
       <div>
-        <h1 className={styles.quiztitle}>{quiz_title}</h1>
+        <h1 className={styles.quiztitle} style={{color:"#214082"}}>{quiz_title}</h1>
         <p className={styles.quizdescription}>{quiz_description}</p>
         <div className={styles.Createdbyandupdated}>
         <div className={styles.Createdby}>
 
-        <span className={styles.Created} >Created By:</span>{" "}
+        <span className={styles.Created} style={{color:"#214082"}} >Created By:</span>{" "}
           <span className={styles.username} >{`${quizData.created_by}`}</span>
         </div>
         <div>
 
-        <span className={styles.Created} >Created ON:</span>{" "}
+        <span className={styles.Created}style={{color:"#214082"}} >Created ON:</span>{" "}
           <span className={styles.username} >{`${quizData.created_on}`}</span>
         </div>
         </div>
@@ -427,7 +427,7 @@ const QuizQuestions = () => {
                   alignItems: 'center',
                   backgroundColor: 'transparent',
                   width: '100%',
-                  padding: '10px',
+                  // padding: '10px',
                   border: 'none',
                   textAlign: 'left',
                   cursor: 'pointer'
@@ -500,8 +500,11 @@ const QuizQuestions = () => {
      
     </div>
           </div>
+          <div>
           <div className={styles.verticalLine}></div>
+          </div>
       <div className={styles.Totaltimer}>
+      <div className={styles.back1} onClick={Back}><MdOutlineCancel /></div>
       <div className={styles.sentence1} style={{ marginTop: "220px" }}>
         {`${currentQuestionIndex + 1} out of ${filteredQuizData.length}`}
       </div>
@@ -522,7 +525,7 @@ const QuizQuestions = () => {
       className={styles.clockIcon}
     />
   </div> */}
-        <div className={styles.back1} onClick={Back}><MdOutlineCancel /></div>
+
         <LogoutBar/>
       </div>
     

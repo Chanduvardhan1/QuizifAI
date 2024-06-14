@@ -66,6 +66,8 @@
   padding-top: 2px;
   padding-bottom: 2px;
   border-radius: 20px;
+  transform: scale(1.1); /* Zoom effect on hover */
+  transition: transform 0.3s ease;
   /* padding-top: 5px; */
 }
 
@@ -87,6 +89,8 @@
 
 .buttons button:hover{
   background-color: rgb(239,81,48);
+  transform: scale(1.1); /* Zoom effect on hover */
+  transition: transform 0.3s ease;
 }
 
 .buttons button {

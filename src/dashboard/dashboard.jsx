@@ -221,57 +221,59 @@ const Dashboard = () => {
   function getColorPercentage(percentData) {
     if (percentData === 0) {
       return "#808080"; // Gray color
-    } else if (percentData <= 60) {
+    } else if (percentData > 0 && percentData <= 60) {
       return "#F34747"; // Red color
     } else if (percentData > 60 && percentData < 80) {
-      return "#F5E23F"; // yellow
-    } else if (percentData >= 81 && percentData < 90) {
-      return "#F6970D"; // orenge
-    } else {
+      return "#F5E23F"; // Yellow
+    } else if (percentData >= 80 && percentData < 90) {
+      return "#F6970D"; // Orange
+    } else if (percentData >= 90 && percentData <= 100) {
       return "#15803d"; // Green Color
+    } else {
+      return "#808080"; // Gray color for invalid percentages
     }
   }
-
+  
   const results = latestResult.map((result, index) => {
-    const textColorClass = getColor(result?.quiz_grade);
+    const percentColor = getColorPercentage(result?.quiz_percentage);
     return (
-        <div key={index}>
-            <div className={styles.infoLine}>
-                <span className={styles.info} style={{ fontSize: "10px", color: "grey", textWrap: "nowrap" }}>
-                    {result?.attempt_date}
-                    <span className="relative group">
-                        <span className="absolute ml-[10px] w-[100px] cursor-pointer z-0 truncate">
-                            {result?.quiz_name}
-                        </span>
-                        <span className="cursor-pointer hidden group-hover:inline-block absolute left-0 top-5 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-                            {result?.quiz_name}
-                        </span>
-                    </span>
-                </span>
-                <span
-                    style={{
-                        marginLeft: "10px",
-                        width: "130px",
-                        height: "8px",
-                        fontSize: "8px",
-                        marginTop: "7px",
-                        marginRight: "15px",
-                    }}
-                >
-                    <Line
-                        percent={result?.quiz_percentage}
-                        strokeWidth={4}
-                        strokeColor={getColorPercentage(result?.quiz_percentage)}
-                    />
-                </span>
-                <span className={`text-[10px]`} style={{ color: textColorClass }}>
-                    {result?.quiz_percentage}%
-                </span>
-            </div>
-            <hr className={styles.divider} />
+      <div key={index}>
+        <div className={styles.infoLine}>
+          <span className={styles.info} style={{ fontSize: "10px", color: "grey", textWrap: "nowrap" }}>
+            {result?.attempt_date}
+            <span className="relative group">
+              <span className="absolute ml-[10px] w-[100px] cursor-pointer z-0 truncate">
+                {result?.quiz_name}
+              </span>
+              <span className="cursor-pointer hidden group-hover:inline-block absolute left-0 top-5 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+                {result?.quiz_name}
+              </span>
+            </span>
+          </span>
+          <span
+            style={{
+              marginLeft: "10px",
+              width: "130px",
+              height: "8px",
+              fontSize: "8px",
+              marginTop: "7px",
+              marginRight: "15px",
+            }}
+          >
+            <Line
+              percent={result?.quiz_percentage}
+              strokeWidth={4}
+              strokeColor={percentColor}
+            />
+          </span>
+          <span className={`text-[10px]`} style={{ color: percentColor }}>
+            {result?.quiz_percentage}%
+          </span>
         </div>
+        <hr className={styles.divider} />
+      </div>
     );
-});
+  });
 
   return (
     <div className={styles.container}>
@@ -329,17 +331,17 @@ const Dashboard = () => {
         <div className="flex mx-auto">
 
         <div className={styles.resultWrapper}>
-            <div className={styles.latestResult} style={{ paddingTop: "12px", paddingBottom: "13px", color: "#002366" }}>
-                Latest Results
-                {latestResult.length === 0 ? (
-                    <p className="">No quizzes attempted till now.</p>
-                ) : (
-                    <div className={styles.resultInfo}>
-                        {results}
-                    </div>
-                )}
-            </div>
+    <div className={styles.latestResult} style={{ paddingTop: "12px", paddingBottom: "13px", color: "#002366" }}>
+      Latest Results
+      {latestResult.length === 0 ? (
+        <p className="">No quizzes attempted till now.</p>
+      ) : (
+        <div className={styles.resultInfo}>
+          {results}
         </div>
+      )}
+    </div>
+  </div>
 
   <div className={styles.resultWrapper}>
   <div className={styles.timeSpent} style={{ paddingTop: "10px",color:"#002366" }}>

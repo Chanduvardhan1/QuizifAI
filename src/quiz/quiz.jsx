@@ -311,7 +311,7 @@ const Quiz = () => {
             <p className="text-[16px] font-Poppins -ml-[18.5px]">Sort by</p>
           </div> */}
          
-  <div className={styles.infoCards}>
+  <div className={styles.infoCards} >
  <div className={styles.sortBy}>
   {/* <p className="ml-8 my-3 font-Poppins font-medium">Sort by:</p> */}
   <div className="gap-1 mb-3 bg-[#f3d0d5] border-none px-2 ml-6 -pl-[30px] rounded-md">

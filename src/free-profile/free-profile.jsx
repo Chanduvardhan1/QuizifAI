@@ -359,6 +359,7 @@ const FreeProfile = () => {
                 className={styles.profileimg}
                 style={{ width: "113px", height: "110px" }}
               />
+              <a href="./old-password" className="text-[10px] ml-[14px] text-blue-700 font-medium hover:underline">Update Password</a>
             </div>
 
             <div className={styles.contentContainer}>

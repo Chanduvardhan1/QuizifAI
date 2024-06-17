@@ -58,6 +58,7 @@ import Profile from "./profile/profile.jsx";
 ///import DashboardQuizmaster from "./dashboard-quizmaster/dashboard-quizmaster.jsx";
 import Superadmin from "./dashboard-superadmin/dashboard-superadmin.jsx";
 import FreeProfile from "./free-profile/free-profile.jsx";
+import OldPassword from "./free-profile/old-password.jsx";
 import Configure from "./configure/configure.jsx";
 import Category from "./configure/category.jsx";
 import Navbarhome from "./navbarhome/navbarhome.jsx";
@@ -321,6 +322,7 @@ import Quizresults1 from "./quizview_results/quiz_results.jsx";
             <Route path="dashboard-quizmaster" element={<Quizmaster/>} />
             <Route path="dashboard-superadmin" element={<Superadmin/>} />
             <Route path="free-profile" element={<FreeProfile/>} />
+            <Route path="old-password" element={<OldPassword/>} />
             <Route path="configure" element={<Configure/>} />
             <Route path="category" element={<Category/>} />
            

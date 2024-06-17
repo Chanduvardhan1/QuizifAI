@@ -220,7 +220,7 @@ const LogoutBar = () => {
             <div className="flex">
               <img className="h[60px] w-[60px] ml-7 mt-1" src={ranks}/>
               <p className="text-[30px] text-[#5E81F4]  mt-1 font-bold">{globalRank}</p>
-              <h1 className="mt-[40px] relative -left-5 font-Poppins text-[13px]">global rank</h1>
+              <h1 className="mt-[40px] relative font-Poppins text-[13px]">global rank</h1>
             </div>
             <div className="h-[5px] w-full bg-white mt-[10px]"></div>
 

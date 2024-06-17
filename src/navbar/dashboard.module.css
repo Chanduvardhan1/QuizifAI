@@ -53,9 +53,13 @@
   cursor: pointer;
   transition: transform 0.3s ease, color 0.3s ease;
   text-decoration: none; /* Remove default underline */
-  color: #333;
+  color: #53699C;
 }
 
+.pageItem.active {
+  color: orange;
+  /* other styles */
+}
 .infoLine {
 display: flex;
 align-items: center;
@@ -85,8 +89,11 @@ border: none;
 .pageLink{
   margin-right: 10px;
   cursor: pointer;
-  color: #002366;
+  color: #53699C;
   transition: color 0.3s ease;
+}
+.pageLink:active{
+  color:#EF5130;
 }
 
 .logoutIcon{

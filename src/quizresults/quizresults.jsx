@@ -39,6 +39,7 @@ import current from "../../src/assets/Images/images/quizresults/Vector.png"
 import vector from "../../src/assets/Images/images/quizresults/icon-park_check-correct.png"
 import Navigation from "../navbar/navbar.jsx";
 import LogoutBar from "../logoutbar/logoutbar.jsx";
+import rankimage from "../../src/assets/Images/images/quizresults/rank.jpg"
 
 
 
@@ -271,7 +272,7 @@ const quizresults = () => {
         </div>
         <div>
 
-        <span className={styles.Createdby} >Created ON:</span>{" "}
+        <span className={styles.Createdby} >Created On:</span>{" "}
           <span className={styles.username} >{`${quizData.created_on}`}</span>
         </div>
         </div>
@@ -297,6 +298,15 @@ const quizresults = () => {
       <div className={styles.horizontalLine}></div>
       <div className={styles.wrapper}>
       <div className={styles.sentenceBox}>
+         <div className={styles.verticaliconsContainer}>
+          <h1  className={styles.verticalicon2} >{quizData.rank}</h1>
+        <img
+    src={rankimage} 
+    alt="Icon 1"
+    className={styles.verticalicon1}
+  />
+  <h1 className={styles.rank1}>Your Rank</h1>
+      </div>
       <div className={styles.sentencesContainer}>
         <div className={styles.sentence}>
         <img
@@ -317,7 +327,7 @@ const quizresults = () => {
     alt="Calendar Icon"
     className={styles.icon2}
   />
-          <span>{quizData.attempt_duration} spent for {quizData.total_questions}questions</span>
+          <span>{quizData.attempt_duration} spent for {quizData.total_questions} questions</span>
         </div>
        
         
@@ -366,25 +376,23 @@ const quizresults = () => {
           <span>{quizData.correct_answers} correct answer</span>
         </div>
         </div>
-        <div className={styles.verticalLine}></div>
-        <div className={styles.verticaliconsContainer}>
-          <h1  className={styles.verticalicon2} >{quizData.rank}</h1>
-        <img
-    src={ranksIcon} 
-    alt="Icon 1"
-    className={styles.verticalicon1}
-  />
-  <h1 className={styles.rank1}>Your rank</h1>
-      </div>
-        </div>
-        <div className={styles.horizontalLine} style={{marginTop:"0px"}}></div>
+        {/* <div className={styles.verticalLine}></div> */}
+       
+
         <div className={styles.boxContainer1}>
           <div className={styles.titles}>
         <p className={styles.title}>Leaderboard</p>
+
+
         </div>
-        <div className={styles.fistrank}>
+        <div className={styles.lines}>
+          <div className={styles.lines1}></div>
+          <div className={styles.lines2}> Top 10 Rankers</div>
+          <div className={styles.lines3}></div>
+        </div>
+        {/* <div className={styles.fistrank}>
           <img src={fistrank} alt="" style={{width:"60px",height:"52px"}} />
-        </div>
+        </div> */}
         <div className={styles.ranksiconsContainer}>
         <img
     src={rank1Icon} 
@@ -403,30 +411,43 @@ const quizresults = () => {
     className={styles.rankicon3}
   />
         </div>
-        <div className={styles.innerBoxes1}>
+        <div className={styles.ranksiconsContainer1}>
+     <p className={styles.second}>2<span  className={styles.st}>nd</span></p>
+        <p className={styles.fist}>1<span  className={styles.st}>st</span></p> 
+      
+        <p className={styles.thired}>3<span  className={styles.st}>rd</span></p>
+        </div>
+         <div className={styles.innerBoxes1}>
         <div className={styles.innerBox1} style={{width:"122px", height:"93px",}}>
-        <img
+        {/* <img
     src={greybox1Image} 
     alt="img 1"
-  />
+  /> */}
             {/* <span className={styles.textOverImage} style={{marginTop:"-40px", marginLeft:"50px"}}>Username<br></br>99.5</span> */}
             
-          </div>
+           </div>
           <div className={styles.innerBox2} style={{width:"122px", height:"118px", marginbottom:"23px"}}>
-          <img
+          {/* <img
     src={greybox2Image} 
     alt="img 1"
-  />
+  /> */}
             {/* <span className={styles.textOverImage1}>Username<br></br>100</span> */}
-          </div>
+           </div>
           <div className={styles.innerBox3} style={{width:"122px", height:"93px",}}>
-          <img
+          {/* <img
     src={greybox3Image} 
     alt="img 1"
-  />
+  /> */}
             {/* <span className={styles.textOverImage2}>Username<br></br>99</span> */}
           </div>
-        </div> 
+        </div>    
+        {/* <div className={styles.tables}>
+          <div className={styles.table1}> 
+            <h1 className={styles.heading}>QuI</h1>
+          </div>
+          <div className={styles.table2}>2</div>
+          <div className={styles.table3}>3</div>
+        </div> */}
         
         
         {/* <div  className={styles.columns1}>
@@ -471,8 +492,11 @@ const quizresults = () => {
             <div key={entry.rank}  >
               {/* <img src={images[index]} alt={`img ${index + 1}`} /> */}
               <span className={styles[`textOverImage${index + 1}`]} >
-                {entry.user_name}<br />{entry.attained_percentage}
+                {entry.user_name} <br /> <span style={{color:'#e20000'}}>{entry.attained_percentage}</span>
               </span>
+              {/* <span className={styles[`textOvernumber${index + 1}`]} >
+                 {entry.attained_percentage}
+              </span> */}
             </div>
           );
         })}
@@ -495,6 +519,9 @@ const quizresults = () => {
       ))}
     </div>
     </div>
+    </div>
+    <div className={styles.horizontalLine} style={{marginTop:"0px"}}></div>
+
     <div className={styles.boxContainer}>
       <div className={styles.parentContainer}>
       {questions.map((question, index) => (

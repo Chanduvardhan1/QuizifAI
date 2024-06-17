@@ -282,7 +282,7 @@ const QuizQuestions = () => {
         </div>
         <div>
 
-        <span className={styles.Created}style={{color:"#214082"}} >Created ON:</span>{" "}
+        <span className={styles.Created}style={{color:"#214082"}} >Created On:</span>{" "}
           <span className={styles.username} >{`${quizData.created_on}`}</span>
         </div>
         </div>
@@ -436,11 +436,12 @@ const QuizQuestions = () => {
                 <div style={{
                   width: '40px',
                   marginRight: '10px',
-                  padding: '10px',
+                  padding: '7px',
                   textAlign: 'center' ,
                   border: '1px solid #ccc',
                   borderRadius: '5px',
                   backgroundColor: '#f9f9f9',
+                 
                 }}>{optionLabel}</div>
                 <div style={{
                   display: 'flex',
@@ -451,7 +452,8 @@ const QuizQuestions = () => {
                   padding: '10px', // Adds padding for better click area
                   border: isSelected ? '2px solid #FEBB42' : '1px solid #ccc', // Highlights selected option
                   borderRadius: '5px', // Rounds corners of buttons
-                  textAlign: 'left' // Align text to the left for better readability
+                  textAlign: 'left' ,// Align text to the left for better readability
+                  fontSize:'12px',
                 }}>{currentQuestion[key]}</div>
               </button>
             </li>

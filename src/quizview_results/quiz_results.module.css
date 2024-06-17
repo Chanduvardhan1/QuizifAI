@@ -104,7 +104,7 @@
       font-weight: 700;
     }
   .quizdescription{
-    width: 500px;
+    width: 780px;
     font-size: 15px;
   }
     .infoContainer{
@@ -120,8 +120,8 @@
     }
   .Createdbyupdated{
     display: flex;
-    /* justify-content: space-between; */
-    gap: 40px; 
+    justify-content: space-between;
+    /* gap: 40px;  */
   }
     .icon1{
       width: 51px;
@@ -167,7 +167,7 @@
   .horizontalLine {
       border: 1px dashed #555555; /* Add border style */
       margin-top: 30px; /* Adjust margin top for spacing */
-      width: 548px;
+      width: 800px;
       margin-left: 40px;
   border: 1;
   
@@ -187,7 +187,7 @@
       align-items: center;
       margin-right: 30px;
       font-family: Poppins;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 600;
   line-height: 23px;
   letter-spacing: 0em;
@@ -215,8 +215,8 @@
       /* margin-left: 100px;
       margin-top: -300px; */
       z-index: 1;
-      gap: 10px;
-      padding-left: 15px;
+      gap: 9px;
+      padding-left: 20px;
   }
     
     .column {
@@ -250,10 +250,10 @@
       height: 71px;
     }
     .boxContainer {
-      width: 724px;
+      width: 850px;
       height: 1072px;
       /* position: absolute; */
-      width: 600px;
+      /* width: 600px; */
   /* top: 548px; */
   /* left: 225px; */
   margin-left: 20px;
@@ -262,7 +262,7 @@
       /* background-color: #FFFFFF; */
     }
     .box {
-      width: 350px;
+      width:  586px;
       height: 25px;
       border-radius: 10px;
       border: 1px solid #000000; /* Adjust border color and width */
@@ -272,7 +272,61 @@
       background: #F8FDFF;
   
     }
-  
+    .tables{
+      display: flex;
+      justify-content: center;
+      align-items: end;
+    }
+  .table1{
+    width: 100px;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: blue;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    box-shadow: 0px 4px 8px#214082;
+  }
+  .table2{
+    width: 100px;
+    height: 110px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: blue;
+    box-shadow: 0px 4px 8px#214082;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+  .lines{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 15px;
+  }
+  .lines1{
+    width: 50px;
+    background-color: black;
+    height: 1px;
+  }
+  .lines3{
+    width: 50px;
+    background-color: black;
+    height: 1px;
+  }
+  .table3{
+    width: 100px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: blue;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    box-shadow: 0px 4px 8px#214082;
+  }
     .boxes {
       display: flex;
       justify-content: flex-start;
@@ -412,10 +466,11 @@
     position: relative;
     width: 100%;
     /* justify-content: center; */
+    gap: 80px;
   }
   
   .sentenceBox {
-    margin-right: 20px; /* Adjust margin as needed */
+    /* margin-right: 20px;  */
   }
   
   .verticalLine {
@@ -428,25 +483,27 @@
   .verticaliconsContainer {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
+    margin-top:70px;
   }
   
   .verticalicon1 {
-    width: 91.01px; /* Adjust size as needed */
-    height: 58.62px; /* Adjust size as needed */
+    width: 130.01px; /* Adjust size as needed */
+    height: 108.62px; /* Adjust size as needed */
     margin-top: 10px; /* Adjust margin as needed */
   }
   .verticalicon2 {
     width: 139px; /* Adjust size as needed */
     height: 105.52px; /* Adjust size as needed */
     margin-top: 0px; /* Adjust margin as needed */
-    font-size: 100px;
+    font-size: 70px;
     font-weight: 800;
     display: flex;
     flex-direction: column;
     /* align-content: center; */
     align-items: center;
+    position: absolute;
   }
   .values {
     /* display: flex;
@@ -465,10 +522,10 @@
 }
   .boxContainer1{
     position: relative;
-    width: 471px;
+    width: 400px;
 /* height: 582px; */
-margin-top: 20px;
-margin-left: 40px;
+margin-top: 10px;
+/* margin-left: 40px; */
 gap: 0px;
 border-radius: 20px;
 opacity: 0px;
@@ -477,7 +534,7 @@ background: #FFFFFF;
 box-shadow: 0px 4px 4px 0px #00000040;
 border-bottom: 1px solid #ccc;
 flex-direction: column;
-
+margin-bottom: 15px;
   
   }
   .innerBoxes {
@@ -512,7 +569,7 @@ line-height: 30px;
 text-align: center;
 margin-left: -50px;
 
-
+color: #e20000;
   }
   
   .innerBoxes {
@@ -529,7 +586,7 @@ margin-left: -50px;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    height: 100px;
+    height: 60px;
     gap: 0px;
     margin-bottom: 10px;
   }
@@ -563,6 +620,52 @@ margin-left: -50px;
     gap: 45px;
     justify-content: center;
   }
+  .ranksiconsContainer1 {
+    display: flex;
+    gap: 95px;
+    justify-content: center;
+    z-index: 1;
+  }
+  .fist{
+    border-radius: 50%;
+    display: flex;
+    background-color: orange;
+    padding: 2px;
+    /* margin-bottom: 1px; */
+    padding-bottom: 0px;
+    width: 25px;
+    justify-content: center;
+    position: relative;
+    top:-10px;
+  }
+  .st{
+    font-size: 8px;
+  }
+  .second{
+    border-radius: 50%;
+    display: flex;
+    background-color: skyblue;
+    padding: 2px;
+    /* margin-bottom: 1px; */
+    padding-bottom: 0px;
+    width: 25px;
+    justify-content: center;
+    position: relative;
+    top:10px;
+  }
+
+  .thired{
+    border-radius: 50%;
+    display: flex;
+    background-color: lawngreen;
+    padding: 2px;
+    /* margin-bottom: 1px; */
+    padding-bottom: 0px;
+    width: 25px;
+    justify-content: center;
+    position: relative;
+    top:30px
+  }
   .fistrank{
     display: flex;
     align-items: center;
@@ -577,6 +680,24 @@ margin-left: -50px;
     /* Adjust icon styles as needed */
     top: 32px;
     position: relative;
+  }
+  .textOvernumber1{
+    position: relative;
+    top: -53px;
+    left: 22px;
+    color: #e20000;
+  }
+  .textOvernumber2{
+    position: relative;
+    top: -20px;
+    left: -120px;
+    color: #e20000;
+  }
+  .textOvernumber3{
+    position: relative;
+    top: 0px;
+    left: 103px;
+    color: #e20000;
   }
   .rankicon2 {
     width: 82px;
@@ -615,44 +736,54 @@ font-weight: 500;
   }
   .textOverImage1 {
 /* Center the text */
-    color: black; /* Set text color */
+    color: #214082; /* Set text color */
     z-index: 2;
-    margin-top: -98px;
-    margin-left: -40px;
+    margin-top: -80px;
+    margin-left: -51px;
     font-size: 14px;
     font-weight: 500;
-    /* display: flex; */
-    /* justify-content: center; */
-    /* align-items: center; */
+    display: flex; 
+     justify-content: center;
+     align-items: center;
     /* margin-right: -50px; */
-    width: 90px;
-
+    width: 110px;
+    text-align: center;
+    flex-direction: column;
     /* Add additional styles as needed */
   }
   .textOverImage2 {
-    color: black;
+    color: #214082;
     z-index: 2;
-    margin-top: -80px;
-    margin-left: -160px;
-    font-size: 12px;
+    margin-top: -55px;
+    margin-left: -180px;
+    font-size: 14px;
     font-weight: 500;
-    width: 110px;
+    width: 120px;
     padding-left: 0px;
     display: flex;
     justify-content: center;
     align-items: center;
     justify-items: center;
+    text-align: center; 
+    flex-direction: column;
     /* Add additional styles as needed */
   }
   .textOverImage3 {
     position: absolute;
-    color: black; /* Set text color */
+    color: #214082; /* Set text color */
     font-size: 14px; /* Set font size */
     z-index: 2;
-    margin-top: -52px;
-    margin-left: 78px;
-    font-size: 10px;
+    margin-top: -35px;
+    margin-left: 62px;
+    font-size: 14px;
 font-weight: 500;
+display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 123px;
+    text-align: center;
+    flex-direction: column;
+
 
     /* Add additional styles as needed */
   }
@@ -660,10 +791,12 @@ font-weight: 500;
   .columns {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    /* align-items: center; */
     /* margin-left: 850px;
     margin-top: -339px; */
     z-index: 1;
+    font-size: 12px;
+    font-weight: 700;
   }
   
   .column {
@@ -677,8 +810,10 @@ font-weight: 500;
     flex-direction: row;
     /* margin-left: 826px; */
     z-index: 1;
+    font-size: 12px;
     /* background: #FFFFFF; */
     /* box-shadow: 0px 4px 4px 0px #00000040; */
+
   }
   
   .value {
@@ -707,7 +842,7 @@ height: 23px;
     display: flex;
     flex-direction: column;
     margin-top: -140px;
-    margin-left: 400px; /* Adjust as needed */
+    margin-left: 630px; /* Adjust as needed */
   }
   
   .iconContainer {

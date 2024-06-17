@@ -6,6 +6,7 @@ import dashboardIcon from "../assets/Images/images/dashboard/dashboard1.png";
 import quizIcon from "../assets/Images/images/dashboard/quiz1.png";
 import profileIcon from "../assets/Images/images/dashboard/profile1.png";
 import Settings from "../assets/Images/images/dashboard/Settings1.png";
+import rocket from "../assets/Images/images/dashboard/rocket.png";
 
 const Navigation = () => {
   // Initialize activePage state to the current pathname
@@ -25,7 +26,6 @@ const Navigation = () => {
   return (
     <div className={styles.navigation}>
       <img
-
         src={quizifailogo}
         alt="Logo"
         width={180}
@@ -52,7 +52,7 @@ const Navigation = () => {
         </NavLink>
         <NavLink
           to="/free-profile"
-          className={`${styles.pageItem} ${activePage === '/free-profile' ? styles.bold : ''}`}
+          className={`${styles.pageItem} ${activePage === '/free-profile' ? styles.active : ''}`}
           onClick={() => handleNavigation('/free-profile')}
         >
           <img src={profileIcon} alt="Profile Icon" className={styles.pageIcon} />
@@ -60,12 +60,13 @@ const Navigation = () => {
         </NavLink>
         <NavLink
           to="/configure"
-          className={`${styles.pageItem} ${activePage === '/configure' ? styles.bold : ''}`}
+          className={`${styles.pageItem} ${activePage === '/configure' ? styles.active : ''}`}
           onClick={() => handleNavigation('/configure')}
         >
           <img src={Settings} alt="Settings Icon" className={styles.pageIcon} />
           <span className={styles.pageLink}>Settings</span>
         </NavLink>
+        <img className="h-[122px] w-[60px] ml-[35px] mt-[50px]" src={rocket} alt="rocket"/>
       </div>
     </div>
   );

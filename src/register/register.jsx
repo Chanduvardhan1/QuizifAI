@@ -5,7 +5,7 @@ import styles1 from "./signup.module.css";
 import icon1 from "../assets/Images/images/mdi_gmail.png";
 import icon2 from "../assets/Images/images/clarity_mobile-line.png";
 import icon3 from "../assets/Images/images/logos_google-gmail.png";
-import quizifailogo from  "../assets/Images/images/home/Quizifai6.png";
+import quizifailogo from  "../../src/assets/Images/images/home/home.jpg";
 import successImage from "../assets/Images/images/signup/successImage.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FaTimes, FaCheck } from "react-icons/fa";
@@ -901,7 +901,7 @@ const register = () => {
       <div className={styles.mainContent}>
         <div className={styles.leftSection}>
           <div className={styles1.logo}>
-            <img src={quizifailogo} alt="Logo" width={400} height={500}
+            <img src={quizifailogo} alt="Logo" width={1000} height={1000}
              style={{ marginTop: "-15px" }} />
           </div>
         </div>
@@ -941,11 +941,11 @@ const register = () => {
             <>
               <div className={styles.SignupHeader}>
                 <h1 className={styles1.resgisterTitle}>Register</h1>
-
+{/* 
                 <p className={styles1.registerDescription}>
                   Enter your details to register 
                 </p>
-               <p className={styles.mandatory}>All fields are mandatory*</p>
+               <p className={styles.mandatory}>All fields are mandatory*</p> */}
               </div>
             
               <div
@@ -1000,7 +1000,7 @@ const register = () => {
                     id="middleName"
                     label="Middle Name"
                     variant="outlined"
-                    required
+                   
                     error={submitted && middlename.trim() === ""}
                     // helperText={
                     //   submitted && middlename.trim() === ""
@@ -1464,7 +1464,7 @@ const register = () => {
                       // marginBottom: "20px",
                     }}
                     InputLabelProps={{
-                      style: { fontFamily: "poppins" },
+                      style: { fontFamily: "poppins",marginRight:'10px' },
                     }}
                     InputProps={{
                       style: {

@@ -712,8 +712,11 @@ margin-top: -3px;
   margin-top: 20px;
 }
 .registrationSuccess1{
-  margin-right: 80px;
   margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 
@@ -727,7 +730,7 @@ margin-top: -3px;
 }
 .registrationSuccess1 img {
 
-  margin-left: 80px; 
+  /* margin-left: 80px;  */
 }
 .validationIconGreen {
   color: green; 

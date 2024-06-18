@@ -147,7 +147,7 @@ const resetpassword = () => {
                 Click{" "}
                 <span
                   className={styles.link}
-                  style={{ fontWeight: 700, cursor: "pointer" }}
+                  style={{ fontWeight: 700, cursor: "pointer",color:'blue',textDecorationLine:'underline' }}
                   onClick={handleBackToDashboard}
                 >
                   here

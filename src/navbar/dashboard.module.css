@@ -67,6 +67,7 @@ align-items: center;
 
 .bold {
   font-weight: bold;
+  color: #EF5130;
 }
 .info {
 flex: 1;
@@ -89,7 +90,7 @@ border: none;
 .pageLink{
   margin-right: 10px;
   cursor: pointer;
-  color: #53699C;
+  /* color: #53699C; */
   transition: color 0.3s ease;
 }
 .pageLink:active{

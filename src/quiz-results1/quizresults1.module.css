@@ -53,7 +53,7 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      margin-left: 70px;
+      /* margin-left: 70px; */
     
       /* background: linear-gradient(
       0deg,
@@ -395,10 +395,10 @@
 
   .boxContainer1{
     /* position: relative; */
-     /* width: 625px; */
-/* height: 582px; */ 
+     width: 480px;
+/* height: 480px;  */
 
-margin-left: 70px;
+/* margin-left: 70px; */
 gap: 0px;
 border-radius: 20px;
 opacity: 0px;
@@ -408,7 +408,7 @@ border-bottom: 1px solid #ccc;
 display: flex;
 flex-direction: column;
 border: 1px solid #ccc;
-padding: 15px;
+padding: 10px;
   }
 
   .title {
@@ -421,7 +421,7 @@ padding: 15px;
     /* margin-left: -50px; */
     display: flex;
     justify-content: center;
-
+   color: #e20000;
 
   }
   
@@ -535,6 +535,10 @@ padding: 15px;
   }
   .mainContent1{
     display: flex;
+    flex-direction: column;
+    color: #214082;
+    justify-content: end;
+    align-items: end;
   }
   .columns {
     display: flex;
@@ -543,8 +547,10 @@ padding: 15px;
     /* margin-left: 100px; */
     /* margin-top: -300px; */
     z-index: 1;
-    gap: 15px;
+    gap: 0px;
     justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
   }
   
   .column {
@@ -553,7 +559,105 @@ padding: 15px;
     margin: 0 12px;
     white-space: nowrap;
   }
- 
+  .lines{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 15px;
+  }
+  .lines1{
+    width: 50px;
+    background-color: black;
+    height: 1px;
+  }
+  .lines3{
+    width: 50px;
+    background-color: black;
+    height: 1px;
+  }
+  .ranksiconsContainer1 {
+    display: flex;
+    gap: 100px;
+    justify-content: center;
+    z-index: 1;
+  }
+  .fist{
+    border-radius: 50%;
+    display: flex;
+    background-color: orange;
+    padding: 2px;
+    /* margin-bottom: 1px; */
+    padding-bottom: 0px;
+    width: 25px;
+    justify-content: center;
+    position: relative;
+    top:-10px;
+  }
+  .st{
+    font-size: 8px;
+  }
+  .second{
+    border-radius: 50%;
+    display: flex;
+    background-color: skyblue;
+    padding: 2px;
+    /* margin-bottom: 1px; */
+    padding-bottom: 0px;
+    width: 25px;
+    justify-content: center;
+    position: relative;
+    top:3px;
+  }
+  
+  .thired{
+    border-radius: 50%;
+    display: flex;
+    background-color: lawngreen;
+    padding: 2px;
+    /* margin-bottom: 1px; */
+    padding-bottom: 0px;
+    width: 25px;
+    justify-content: center;
+    position: relative;
+    top:20px
+  }
+  .header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.titleContainer{
+  font-family: Poppins;
+  font-size: 18px;
+  /* font-weight: 700; */
+  line-height: 30px;
+  letter-spacing: 0em;
+  text-align: left;
+  margin-left: 50px;
+  display: flex;
+  flex-direction: column;
+}
+.quizname{
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: 700;
+}
+.quizdescription{
+  width: 780px;
+  font-size: 15px;
+}
+.Createdbyupdated{
+  display: flex;
+  justify-content: space-between;
+  /* gap: 40px; */
+}
+.Createdby {
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: 700;
+}
   .custom-spacing {
     justify-content: var(--value-spacing);
   }
@@ -576,14 +680,15 @@ height: 23px;
   .values {
     display: flex;
     /* justify-content: space-between; */
-    /* width: 47%; */
-    margin-bottom: 5px;
+    width: 100%;
+    /* margin-bottom: 5px; */
     /* border-bottom: 1px solid #ddd; */
     padding: 5px;
     z-index: 1;
     /* margin-left: 59px; */
-    gap: 70px;
-    font-size: 14px;
+    gap: 35px;
+    font-size: 12px;
+    border-bottom: 1px solid #ccc;
   }
   
   .value {
@@ -654,7 +759,7 @@ height: 26px;
     height: 20px; /* Adjust height as needed */
   }
 
-  .titleContainer{
+  .titleContainer1{
     font-family: Poppins;
 font-size: 18px;
 font-weight: 700;
@@ -788,21 +893,32 @@ text-align: left;
   }
   
   .textOverImage1 {
-    margin-top: -10px;
-    margin-left: 232px;
+    margin-top: 99px;
+    margin-left: 175px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
   }
   
   .textOverImage2 {
-    /* margin-top: -62px; */
-    margin-left: -18px;
+    margin-top: 120px;
+    margin-left: -70px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
   }
   
   .textOverImage3 {
     /* margin-left: 25px; */
     position: relative;
-    top: -54px;
-    left: 10px;
-    font-size: 12px;
+    top: 78px;
+    left: 50px;
+    display: flex;
+    color: black;
+    font-size: 14px;
+    font-weight: 500;
+    flex-direction: column;
+    text-align: center;
   }
   
  .innerBoxes1{

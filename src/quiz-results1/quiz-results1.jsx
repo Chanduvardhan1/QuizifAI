@@ -41,6 +41,9 @@ import publicIcon from "../assets/Images/images/quizview/public.png";
 import startIcon from "../assets/Images/images/quiz-Access/start.png";
 import LeftBar from "../leftbar/leftbar";
 import { useLocation } from 'react-router-dom';
+import Navigation from "../navbar/navbar.jsx"
+import LogoutBar from "../logoutbar/logoutbar.jsx";
+
 
 const Questions = () => {
   const location = useLocation();
@@ -88,44 +91,86 @@ const topThree = leaderboardData.slice(0, 3);
           rel="stylesheet"
         />
   </Head>*/}
-      <LeftBar/>
+      <Navigation/>
       <div className={styles.mainContent}>
        <div className={styles.mainContent1}>
+      
+        <div className={styles.titleContainer1}>
+        {/* <img
+  src={titleIcon} 
+  alt="User Icon"
+  className={styles.icon1}
+/> */}
+          <span className={styles.quizname}>Neet Sample Paper</span>
+          <p className={styles.quizdescription}>List of neet sample chemistry questions</p>
+          <div className={styles.Createdbyupdated}>
+        <div className={styles.Created}>
+
+        <span className={styles.Createdby} >Created By:</span>{" "}
+          {/* <span className={styles.username} >{`${quizData.created_by}`}</span> */}
+        </div>
+        <div>
+
+        <span className={styles.Createdby} >Created On:</span>{" "}
+          {/* <span className={styles.username} >{`${quizData.created_on}`}</span> */}
+        </div>
+        </div>
+        </div>
+        {/* <div className={styles.infoContainer}>
+        {/* <img
+  src={createdIcon} 
+  alt="Calendar Icon"
+  className={styles.icon2}
+/> */}
+          {/* <span>user name<br></br>date</span> */}
+        {/* </div>  */}
+    
         <div className={styles.boxContainer1}>
 
         <div className={styles.titles}>
         <p className={styles.title}>Leaderboard</p>
         </div>
-        <div className={styles.firstRank}>
-        <img src={FirstRank} alt="First Rank" style={{width:"60px",height:"52px"}} />
+        <div className={styles.lines}>
+          <div className={styles.lines1}></div>
+          <div className={styles.lines2}> Top 10 Rankers</div>
+          <div className={styles.lines3}></div>
         </div>
+        {/* <div className={styles.firstRank}>
+        <img src={FirstRank} alt="First Rank" style={{width:"60px",height:"52px"}} />
+        </div> */}
         <div className={styles.ranksiconsContainer}>
           <img src={rank1Icon} alt="Icon 1" className={styles.rankicon1} />
       
           <img src={rank2Icon} alt="" className={styles.rankicon2} />
           <img src={rank3Icon} alt="Rank 3 Icon" className={styles.rankicon3} />
         </div>
+        <div className={styles.ranksiconsContainer1}>
+     <p className={styles.second}>2<span  className={styles.st}>nd</span></p>
+        <p className={styles.fist}>1<span  className={styles.st}>st</span></p> 
+      
+        <p className={styles.thired}>3<span  className={styles.st}>rd</span></p>
+        </div>
         <div className={styles.innerBoxes1}>
         <div className={styles.innerBox1} style={{width:"122px", height:"93px",}}>
-        <img
+        {/* <img
     src={greybox1Image} 
     alt="img 1"
-  />
+  /> */}
             {/* <span className={styles.textOverImage} style={{marginTop:"-40px", marginLeft:"50px"}}>Username<br></br>99.5</span> */}
             
           </div>
           <div className={styles.innerBox2} style={{width:"122px", height:"118px", marginTop:"-24px",}}>
-          <img
+          {/* <img
     src={greybox2Image} 
     alt="img 1"
-  />
+  /> */}
             {/* <span className={styles.textOverImage1}>Username<br></br>100</span> */}
           </div>
           <div className={styles.innerBox3} style={{width:"122px", height:"93px",}}>
-          <img
+          {/* <img
     src={greybox3Image} 
     alt="img 1"
-  />
+  /> */}
             {/* <span className={styles.textOverImage2}>Username<br></br>99</span> */}
           </div>
         </div> 
@@ -149,7 +194,7 @@ const topThree = leaderboardData.slice(0, 3);
                 style={{ width: "100px" }}
               >
                 {item.user_name}<br />
-                <span style={{ color: index === 0 ? "#009BD6" : index === 1 ? "#FB9639" : "#00D95F" }}>{item.attained_percentage}</span>
+                <span style={{ color: index === 0 ? "#e20000" : index === 1 ? "#e20000" : "#e20000" }}>{item.attained_percentage}</span>
               </span>
             </div>
           ))}
@@ -175,7 +220,7 @@ const topThree = leaderboardData.slice(0, 3);
         </div>
       ))}
           </div>
-          <div>
+          {/* <div>
   <span className={styles.boticonContainer}>
   <img
     src={bot2Icon} 
@@ -183,7 +228,7 @@ const topThree = leaderboardData.slice(0, 3);
     className={styles.boticon}
   />
   </span>
-  </div>
+  </div> */}
   </div>
   {/* <div className={styles.header}>
         <div className={styles.titleContainer}>
@@ -327,7 +372,7 @@ const topThree = leaderboardData.slice(0, 3);
         </button>
       </div> */}
         </div>
-        
+        <LogoutBar/>
          
       </div>
       

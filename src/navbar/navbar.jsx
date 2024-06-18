@@ -52,7 +52,7 @@ const Navigation = () => {
         </NavLink>
         <NavLink
           to="/free-profile"
-          className={`${styles.pageItem} ${activePage === '/free-profile' ? styles.active : ''}`}
+          className={`${styles.pageItem} ${activePage === '/free-profile' ? styles.bold : ''}`}
           onClick={() => handleNavigation('/free-profile')}
         >
           <img src={profileIcon} alt="Profile Icon" className={styles.pageIcon} />
@@ -60,7 +60,7 @@ const Navigation = () => {
         </NavLink>
         <NavLink
           to="/configure"
-          className={`${styles.pageItem} ${activePage === '/configure' ? styles.active : ''}`}
+          className={`${styles.pageItem} ${activePage === '/configure' ? styles.bold : ''}`}
           onClick={() => handleNavigation('/configure')}
         >
           <img src={Settings} alt="Settings Icon" className={styles.pageIcon} />

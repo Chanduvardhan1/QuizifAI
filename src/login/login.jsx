@@ -211,7 +211,7 @@ const LoginPage = () => {
         }),
       });
       const responseData = await response.json();
-      console.log("API Response:", responseData);
+      // console.log("API Response:", responseData);
   
       if (response.ok) {
         if (Array.isArray(responseData) && responseData[0]) {
@@ -222,7 +222,7 @@ const LoginPage = () => {
               } else {
                   setErrorMessage(errorMessage);
               }
-              console.error(errorMessage);
+              // console.error(errorMessage);
           } else {
             // Assuming successful response structure in array form
             localStorage.setItem('user_id', responseData[0].user_id[0]);
@@ -244,7 +244,7 @@ const LoginPage = () => {
           } else {
             setErrorMessage(errorMessage);
           }
-          console.error(errorMessage);
+          setErrorMessage.error(errorMessage);
         } else if (responseData.response === "success") {
           // Assuming successful response structure in object form
           localStorage.setItem('user_id', responseData.data.user_id);
@@ -254,14 +254,14 @@ const LoginPage = () => {
           console.log("Login successful!");
         } else {
           setErrorMessage("An unknown error occurred while logging in.");
-          console.error("An unknown error occurred while logging in.");
+          // console.error("An unknown error occurred while logging in.");
         }
       } else {
         setErrorMessage(responseData.message || "An unknown error occurred while logging in.");
-        console.error(responseData.message || "An unknown error occurred while logging in.");
+        // console.error(responseData.message || "An unknown error occurred while logging in.");
       }
     } catch (error) {
-      console.error("Login failed:", error);
+      // console.error("Login failed:", error);
       setErrorMessage("An error occurred while logging in.");
     }
   };
@@ -306,19 +306,19 @@ const LoginPage = () => {
     .then((data) => {
       // Check if response indicates success
       if (data.response === "success") {
-        console.log("Email Sent Successfully");
+        // console.log("Email Sent Successfully");
         // Handle success response
         setShowThankYou(true); 
         navigate("/resetpassword");// Set state to show thank you message or handle as per your requirement
       } else {
         // Handle other response scenarios
-        console.error("Unexpected response:", data);
+        // console.error("Unexpected response:", data);
         alert(data.response)
       }
     })
     .catch((error) => {
       // Handle error
-      console.error("Error occurred:", error);
+      // console.error("Error occurred:", error);
     });
 };
 

@@ -757,23 +757,23 @@ const register = () => {
         setShowRegistrationSuccess(true);
       } else {
         // Check if the error detail contains information about age
-        if (
-          responseData.detail &&
-          responseData.detail.length > 0 &&
-          responseData.detail[0].type === "value_error" &&
-          responseData.detail[0].msg ===
-            "Value error, User must be at least 12 years old to use the application"
-        ){
-          // Display an alert specific to age error
-          alert("User must be at least 12 years old to use the application");
+        if (responseData.detail && responseData.detail.length > 0) {
+          responseData.detail.forEach((error) => {
+            if (error.type === "value_error" && error.msg === "Value error, User must be at least 12 years old to use the application") {
+              setErrorMessage("User must be at least 12 years old to use the application");
+            } else if (error.type === "date_from_datetime_parsing" && error.msg === "Input should be a valid date or datetime, input is too short") {
+              setErrorMessage("Date of birth should be a valid date or datetime, input is too short");
+            } else if (error.type === "value_error" && error.msg === "Value error, Password must be at least 8 characters long") {
+              setErrorMessage("Password must be at least 8 characters long");
+            } else {
+              setErrorMessage(error.msg);
+            }
+          });
         } else {
-          // Display a general alert for other errors
-          alert(responseData.data);
+          setErrorMessage(responseData.data);
         }
       }
-      if (!response.ok) {
-        alert("Network response was not ok");
-      }
+      
     } catch (error) {
       console.error("Error:", error);
     }
@@ -1001,7 +1001,7 @@ const register = () => {
                     label="Middle Name"
                     variant="outlined"
                    
-                    error={submitted && middlename.trim() === ""}
+                    // error={submitted && middlename.trim() === ""}
                     // helperText={
                     //   submitted && middlename.trim() === ""
                     //     ? "middlename is required"
@@ -2025,9 +2025,7 @@ const register = () => {
                         </div>
                       )}
                   </div> */}
-                {errorMessage && (
-                  <div style={{ color: "red" }}>{errorMessage}</div>
-                )}
+               
                 {/* <div>
             <label>State:</label>
             <input type="text" value={locationDetails.Statename} readOnly />
@@ -2091,6 +2089,9 @@ const register = () => {
                     Back to Login
                   </span>{" "}
                 </p> */}
+                {errorMessage && (
+                  <div style={{ color: "red" }}>{errorMessage}</div>
+                )}
                 <button
                   // onClick={handleRegister}
                   className={styles.registerButton}

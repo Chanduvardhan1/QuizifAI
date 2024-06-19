@@ -210,7 +210,7 @@ if (hasError) {
         return response.json();
       })
       .then((data) => {
-        console.log('Sign-up successful:', data);
+        // console.log('Sign-up successful:', data);
 
         if (loginMethod === 'email' && data.response === 'success') {
           setResponseMessage("Email is successfully registered. Check your email for verification.");
@@ -359,7 +359,7 @@ if (hasError) {
         return response.json();
       })
       .then((data) => {
-        console.log("Sign-up successful:", data);
+        // console.log("Sign-up successful:", data);
 
         // const { response, output } = data;
         if (
@@ -478,11 +478,11 @@ if (hasError) {
      
         setTerms("Invalid or incorrect OTP.");
       }else {
-        console.log("Response other than success:", data.response);
+        // console.log("Response other than success:", data.response);
       }
   
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
       // Optionally show an error message to the user
       // alert("An error occurred during OTP verification");
     }
@@ -527,11 +527,11 @@ if (hasError) {
      
         setTerms( "Invalid or incorrect OTP.");
       }else {
-        console.log("Response other than success:", data.response);
+        // console.log("Response other than success:", data.response);
       }
   
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
       // Optionally show an error message to the user
       // alert("An error occurred during OTP verification");
     }

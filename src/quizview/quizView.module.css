@@ -201,16 +201,10 @@ text-align: left;
     height: 71px;
   }
   .boxContainer {
-    width: 724px;
-    height: 1072px;
-    position: absolute;
-    width: 724px;
-/* top: 548px; */
-left: 133px;
-   
-
     border-radius: 20px;
     background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
   }
   .box {
     width: 235px;

@@ -833,7 +833,7 @@ export default function quiztype() {
 
               <div className=" rounded-lg absolute top-[99px] left-[1144px]">
                 <input
-                  // type="number"
+                  type="number"
                   className="w-[135px] border-solid border-[#B8BBC2] border-[1.8px] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer"
                   placeholder="No of question "
                   value={numQuestions}

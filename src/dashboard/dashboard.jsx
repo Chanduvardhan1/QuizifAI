@@ -252,12 +252,14 @@ const Dashboard = () => {
           </span>
           <span
             style={{
-              marginLeft: "10px",
+              marginLeft: "-10px",
               width: "130px",
               height: "8px",
               fontSize: "8px",
               marginTop: "7px",
               marginRight: "15px",
+              position:"relative",
+              left:"-15px",
             }}
           >
             <Line
@@ -266,7 +268,7 @@ const Dashboard = () => {
               strokeColor={percentColor}
             />
           </span>
-          <span className={`text-[10px]`} style={{ color: percentColor }}>
+          <span className={`text-[10px] -ml-2 mr-auto`} style={{ color: percentColor }}>
             {result?.quiz_percentage}%
           </span>
         </div>

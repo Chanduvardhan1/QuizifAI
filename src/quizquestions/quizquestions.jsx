@@ -127,7 +127,7 @@ const QuizQuestions = () => {
   
   const { quizId } = useParams();
   const location = useLocation();
-  const {quiz_title, quiz_description,quiz_duration } = location.state;
+  const {quiz_title, quiz_description,quiz_duration,quiz_total_marks,num_questions,pass_percentage} = location.state;
   const [elapsedTime, setElapsedTime] = useState(quiz_duration * 60); 
   const timerRef = useRef(null);
 
@@ -274,6 +274,28 @@ const QuizQuestions = () => {
       <div>
         <h1 className={styles.quiztitle} style={{color:"#214082"}}>{quiz_title}</h1>
         <p className={styles.quizdescription}>{quiz_description}</p>
+        <div className={styles.Questionslines }>
+        <div className={styles.Questions}>
+
+        <span className={styles.Question} >Questions :</span>{" "}
+          <span className={styles.username1} >{num_questions}</span>
+        </div>
+        <div>
+
+        <span className={styles.Question} >Duration:</span>{" "}
+          <span className={styles.username1} >{quiz_duration} min</span>
+        </div>
+        <div>
+
+<span className={styles.Question} >Total Score:</span>{" "}
+  <span className={styles.username1} >{quiz_total_marks}</span>
+</div>
+<div>
+
+<span className={styles.Question } >Pass Score :</span>{" "}
+  <span className={styles.username1} >{pass_percentage}</span>
+</div>
+        </div>
         <div className={styles.Createdbyandupdated}>
         <div className={styles.Createdby}>
 

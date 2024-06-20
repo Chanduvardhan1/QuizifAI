@@ -100,7 +100,7 @@ flex-direction: column;
   }
   .Createdby{
     font-family: Poppins;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 700;
   }
 .quizdescription{
@@ -120,8 +120,8 @@ margin-right: 700px;
   }
 .Createdbyupdated{
   display: flex;
-  justify-content: space-between;
-  /* gap: 40px;  */
+  /* justify-content: space-between; */
+  gap: 150px; 
 }
   .icon1{
     width: 51px;
@@ -199,7 +199,7 @@ text-align: left;
     align-items: center;
     margin-right: 30px;
     font-family: Poppins;
-font-size: 15px;
+font-size: 12px;
 font-weight: 600;
 line-height: 23px;
 letter-spacing: 0em;
@@ -207,6 +207,35 @@ text-align: left;
 margin-top: 21px;
 margin-left: 50px
 
+  }
+  .sentence3 {
+
+font-size: 14px;
+
+
+  }
+  .downloads{
+    display: flex;
+    justify-content: space-between;
+  }
+  .downbutton{
+    width: 80px;
+    height: 30px;
+    border-radius: 20px;
+    background: #3B61C8;
+    font-family: Poppins;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    margin-right: 6px;
+    margin-left: 4px;
+  }
+  .downbutton:hover{
+    background-color: rgb(239,81,48);
   }
   .columns {
     /* display: flex;
@@ -466,11 +495,13 @@ border: none;
   position: relative;
   width: 100%;
   /* justify-content: center; */
-  gap: 80px;
+  /* gap: 35px; */
+  padding: 5px;
 }
 
 .sentenceBox {
   /* margin-right: 20px;  */
+  width: 100%;
 }
 
 .verticalLine {
@@ -851,7 +882,7 @@ height: 23px;
 
 
 .textContainer {
-  margin-left: 10px; /* Adjust as needed */
+  /* margin-left: 10px; */
   font-family: Poppins;
 font-size: 9px;
 font-weight: 600;
@@ -869,7 +900,7 @@ margin-top: 30px;
 .icon6{
   width: 84px;
   height: 68px;
-  margin-left: 80px;
+  /* margin-left: 80px; */
 
 }
 
@@ -879,4 +910,20 @@ margin-top: 30px;
   height: 97px;
   margin-left: 80px;
 
+}
+.Questionslines{
+  display:flex;
+  gap:43px;
+}
+.Question{
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 700;
+}
+.username{
+  font-size: 14px;
+}
+.username1{
+  font-size: 14px;
+ 
 }

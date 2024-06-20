@@ -916,7 +916,6 @@ if (hasError) {
               </p>
             </div>
           )}
-
         {/* Sign up form */}
         {!showRegisterForm && !showRegistrationSuccess && (
           <>
@@ -926,9 +925,7 @@ if (hasError) {
                 {/* <p className={styles.SignupDescription}>
                   Enter your details to register
                 </p> */}
-              </div>
-
-           
+              </div>          
             </div>
           
             <div className={styles.totalBox}>

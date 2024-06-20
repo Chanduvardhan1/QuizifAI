@@ -43,6 +43,7 @@ const FreeProfile = () => {
   const currentValue2 = 30;
   const maxValue2 = 80;
 
+  const [isFocused, setIsFocused] = useState(false);
   const [selectedButton, setSelectedButton] = useState("email");
   const [inputValue, setInputValue] = useState("");
   const [preferredLoginMethod, setPreferredLoginMethod] = useState("email");
@@ -96,227 +97,179 @@ const FreeProfile = () => {
       setDob(dateValue);
     }
   }
+
+  // useEffect(() => {
+    
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch("https://quizifai.com:8010/get_prfl_dtls");
+  //       const userData = await response.json();
+  //       setFirstName(userData.data.first_name);
+  //       setMiddleName(userData.data.middle_name);
+  //       setLastName(userData.data.last_name);
+  //       setOccupation(userData.data.occupation_name);
+  //       setPincode(userData.data.pin_code);
+  //       setCityName(userData.data.city_name);
+  //       setGender(userData.data.gender);
+  //       setStateName(userData.data.state_name);
+  //       setDOB(userData.data.date_of_birth);
+  //       setCountryName(userData.data.country_name);
+  //       setEmail(userData.data.user_email);
+  //       setMobile(userData.data.user_phone_number || ""); 
+  //     } catch (error) {
+  //       console.error("Error fetching user data:", error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
+  
   // const BasicProgressBar = ({ currentValue, maxValue }) => (
   // <progress value={currentValue} max={maxValue}>{currentValue}%</progress>
   //);
 
-  const BasicProgressBar = ({ currentValue, maxValue }) => (
-    <progress value={currentValue} max={maxValue} style={{ width: "100px" }}>
-      {currentValue}%
-    </progress>
-  );
+  // const BasicProgressBar = ({ currentValue, maxValue }) => (
+  //   <progress value={currentValue} max={maxValue} style={{ width: "100px" }}>
+  //     {currentValue}%
+  //   </progress>
+  // );
 
-  const handleSubmit = async () => {
-    const payload = {
-      user_id: userId,
-      first_name: firstName,
-      middle_name: middleName,
-      last_name: lastName,
-      user_email: email,
+  // const handleSubmit = async () => {
+  //   const payload = {
+  //     user_id: userId,
+  //     first_name: firstName,
+  //     middle_name: middleName,
+  //     last_name: lastName,
+  //     user_email: email,
 
-      user_phone_number: parseInt(mobileNumber === "" ? "0" : mobileNumber),
-      gender: gender,
-      date_of_birth: dob,
-      user_address_line_1: address1,
-      user_address_line_2: address2,
-      occupation: professions,
-      preferred_login_method: preferredLoginMethod,
-      access_key: accesskey,
-      user_role: userrole,
-      user_type: usertype,
-      user_org_id: 0,
-      active_flag: true,
-      user_address_id: 0,
-      user_location_id: 0,
-      access_key: null,
-      otp: Otp,
-      display_name: displayname,
-    };
-
-    try {
-      const response = await fetch("https://quizifai.com:8010/edt_prfl_dtls", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to submit data");
-      }
-
-      const responseData = await response.json();
-      console.log(responseData);
-      console.log("Response:", response);
-    } catch (error) {
-      console.error("Error submitting data:", error);
-    }
-  };
-
-  useEffect(() => {
-    // Fetch user_id from local storage
-    const userId = localStorage.getItem("user_id");
-
-    // Make a POST request to the API endpoint
-    fetch("https://quizifai.com:8010/get_prfl_dtls", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        accept: "application/json",
-      },
-      body: JSON.stringify({ user_id: userId }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        // Handle successful response
-        setProfileData(data);
-        setFirstName(data.data.first_name);
-        setMiddleName(data.data.middle_name);
-        setLastName(data.data.last_name);
-        setGender(data.data.gender);
-        setProfession(data.data.occupation_name);
-        setDob(data.data.date_of_birth);
-
-        setPostalCode(data.data.pin_code);
-        setAddress1(data.data.user_address_line_1);
-        setAddress2(data.data.user_address_line_2);
-        setCity(data.data.location_name);
-        setState(data.data.state_name);
-        setCountry(data.data.country_name);
-        setEmail(data.data.user_email);
-        setMobileNumber(data.data.user_phone_number);
-      })
-      .catch((error) => {
-        // Handle errors
-        console.error("Error fetching profile data:", error);
-      });
-  }, []);
-
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [isVerifyDisabled, setIsVerifyDisabled] = useState(true);
-  const [shouldSendOtp, setShouldSendOtp] = useState(false);
-
-  const handleEdit =() =>{
-    setIsEditMode(true);
-    setIsVerifyDisabled(false);
-  };
-
-  const handleSave = () => {
-    setIsEditMode(false);
-    setIsVerifyDisabled(true); // Disable Verify button when exiting edit mode
-  };
-
-  const handleVerify = () =>{
-    setShouldSendOtp(true);
-  };
-  
-  useEffect(() => {
-    const userId = localStorage.getItem("user_id");
-    if (shouldSendOtp && email) {
-      const sendOtp = async () => {
-        try {
-          // Your API endpoint
-          const response = await axios.post("https://quizifai.com:8010/register_email_mobile", {
-            email: email,
-            user_id: userId,
-            mobile: mobileNumber,
-          });
-          if (response.status === 200) {
-            alert(`OTP sent to ${email}`);
-          } else {
-            alert('Failed to send OTP. Please try again.');
-          }
-        } catch (error) {
-          console.error('Error sending OTP:', error);
-          alert('Account already exists with the given field.');
-        }
-      };
-
-      sendOtp();
-      setShouldSendOtp(false); // Reset OTP trigger
-    }
-  }, [shouldSendOtp, email]);
-  // useEffect(() => {
-
-  //   const fetchQuizData = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         `https://quizifai.com:8010/landing_page?user_id=1`
-  //       );
-  //       if (!response.ok) {
-  //         throw new Error("Failed to fetch quiz data");
-  //       }
-  //       const data = await response.json();
-  //       setTimeData(data.time_spent);
-  //       setLatestResults(data.latest_results);
-  //       setWeeklyQuizCount(data.weekly_quiz_count);
-  //       setAverageScorePercentage(data.average_score_percentage);
-  //       setNotAttemptedQuizzes(data.latest_not_attempted_quizzes);
-  //       setAttemptedQuizzes(data.latest_attempted_quizzes);
-  //       setTopScoredQuizzes(data.top_scored_quizzes);
-  //     } catch (error) {
-  //       console.error("Error fetching quiz data:", error);
-  //     }
+  //     user_phone_number: parseInt(mobileNumber === "" ? "0" : mobileNumber),
+  //     gender: gender,
+  //     date_of_birth: dob,
+  //     user_address_line_1: address1,
+  //     user_address_line_2: address2,
+  //     occupation: professions,
+  //     preferred_login_method: preferredLoginMethod,
+  //     access_key: accesskey,
+  //     user_role: userrole,
+  //     user_type: usertype,
+  //     user_org_id: 0,
+  //     active_flag: true,
+  //     user_address_id: 0,
+  //     user_location_id: 0,
+  //     access_key: null,
+  //     otp: Otp,
+  //     display_name: displayname,
   //   };
 
-  //   fetchQuizData();
+  //   try {
+  //     const response = await fetch("https://quizifai.com:8010/edt_prfl_dtls", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(payload),
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error("Failed to submit data");
+  //     }
+
+  //     const responseData = await response.json();
+  //     console.log(responseData);
+  //     console.log("Response:", response);
+  //   } catch (error) {
+  //     console.error("Error submitting data:", error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   const userId = localStorage.getItem("user_id");
+
+  //   fetch("https://quizifai.com:8010/get_prfl_dtls", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       accept: "application/json",
+  //     },
+  //     body: JSON.stringify({ user_id: userId }),
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok");
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       setProfileData(data);
+  //       setFirstName(data.data.first_name);
+  //       setMiddleName(data.data.middle_name);
+  //       setLastName(data.data.last_name);
+  //       setGender(data.data.gender);
+  //       setProfession(data.data.occupation_name);
+  //       setDob(data.data.date_of_birth);
+
+  //       setPostalCode(data.data.pin_code);
+  //       setAddress1(data.data.user_address_line_1);
+  //       setAddress2(data.data.user_address_line_2);
+  //       setCity(data.data.location_name);
+  //       setState(data.data.state_name);
+  //       setCountry(data.data.country_name);
+  //       setEmail(data.data.user_email);
+  //       setMobileNumber(data.data.user_phone_number);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching profile data:", error);
+  //     });
   // }, []);
 
-  const [pincode, setpincode] = useState("");
-  const [countryname, setcountryname] = useState("");
-  const [statename, setstatename] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [responseData, setResponseData] = useState(null);
+  // const [pincode, setpincode] = useState("");
+  // const [countryname, setcountryname] = useState("");
+  // const [statename, setstatename] = useState("");
+  // const [errorMessage, setErrorMessage] = useState("");
+  // const [responseData, setResponseData] = useState(null);
 
-  const handleSearchClick = async (e) => {
-    e.preventDefault();
+  // const handleSearchClick = async (e) => {
+  //   e.preventDefault();
 
-    try {
-      const response = await fetch(
-        "https://quizifai.com:8010/location_details/",
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            pincode: postalCode,
-          }),
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to submit form");
-      }
+  //   try {
+  //     const response = await fetch(
+  //       "https://quizifai.com:8010/location_details/",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           Accept: "application/json",
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           pincode: postalCode,
+  //         }),
+  //       }
+  //     );
+  //     if (!response.ok) {
+  //       throw new Error("Failed to submit form");
+  //     }
 
-      const data = await response.json();
-      setResponseData(data); // Set response data in state
-      console.log(data); // Displaying response in console
-      setErrorMessage(""); // Clear any previous error message
-      if (
-        data &&
-        data.data &&
-        Array.isArray(data.data[0]) &&
-        data.data[0].length > 0
-      ) {
-        setstatename(data.data[0][0].Statename || '');
-        setcountryname(data.data[0][0].country_name || '');
-        setCity(data.data[0][0].Cityname || '');
-        setErrorMessage('');
-      }else{
-        setErrorMessage("No data found for the given postal code");
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setErrorMessage("Failed to submit form. Please try again.");
-    }
-  };
+  //     const data = await response.json();
+  //     setResponseData(data); // Set response data in state
+  //     console.log(data); // Displaying response in console
+  //     setErrorMessage(""); // Clear any previous error message
+  //     if (
+  //       data &&
+  //       data.data &&
+  //       Array.isArray(data.data[0]) &&
+  //       data.data[0].length > 0
+  //     ) {
+  //       setstatename(data.data[0][0].Statename || '');
+  //       setcountryname(data.data[0][0].country_name || '');
+  //       setCity(data.data[0][0].Cityname || '');
+  //       setErrorMessage('');
+  //     }else{
+  //       setErrorMessage("No data found for the given postal code");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //     setErrorMessage("Failed to submit form. Please try again.");
+  //   }
+  // };
   
   const [userName, setUserName] = useState("");
 
@@ -325,20 +278,66 @@ const FreeProfile = () => {
     const storedUserName = localStorage.getItem("user_name");
     setUserName(storedUserName);
   }, []);
+
+  const [userData, setUserData] = useState({
+    user_id: 0,
+    first_name: 'Madhuri',
+    middle_name: '',
+    last_name: '',
+    user_email: '',
+    email_otp: 0,
+    user_phone_number: '',
+    otp: 0,
+    user_role: 'quiz user',
+    user_type: 'public',
+    user_org_id: 0,
+    active_flag: true,
+    gender: '',
+    display_name: '',
+    date_of_birth: '',
+    preferred_login_method: 'email',
+    user_address_id: 0,
+    user_location_id: 0,
+    user_address_line_1: '',
+    user_address_line_2: '',
+    occupation: 'Student',
+    other_occupation: '',
+    access_key: ''
+  });
+  useEffect(() => {
+    // Fetch user data on component mount
+    axios.get('https://quizifai.com:8010/get_prfl_dtls')
+      .then(response => {
+        setUserData(response.data);
+      })
+      .catch(error => {
+        console.error("There was an error fetching the user data!", error);
+      });
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
   
   return (
     <div className={styles.container}>
-      {/*<Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600;700&display=swap"
-          rel="stylesheet"
-        />
-  </Head>*/}
+      
       <Navigation />
       <div className={styles.mainContent}>
         <div className={styles.header}>
           {/* Header content */}
-          <p className="relative -left-[45px] top-[67px]">{userName}</p>
+          <div className="flex">
+          <div className="absolute left-0 ml-[50px]">
+          <p className="">{userName}</p>
+          <div className="bg-[#30CDF040] mt-[10px] pl-[5px] text-[15px] font-medium text-[#214082] leading-6 py-[10px] rounded-[10px] w-[770px]">
+          You've completed {weeklyQuizCount} Quizzes this week with an average
+          score of {averageScorePercentage}%
+        </div>
+          </div>
           <div className={styles.headerRight}>
             <div>{getFormattedDate()}</div>
             <div className={styles.searchIconContainer}>
@@ -349,1407 +348,240 @@ const FreeProfile = () => {
               />
             </div>
           </div>
+          </div>
+          
         </div>
-        <div className={styles.contentContainer} style={{ marginLeft: "30px" }}>
+        <div className={styles.contentContainer} style={{ marginLeft: "30px",marginTop:"80px" }}>
           <div className={styles.imgAndTextContainer}>
             <div className={styles.profileimgContainer}>
               <img
                 src={profileimg}
                 alt="img"
                 className={styles.profileimg}
-                style={{ width: "113px", height: "110px" }}
+                style={{ width: "113px", height: "110px",marginLeft:"20px" }}
               />
-              <a href="./old-password" className="text-[10px] ml-[14px] text-blue-700 font-medium hover:underline">Update Password</a>
-            </div>
-
-            <div className={styles.contentContainer}>
-              <div
-                className={styles.textContainer}
-                style={{ marginLeft: "150px", marginTop: "-105px" }}
-              >
-                <div className={styles.textLine1}>{profession} </div>
-                <div className={styles.textLine3}>
-                  (<span className={styles.textLine2}>Plan of the Subscription</span>){" "}
-                </div>
-                <div className={styles.textLine3}>
-                  No. days left in Subscription/ Free
-                </div>
-              </div>
+              {/* <a href="./old-password" className="text-[10px] ml-[14px] text-blue-700 font-medium hover:underline">Update Password</a> */}
             </div>
           </div>
 
-          <div className={styles.additionalTextContainer1}>
-            <div
-              className={styles.contentContainer1}
-              style={{ marginLeft: "10px" }}
-            >
-              <div className={styles.textAndimgContainer1}>
-                <div className={styles.textContainer1}>
-                  <p className={styles.textLines1}>You Ranked</p>
-                </div>
-                <div className={styles.imgContainer2}>
-                  <img
-                    src={rankingimg}
-                    alt="img"
-                    className={styles.Rankingimg}
-                    style={{ width: "60px", height: "40px" }}
-                  />
-                </div>
-              </div>
-              <div className={styles.textAndimgContainer2}>
-                <div className={styles.textContainer1}>
-                  <p
-                    className={styles.textLines3}
-                    style={{ marginTop: "-20px" }}
-                  >
-                    002
-                  </p>
-                  <p
-                    className={styles.textLines4}
-                    style={{ marginTop: "-20px" }}
-                  >
-                    in last 30 days
-                  </p>
-                </div>
-              </div>
-              <div className={styles.imgContainer1}>
-                <img
-                  src={infoph}
-                  alt="img"
-                  className={styles.infoimg}
-                  style={{ width: "10px", height: "10px" }}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className={styles.inputContainer}>
-          <div className={styles.inputRow}>
-            <div className={styles.inputGroup1}>
-              <TextField
-                id="firstName"
-                label="First Name"
-                variant="outlined"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                InputLabelProps={{
-                  style: { fontFamily: "poppins",fontSize:"13px"},
-                }}
-                InputProps={{
-                  readOnly: !isEditMode,
-                  style: {
-                    width: "160px",
-                    height: "45px",
-                    border: "none",
-                    fontFamily: "poppins",
-                    // fontSize: "15px",
-                    borderRadius: "10px",
-                    fontSize: "13px",
-                    color:"#214082",
-                    marginLeft: "3px",
-                  },
-                  autoComplete: "off",
-                }}
-                className={`${styles.iconInput} ${!isEditMode ? styles.readOnlyInput : ""}`}
-                sx={{
-                  width: "150px", // Apply styles directly using sx
-                  height: "44px",
-                }}
-              />
-            </div>
-    <div className={styles.inputGroup} style={{marginLeft:"18px"}}>
-      <TextField
-        id="middleName"
-        label="Middle Name"
-        variant="outlined"
-        value={middleName}
-        onChange={(e) => setMiddleName(e.target.value)}
-        InputLabelProps={{
-          style: { fontFamily: "poppins"},
-        }}
-        InputProps={{
-          readOnly: !isEditMode,
-          style: {
-            width: "160px",
-            height: "45px",
-            border: "none",
-            fontFamily: "poppins",
-            borderRadius: "10px",
-            fontSize: "13px",
-            color:"#214082",
-            marginLeft :"31px",
-            paddingRight: "30px", // Ensure the text doesn't overlap with the icon
-          },
-          autoComplete: "off",
-        }}
-        className={`${styles.iconInput} ${!isEditMode ? styles.readOnlyInput : ""}`}
-        sx={{
-          width: "150px", // Apply styles directly using sx
-          height: "44px",
-        }}
-      />
-      {/* <button onClick={() => setIsEditMode(!isEditMode)}>
-        {isEditMode ? 'Save' : 'Edit'}
-      </button> */}
-    </div>
-            <div className={styles.inputGroup} style={{marginLeft:"16px"}}>
-              <TextField
-                id="lastName"
-                label="Last Name"
-                variant="outlined"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-
-                InputLabelProps={{
-                  style: { fontFamily: "poppins",paddingLeft: "40px" },
-                }}
-                InputProps={{
-                  readOnly: !isEditMode,
-                  style: {
-                    width: "160px",
-                    height: "45px",
-                    border: "none",
-                    fontFamily: "poppins",
-                    fontSize: "15px",
-                    borderRadius: "10px",
-                    fontSize: "12px",
-                    color:"#214082",
-                    marginLeft: "60px",
-                    paddingRight: "30px", // Ensure the text doesn't overlap with the icon
-                  },
-                  autoComplete: "off",
-                }}
-                className={`${styles.iconInput} ${!isEditMode ? styles.readOnlyInput : ""}`}
-                sx={{
-                  width: "150px", // Apply styles directly using sx
-                  height: "44px",
-                }}
-              />
-              {/* <button onClick={() => setIsEditMode(!isEditMode)}>
-                {isEditMode ? 'Save' : 'Edit'}
-              </button> */}
-        
-            </div>
-         
-          </div>
-
-   <div className={styles.inputRow}>
-  <div className={styles.inputGroup4}>
-  <TextField
-    id="gender"
-    select
-    label="Gender"
-    value={gender}
-    onChange={(e) => setGender(e.target.value)}
-    readOnly={!isEditMode}
-    className={!isEditMode ? styles.readOnlyInput : ""}
-    InputLabelProps={{
-      style: { fontFamily: "poppins",fontSize: "12px", },
-    }}
-    InputProps={{
-      style: {
-        width: "160px",
-        height: "45px",
-        fontFamily: "poppins",
-        paddingLeft: "0px",
-        borderRadius: "10px",
-        fontSize:"12px",
-        color:"#214082",
-        
-      },
-      autoComplete: "off",
-    }} 
-  >
-    <MenuItem value="male">Male</MenuItem>
-    <MenuItem value="female">Female</MenuItem>
-  </TextField>
-</div>
-
-<div className={styles.inputGroup} style={{marginLeft:"20px"}}>
-<TextField
-        id="dob"
-        type="date"
-        label="Date of Birth"
-        value={dob}
-        onChange={(handleDateChange)}
-        readOnly={!isEditMode}
-        className={!isEditMode ? styles.readOnlyInput : ""}
-        InputLabelProps={{
-          shrink: true,
-          style: { fontFamily: "poppins",marginLeft: "20px",marginTop:"2px" },
-        }}
-        InputProps={{
-          style: {
-            width: "160px",
-            height: "45px",
-            fontFamily: "poppins",
-            paddingLeft: "0px",
-            borderRadius: "10px",
-            marginLeft:"22px",
-            fontSize: "12px",
-          },
-          autoComplete: "off",
-          readOnly: !isEditMode, // Add readOnly prop conditionally
-        }}
-      />
-</div>
-<div className={styles.inputGroup} style={{marginLeft:"15px"}}>
-<TextField
-        id="occupation"
-        type="text"
-        label="Occupation"
-        value={professions}
-        onChange={(e) => setProfession(e.target.value)}
-        readOnly={!isEditMode}
-        className={!isEditMode ? styles.readOnlyInput : ""}
-        InputLabelProps={{
-          shrink: true,
-          style: { fontFamily: "poppins",marginLeft:"18px",marginTop:"2px" },
-        }}
-        InputProps={{
-          style: {
-            width: "160px",
-            height: "45px",
-            fontFamily: "poppins",
-            paddingLeft: "0px",
-            borderRadius: "10px",
-            fontSize: "12px",
-            marginLeft: "20px",
-          },
-          autoComplete: "off",
-          readOnly: !isEditMode, // Add readOnly prop conditionally
-        }}
-      />
-</div>
-            {/* <div className={styles.inputGroup}>
-              <label htmlFor="address1">Address Line 1</label>
-              <input
-                type="text"
-                id="address1"
-                placeholder="Address Line 1"
-                value={address1}
-                onChange={(e) => setAddress1(e.target.value)}
-              />
-            </div>
-            <div className={styles.inputGroup}>
-              <label htmlFor="address2">Address Line 2</label>
-              <input
-                type="text"
-                id="address2"
-                placeholder="Address Line 2"
-                value={address2}
-                onChange={(e) => setAddress2(e.target.value)}
-              />
-            </div> */}
-          </div>
-
-
-      <div className={styles.inputRow}>
-          <div className={styles.inputGroup}>
-              <TextField
-                type="text"
-                id="postalCode"
-                label="Postal code"
-                variant="outlined"
-                value={postalCode}
-                 onChange={handlePostalCodeChange}
-                InputLabelProps={{
-          style: { fontFamily: "poppins",marginLeft:"-18px" },
-        }}
-        InputProps={{
-          readOnly: !isEditMode,
-          style: {
-            width: "160px",
-            height: "50px",
-            border: "none",
-            fontFamily: "poppins",
-            fontSize: "15px",
-            borderRadius: "10px",
-            marginLeft: "-20px",
-          },
-          autoComplete: "off",
-        }}
-        className={`${styles.iconInput} ${!isEditMode ? styles.readOnlyInput : ""}`}
-          sx={{
-            width: "150px",
-            height: "44px",
-          }}
-      />
-               <button
-                    className={styles.searchicon}
-                    onClick={handleSearchClick}
-                    style={{
-                      backgroundImage: `url('images/signup/LineIcon.png'),url('images/signup/searchIcon.png')`,
-                      backgroundRepeat: "no-repeat",
-                      width: "40px",
-                      height: "25px",
-                      right: "-100px",
-                      top:"-32px",
-                      position: "relative",
-                      backgroundPosition:
-                        "0px center, right 10px center, right 40px center",
-                      cursor: "pointer",
-                    }}
-                  ></button>
-            </div>
-            <div className={styles.inputGroup} style={{marginLeft:"20px"}}>
-              <TextField
-                type="text"
-                id="city"
-                variant="outlined"
-                label="City Name"
-                value={city}
-                // onChange={(e) => setCity(e.target.value)}
-                InputLabelProps={{
-                  style: { fontFamily: "poppins",marginTop:"-10px",marginLeft:"13px" },
-                }}
-                InputProps={{
-                  readOnly: !isEditMode,
-                  style: {
-                    width: "157px",
-                    height: "45px",
-                    border: "none",
-                    fontFamily: "poppins",
-                    fontSize: "15px",
-                    borderRadius: "10px",
-                    marginLeft: "13px",
-                    marginTop: "-10px",
-                    paddingRight: "30px", // Ensure the text doesn't overlap with the icon
-                  },
-                  autoComplete: "off",
-                }}
-                className={`${styles.iconInput} ${!isEditMode ? styles.readOnlyInput : ""}`}
-                sx={{
-                  width: "150px", // Apply styles directly using sx
-                  height: "44px",
-                }}
-              >
-              {/* <option value=""  disabled selected>District</option> */}
-               {responseData &&
-                            responseData.data &&
-                            Array.isArray(responseData.data[0]) &&
-                            [
-                              ...new Set(
-                                responseData.data[0].map(
-                                  (location) => location.Districtname
-                                )
-                              ),
-                            ].map((districtName, index) => (
-                              <MenuItem key={index} value={districtName}>
-                                {districtName}
-                              </MenuItem>
-                            ))}
-                  </TextField>          
-            </div>
-           {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
-
-            <div className={styles.inputGroup} style={{marginLeft:"15px"}}>
-              <TextField
-                type="text"
-                id="state"
-                label="State Name"
-                variant="outlined"
-                value={state}
-                onChange={(e) => setState(e.target.value)}
-                InputLabelProps={{
-                  style: { fontFamily: "poppins",marginLeft:"40px",marginTop:"-9px" },
-                }}
-                InputProps={{
-                  readOnly: !isEditMode,
-                  style: {
-                    width: "160px",
-                    height: "45px",
-                    border: "none",
-                    fontFamily: "poppins",
-                    fontSize: "12px",
-                    borderRadius: "10px",
-                    marginLeft: "43px",
-                    marginTop: "-10px",
-                    paddingRight: "30px", // Ensure the text doesn't overlap with the icon
-                  },
-                  autoComplete: "off",
-                }}
-                className={`${styles.iconInput} ${!isEditMode ?       styles.readOnlyInput : ""}`}
-                sx={{
-                  width: "150px", // Apply styles directly using sx
-                  height: "44px",
-                }}
-              >
-               {/* <option value=""  disabled selected>State</option> */}
-               {responseData &&
-                              responseData.data &&
-                              Array.isArray(responseData.data[0]) &&
-                              [
-                                ...new Set(
-                                  responseData.data[0].map(
-                                    (location) => location.Statename
-                                  )
-                                ),
-                              ].map((stateName, index) => (
-                                <MenuItem key={index} value={stateName}>
-                                  {stateName}
-                                </MenuItem>
-                              ))}
-          </TextField>
-            </div>
-           
-          </div>
           <div className="flex">
-          <div className={styles.inputGroup}>
-              <TextField
-                type="text"
-                id="country"
-                label="Country Name"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-                InputLabelProps={{
-                  style: { fontFamily: "poppins",fontSize: "13px",marginLeft:"-20px",marginTop:"-20px" },
-                }}
-                InputProps={{
-                  readOnly: !isEditMode,
-                  style: {
-                    width: "160px",
-                    height: "45px",
-                    border: "none",
-                    fontFamily: "poppins",
-                    borderRadius: "10px",
-                    marginLeft: "-20px",
-                    marginTop: "-20px",
-                    paddingRight: "30px", // Ensure the text doesn't overlap with the icon
-                  },
-                  autoComplete: "off",
-                }}
-                className={`${styles.iconInput} ${!isEditMode ?       styles.readOnlyInput : ""}`}
-                sx={{
-                  width: "150px", // Apply styles directly using sx
-                  height: "44px",
-                }}
-              >
-              {/* <option value=""  disabled selected>Country</option> */}
-              {responseData &&
-                              responseData.data &&
-                              Array.isArray(responseData.data[0]) &&
-                              [
-                                ...new Set(
-                                  responseData.data[0].map(
-                                    (location) => location.country_name
-                                  )
-                                ),
-                              ].map((countryName, index) => (
-                                <MenuItem key={index} value={countryName}>
-                                  {countryName}
-                                </MenuItem>
-                              ))}
-                </TextField>
-            </div>
-            <div className={styles.inputGroup}>
+            {/* first name */}
+            <div className="flex">
+          <div className={styles.inputGroup1} style={{ marginLeft: "-50px" }}>
+            <label className="text-blue-800 font-semibold">First Name</label>
             <input
-            type="text"
-            id="verification code"
-            onChange={(e) => {
-              setOtp(e.target.value);
-            }}
-            style={{border:"1px solid black",marginTop:"-20px",height:"43px",marginLeft:"35px"}}
-            placeholder="Verification code"/>
-            </div>
-          </div>
-          
-
-          {/* <div className={styles.toggleButtonsContainer}>
-            {/* <button
-              className={`${styles.toggleButton} ${
-                selectedButton === "Email" && styles.selected
-              }`}
-              onClick={() => handleButtonClick("Email")}
-            >
-              <img src={EmailIcon} alt="Email Icon" className={styles.icon1} />{" "}
-              Email
-            </button> */}
-            {/* <button
-          className={`${styles.toggleButton} ${selectedButton === 'Gmail' && styles.selected}`}
-          onClick={() => handleButtonClick('Gmail')}
-        >
-         <img src={GmailIcon} alt="Gmail Icon" className={styles.icon2} /> Gmail
-        </button> */}
-            {/* <button
-              className={`${styles.toggleButton} ${
-                selectedButton === "Mobile" && styles.selected
-              }`}
-              onClick={() => handleButtonClick("Mobile")}
-            >
-              <img
-                src={MobileIcon}
-                alt="Mobile Icon"
-                className={styles.icon3}
-              />{" "}
-              Mobile
-            </button> */}
-          {/* </div>  */}
-
-          <div className={styles.inputRow}>
-            <div className={styles.inputGroup} style={{marginLeft:"-20px",marginTop:"-15px"}}>
-              {/* <label htmlFor="email">Email</label> */}
-              <button
-                className={`${styles.toggleButton} ${
-                  selectedButton === "Email" && styles.selected
-                }`}
-                onClick={() => handleButtonClick("email")}
-              >
-                <img
-                  src={EmailIcon}
-                  alt="Email Icon"
-                  className={styles.icon1}
-                />{" "}
-                Email
-              </button>
-              <input
-            type="email"
-            id="email"
-            placeholder="email"
-            style={{ marginLeft: "-5px", width: "250px", border: "1px solid black" }}
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              setIsVerifyDisabled(false); // Enable Verify button if email is changed
-            }}
-            readOnly={!isEditMode}
-            className={!isEditMode ? styles.readOnlyInput : ""}
-          />
-            </div>
-            <div className={styles.inputGroup} style={{marginLeft:"55px",marginTop:"-15px"}}>
-              {/* <label htmlFor="mobileNumber">Mobile Number</label> */}
-              <button
-                className={`${styles.toggleButton} ${
-                  selectedButton === "Mobile" && styles.selected
-                }`}
-                onClick={() => handleButtonClick("Mobile")}
-              >
-                <img
-                  src={MobileIcon}
-                  alt="Mobile Icon"
-                  className={styles.icon3}
-                />{" "}
-                Mobile
-              </button> 
-              <input
-                type="tel"
-                id="mobileNumber"
-                placeholder="mobileNumber"
-                style={{marginLeft:"-5px",width:"250px",border:"1px solid black"}}
-                value={mobileNumber}
-                onChange={(e) => setMobileNumber(e.target.value)}
-                readOnly={!isEditMode}
-                className={!isEditMode ? styles.readOnlyInput : ""}
-              />
-            </div>
-            
-          </div>
-          <div className={styles.buttonContainer} style={{marginTop:"20px",marginLeft:"60px"}}>
-          {!isEditMode && (
-          <button className={styles.customButton} onClick={handleEdit}>
-            Edit
-          </button>
-        )}
-        {isEditMode && (
-          <button className={styles.customButton} onClick={handleSubmit}>
-            Save
-          </button>
-        )}
-
-                <button className={`${styles.customButton} ${isVerifyDisabled ? styles.disabledButton : ''}`}
-                  disabled={isVerifyDisabled} onClick={handleVerify}>Verify
-                </button>
-              </div>
-        </div>
-
-        {/* <div className={styles.box}>
-        <div className={styles.horizontalBoxes}>
-            <div className={styles.contentWrapper}>
-              <div className={styles.resultWrapper}>
-                <div className={styles.latestResult}>
-                  Latest Result
-                  <div className={styles.resultInfo}>
-                    <div className={styles.infoLine}>
-                      <span
-                        className={styles.info}
-                        style={{
-                          fontSize: "10px",
-                          color: "grey",
-                          marginTop: "20px",
-                          marginLeft: "10px",
-                        }}
-                      >
-                        Date -<span className={styles.title}>Title</span> -
-                        Topic
-                      </span>
-                      <span
-                        style={{
-                          marginLeft: "10px",
-
-                          width: "100px",
-                          height: "2px",
-                          fontSize: "10px",
-                        }}
-                      >
-                        <Progress percent={25} />
-                      </span>
-                    </div>
-                    <hr className={styles.divider} />
-                    <div className={styles.infoLine}>
-                      <span
-                        className={styles.info}
-                        style={{
-                          fontSize: "10px",
-                          color: "grey",
-                          marginTop: "5px",
-                          marginLeft: "10px",
-                        }}
-                      >
-                        Date -<span className={styles.title}>Title</span> -
-                        Topic
-                      </span>
-                      <span
-                        style={{
-                          marginLeft: "10px",
-                          marginTop: "-10px",
-                          width: "100px",
-                          height: "2px",
-                          fontSize: "10px",
-                        }}
-                      >
-                        <Progress percent={44} />
-                      </span>
-                    </div>
-                    <hr className={styles.divider} />
-                    <div
-                      className={styles.infoLine}
-                      style={{ fontSize: "10px" }}
-                    >
-                      <span
-                        className={styles.info}
-                        style={{
-                          fontSize: "10px",
-                          color: "grey",
-                          marginTop: "5px",
-                          marginLeft: "10px",
-                        }}
-                      >
-                        Date -<span className={styles.title}>Title</span> -
-                        Topic
-                      </span>
-                      <span
-                        style={{
-                          marginLeft: "10px",
-                          marginTop: "-10px",
-                          width: "100px",
-                          height: "2px",
-
-                          fontSize: "10px",
-                        }}
-                      >
-                        <Progress percent={40} />
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className={styles.box}>
-            <div className={styles.resultWrapper}>
-              <div className={styles.timeSpent}>
-                Time Spent on Quiz
-                <span className={styles.moreButton}>Last week</span>
-                <div className={styles.progressBars}>
-                  <div className={styles.progressBar}>
-                    <div className={styles.day}>Mon</div>
-                    <div className={styles.progress}>
-                      <div
-                        className={styles.progressFill}
-                        style={{ height: "20%" }}
-                      ></div>
-                    </div>
-                  </div>
-                  <div className={styles.progressBar}>
-                    <div className={styles.day}>Tue</div>
-                    <div className={styles.progress}>
-                      <div
-                        className={styles.progressFill}
-                        style={{ height: "30%" }}
-                      ></div>
-                    </div>
-                  </div>
-                  <div className={styles.progressBar}>
-                    <div className={styles.day}>Wed</div>
-                    <div className={styles.progress}>
-                      <div
-                        className={styles.progressFill}
-                        style={{ height: "50%" }}
-                      ></div>
-                    </div>
-                  </div>
-                  <div className={styles.progressBar}>
-                    <div className={styles.day}>Thu</div>
-                    <div className={styles.progress}>
-                      <div
-                        className={styles.progressFill}
-                        style={{ height: "70%" }}
-                      ></div>
-                    </div>
-                  </div>
-                  <div className={styles.progressBar}>
-                    <div className={styles.day}>Fri</div>
-                    <div className={styles.progress}>
-                      <div
-                        className={styles.progressFill}
-                        style={{ height: "40%" }}
-                      ></div>
-                    </div>
-                  </div>
-                  <div className={styles.progressBar}>
-                    <div className={styles.day}>Sat</div>
-                    <div className={styles.progress}>
-                      <div
-                        className={styles.progressFill}
-                        style={{ height: "60%" }}
-                      ></div>
-                    </div>
-                  </div>
-                  <div className={styles.progressBar}>
-                    <div className={styles.day}>Sun</div>
-                    <div className={styles.progress}>
-                      <div
-                        className={styles.progressFill}
-                        style={{ height: "80%" }}
-                      ></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className={styles.box}>
-            <div className={styles.resultWrapper}>
-              <div className={styles.rewards}>Rewards</div>
-              <div className={styles.sentencesWrapper}>
-                {/* Add five <div> tags for the sentences */}
-        {/* <div className={styles.sentence}>
-                  1. Top Ranked in last week
-                </div>
-                <div className={styles.sentence}>2. Won four Vouchers</div>
-                <div className={styles.sentence}>3. Won four Vouchers</div>
-                <div className={styles.sentence}>4. Won four Vouchers</div>
-                <div className={styles.sentence}>5. Won four Vouchers</div>
-              </div>
-            </div>
-          </div>
-        </div>  */}
-
-        {/* <div className={styles.contentWrapper1}>
-          <div className={styles.latestQuizHeader}>
-            <p>Latest Attended Quiz</p>
-          </div>
-          <div className={styles.infoCards}>
-            {/* Info cards content */}
-
-        {/* <div className={styles.card}>
-              <span className={styles.title}>
-                {attemptedQuizzes[0]?.quiz_name}
-              </span>
-              <div className={styles.infoBox}>
-                <span className={styles.description}>
-                  {attemptedQuizzes[0]?.description}
-                </span>
-                <div className={styles.additionalInfo}>
-                  <div
-                    className={styles.infoIcon}
-                    style={{ marginTop: "10px" }}
-                  >
-                    <img
-                      src={infoIcon}
-                      alt="Separate Icon"
-                      width={10}
-                      height={10}
-                      style={{ marginLeft: "40px" }}
-                    />
-                  </div>
-                  <span className={styles.infoItem}>
-                    <img
-                      src={topicIcon}
-                      alt="Topic Icon"
-                      width={10}
-                      height={10}
-                    />{" "}
-                    {attemptedQuizzes[0]?.category}
-                  </span>
-                  <span className={styles.infoItem1}>
-                    <img
-                      src={timerIcon}
-                      alt="Time Icon"
-                      width={10}
-                      height={10}
-                    />{" "}
-                    {attemptedQuizzes[0]?.duration}
-                  </span>
-                  <span className={styles.infoItem2}>
-                    <img
-                      src={difficultyIcon}
-                      alt="Easy Icon"
-                      width={10}
-                      height={10}
-                    />{" "}
-                    {attemptedQuizzes[0]?.complexity}
-                  </span>
-                  <div className={styles.iconContainer}>
-                    <img src={img1Icon} alt="Icon 1" width={8} height={8} />
-                    <img
-                      src={img2Icon}
-                      alt="Icon 2"
-                      width={6}
-                      height={6}
-                      style={{ marginTop: "1px" }}
-                    />
-                    <img src={img3Icon} alt="Icon 3" width={8} height={8} />
-                    <img src={img4Icon} alt="Icon 4" width={11} height={7} />
-                    <img src={img5Icon} alt="Icon 5" width={7} height={8} />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={styles.card}>
-              <span className={styles.title}>
-                {attemptedQuizzes[1]?.quiz_name}
-              </span>
-              <div className={styles.infoBox}>
-                <span className={styles.description}>
-                  {attemptedQuizzes[1]?.description}
-                </span>
-                <div className={styles.additionalInfo}>
-                  <div
-                    className={styles.infoIcon}
-                    style={{ marginTop: "10px" }}
-                  >
-                    <img
-                      src={infoIcon}
-                      alt="Separate Icon"
-                      width={10}
-                      height={10}
-                      style={{ marginLeft: "40px" }}
-                    />
-                  </div>
-                  <span className={styles.infoItem}>
-                    <img
-                      src={topicIcon}
-                      alt="Topic Icon"
-                      width={10}
-                      height={10}
-                    />{" "}
-                    {attemptedQuizzes[1]?.category}
-                  </span>
-                  <span className={styles.infoItem1}>
-                    <img
-                      src={timerIcon}
-                      alt="Time Icon"
-                      width={10}
-                      height={10}
-                    />{" "}
-                    {attemptedQuizzes[1]?.duration}
-                  </span>
-                  <span className={styles.infoItem2}>
-                    <img
-                      src={difficultyIcon}
-                      alt="Easy Icon"
-                      width={10}
-                      height={10}
-                    />{" "}
-                    {attemptedQuizzes[1]?.complexity}
-                  </span>
-                  <div className={styles.iconContainer}>
-                    <img src={img1Icon} alt="Icon 1" width={8} height={8} />
-                    <img
-                      src={img2Icon}
-                      alt="Icon 2"
-                      width={6}
-                      height={6}
-                      style={{ marginTop: "1px" }}
-                    />
-                    <img src={img3Icon} alt="Icon 3" width={8} height={8} />
-                    <img src={img4Icon} alt="Icon 4" width={11} height={7} />
-                    <img src={img5Icon} alt="Icon 5" width={7} height={8} />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={styles.card}>
-              <span className={styles.title}>
-                {attemptedQuizzes[2]?.quiz_name}
-              </span>
-              <div className={styles.infoBox}>
-                <span className={styles.description}>
-                  {attemptedQuizzes[2]?.description}
-                </span>
-                <div className={styles.additionalInfo}>
-                  <div
-                    className={styles.infoIcon}
-                    style={{ marginTop: "10px" }}
-                  >
-                    <img
-                      src={infoIcon}
-                      alt="Separate Icon"
-                      width={10}
-                      height={10}
-                      style={{ marginLeft: "40px" }}
-                    />
-                  </div>
-                  <span className={styles.infoItem}>
-                    <img
-                      src={topicIcon}
-                      alt="Topic Icon"
-                      width={10}
-                      height={10}
-                    />{" "}
-                    {attemptedQuizzes[2]?.category}
-                  </span>
-                  <span className={styles.infoItem1}>
-                    <img
-                      src={timerIcon}
-                      alt="Time Icon"
-                      width={10}
-                      height={10}
-                    />{" "}
-                    {attemptedQuizzes[2]?.duration}
-                  </span>
-                  <span className={styles.infoItem2}>
-                    <img
-                      src={difficultyIcon}
-                      alt="Easy Icon"
-                      width={10}
-                      height={10}
-                    />{" "}
-                    {attemptedQuizzes[2]?.complexity}
-                  </span>
-                  <div className={styles.iconContainer}>
-                    <img src={img1Icon} alt="Icon 1" width={8} height={8} />
-                    <img
-                      src={img2Icon}
-                      alt="Icon 2"
-                      width={6}
-                      height={6}
-                      style={{ marginTop: "1px" }}
-                    />
-                    <img src={img3Icon} alt="Icon 3" width={8} height={8} />
-                    <img src={img4Icon} alt="Icon 4" width={11} height={7} />
-                    <img src={img5Icon} alt="Icon 5" width={7} height={8} />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className={styles.topScoredHeader}>
-            <p>Top Scored Quiz</p>
-          </div>
-          <div className={styles.infoCards}>
-            {/* Info cards content */}
-
-        {/* <div className={styles.card}>
-              <span className={styles.title}>
-                {topScoredQuizzes[0]?.quiz_name}
-              </span>
-              <div className={styles.infoBox}>
-                <span className={styles.description}>
-                  {topScoredQuizzes[0]?.description}
-                </span>
-                <div className={styles.additionalInfo}>
-                  <div
-                    className={styles.infoIcon}
-                    style={{ marginTop: "10px" }}
-                  >
-                    <img
-                      src={infoIcon}
-                      alt="Separate Icon"
-                      width={10}
-                      height={10}
-                      style={{ marginLeft: "40px" }}
-                    />
-                  </div>
-                  <span className={styles.infoItem}>
-                    <img
-                      src={topicIcon}
-                      alt="Topic Icon"
-                      width={10}
-                      height={10}
-                    />{" "}
-                    {topScoredQuizzes[0]?.topic}
-                  </span>
-                  <span className={styles.infoItem1}>
-                    <img
-                      src={timerIcon}
-                      alt="Time Icon"
-                      width={10}
-                      height={10}
-                    />{" "}
-                    {topScoredQuizzes[0]?.duration}
-                  </span>
-                  <span className={styles.infoItem2}>
-                    <img
-                      src={difficultyIcon}
-                      alt="Easy Icon"
-                      width={10}
-                      height={10}
-                    />{" "}
-                    {topScoredQuizzes[0]?.complexity}
-                  </span>
-                  <div className={styles.iconContainer}>
-                    <img src={img1Icon} alt="Icon 1" width={8} height={8} />
-                    <img
-                      src={img2Icon}
-                      alt="Icon 2"
-                      width={6}
-                      height={6}
-                      style={{ marginTop: "1px" }}
-                    />
-                    <img src={img3Icon} alt="Icon 3" width={8} height={8} />
-                    <img src={img4Icon} alt="Icon 4" width={11} height={7} />
-                    <img src={img5Icon} alt="Icon 5" width={7} height={8} />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={styles.card}>
-              <span className={styles.title}>
-                {topScoredQuizzes[1]?.quiz_name}
-              </span>
-              <div className={styles.infoBox}>
-                <span className={styles.description}>
-                  {topScoredQuizzes[1]?.description}
-                </span>
-                <div className={styles.additionalInfo}>
-                  <div
-                    className={styles.infoIcon}
-                    style={{ marginTop: "10px" }}
-                  >
-                    <img
-                      src={infoIcon}
-                      alt="Separate Icon"
-                      width={10}
-                      height={10}
-                      style={{ marginLeft: "40px" }}
-                    />
-                  </div>
-                  <span className={styles.infoItem}>
-                    <img
-                      src={topicIcon}
-                      alt="Topic Icon"
-                      width={10}
-                      height={10}
-                    />{" "}
-                    {topScoredQuizzes[1]?.topic}
-                  </span>
-                  <span className={styles.infoItem1}>
-                    <img
-                      src={timerIcon}
-                      alt="Time Icon"
-                      width={10}
-                      height={10}
-                    />{" "}
-                    {topScoredQuizzes[1]?.duration}
-                  </span>
-                  <span className={styles.infoItem2}>
-                    <img
-                      src={difficultyIcon}
-                      alt="Easy Icon"
-                      width={10}
-                      height={10}
-                    />{" "}
-                    {topScoredQuizzes[1]?.complexity}
-                  </span>
-                  <div className={styles.iconContainer}>
-                    <img src={img1Icon} alt="Icon 1" width={8} height={8} />
-                    <img
-                      src={img2Icon}
-                      alt="Icon 2"
-                      width={6}
-                      height={6}
-                      style={{ marginTop: "1px" }}
-                    />
-                    <img src={img3Icon} alt="Icon 3" width={8} height={8} />
-                    <img src={img4Icon} alt="Icon 4" width={11} height={7} />
-                    <img src={img5Icon} alt="Icon 5" width={7} height={8} />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={styles.card}>
-              <span className={styles.title}>
-                {topScoredQuizzes[2]?.quiz_name}
-              </span>
-              <div className={styles.infoBox}>
-                <span className={styles.description}>
-                  {topScoredQuizzes[2]?.description}
-                </span>
-                <div className={styles.additionalInfo}>
-                  <div
-                    className={styles.infoIcon}
-                    style={{ marginTop: "10px" }}
-                  >
-                    <img
-                      src={infoIcon}
-                      alt="Separate Icon"
-                      width={10}
-                      height={10}
-                      style={{ marginLeft: "40px" }}
-                    />
-                  </div>
-                  <span className={styles.infoItem}>
-                    <img
-                      src={topicIcon}
-                      alt="Topic Icon"
-                      width={10}
-                      height={10}
-                    />{" "}
-                    {topScoredQuizzes[2]?.topic}
-                  </span>
-                  <span className={styles.infoItem1}>
-                    <img
-                      src={timerIcon}
-                      alt="Time Icon"
-                      width={10}
-                      height={10}
-                    />{" "}
-                    {topScoredQuizzes[2]?.duration}
-                  </span>
-                  <span className={styles.infoItem2}>
-                    <img
-                      src={difficultyIcon}
-                      alt="Easy Icon"
-                      width={10}
-                      height={10}
-                    />{" "}
-                    {topScoredQuizzes[2]?.complexity}
-                  </span>
-                  <div className={styles.iconContainer}>
-                    <img src={img1Icon} alt="Icon 1" width={8} height={8} />
-                    <img
-                      src={img2Icon}
-                      alt="Icon 2"
-                      width={6}
-                      height={6}
-                      style={{ marginTop: "1px" }}
-                    />
-                    <img src={img3Icon} alt="Icon 3" width={8} height={8} />
-                    <img src={img4Icon} alt="Icon 4" width={11} height={7} />
-                    <img src={img5Icon} alt="Icon 5" width={7} height={8} />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>  */}
-      </div>
-      {/* <div className={styles.logout}>
-        <div
-          style={{
-            marginTop: "60px",
-            display: "flex",
-            alignItems: "center",
-            marginLeft: "20px",
-          }}
-        >
-          <span style={{ marginRight: "10px" }}>Logout</span>
-          <img
-            src={logoutArrowIcon}
-            alt="Logout Icon"
-            style={{ width: "30px", height: "20px", marginLeft: "130px" }}
-          />
-        </div>
-        <div
-          style={{
-            textAlign: "left",
-            marginTop: "30px",
-            fontFamily: "Poppins",
-            fontSize: "15px",
-            fontWeight: 700,
-            lineHeight: "23px",
-            letterSpacing: "0em",
-            color: "#214082",
-            marginLeft: "20px",
-          }}
-        >
-          You’ve completed 10 <br></br>Quiz’s this week of <br></br>average
-          score of 85%
-        </div>
-        <div style={{ textAlign: "left", marginLeft: "20px" }}>
-          <div
-            style={{ display: "flex", alignItems: "center", marginTop: "20px" }}
-          >
-            <span
-              style={{
-                fontSize: "15px",
-                color: "#000000",
-                fontWeight: 500,
-                marginRight: "10px",
-              }}
-            >
-              Notification
-            </span>
-            <img
-              src={notifyIcon}
-              alt="Notify Icon"
-              className={styles.notifyIcon}
-              style={{ marginLeft: "120px" }}
+              name="first_name"
+              value={userData.first_name}
+              onChange={handleChange}
+              className="border-none border-b-2 hover:border-gray-500 ml-[10px] h-[30px] w-[250px] text-[11px] focus:outline-none"
+              type="text"
             />
+            <hr className="h-[1px] w-[255px] bg-gray-200"></hr>
           </div>
-          <div style={{ marginTop: "20px" }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: "5px",
-              }}
-            >
-              <div
-                style={{
-                  backgroundColor: "#FFE8EE",
-                  width: "30px",
-                  height: "30px",
-                  borderRadius: "5px",
-                  marginRight: "5px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <img
-                  src={todayTopicIcon}
-                  alt="Scored Icon"
-                  style={{ width: "15px", height: "15px" }}
-                />
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: "15px",
-                    fontWeight: 500,
-                    marginRight: "15px",
-                  }}
-                >
-                  Today - Topic
-                </span>
-                <span
-                  style={{
-                    fontSize: "10px",
-                    color: "#9696BB",
-                    marginTop: "3px",
-                  }}
-                >
-                  23 Jan 2024, Tuesday
-                </span>
-              </div>
-            </div>
-
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginTop: "30px",
-              }}
-            >
-              <div
-                style={{
-                  backgroundColor: "#E4EBFF",
-                  width: "30px",
-                  height: "30px",
-                  borderRadius: "5px",
-                  marginRight: "5px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <img
-                  src={subTopicIcon}
-                  alt="Time Spent Icon"
-                  style={{ width: "17px", height: "13px" }}
-                />
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <span style={{ fontSize: "15px", fontWeight: 500 }}>
-                  Topic - Sub Topic Title
-                </span>
-                <span
-                  style={{
-                    fontSize: "10px",
-                    color: "#9696BB",
-                    marginTop: "3px",
-                    marginRight: "30px",
-                  }}
-                >
-                  24 Jan 2024, Wednesday
-                </span>
-              </div>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginTop: "30px",
-              }}
-            >
-              <div
-                style={{
-                  backgroundColor: "#E4EBFF",
-                  width: "30px",
-                  height: "30px",
-                  borderRadius: "5px",
-                  marginRight: "5px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <img
-                  src={subTopicIcon}
-                  alt="Time Spent Icon"
-                  style={{ width: "17px", height: "13px" }}
-                />
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <span style={{ fontSize: "15px", fontWeight: 500 }}>
-                  Topic - Sub Topic Title
-                </span>
-                <span
-                  style={{
-                    fontSize: "10px",
-                    color: "#9696BB",
-                    marginTop: "3px",
-                    marginRight: "30px",
-                  }}
-                >
-                  24 Jan 2024, Wednesday
-                </span>
-              </div>
-            </div>
+          <div className={styles.inputGroup1} style={{ marginLeft: "-35px" }}>
+            <label className="text-blue-800 font-semibold">Occupation</label>
+            <input
+              name="occupation"
+              value={userData.occupation}
+              onChange={handleChange}
+              className="border-none border-b-2 hover:border-gray-500 ml-[10px] h-[30px] w-[250px] text-[11px] focus:outline-none"
+              type="text"
+            />
+            <hr className="h-[1px] w-[270px] bg-gray-200"></hr>
           </div>
         </div>
-      </div> */}
+ {/* occupation  */}
+            {/* <div className={styles.inputGroup1} style={{marginLeft:"-35px"}}>
+             <label className="text-blue-800 font-semibold">Occupation</label>
+             <input className="
+   border-none 
+      border-b-2  
+      hover:border-gray-500 
+      ml-[10px] 
+      h-[30px] 
+      w-[250px] 
+      text-[11px] 
+      focus:outline-none
+    " type="text"/>
+    <hr className="h-[1px] w-[270px] bg-gray-200"></hr>
+            </div> */}
+   </div>
+  
+   </div>
+   <div className="flex ml-[29%] -mt-[50px]">
+            {/* Middle name */}
+          <div className={styles.inputGroup1} style={{marginLeft:"-50px"}}>
+             <label className="text-blue-800 font-semibold">Middle Name</label>
+             <input className="
+   border-none 
+      border-b-2  
+      hover:border-gray-500 
+      ml-[10px] 
+      h-[30px] 
+      w-[250px] 
+      text-[11px] 
+      focus:outline-none
+    " type="text"/>
+    <hr className="h-[1px] w-[255px] bg-gray-200"></hr>
+            </div>
+ {/* pincode  */}
+            <div className={styles.inputGroup1} style={{marginLeft:"-53px"}}>
+             <label className="text-blue-800 font-semibold">Pincode</label>
+             <input className="
+   border-none 
+      border-b-2  
+      hover:border-gray-500 
+      ml-[10px] 
+      h-[30px] 
+      w-[250px] 
+      text-[11px] 
+      focus:outline-none
+    " type="text"/>
+    <hr className="h-[1px] w-[270px] bg-gray-200"></hr>
+            </div>
+   </div>
+   <div className="flex ml-[29%] -mt-[10px]">
+            {/* Last name */}
+          <div className={styles.inputGroup1} style={{marginLeft:"-50px"}}>
+             <label className="text-blue-800 font-semibold">Last Name</label>
+             <input className="
+   border-none 
+      border-b-2  
+      hover:border-gray-500 
+      ml-[10px] 
+      h-[30px] 
+      w-[250px] 
+      text-[11px] 
+      focus:outline-none
+    " type="text"/>
+    <hr className="h-[1px] w-[255px] bg-gray-200"></hr>
+            </div>
+ {/* city name  */}
+            <div className={styles.inputGroup1} style={{marginLeft:"-35px"}}>
+             <label className="text-blue-800 font-semibold">City Name</label>
+             <input className="
+   border-none 
+      border-b-2  
+      hover:border-gray-500 
+      ml-[10px] 
+      h-[30px] 
+      w-[250px] 
+      text-[11px] 
+      focus:outline-none
+    " type="text"/>
+    <hr className="h-[1px] w-[270px] bg-gray-200"></hr>
+            </div>
+   </div>
+   <div className="flex ml-[29%] -mt-[10px]">
+            {/* gender*/}
+          <div className={styles.inputGroup1} style={{marginLeft:"-50px"}}>
+             <label className="text-blue-800 font-semibold">Gender</label>
+             <input className="
+   border-none 
+      border-b-2  
+      hover:border-gray-500 
+      ml-[10px] 
+      h-[30px] 
+      w-[250px] 
+      text-[11px] 
+      focus:outline-none
+    " type="text"/>
+    <hr className="h-[1px] w-[255px] bg-gray-200"></hr>
+            </div>
+ {/* state name  */}
+            <div className={styles.inputGroup1} style={{marginLeft:"-13px"}}>
+             <label className="text-blue-800 font-semibold">State Name</label>
+             <input className="
+   border-none 
+      border-b-2  
+      hover:border-gray-50
+      ml-[10px] 
+      h-[30px] 
+      w-[250px] 
+      text-[11px] 
+      focus:outline-none
+    " type="text"/>
+    <hr className="h-[1px] w-[270px] bg-gray-200"></hr>
+            </div>
+   </div>
+   <div className="flex ml-[29%] -mt-[10px]">
+            {/* email*/}
+          <div className={styles.inputGroup1} style={{marginLeft:"-50px",textWrap:"nowrap"}}>
+             <label className="text-blue-800 font-semibold">DOB</label>
+             <input className="
+   border-none 
+      border-b-2  
+      hover:border-gray-500 
+      ml-[10px] 
+      h-[30px] 
+      w-[250px] 
+      text-[11px] 
+      focus:outline-none
+    " type="text"/>
+    <hr className="h-[1px] w-[255px] bg-gray-200"></hr>
+            </div>
+ {/* mobile */}
+            <div className={styles.inputGroup1} style={{marginLeft:"10px",textWrap:"nowrap"}}>
+             <label className="text-blue-800 font-semibold">Country Name</label>
+             <input className="
+   border-none 
+      border-b-2  
+      hover:border-gray-500 
+      ml-[10px] 
+      h-[30px] 
+      w-[250px] 
+      text-[11px] 
+      focus:outline-none
+    " type="text"
+    onFocus={() => setIsFocused(true)}
+    onBlur={() => setIsFocused(false)}
+  />
+  <hr
+    className={`h-[1px] w-[270px] bg-gray-200 ${isFocused ? 'bg-blue-500' : ''}`}
+  />
+            </div>
+   </div>
+   <div className="flex ml-[29%] -mt-[10px]">
+            {/* email*/}
+          <div className={styles.inputGroup1} style={{marginLeft:"-50px"}}>
+             <label className="text-blue-800 font-semibold">Email</label>
+             <input className="
+   border-none 
+      border-b-2  
+      hover:border-gray-500 
+      ml-[10px] 
+      h-[30px] 
+      w-[250px] 
+      text-[11px] 
+      focus:outline-none
+    " type="text"/>
+    <hr className="h-[1px] w-[255px] bg-gray-200"></hr>
+            </div>
+ {/* mobile */}
+            <div className={styles.inputGroup1} style={{marginLeft:"3px"}}>
+             <label className="text-blue-800 font-semibold">Mobile</label>
+             <input className="
+   border-none 
+      border-b-2  
+      hover:border-gray-500 
+      ml-[10px] 
+      h-[30px] 
+      w-[250px] 
+      text-[11px] 
+      focus:outline-none
+    " type="text"/>
+    <hr className="h-[1px] w-[270px] bg-gray-200"></hr>
+            </div>
+   </div>
+   
+   <div className="flex justify-start ml-[23%] gap-5 mt-[20px]">
+   <button className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[#FA3D49] transition-transform duration-300 ease-in-out px-4 py-1 rounded-[20px] text-white">Edit</button>
+   <button className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[#FA3D49] transition-transform duration-300 ease-in-out px-4 py-1 rounded-[20px] text-white">Save</button>
+   {/* <button className="bg-[#3B61C8] py-2 px-4 rounded-[20px] text-white">verify</button> */}
+   </div>
+   
+   </div>
+        
        <LogoutBar />
     </div>
   );

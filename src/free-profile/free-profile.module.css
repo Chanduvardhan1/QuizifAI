@@ -327,23 +327,24 @@ text-align: left;
   }
 
 .completionInfo {
-    width: 672px;
     height: 42px;
     background-color: #e0e0e0;
-    margin: 20px;
-    margin-left: 60px;
     display: flex;
     align-items: center;
     text-align: left;
     justify-content: left;
+    margin-top: 20px;
   }
 
   .headerRight {
+    position: absolute;
+    right: 0px;
     display: flex;
-    justify-content: center;
+    justify-content: end;
     align-items: row;
     font-family: Poppins;
     margin-right: 30px;
+    margin-top: -10px;
 font-size: 15px;
 font-weight: 500;
 line-height: 23px;

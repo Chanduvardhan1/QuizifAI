@@ -4,6 +4,7 @@ import Switch from "react-switch";
 import Navigation from "../navbar/navbar";
 import { useNavigate } from "react-router-dom";
 // import { useHistory } from 'react-router-dom';
+import { MdOutlineCancel } from "react-icons/md";
 
 // Navbar-icons
 import QuizifAilogo from "../assets/Images/images/home/Quizifai3.png";
@@ -541,20 +542,13 @@ export default function editmanuly() {
   };
   const handleNext = async () => {
     const requiredFields = [
-     
       numQuestions,
-
       selectedCategory,
       selectedSubCategory,
       percentage,
       selectedComplexity,
       duration,
-
-     
-    
       quiztotalmarks,
-      
-
   ];
   
   const isAnyFieldEmpty = requiredFields.some(field => !field);
@@ -630,13 +624,22 @@ export default function editmanuly() {
       });
       const responseData = await response.json();
       console.log(responseData, "data");
-  
-      if (response.ok && responseData.response === "success") {
-        // Assuming router and state setter are defined properly
-     
-        navigate("/quizcreated", { state: { quizData: responseData } });
-      }  else {
+      if (response.ok) {
+        if (responseData.response === "success") {
+          // Navigate to quiz created page with the response data
+          navigate("/quizcreated", { state: { quizData: responseData } });
+        } else if (responseData.data && responseData.data.length > 0) {
+          // Handle the specific message about the inactive quiz
+          alert(responseData.data[0]);
+        } else {
+          alert("An unexpected error occurred.");
+        }
+      } else {
         if (responseData.detail) {
+          if (responseData.detail === "'int' object has no attribute 'version_number'") {
+            alert("An error occurred due to an incorrect data type for 'version_number'. Please contact support.");
+            return;
+          }
           const errorMessages = responseData.detail.map(error => {
             if (error.type === "missing" && error.loc.includes("num_questions")) {
               return "Please provide the number of questions for the quiz.";
@@ -661,7 +664,7 @@ export default function editmanuly() {
       }
     } catch (error) {
       console.error("Type-Quiz failed:", error);
-      Alert("An error occurred while choosing the type of the quiz");
+      alert("An error occurred while choosing the type of the quiz");
     }
   };
   // useEffect(() => {
@@ -902,6 +905,11 @@ export default function editmanuly() {
     }
     return Math.ceil(duration / numQuestions) * 60;
   };
+  const Back = () => {
+    
+    navigate("/dashboard");
+  
+};
   return (
     <>
       <div>
@@ -983,7 +991,8 @@ export default function editmanuly() {
           </div> */}
           <Navigation />
         </header>
-     
+        <div className="absolute top-[30px] left-[1260px] cursor-pointer text-[#eeb600f0] " onClick={Back}><MdOutlineCancel /></div>
+
           <main className="w-max-auto">
             <div className="w-[719px] h-[48px] absolute top-[30px] left-[200px] rounded-[10px] bg-[#E0FFE8] z-0">
               <h className="font-Poppins text-[#214082]  font-semibold text-[25px] leading-[37.5px] flex justify-center items-center mt-1l">
@@ -1613,7 +1622,7 @@ export default function editmanuly() {
                 </button>
 
                 <button
-                  className="w-[80px] h-[30px] rounded-[10px] bg-[#3B61C8] text-white hover:bg-[#EF5130]"
+                  className="w-[80px] h-[30px] rounded-[10px] bg-[#1E4DE9] text-white hover:bg-[#EF5130]"
                   onClick={handleCancel}
                 >
                   Cancel

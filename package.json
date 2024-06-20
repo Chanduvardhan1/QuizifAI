@@ -22,6 +22,7 @@
     "circular-json": "^0.5.9",
     "css": "^3.0.0",
     "html2canvas": "^1.4.1",
+    "html2pdf.js": "^0.10.1",
     "jspdf": "^2.5.1",
     "next": "^14.2.3",
     "rc-progress": "^3.5.1",

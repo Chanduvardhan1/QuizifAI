@@ -33,6 +33,7 @@ import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "../navbar/navbar.jsx";
+import LogoutBar from "../logoutbar/logoutbar.jsx";
 
 
 
@@ -147,7 +148,7 @@ const Edit = (quizId) => {
           {/* <div className=" h-[1000px] max-w-full bg-gradient-to-t from-[#CEE4FF80] to-[#E2EFFF80]"> */}
           <div className=" h-[1000px] max-w-full ">
             <div className="w-[802px] h-[45px] absolute top-[120px] left-[297px]">
-              <h1 className="font-Poppins text-[30px] font-bold leading-[45px] text-[#2c3f7e] flex justify-center">
+              <h1 className="font-Poppins text-[#214082] text-[30px] font-bold leading-[45px]  flex justify-center">
                 Created Successfully
               </h1>
             </div>
@@ -159,7 +160,7 @@ const Edit = (quizId) => {
                     className="w-[51px] h-[37px] absolute top-[180px] left-[295px]"
                     src={QuizTitle}
                   /> */}
-                  <h1 className="font-Poppins text-[18px] font-bold leading-[40px] absolute top-[175px] left-[100px] text-[#555555] text-nowrap">
+                  <h1 className="font-Poppins text-[#214082] text-[18px] font-bold leading-[40px] absolute top-[175px] left-[100px]  text-nowrap">
                     {quizData.quiz_title}
                   </h1>
                   <h1 className="w-[760px] h-[49px] absolute top-[205px] left-[100px]">
@@ -169,18 +170,18 @@ const Edit = (quizId) => {
                     className="w-[30px] h-[30px] absolute top-[177px] left-[737px]"
                     src={QuizCreatedBy}
                   /> */}
-                  {/* <h1 className="font-Poppins text-[15px] font-medium leading-[40px] absolute top-[175px] left-[791px] text-nowrap">
+                  {/* <h1 className="font-Poppins text-[#214082] text-[15px] font-medium leading-[40px] absolute top-[175px] left-[791px] text-nowrap">
                     Quiz created by user name on date
                   </h1> */}
                 </div>
                 <div className="w-[900px] h-[49px] absolute top-[222px] left-[100px]">
                   <div className=" flex gap-[55px]">
                   <div className=" w-[300px]">
-                    <span className="font-Poppins text-[15px] font-bold leading-[40px] ">created By:</span>
+                    <span className="font-Poppins text-[#214082] text-[15px] font-bold leading-[40px] ">created By:</span>
                     <span > {quizData.created_by}</span>
                   </div>
                   <div  className="w-[300px]">
-                  <span className="font-Poppins text-[15px] font-bold leading-[40px] ">Created ON:</span>
+                  <span className="font-Poppins text-[#214082] text-[15px] font-bold leading-[40px] ">Created On:</span>
                     <span> {quizData.created_on}</span>
                   </div>
                 </div>
@@ -197,13 +198,13 @@ const Edit = (quizId) => {
                     src={HorizontalLine}
                   />
                 </div>
-                <div className=" absolute top-[340px] left-[293px] flex gap-[55px]" >
+                <div className=" absolute top-[340px] left-[300px] flex gap-[55px]" >
                   <div  className=" w-[300px]">
-                    <span className="font-Poppins text-[15px] font-bold leading-[40px]  ">Category:</span>
+                    <span className="font-Poppins text-[#214082] text-[15px] font-bold leading-[40px]  ">Category:</span>
                     <span>{quizData.quiz_sub_category_name}</span>
                   </div>
                   <div className=" w-[300px]">
-                  <span className="font-Poppins text-[15px] font-bold leading-[40px] ">Sub Category:</span>
+                  <span className="font-Poppins text-[#214082] text-[15px] font-bold leading-[40px] ">Sub Category:</span>
                     <span> {quizData.quiz_sub_category_name}</span>
                   </div>
                 </div>
@@ -215,10 +216,10 @@ const Edit = (quizId) => {
                     src={Percentage}
                   /> */}
                   <div className="w-[185px] h-[23px] absolute top-[356px] left-[100px]">
-                    {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[22.5px] text-[#555555]">
+                    {/* <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] leading-[22.5px] text-[#555555]">
                       {quizData.pass_percentage}% is the pass score
                     </h1> */}
-                    <span className="font-Poppins text-[15px] font-bold leading-[40px]  ">Complexity:</span>
+                    <span className="font-Poppins text-[#214082] text-[15px] font-bold leading-[40px]  ">Complexity:</span>
                     <span> {quizData.quiz_complexity_name}</span>
                   </div>
                   {/* <img
@@ -227,10 +228,10 @@ const Edit = (quizId) => {
                   /> */}
 
                   <div className="w-[344px] h-[23px] absolute top-[356px] left-[455px]">
-                    {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[22.5px] text-[#555555]">
+                    {/* <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] leading-[22.5px] text-[#555555]">
                       Complexity:{quizData.quiz_complexity_name}
                     </h1> */}
-                    <span className="font-Poppins text-[15px] font-bold leading-[40px]  ">pass score:</span>
+                    <span className="font-Poppins text-[#214082] text-[15px] font-bold leading-[40px]  ">pass score:</span>
                     <span> {quizData.pass_percentage}%</span>
                   </div>
                   {/* <img className="w-[31px] h-[16.41px] absolute top-[336px] left-[784px]" src={Medium}/>
@@ -241,17 +242,17 @@ const Edit = (quizId) => {
                     src={Hash}
                   /> */}
                   <div className="w-[113px] h-[22px] absolute top-[356px] left-[720px]">
-                    {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[22.5px] text-[#555555]">
+                    {/* <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] leading-[22.5px] text-[#555555]">
                       {quizData.num_questions} questions
                     </h1> */}
-                    <span className="font-Poppins text-[15px] font-bold leading-[40px]  ">Duration:</span>
+                    <span className="font-Poppins text-[#214082] text-[15px] font-bold leading-[40px]  ">Duration:</span>
                     <span> {quizData.quiz_duration}</span>
                   </div>
                   <div className="w-[180px] h-[22px] absolute top-[356px] left-[915px]">
-                    {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[22.5px] text-[#555555]">
+                    {/* <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] leading-[22.5px] text-[#555555]">
                       {quizData.num_questions} questions
                     </h1> */}
-                    <span className="font-Poppins text-[15px] font-bold leading-[40px]  ">Question Count:</span>
+                    <span className="font-Poppins text-[#214082] text-[15px] font-bold leading-[40px]  ">Question Count:</span>
                     <span> {quizData.num_questions}</span>
                   </div>
 
@@ -268,11 +269,11 @@ const Edit = (quizId) => {
                   /> */}
 
                   <div className="w-[255px] h-[32px] absolute top-[400px] left-[100px]">
-                    {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
+                    {/* <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] leading-[40px] text-[#555555]">
                       {" "}
                       Retake this paper:{quizData.retake_flag}
                     </h1> */}
-                    <span className="font-Poppins text-[15px] font-bold leading-[40px]">Course:</span>
+                    <span className="font-Poppins text-[#214082] text-[15px] font-bold leading-[40px]">Course:</span>
                     <span> {quizData.course_name}</span>
                   </div>
                   {/* <img
@@ -281,11 +282,11 @@ const Edit = (quizId) => {
                   /> */}
 
                   <div className="w-[223px] h-[32px] absolute top-[400px] left-[455px]">
-                    {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
+                    {/* <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] leading-[40px] text-[#555555]">
                       Multiple Answers:{" "}
                       {quizData.multi_answer ? "Yes" : "No"}
                     </h1> */}
-                    <span className="font-Poppins text-[15px] font-bold leading-[40px]  ">Class:</span>
+                    <span className="font-Poppins text-[#214082] text-[15px] font-bold leading-[40px]  ">Class:</span>
                     <span> {quizData.class_name}</span>
                   </div>
                   {/* <img
@@ -300,11 +301,11 @@ const Edit = (quizId) => {
                   /> */}
 
                   <div className="w-[164px] h-[32px] absolute top-[432px] left-[100px]">
-                    {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
+                    {/* <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] leading-[40px] text-[#555555]">
                       {" "}
                       Retake this paper:{quizData.retake_flag}
                     </h1> */}
-                    <span className="font-Poppins text-[15px] font-bold leading-[40px]  ">Retake this paper:</span>
+                    <span className="font-Poppins text-[#214082] text-[15px] font-bold leading-[40px]  ">Retake this paper:</span>
                     <span>{quizData.retake_flag}</span>
                   </div>
                   {/* <img
@@ -313,11 +314,11 @@ const Edit = (quizId) => {
                   /> */}
 
                   <div className="w-[223px] h-[32px] absolute top-[432px] left-[455px]">
-                    {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
+                    {/* <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] leading-[40px] text-[#555555]">
                       Multiple Answers:{" "}
                       {quizData.multi_answer ? "Yes" : "No"}
                     </h1> */}
-                    <span className="font-Poppins text-[15px] font-bold leading-[40px]  "> Multiple Answers:</span>
+                    <span className="font-Poppins text-[#214082] text-[15px] font-bold leading-[40px]  "> Multiple Answers:</span>
                     <span>{quizData.multi_answer ? "Yes" : "No"}</span>
                   </div>
                   {/* <img
@@ -332,7 +333,7 @@ const Edit = (quizId) => {
                     src={SubCategory}
                   /> */}
                   {/* <div className="w-[264px] h-[27px] absolute top-[514px] left-[100px]">
-                    <h1 className="font-Poppins font-semibold text-[15px] leading-[22.5px] text-[#555555]">
+                    <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] leading-[22.5px] text-[#555555]">
                     {quizData.quiz_sub_category_name} from  {" "}{quizData.quiz_category_name}
                      {" "}
                     </h1>
@@ -342,7 +343,7 @@ const Edit = (quizId) => {
                     src={Clock}
                   /> */}
                   {/* <div className="w-[329px] h-[27px] absolute top-[513px] left-[689px]">
-                    <h1 className="font-Poppins font-semibold text-[15px] leading-[22.5px] text-[#555555]">
+                    <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] leading-[22.5px] text-[#555555]">
                  
               {/* <p>Total Questions: {quiz.num_questions}</p> */}
               {/* <span>Total {quizData.quiz_duration} minutes</span> {" "}
@@ -362,11 +363,11 @@ const Edit = (quizId) => {
                     src={Calender}
                   /> */}
                   <div className="w-[391px] h-[27px] absolute top-[599px] left-[100px]">
-                    {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
+                    {/* <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] leading-[40px] text-[#555555]">
                       Quiz will be live from: {quizData.available_from} to{" "}
                       {quizData.disabled_on}
                     </h1> */}
-                    <span className="font-Poppins text-[15px] font-bold leading-[40px]  "> Quiz will be live from:</span>
+                    <span className="font-Poppins text-[#214082] text-[15px] font-bold leading-[40px]  "> Quiz will be live from:</span>
                     <span> {quizData.available_from} to{" "}
                       {quizData.disabled_on}</span>
                   </div>
@@ -375,10 +376,10 @@ const Edit = (quizId) => {
                     src={AiBot}
                   /> */}
                   <div className="w-[182px] h-[27px] absolute top-[599px] left-[585px]">
-                    {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
+                    {/* <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] leading-[40px] text-[#555555]">
                       AI support needed: No
                     </h1> */}
-                    <span className="font-Poppins text-[15px] font-bold leading-[40px] ">AI support needed:</span>
+                    <span className="font-Poppins text-[#214082] text-[15px] font-bold leading-[40px] ">AI support needed:</span>
                     <span> No</span>
                   </div>
                   {/* <img
@@ -386,11 +387,11 @@ const Edit = (quizId) => {
                     src={Globe}
                   /> */}
                   <div className="w-[182px] h-[27px] absolute top-[599px] left-[915px]">
-                    {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[40px] text-[#555555]">
+                    {/* <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] leading-[40px] text-[#555555]">
                       Public access:{" "}
                       {quizData.quiz_public_access ? "Yes" : "No"}
                     </h1> */}
-                    <span className="font-Poppins text-[15px] font-bold leading-[40px]  " >Public access:</span>
+                    <span className="font-Poppins text-[#214082] text-[15px] font-bold leading-[40px]  " >Public access:</span>
                   <span> {quizData.quiz_public_access ? "Yes" : "No"}</span>
                   </div>
                 </div>
@@ -425,6 +426,7 @@ const Edit = (quizId) => {
             </div>
           </div>
         </main>
+        <LogoutBar/>
       </div>
     </>
   );

@@ -4,11 +4,14 @@ import React, { useEffect, useState } from 'react';
 import styles from './quiz_results.module.css';
 import LeftBar from '../leftbar/leftbar';
 import createdIcon from "../../src/assets/Images/images/quiz-Access/created.png";
-import descriptionIcon from "../../src/assets/Images/images/quiz-Access/description.png"; 
-import percentIcon from "../../src/assets/Images/images/quiz-Access/percent.png"; 
+import descriptionIcon from "../../src/assets/Images/images/quiz-Access/description.png";
+import percentIcon from "../../src/assets/Images/images/quizresults/discount.png"; 
+import timeIcon from "../../src/assets/Images/images/quizresults/stopwatch1.png";
+import dateIcon from "../../src/assets/Images/images/quizresults/schedule.png";
+import current from "../../src/assets/Images/images/quizresults/faq.png"
+
 import titleIcon from "../../src/assets/Images/images/quiz-Access/title.png";
 import categoryIcon from "../../src/assets/Images/images/quiz-Access/category.png";
-import timeIcon from "../../src/assets/Images/images/quizresults/Layer_1.png";
 import ranksIcon from "../../src/assets/Images/images/quizresults/ranks.png"; 
 import rank1Icon from "../../src/assets/Images/images/quizresults/rank1.png";
 import rank2Icon from "../../src/assets/Images/images/quizresults/rank2.png";
@@ -23,7 +26,6 @@ import iconA from "../../src/assets/Images/images/questions/IconA.png"
 import iconB from "../../src/assets/Images/images/questions/IconB.png";
 import iconC from "../../src/assets/Images/images/questions/IconC.png";
 import iconD from "../../src/assets/Images/images/questions/IconD.png";
-import dateIcon from "../../src/assets/Images/images/quizview/date.png";
 import answerTimerIcon from "../../src/assets/Images/images/quizresults/answerTimer.png"; 
 import rightIcon1 from "../../src/assets/Images/images/quizresults/righticon.png"; 
 import wrongIcon from "../../src/assets/Images/images/quizresults/wrong.png";
@@ -35,12 +37,13 @@ import { useLocation } from 'react-router-dom';
 import { MdOutlineCancel } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import fistrank from '../../src/assets/Images/images/quizresults/FirstRank.png'
-import current from "../../src/assets/Images/images/quizresults/Vector.png"
 import vector from "../../src/assets/Images/images/quizresults/icon-park_check-correct.png"
 import Navigation from "../navbar/navbar.jsx";
 import LogoutBar from "../logoutbar/logoutbar.jsx";
 // import rankimage from "../../src/assets/Images/images/quizresults/rankimage.png"
 import rankimage from "../../src/assets/Images/images/quizresults/rank.jpg"
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 const quiz_results = () => {
   const [quizData, setQuizData] = useState(null);
@@ -246,7 +249,26 @@ const quiz_results = () => {
 };
   const questions = quizData1.questions;
   const topThree = leaderboardData.slice(0, 3);
-
+  const handleDownload = () => {
+    const input = resultRef.current;
+    if (input) {
+      html2canvas(input, { useCORS: true, scale: 2 })
+        .then((canvas) => {
+          const imgData = canvas.toDataURL('image/png');
+          const pdf = new jsPDF('p', 'mm', 'a4');
+          const imgProps = pdf.getImageProperties(imgData);
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+          pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+          pdf.save(`${quizData.quiz_name}_results.pdf`);
+        })
+        .catch((error) => {
+          console.error('Error generating PDF:', error);
+        });
+    } else {
+      console.error('resultRef is not attached to any DOM element');
+    }
+  };
   return (
 
     <div className={styles.container}>
@@ -258,7 +280,7 @@ const quiz_results = () => {
       </Head> */}
       <Navigation/>
       
-      <div className={styles.mainContent}>
+      <div className={styles.mainContent}  ref={resultRef}>
       <div className={styles.back1} onClick={Back}><MdOutlineCancel /></div>
 
         <div className={styles.header}>
@@ -268,8 +290,39 @@ const quiz_results = () => {
   alt="User Icon"
   className={styles.icon1}
 /> */}
+<div className={styles.downloads} >
+<div className={styles.download} >
+
           <span className={styles.quizname}>{quizData.quiz_name}</span>
+</div>
+<div className={styles.download} >
+<button className={styles.downbutton} onClick={handleDownload}>download</button>
+</div>
+</div>
+
           <p className={styles.quizdescription}>{quizData.quiz_description}</p>
+          <div className={styles.Questionslines }>
+        <div className={styles.Questions}>
+
+        <span className={styles.Question} >Questions :</span>{" "}
+          <span className={styles.username1} >{`${quizData.total_questions}`}</span>
+        </div>
+        <div>
+
+        <span className={styles.Question} >Duration:</span>{" "}
+          <span className={styles.username1} >{`${quizData.attempt_duration}`}</span>
+        </div>
+        <div>
+
+<span className={styles.Question} >Total Score:</span>{" "}
+  <span className={styles.username1} >{`${quizData.quiz_total_marks}`}</span>
+</div>
+<div>
+
+<span className={styles.Question } >Pass Score :</span>{" "}
+  <span className={styles.username1} >{`${quizData.attempt_percentage}`}</span>
+</div>
+        </div>
           <div className={styles.Createdbyupdated}>
         <div className={styles.Created}>
 
@@ -314,30 +367,60 @@ const quiz_results = () => {
   <h1 className={styles.rank1}>Your Rank</h1>
       </div>
       <div className={styles.sentencesContainer}>
-        <div className={styles.sentence}>
+         <div className={styles.sentence}>
         <img
-    src={percentIcon} 
+    src={dateIcon} 
     alt="Calendar Icon"
     className={styles.icon2}
   />
-          <span>You have scored {quizData.attained_score_percentage}%</span>
+          <span>Taken on {quizData.attained_score}</span>
         </div>
-       
-        
-      </div>
-     
-      <div className={styles.sentencesContainer}>
+        </div>
+        <div className={styles.sentencesContainer}>
         <div className={styles.sentence}>
         <img
     src={timeIcon} 
     alt="Calendar Icon"
     className={styles.icon2}
   />
-          <span>{quizData.attempt_duration} spent for {quizData.total_questions} questions</span>
+          <span>Spent {quizData.attempt_duration}</span>
         </div>
        
         
       </div>
+      <div className={styles.sentencesContainer}>
+        <div className={styles.sentence}>
+        <img
+    src={current}
+    alt="Calendar Icon"
+    className={styles.icon2}
+  />
+          <span>Attempted {quizData.attempted_questions} Questions</span>
+        </div>
+        </div>
+        
+        <div className={styles.sentence1}>
+        <img
+    src={vector} 
+    alt="Calendar Icon"
+    className={styles.icon2}
+  />
+          <span>{quizData.correct_answers} correct answer</span>
+        </div>
+      <div className={styles.sentencesContainer}>
+        <div className={styles.sentence}>
+        <img
+    src={percentIcon} 
+    alt="Calendar Icon"
+    className={styles.icon2}
+  />
+          <span className={styles.sentence3}>You have scored {quizData.attained_score_percentage}% ,A Grade, Failed</span>
+        </div>
+       
+        
+      </div>
+     
+     
 
       {/* <div className={styles.sentencesContainer}>
         {/* <div className={styles.sentence}>
@@ -352,35 +435,26 @@ const quiz_results = () => {
         
       {/* </div>  */}
       
-      <div className={styles.sentencesContainer}>
+      {/* <div className={styles.sentencesContainer}>
         <div className={styles.sentence}>
         <img
     src={current}
     alt="Calendar Icon"
     className={styles.icon2}
   />
-          <span>{quizData.attempted_questions} answered out of {quizData.total_questions} questions</span>
+          <span>Attempted {quizData.attempted_questions} Questions</span>
         </div>
-        </div>
-        <div className={styles.sentencesContainer}>
-        <div className={styles.sentence}>
+        </div> */}
+        {/* <div className={styles.sentence}>
         <img
-    src={dateIcon} 
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span>{quizData.attained_score} attained score</span>
-        </div>
-        
-        </div>
-        <div className={styles.sentence1}>
-        <img
-    src={vector} 
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span>{quizData.correct_answers} correct answer</span>
-        </div>
+        src={dateIcon} 
+        alt="Calendar Icon"
+        className={styles.icon2}
+        />
+        <span>{quizData.attained_score} attained score</span>
+        </div> */}
+       
+       
         </div>
         {/* <div className={styles.verticalLine}></div> */}
        
@@ -527,7 +601,6 @@ const quiz_results = () => {
     </div>
     </div>
     <div className={styles.horizontalLine} style={{marginTop:"0px"}}></div>
-
     <div className={styles.boxContainer}>
       <div className={styles.parentContainer}>
       {questions.map((question, index) => (
@@ -539,13 +612,13 @@ const quiz_results = () => {
               className={styles.icon2}
             /> */}
              <span style={{ color: "#F4774B" }}>{index + 1}. {question.question_text}</span>
-            <span className={styles.iconContainer}>
+            {/* <span className={styles.iconContainer}>
               <img
                 src={question.selected_option === question.correct_option ? rightIcon : wrongIcon}
                 alt="Result Icon"
                 className={styles.righticon}
               />
-            </span>
+            </span> */}
           </div>
 
           {Object.keys(question.options).map((optionKey, idx) => {
@@ -570,11 +643,11 @@ const quiz_results = () => {
 
 <span className={styles.newContainer}>
             <span className={styles.iconContainer}>
-              <img
+              {/* <img
                 src={answerTimerIcon}
                 alt="Answer Timer Icon"
                 className={styles.icon5}
-              />
+              /> */}
               <img
                 src={question.selected_option === question.correct_option ? rightIcon1 : wrongIcon1}
                 alt="Answer Icon"

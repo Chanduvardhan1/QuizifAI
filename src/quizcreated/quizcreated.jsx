@@ -196,7 +196,7 @@ const Edit = (quizId) => {
                     src={HorizontalLine}
                   />
                 </div>
-                <div className=" absolute top-[340px] left-[293px] flex gap-[55px]" >
+                <div className=" absolute top-[340px] left-[300px] flex gap-[55px]" >
                   <div  className=" w-[300px]">
                     <span className="font-Poppins text-[15px] font-bold leading-[40px] text-[#214082]">Category:</span>
                     <span>{quizData[0].quiz_sub_category_name}</span>

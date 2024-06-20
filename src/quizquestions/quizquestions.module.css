@@ -200,7 +200,7 @@ padding-top: 10px;
 .sentence1{
     font-family: Poppins;
     margin-top: 100px;
-font-size: 18px;
+font-size: 14px;
 font-weight: 700;
 line-height: 30px;
 letter-spacing: 0em;
@@ -220,12 +220,12 @@ width: 152px;
 }
 .Createdbyandupdated{
     display: flex;
-    gap: 200px;
+    gap: 142px;
 }
 .Created{
     align-items: center;
     font-family: Poppins;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
 }
 .quizdescription{
@@ -234,7 +234,7 @@ width: 152px;
 }
 .sentence2{
     font-family: Poppins;
-font-size: 18px;
+font-size: 14px;
 font-weight: 500;
 line-height: 30px;
 letter-spacing: 0em;
@@ -259,13 +259,12 @@ width: 200px;
   }
 .sentence3{
     font-family: Poppins;
-font-size: 18px;
+font-size: 14px;
 font-weight: 500;
 line-height: 45px;
 letter-spacing: 0em;
-
 text-align: left;
-color:#CBCBCB;
+color:black;
 
 
 }
@@ -326,4 +325,21 @@ margin-left: -130px;
     align-items: center;
     margin-bottom: 10px;
     gap: 5px;
+  }
+  .Questionslines{
+    display:flex;
+    gap:70px;
+  }
+  .Question{
+    font-family: Poppins;
+    font-size: 14px;
+    font-weight: 700;
+    color: #214082;
+  }
+  .username{
+    font-size: 14px;
+  }
+  .username1{
+    font-size: 14px;
+   
   }

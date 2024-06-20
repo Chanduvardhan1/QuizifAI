@@ -795,7 +795,7 @@ const Dashboard = () => {
             >
               More{" "}
             </span>
-            <p className="ml-[1px] mt-[1px] mr-[30px] text-[#EF5130]">></p>           
+            <p className="ml-[1px] mt-[1px] mr-[30px] text-[#EF5130]"></p>           
             {/* <img
               className="cursor-pointer mr-[20px] ml-1"
               src={moreArrow}

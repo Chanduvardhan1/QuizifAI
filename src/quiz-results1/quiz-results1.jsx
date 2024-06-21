@@ -43,13 +43,18 @@ import LeftBar from "../leftbar/leftbar";
 import { useLocation } from 'react-router-dom';
 import Navigation from "../navbar/navbar.jsx"
 import LogoutBar from "../logoutbar/logoutbar.jsx";
+import Attempt1 from "../../public/images/dashboard/Attempt1.png";
+import NoOfQuestion from "../../public/images/dashboard/NoOfQuestion.png";
+import Clock from "../../public/images/dashboard/Clock.png";
+import Easy from "../../public/images/dashboard/Easy.png";
 
 
 const Questions = () => {
   const location = useLocation();
   const { quizId } = location.state || {};
   const [leaderboardData, setLeaderboardData] = useState([]);
-  
+  const [quizData, setQuizData] = useState({});
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -68,6 +73,18 @@ const Questions = () => {
 
         if (result.response === 'success') {
           setLeaderboardData(result.data);
+          // Assuming you have quiz data in result, otherwise update this part
+          setQuizData({
+            quiz_name: result.data[0].quiz_name,
+            quiz_description: result.data[0].quiz_description,
+            created_by: result.data[0].created_by,
+            created_date: result.data[0].created_date,
+            attempts_count: result.data[0].attempts_count,
+            total_questions: result.data[0].total_questions,
+            quiz_duration: result.data[0].quiz_duration,
+            complexity: result.data[0].complexity,
+
+          });
         } else {
           console.error('Failed to fetch leaderboard data:', result.message);
         }
@@ -101,21 +118,23 @@ const topThree = leaderboardData.slice(0, 3);
   alt="User Icon"
   className={styles.icon1}
 /> */}
-          <span className={styles.quizname}>Neet Sample Paper</span>
-          <p className={styles.quizdescription}>List of neet sample chemistry questions</p>
+          <span className={styles.quizname}>{quizData.quiz_name}</span>
+          <p className={styles.quizdescription}>{quizData.quiz_description}</p>
           <div className={styles.Createdbyupdated}>
         <div className={styles.Created}>
 
         <span className={styles.Createdby} >Created By:</span>{" "}
-          {/* <span className={styles.username} >{`${quizData.created_by}`}</span> */}
+          <span className={styles.username} >{`${quizData.created_by}`}</span>
         </div>
         <div>
 
         <span className={styles.Createdby} >Created On:</span>{" "}
-          {/* <span className={styles.username} >{`${quizData.created_on}`}</span> */}
+          <span className={styles.username} >{`${quizData.created_date}`}</span>
         </div>
         </div>
         </div>
+        <div className={styles.horizontalLine}></div>
+
         {/* <div className={styles.infoContainer}>
         {/* <img
   src={createdIcon} 
@@ -124,7 +143,25 @@ const topThree = leaderboardData.slice(0, 3);
 /> */}
           {/* <span>user name<br></br>date</span> */}
         {/* </div>  */}
-    
+    <div className={styles.flexcontent} >
+      <div className={styles.flexcolumnecontent}>
+<div className={styles.alldetails}>
+  <img className={styles.Allimg} src={Attempt1} alt="" />
+  <div>{quizData.attempts_count} attempts</div>
+</div>
+<div className={styles.alldetails}>
+<img className={styles.Allimg}  src={NoOfQuestion} a alt="" />
+<div>{quizData.total_questions} question</div>
+</div>
+<div className={styles.alldetails}>
+<img className={styles.Allimg}  src={Clock} alt="" />
+<div>{quizData.quiz_duration} Minutes</div>
+</div>
+<div className={styles.alldetails}>
+<img className={styles.Allimg}  src={Easy} alt="" />
+<div>{quizData.complexity}</div>
+</div>
+      </div>
         <div className={styles.boxContainer1}>
 
         <div className={styles.titles}>
@@ -219,6 +256,7 @@ const topThree = leaderboardData.slice(0, 3);
           <div className={styles.value}>{item.attempt_duration_mins}</div>
         </div>
       ))}
+          </div>
           </div>
           {/* <div>
   <span className={styles.boticonContainer}>

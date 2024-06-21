@@ -353,7 +353,11 @@ text-align: left;
 color: #343452;
 align-items:center;
   }
-  
+  .input-highlight {
+    border: 2px solid #3B61C8; /* Change the border color as needed */
+    background-color: #f0f8ff; /* Light blue background color */
+    transition: all 0.3s ease-in-out;
+  }
 
   .horizontalBoxes {
     display: flex;

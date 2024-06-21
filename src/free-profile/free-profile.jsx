@@ -10,7 +10,10 @@ import styles from "./free-profile.module.css";
 import logoutArrowIcon from "../assets/Images/images/dashboard/logoutArrow1.png";
 //import Head from "next/head";
 //import img from "next/img";
+import visible from "../assets/Images/images/profile/visible.png";
+import hide from "../assets/Images/images/profile/hide.png";
 import searchIcon from "../assets/Images/images/dashboard/searchBar.png";
+import search from "../assets/Images/images/dashboard/Search.png";
 import notificationsettings from "../assets/Images/images/dashboard/notification-settings.png";
 import profileimg from "../assets/Images/images/profile/profileImage.png";
 import rankingimg from "../assets/Images/images/profile/ranking.png";
@@ -46,42 +49,68 @@ const FreeProfile = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [selectedButton, setSelectedButton] = useState("email");
   const [inputValue, setInputValue] = useState("");
-  const [preferredLoginMethod, setPreferredLoginMethod] = useState("email");
+  const [preferredLoginMethod, setPreferredLoginMethod] = useState("");
+  // get user details
   const [firstName, setFirstName] = useState("");
   const [middleName, setMiddleName] = useState("");
   const [lastName, setLastName] = useState("");
   const [gender, setGender] = useState("");
   const [dob, setDob] = useState("");
   const [postalCode, setPostalCode] = useState("");
-  const [address1, setAddress1] = useState("");
-  const [address2, setAddress2] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
   const [email, setEmail] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
-  const [accesskey, setaccesskey] = useState("");
+  const [occupation, setOccupation] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [initialFormData, setInitialFormData] = useState({}); 
+  const [initialLoginData, setInitialLoginData] = useState({});
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [newPasswordVisible, setNewPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [oldPasswordError, setOldPasswordError] = useState('');
+  const [newPasswordError, setNewPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
-  const [latestResults, setLatestResults] = useState([]);
-  const [timeData, setTimeData] = useState([]);
   const [weeklyQuizCount, setWeeklyQuizCount] = useState(0);
   const [averageScorePercentage, setAverageScorePercentage] = useState(0);
-  const [notAttemptedQuizzes, setNotAttemptedQuizzes] = useState([]);
-  const [attemptedQuizzes, setAttemptedQuizzes] = useState([]);
-  const [topScoredQuizzes, setTopScoredQuizzes] = useState([]);
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
+  const [userName, setUserName] = useState(localStorage.getItem("user_name"));
   const [profileData, setProfileData] = useState(null);
   const [profession, setProfession] = useState("");
-  const [Otp, setOtp] = useState(null);
+  const [otp, setOtp] = useState(null);
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [message, setMessage] = useState('');
   const [userrole, setuserrole] = useState("quiz user");
   const [usertype, setusertype] = useState("public");
   const [displayname, setdisplayname] = useState(null);
   const [professions, setProfessions] = useState("student");
 
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+  const toggleNewPasswordVisibility = () => {
+    setNewPasswordVisible(!newPasswordVisible);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setConfirmPasswordVisible(!confirmPasswordVisible);
+  };
+
+  const validatePassword = (password) => {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
+  };
+
   const handleButtonClick = (buttonName) => {
     setSelectedButton(buttonName);
     setInputValue(buttonName);
   };
+
   const handlePostalCodeChange = (e) => {
     const value = e.target.value;
     // Allow only digits and limit to 6 characters
@@ -90,275 +119,305 @@ const FreeProfile = () => {
     }
   };
 
-  const handleDateChange =(e) =>{
+  const handleDateChange = (e) => {
     const dateValue = e.target.value;
-    const year = dateValue.split('-')[0];
-    if(year.length <= 4){
+    const year = dateValue.split("-")[0];
+    if (year.length <= 4) {
       setDob(dateValue);
     }
-  }
-
-  // useEffect(() => {
-    
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch("https://quizifai.com:8010/get_prfl_dtls");
-  //       const userData = await response.json();
-  //       setFirstName(userData.data.first_name);
-  //       setMiddleName(userData.data.middle_name);
-  //       setLastName(userData.data.last_name);
-  //       setOccupation(userData.data.occupation_name);
-  //       setPincode(userData.data.pin_code);
-  //       setCityName(userData.data.city_name);
-  //       setGender(userData.data.gender);
-  //       setStateName(userData.data.state_name);
-  //       setDOB(userData.data.date_of_birth);
-  //       setCountryName(userData.data.country_name);
-  //       setEmail(userData.data.user_email);
-  //       setMobile(userData.data.user_phone_number || ""); 
-  //     } catch (error) {
-  //       console.error("Error fetching user data:", error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-  
-  // const BasicProgressBar = ({ currentValue, maxValue }) => (
-  // <progress value={currentValue} max={maxValue}>{currentValue}%</progress>
-  //);
-
-  // const BasicProgressBar = ({ currentValue, maxValue }) => (
-  //   <progress value={currentValue} max={maxValue} style={{ width: "100px" }}>
-  //     {currentValue}%
-  //   </progress>
-  // );
-
-  // const handleSubmit = async () => {
-  //   const payload = {
-  //     user_id: userId,
-  //     first_name: firstName,
-  //     middle_name: middleName,
-  //     last_name: lastName,
-  //     user_email: email,
-
-  //     user_phone_number: parseInt(mobileNumber === "" ? "0" : mobileNumber),
-  //     gender: gender,
-  //     date_of_birth: dob,
-  //     user_address_line_1: address1,
-  //     user_address_line_2: address2,
-  //     occupation: professions,
-  //     preferred_login_method: preferredLoginMethod,
-  //     access_key: accesskey,
-  //     user_role: userrole,
-  //     user_type: usertype,
-  //     user_org_id: 0,
-  //     active_flag: true,
-  //     user_address_id: 0,
-  //     user_location_id: 0,
-  //     access_key: null,
-  //     otp: Otp,
-  //     display_name: displayname,
-  //   };
-
-  //   try {
-  //     const response = await fetch("https://quizifai.com:8010/edt_prfl_dtls", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(payload),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error("Failed to submit data");
-  //     }
-
-  //     const responseData = await response.json();
-  //     console.log(responseData);
-  //     console.log("Response:", response);
-  //   } catch (error) {
-  //     console.error("Error submitting data:", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const userId = localStorage.getItem("user_id");
-
-  //   fetch("https://quizifai.com:8010/get_prfl_dtls", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       accept: "application/json",
-  //     },
-  //     body: JSON.stringify({ user_id: userId }),
-  //   })
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error("Network response was not ok");
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       setProfileData(data);
-  //       setFirstName(data.data.first_name);
-  //       setMiddleName(data.data.middle_name);
-  //       setLastName(data.data.last_name);
-  //       setGender(data.data.gender);
-  //       setProfession(data.data.occupation_name);
-  //       setDob(data.data.date_of_birth);
-
-  //       setPostalCode(data.data.pin_code);
-  //       setAddress1(data.data.user_address_line_1);
-  //       setAddress2(data.data.user_address_line_2);
-  //       setCity(data.data.location_name);
-  //       setState(data.data.state_name);
-  //       setCountry(data.data.country_name);
-  //       setEmail(data.data.user_email);
-  //       setMobileNumber(data.data.user_phone_number);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching profile data:", error);
-  //     });
-  // }, []);
-
-  // const [pincode, setpincode] = useState("");
-  // const [countryname, setcountryname] = useState("");
-  // const [statename, setstatename] = useState("");
-  // const [errorMessage, setErrorMessage] = useState("");
-  // const [responseData, setResponseData] = useState(null);
-
-  // const handleSearchClick = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     const response = await fetch(
-  //       "https://quizifai.com:8010/location_details/",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           Accept: "application/json",
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           pincode: postalCode,
-  //         }),
-  //       }
-  //     );
-  //     if (!response.ok) {
-  //       throw new Error("Failed to submit form");
-  //     }
-
-  //     const data = await response.json();
-  //     setResponseData(data); // Set response data in state
-  //     console.log(data); // Displaying response in console
-  //     setErrorMessage(""); // Clear any previous error message
-  //     if (
-  //       data &&
-  //       data.data &&
-  //       Array.isArray(data.data[0]) &&
-  //       data.data[0].length > 0
-  //     ) {
-  //       setstatename(data.data[0][0].Statename || '');
-  //       setcountryname(data.data[0][0].country_name || '');
-  //       setCity(data.data[0][0].Cityname || '');
-  //       setErrorMessage('');
-  //     }else{
-  //       setErrorMessage("No data found for the given postal code");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //     setErrorMessage("Failed to submit form. Please try again.");
-  //   }
-  // };
-  
-  const [userName, setUserName] = useState("");
-
-  useEffect(() => {
-    // Retrieve user name from local storage
-    const storedUserName = localStorage.getItem("user_name");
-    setUserName(storedUserName);
-  }, []);
-
-  const [userData, setUserData] = useState({
-    user_id: 0,
-    first_name: 'Madhuri',
-    middle_name: '',
-    last_name: '',
-    user_email: '',
-    email_otp: 0,
-    user_phone_number: '',
-    otp: 0,
-    user_role: 'quiz user',
-    user_type: 'public',
-    user_org_id: 0,
-    active_flag: true,
-    gender: '',
-    display_name: '',
-    date_of_birth: '',
-    preferred_login_method: 'email',
-    user_address_id: 0,
-    user_location_id: 0,
-    user_address_line_1: '',
-    user_address_line_2: '',
-    occupation: 'Student',
-    other_occupation: '',
-    access_key: ''
-  });
-  useEffect(() => {
-    // Fetch user data on component mount
-    axios.get('https://quizifai.com:8010/get_prfl_dtls')
-      .then(response => {
-        setUserData(response.data);
-      })
-      .catch(error => {
-        console.error("There was an error fetching the user data!", error);
-      });
-  }, []);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUserData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
   };
+
+  // Get profile details integration part******************
+  useEffect(() => {
+    const fetchQuizData = async () => {
+      console.log("User ID:", userId);
+      console.log("User Name:", userName);
+
+      try {
+        const response = await fetch(
+          `https://quizifai.com:8010/latest_quizes`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              user_id: userId,
+              username: userName,
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await response.json();
+        console.log("Data:", data);
+
+        const getProfileDetails = data.get_profiledetails;
+        const initialData = {
+          firstName: getProfileDetails.first_name,
+          middleName:getProfileDetails.middle_name,
+          lastName:getProfileDetails.last_name,
+          gender: getProfileDetails.gender,
+          dob: getProfileDetails.date_of_birth,
+          email: getProfileDetails.user_email,
+          mobileNumber: getProfileDetails.mobile_number,
+          country: getProfileDetails.country_name,
+          state: getProfileDetails.state_name,
+          city: getProfileDetails.location_name,
+          postalCode: getProfileDetails.pin_code,
+          occupation: getProfileDetails.occupation_name,
+        };
+        setFirstName(getProfileDetails.first_name);
+        setMiddleName(getProfileDetails.middle_name);
+        setLastName(getProfileDetails.last_name);
+        setGender(getProfileDetails.gender);
+        setDob(getProfileDetails.date_of_birth);
+        setEmail(getProfileDetails.user_email);
+        setMobileNumber(getProfileDetails.user_phone_number);
+        setCountry(getProfileDetails.country_name);
+        setState(getProfileDetails.state_name);
+        setCity(getProfileDetails.location_name);
+        setPostalCode(getProfileDetails.pin_code);
+        setOccupation(getProfileDetails.occupation_name);
+        setInitialLoginData(initialData);
+      } catch (error) {
+        console.error("Error fetching quiz data:", error);
+      }
+    };
+
+    fetchQuizData();
+  }, []);
+ 
+  // Edit profile details **********
+  const handleEditClick = () => {
+    setInitialFormData({
+          firstName,
+          middleName,
+          lastName,
+          gender,
+          dob,
+          email,
+          mobileNumber,
+          country,
+          state,
+          city,
+          postalCode,
+          occupation,
+    }); // Save the current form data as the initial state
+    setIsEditing(true);
+  };
+   // save after edit 
+  const handleSaveClick = async () => {
+    const payload = {
+      user_id: userId,
+      first_name: firstName,
+      middle_name: middleName,
+      last_name: lastName,
+      user_email: email,
+      email_otp: null,
+      user_phone_number: mobileNumber,
+      otp: null,
+      user_role: null,
+      user_type: null,
+      user_org_id: 0,
+      active_flag: true,
+      gender: gender,
+      display_name: " ",
+      date_of_birth: dob,
+      preferred_login_method: preferredLoginMethod,
+      user_address_id: null,
+      user_location_id: null,
+      user_address_line_1: " ",
+      user_address_line_2: " ",
+      occupation: occupation,
+      other_occupation: " ",
+      access_key: " "
+    };
+
+    console.log("Updating profile with payload:", payload);
+
+    try {
+      const response = await fetch(
+        `https://quizifai.com:8010/edt_prfl_dtls`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to update data: ${errorText}`);
+      }
+
+      const data = await response.json();
+      console.log("Updated Data:", data);
+      alert("Updated data successfully...!")
+
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error updating profile data:", error);
+    }
+  };
+  const handleCancelClick = () => {
+    setFirstName(initialFormData.firstName);
+    setMiddleName(initialFormData.middleName);
+    setLastName(initialFormData.lastName);
+    setGender(initialFormData.gender);
+    setDob(initialFormData.dob);
+    setEmail(initialFormData.email);
+    setMobileNumber(initialFormData.mobileNumber);
+    setCountry(initialFormData.country);
+    setState(initialFormData.state);
+    setCity(initialFormData.city);
+    setPostalCode(initialFormData.postalCode);
+    setOccupation(initialFormData.occupation);
+    setIsEditing(false);
+  };
+
+  //Login user detailes
+
+  const handleLoginEditClick = () => {
+    // setInitialLoginData({
+    //   email,
+    //   mobileNumber,
+    // }); 
+    setIsEditing(true);
+  };
+
+  const handleLoginSaveClick = async () => {
+    const payload = {
+      user_id: userId,
+      email: email,
+      mobile: mobileNumber,
+    };
   
+    console.log("Sending OTP with payload:", payload);
+  
+    try {
+      const response = await fetch(
+        `https://quizifai.com:8010/register_email_mobile`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+  
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`Failed to send OTP: ${errorText}`);
+        throw new Error(`Failed to send OTP: ${errorText}`);
+      }
+  
+      const data = await response.json();
+      console.log("OTP Sent Data:", data);
+  
+      setIsEditing(false);
+      setIsOtpSent(true);
+    } catch (error) {
+      console.error("Error sending OTP:", error.message);
+      // Display error message to the user
+      setMessage("Error sending OTP. Please try again.");
+    }
+  };
+
+
+//update password
+  const handleUpdatePassword = async (e) => {
+    e.preventDefault();
+    let valid = true;
+
+    if (!validatePassword(newPassword)) {
+      setNewPasswordError('Password must be at least 8 characters long, contain 1 uppercase letter, 1 special character, and 1 digit.');
+      valid = false;
+    } else {
+      setNewPasswordError('');
+    }
+
+    if (newPassword !== confirmPassword) {
+      setConfirmPasswordError('New password and confirm password do not match.');
+      valid = false;
+    } else {
+      setConfirmPasswordError('');
+    }
+
+    if (!valid) {
+      return;
+    }
+
+    try {
+      const response = await axios.post('https://quizifai.com:8010/update_password', {
+        user_id: userId,
+        old_password: oldPassword,
+        new_password: newPassword,
+        confirm_password: confirmPassword,
+      });
+      if (response.data.success) {
+        alert("Password updated successfully");
+        setOldPasswordError('');
+      } else if (response.data.error === 'Incorrect old password') {
+        setOldPasswordError('Incorrect old password.');
+        alert("Incorrect old password");
+      } else {
+        alert("Password Updated succssfully...!");
+      }
+    } catch (error) {
+      console.error("Error updating password", error);
+      alert("An error occurred while updating the password");
+    }
+  };
+
   return (
     <div className={styles.container}>
-      
       <Navigation />
-      <div className={styles.mainContent}>
+      <div className={styles.mainContent} style={{backgroundColor:"#F5F5F5"}}>
         <div className={styles.header}>
           {/* Header content */}
           <div className="flex">
-          <div className="absolute left-0 ml-[50px]">
-          <p className="">{userName}</p>
-          <div className="bg-[#30CDF040] mt-[10px] pl-[5px] text-[15px] font-medium text-[#214082] leading-6 py-[10px] rounded-[10px] w-[770px]">
-          You've completed {weeklyQuizCount} Quizzes this week with an average
-          score of {averageScorePercentage}%
-        </div>
-          </div>
-          <div className={styles.headerRight}>
-            <div>{getFormattedDate()}</div>
-            <div className={styles.searchIconContainer}>
-              <img
-                src={searchIcon}
-                alt="Search Icon"
-                className={styles.searchIcon}
-              />
+            <div className="absolute left-0 ml-[50px]">
+              <p className="text-[#002366]">Welcome {userName}</p>
+              <div className="bg-[#30CDF040] mt-[10px] pl-[5px] text-[15px] font-medium text-[#214082] leading-6 py-[10px] rounded-[10px] w-[770px]">
+                You've completed {weeklyQuizCount} Quizzes this week with an
+                average score of {averageScorePercentage}%
+              </div>
+            </div>
+            <div className={styles.headerRight}>
+              <div>{getFormattedDate()}</div>
+              <div className={styles.searchIconContainer}>
+                <img
+                  src={searchIcon}
+                  alt="Search Icon"
+                  className={styles.searchIcon}
+                />
+              </div>
             </div>
           </div>
-          </div>
-          
         </div>
-        <div className={styles.contentContainer} style={{ marginLeft: "30px",marginTop:"80px" }}>
+        {/* Main content  */}
+        <div className="relative top-[70px] bg-white flex-col">
+        <div
+          className={styles.contentContainer}
+          style={{ marginLeft: "30px", marginTop: "" }}
+        >
           <div className={styles.imgAndTextContainer}>
             <div className={styles.profileimgContainer}>
+            <h1 className=" text-[13px] text-[#EF5130] font-semibold relative top-3 left-2">
+                  Personal Information
+                </h1>
               <img
                 src={profileimg}
                 alt="img"
                 className={styles.profileimg}
-                style={{ width: "113px", height: "110px",marginLeft:"20px" }}
+                style={{ width: "113px", height: "110px", marginLeft: "20px",position:"relative", top:"35px"}}
               />
               {/* <a href="./old-password" className="text-[10px] ml-[14px] text-blue-700 font-medium hover:underline">Update Password</a> */}
             </div>
@@ -366,223 +425,478 @@ const FreeProfile = () => {
 
           <div className="flex">
             {/* first name */}
-            <div className="flex">
-          <div className={styles.inputGroup1} style={{ marginLeft: "-50px" }}>
-            <label className="text-blue-800 font-semibold">First Name</label>
-            <input
-              name="first_name"
-              value={userData.first_name}
-              onChange={handleChange}
-              className="border-none border-b-2 hover:border-gray-500 ml-[10px] h-[30px] w-[250px] text-[11px] focus:outline-none"
-              type="text"
-            />
-            <hr className="h-[1px] w-[255px] bg-gray-200"></hr>
+            <div className="flex my-[15px]">
+              <div
+                className={styles.inputGroup1}
+                style={{ marginLeft: "-55px" }}
+              >
+                <label className="text-blue-800 font-semibold">
+                  First Name<sup className="text-red-500">*</sup>
+                </label>
+                <input
+                  className="border-transparent 
+                          border-b-2  
+                        hover:border-blue-200 
+                          ml-[10px] 
+                          mr-[70px]
+                          h-[30px] 
+                          w-[170px] 
+                          text-[11px] 
+                          focus:outline-none ${isEditing ? 'input-highlight' : ''}`}"
+                          type="text"
+                          required
+                          value={firstName}
+                          onChange={(e) => setFirstName(e.target.value)}
+                          disabled={!isEditing}
+                />
+                <hr className={`h-[1px] w-[250px] ${isEditing ? 'hr-highlight' : 'bg-whitet'}`}></hr>
+              </div>
+              <div
+                className={styles.inputGroup1}
+                style={{ marginLeft: "-35px" }}
+              >
+                <label className="text-blue-800 font-semibold">
+                  Occupation
+                </label>
+                <select
+                  name="occupation"
+                  className="border-transparent 
+                           border-b-2   
+                        hover:border-blue-200 
+                          ml-[10px] 
+                          h-[30px] 
+                          w-[183px] 
+                          text-[11px] 
+                          focus:outline-none"
+                          type="text"
+                          value={occupation}
+                          onChange={(e) => setOccupation(e.target.value)}
+                          disabled={!isEditing}
+                >
+                 <option value="">Select Occupation</option>
+                 <option value="">Student</option>
+                 <option value="Male">Teacher</option>
+                 <option value="Female">Professional</option>
+                 <option value="Other">Other</option> 
+                </select>
+                <hr className="h-[0.5px] w-[270px] bg-gray-100"></hr>
+              </div>
+            </div>
           </div>
-          <div className={styles.inputGroup1} style={{ marginLeft: "-35px" }}>
-            <label className="text-blue-800 font-semibold">Occupation</label>
+        </div>
+        <div className="flex ml-[29%] -mt-[40px] my-[10px]">
+          {/* Middle name */}
+          <div className={styles.inputGroup1} style={{ marginLeft: "-50px" }}>
+            <label className="text-blue-800 font-semibold">Middle Name</label>
             <input
-              name="occupation"
-              value={userData.occupation}
-              onChange={handleChange}
-              className="border-none border-b-2 hover:border-gray-500 ml-[10px] h-[30px] w-[250px] text-[11px] focus:outline-none"
+              className="border-transparent 
+                          border-b-2   
+                        hover:border-blue-200 
+                          ml-[10px] 
+                          mr-[80px]
+                          h-[30px] 
+                          w-[153px] 
+                          text-[11px] 
+                          focus:outline-none"
               type="text"
+              value={middleName}
+              onChange={(e) => setMiddleName(e.target.value)}
+              disabled={!isEditing}
+            />
+            <hr className="h-[0.5px] w-[250px] bg-gray-200"></hr>
+          </div>
+          {/* pincode  */}
+          <div className={styles.inputGroup1} style={{ marginLeft: "-46px",display:"" }}>
+            <label className="text-blue-800 font-semibold">Pincode</label>
+            <input
+              className="border-transparent 
+                           border-b-2   
+                        hover:border-blue-200 
+                          ml-[10px] 
+                          // mr-[90px]
+                          h-[30px] 
+                          w-[205px] 
+                          text-[11px] 
+                          focus:outline-none"
+              type="text"
+              value={postalCode}
+              onChange={handlePostalCodeChange}
+              disabled={!isEditing}
+            />
+            <img className="h-[15px] w-[15px] -mt-[15px] ml-[71%] relative -top-[8px]" src={search}/>
+            
+            <hr className="h-[0.5px] w-[270px] bg-gray-200"></hr>
+          </div>
+        </div>
+        <div className="flex ml-[29%] -mt-[5px] my-[10px]">
+          {/* Last name */}
+          <div className={styles.inputGroup1} style={{ marginLeft: "-50px" }}>
+            <label className="text-blue-800 font-semibold">Last Name</label>
+            <input
+              className="border-transparent 
+                           border-b-2   
+                        hover:border-blue-200 
+                          ml-[10px] 
+                          mr-[70px]
+                          h-[30px] 
+                          w-[170px] 
+                          text-[11px] 
+                          focus:outline-none"
+              type="text"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              disabled={!isEditing}
+            />
+            <hr className="h-[1px] w-[250px] bg-gray-200"></hr>
+          </div>
+          {/* city name  */}
+          <div className={styles.inputGroup1} style={{ marginLeft: "-35px" }}>
+            <label className="text-blue-800 font-semibold">City Name</label>
+            <input
+              className="border-transparent 
+                           border-b-2  
+                        hover:border-blue-200 
+                          ml-[10px] 
+                          mr-[90px]
+                          h-[30px] 
+                          w-[190px] 
+                          text-[11px] 
+                          focus:outline-none"
+              type="text"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              disabled={!isEditing}
             />
             <hr className="h-[1px] w-[270px] bg-gray-200"></hr>
           </div>
         </div>
- {/* occupation  */}
-            {/* <div className={styles.inputGroup1} style={{marginLeft:"-35px"}}>
-             <label className="text-blue-800 font-semibold">Occupation</label>
-             <input className="
-   border-none 
-      border-b-2  
-      hover:border-gray-500 
-      ml-[10px] 
-      h-[30px] 
-      w-[250px] 
-      text-[11px] 
-      focus:outline-none
-    " type="text"/>
-    <hr className="h-[1px] w-[270px] bg-gray-200"></hr>
-            </div> */}
-   </div>
-  
-   </div>
-   <div className="flex ml-[29%] -mt-[50px]">
-            {/* Middle name */}
-          <div className={styles.inputGroup1} style={{marginLeft:"-50px"}}>
-             <label className="text-blue-800 font-semibold">Middle Name</label>
-             <input className="
-   border-none 
-      border-b-2  
-      hover:border-gray-500 
-      ml-[10px] 
-      h-[30px] 
-      w-[250px] 
-      text-[11px] 
-      focus:outline-none
-    " type="text"/>
-    <hr className="h-[1px] w-[255px] bg-gray-200"></hr>
-            </div>
- {/* pincode  */}
-            <div className={styles.inputGroup1} style={{marginLeft:"-53px"}}>
-             <label className="text-blue-800 font-semibold">Pincode</label>
-             <input className="
-   border-none 
-      border-b-2  
-      hover:border-gray-500 
-      ml-[10px] 
-      h-[30px] 
-      w-[250px] 
-      text-[11px] 
-      focus:outline-none
-    " type="text"/>
-    <hr className="h-[1px] w-[270px] bg-gray-200"></hr>
-            </div>
-   </div>
-   <div className="flex ml-[29%] -mt-[10px]">
-            {/* Last name */}
-          <div className={styles.inputGroup1} style={{marginLeft:"-50px"}}>
-             <label className="text-blue-800 font-semibold">Last Name</label>
-             <input className="
-   border-none 
-      border-b-2  
-      hover:border-gray-500 
-      ml-[10px] 
-      h-[30px] 
-      w-[250px] 
-      text-[11px] 
-      focus:outline-none
-    " type="text"/>
-    <hr className="h-[1px] w-[255px] bg-gray-200"></hr>
-            </div>
- {/* city name  */}
-            <div className={styles.inputGroup1} style={{marginLeft:"-35px"}}>
-             <label className="text-blue-800 font-semibold">City Name</label>
-             <input className="
-   border-none 
-      border-b-2  
-      hover:border-gray-500 
-      ml-[10px] 
-      h-[30px] 
-      w-[250px] 
-      text-[11px] 
-      focus:outline-none
-    " type="text"/>
-    <hr className="h-[1px] w-[270px] bg-gray-200"></hr>
-            </div>
-   </div>
-   <div className="flex ml-[29%] -mt-[10px]">
-            {/* gender*/}
-          <div className={styles.inputGroup1} style={{marginLeft:"-50px"}}>
-             <label className="text-blue-800 font-semibold">Gender</label>
-             <input className="
-   border-none 
-      border-b-2  
-      hover:border-gray-500 
-      ml-[10px] 
-      h-[30px] 
-      w-[250px] 
-      text-[11px] 
-      focus:outline-none
-    " type="text"/>
-    <hr className="h-[1px] w-[255px] bg-gray-200"></hr>
-            </div>
- {/* state name  */}
-            <div className={styles.inputGroup1} style={{marginLeft:"-13px"}}>
-             <label className="text-blue-800 font-semibold">State Name</label>
-             <input className="
-   border-none 
-      border-b-2  
-      hover:border-gray-50
-      ml-[10px] 
-      h-[30px] 
-      w-[250px] 
-      text-[11px] 
-      focus:outline-none
-    " type="text"/>
-    <hr className="h-[1px] w-[270px] bg-gray-200"></hr>
-            </div>
-   </div>
-   <div className="flex ml-[29%] -mt-[10px]">
-            {/* email*/}
-          <div className={styles.inputGroup1} style={{marginLeft:"-50px",textWrap:"nowrap"}}>
-             <label className="text-blue-800 font-semibold">DOB</label>
-             <input className="
-   border-none 
-      border-b-2  
-      hover:border-gray-500 
-      ml-[10px] 
-      h-[30px] 
-      w-[250px] 
-      text-[11px] 
-      focus:outline-none
-    " type="text"/>
-    <hr className="h-[1px] w-[255px] bg-gray-200"></hr>
-            </div>
- {/* mobile */}
-            <div className={styles.inputGroup1} style={{marginLeft:"10px",textWrap:"nowrap"}}>
-             <label className="text-blue-800 font-semibold">Country Name</label>
-             <input className="
-   border-none 
-      border-b-2  
-      hover:border-gray-500 
-      ml-[10px] 
-      h-[30px] 
-      w-[250px] 
-      text-[11px] 
-      focus:outline-none
-    " type="text"
-    onFocus={() => setIsFocused(true)}
-    onBlur={() => setIsFocused(false)}
-  />
-  <hr
-    className={`h-[1px] w-[270px] bg-gray-200 ${isFocused ? 'bg-blue-500' : ''}`}
-  />
-            </div>
-   </div>
-   <div className="flex ml-[29%] -mt-[10px]">
-            {/* email*/}
-          <div className={styles.inputGroup1} style={{marginLeft:"-50px"}}>
-             <label className="text-blue-800 font-semibold">Email</label>
-             <input className="
-   border-none 
-      border-b-2  
-      hover:border-gray-500 
-      ml-[10px] 
-      h-[30px] 
-      w-[250px] 
-      text-[11px] 
-      focus:outline-none
-    " type="text"/>
-    <hr className="h-[1px] w-[255px] bg-gray-200"></hr>
-            </div>
- {/* mobile */}
-            <div className={styles.inputGroup1} style={{marginLeft:"3px"}}>
-             <label className="text-blue-800 font-semibold">Mobile</label>
-             <input className="
-   border-none 
-      border-b-2  
-      hover:border-gray-500 
-      ml-[10px] 
-      h-[30px] 
-      w-[250px] 
-      text-[11px] 
-      focus:outline-none
-    " type="text"/>
-    <hr className="h-[1px] w-[270px] bg-gray-200"></hr>
-            </div>
-   </div>
-   
-   <div className="flex justify-start ml-[23%] gap-5 mt-[20px]">
-   <button className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[#FA3D49] transition-transform duration-300 ease-in-out px-4 py-1 rounded-[20px] text-white">Edit</button>
-   <button className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[#FA3D49] transition-transform duration-300 ease-in-out px-4 py-1 rounded-[20px] text-white">Save</button>
-   {/* <button className="bg-[#3B61C8] py-2 px-4 rounded-[20px] text-white">verify</button> */}
-   </div>
-   
-   </div>
+        <div className="flex ml-[29%] -mt-[5px] my-[10px]">
+          {/* gender*/}
+          <div className={styles.inputGroup1} style={{ marginLeft: "-50px" }}>
+            <label className="text-blue-800 font-semibold">Gender</label>
+            <select
+      className="border-transparent 
+                   border-b-2   
+                 hover:border-blue-200 
+                   ml-[10px] 
+                   h-[30px] 
+                   w-[190px] 
+                   text-[11px] 
+                   focus:outline-none"
+      value={gender}
+      onChange={(e) => setGender(e.target.value)}
+      disabled={!isEditing}
+    >
+      <option value="">Select Gender</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Other">Other</option>
+    </select>
+            <hr className="h-[0.5px] w-[250px] bg-gray-200"></hr>
+          </div>
+          {/* state name  */}
+          <div className={styles.inputGroup1} style={{ marginLeft: "35px" }}>
+            <label className="text-blue-800 font-semibold">State Name</label>
+            <input
+              className="border-transparent 
+                           border-b-2   
+                        hover:border-blue-200 
+                          ml-[10px] 
+                          h-[30px] 
+                          w-[183px] 
+                          text-[11px] 
+                          focus:outline-none"
+              type="text"
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+              disabled={!isEditing}
+            />
+            <hr className="h-[1px] w-[270px] bg-gray-200"></hr>
+          </div>
+        </div>
+        <div className="flex ml-[29%] -mt-[5px] my-[10px]">
+          {/* email*/}
+          <div
+            className={styles.inputGroup1}
+            style={{ marginLeft: "-50px", textWrap: "nowrap" }}
+          >
+            <label className="text-blue-800 font-semibold">DOB</label>
+            <input
+              className="border-transparent 
+                           border-b-2   
+                        hover:border-blue-200 
+                          ml-[10px] 
+                          mr-[90px]
+                          h-[30px] 
+                          w-[210px] 
+                          text-[11px] 
+                          focus:outline-none"
+              type="date"
+              value={dob}
+              onChange={handleDateChange}
+               disabled={!isEditing}
+            />
+            <hr className="h-[1px] w-[250px] bg-gray-200"></hr>
+          </div>
+          {/* mobile */}
+          <div
+            className={styles.inputGroup1}
+            style={{ marginLeft: "-53px", textWrap: "nowrap" }}
+          >
+            <label className="text-blue-800 font-semibold">Country Name</label>
+            <input
+              className="border-transparent 
+                           border-b-2   
+                        hover:border-blue-200 
+                          ml-[10px] 
+                          h-[30px] 
+                          w-[170px] 
+                          text-[11px] 
+                          focus:outline-none"
+              type="text"
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              disabled={!isEditing}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+            />
+            <hr
+              className={`h-[1px] w-[270px] bg-gray-200 ${
+                isFocused ? "bg-blue-500" : ""
+              }`}
+            />
+          </div>
+        </div>
+
+
+        <div className="flex justify-start ml-[23%] mt-[20px] mb-[20px]">
+        {isEditing ? (
+        <button
+          className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[#FA3D49] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] text-white"
+          onClick={handleSaveClick}
+        >
+          Save
+        </button>
+      ) : (
+        <button
+          className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[#FA3D49] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] text-white"
+          onClick={handleEditClick}
+        >
+          Edit
+        </button>
+      )}
+       <button className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[#FA3D49] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] ml-[5%] text-white"
+       onClick={handleCancelClick}
+       >
+       Cancel
+       </button>
+          {/* <button className="bg-[#3B61C8] py-2 px-4 rounded-[20px] text-white">verify</button> */}
+        </div>
+      </div>
+
+      <div className="bg-white w-full mt-[8%]">
+      <h1 className="ml-[6%] mt-4 text-[13px] text-[#EF5130] font-semibold">Login User Details</h1>
+      <div className="flex ml-[30%] mt-[20px]">
+        {/* Email */}
+        <div className={styles.inputGroup1} style={{ marginLeft: "-50px" }}>
+          <label className="text-blue-800 font-semibold">Email</label>
+          <input
+            className={`
+              border-transparent 
+              border-b-2   
+              hover:border-blue-200   
+              mr-[40px]
+              ml-[10px]
+              h-[30px] 
+              w-[200px] 
+              text-[11px] 
+              focus:outline-gray-300
+              ${isEditing ? 'highlight' : ''}
+            `}
+            type="text"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={!isEditing}
+          />
+        </div>
+        {/* Mobile */}
+        <div className={styles.inputGroup1}>
+          <label className="text-blue-800 font-semibold ml-[20px]">Mobile</label>
+          <input
+            className={`
+              border-transparent 
+              border-b-2   
+              hover:border-blue-200  
+              ml-[10px] 
+              h-[30px] 
+              w-[213px] 
+              text-[11px] 
+              focus:outline-gray-300
+              ${isEditing ? 'highlight' : ''}
+            `}
+            type="tel"
+            value={mobileNumber}
+            onChange={(e) => setMobileNumber(e.target.value)}
+            disabled={!isEditing}
+          />
+        </div>
+      </div>
+      {isEditing ? (
+        <button
+          className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[#FA3D49] 
+          transition-transform duration-300 ease-in-out h-[30px] w-[90px] text-[13px] font-semibold 
+          rounded-[20px] ml-[200px] mb-[20px] text-white mt-[20px]"
+          onClick={handleLoginSaveClick}
+        >
+          Send Otp
+        </button>
+      ) : (
+        <button
+          className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[#FA3D49] 
+          transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold 
+          rounded-[20px] ml-[200px] mb-[20px] text-white mt-[20px]"
+          onClick={handleLoginEditClick}
+        >
+          Edit
+        </button>
+      )}
+      {isOtpSent && (
+        <div className="mt-[20px]">
+          <label className="text-blue-800 font-semibold">Enter OTP</label>
+          <input
+            className="border-transparent border-b-2 hover:border-blue-200 ml-[10px] h-[30px] w-[200px] text-[11px] focus:outline-gray-300"
+            type="text"
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
+          />
+          <button
+            className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[#FA3D49] 
+            transition-transform duration-300 ease-in-out h-[30px] w-[90px] text-[13px] font-semibold 
+            rounded-[20px] ml-[10px] text-white"
+            onClick={handleOtpVerifyClick}
+          >
+            Verify OTP
+          </button>
+        </div>
+      )}
+      {message && (
+        <div className="mt-[20px] text-green-500 font-semibold">
+          {message}
+        </div>
+      )}
+    </div>
+
+      <div className="bg-white w-full">
+      <h1 className="ml-[6%] mt-4 text-[13px] text-[#EF5130] font-semibold">Update Password </h1>
+      <div className="flex ml-[30%] mt-[20px]">
+      {/* Email */}
+      <div className="inputGroup1" style={{ marginLeft: "-50px" }}>
+          <label className="text-blue-800  text-[13px] font-semibold">Old Password</label>
+          <input
+            className={`
+              border-transparent 
+              border-b-2   
+              hover:border-blue-200   
+              mr-[40px]
+              ml-[px]
+              h-[30px] 
+              w-[173px] 
+              text-[11px] 
+              focus:outline-gray-300 
+            `}
+            type={passwordVisible ? 'text' : 'password'}
+            placeholder="Enter your old password"
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
+          />
+          <span
+            onClick={togglePasswordVisibility}
+            className='cursor-pointer'
+          >
+            {passwordVisible ? (
+              <img className='h-[17px] w-[17px] ml-[66%] relative -top-[25px]' src={visible} alt='Hide Password' />
+            ) : (
+              <img className='h-[17px] w-[17px] ml-[66%] relative -top-[25px]' src={hide} alt='Show Password' />
+            )}
+          </span>
+          {oldPasswordError && <div className="text-red-500 text-xs mt-1">{oldPasswordError}</div>}
+        </div>
+      {/* Mobile */}
+      <div className={styles.inputGroup1}>
+        <label className="text-blue-800 font-semibold ml-[15px]">New Password</label>
+        <input
+          className={`
+            border-transparent 
+            border-b-2   
+            hover:border-blue-200  
+            ml-[15px] 
+            h-[30px] 
+            w-[163px] 
+            text-[11px] 
+            focus:outline-gray-300
+          `}
+          type={newPasswordVisible ? 'text' : 'password'}
+          placeholder="Enter new password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+        />
+        <span
+                onClick={toggleNewPasswordVisibility}
+                className='cursor-pointer'
+              >
+                {newPasswordVisible ? (
+                  <img className='h-[17px] w-[17px] ml-[72%] relative -top-[25px]' src={visible} alt='Hide Password' />
+                ) : (
+                  <img className='h-[17px] w-[17px] ml-[72%] relative -top-[25px]' src={hide} alt='Show Password' />
+                )}
+              </span>
+              {newPasswordError && <div className="text-red-500 text-xs mt-1 w-[190px] mx-[10px]">{newPasswordError}</div>}
+      </div>
+      <div className={styles.inputGroup1}>
+        <label className="text-blue-800 font-semibold ml-[20px]">Confirm Password</label>
+        <input
+          className={`
+            border-transparent 
+            border-b-2   
+            hover:border-blue-200  
+            ml-[20px] 
+            h-[30px] 
+            w-[168px] 
+            text-[11px] 
+            focus:outline-gray-300
+          `}
+          type={confirmPasswordVisible ? 'text' : 'password'}
+          placeholder="Enter confirm password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+        <span
+                onClick={toggleConfirmPasswordVisibility}
+                className='cursor-pointer'
+              >
+                {confirmPasswordVisible ? (
+                  <img className='h-[17px] w-[17px] ml-[67%] relative -top-[25px]' src={visible} alt='Hide Password' />
+                ) : (
+                  <img className='h-[17px] w-[17px] ml-[67%] relative -top-[25px]' src={hide} alt='Show Password' />
+                )}
+              </span>
+              {confirmPasswordError && <div className="text-red-500 text-xs mt-1 w-[200px]">{confirmPasswordError}</div>}
+      </div>
+    </div>
+        <button
+          className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[#FA3D49] 
+          transition-transform duration-300 ease-in-out h-[30px] w-[150px] text-[13px] font-semibold 
+          rounded-[20px] ml-[200px] mb-[20px] text-white mt-[20px] text-nowrap"
+          onClick={handleUpdatePassword}
+        >
+          Update Password
+        </button>
+      </div> 
+
         
-       <LogoutBar />
+        
+      </div>
+      <LogoutBar />
     </div>
   );
 };

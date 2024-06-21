@@ -490,7 +490,7 @@ const Dashboard = () => {
                             src={Share_button}
                             alt="Play icon"
                           />
-                          <span className={styles.sharetext}>Share</span>
+                          <span className={styles.sharetext} onClick={() => handleStartQuiz(quizItem.quiz_id)}>Retake</span>
                         </div>
                       )}
                     </div>

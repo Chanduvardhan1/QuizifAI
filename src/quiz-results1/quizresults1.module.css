@@ -150,15 +150,7 @@
       justify-content: center; /* Center icon and text horizontally */
     }
     
-  .horizontalLine {
-      border: 1px dashed #555555; /* Add border style */
-      margin-top: 30px; /* Adjust margin top for spacing */
-      width: 548px;
-      margin-left: 40px;
-  border: 1;
   
-  
-    }
  
   
     .sentencesContainer {
@@ -646,23 +638,32 @@ padding: 10px;
 }
 .quizdescription{
   width: 780px;
-  font-size: 15px;
+  font-size: 14px;
 }
 .Createdbyupdated{
   display: flex;
   justify-content: space-between;
   /* gap: 40px; */
+  font-size: 14px;
 }
 .Createdby {
   font-family: Poppins;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 700;
 }
   .custom-spacing {
     justify-content: var(--value-spacing);
   }
-  
- 
+  .username{
+    font-weight: 400;
+  }
+ .horizontalLine{
+  border: 1px dashed #555555; 
+     /* margin-top: 30px;  */
+    width: 800px; 
+    border: 1;
+    /* margin-bottom: 10px; */
+ }
   .righticon{
     width: 22.98px;
 height: 23px;
@@ -822,16 +823,6 @@ text-align: left;
     display: flex;
     justify-content: center; /* Center icon and text horizontally */
   }
-  
-.horizontalLine {
-    border: 1px dashed #555555; /* Add border style */
-    margin-top: 30px; /* Adjust margin top for spacing */
-    width: 885px;
-    margin-left: 40px;
-border: 1;
-
-
-  }
 
   .sentencesContainer {
     display: flex;
@@ -925,3 +916,25 @@ text-align: left;
   display: flex;
   justify-content: center;
  } 
+ .flexcontent{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding-top: 10px;
+ }
+ .flexcolumnecontent{
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding-left: 60px;
+    padding-top: 60px;
+ }
+ .alldetails{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+ }
+ .Allimg{
+  width: 30px;
+  height: 30px;
+ }

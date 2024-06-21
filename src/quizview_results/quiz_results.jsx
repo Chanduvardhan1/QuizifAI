@@ -1,6 +1,6 @@
 // import Head from 'next/head';
 // import Image from "next/image";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useRef } from 'react';
 import styles from './quiz_results.module.css';
 import LeftBar from '../leftbar/leftbar';
 import createdIcon from "../../src/assets/Images/images/quiz-Access/created.png";
@@ -55,7 +55,7 @@ const quiz_results = () => {
   const [leaderboardData, setLeaderboardData] = useState([]);
   const navigate = useNavigate();
   const [isQuizSubmitted, setIsQuizSubmitted] = useState(false); // State to track quiz submission
-
+  const resultRef = useRef();
  
   const optionLabels = {
     option1: 'A',
@@ -373,7 +373,7 @@ const quiz_results = () => {
     alt="Calendar Icon"
     className={styles.icon2}
   />
-          <span>Taken on {quizData.attained_score}</span>
+          <span>Taken on </span>
         </div>
         </div>
         <div className={styles.sentencesContainer}>
@@ -414,7 +414,7 @@ const quiz_results = () => {
     alt="Calendar Icon"
     className={styles.icon2}
   />
-          <span className={styles.sentence3}>You have scored {quizData.attained_score_percentage}% ,A Grade, Failed</span>
+          <span className={styles.sentence3}>You have scored {quizData.attained_score_percentage}%</span>
         </div>
        
         

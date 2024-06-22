@@ -79,11 +79,11 @@ const Dashboard = () => {
 
     const fetchQuizData = async () => {
       // Retrieve user_id and user_name from localStorage
-      console.log("User ID:", userId);
-      console.log("User Name:", username);
+      // console.log("User ID:", userId);
+      // console.log("User Name:", username);
       try {
         const response = await fetch(
-          `https://quizifai.com:8010/latest_quizes?user_id=${userId}&username=${username}`,
+          `https://quizifai.com:8010/dashboard`,
           {
             method: "POST",
             headers: {
@@ -91,7 +91,7 @@ const Dashboard = () => {
             },
             body: JSON.stringify({
               user_id: userId,
-              username: username, // Ensure correct payload format
+          
             }),
           }
         );

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import Switch from "react-switch";
 import Navigation from "../navbar/navbar";
 import { useNavigate } from "react-router-dom";
@@ -224,9 +224,14 @@ export default function editmanuly() {
   const [classes, setClasses] = useState([]); // Initialize as empty array
   const [categories, setCategories] = useState([]);
 
+  const [isModified, setIsModified] = useState(false);
+  const saveButtonRef = useRef(null);
+
   useEffect(() => {
     fetchCategories();
   }, []);
+
+
 
   const fetchCategories = async () => {
     try {
@@ -539,6 +544,7 @@ export default function editmanuly() {
       options: idx === questionIndex ? newOptions : question.options,
     }));
     setQuestions(newQuestions);
+    setIsModified(true);
   };
   const handleNext = async () => {
     const requiredFields = [
@@ -626,6 +632,7 @@ export default function editmanuly() {
       console.log(responseData, "data");
       if (response.ok) {
         if (responseData.response === "success") {
+          setIsModified(false);
           // Navigate to quiz created page with the response data
           navigate("/quizcreated", { state: { quizData: responseData } });
         } else if (responseData.data && responseData.data.length > 0) {
@@ -805,8 +812,20 @@ export default function editmanuly() {
     fetchQuizData();
   }, []);
 
+
+  useEffect(() => {
+    if (saveButtonRef.current) {
+      if (isModified) {
+        saveButtonRef.current.style.backgroundColor = "#EF5130"; // Change button color to red
+      } else {
+        saveButtonRef.current.style.backgroundColor = "#1E4DE9"; // Reset to original color
+      }
+    }
+  }, [isModified]);
+
   const handleCancel = () => {
     fetchQuizData();
+    setIsModified(false);
   };
  
   const calculateWeightage = (numQuestions, quiztotalmarks) => {
@@ -817,6 +836,7 @@ export default function editmanuly() {
     const updatedQuestions = [...questions];
     updatedQuestions[index] = value;
     setQuestions(updatedQuestions);
+    setIsModified(true);
   };
   const toggler1 = (checked) => {
     setMultiAnswer(checked);
@@ -1537,6 +1557,7 @@ export default function editmanuly() {
           const newQuestions = [...questions];
           newQuestions[questionIndex].question_text = e.target.value;
           setQuestions(newQuestions);
+          setIsModified(true);
         }}
       />
 
@@ -1555,6 +1576,7 @@ export default function editmanuly() {
             return q;
           });
           setQuestions(updatedQuestions);
+          setIsModified(true);
         }}
       />
 
@@ -1591,6 +1613,7 @@ export default function editmanuly() {
             const newQuestions = [...questions];
             newQuestions[questionIndex].options = newOptions;
             setQuestions(newQuestions);
+            setIsModified(true);
           }}
         />
         {/* Add correct answer flag input */}

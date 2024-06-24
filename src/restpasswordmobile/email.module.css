@@ -401,7 +401,7 @@
   font-size: 15px;
   border-radius: 10px;
   border: none;
-  margin-left: 100px;
+  /* margin-left: 100px; */
   
 }
 
@@ -649,15 +649,15 @@ margin-top: -3px;
   display: flex;
   align-items: center;
   gap: 5px;
-  align-items: center;
-  gap: 5px;
+  margin-top: 10px;
   justify-content: end;
-  padding-right: 95px;
+  padding-right: 100px;
 }
+
 .disabledButton {
   border: none;
   background-color: #ccc; /* Gray color */
-  color: #dad8d8; /* Lighter text color */
+  color: #ffffff; /* Lighter text color */
   cursor: not-allowed;
   width: 100px;
   height: 40px;
@@ -915,11 +915,11 @@ margin-top: -3px;
   }
 
   .loginButton, .resendButton {
-    margin-right: 200px;
+    /* margin-right: 200px; */
     width: 120%;
   
     font-size: calc(18px + 80%); 
-    margin-top: 20px;
+    /* margin-top: 20px; */
   }
 
   

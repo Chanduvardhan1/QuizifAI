@@ -210,11 +210,7 @@
     padding: 20px;
     z-index: 1000; 
   }
-  .Button{
-    display: flex;
-    gap: 125px;
-    padding: 5px;
-  }
+  
   .closeButton {
     position: absolute;
     top: 15px;
@@ -448,12 +444,18 @@
   font-size: 15px;
   border-radius: 10px;
   border: none;
-
+/* position:relative;
+top:-40px */
 }
 .loginButton1:hover {
   background-color: #7e71ff; /* Change background color on hover */
   transform: scale(1.1); /* Zoom effect on hover */
   transition: transform 0.3s ease;
+}
+.Button{
+  display: flex;
+    gap: 125px;
+    padding: 5px;
 }
   .registerButton {
     width: 104px;

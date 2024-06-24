@@ -77,7 +77,7 @@ import Resetpassword from "./reset-password/restpassword.jsx";
 import Contact from "./contactus/contactus.jsx";
 import Contact1 from "./contact/contact.jsx";
 import Termsandconditions from "./termsandconditions/termsandconditions.jsx";
-
+import Resetpasswordmobile from "./restpasswordmobile/restpasswordmobile.jsx";
 
 import Quizcreated2 from "./quizcreated-textbook/quizcreated2.jsx";
 import Createeditquiz from "./create-editquiz/create-editquiz.jsx";
@@ -339,7 +339,7 @@ import Quizresults1 from "./quizview_results/quiz_results.jsx";
             <Route path="superadmin" element={<Superadmins/>} />
             <Route path="superadmin1" element={<Superadmin1/>} />
             <Route path="resetpassword" element={<Resetpassword/>} />
-
+            <Route path="resetpasswordmobile" element={<Resetpasswordmobile/>} />
             <Route path="create-editquiz" element={<Createeditquiz/>} />
 
             <Route path="editmanuly" element={<Editmanuly/>} />

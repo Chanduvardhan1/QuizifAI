@@ -212,8 +212,8 @@ if (hasError) {
       .then((data) => {
         // console.log('Sign-up successful:', data);
 
-        if (loginMethod === 'email' && data.response === 'success') {
-          setResponseMessage("Email is successfully registered. Check your email for verification.");
+        if (loginMethod === 'email' && data.response === 'success' &&  data.response_message === 'Please verify your email to proceed' ) {
+          setResponseMessage(data.response_message);
           setShowOtpField(true);
           setShowVerifyButton(true);
         } else if (
@@ -225,14 +225,20 @@ if (hasError) {
           setShowVerifyButton(true);
         } else if (
           data.response === 'fail' &&
-          data.data === 'Email is already registered. You can log in.'
+          data.response_message === 'Email is already registered. Please log in or use a different email.'
         ) {
-          setResponseMessage(data.data);
+          setResponseMessage(data.response_message);
         }  else if (
           data.response === 'fail' &&
-          data.data === 'Email is not valid,Make sure email should have atleast 8 characters.'
+          data.response_message === 'Please provide a valid email address to proceed with your account.'
         ) {
-          setTerms("Email is not valid");
+          setTerms(data.response_message);
+        }  else if (
+          data.response === 'fail' &&
+          data.data === 'Email is already registered. Registration is not yet completed.'
+        ) {
+          setResponseMessage1(data.data);
+          navigate("/register");
         } 
         else {
           setResponseMessage1(data.data);
@@ -371,28 +377,26 @@ if (hasError) {
           setShowOtpField1(true);
           setShowVerifyButton1(true); 
         } else if (
-          data.response === "success" &&
-          data.output &&
-          data.output.includes("Please verify your OTP")
+          data.response === "success"
         ) {
           // const sanitizedOutput = data.output.replace(/\d{6}\s?/, ""); // Removes the OTP (6 digits followed by optional space)
           // setResponseMessage(sanitizedOutput);
-          setResponseMessage("Account Has Been Created OTP Successfully Sent Please verify your OTP")
+          setResponseMessage(data.response_message)
           // setGreen("Account Has Been Created OTP Successfully Sent Please verify your OTP")
           setShowOtpField1(true);
           setShowVerifyButton1(true); 
         } else if (
           data.response === "fail" &&
-          data.data === "400: Mobile Number is Invalid."
+          data.response_message === "Mobile number is invalid to proceed with your account."
         ) {
-          setResponseMessage(data.data);
+          setResponseMessage(data.response_message);
         } else if (
           data.response === "fail" &&
-          data.data ===
-            "Mobile Number is already registered. You can log in."
+          data.response_message ===
+          "Mobile is already registered. Please log in or use a different mobile number."
           
         ) {
-          setResponseMessage(data.data);
+          setResponseMessage(data.response_message);
           // navigate("/Register");
           // navigate("/login", {
           //   state: { emailMobOption: loginMethod, emailMob: mobile },
@@ -446,7 +450,7 @@ if (hasError) {
       return;
     }
     try {
-      const response = await fetch("https://quizifai.com:8010/verification", {
+      const response = await fetch("https://quizifai.com:8010/sgnup_verification", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -496,7 +500,7 @@ if (hasError) {
       return;
     }
     try {
-      const response = await fetch("https://quizifai.com:8010/verification", {
+      const response = await fetch("", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

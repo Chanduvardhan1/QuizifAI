@@ -14,8 +14,8 @@ import TextField from "@mui/material/TextField";
 import { useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const resetpassword = () => {
-  const [loginMethod, setLoginMethod] = useState("email");
+const resetpasswordmobile = () => {
+  const [loginMethod, setLoginMethod] = useState("mobile");
   const [email, setEmail] = useState("");
   const [email1, setEmail1] = useState("email");
   const [otp, setOtp] = useState("");
@@ -52,7 +52,6 @@ const resetpassword = () => {
   const [errors, setErrors] = useState({});
   const [mobile, setMobile] = useState("");
   const [mobile1, setMobile1] = useState("");
-  const [showOtpField1, setShowOtpField1] = useState(false);
   const [resendAvailable, setResendAvailable] = useState(false);
   const [resendTime, setResendTime] = useState(600);
 
@@ -66,7 +65,7 @@ const resetpassword = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-  useEffect(() => {
+ useEffect(() => {
     const timer = setInterval(() => {
       setResendTime((prevTime) => {
         if (prevTime <= 1) {
@@ -124,30 +123,24 @@ const resetpassword = () => {
   };
 
   const handleSignUp2 = () => {
+
     if (password.length < 8) {
-      alert("Password must be at least 8 characters long");
-      return;
-    }
-    if (!/[A-Z]/.test(password)) {
-      alert("Password must contain at least one uppercase letter");
-      return;
-    }
-    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-      alert("Password must contain at least one special character");
-      return;
-    }
-    if (password !== confirmpassword) {
-      alert("New password and confirm password do not match. Please check again.");
-      return;
-    }
-    if (otp.length !== 6) {
-      alert("OTP must be exactly 6 digits");
-      return;
-    }
-    if (!/^\d{6}$/.test(otp)) {
-      alert("OTP must contain only numbers");
-      return;
-    }
+        alert("Password must be at least 8 characters long");
+        return;
+      }
+      if (!/[A-Z]/.test(password)) {
+        alert("Password must contain at least one uppercase letter");
+        return;
+      }
+      if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        alert("Password must contain at least one special character");
+        return;
+      }
+      if (password !== confirmpassword) {
+        alert("New password and confirm password do not match. Please check again.");
+        return;
+      }
+
     const userData = {
       reset_option: loginMethod,
       email_or_mobile: loginMethod === "email" ? email : mobile,
@@ -180,11 +173,6 @@ const resetpassword = () => {
           // Email is already registered, handle accordingly (for example, show an error message)
           // setErrorMessage(data.data); // Set error message to display on the same page
           alert(data.message)
-        }
-        else if (data.response === "fail" && data.data ==="OTP has Expired.") {
-          // Email is already registered, handle accordingly (for example, show an error message)
-          // setErrorMessage(data.data); // Set error message to display on the same page
-          alert(data.data)
         }
         
        else{
@@ -263,7 +251,7 @@ const resetpassword = () => {
               </div> */}
 
               <div className={styles.toggleOptions}>
-                <label className={styles.toggleLabel}>
+                {/* <label className={styles.toggleLabel}>
                   <input
                     type="radio"
                     name="contactMethod"
@@ -276,9 +264,9 @@ const resetpassword = () => {
                     <img src={icon1} alt="Logo" width={24} height={24} />
                   </div>
                   Email
-                </label>
+                </label> */}
 
-                {/* <label className={styles.toggleLabel}>
+                <label className={styles.toggleLabel}>
                   <input
                     type="radio"
                     name="contactMethod"
@@ -291,16 +279,16 @@ const resetpassword = () => {
                     <img src={icon2} alt="Logo" width={30} height={30} />
                   </div>
                   Mobile
-                </label> */}
+                </label>
               </div>
               {/*  email content */}
-              {loginMethod === "email" && (
+              {/* {loginMethod === "email" && (
                 <div className={styles.emailContent}>
                   <div className={styles.inputContainer}>
                     <div className={styles.inputWrapper}>
                       <div
                         className={styles.inputWithIcon}
-                        style={{ marginBottom: "10px", marginRight: "90px" }}
+                        style={{ marginTop: "0px", marginRight: "90px" }}
                       >
                         <TextField
                           id="email"
@@ -331,26 +319,6 @@ const resetpassword = () => {
                           }}
                         />
                       </div>
-
-                      <div>
-      {!showOtpField && (
-        <div className={styles.sendOTP}>
-          <span className={styles.resendAvailable}>
-            {resendAvailable ? "" : ` (${formatTime(resendTime)})`}
-          </span>
-          <button
-            onClick={handleSignUp1}
-            disabled={!resendAvailable}
-            className={
-              resendAvailable ? styles.sendOTP1 : styles.disabledButton
-            }
-          >
-            {resendAvailable ? "Resend OTP" : `Resend OTP in `}
-            {/* {!resendAvailable && ` ${formatTime(resendTime)}`} */}
-          </button>
-        </div>
-      )}
-    </div>
                       {errors.emailOrMobile && (
                         <p className={styles.errormessage}>
                           {errors.emailOrMobile}
@@ -497,7 +465,7 @@ const resetpassword = () => {
                     </div>
                   </div>
                 </div>
-              )}
+              )} */}
 
               {/* Mobile content */}
               {loginMethod === "mobile" && (
@@ -517,7 +485,7 @@ const resetpassword = () => {
                     <div
                       className={styles.inputWithIcon}
                       style={{
-                        marginTop: "20px",
+                        marginTop: "10px",
                         marginRight: "90px",
                         position: "relative",
                       }}
@@ -543,8 +511,8 @@ const resetpassword = () => {
                             backgroundSize: "10px 19px",
                             backgroundPosition: "295px center",
                             backgroundRepeat: "no-repeat",
-                            width: "100%",
-                            height: "100%",
+                            // width: "100%",
+                            // height: "100%",
                             // backgroundColor: "#F0EFFF",
                             border: "none",
                             fontFamily: "poppins",
@@ -556,6 +524,25 @@ const resetpassword = () => {
                       />
                    
                     </div>
+                    <div>
+      {!showOtpField && (
+        <div className={styles.sendOTP}>
+          <span className={styles.resendAvailable}>
+            {resendAvailable ? "" : ` (${formatTime(resendTime)})`}
+          </span>
+          <button
+            onClick={handleSignUp1}
+            disabled={!resendAvailable}
+            className={
+              resendAvailable ? styles.sendOTP1 : styles.disabledButton
+            }
+          >
+            {resendAvailable ? "Resend OTP" : `Resend OTP in `}
+            {/* {!resendAvailable && ` ${formatTime(resendTime)}`} */}
+          </button>
+        </div>
+      )}
+    </div>
                     {errors.mobile && <p className={styles.errormessage}>{errors.mobile}</p>}
 
                   </div>
@@ -564,7 +551,7 @@ const resetpassword = () => {
                   <div className={styles.inputWrapper}>
                     <div
                       className={styles.inputWithIcon}
-                      style={{ marginTop: "20px", marginRight: "90px" }}
+                      style={{ marginTop: "10px", marginRight: "90px" }}
                     >
                       <TextField
                         id="otp"
@@ -850,18 +837,19 @@ const resetpassword = () => {
               )} */}
 
               <div className={styles1.Button}>
+              <button
+                  onClick={handleSignUp2}
+                  className={styles1.loginButton1}
+                >
+                  submit
+                </button>
                 <button
                   onClick={handlecancel}
                   className={styles1.loginButton}
                 >
                   cancel
                 </button>
-                <button
-                  onClick={handleSignUp2}
-                  className={styles1.loginButton1}
-                >
-                  submit
-                </button>
+             
               </div>
             </>
           )}
@@ -871,4 +859,4 @@ const resetpassword = () => {
   );
 };
 
-export default resetpassword;
+export default resetpasswordmobile;

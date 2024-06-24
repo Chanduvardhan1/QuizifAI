@@ -67,7 +67,7 @@ const Dashboard = () => {
   const [attemptedquizzes, setAttemptedquizzes] = useState([]);
   const [allquizzes, setAllquizzes] = useState([]);
 
-  const [userId, setUserId] = useState(localStorage.getItem("user_id"));
+  // const [userId, setUserId] = useState(localStorage.getItem("user_id"));
   const [username, setUsername] = useState(localStorage.getItem("user_name"));
   const navigate = useNavigate();
   useEffect(() => {
@@ -79,19 +79,18 @@ const Dashboard = () => {
 
     const fetchQuizData = async () => {
       // Retrieve user_id and user_name from localStorage
-      console.log("User ID:", userId);
-      console.log("User Name:", username);
+      // console.log("User ID:", userId);
       try {
+        const user_id = localStorage.getItem('user_id');
         const response = await fetch(
-          `https://quizifai.com:8010/latest_quizes?user_id=${userId}&username=${username}`,
+          `https://quizifai.com:8010/dashboard`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              user_id: userId,
-              username: username, // Ensure correct payload format
+              user_id: user_id, // Ensure correct payload format
             }),
           }
         );
@@ -119,7 +118,7 @@ const Dashboard = () => {
     };
 
     fetchQuizData();
-  }, [userId, username]);
+  }, []);
 
   const card = ({ latestquizzes, attemptedquizzes }) => {
     const cardStyle = {

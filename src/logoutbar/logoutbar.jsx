@@ -55,8 +55,9 @@ const LogoutBar = () => {
   
  
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
-  const [username, setUsername] = useState(localStorage.getItem("user_name"));
-  const [occupation, setOccupation] = useState(localStorage.getItem("occupation_name"));
+  // const [username, setUsername] = useState(localStorage.getItem("user_name"));
+  // const [occupation, setOccupation] = useState(localStorage.getItem("occupation_name"));
+  const [name, setName] = useState("")
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
   const [globalRank, setGlobalRank] = useState("");
@@ -72,12 +73,10 @@ const LogoutBar = () => {
   useEffect(() => {
     const fetchQuizData = async () => {
       console.log("User ID:", userId);
-      console.log("User Name:", username);
-      console.log("occupation:", occupation);
 
       try {
         const response = await fetch(
-          `https://quizifai.com:8010/latest_quizes`,
+          `https://quizifai.com:8010/dashboard`,
           {
             method: "POST",
             headers: {
@@ -85,7 +84,6 @@ const LogoutBar = () => {
             },
             body: JSON.stringify({
                user_id: userId ,
-              username:username,
             }),
           }
         );
@@ -97,6 +95,7 @@ const LogoutBar = () => {
         console.log("Data:", data);
 
         const userDetails = data.user_details;
+        setName(userDetails.full_name);
          setCity(userDetails.location_name);
          setCountry(userDetails.country_name);
          setGlobalRank(userDetails.global_rank);
@@ -161,7 +160,7 @@ const LogoutBar = () => {
         </div>
         <div style={{ textAlign: "center" }}>
           <p style={{ fontSize: "15px", marginBottom: "5px", fontWeight: 600 ,color:"#002366"}}>
-            {username}
+           {name}
           </p>
           <p
             style={{
@@ -172,7 +171,7 @@ const LogoutBar = () => {
               marginTop:"-5px",
             }}
           >
-            {occupation}
+            occupation
           </p>
 
           <div className="flex">

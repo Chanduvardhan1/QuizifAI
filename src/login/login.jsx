@@ -225,9 +225,7 @@ const LoginPage = () => {
               // console.error(errorMessage);
           } else {
             // Assuming successful response structure in array form
-            localStorage.setItem('user_id', responseData[0].user_id[0]);
-            localStorage.setItem('user_name', responseData[0].user_name);
-            localStorage.setItem('occupation_name', responseData[0].occupation_name);
+            localStorage.setItem('user_id', responseData.user_id);
 
             setErrorMessage("");
             navigate("/dashboard");

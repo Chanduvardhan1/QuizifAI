@@ -64,6 +64,7 @@ const FreeProfile = () => {
   const [mobileNumber, setMobileNumber] = useState("");
   const [occupation, setOccupation] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [isEditingLogin, setIsEditingLogin] = useState(false);
   const [initialFormData, setInitialFormData] = useState({}); 
   const [initialLoginData, setInitialLoginData] = useState({});
   const [oldPassword, setOldPassword] = useState('');
@@ -288,7 +289,7 @@ const FreeProfile = () => {
     //   email,
     //   mobileNumber,
     // }); 
-    setIsEditing(true);
+    setIsEditingLogin(true);
   };
 
   const handleLoginSaveClick = async () => {
@@ -296,6 +297,7 @@ const FreeProfile = () => {
       user_id: userId,
       email: email,
       mobile: mobileNumber,
+      OTP:otp,
     };
   
     console.log("Sending OTP with payload:", payload);
@@ -321,7 +323,7 @@ const FreeProfile = () => {
       const data = await response.json();
       console.log("OTP Sent Data:", data);
   
-      setIsEditing(false);
+      setIsEditingLogin(false);
       setIsOtpSent(true);
     } catch (error) {
       console.error("Error sending OTP:", error.message);
@@ -711,12 +713,12 @@ const FreeProfile = () => {
               w-[200px] 
               text-[11px] 
               focus:outline-gray-300
-              ${isEditing ? 'highlight' : ''}
+              ${isEditingLogin ? 'highlight' : ''}
             `}
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            disabled={!isEditing}
+            disabled={!isEditingLogin}
           />
         </div>
         {/* Mobile */}
@@ -732,12 +734,12 @@ const FreeProfile = () => {
               w-[213px] 
               text-[11px] 
               focus:outline-gray-300
-              ${isEditing ? 'highlight' : ''}
+              ${isEditingLogin ? 'highlight' : ''}
             `}
             type="tel"
             value={mobileNumber}
             onChange={(e) => setMobileNumber(e.target.value)}
-            disabled={!isEditing}
+            disabled={!isEditingLogin}
           />
         </div>
       </div>

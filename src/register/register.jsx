@@ -879,14 +879,9 @@ const register = () => {
       setResponseData(data); // Set response data in state
       console.log(data); // Displaying response in console
       setErrorMessage(""); // Clear any previous error message
-      if (
-        data &&
-        data.data &&
-        Array.isArray(data.data[0]) &&
-        data.data[0].length > 0
-      ) {
-        setstatename(data.data[0][0].Statename);
-        setcountryname(data.data[0][0].country_name);
+      if (data && data.data && data.data.length > 0) {
+        setstatename(data.data[0].Statename);
+        setcountryname(data.data[0].country_name);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -1710,11 +1705,9 @@ const register = () => {
                         >
                           {/* <option value=""  disabled selected>Location</option> */}
                           {responseData &&
-                            responseData.data &&
-                            Array.isArray(responseData.data[0]) &&
                             [
                               ...new Set(
-                                responseData.data[0].map(
+                                responseData.data.map(
                                   (location) => location.City
                                 )
                               ),
@@ -1772,11 +1765,10 @@ const register = () => {
                         >
                           {/* <option value=""  disabled selected>District</option> */}
                           {responseData &&
-                            responseData.data &&
-                            Array.isArray(responseData.data[0]) &&
+                           
                             [
                               ...new Set(
-                                responseData.data[0].map(
+                                responseData.data.map(
                                   (location) => location.Districtname
                                 )
                               ),
@@ -1834,7 +1826,7 @@ const register = () => {
                             onChange={(e) => setstatename(e.target.value)}
                           >
                             {/* <option value=""  disabled selected>State</option> */}
-                            {responseData &&
+                            {/* {responseData &&
                               responseData.data &&
                               Array.isArray(responseData.data[0]) &&
                               [
@@ -1847,7 +1839,7 @@ const register = () => {
                                 <MenuItem key={index} value={stateName}>
                                   {stateName}
                                 </MenuItem>
-                              ))}
+                              ))} */}
                           </TextField>
                         </label>
 
@@ -1894,16 +1886,15 @@ const register = () => {
                               },
                               readOnly: true,
                             }}
+                            // onChange={(e) => setcountryname(e.target.value)}
                             value={countryname}
-                            onChange={(e) => setcountryname(e.target.value)}
-                          >
+                            >
                             {/* <option value=""  disabled selected>Country</option> */}
-                            {responseData &&
-                              responseData.data &&
-                              Array.isArray(responseData.data[0]) &&
+                            {/* {responseData &&
+                            
                               [
                                 ...new Set(
-                                  responseData.data[0].map(
+                                  responseData.data.map(
                                     (location) => location.country_name
                                   )
                                 ),
@@ -1911,7 +1902,7 @@ const register = () => {
                                 <MenuItem key={index} value={countryName}>
                                   {countryName}
                                 </MenuItem>
-                              ))}
+                              ))} */}
                           </TextField>
                         </label>
                       </div>

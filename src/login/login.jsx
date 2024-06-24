@@ -30,6 +30,7 @@ const LoginPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
   const [showThankYou, setShowThankYou] = useState(false);
+  const [forgeotmobile, setforgeotmobile] = useState(false);
   const [showResetOTP, setShowResetOTP] = useState(false);
   const [showResendOTPForm, setShowResendOTPForm] = useState(false);
   const isMobile = useMediaQuery("(max-width:600px)");
@@ -82,6 +83,7 @@ const LoginPage = () => {
 
   const handleForgotPasswordClick = () => {
     setShowForgotPassword(true);
+    setErrorMessage('')
   };
 
   const handleGoBack = () => {
@@ -278,12 +280,16 @@ const LoginPage = () => {
     })
     .then((data) => {
       // Check if response indicates success
-      if (data.response === "success") {
+      if (data.response === "success" && data.data==="Email Sent Successfully") {
         // console.log("Email Sent Successfully");
         // Handle success response
         setShowThankYou(true); 
         navigate("/resetpassword");// Set state to show thank you message or handle as per your requirement
-      } else {
+      } else if (data.response === "success" && data.data === "OTP Succuessfully Sent")
+         {
+
+          navigate("/resetpasswordmobile");
+    } else {
         // Handle other response scenarios
         // console.error("Unexpected response:", data);
         alert(data.response)
@@ -496,6 +502,7 @@ const LoginPage = () => {
                       <div
                         className={styles.forgotPassword}
                         onClick={handleForgotPasswordClick}
+                       
                       >
                         Forgot Password?
                       </div>
@@ -898,6 +905,7 @@ const LoginPage = () => {
                       >
                         Reset using phone or email
                       </p>
+                      {loginMethod === "email" && (
                       <div
                         className={styles.inputWithIcon1}
                         style={{ marginTop: "20px", marginRight: "90px" }}
@@ -921,9 +929,11 @@ const LoginPage = () => {
                           }}
                           value={email}
                           onChange={handleEmailChange}
+                          readOnly
                         />
                       </div>
-                      <p
+                        )}
+                      {/* <p
                         className={styles.orText}
                         style={{
                           marginLeft: "140px",
@@ -933,7 +943,8 @@ const LoginPage = () => {
                         }}
                       >
                         OR
-                      </p>
+                      </p> */}
+                       {loginMethod === "mobile" && (
                       <div
                         className={styles.inputWithIcon1}
                         style={{ marginTop: "20px", marginRight: "90px" }}
@@ -957,8 +968,10 @@ const LoginPage = () => {
                           }}
                           value={mobile}
                           onChange={handleMobileChange}
+                          readOnly
                         />
                       </div>
+                        )}
                       <div
                         className={styles.checkboxContainer1}
                         styles={{ marginTop: "150px" }}
@@ -997,7 +1010,7 @@ const LoginPage = () => {
                             fontFamily: "poppins",
                           }}
                         >
-                          Submit
+                          Sendotp
                         </button>
                         <button
                           className={`${styles.cancelButton} ${styles.button1}`}
@@ -1006,6 +1019,7 @@ const LoginPage = () => {
                             height: "48px",
                             fontFamily: "poppins",
                           }}
+                          onClick={handleGoBack1}
                         >
                           Cancel
                         </button>
@@ -1014,25 +1028,28 @@ const LoginPage = () => {
                     </div>
                   </div>
                 </div>
-              ) : (
+              ) : (  
                 // Thank You message
 
+                <div className={styles.forgotPasswordContent}>
+                {/* Forgot password form */}
                 <div
-                  className={styles.thankYouMessage}
-                  style={{ marginLeft: "50px" }}
+                  className={styles.forgotPasswordContent}
+                  styles={{ marginLeft: "300px" }}
                 >
-                  <div
-                    className={styles.goBackButton1}
-                    style={{ marginTop: "100px" }}
-                    onClick={handleGoBack}
-                  >
-                    <img
-                      src={forgotPasswordIcon}
-                      alt="Go Back"
-                      width={12}
-                      height={17}
-                    />
-                    <span>Go Back</span>
+                  <div className={styles.forgotPasswordHeader}>
+                    <div
+                      className={styles.goBackButton}
+                      onClick={handleGoBack1}
+                    >
+                      <img
+                        src={forgotPasswordIcon}
+                        alt="Go Back"
+                        width={12}
+                        height={17}
+                      />
+                      <span>Go Back</span>
+                    </div>
                   </div>
                   <div className={styles.forgotPasswordText}>
                     <p
@@ -1053,72 +1070,125 @@ const LoginPage = () => {
                         fontWeight: 700,
                       }}
                     >
-                      Thank You!
+                      Reset using phone or email
                     </p>
+                    <div
+                      className={styles.inputWithIcon1}
+                      style={{ marginTop: "20px", marginRight: "90px" }}
+                    >
+                      <input
+                        type="text"
+                        placeholder="Enter Email"
+                        className={styles.inputField1}
+                        style={{
+                          backgroundImage: `url('/images/email/mail.png')`,
+                          backgroundSize: "19px 16px",
+                          backgroundPosition: "10px center",
+                          backgroundRepeat: "no-repeat",
+                          width: 270,
+                          height: 40,
+                          backgroundColor: "#F0EFFF",
+                          border: "none",
+                          fontFamily: "poppins",
+                          paddingLeft: "40px",
+                          borderRadius: "10px",
+                        }}
+                        value={email}
+                        onChange={handleEmailChange}
+                        readOnly
+                      />
+                    </div>
                     <p
-                      className={styles.secondParagraph}
+                      className={styles.orText}
                       style={{
+                        marginLeft: "140px",
                         color: "#454B60",
                         fontSize: "16px",
                         fontWeight: 700,
                       }}
                     >
-                      Please check your email for further <br></br>instructions.
+                      OR
                     </p>
-                  </div>
-                  <div
-                    className={styles.checkboxContainer1}
-                    style={{ display: "flex", alignItems: "center" }}
-                  >
-                    <input
-                      type="checkbox"
-                      id="termsCheckbox"
-                      className={styles.checkboxInput}
-                      style={{ marginRight: "5px", marginTop: "5px" }}
-                    />
-                    <div style={{ flex: 1 }}>
-                      <label
-                        htmlFor="termsCheckbox"
-                        className={styles.checkboxLabel}
+                     <div
+                      className={styles.inputWithIcon1}
+                      style={{ marginTop: "20px", marginRight: "90px" }}
+                    >
+                      <input
+                        type="text"
+                        placeholder="Mobile Number"
+                        className={styles.inputField1}
                         style={{
-                          color: "#454B60",
-                          fontSize: "16px",
-                          fontWeight: 700,
-                          marginTop: "40px",
-                          marginBottom: "100px",
+                          backgroundImage: `url('/images/mobile/mob.png')`,
+                          backgroundSize: "14px 24px",
+                          backgroundPosition: "10px center",
+                          backgroundRepeat: "no-repeat",
+                          width: 270,
+                          height: 40,
+                          backgroundColor: "#F0EFFF",
+                          border: "none",
+                          fontFamily: "poppins",
+                          paddingLeft: "40px",
+                          borderRadius: "10px",
+                        }}
+                        value={mobile}
+                        onChange={handleMobileChange}
+                      />
+                    </div> 
+                    <div
+                      className={styles.checkboxContainer1}
+                      styles={{ marginTop: "150px" }}
+                    >
+{/*                     
+                        <input
+                          type="checkbox"
+                          id="termsCheckbox"
+                          className={styles.checkboxInput}
+                          checked={termsChecked}
+                          onChange={() => setTermsChecked(!termsChecked)}
+                        />
+                        <label
+                          htmlFor="termsCheckbox"
+                          className={styles.checkboxLabel}
+                        ></label>
+                     
+                      <span className={styles.termsText}>
+                        I agree with the terms and conditions
+                      </span> */}
+                    </div>
+                    {errorMessage && (
+              <>
+                {console.log("Error message:", errorMessage)}
+                <p className={styles.displayError}>{errorMessage}</p>
+              </>
+            )}
+                    <div className={styles.buttonContainer}>
+                      <button
+                        className={`${styles.submitButton} ${styles.button1}`}
+                        onClick={handleForgotPasswordSubmit}
+                        style={{
+                          width: "144px",
+                          height: "48px",
+                          marginRight: "40px",
+                          fontFamily: "poppins",
                         }}
                       >
-                        Didn't get the reset email?
-                      </label>
+                        Submit
+                      </button>
+                      <button
+                        className={`${styles.cancelButton} ${styles.button1}`}
+                        style={{
+                          width: "144px",
+                          height: "48px",
+                          fontFamily: "poppins",
+                        }}
+                      >
+                        Cancel
+                      </button>
                     </div>
-                  </div>
-                  <div
-                    className={styles.buttonContainer}
-                    styles={{ marginTop: "200px" }}
-                  >
-                    <button
-                      className={`${styles.submitButton} ${styles.button1}`}
-                      style={{
-                        width: "144px",
-                        height: "48px",
-                        marginRight: "40px",
-                        fontFamily: "poppins",
-                      }}
-                    >
-                      Resend
-                    </button>
-                    <button
-                      className={`${styles.cancelButton} ${styles.button1}`}
-                      style={{
-                        width: "144px",
-                        height: "48px",
-                        fontFamily: "poppins",
-                      }}
-                    >
-                      Cancel
-                    </button>
+           
                   </div>
                 </div>
+              </div>
               )}
             </>
           )}

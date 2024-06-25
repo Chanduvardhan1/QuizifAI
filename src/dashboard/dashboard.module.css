@@ -259,7 +259,7 @@ font-weight: 500;
 line-height: 30px;
 letter-spacing: 0em;
 text-align: left;
-margin-left: 20px;
+margin-left: 4.5%;
 color: #002366;
 
 }
@@ -616,6 +616,7 @@ margin-top: -60px;
   flex-wrap: wrap;
   margin-left: 20px;
   margin-right: 10px;
+  justify-content: space-around;
 }
 
 .card {

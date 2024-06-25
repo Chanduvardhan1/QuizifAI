@@ -716,12 +716,13 @@ const register = () => {
       user_phone_number: userphonenumber,
       occupation_name: occupationname,
       other_occupation_name: occupationname1,
-      city_name: cityname,
+      location_name: cityname,
       country_name: countryname,
       pin_code: pincode,
       state_name: statename,
       password: password,
       confirm_password: confirmpassword,
+      district_name:Districtname,
     };
 
     try {
@@ -741,10 +742,11 @@ const register = () => {
         user_email: "",
         user_phone_number: "",
         occupation_name: "",
-        city_name: "",
+        location_name: "",
         country_name: "",
         pin_code: "",
         state_name: "",
+        district_name:"",
       });
 
       
@@ -880,8 +882,8 @@ const register = () => {
       console.log(data); // Displaying response in console
       setErrorMessage(""); // Clear any previous error message
       if (data && data.data && data.data.length > 0) {
-        setstatename(data.data[0].Statename);
-        setcountryname(data.data[0].country_name);
+        setstatename(data.data[0].state);
+        setcountryname(data.data[0].country);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -1704,18 +1706,23 @@ const register = () => {
                           onChange={(e) => setcityname(e.target.value)}
                         >
                           {/* <option value=""  disabled selected>Location</option> */}
-                          {responseData &&
+                          {/* {
                             [
                               ...new Set(
-                                responseData.data.map(
-                                  (location) => location.City
+                                responseData?.data.map(
+                                  (location) => location.location
                                 )
                               ),
                             ].map((cityName, index) => (
                               <MenuItem key={index} value={cityName}>
                                 {cityName}
                               </MenuItem>
-                            ))}
+                            ))} */}
+                            {responseData?.data.map((location, index) => (
+        <MenuItem key={index} value={location.location}>
+          {location.location}
+        </MenuItem>
+      ))}
                         </TextField>
                       </label>
                       <label>
@@ -1769,7 +1776,7 @@ const register = () => {
                             [
                               ...new Set(
                                 responseData.data.map(
-                                  (location) => location.Districtname
+                                  (location) => location.district
                                 )
                               ),
                             ].map((districtName, index) => (

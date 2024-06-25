@@ -196,7 +196,7 @@ const LoginPage = () => {
   const handleLogin = async (loginOption, email, mobile, password) => {
     try {
       console.log("email - ", email);
-    
+  
       const response = await fetch(`https://quizifai.com:8010/login`, {
         method: "POST",
         headers: {
@@ -210,23 +210,32 @@ const LoginPage = () => {
       });
   
       const responseData = await response.json();
-      
+  
       if (response.ok) {
         if (responseData.response === "success") {
-          localStorage.setItem('user_id', responseData.user_id);
-          setErrorMessage(""); // Clear any previous error message
-          navigate("/dashboard");
-          console.log("Login successful!");
+          const userId = responseData.data && responseData.data[0] && responseData.data[0].user_id;
+          if (userId) {
+            localStorage.setItem('user_id', userId);
+            setErrorMessage(""); // Clear any previous error message
+            navigate("/dashboard");
+            console.log("Login successful!");
+          } else {
+            setErrorMessage("An unknown error occurred while logging in.");
+          }
         } else if (responseData.response === "fail") {
           let errorMessage = responseData.message || "An unknown error occurred while logging in.";
-          if (responseData.message === "Password is incorrect.Please try again or Forgot your password? Click on Reset Password.") {
-            errorMessage = "Oops! That password doesn't seem to be right. Try again, or click Forgot Password.";
-          } else if (responseData.data === "Email is incorrect or account doesn't exist.") {
-            errorMessage = "Email is incorrect or account doesn't exist. Please sign up.";
-          } else if (responseData.data === "Mobile Number is incorrect or account doesn't exist pls sinup.") {
-            errorMessage = "Mobile Number is incorrect or account doesn't exist. Please sign up.";
-          } else if (responseData.message === "Email is already registered but not verified. Please verify your email and try again.") {
+          if (responseData.response_message === "Password is incorrect.Please try again.") {
+            errorMessage = "Password is incorrect.Please try again.";
+          } else if (responseData.response_message === "Email is not valid.Please check your email") {
+            errorMessage = "Email is not valid.Please check your email";
+          } else if (responseData.response_message === "Mobile Number is incorrect or account doesn't exist pls sinup.") {
+            errorMessage = "Mobile Number is not valid.Please check your number";
+          } else if (responseData.response_message === "Email is not verified, please verify your email") {
             errorMessage = "Email is already registered but not verified. Please verify your email and try again.";
+          } else if (responseData.response_message === "Registration is not yet completed.") {
+            errorMessage = "Registration is not yet completed.";
+          } else if (responseData.response_message === "Mobile Number is not valid.Please check your number") {
+            errorMessage = "Mobile Number is not valid.Please check your number";
           }
           setErrorMessage(errorMessage);
         } else {
@@ -239,6 +248,7 @@ const LoginPage = () => {
       setErrorMessage("An error occurred while logging in.");
     }
   };
+  
   
   
   const validateEmail1 = (email) => {
@@ -255,14 +265,11 @@ const LoginPage = () => {
     }
   };
   const handleForgotPasswordSubmit = () => {
-    // const forgotOption = email.includes("@") ? "email" : "mobile";
-    // Prepare the request body
     const requestBody = JSON.stringify({
-      Forogot_option:  loginMethod,
-      email_or_mobile:loginMethod === "email" ? email : mobile,
+      Forogot_option: loginMethod,
+      email_or_mobile: loginMethod === "email" ? email : mobile,
     });
 
-    // Make a POST request to the forgot password endpoint using fetch
     fetch("https://quizifai.com:8010/forgotpassword", {
       method: "POST",
       headers: {
@@ -275,31 +282,24 @@ const LoginPage = () => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      // Parse the JSON response
       return response.json();
     })
     .then((data) => {
-      // Check if response indicates success
-      if (data.response === "success" && data.data==="Email Sent Successfully") {
-        // console.log("Email Sent Successfully");
-        // Handle success response
-        setShowThankYou(true); 
-        navigate("/resetpassword");// Set state to show thank you message or handle as per your requirement
-      } else if (data.response === "success" && data.data === "OTP Succuessfully Sent")
-         {
-
-          navigate("/resetpasswordmobile");
-    } else {
-        // Handle other response scenarios
-        // console.error("Unexpected response:", data);
-        alert(data.response)
+      if (data.response === "success") {
+        const userId = data.data[0]?.user_id;
+        if (data.response_message === "OTP Succuessfully Sent") {
+          navigate("/resetpasswordmobile", { state: { userId } });
+        } else if (data.response_message === "OTP Sent Successfully,Please reset your password") {
+          navigate("/resetpassword", { state: { userId } });
+        }
+      } else {
+        alert(data.response);
       }
     })
     .catch((error) => {
-      // Handle error
-      // console.error("Error occurred:", error);
+      console.error("Error occurred:", error);
     });
-};
+  };
 
   // const handleEmailChange = (event) => {
   //   setEmail(event.target.value);

@@ -217,13 +217,21 @@ if (hasError) {
           setShowOtpField(true);
           setShowVerifyButton(true);
         } else if (
-          data.response === 'fail' &&
-          data.data === 'Email is already registered. Please verify your email.'
+          data.response === 'success' &&
+          data.response_message === 'Email is already registered. Please verify your email.'
         ) {
-          setResponseMessage(data.data);
+          setResponseMessage(data.response_message);
           setShowOtpField(true);
           setShowVerifyButton(true);
-        } else if (
+        }  else if (
+          data.response === 'success' &&
+          data.response_message === 'Account created successfully. Please check your email to verify your account.'
+        ) {
+          setResponseMessage(data.response_message);
+          setShowOtpField(true);
+          setShowVerifyButton(true);
+        } 
+        else if (
           data.response === 'fail' &&
           data.response_message === 'Email is already registered. Please log in or use a different email.'
         ) {
@@ -235,13 +243,19 @@ if (hasError) {
           setTerms(data.response_message);
         }  else if (
           data.response === 'fail' &&
-          data.data === 'Email is already registered. Registration is not yet completed.'
+          data.response_message === 'Please click here to complete your registration and activate your account.'
         ) {
-          setResponseMessage1(data.data);
+          setResponseMessage1(data.response_message);
           navigate("/register");
         } 
+        else if (
+          data.response === 'fail' &&
+          data.response_message === 'Error while creating an account'
+        ) {
+          setTerms(data.response_message);
+        }
         else {
-          setResponseMessage1(data.data);
+          setResponseMessage1(data.response_message);
         }
       })
       .catch((error) => {
@@ -254,7 +268,7 @@ if (hasError) {
             setResponseMessage('');
           }
         } else {
-          setResponseMessage(' Names can only contain alphabetic characters');
+          setResponseMessage('Error signing up');
         }
       });
   };
@@ -401,7 +415,14 @@ if (hasError) {
           // navigate("/login", {
           //   state: { emailMobOption: loginMethod, emailMob: mobile },
           // });
-        }else if (
+        } else if (
+          data.response === "fail" &&
+          data.response_message === "Please click here to complete your registration and activate your account."
+        ) {
+          setResponseMessage(data.response_message);
+          navigate("/Register");
+        }
+        else if (
           data.response === "fail" &&
           data.data ===
             "Mobile Number is Invalid."
@@ -424,7 +445,7 @@ if (hasError) {
             setResponseMessage('');
           }
         } else {
-          setResponseMessage(' Names can only contain alphabetic characters');
+          setResponseMessage('Error signing up');
         }
       });
   };
@@ -449,6 +470,14 @@ if (hasError) {
       setTerms("Please agree to the terms and conditions");
       return;
     }
+    if (otp.length !== 6) {
+      setTerms("OTP must be exactly 6 digits");
+      return;
+    }
+    if (!/^\d{6}$/.test(otp)) {
+      setTerms("OTP must contain only numbers");
+      return;
+    }
     try {
       const response = await fetch("https://quizifai.com:8010/sgnup_verification", {
         method: "POST",
@@ -469,18 +498,18 @@ if (hasError) {
       }
       const data = await response.json();
 
-      if (data.response === "success") {
+      if (data.response === "success" && data.response_message === "Mobile is verified you can proceed with registration.") {
         // setShowSecondButton(true);
         setShowRegistrationSuccess(true);
         handleOpenGmail(loginMethod,mobile);
       } else if (
         data.response === "fail" &&
-        data.data ===
+        data.response_message ===
           "Invalid or incorrect OTP."
         
       ) {
      
-        setTerms("Invalid or incorrect OTP.");
+        setTerms(data.response_message);
       }else {
         // console.log("Response other than success:", data.response);
       }
@@ -499,8 +528,16 @@ if (hasError) {
       setTerms("Please agree to the terms and conditions");
       return;
     }
+    if (otp.length !== 6) {
+      setTerms("OTP must be exactly 6 digits");
+      return;
+    }
+    if (!/^\d{6}$/.test(otp)) {
+      setTerms("OTP must contain only numbers");
+      return;
+    }
     try {
-      const response = await fetch("", {
+      const response = await fetch("https://quizifai.com:8010/sgnup_verification", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -519,17 +556,17 @@ if (hasError) {
       }
       const data = await response.json();
 
-      if (data.response === "success") {
+      if (data.response === "success"  && data.response_message ==="Email is Verified you can proceed with registration.") {
         // setShowSecondButton(true);
         setShowRegistrationSuccess(true);
       }  else if (
         data.response === "fail" &&
-        data.detail ===
+        data.response_message ===
           "Invalid or incorrect OTP."
         
       ) {
      
-        setTerms( "Invalid or incorrect OTP.");
+        setTerms(data.response_message);
       }else {
         // console.log("Response other than success:", data.response);
       }

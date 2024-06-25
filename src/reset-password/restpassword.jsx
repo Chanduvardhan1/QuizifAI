@@ -13,6 +13,7 @@ import TextField from "@mui/material/TextField";
 
 import { useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 
 const resetpassword = () => {
   const [loginMethod, setLoginMethod] = useState("email");
@@ -55,6 +56,14 @@ const resetpassword = () => {
   const [showOtpField1, setShowOtpField1] = useState(false);
   const [resendAvailable, setResendAvailable] = useState(false);
   const [resendTime, setResendTime] = useState(600);
+  const location = useLocation();
+  const { userId } = location.state || {};
+
+  useEffect(() => {
+    if (userId) {
+      setEmail(userId);
+    }
+  }, [userId]);
 
   const navigate = useNavigate();
   const handleBackToDashboard = () => {
@@ -95,15 +104,15 @@ const resetpassword = () => {
   const handleResendOTP = () => {
     // Implement your API call to resend OTP here
     // Example code:
-    fetch("https://quizifai.com:8010/rsnd_otp_for_frgt_psswrd", {
+    fetch("https://quizifai.com:8010/forgotpassword", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        Resend_option: loginMethod,
-        mobile: loginMethod === "email" ? email : mobile, // Replace with actual mobile number
+        Forogot_option: loginMethod,
+        email_or_mobile: loginMethod === "email" ? email : mobile, // Replace with actual mobile number
       }),
     })
       .then((response) => {
@@ -150,7 +159,7 @@ const resetpassword = () => {
     }
     const userData = {
       reset_option: loginMethod,
-      email_or_mobile: loginMethod === "email" ? email : mobile,
+      user_id: loginMethod === "email" ? email : mobile,
       otp: otp,
       new_password: password,
       confirm_new_password: confirmpassword,
@@ -164,32 +173,31 @@ const resetpassword = () => {
       },
       body: JSON.stringify(userData),
     })
-      .then((response) => {
+    .then((response) => {
+      console.log("Response status:", response.status);
+      return response.json().then(data => {
         if (!response.ok) {
-          throw new Error("resetpassword");
+          throw new Error(data.message || "resetpassword");
         }
-        return response.json();
-      })
+        return data;
+      });
+    })
       .then((data) => {
         console.log("resetpassword successful:", data);
-        if (data.output === "Password has been successfully reset.") {
-        
+        if (data.response === "success" && data.response_message === "Password has been successfully reset.") {
           setShowRegistrationSuccess(true);
-        } else if (data.message ===
-          "Please click on Reset Password link to Email and try again.") {
-          // Email is already registered, handle accordingly (for example, show an error message)
-          // setErrorMessage(data.data); // Set error message to display on the same page
-          alert(data.message)
+        } else if (data.response_message === "Please click on Reset Password link to Email and try again.") {
+          alert(data.response_message);
+        } else if (data.response === "fail" && data.response_message === "OTP has Expired.") {
+          alert(data.response_message);
+        } else if (data.response === "fail" && data.response_message === "Please use a different password. You have used this password before.") {
+          alert(data.response_message);
+        }else if (data.response === "fail" && data.response_message === "OTP is Invalid Plase Enter valid OTP.") {
+          alert(data.response_message);
+        } 
+         else {
+          alert("Error resetpassword");
         }
-        else if (data.response === "fail" && data.data ==="OTP has Expired.") {
-          // Email is already registered, handle accordingly (for example, show an error message)
-          // setErrorMessage(data.data); // Set error message to display on the same page
-          alert(data.data)
-        }
-        
-       else{
-        alert("Error resetpassword")
-       }
       })
       .catch((error) => {
         console.error("Error signing up:", error);
@@ -314,6 +322,7 @@ const resetpassword = () => {
                             style: { fontFamily: "poppins" },
                           }}
                           InputProps={{
+                            readOnly: true,
                             style: {
                               backgroundImage: `url('/images/email/mail.png')`,
                               backgroundSize: "19px 16px",

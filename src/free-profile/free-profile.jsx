@@ -5,28 +5,13 @@ import React, { useState, useEffect } from "react";
 import Navigation from "../navbar/navbar.jsx";
 import axios from "axios";
 import LogoutBar from "../logoutbar/logoutbar.jsx";
-
 import styles from "./free-profile.module.css";
-import logoutArrowIcon from "../assets/Images/images/dashboard/logoutArrow1.png";
-//import Head from "next/head";
-//import img from "next/img";
+
 import visible from "../assets/Images/images/profile/visible.png";
 import hide from "../assets/Images/images/profile/hide.png";
 import searchIcon from "../assets/Images/images/dashboard/searchBar.png";
 import search from "../assets/Images/images/dashboard/Search.png";
-import notificationsettings from "../assets/Images/images/dashboard/notification-settings.png";
 import profileimg from "../assets/Images/images/profile/profileImage.png";
-import rankingimg from "../assets/Images/images/profile/ranking.png";
-import infoIcon from "../assets/Images/images/dashboard/infoIcon.png";
-
-import infoph from "../assets/Images/images/profile/infoPh.png";
-import EmailIcon from "../assets/Images/images/email/mail.png";
-import GmailIcon from "../assets/Images/images/profile/icongmail.png";
-import MobileIcon from "../assets/Images/images/mobile/mob.png";
-import ProgressBar from "@ramonak/react-progress-bar";
-import { Progress } from "react-sweet-progress";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
 import "react-sweet-progress/lib/style.css";
 
 const FreeProfile = () => {
@@ -58,12 +43,14 @@ const FreeProfile = () => {
   const [dob, setDob] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [city, setCity] = useState("");
+  const [cityOptions, setCityOptions] = useState([]);
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
   const [email, setEmail] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   const [occupation, setOccupation] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [isEditingLogin, setIsEditingLogin] = useState(false);
   const [initialFormData, setInitialFormData] = useState({}); 
   const [initialLoginData, setInitialLoginData] = useState({});
   const [oldPassword, setOldPassword] = useState('');
@@ -79,7 +66,7 @@ const FreeProfile = () => {
   const [weeklyQuizCount, setWeeklyQuizCount] = useState(0);
   const [averageScorePercentage, setAverageScorePercentage] = useState(0);
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
-  const [userName, setUserName] = useState(localStorage.getItem("user_name"));
+  const [userName, setUserName] = useState("");
   const [profileData, setProfileData] = useState(null);
   const [profession, setProfession] = useState("");
   const [otp, setOtp] = useState(null);
@@ -111,6 +98,7 @@ const FreeProfile = () => {
     setInputValue(buttonName);
   };
 
+  //location details ****************************
   const handlePostalCodeChange = (e) => {
     const value = e.target.value;
     // Allow only digits and limit to 6 characters
@@ -118,6 +106,27 @@ const FreeProfile = () => {
       setPostalCode(value);
     }
   };
+
+  
+    const fetchDetailsByPincode = async (pincode) => {
+      try {
+        const response = await axios.post('https://quizifai.com:8010/location_details/', {
+          pincode: pincode
+        });
+        const data = response.data.data[0];
+  
+        setCountry(data.country);
+        setState(data.state);
+        // setDistrict(data.district);
+        setCity(data.location);
+      } catch (error) {
+        console.error("Error fetching details by pincode", error);
+      }
+    };
+
+  const handleSearchClick = () =>{
+    fetchDetailsByPincode(postalCode);
+  }
 
   const handleDateChange = (e) => {
     const dateValue = e.target.value;
@@ -131,11 +140,11 @@ const FreeProfile = () => {
   useEffect(() => {
     const fetchQuizData = async () => {
       console.log("User ID:", userId);
-      console.log("User Name:", userName);
+      
 
       try {
         const response = await fetch(
-          `https://quizifai.com:8010/latest_quizes`,
+          `https://quizifai.com:8010/dashboard`,
           {
             method: "POST",
             headers: {
@@ -143,7 +152,6 @@ const FreeProfile = () => {
             },
             body: JSON.stringify({
               user_id: userId,
-              username: userName,
             }),
           }
         );
@@ -182,15 +190,18 @@ const FreeProfile = () => {
         setPostalCode(getProfileDetails.pin_code);
         setOccupation(getProfileDetails.occupation_name);
         setInitialLoginData(initialData);
+
+        const userDetails = data.user_details;
+        setUserName(userDetails.full_name);
       } catch (error) {
         console.error("Error fetching quiz data:", error);
       }
     };
 
     fetchQuizData();
-  }, []);
+  }, [userId]);
  
-  // Edit profile details **********
+  // Edit profile details **********************
   const handleEditClick = () => {
     setInitialFormData({
           firstName,
@@ -258,11 +269,11 @@ const FreeProfile = () => {
 
       const data = await response.json();
       console.log("Updated Data:", data);
-      alert("Updated data successfully...!")
+      alert("Profile Updated successfully...!")
 
       setIsEditing(false);
     } catch (error) {
-      console.error("Error updating profile data:", error);
+      console.error("Error updating profile:", error);
     }
   };
   const handleCancelClick = () => {
@@ -281,14 +292,10 @@ const FreeProfile = () => {
     setIsEditing(false);
   };
 
-  //Login user detailes
+  //Login user detailes88********************
 
   const handleLoginEditClick = () => {
-    // setInitialLoginData({
-    //   email,
-    //   mobileNumber,
-    // }); 
-    setIsEditing(true);
+    setIsEditingLogin(true);
   };
 
   const handleLoginSaveClick = async () => {
@@ -321,7 +328,7 @@ const FreeProfile = () => {
       const data = await response.json();
       console.log("OTP Sent Data:", data);
   
-      setIsEditing(false);
+      setIsEditingLogin(false);
       setIsOtpSent(true);
     } catch (error) {
       console.error("Error sending OTP:", error.message);
@@ -331,7 +338,7 @@ const FreeProfile = () => {
   };
 
 
-//update password
+//update password****************************
   const handleUpdatePassword = async (e) => {
     e.preventDefault();
     let valid = true;
@@ -453,7 +460,7 @@ const FreeProfile = () => {
               </div>
               <div
                 className={styles.inputGroup1}
-                style={{ marginLeft: "-35px" }}
+                style={{ marginLeft: "-40px" }}
               >
                 <label className="text-blue-800 font-semibold">
                   Occupation
@@ -473,7 +480,7 @@ const FreeProfile = () => {
                           onChange={(e) => setOccupation(e.target.value)}
                           disabled={!isEditing}
                 >
-                 <option value="">Select Occupation</option>
+                 <option value="">{occupation}</option>
                  <option value="">Student</option>
                  <option value="Male">Teacher</option>
                  <option value="Female">Professional</option>
@@ -523,8 +530,11 @@ const FreeProfile = () => {
               onChange={handlePostalCodeChange}
               disabled={!isEditing}
             />
-            <img className="h-[15px] w-[15px] -mt-[15px] ml-[71%] relative -top-[8px]" src={search}/>
-            
+          <img
+          className="h-[15px] w-[15px] -mt-[15px] ml-[71%] relative -top-[8px] cursor-pointer"
+          src={search}
+          onClick={handleSearchClick}
+        />            
             <hr className="h-[0.5px] w-[270px] bg-gray-200"></hr>
           </div>
         </div>
@@ -587,7 +597,7 @@ const FreeProfile = () => {
       onChange={(e) => setGender(e.target.value)}
       disabled={!isEditing}
     >
-      <option value="">Select Gender</option>
+      <option value="">{gender}</option>
       <option value="Male">Male</option>
       <option value="Female">Female</option>
       <option value="Other">Other</option>
@@ -638,7 +648,7 @@ const FreeProfile = () => {
             />
             <hr className="h-[1px] w-[250px] bg-gray-200"></hr>
           </div>
-          {/* mobile */}
+          {/* Country */}
           <div
             className={styles.inputGroup1}
             style={{ marginLeft: "-53px", textWrap: "nowrap" }}
@@ -741,7 +751,7 @@ const FreeProfile = () => {
           />
         </div>
       </div>
-      {isEditing ? (
+      {isEditingLogin ? (
         <button
           className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[#FA3D49] 
           transition-transform duration-300 ease-in-out h-[30px] w-[90px] text-[13px] font-semibold 
@@ -814,9 +824,9 @@ const FreeProfile = () => {
             className='cursor-pointer'
           >
             {passwordVisible ? (
-              <img className='h-[17px] w-[17px] ml-[66%] relative -top-[25px]' src={visible} alt='Hide Password' />
+              <img className='h-[17px] w-[17px] ml-[66%] relative -top-[25px]' src={visible} title="hide" alt='Hide Password' />
             ) : (
-              <img className='h-[17px] w-[17px] ml-[66%] relative -top-[25px]' src={hide} alt='Show Password' />
+              <img className='h-[17px] w-[17px] ml-[66%] relative -top-[25px]' src={hide} title="show" alt='Show Password' />
             )}
           </span>
           {oldPasswordError && <div className="text-red-500 text-xs mt-1">{oldPasswordError}</div>}
@@ -845,9 +855,9 @@ const FreeProfile = () => {
                 className='cursor-pointer'
               >
                 {newPasswordVisible ? (
-                  <img className='h-[17px] w-[17px] ml-[72%] relative -top-[25px]' src={visible} alt='Hide Password' />
+                  <img className='h-[17px] w-[17px] ml-[72%] relative -top-[25px]' src={visible} title="hide" alt='Hide Password' />
                 ) : (
-                  <img className='h-[17px] w-[17px] ml-[72%] relative -top-[25px]' src={hide} alt='Show Password' />
+                  <img className='h-[17px] w-[17px] ml-[72%] relative -top-[25px]' src={hide} title="show" alt='Show Password' />
                 )}
               </span>
               {newPasswordError && <div className="text-red-500 text-xs mt-1 w-[190px] mx-[10px]">{newPasswordError}</div>}
@@ -875,9 +885,9 @@ const FreeProfile = () => {
                 className='cursor-pointer'
               >
                 {confirmPasswordVisible ? (
-                  <img className='h-[17px] w-[17px] ml-[67%] relative -top-[25px]' src={visible} alt='Hide Password' />
+                  <img className='h-[17px] w-[17px] ml-[67%] relative -top-[25px]' src={visible} title="hide" alt='Hide Password' />
                 ) : (
-                  <img className='h-[17px] w-[17px] ml-[67%] relative -top-[25px]' src={hide} alt='Show Password' />
+                  <img className='h-[17px] w-[17px] ml-[67%] relative -top-[25px]' src={hide} title="show" alt='Show Password' />
                 )}
               </span>
               {confirmPasswordError && <div className="text-red-500 text-xs mt-1 w-[200px]">{confirmPasswordError}</div>}

@@ -340,18 +340,18 @@ const Dashboard = () => {
 
         <div className="mx-auto">
           
-        <div className="flex justify-between mx-[40px]" style={{marginTop:"10px",marginBottom:"20px"}}>
-        <p className="text-[#002366] text-[15px] font-medium leading-6">Latest Quizzes</p>
+        <div className="flex justify-between mx-[20px]" style={{marginBottom:"20px"}}>
+        <p className="text-[#002366] text-[15px] font-medium leading-6 ml-[10px]">Latest Quizzes</p>
             <span
-              className="text-[#EF5130] text-[12px] mr-[30px] mt-1 cursor-pointer" style={{fontWeight:"600"}}
+              className="text-[#EF5130] text-[12px] mr-[20px] mt-1 cursor-pointer" style={{fontWeight:"600"}}
               onClick={handleBackToQuizzes}
             >
-              More{" "}
+              More>{" "}
             </span>
           </div>
 
-          <div className="flex flex-wrap mx-auto ml-[45px] -mt-[20px]">
-            {allquizzes.slice(0,6).map((quizItem, index) => (
+          <div className="flex flex-wrap mx-auto ml-[15px] -mt-[20px]">
+            {allquizzes.slice(0,3).map((quizItem, index) => (
                <div
                key={index}
                className=""         
@@ -722,18 +722,18 @@ const Dashboard = () => {
             ))}
           </div>
 
-          <div className="flex justify-between mx-[40px]" style={{marginTop:"10px",marginBottom:"20px"}}>
+          <div className="flex justify-between mx-[30px]" style={{marginTop:"10px",marginBottom:"20px"}}>
             <p className="text-[#002366] text-[15px] font-medium leading-6">Most Popular Quizzes</p>
             <span
-              className="text-[#EF5130] text-[12px] mr-[30px] mt-1 cursor-pointer" style={{fontWeight:"600"}}
+              className="text-[#EF5130] text-[12px] mr-[10px] mt-1 cursor-pointer" style={{fontWeight:"600"}}
               onClick={handleBackToQuizzes}
             >
-              More{" "}
+              More>{" "}
             </span>
           </div>
           
-          <div className="flex flex-wrap mx-auto ml-[45px] -mt-[20px]">
-            {allquizzes.slice(0,6).map((quizItem, index) => (
+          <div className="flex flex-wrap mx-auto ml-[15px] -mt-[20px]">
+            {allquizzes.slice(0,3).map((quizItem, index) => (
                <div
                key={index}
                className=""         

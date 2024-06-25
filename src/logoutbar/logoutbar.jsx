@@ -5,21 +5,12 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useState,useEffect } from "react";
 import styles from "./dashboard.module.css";
-// import logoutArrowIcon from "../assets/Images/images/dashboard/logoutArrow1.png";
-import Poweron from "../assets/Images/images/dashboard/power-on.png";
 import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 import user2Icon from "../assets/Images/images/dashboard/user2.png";
 import userIcon from "../assets/Images/images/dashboard/user.png";
-import scoredIcon from "../assets/Images/images/dashboard/scored.png";
 import expand from "../assets/Images/images/dashboard/expand.png";
-// import Rank from "../assets/Images/images/dashboard/rank.png";
 import ranks from "../assets/Images/images/dashboard/ranks.png";
 import infinity from "../assets/Images/images/dashboard/infinity.png"
-import timeSpentIcon from "../assets/Images/images/dashboard/timeSpent.png";
-import downArrow from "../assets/Images/images/dashboard/downArrow.png";
-import notifyIcon from "../assets/Images/images/dashboard/notify.png";
-import todayTopicIcon from "../assets/Images/images/dashboard/todayTopic.png";
-import subTopicIcon from "../assets/Images/images/dashboard/subTopic.png";
 import questionmark from "../assets/Images/images/dashboard/questionmark.png";
 
 
@@ -41,7 +32,8 @@ const BasicProgressBar = ({ currentValue, maxValue }) => (
 
   
 
-const LogoutBar = () => {
+const LogoutBar = (data) => {
+   const hasData = data && data.id;
   const navigate = useNavigate();
 
 
@@ -55,7 +47,7 @@ const LogoutBar = () => {
   
  
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
-  const [username, setUsername] = useState(localStorage.getItem("user_name"));
+  const [username, setUsername] = useState("");
   const [occupation, setOccupation] = useState(localStorage.getItem("occupation_name"));
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
@@ -66,26 +58,25 @@ const LogoutBar = () => {
   const [registeredOn, setRegisteredOn] = useState("");
   const [lastLogin, setLastLogin] = useState("");
   const [passwordChanged, setPasswordChanged] = useState("");
+  const [subscriptionStartDate, setSubscriptionStartDate] = useState('');
+  const [subscriptionEndDate, setSubscriptionEndDate] = useState('');
+  const [remainingDays, setRemainingDays] = useState('');
   
-
   
   useEffect(() => {
     const fetchQuizData = async () => {
       console.log("User ID:", userId);
-      console.log("User Name:", username);
-      console.log("occupation:", occupation);
 
       try {
         const response = await fetch(
-          `https://quizifai.com:8010/latest_quizes`,
+          `https://quizifai.com:8010/dashboard`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-               user_id: userId ,
-              username:username,
+               user_id: userId
             }),
           }
         );
@@ -97,6 +88,7 @@ const LogoutBar = () => {
         console.log("Data:", data);
 
         const userDetails = data.user_details;
+        setUsername(userDetails.full_name);
          setCity(userDetails.location_name);
          setCountry(userDetails.country_name);
          setGlobalRank(userDetails.global_rank);
@@ -109,6 +101,11 @@ const LogoutBar = () => {
          setTotalMinuutes(usermetrics.total_minutes);
          setAverageScorePercentage(usermetrics.average_total_percentage);
          setGlobalRank(usermetrics.global_rank);
+
+         const subscriptionDetails = userDetails.subscription_details[0];
+        setSubscriptionStartDate(subscriptionDetails.start_date);
+        setSubscriptionEndDate(subscriptionDetails.end_date);
+        setRemainingDays(subscriptionDetails.remaining_days);
          
         // Assume you set the fetched data to the state as necessary
       } catch (error) {
@@ -219,8 +216,10 @@ const LogoutBar = () => {
             
             <div className="flex">
               <img className="h[60px] w-[60px] ml-7 mt-1" src={ranks}/>
-              <p className="text-[30px] text-[#5E81F4]  mt-1 font-bold">{globalRank}</p>
-              <h1 className="mt-[40px] relative font-Poppins text-[13px]">global rank</h1>
+              <div>
+              <p className="text-[30px] text-[#5E81F4]  text-start mt-1 font-bold">{globalRank}</p>
+              <h1 className="relative font-Poppins text-[13px]">global rank</h1>
+              </div>
             </div>
             <div className="h-[5px] w-full bg-white mt-[10px]"></div>
 
@@ -240,12 +239,17 @@ const LogoutBar = () => {
 
           <div>
             <h1 className="font-semibold mt-[10px] text-[15px]">Public User</h1>
-            <h1 className="text-[12px] mt-[5px] px-[1px]">Subscribed Date : <span className="text-[#5E81F4] text-nowrap">03rd june 2024</span></h1>
+            <h1 className="text-[12px] mt-[5px] px-[1px]">Subscribed Date : 
+              <span className="text-[#5E81F4] text-nowrap">{subscriptionStartDate}</span></h1>
             <h1 className="font-semibold -mt-[3px] text-[15px] pt-2">Subscribed</h1>
             
             <div className="flex">
             {/* <span className="text-[25px] text-[#5E81F4] ml-[20px] mt-[10px] font-semibold"></span> */}
-            <img className="h-[40px] w-[35px] ml-5 -mt-2" src={infinity}/>
+            {remainingDays > 0 ?(
+              <img className="h-[40px] w-[35px] ml-5 -mt-2" src={infinity} />
+            ):(
+              <p className="text-[13px] text-red-500 ml-[20px] mt-[3px]">{remainingDays}</p>            
+            )}
             <h1 className="mt-[2px] ml-[10px] text-[13px] font-normal">days remaining</h1>
             </div>
           </div>

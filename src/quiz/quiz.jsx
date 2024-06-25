@@ -337,26 +337,26 @@ const Quiz = () => {
 </div>
 
  <div className="mx-auto">
- <div className="flex flex-wrap mx-auto ml-[20px]">
+ <div className="flex flex-wrap mx-auto ml-[35px] mt-[10px]">
             {allquizzes.map((quizItem, index) => (
                <div
                key={index}
                className=""         
              >
-              {quizItem.attempted_flag === 'Y' ?(
-                //attempted cards
+              {quizItem.attempt_flag === 'Y' ?(
                 <div
                 key={index} className={styles.card}
                 style={{
                   width:"245px",
                   paddingTop: "8px",
                   paddingTop:"20px",
-                  marginTop:"30px",
+                  marginTop:"10px",
+                  marginRight:"10px",
                   backgroundColor: "#fee2e2",               
                 }}
               >
                 <span className="relative group">
-                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate">
+                <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate -mt-[10px]">
                 {quizItem.quiz_name}
                 </span>
                 <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
@@ -364,7 +364,7 @@ const Quiz = () => {
                 </span>
               </span>
                   <div className={styles.iconContainer}>
-                    <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
+                    <div className="z-40 mb-[2px] pl-[36px] font-normal rounded -mt-[13px]">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -482,7 +482,7 @@ const Quiz = () => {
                   </div>
                   <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[50px] left-[10px]">
                   <div>Created By :
-                    <span className="pl-[2px]">{quizItem.full_name}</span>
+                    <span className="pl-[2px]">{quizItem.created_by}</span>
                   </div>
                   {/* <div>Created On</div> */}
                   </div>
@@ -493,7 +493,7 @@ const Quiz = () => {
                   >
                     <div
                       className={styles.infoIcon}
-                      style={{ marginTop: "37px" }}
+                      style={{ marginTop: "20px",marginRight:"20px" }}
                     ></div>
                     <div className="z-0">
                       <div className="text-[7px] flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
@@ -504,7 +504,7 @@ const Quiz = () => {
                           width={10}
                           height={10}
                         />
-                        <p>{quizItem.attempts_count} </p>
+                        <p>{quizItem.quiz_attempts} </p>
                         <span
                           title="number of times quiz attempted"
                           className="text-[8px] -ml-[1px] cursor-pointer"
@@ -523,7 +523,7 @@ const Quiz = () => {
                         height={10}
                       />{" "}
                       {quizItem.attained_score}/
-                      {quizItem.total_score}
+                      {quizItem.quiz_total_marks}
                       <div
                         title="attained score/total score"
                         className="cursor-pointer text-[6px]"
@@ -540,7 +540,7 @@ const Quiz = () => {
                         height={14}
                       />{" "}
                       {quizItem.attempted_questions}/
-                      {quizItem.total_questions}
+                      {quizItem.number_of_questions}
                       <div
                         title="attempted qustions/total questions"
                         className="cursor-pointer text-[6px]"
@@ -571,14 +571,13 @@ const Quiz = () => {
     
                 </div>
               ):(
-                //non attempted cards
                 <div
               className={styles.card}
               style={{
                 width: "245px",
                 paddingTop: "8px",
-                marginTop:"15px",
-                marginLeft:"10px",
+                marginRight: "10px",
+                marginTop:"10px",
                 backgroundColor: "#CBF2FB",
               }}
             >
@@ -654,7 +653,7 @@ const Quiz = () => {
             </div>
             <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[75px] left-[12px]">
             <div>Created By :
-                      <span className="pl-[2px]">{quizItem.full_name}</span>
+                      <span className="pl-[2px]">{quizItem.created_by}</span>
                     </div>
                     {/* <div>Created On</div> */}
                     </div>
@@ -708,7 +707,7 @@ const Quiz = () => {
               )}
               </div>
             ))}
-          </div>
+    </div>
   </div>         
             
     </div>

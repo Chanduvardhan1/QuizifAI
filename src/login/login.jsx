@@ -905,6 +905,7 @@ const LoginPage = () => {
                       >
                         Reset using phone or email
                       </p>
+                      <div>
                       {loginMethod === "email" && (
                       <div
                         className={styles.inputWithIcon1}
@@ -972,10 +973,10 @@ const LoginPage = () => {
                         />
                       </div>
                         )}
-                      <div
+                      {/* <div
                         className={styles.checkboxContainer1}
                         styles={{ marginTop: "150px" }}
-                      >
+                      > */}
 {/*                     
                           <input
                             type="checkbox"
@@ -992,13 +993,8 @@ const LoginPage = () => {
                         <span className={styles.termsText}>
                           I agree with the terms and conditions
                         </span> */}
-                      </div>
-                      {errorMessage && (
-                <>
-                  {console.log("Error message:", errorMessage)}
-                  <p className={styles.displayError}>{errorMessage}</p>
-                </>
-              )}
+                      {/* </div> */}
+                  
                       <div className={styles.buttonContainer}>
                         <button
                           className={`${styles.submitButton} ${styles.button1}`}
@@ -1012,7 +1008,7 @@ const LoginPage = () => {
                         >
                           Sendotp
                         </button>
-                        <button
+                        {/* <button
                           className={`${styles.cancelButton} ${styles.button1}`}
                           style={{
                             width: "144px",
@@ -1022,9 +1018,15 @@ const LoginPage = () => {
                           onClick={handleGoBack1}
                         >
                           Cancel
-                        </button>
+                        </button> */}
                       </div>
-             
+                      </div>
+                      {errorMessage && (
+                <>
+                  {console.log("Error message:", errorMessage)}
+                  <p className={styles.displayError}>{errorMessage}</p>
+                </>
+              )}
                     </div>
                   </div>
                 </div>

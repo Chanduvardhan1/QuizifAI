@@ -18,6 +18,7 @@ import Attempt1 from "../../public/images/dashboard/Attempt1.png";
 import NoOfQuestion from "../../public/images/dashboard/NoOfQuestion.png";
 import Easy from "../../public/images/dashboard/Easy.png";
 import Clock from "../../public/images/dashboard/Clock.png";
+import arrow from "../../src/assets/Images/dashboard/rightArrow.png";
 import "react-sweet-progress/lib/style.css";
 
 const Dashboard = () => {
@@ -343,12 +344,16 @@ const Dashboard = () => {
           
         <div className="flex justify-between mx-[20px]" style={{marginBottom:"20px"}}>
         <p className="text-[#002366] text-[15px] font-medium leading-6 ml-[10px]">Latest Quizzes</p>
-            <span
+        <span className="flex">
+        <span
               className="text-[#EF5130] text-[12px] mr-[20px] mt-1 cursor-pointer" style={{fontWeight:"600"}}
               onClick={handleBackToQuizzes}
             >
               More{" "}
             </span>
+            <img className="h-[10px] w-[9px] mt-[9px] -ml-[15px]" src={arrow}/>
+        </span>
+
           </div>
 
           <div className="flex flex-wrap mx-auto ml-[15px] -mt-[20px]">
@@ -725,12 +730,15 @@ const Dashboard = () => {
 
           <div className="flex justify-between mx-[30px]" style={{marginTop:"10px",marginBottom:"20px"}}>
             <p className="text-[#002366] text-[15px] font-medium leading-6">Most Popular Quizzes</p>
-            <span
-              className="text-[#EF5130] text-[12px] mr-[10px] mt-1 cursor-pointer" style={{fontWeight:"600"}}
+            <span className="flex">
+        <span
+              className="text-[#EF5130] text-[12px] mr-[20px] mt-1 cursor-pointer" style={{fontWeight:"600"}}
               onClick={handleBackToQuizzes}
             >
               More{" "}
             </span>
+            <img className="h-[10px] w-[9px] mt-[9px] -ml-[15px]" src={arrow}/>
+        </span>
           </div>
           
           <div className="flex flex-wrap mx-auto ml-[15px] -mt-[20px]">

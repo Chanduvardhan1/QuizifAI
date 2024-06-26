@@ -43,9 +43,10 @@ const FreeProfile = () => {
   const [dob, setDob] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [city, setCity] = useState("");
-  const [cityOptions, setCityOptions] = useState([]);
+  const [locations, setLocations] = useState([]);
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
+  const [district, setDistrict] = useState("");
   const [email, setEmail] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   const [occupation, setOccupation] = useState("");
@@ -98,6 +99,14 @@ const FreeProfile = () => {
     setInputValue(buttonName);
   };
 
+  const handleDateChange = (e) => {
+    const dateValue = e.target.value;
+    const year = dateValue.split("-")[0];
+    if (year.length <= 4) {
+      setDob(dateValue);
+    }
+  };
+
   //location details ****************************
   const handlePostalCodeChange = (e) => {
     const value = e.target.value;
@@ -114,11 +123,16 @@ const FreeProfile = () => {
           pincode: pincode
         });
         const data = response.data.data[0];
-  
         setCountry(data.country);
         setState(data.state);
-        // setDistrict(data.district);
-        setCity(data.location);
+        setDistrict(data.district);
+  
+        const locationData = response.data.data;
+        setLocations(locationData);
+        if(locationData.length > 0){
+          setCity(locationData[0].location);
+        }
+
       } catch (error) {
         console.error("Error fetching details by pincode", error);
       }
@@ -128,20 +142,11 @@ const FreeProfile = () => {
     fetchDetailsByPincode(postalCode);
   }
 
-  const handleDateChange = (e) => {
-    const dateValue = e.target.value;
-    const year = dateValue.split("-")[0];
-    if (year.length <= 4) {
-      setDob(dateValue);
-    }
-  };
-
   // Get profile details integration part******************
   useEffect(() => {
     const fetchQuizData = async () => {
       console.log("User ID:", userId);
       
-
       try {
         const response = await fetch(
           `https://quizifai.com:8010/dashboard`,
@@ -162,7 +167,7 @@ const FreeProfile = () => {
         const data = await response.json();
         console.log("Data:", data);
 
-        const userProfileDetails = data.user_profile_details;
+        const userProfileDetails = data.data[0].user_profile_details;
         if(!userProfileDetails){
           throw new Error("User profile details not found");
         }
@@ -172,6 +177,7 @@ const FreeProfile = () => {
           lastName: userProfileDetails.last_name,
           gender: userProfileDetails.gender,
           dob: userProfileDetails.date_of_birth,
+          district : userProfileDetails.district_name,
           email: userProfileDetails.user_email,
           mobileNumber: userProfileDetails.user_phone_number,
           country: userProfileDetails.country_name,
@@ -179,12 +185,14 @@ const FreeProfile = () => {
           city: userProfileDetails.location_name ,
           postalCode: userProfileDetails.pin_code,
           occupation: userProfileDetails.occupation_name,
+          preferredLoginMethod: userProfileDetails.preferred_login_method,
         };
         setFirstName(userProfileDetails.first_name);
         setMiddleName(userProfileDetails.middle_name);
         setLastName(userProfileDetails.last_name);
         setGender(userProfileDetails.gender);
         setDob(userProfileDetails.date_of_birth);
+        setDistrict(userProfileDetails.district_name);
         setEmail(userProfileDetails.user_email);
         setMobileNumber(userProfileDetails.user_phone_number);
         setCountry(userProfileDetails.country_name);
@@ -193,6 +201,7 @@ const FreeProfile = () => {
         setPostalCode(userProfileDetails.pin_code);
         setOccupation(userProfileDetails.occupation_name);
         setInitialLoginData(initialData);
+        setPreferredLoginMethod(userProfileDetails.preferred_login_method);
 
         // const userDetails = data.user_details;
         // setUserName(userDetails.full_name);
@@ -212,6 +221,7 @@ const FreeProfile = () => {
           lastName,
           gender,
           dob,
+          district,
           email,
           mobileNumber,
           country,
@@ -219,6 +229,7 @@ const FreeProfile = () => {
           city,
           postalCode,
           occupation,
+          preferredLoginMethod,
     }); // Save the current form data as the initial state
     setIsEditing(true);
   };
@@ -233,8 +244,8 @@ const FreeProfile = () => {
       email_otp: " ",
       user_phone_number: mobileNumber,
       otp: " ",
-      user_role: " ",
-      user_type: " ",
+      user_role: "quiz user", // Example value, adjust as needed
+      user_type: "public", 
       user_org_id: null,
       gender: gender,
       display_name: " ",
@@ -283,6 +294,7 @@ const FreeProfile = () => {
     setLastName(initialFormData.lastName);
     setGender(initialFormData.gender);
     setDob(initialFormData.dob);
+    setDistrict(initialFormData.district);
     setEmail(initialFormData.email);
     setMobileNumber(initialFormData.mobileNumber);
     setCountry(initialFormData.country);
@@ -296,7 +308,11 @@ const FreeProfile = () => {
   //Login user detailes88********************
 
   const handleLoginEditClick = () => {
-    setIsEditingLogin(true);
+    setInitialFormData({
+      email,
+      mobileNumber,
+});
+setIsEditingLogin(true);
   };
 
   const handleLoginSaveClick = async () => {
@@ -304,7 +320,7 @@ const FreeProfile = () => {
       user_id: userId,
       email: email,
       mobile: mobileNumber,
-      
+      // otp: otp,     
     };
   
     console.log("Sending OTP with payload:", payload);
@@ -332,13 +348,17 @@ const FreeProfile = () => {
   
       setIsEditingLogin(false);
       setIsOtpSent(true);
-      setMessage('OTP sent successfully!');
+      alert('OTP sent successfully!');
     } catch (error) {
       console.error("Error sending OTP:", error.message);
       // Display error message to the user
-      setMessage("Error sending OTP. Please try again.");
+      alert("Error sending OTP. Please try again.");
     }
   };
+  const handleLoginCancelClick = () =>{
+    setEmail(initialFormData.email);
+    setMobileNumber(initialFormData.mobileNumber);
+  }
 
   const handleOtpVerifyClick = () => {
     const isOtpValid = verifyOtp(otp);
@@ -463,7 +483,7 @@ const FreeProfile = () => {
                           ml-[10px] 
                           mr-[70px]
                           h-[30px] 
-                          w-[170px] 
+                          w-[165px] 
                           text-[11px] 
                           focus:outline-none ${isEditing ? 'input-highlight' : ''}`}"
                           type="text"
@@ -476,7 +496,7 @@ const FreeProfile = () => {
               </div>
               <div
                 className={styles.inputGroup1}
-                style={{ marginLeft: "-40px" }}
+                style={{ marginLeft: "-30px" }}
               >
                 <label className="text-blue-800 font-semibold">
                   Occupation
@@ -529,7 +549,7 @@ const FreeProfile = () => {
             <hr className="h-[0.5px] w-[250px] bg-gray-200"></hr>
           </div>
           {/* pincode  */}
-          <div className={styles.inputGroup1} style={{ marginLeft: "-46px",display:"" }}>
+          <div className={styles.inputGroup1} style={{ marginLeft: "-40px",display:"" }}>
             <label className="text-blue-800 font-semibold">Pincode</label>
             <input
               className="border-transparent 
@@ -575,26 +595,33 @@ const FreeProfile = () => {
             />
             <hr className="h-[1px] w-[250px] bg-gray-200"></hr>
           </div>
-          {/* city name  */}
-          <div className={styles.inputGroup1} style={{ marginLeft: "-35px" }}>
-            <label className="text-blue-800 font-semibold">City Name</label>
+          {/* district name  */}
+          <div
+            className={styles.inputGroup1}
+            style={{ marginLeft: "-30px", textWrap: "nowrap" }}
+          >
+            <label className="text-blue-800 font-semibold">District Name</label>
             <input
               className="border-transparent 
-                           border-b-2  
+                           border-b-2   
                         hover:border-blue-200 
                           ml-[10px] 
-                          mr-[90px]
                           h-[30px] 
-                          w-[190px] 
+                          w-[170px] 
                           text-[11px] 
                           focus:outline-none"
               type="text"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
+              value={district}
+              onChange={(e) => setDistrict(e.target.value)}
               disabled={!isEditing}
             />
-            <hr className="h-[1px] w-[270px] bg-gray-200"></hr>
+            <hr
+              className={`h-[1px] w-[270px] bg-gray-200 ${
+                isFocused ? "bg-blue-500" : ""
+              }`}
+            />
           </div>
+          
         </div>
         <div className="flex ml-[29%] -mt-[5px] my-[10px]">
           {/* gender*/}
@@ -620,8 +647,59 @@ const FreeProfile = () => {
     </select>
             <hr className="h-[0.5px] w-[250px] bg-gray-200"></hr>
           </div>
-          {/* state name  */}
-          <div className={styles.inputGroup1} style={{ marginLeft: "35px" }}>
+          {/* city name  */}
+          <div className={styles.inputGroup1} style={{ marginLeft: "40px" }}>
+            <label className="text-blue-800 font-semibold">City Name</label>
+            <select
+              className="border-transparent 
+                           border-b-2  
+                        hover:border-blue-200 
+                          ml-[10px] 
+                          mr-[90px]
+                          h-[30px] 
+                          w-[190px] 
+                          text-[11px] 
+                          focus:outline-none"
+              type="text"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              disabled={!isEditing}
+            >
+             {locations.map((location) => (
+            <option key={location.location_id} value={location.location}>
+              {location.location}
+            </option>
+             ))} 
+            </select>
+            <hr className="h-[1px] w-[270px] bg-gray-200"></hr>
+          </div>  
+        </div>
+        <div className="flex ml-[29%] -mt-[5px] my-[10px]">
+          {/* email*/}
+          <div
+            className={styles.inputGroup1}
+            style={{ marginLeft: "-50px", textWrap: "nowrap" }}
+          >
+            <label className="text-blue-800 font-semibold">DOB</label>
+            <input
+              className="border-transparent 
+                           border-b-2   
+                        hover:border-blue-200 
+                          ml-[10px] 
+                          mr-[90px]
+                          h-[30px] 
+                          w-[213px] 
+                          text-[11px] 
+                          focus:outline-none"
+              type="date"
+              value={dob}
+              onChange={handleDateChange}
+               disabled={!isEditing}
+            />
+            <hr className="h-[1px] w-[250px] bg-gray-200"></hr>
+          </div>
+          {/* state */}
+          <div className={styles.inputGroup1} style={{ marginLeft: "-50px" }}>
             <label className="text-blue-800 font-semibold">State Name</label>
             <input
               className="border-transparent 
@@ -639,14 +717,15 @@ const FreeProfile = () => {
             />
             <hr className="h-[1px] w-[270px] bg-gray-200"></hr>
           </div>
+          
         </div>
         <div className="flex ml-[29%] -mt-[5px] my-[10px]">
-          {/* email*/}
+          {/* login method*/}
           <div
             className={styles.inputGroup1}
             style={{ marginLeft: "-50px", textWrap: "nowrap" }}
           >
-            <label className="text-blue-800 font-semibold">DOB</label>
+            <label className="text-blue-800 font-semibold">login Method</label>
             <input
               className="border-transparent 
                            border-b-2   
@@ -654,20 +733,20 @@ const FreeProfile = () => {
                           ml-[10px] 
                           mr-[90px]
                           h-[30px] 
-                          w-[210px] 
+                          w-[155px] 
                           text-[11px] 
                           focus:outline-none"
-              type="date"
-              value={dob}
-              onChange={handleDateChange}
-               disabled={!isEditing}
+                          type="text"
+                          value={preferredLoginMethod}
+                          onChange={(e) => setPreferredLoginMethod(e.target.value)}
+                          disabled={!isEditing}
             />
             <hr className="h-[1px] w-[250px] bg-gray-200"></hr>
           </div>
           {/* Country */}
           <div
             className={styles.inputGroup1}
-            style={{ marginLeft: "-53px", textWrap: "nowrap" }}
+            style={{ marginLeft: "-50px", textWrap: "nowrap" }}
           >
             <label className="text-blue-800 font-semibold">Country Name</label>
             <input
@@ -676,7 +755,7 @@ const FreeProfile = () => {
                         hover:border-blue-200 
                           ml-[10px] 
                           h-[30px] 
-                          w-[170px] 
+                          w-[164px] 
                           text-[11px] 
                           focus:outline-none"
               type="text"
@@ -742,7 +821,7 @@ const FreeProfile = () => {
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            disabled={!isEditing}
+            disabled={!isEditingLogin}
           />
         </div>
         {/* Mobile */}
@@ -763,7 +842,7 @@ const FreeProfile = () => {
             type="tel"
             value={mobileNumber}
             onChange={(e) => setMobileNumber(e.target.value)}
-            disabled={!isEditing}
+            disabled={!isEditingLogin}
           />
         </div>
       </div>
@@ -786,6 +865,12 @@ const FreeProfile = () => {
           Edit
         </button>
       )}
+      <button className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[#FA3D49] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] ml-[4%] text-white"
+       onClick={handleLoginCancelClick}
+       >
+       Cancel
+       </button>
+
       {isOtpSent && (
         <div className="mt-[20px]">
           <label className="text-blue-800 font-semibold">Enter OTP</label>
@@ -804,6 +889,7 @@ const FreeProfile = () => {
           >
             Verify OTP
           </button>
+          
         </div>
       )}
       {message && (
@@ -811,6 +897,7 @@ const FreeProfile = () => {
           {message}
         </div>
       )}
+      
     </div>
 
       <div className="bg-white w-full">

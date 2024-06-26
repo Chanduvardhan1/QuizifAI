@@ -29,7 +29,7 @@ const Quiz = () => {
 
    
   const [dataRanges, setDataRanges] = useState([]);
-  const [selectedDataRange,setSelectedDataRange]=useState("");
+  const [selectedDateRange, setSelectedDateRange] = useState('');
 
   const [popularity, setPopularity] = useState([]);
   const [selectedPopularity,setSelectedPopularity]=useState("");
@@ -57,118 +57,15 @@ const Quiz = () => {
   const [allquizzes, setAllquizzes] = useState([]);
  
   // Filtered quizzes based on selected dropdown options
-  const filteredQuizzes = allquizzes.filter((quizItem) => {
-    return (
-      (selectedCategory === "" || quizItem.category === selectedCategory) &&
-      (selectedSubCategory === "" || quizItem.sub_category === selectedSubCategory) &&
-      (selectedComplexity === "" || quizItem.complexity === selectedComplexity) &&
-      (selectedCources === "" || quizItem.course === selectedCources) &&
-      (selectedClasses === "" || quizItem.class === selectedClasses)
-    );
-  });
-
-  // const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   fetchDataRange();
-  // }, []);
-
-  // const fetchDataRange = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       'https://quizifai.com:8010/get_date_rnge/');
-  //     const data = await response.json();
-  //     if (data.response === 'Success') {
-  //       const formattedData = data['Date Range'].map(range => ({
-  //         DateRange: range,
-  //         Popularity: data.Popularity
-  //       }));
-  //       setDataRanges(formattedData);
-  //     } else {
-  //       console.error('Unexpected response format:', data);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching DataRange:', error);
-  //   }
-  // };
-
-  // const handleSelectDataRange = (event) => {
-  //   const selectedRange = event.target.value;
-  //   setSelectedDataRange(selectedRange);
-
-  //   const selectedRangeData = dataRanges.find(range => range.DateRange === selectedRange);
-  //   if (selectedRangeData) {
-  //     setPopularity(selectedRangeData.Popularity);
-  //   } else {
-  //     setPopularity([]);
-  //   }
-  //   setSelectedPopularity('');
-  // };
-
-  // const handleSelectPopularity = (event) => {
-  //   const selectedPopularityValue = event.target.value;
-  //   setSelectedPopularity(selectedPopularityValue);
-  // };
-
-  // useEffect(() => {
-  //   fetchCategories();
-  // }, []);
-
-  // const fetchCategories = async () => {
-  //   try {
-  //     const response = await fetch('https://quizifai.com:8010/categories&sub_categories/');
-  //     const data = await response.json();
-  //     if (data.response === 'success') {
-  //       setCategories(data.data);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching categories:', error);
-  //   }
-  // };
-
-  //  const handleSelectCategory = (event) => {
-  //   const selectedCategory = event.target.value;
-  //   setSelectedCategory(selectedCategory);
-  //   const category = categories.find(cat => cat.category_name === selectedCategory);
-  //   if (category) {
-  //     setSubCategories(category.sub_categories.map(subCat => subCat.sub_category_name));
-  //   }
-  // };
-
-  // const handleSelectSubCategory = (event) => {
-  //   const selectedSubCategory = event.target.value;
-  //   setSelectedSubCategory(selectedSubCategory);
-  // };
-
-  // useEffect(() => {
-  //   fetchCources();
-  // }, []);
-
-  // const fetchCources = async () =>{
-  //   try{
-  //     const response = await fetch('https://quizifai.com:8010/courses-clsses/');
-  //     const data = await response.json();
-  //     if(data.response === 'success'){
-  //       setCources(data.data);
-  //     }
-  //   }catch (error) {
-  //     console.error('Error fetching Cources:', error);
-  //   }
-  // }
-
-  //  const handleSelectCource = (event) => {
-  //   const selectedCources = event.target.value;
-  //   setSelectedCources(selectedCources);
-  //   const cource = cources.find(cour => cour.course_name === selectedCources);
-  //   if (cource) {
-  //     setClasses(cource.classes.map(cls => cls.class_name));
-  //   }
-  // };
-
-  // const handleSelectClass = (event) => {
-  //   const selectedClasses = event.target.value;
-  //   setSelectedClasses(selectedClasses);
-  // };
+  // const filteredQuizzes = allquizzes.filter((quizItem) => {
+  //   return (
+  //     (selectedCategory === "" || quizItem.category === selectedCategory) &&
+  //     (selectedSubCategory === "" || quizItem.sub_category === selectedSubCategory) &&
+  //     (selectedComplexity === "" || quizItem.complexity === selectedComplexity) &&
+  //     (selectedCources === "" || quizItem.course === selectedCources) &&
+  //     (selectedClasses === "" || quizItem.class === selectedClasses)
+  //   );
+  // });
 
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -183,7 +80,6 @@ const Quiz = () => {
             },
             body: JSON.stringify({
               user_id: userId,
-              quiz_complexity_name: selectedComplexity,
             }),
           }
         );
@@ -191,15 +87,19 @@ const Quiz = () => {
           throw new Error('Failed to fetch quiz data');
         }
         const result = await response.json();
-        console.log("quizzes data received:", result);
+        console.log("quizzes received data:", result);
         
         const data = result.data[0];
         setTimeData(data.time_spent || []);
-        setLatestResult(data.latest_result || []);
         setWeeklyQuizCount(data.weekly_quiz_count || 0);
         setAverageScorePercentage(parseFloat(data.average_score_percentage) || 0);
         setAllquizzes(data.all_quizzes || []);
-  
+       
+         // Extract unique date ranges
+         const uniqueDateRanges = [...new Set(data.all_quizzes.map(quiz => quiz.date_range))];
+         setDataRanges(uniqueDateRanges);
+         
+
        const userDetails = data.audit_details;
        setUsername(userDetails.full_name);
   
@@ -275,12 +175,17 @@ const Quiz = () => {
   <select
         className="w-[90px] rounded-md ml-4 cursor-pointer text-[10px] bg-[#f3d0d5] border-none"
         style={{ border: 'none', outline: 'none' }}
-        value={dataRanges}
-        onChange={e => setDataRanges(e.target.value)}
+        value={selectedDateRange}
+        onChange={e => setSelectedDateRange(e.target.value)}
       >
         <option value="" style={{ background: '#A5CCE3' }}>
           Date Range
         </option>
+        {dataRanges.map((range, index) => (
+          <option key={index} value={range}>
+            {range}
+          </option>
+        ))}
         {/* {dataRanges.map((range, index) => (
           <option key={index} value={range.DateRange}>
             {range.DateRange}

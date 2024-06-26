@@ -176,7 +176,7 @@ const quizresults = () => {
           })
         });
         const result = await response.json();
-        const data = result[0]?.data;
+        const data = result.data[0];
         setQuizData(data);
         console.log('Quiz result submitted:', data);
         setIsQuizSubmitted(true); // Set the submission state to true after success
@@ -208,7 +208,7 @@ const quizresults = () => {
         const result = await response.json();
 
         if (result.response === 'success') {
-          setLeaderboardData(result.data);
+          setLeaderboardData(result.response_message);
         } else {
           console.error('Failed to fetch leaderboard data:', result.message);
         }
@@ -321,6 +321,9 @@ const quizresults = () => {
    /* fetch or store quizId */;
   navigate(`/dashboard`);
 };
+if (!Array.isArray(leaderboardData)) {
+  return null;
+}
   const questions = quizData1.questions;
   const topThree = leaderboardData.slice(0, 3);
 
@@ -345,7 +348,7 @@ const quizresults = () => {
   alt="User Icon"
   className={styles.icon1}
 /> */}
-<div className={styles.downloads} >
+{/* <div className={styles.downloads} >
 <div className={styles.download} >
 
           <span className={styles.quizname}>{quizData.quiz_name}</span>
@@ -353,7 +356,7 @@ const quizresults = () => {
 <div className={styles.download} >
 <button className={styles.downbutton} onClick={handleDownload}>Download</button>
 </div>
-</div>
+</div> */}
 
           <p className={styles.quizdescription}>{quizData.quiz_description}</p>
           <div className={styles.Questionslines }>

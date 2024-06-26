@@ -53,7 +53,7 @@ const LogoutBar = (data) => {
   const [country, setCountry] = useState("");
   const [globalRank, setGlobalRank] = useState("");
   const [totalQuizzes, setTotalQuizzes] = useState("");
-  const [totalMinuutes, setTotalMinuutes] = useState("");
+  const [totalMinutes, setTotalMinutes] = useState("");
   const [averageScorePercentage, setAverageScorePercentage] = useState("");
   const [registeredOn, setRegisteredOn] = useState("");
   const [lastLogin, setLastLogin] = useState("");
@@ -87,17 +87,17 @@ const LogoutBar = (data) => {
         const data = await response.json();
         console.log("Data:", data);
 
-        const userDetails = data.user_details;
-        if (userDetails) {
-          setUsername(userDetails.full_name || "");
-          setCity(userDetails.location_name || "");
-          setCountry(userDetails.country_name || "");
-          setGlobalRank(userDetails.global_rank || "");
-          setRegisteredOn(userDetails.created_date || "");
-          setLastLogin(userDetails.last_login_timestamp || "");
-          setPasswordChanged(userDetails.user_password_change_date || "");
+        const auditDetails = data.audit_details;
+        if (auditDetails) {
+          setUsername(auditDetails.full_name || "");
+          setCity(auditDetails.location_name || "");
+          setCountry(auditDetails.country_name || "");
+          setGlobalRank(auditDetails.global_rank || "");
+          setRegisteredOn(auditDetails.created_date || "");
+          setLastLogin(auditDetails.last_login_timestamp || "");
+          setPasswordChanged(auditDetails.user_password_change_date || "");
 
-          const subscriptionDetails = userDetails.subscription_details && userDetails.subscription_details[0];
+          const subscriptionDetails = auditDetails.subscription_details && auditDetails.subscription_details[0];
           if (subscriptionDetails) {
             setSubscriptionStartDate(subscriptionDetails.start_date || "");
             setSubscriptionEndDate(subscriptionDetails.end_date || "");
@@ -112,9 +112,9 @@ const LogoutBar = (data) => {
         const usermetrics = data.user_metrics;
         if (usermetrics) {
           setTotalQuizzes(usermetrics.total_quizzes || 0);
-          setTotalMinuutes(usermetrics.total_minutes || 0);
+          setTotalMinutes(usermetrics.total_minutes || 0);
           setAverageScorePercentage(usermetrics.average_total_percentage || 0);
-          setGlobalRank(usermetrics.global_rank || "N/A");
+          setGlobalRank(usermetrics.global_rank || "");
         } else {
           console.error("No user metrics found.");
         }
@@ -128,11 +128,9 @@ const LogoutBar = (data) => {
   
   return (
     <div className={styles.logout}>
-     <div style={{ marginTop: "10px", display: "flex", alignItems: "center" , marginLeft:"30px"}}>
-  
-
-<div>
-<img
+     <div style={{ marginTop: "10px", display: "flex", alignItems: "center" , marginLeft:"30px"}}> 
+       <div>
+       <img
     src={LogoutIcon}
     onClick={handleBackToLogin}
     alt="Logout Icon"
@@ -239,7 +237,7 @@ const LogoutBar = (data) => {
             <h1 className="text-[12px] mt-[20px] ml-[5px] font-medium">quizzes</h1>
           </div>
           <div className="flex -mt-[15px]">
-            <span className="text-[25px] text-[#E97132] ml-[35px] mt-[10px] font-semibold">{totalMinuutes}</span>
+            <span className="text-[25px] text-[#E97132] ml-[35px] mt-[10px] font-semibold">{totalMinutes}</span>
             <h1 className="mt-[23px] ml-[5px] text-[12px] text-nowrap font-normal">total minutes</h1>
 
           </div><div className="flex -mt-[15px]">

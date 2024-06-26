@@ -542,7 +542,7 @@ margin-right: 120px;
 
 .checkboxContainer1 {
   display: flex;
-  margin-top: 70px;
+  /* margin-top: 70px; */
   align-items: center;
   justify-content: space-between;
   margin-right: 120px;
@@ -1260,7 +1260,7 @@ margin-left:18px;
     margin-left: 250px !important;
   }
   .checkboxContainer1 {
-    margin-top: 70px;
+    /* margin-top: 70px; */
   }
 
   .buttonContainer {

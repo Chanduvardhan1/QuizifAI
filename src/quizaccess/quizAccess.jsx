@@ -148,7 +148,7 @@ const quizAccess = () => {
     .then(data => {
       console.log(data);
       setQuizData(data.data);
-      setQuizDetails(data["quiz details"]);
+      setQuizDetails(data["quiz metrics"]);
       setCreatedBy(data.created_by);
       setCreatedOn(data.created_on);
     })

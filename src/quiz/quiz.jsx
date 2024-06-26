@@ -190,16 +190,19 @@ const Quiz = () => {
         if (!response.ok) {
           throw new Error('Failed to fetch quiz data');
         }
-        const data = await response.json();
-        console.log("Data received:", data);
-
-        setTimeData(data.time_spent);
-        setWeeklyQuizCount(data.weekly_quiz_count);
-        setAverageScorePercentage(data.average_score_percentage);
-        setAllquizzes(data.all_quizes || []);
-
-        const userDetails = data.user_details;
-        setUsername(userDetails.full_name);
+        const result = await response.json();
+        console.log("quizzes data received:", result);
+        
+        const data = result.data[0];
+        setTimeData(data.time_spent || []);
+        setLatestResult(data.latest_result || []);
+        setWeeklyQuizCount(data.weekly_quiz_count || 0);
+        setAverageScorePercentage(parseFloat(data.average_score_percentage) || 0);
+        setAllquizzes(data.all_quizzes || []);
+  
+       const userDetails = data.audit_details;
+       setUsername(userDetails.full_name);
+  
 
       } catch (error) {
         console.error('Error fetching quiz data:', error);

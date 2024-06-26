@@ -41,7 +41,7 @@ const LoginPage = () => {
   // const router = useRouter();
   const [emailError, setEmailError] = useState(false);
   const [loginOption, setloginOption] = useState("");
-
+  const [platform, setplatform] = useState("")
   const validateEmail = () => {
     return /\S+@\S+\.\S+/.test(email);
   };
@@ -196,7 +196,10 @@ const LoginPage = () => {
   const handleLogin = async (loginOption, email, mobile, password) => {
     try {
       console.log("email - ", email);
-  
+
+      const platform = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+      ? "mobile" // If any of the identifiers are found, return 'Mobile'.
+      : "Web";
       const response = await fetch(`https://quizifai.com:8010/login`, {
         method: "POST",
         headers: {
@@ -206,6 +209,7 @@ const LoginPage = () => {
           login_option: loginOption,
           email_or_mobile: loginOption === "email" ? email : mobile,
           password: password,
+          platform:platform,
         }),
       });
   
@@ -909,7 +913,7 @@ const LoginPage = () => {
                       {loginMethod === "email" && (
                       <div
                         className={styles.inputWithIcon1}
-                        style={{ marginTop: "20px", marginRight: "90px" }}
+                        // style={{ marginTop: "20px", marginRight: "90px" }}
                       >
                         <input
                           type="text"
@@ -948,7 +952,7 @@ const LoginPage = () => {
                        {loginMethod === "mobile" && (
                       <div
                         className={styles.inputWithIcon1}
-                        style={{ marginTop: "20px", marginRight: "90px" }}
+                        // style={{ marginTop: "20px", marginRight: "90px" }}
                       >
                         <input
                           type="text"

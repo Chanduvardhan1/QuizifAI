@@ -69,7 +69,7 @@ const Dashboard = () => {
         console.log('data - ', data);
 
         setTimeData(data.time_spent || []);
-        setLatestResult(data.latest_result || null);
+        setLatestResult(data.latest_result || []);
         setWeeklyQuizCount(data.weekly_quiz_count || 0);
         setAverageScorePercentage(data.average_score_percentage || 0);
         setAllquizzes(data.all_quizes || []);
@@ -179,7 +179,7 @@ const Dashboard = () => {
     }
   }
   
-  const results = latestResult.map((result, index) => {
+  const results = (latestResult || []).map((result, index) => {
     const percentColor = getColorPercentage(result?.quiz_percentage);
     return (
       <div key={index}>

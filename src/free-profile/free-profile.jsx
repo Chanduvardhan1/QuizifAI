@@ -69,7 +69,7 @@ const FreeProfile = () => {
   const [userName, setUserName] = useState("");
   const [profileData, setProfileData] = useState(null);
   const [profession, setProfession] = useState("");
-  const [otp, setOtp] = useState(null);
+  const [otp, setOtp] = useState('');
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [message, setMessage] = useState('');
   const [userrole, setuserrole] = useState("quiz user");
@@ -164,20 +164,20 @@ const FreeProfile = () => {
 
         const getProfileDetails = data.get_profiledetails;
         const initialData = {
-          firstName: getProfileDetails.first_name,
-          middleName:getProfileDetails.middle_name,
-          lastName:getProfileDetails.last_name,
-          gender: getProfileDetails.gender,
-          dob: getProfileDetails.date_of_birth,
-          email: getProfileDetails.user_email,
-          mobileNumber: getProfileDetails.mobile_number,
-          country: getProfileDetails.country_name,
-          state: getProfileDetails.state_name,
-          city: getProfileDetails.location_name,
-          postalCode: getProfileDetails.pin_code,
-          occupation: getProfileDetails.occupation_name,
+          firstName: getProfileDetails.first_name || "N/A",
+          middleName: getProfileDetails.middle_name || "N/A",
+          lastName: getProfileDetails.last_name || "N/A",
+          gender: getProfileDetails.gender || "N/A",
+          dob: getProfileDetails.date_of_birth || "N/A",
+          email: getProfileDetails.user_email || "N/A",
+          mobileNumber: getProfileDetails.mobile_number || "N/A",
+          country: getProfileDetails.country_name || "N/A",
+          state: getProfileDetails.state_name || "N/A",
+          city: getProfileDetails.location_name || "N/A",
+          postalCode: getProfileDetails.pin_code || "N/A",
+          occupation: getProfileDetails.occupation_name || "N/A",
         };
-        setFirstName(getProfileDetails.first_name);
+        setFirstName(getProfileDetails.first_name || "N/A");
         setMiddleName(getProfileDetails.middle_name);
         setLastName(getProfileDetails.last_name);
         setGender(getProfileDetails.gender);
@@ -191,8 +191,8 @@ const FreeProfile = () => {
         setOccupation(getProfileDetails.occupation_name);
         setInitialLoginData(initialData);
 
-        const userDetails = data.user_details;
-        setUserName(userDetails.full_name);
+        // const userDetails = data.user_details;
+        // setUserName(userDetails.full_name);
       } catch (error) {
         console.error("Error fetching quiz data:", error);
       }
@@ -303,6 +303,7 @@ const FreeProfile = () => {
       user_id: userId,
       email: email,
       mobile: mobileNumber,
+      
     };
   
     console.log("Sending OTP with payload:", payload);
@@ -330,10 +331,24 @@ const FreeProfile = () => {
   
       setIsEditingLogin(false);
       setIsOtpSent(true);
+      setMessage('OTP sent successfully!');
     } catch (error) {
       console.error("Error sending OTP:", error.message);
       // Display error message to the user
       setMessage("Error sending OTP. Please try again.");
+    }
+  };
+
+  const handleOtpVerifyClick = () => {
+    const isOtpValid = verifyOtp(otp);
+
+    if (isOtpValid) {
+      setMessage('OTP verified successfully!');
+      setIsEditing(false);
+      setIsEditingLogin(false);
+      setIsOtpSent(false);
+    } else {
+      setMessage('Invalid OTP. Please try again.');
     }
   };
 
@@ -775,6 +790,7 @@ const FreeProfile = () => {
           <label className="text-blue-800 font-semibold">Enter OTP</label>
           <input
             className="border-transparent border-b-2 hover:border-blue-200 ml-[10px] h-[30px] w-[200px] text-[11px] focus:outline-gray-300"
+            placeholder="Enter otp"
             type="text"
             value={otp}
             onChange={(e) => setOtp(e.target.value)}

@@ -57,6 +57,7 @@ const resetpassword = () => {
   const [resendAvailable, setResendAvailable] = useState(false);
   const [resendTime, setResendTime] = useState(600);
   const location = useLocation();
+  // const { userId,email } = location.state || {};
   const { userId } = location.state || {};
 
   useEffect(() => {
@@ -271,7 +272,7 @@ const resetpassword = () => {
               </div> */}
 
               <div className={styles.toggleOptions}>
-                <label className={styles.toggleLabel}>
+                {/* <label className={styles.toggleLabel}>
                   <input
                     type="radio"
                     name="contactMethod"
@@ -284,7 +285,7 @@ const resetpassword = () => {
                     <img src={icon1} alt="Logo" width={24} height={24} />
                   </div>
                   Email
-                </label>
+                </label> */}
 
                 {/* <label className={styles.toggleLabel}>
                   <input
@@ -414,7 +415,7 @@ const resetpassword = () => {
                       >
                         <TextField
                           id="password"
-                          label="Enter New Password "
+                          label="New Password "
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           variant="outlined"

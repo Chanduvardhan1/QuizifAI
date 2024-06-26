@@ -539,7 +539,11 @@ align-items: center;
 /* justify-content: space-between; */
 margin-right: 120px;
 }
-
+.emailinputbox{
+  display: flex;
+  text-align: center;
+  gap: 5px;
+}
 .checkboxContainer1 {
   display: flex;
   /* margin-top: 70px; */
@@ -659,14 +663,16 @@ margin-top: -3px;
 }
 
 .button1 {
-  border-radius: 10px;
+  border-radius: 20px;
   cursor: pointer;
 }
 
 .submitButton {
-  background-color: #223F80;
+  background-color: #3B61C8;
   color: #ffffff;
   border: none;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .cancelButton {

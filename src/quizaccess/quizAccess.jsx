@@ -148,7 +148,7 @@ const quizAccess = () => {
     .then(data => {
       console.log(data);
       setQuizData(data.data);
-      setQuizDetails(data["quiz metrics"]);
+      // setQuizDetails(data["quiz metrics"]);
       setCreatedBy(data.created_by);
       setCreatedOn(data.created_on);
     })
@@ -395,7 +395,7 @@ const quizAccess = () => {
     className={styles.icon2}
   /> */}
           <span className={styles.sentence5} style={{color:"#214082"}}>Total Attempts:</span>
-          <span >{`${quizDetails.total_attempts}`}</span>
+          <span >{quizData['quiz metrics'].total_attempts}</span>
         </div>
         <div className={styles.sentence}>
         {/* <img
@@ -404,7 +404,7 @@ const quizAccess = () => {
     className={styles.icon2}
   /> */}
    <span className={styles.sentence5} style={{color:"#214082"}}>Your Attempts:</span>
-          <span>{`${quizDetails.your_attempts}`}</span>
+          <span>{quizData['quiz metrics'].your_attempts}</span>
         </div>
         <div className={styles.sentence}>
         {/* <img
@@ -412,7 +412,7 @@ const quizAccess = () => {
     alt="Calendar Icon"
     className={styles.icon2}
   /> */}  <span className={styles.sentence5} style={{color:"#214082"}}>Highest Score:</span>
-          <span>{`${quizDetails.highest_score}`}</span>
+          <span>{quizData['quiz metrics'].highest_score !== null ? quizData['quiz metrics'].highest_score : 'N/A'}</span>
         </div>
        
         </div>
@@ -425,7 +425,7 @@ const quizAccess = () => {
     className={styles.icon2}
   /> */}
    <span className={styles.sentence5} style={{color:"#214082"}}>Quickest completion time: </span>
-          <span>{`${quizDetails.quickest_completion_time}`}</span>
+          <span>{quizData['quiz metrics'].quickest_completion_time !== null ? quizData['quiz metrics'].quickest_completion_time : 'N/A'}</span>
         </div>
         </div>
       {/* <div className={styles.sentencesContainer}>

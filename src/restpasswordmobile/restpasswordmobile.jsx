@@ -57,6 +57,7 @@ const resetpasswordmobile = () => {
   const [resendTime, setResendTime] = useState(600);
   const location = useLocation();
   const { userId } = location.state || {};
+  // const { userId,email } = location.state || {};
 
   useEffect(() => {
     if (userId) {
@@ -278,7 +279,7 @@ const resetpasswordmobile = () => {
                   Email
                 </label> */}
 
-                <label className={styles.toggleLabel}>
+                {/* <label className={styles.toggleLabel}>
                   <input
                     type="radio"
                     name="contactMethod"
@@ -291,7 +292,7 @@ const resetpasswordmobile = () => {
                     <img src={icon2} alt="Logo" width={30} height={30} />
                   </div>
                   Mobile
-                </label>
+                </label> */}
               </div>
               {/*  email content */}
               {/* {loginMethod === "email" && (

@@ -162,33 +162,36 @@ const FreeProfile = () => {
         const data = await response.json();
         console.log("Data:", data);
 
-        const getProfileDetails = data.get_profiledetails;
+        const userProfileDetails = data.user_profile_details;
+        if(!userProfileDetails){
+          throw new Error("User profile details not found");
+        }
         const initialData = {
-          firstName: getProfileDetails.first_name || "N/A",
-          middleName: getProfileDetails.middle_name || "N/A",
-          lastName: getProfileDetails.last_name || "N/A",
-          gender: getProfileDetails.gender || "N/A",
-          dob: getProfileDetails.date_of_birth || "N/A",
-          email: getProfileDetails.user_email || "N/A",
-          mobileNumber: getProfileDetails.mobile_number || "N/A",
-          country: getProfileDetails.country_name || "N/A",
-          state: getProfileDetails.state_name || "N/A",
-          city: getProfileDetails.location_name || "N/A",
-          postalCode: getProfileDetails.pin_code || "N/A",
-          occupation: getProfileDetails.occupation_name || "N/A",
+          firstName: userProfileDetails.first_name,
+          middleName: userProfileDetails.middle_name,
+          lastName: userProfileDetails.last_name,
+          gender: userProfileDetails.gender,
+          dob: userProfileDetails.date_of_birth,
+          email: userProfileDetails.user_email,
+          mobileNumber: userProfileDetails.user_phone_number,
+          country: userProfileDetails.country_name,
+          state: userProfileDetails.state_name,
+          city: userProfileDetails.location_name ,
+          postalCode: userProfileDetails.pin_code,
+          occupation: userProfileDetails.occupation_name,
         };
-        setFirstName(getProfileDetails.first_name || "N/A");
-        setMiddleName(getProfileDetails.middle_name);
-        setLastName(getProfileDetails.last_name);
-        setGender(getProfileDetails.gender);
-        setDob(getProfileDetails.date_of_birth);
-        setEmail(getProfileDetails.user_email);
-        setMobileNumber(getProfileDetails.user_phone_number);
-        setCountry(getProfileDetails.country_name);
-        setState(getProfileDetails.state_name);
-        setCity(getProfileDetails.location_name);
-        setPostalCode(getProfileDetails.pin_code);
-        setOccupation(getProfileDetails.occupation_name);
+        setFirstName(userProfileDetails.first_name);
+        setMiddleName(userProfileDetails.middle_name);
+        setLastName(userProfileDetails.last_name);
+        setGender(userProfileDetails.gender);
+        setDob(userProfileDetails.date_of_birth);
+        setEmail(userProfileDetails.user_email);
+        setMobileNumber(userProfileDetails.user_phone_number);
+        setCountry(userProfileDetails.country_name);
+        setState(userProfileDetails.state_name);
+        setCity(userProfileDetails.location_name);
+        setPostalCode(userProfileDetails.pin_code);
+        setOccupation(userProfileDetails.occupation_name);
         setInitialLoginData(initialData);
 
         // const userDetails = data.user_details;
@@ -227,13 +230,12 @@ const FreeProfile = () => {
       middle_name: middleName,
       last_name: lastName,
       user_email: email,
-      email_otp: null,
+      email_otp: " ",
       user_phone_number: mobileNumber,
-      otp: null,
-      user_role: null,
-      user_type: null,
-      user_org_id: 0,
-      active_flag: true,
+      otp: " ",
+      user_role: " ",
+      user_type: " ",
+      user_org_id: null,
       gender: gender,
       display_name: " ",
       date_of_birth: dob,
@@ -244,7 +246,6 @@ const FreeProfile = () => {
       user_address_line_2: " ",
       occupation: occupation,
       other_occupation: " ",
-      access_key: " "
     };
 
     console.log("Updating profile with payload:", payload);

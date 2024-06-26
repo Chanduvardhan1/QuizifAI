@@ -292,12 +292,12 @@ const LoginPage = () => {
       if (data.response === "success") {
         const userId = data.data[0]?.user_id;
         if (data.response_message === "OTP Succuessfully Sent") {
-          navigate("/resetpasswordmobile", { state: { userId } });
+          navigate("/resetpasswordmobile", { state: { userId,email } });
         } else if (data.response_message === "OTP Sent Successfully,Please reset your password") {
-          navigate("/resetpassword", { state: { userId } });
+          navigate("/resetpassword", { state: { userId,email} });
         }
       } else {
-        alert(data.response);
+        alert(data.response_message);
       }
     })
     .catch((error) => {
@@ -909,7 +909,7 @@ const LoginPage = () => {
                       >
                         Reset using phone or email
                       </p>
-                      <div>
+                      <div className={styles.emailinputbox}>
                       {loginMethod === "email" && (
                       <div
                         className={styles.inputWithIcon1}
@@ -1004,9 +1004,9 @@ const LoginPage = () => {
                           className={`${styles.submitButton} ${styles.button1}`}
                           onClick={handleForgotPasswordSubmit}
                           style={{
-                            width: "144px",
-                            height: "48px",
-                            marginRight: "40px",
+                            width: "80px",
+                            height: "30px",
+                           
                             fontFamily: "poppins",
                           }}
                         >

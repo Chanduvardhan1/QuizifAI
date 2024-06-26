@@ -68,7 +68,7 @@ const register = () => {
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [countdown, setCountdown] = useState(5); 
-
+   const[platform, serplatform] =useState("")
   const handleDateChange =(e) =>{
     const dateValue = e.target.value;
     const year = dateValue.split('-')[0];
@@ -628,6 +628,9 @@ const register = () => {
 
   const handleSubmit = async () => {
     setSubmitted(true);
+    const platform = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    ? "mobile" // If any of the identifiers are found, return 'Mobile'.
+    : "Web";
     // if (firstname.trim() === "") {
     //   setfirstname("");
     // } else {
@@ -723,6 +726,7 @@ const register = () => {
       password: password,
       confirm_password: confirmpassword,
       district_name:Districtname,
+      platform:platform,
     };
 
     try {

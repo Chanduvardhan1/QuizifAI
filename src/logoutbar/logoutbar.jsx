@@ -87,9 +87,8 @@ const LogoutBar = (data) => {
         const data = await response.json();
         console.log("Data:", data);
 
-        const auditDetails = data.audit_details;
+        const auditDetails = data.data[0].audit_details;
         if (auditDetails) {
-          setUsername(auditDetails.full_name || "");
           setCity(auditDetails.location_name || "");
           setCountry(auditDetails.country_name || "");
           setGlobalRank(auditDetails.global_rank || "");
@@ -109,7 +108,7 @@ const LogoutBar = (data) => {
           console.error("No user details found.");
         }
 
-        const usermetrics = data.user_metrics;
+        const usermetrics = data.data[0].user_metrics;
         if (usermetrics) {
           setTotalQuizzes(usermetrics.total_quizzes || 0);
           setTotalMinutes(usermetrics.total_minutes || 0);

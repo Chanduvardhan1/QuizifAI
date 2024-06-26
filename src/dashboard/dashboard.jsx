@@ -65,23 +65,24 @@ const Dashboard = () => {
         if (!response.ok) {
           throw new Error('Failed to fetch quiz data');
         }
-        const data = await response.json();
-        console.log('data - ', data);
-
+        const result = await response.json();
+        console.log('dashboard data - ', result); // Log the entire response data
+        
+        const data = result.data[0];
         setTimeData(data.time_spent || []);
         setLatestResult(data.latest_result || []);
         setWeeklyQuizCount(data.weekly_quiz_count || 0);
-        setAverageScorePercentage(data.average_score_percentage || 0);
-        setAllquizzes(data.all_quizes || []);
-
-        const userDetails = data.user_details;
-        setUsername(userDetails.full_name);
-
+        setAverageScorePercentage(parseFloat(data.average_score_percentage) || 0);
+        setAllquizzes(data.all_quizzes || []);
+  
+       const userDetails = data.audit_details;
+       setUsername(userDetails.full_name);
+  
       } catch (error) {
         console.error('Error fetching quiz data:', error);
       }
     };
-
+  
     fetchQuizData();
   }, [userId]);
 
@@ -346,7 +347,7 @@ const Dashboard = () => {
               className="text-[#EF5130] text-[12px] mr-[20px] mt-1 cursor-pointer" style={{fontWeight:"600"}}
               onClick={handleBackToQuizzes}
             >
-              More>{" "}
+              More{" "}
             </span>
           </div>
 
@@ -728,7 +729,7 @@ const Dashboard = () => {
               className="text-[#EF5130] text-[12px] mr-[10px] mt-1 cursor-pointer" style={{fontWeight:"600"}}
               onClick={handleBackToQuizzes}
             >
-              More>{" "}
+              More{" "}
             </span>
           </div>
           

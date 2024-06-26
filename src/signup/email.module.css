@@ -55,6 +55,7 @@
 .span1{
   position: relative;
   top: -5px; 
+  color: #0e1c49;
 }
 .image {
   width: 733.25px;
@@ -76,7 +77,7 @@
 
 .loginTitle{
   /* margin-right: 200px; */
-  color: #454B60;
+  color: #214082;
   font-size: 32px;
   font-weight: 800;
   /* position: relative;
@@ -132,7 +133,7 @@
   font-weight: 800;
   /* margin-top:21px; */
   /* margin-bottom:24px; */
-  color: #454B60;
+  color: #214082;
 }
 .SignupDescription {
   /* text-align: right; */
@@ -173,7 +174,7 @@
   width: 332px;
   height: 23px;
   /* text-align: right; */
-  color: black;
+  color: #0e1c49;
   /* margin-right: 140px; */
   font-size: 16px;
   margin-top:10px;
@@ -768,11 +769,13 @@ margin-top: -3px;
   text-align: center;
   font-size: 16px;
   padding: 10px;
+  color: #0e1c49;
 }
 
 .selected {
   position: relative; 
   width: 100%;/* Ensure the line's position is relative to the selected label */
+  color: #0e1c49;
 }
 
 .selectedLine {

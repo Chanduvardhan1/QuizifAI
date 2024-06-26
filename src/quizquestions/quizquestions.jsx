@@ -153,20 +153,33 @@ const QuizQuestions = () => {
     })
     .then(data => {
       console.log(data);
-      setQuizData(data.data);
-      setAttemptNo(data.data.questions.find(d => d.quiz_level_attempt_id).quiz_level_attempt_id);
-      
-      // Start the countdown timer
-      timerRef.current = setInterval(() => {
-        setElapsedTime(prevTime => {
-          if (prevTime > 0) {
-            return prevTime - 1;
-          } else {
-            clearInterval(timerRef.current);
-            return 0;
-          }
-        });
-      }, 1000);
+
+      if (data && data.data && Array.isArray(data.data)) {
+        const questions = data.data.filter(item => item.question_id !== undefined);
+        const attemptData = data.data.find(item => item.quiz_level_attempt_id !== undefined);
+
+        setQuizData({ questions });
+
+        if (attemptData) {
+          setAttemptNo(attemptData.quiz_level_attempt_id);
+        } else {
+          console.warn('No object with quiz_level_attempt_id found');
+        }
+        
+        // Start the countdown timer
+        timerRef.current = setInterval(() => {
+          setElapsedTime(prevTime => {
+            if (prevTime > 0) {
+              return prevTime - 1;
+            } else {
+              clearInterval(timerRef.current);
+              return 0;
+            }
+          });
+        }, 1000);
+      } else {
+        throw new Error('Unexpected response format');
+      }
     })
     .catch(error => {
       console.error('There was a problem with your fetch operation:', error);

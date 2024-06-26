@@ -180,7 +180,7 @@ const quiz_results = () => {
           })
         });
         const result = await response.json();
-        const data = result[0]?.data;
+        const data = result.datadata[0];
         setQuizData(data);
         console.log('Quiz result submitted:', data);
         setIsQuizSubmitted(true); // Set the submission state to true after success
@@ -214,7 +214,7 @@ const quiz_results = () => {
         const result = await response.json();
 
         if (result.response === 'success') {
-          setLeaderboardData(result.data);
+          setLeaderboardData(result.response_message);
         } else {
           console.error('Failed to fetch leaderboard data:', result.message);
         }

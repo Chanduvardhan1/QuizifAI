@@ -80,7 +80,7 @@ const LogoutBar = (data) => {
             }),
           }
         );
-        
+
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -88,33 +88,44 @@ const LogoutBar = (data) => {
         console.log("Data:", data);
 
         const userDetails = data.user_details;
-        setUsername(userDetails.full_name);
-         setCity(userDetails.location_name);
-         setCountry(userDetails.country_name);
-         setGlobalRank(userDetails.global_rank);
-         setRegisteredOn(userDetails.created_date);
-         setLastLogin(userDetails.last_login_timestamp);
-         setPasswordChanged(userDetails.user_password_change_date);
+        if (userDetails) {
+          setUsername(userDetails.full_name || "");
+          setCity(userDetails.location_name || "");
+          setCountry(userDetails.country_name || "");
+          setGlobalRank(userDetails.global_rank || "");
+          setRegisteredOn(userDetails.created_date || "");
+          setLastLogin(userDetails.last_login_timestamp || "");
+          setPasswordChanged(userDetails.user_password_change_date || "");
 
-         const usermetrics = data.user_metrices;
-         setTotalQuizzes(usermetrics.total_quizzes);
-         setTotalMinuutes(usermetrics.total_minutes);
-         setAverageScorePercentage(usermetrics.average_total_percentage);
-         setGlobalRank(usermetrics.global_rank);
+          const subscriptionDetails = userDetails.subscription_details && userDetails.subscription_details[0];
+          if (subscriptionDetails) {
+            setSubscriptionStartDate(subscriptionDetails.start_date || "");
+            setSubscriptionEndDate(subscriptionDetails.end_date || "");
+            setRemainingDays(subscriptionDetails.remaining_days || "");
+          } else {
+            console.error("No subscription details found.");
+          }
+        } else {
+          console.error("No user details found.");
+        }
 
-         const subscriptionDetails = userDetails.subscription_details[0];
-        setSubscriptionStartDate(subscriptionDetails.start_date);
-        setSubscriptionEndDate(subscriptionDetails.end_date);
-        setRemainingDays(subscriptionDetails.remaining_days);
-         
-        // Assume you set the fetched data to the state as necessary
+        const usermetrics = data.user_metrics;
+        if (usermetrics) {
+          setTotalQuizzes(usermetrics.total_quizzes || 0);
+          setTotalMinuutes(usermetrics.total_minutes || 0);
+          setAverageScorePercentage(usermetrics.average_total_percentage || 0);
+          setGlobalRank(usermetrics.global_rank || "N/A");
+        } else {
+          console.error("No user metrics found.");
+        }
       } catch (error) {
         console.error("Error fetching quiz data:", error);
       }
     };
 
     fetchQuizData();
-  }, []); 
+  }, [userId]); 
+  
   return (
     <div className={styles.logout}>
      <div style={{ marginTop: "10px", display: "flex", alignItems: "center" , marginLeft:"30px"}}>

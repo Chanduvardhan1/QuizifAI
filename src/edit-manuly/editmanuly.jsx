@@ -802,6 +802,7 @@ export default function editmanuly() {
         }));
 
         setQuestions(processedQuestions);
+        setInitialQuestions(processedQuestions);
       }
     } catch (error) {
       console.error('Error fetching quiz data', error);
@@ -930,6 +931,68 @@ export default function editmanuly() {
     navigate("/dashboard");
   
 };
+
+// const handleNumQuestionsChange = (e) => {
+//   const value = parseInt(e.target.value, 10);
+//   setNumQuestions(value);
+
+//   if (value === quizData?.num_questions) {
+//     fetchQuizData();
+//   } else if (value > questions.length) {
+//     const additionalQuestions = Array.from({ length: value - questions.length }, () => ({
+//       question_text: "",
+//       question_weightage: 0,
+//       multi_answer_flag: false,
+//       question_duration: 0,
+//       options: [
+//         { answer_option_text: "" },
+//         { answer_option_text: "" },
+//         { answer_option_text: "" },
+//         { answer_option_text: "" },
+//       ]
+//     }));
+//     setQuestions([...questions, ...additionalQuestions]);
+//   } else if (value === 0) {
+//     setQuestions([]); // Clear questions if number of questions is set to zero
+//   } else {
+//     setQuestions(questions.slice(0, value));
+//   }
+// };
+// useEffect(() => {
+//   if (numQuestions > 0 && questions.length === 0) {
+//     fetchQuizData();
+//   }
+// }, [numQuestions]);
+const handleNumQuestionsChange = (e) => {
+  const value = parseInt(e.target.value, 10);
+  setNumQuestions(value);
+
+  if (value > questions.length) {
+    const additionalQuestions = Array.from({ length: value - questions.length }, () => ({
+      question_text: "",
+      question_weightage: 0,
+      multi_answer_flag: false,
+      question_duration: 0,
+      options: [
+        { answer_option_text: "" },
+        { answer_option_text: "" },
+        { answer_option_text: "" },
+        { answer_option_text: "" },
+      ]
+    }));
+    setQuestions([...questions, ...additionalQuestions]);
+  } else if (value === 0) {
+    setQuestions([]);  // Clear questions if number of questions is set to zero
+  } else {
+    setQuestions(questions.slice(0, value));
+  }
+};
+
+useEffect(() => {
+  if (numQuestions > 0 && questions.length === 0) {
+    fetchQuizData();
+  }
+}, [numQuestions])
   return (
     <>
       <div>
@@ -1052,7 +1115,7 @@ export default function editmanuly() {
               </div>
 
               <div className=" rounded-lg absolute top-[99px] left-[1144px]">
-                <input
+                {/* <input
                   type="number"
                   className="w-[135px] border-solid border-[#B8BBC2] border-[1.8px] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer "
                   placeholder="No of question "
@@ -1063,6 +1126,9 @@ export default function editmanuly() {
                     setQuestions(
                       Array.from({ length: value }, () => ({
                         question_text: "",
+                        question_weightage: 0, // Initialize with a default weightage
+                        multi_answer_flag: false, // Initialize with a default value
+                        question_duration: 0,
                         options: [
                           { answer_option_text: "" },
                           { answer_option_text: "" },
@@ -1072,7 +1138,14 @@ export default function editmanuly() {
                       }))
                     );
                   }}
-                />
+                /> */}
+                 <input
+        type="number"
+        className="w-[135px] border-solid border-[#B8BBC2] border-[1.8px] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer"
+        placeholder="No of questions"
+        value={numQuestions}
+        onChange={handleNumQuestionsChange}
+      />
               </div>
               {/* <div className=" rounded-lg absolute top-[99px] left-[1200px]">
               <select className="w-[135px] border-solid border-[#B8BBC2] border-[1.8px] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer" 
@@ -1507,7 +1580,11 @@ export default function editmanuly() {
                text-[12px]  px-3 py-3 cursor-pointer "
                   placeholder="Total marks"
                   value={quiztotalmarks}
-                  onChange={(e) => setquiztotalmarks(e.target.value)}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value, 10);
+                    setquiztotalmarks(value);
+                    setIsModified(true);
+                  }}
                 ></input>
               </div>
             </div>
@@ -1568,7 +1645,7 @@ export default function editmanuly() {
         className="w-[60px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal "
         value={question.question_weightage}
         onChange={(e) => {
-          const value = parseInt(e.target.value);
+          const value = parseInt(e.target.value,10);
           const updatedQuestions = questions.map((q, index) => {
             if (index === questionIndex) {
               return { ...q, question_weightage: value };
@@ -1581,8 +1658,9 @@ export default function editmanuly() {
       />
 
       {/* Input field for question duration */}
-      {/* <input
+      <input
         type="text"
+        hidden
         placeholder="Duration"
         className="w-[130px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
         value={question.question_duration}
@@ -1592,7 +1670,7 @@ export default function editmanuly() {
           updatedQuestions[questionIndex].question_duration = value;
           setQuestions(updatedQuestions);
         }}
-      /> */}
+      />
     </div>
 
     {/* Input fields for options */}
@@ -1636,7 +1714,7 @@ export default function editmanuly() {
   </div>
 ))}
 
-<div className=" flex justify-center gap-[20px] items-center pr-[335px] ">
+<div className=" flex  gap-[20px] items-center pl-[25px] ">
                 <button
                   className="w-[80px] h-[30px] rounded-[10px] bg-[#1E4DE9] text-white hover:bg-[#EF5130]"
                   onClick={handleNext}

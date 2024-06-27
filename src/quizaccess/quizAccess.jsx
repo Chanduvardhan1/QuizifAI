@@ -149,8 +149,8 @@ const quizAccess = () => {
       console.log(data);
       setQuizData(data.data);
       // setQuizDetails(data["quiz metrics"]);
-      setCreatedBy(data.created_by);
-      setCreatedOn(data.created_on);
+      // setCreatedBy(data.created_by);
+      // setCreatedOn(data.created_on);
     })
     .catch(error => {
       console.error('There was a problem with your fetch operation:', error);
@@ -289,7 +289,7 @@ const quizAccess = () => {
   className={styles.icon2}
 /> */}
           <span className={styles.sentence5} style={{color:"#214082"}}>Created By:</span>{" "}
-          <span className={styles.sentence3} >{createdBy}</span>
+          <span className={styles.sentence3} >{quizData.created_by}</span>
           </div>
           <div className={styles.sentence4}>
         {/* <img
@@ -298,7 +298,7 @@ const quizAccess = () => {
   className={styles.icon2}
 /> */}
           <span className={styles.sentence5} style={{color:"#214082"}}>Created On:</span>
-          <span className={styles.sentence3}>{createdOn}</span>
+          <span className={styles.sentence3}>{quizData.created_on}</span>
           </div>
         </div>
       <div className={styles.horizontalLine}></div>

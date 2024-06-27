@@ -208,7 +208,7 @@ const quizresults = () => {
         const result = await response.json();
 
         if (result.response === 'success') {
-          setLeaderboardData(result.response_message);
+          setLeaderboardData(result.data);
         } else {
           console.error('Failed to fetch leaderboard data:', result.message);
         }
@@ -348,15 +348,15 @@ if (!Array.isArray(leaderboardData)) {
   alt="User Icon"
   className={styles.icon1}
 /> */}
-{/* <div className={styles.downloads} >
+<div className={styles.downloads} >
 <div className={styles.download} >
 
           <span className={styles.quizname}>{quizData.quiz_name}</span>
 </div>
-<div className={styles.download} >
+{/* <div className={styles.download} >
 <button className={styles.downbutton} onClick={handleDownload}>Download</button>
-</div>
 </div> */}
+</div>
 
           <p className={styles.quizdescription}>{quizData.quiz_description}</p>
           <div className={styles.Questionslines }>
@@ -431,7 +431,7 @@ if (!Array.isArray(leaderboardData)) {
     alt="Calendar Icon"
     className={styles.icon2}
   />
-          <span>Taken on </span>
+          <span>Taken on {quizData.quiz_start_date} </span>
         </div>
         </div>
         <div className={styles.sentencesContainer}>
@@ -472,7 +472,7 @@ if (!Array.isArray(leaderboardData)) {
     alt="Calendar Icon"
     className={styles.icon2}
   />
-          <span className={styles.sentence3}>You have scored {quizData.attained_score_percentage}%</span>
+          <span className={styles.sentence3}>You have scored {quizData.attained_score_percentage}%,  {quizData.quiz_grade} Grade, {quizData.pass_flag ? 'Pass' : 'Fail'}</span>
         </div>
        
         

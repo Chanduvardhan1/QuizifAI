@@ -102,24 +102,24 @@ const Dashboard = () => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     navigate(`/editmanuly`);
   };
-  const quizresult = (quizId, attemptId) => {
+  const quizresults = (quizId, attemptId) => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     localStorage.setItem("quiz_level_attempt_id", attemptId); // Store attempt_id in local storage
     navigate(`/quizview_results`);
   };
   
-  const quizresults = () => {
-    if (quizData && quizData.quiz_title && quizData.quiz_id) {
-      navigate(`/quizquestions/${quizData.quiz_id}`, {
-        state: { 
-          quiz_id: quizData.quiz_id,
-          quiz_title: quizData.quiz_title,
-          quiz_description: quizData.quiz_description,
-          quiz_duration: quizData.quiz_duration
-        }
-      });
-    }
-  };
+  // const quizresults = () => {
+  //   if (quizItem && quizItem.quiz_title && quizItem.quiz_id) {
+  //     navigate(`/quizquestions/${quizItem.quiz_id}`, {
+  //       state: { 
+  //         quiz_id: quizItem.quiz_id,
+  //         quiz_title: quizItem.quiz_title,
+  //         quiz_description: quizItem.quiz_description,
+  //         quiz_duration: quizItem.quiz_duration
+  //       }
+  //     });
+  //   }
+  // };
 
   const [cardStates, setCardStates] = useState(Array(allquizzes.length).fill(false));
   const toggleNavbar = (index) => {

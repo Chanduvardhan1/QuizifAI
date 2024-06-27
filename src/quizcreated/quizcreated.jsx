@@ -159,10 +159,10 @@ const Edit = (quizId) => {
                     src={QuizTitle}
                   /> */}
                   <h1 className="font-Poppins text-[#214082] text-[18px] font-bold leading-[40px] absolute top-[175px] left-[100px]  text-nowrap">
-                    {quizData[0].quiz_title}
+                    {quizData.quiz_title}
                   </h1>
                   <h1 className="w-[760px] text-[#214082] h-[49px] absolute top-[205px] left-[100px]">
-                    {quizData[0].quiz_description}
+                    {quizData.quiz_description}
                   </h1>
                   {/* <img
                     className="w-[30px] h-[30px] absolute top-[177px] left-[737px]"
@@ -176,11 +176,11 @@ const Edit = (quizId) => {
                   <div className=" flex gap-[55px]">
                   <div className=" w-[300px]">
                     <span className="font-Poppins text-[15px] font-bold leading-[40px] text-[#214082]">created By:</span>
-                    <span > {quizData[0].created_by}</span>
+                    <span > {quizData.created_by}</span>
                   </div>
                   <div  className="w-[300px]">
                   <span className="font-Poppins text-[15px] font-bold leading-[40px] text-[#214082]">Created ON:</span>
-                    <span> {quizData[0].created_on}</span>
+                    <span> {quizData.created_on}</span>
                   </div>
                 </div>
                 </div>
@@ -199,11 +199,11 @@ const Edit = (quizId) => {
                 <div className=" absolute top-[340px] left-[300px] flex gap-[55px]" >
                   <div  className=" w-[300px]">
                     <span className="font-Poppins text-[15px] font-bold leading-[40px] text-[#214082]">Category:</span>
-                    <span>{quizData[0].quiz_sub_category_name}</span>
+                    <span>{quizData.quiz_sub_category_name}</span>
                   </div>
                   <div className=" w-[300px]">
                   <span className="font-Poppins text-[15px] font-bold leading-[40px] text-[#214082]">Sub Category:</span>
-                    <span> {quizData[0].quiz_sub_category_name}</span>
+                    <span> {quizData.quiz_sub_category_name}</span>
                   </div>
                 </div>
                   <div className=" absolute top-[10px]">
@@ -218,7 +218,7 @@ const Edit = (quizId) => {
                       {quizData[0].pass_percentage}% is the pass score
                     </h1> */}
                     <span className="font-Poppins text-[15px] font-bold leading-[40px] text-[#214082]">Complexity:</span>
-                    <span> {quizData[0].quiz_complexity_name}</span>
+                    <span> {quizData.quiz_complexity_name}</span>
                   </div>
                   {/* <img
                     className="w-[31px] h-[16.41px] absolute top-[357px] left-[565px]"
@@ -230,7 +230,7 @@ const Edit = (quizId) => {
                       Complexity:{quizData[0].quiz_complexity_name}
                     </h1> */}
                     <span className="font-Poppins text-[15px] font-bold leading-[40px] text-[#214082]">pass score:</span>
-                    <span> {quizData[0].pass_percentage}%</span>
+                    <span> {quizData.pass_percentage}%</span>
                   </div>
                   {/* <img className="w-[31px] h-[16.41px] absolute top-[336px] left-[784px]" src={Medium}/>
              <img className="w-[31px] h-[16.41px] absolute top-[334px] left-[849px]" src={Complex}/> */}
@@ -244,14 +244,14 @@ const Edit = (quizId) => {
                       {quizData[0].num_questions} questions
                     </h1> */}
                     <span className="font-Poppins text-[15px] font-bold leading-[40px] text-[#214082]">Duration:</span>
-                    <span> {quizData[0].quiz_duration}</span>
+                    <span> {quizData.quiz_duration}</span>
                   </div>
                   <div className="w-[180px] h-[22px] absolute top-[356px] left-[915px]">
                     {/* <h1 className="font-Poppins font-semibold text-[15px] leading-[22.5px] text-[#555555]">
                       {quizData[0].num_questions} questions
                     </h1> */}
                     <span className="font-Poppins text-[15px] font-bold leading-[40px] text-[#214082]">Question Count:</span>
-                    <span> {quizData[0].num_questions}</span>
+                    <span> {quizData.num_questions}</span>
                   </div>
 
                   {/* <img
@@ -272,7 +272,7 @@ const Edit = (quizId) => {
                       Retake this paper:{quizData[0].retake_flag}
                     </h1> */}
                     <span className="font-Poppins text-[15px] font-bold leading-[40px] text-[#214082]">Course:</span>
-                    <span> {quizData[0].course_name}</span>
+                    <span> {quizData.course_name}</span>
                   </div>
                   {/* <img
                     className="w-[39px] h-[39px] absolute top-[430px] left-[548px]"
@@ -285,7 +285,7 @@ const Edit = (quizId) => {
                       {quizData[0].multi_answer ? "Yes" : "No"}
                     </h1> */}
                     <span className="font-Poppins text-[15px] font-bold leading-[40px] text-[#214082]">Class:</span>
-                    <span> {quizData[0].class_name}</span>
+                    <span> {quizData.class_name}</span>
                   </div>
                   {/* <img
                     className="w-[885px] absolute top-[484px] left-[277px]"
@@ -304,7 +304,7 @@ const Edit = (quizId) => {
                       Retake this paper:{quizData[0].retake_flag}
                     </h1> */}
                     <span className="font-Poppins text-[15px] font-bold leading-[40px] text-[#214082]">Retake this paper:</span>
-                    <span>{quizData[0].retake_flag}</span>
+                    <span>{quizData.retake_flag}</span>
                   </div>
                   {/* <img
                     className="w-[39px] h-[39px] absolute top-[430px] left-[548px]"
@@ -317,7 +317,7 @@ const Edit = (quizId) => {
                       {quizData[0].multi_answer ? "Yes" : "No"}
                     </h1> */}
                     <span className="font-Poppins text-[15px] font-bold leading-[40px] text-[#214082]"> Multiple Answers:</span>
-                    <span>{quizData[0].multi_answer ? "Yes" : "No"}</span>
+                    <span>{quizData.multi_answer ? "Yes" : "No"}</span>
                   </div>
                   {/* <img
                     className="w-[885px] absolute top-[484px] left-[277px]"
@@ -366,8 +366,8 @@ const Edit = (quizId) => {
                       {quizData[0].disabled_on}
                     </h1> */}
                     <span className="font-Poppins text-[15px] font-bold leading-[40px] text-[#214082]"> Quiz will be live from:</span>
-                    <span> {quizData[0].available_from} to{" "}
-                      {quizData[0].disabled_on}</span>
+                    <span> {quizData.available_from} to{" "}
+                      {quizData.disabled_on}</span>
                   </div>
                   {/* <img
                     className="w-[32px] h-[32px] absolute top-[603px] left-[767px]"
@@ -390,7 +390,7 @@ const Edit = (quizId) => {
                       {quizData[0].quiz_public_access ? "Yes" : "No"}
                     </h1> */}
                     <span className="font-Poppins text-[15px] font-bold leading-[40px]  text-[#214082]" >Public access:</span>
-                  <span> {quizData[0].quiz_public_access ? "Yes" : "No"}</span>
+                  <span> {quizData.quiz_public_access ? "Yes" : "No"}</span>
                   </div>
                 </div>
               </div>
@@ -402,7 +402,7 @@ const Edit = (quizId) => {
               Preview
             </button>
             <div className="absolute top-[729px] left-[524px]">
-              <a onClick={() => Edit(quizData[0][0].quiz_id)}>
+              <a onClick={() => Edit(quizData.quiz_id)}>
                 <button className="w-[123px] h-[32px] rounded-[10px] bg-[#214082] text-white">
                   Edit
                 </button>

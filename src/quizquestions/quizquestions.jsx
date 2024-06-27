@@ -162,6 +162,11 @@ const QuizQuestions = () => {
 
         if (attemptData) {
           setAttemptNo(attemptData.quiz_level_attempt_id);
+          setQuizData(prevState => ({
+            ...prevState,
+            created_by: attemptData.created_by,
+            created_on: attemptData.created_on
+          }));
         } else {
           console.warn('No object with quiz_level_attempt_id found');
         }
@@ -189,8 +194,7 @@ const QuizQuestions = () => {
       clearInterval(timerRef.current);
     };
   }, [userId, quiz_duration]);
-
-
+ 
   const handleOptionSelect = (optionId) => {
     setSelectedOptions(prevOptions => ({
       ...prevOptions,
@@ -267,6 +271,30 @@ const QuizQuestions = () => {
   const currentQuestion = quizData.questions.filter(item => item.question_id)[currentQuestionIndex];
   const optionLabels = ['A', 'B', 'C', 'D'];
   const optionKeys = ['quiz_ans_option_1_text', 'quiz_ans_option_2_text', 'quiz_ans_option_3_text', 'quiz_ans_option_4_text'];
+
+  const sortedOptionKeys = [...optionKeys].sort((a, b) => {
+    const optionA = currentQuestion[a];
+    const optionB = currentQuestion[b];
+  
+    // Define your special options
+    const specialOptions = ["All of the above", "None of the above"];
+  
+    // Check if optionA or optionB is a special option
+    if (specialOptions.includes(optionA) && specialOptions.includes(optionB)) {
+      // Both are special options, sort alphabetically
+      return optionA.localeCompare(optionB);
+    } else if (specialOptions.includes(optionA)) {
+      // optionA is a special option, it should come last
+      return 1;
+    } else if (specialOptions.includes(optionB)) {
+      // optionB is a special option, it should come last
+      return -1;
+    } else {
+      // Otherwise, maintain the current order
+      return 0;
+    }
+  });
+  
 
   const Back = () => {
     
@@ -448,53 +476,52 @@ const QuizQuestions = () => {
           {/* </div> */}
           <div className={styles.boxesContainer}>
           <ul style={{ listStyleType: 'none', padding: 0 }}>
-        {optionKeys.map((key, index) => {
-          const optionId = currentQuestion[key.replace('_text', '_id')];
-          const optionLabel = optionLabels[index];
-          const isSelected = selectedOptions[currentQuestionIndex] === optionId;
-          return (
-            <li key={optionId} style={{ marginBottom: '10px' }}>
-              <button
-                className={styles.box}
-                onClick={() => handleOptionSelect(optionId)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  backgroundColor: 'transparent',
-                  width: '100%',
-                  // padding: '10px',
-                  border: 'none',
-                  textAlign: 'left',
-                  cursor: 'pointer'
-                }}
-              >
-                <div style={{
-                  width: '40px',
-                  marginRight: '10px',
-                  padding: '7px',
-                  textAlign: 'center' ,
-                  border: '1px solid #ccc',
-                  borderRadius: '5px',
-                  backgroundColor: '#f9f9f9',
-                 
-                }}>{optionLabel}</div>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  fontWeight: isSelected ? 'bold' : 'normal',
-                  backgroundColor: isSelected ? 'lightyellow' : 'transparent',
-                  width: '550px', // Ensure the button takes full width
-                  padding: '10px', // Adds padding for better click area
-                  border: isSelected ? '2px solid #FEBB42' : '1px solid #ccc', // Highlights selected option
-                  borderRadius: '5px', // Rounds corners of buttons
-                  textAlign: 'left' ,// Align text to the left for better readability
-                  fontSize:'12px',
-                }}>{currentQuestion[key]}</div>
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+      {sortedOptionKeys.map((key, index) => {
+        const optionId = currentQuestion[key.replace('_text', '_id')];
+        const optionLabel = optionLabels[index];
+        const isSelected = selectedOptions[currentQuestionIndex] === optionId;
+
+        return (
+          <li key={optionId} style={{ marginBottom: '10px' }}>
+            <button
+              className={styles.box}
+              onClick={() => handleOptionSelect(optionId)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                backgroundColor: 'transparent',
+                width: '100%',
+                border: 'none',
+                textAlign: 'left',
+                cursor: 'pointer'
+              }}
+            >
+              <div style={{
+                width: '40px',
+                marginRight: '10px',
+                padding: '7px',
+                textAlign: 'center',
+                border: '1px solid #ccc',
+                borderRadius: '5px',
+                backgroundColor: '#f9f9f9',
+              }}>{optionLabel}</div>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                fontWeight: isSelected ? 'bold' : 'normal',
+                backgroundColor: isSelected ? 'lightyellow' : 'transparent',
+                width: '550px', // Ensure the button takes full width
+                padding: '10px', // Adds padding for better click area
+                border: isSelected ? '2px solid #FEBB42' : '1px solid #ccc', // Highlights selected option
+                borderRadius: '5px', // Rounds corners of buttons
+                textAlign: 'left', // Align text to the left for better readability
+                fontSize: '12px',
+              }}>{currentQuestion[key]}</div>
+            </button>
+          </li>
+        );
+      })}
+    </ul>
           </div>
         </>
       )}

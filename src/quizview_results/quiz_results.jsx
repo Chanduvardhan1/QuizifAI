@@ -180,7 +180,7 @@ const quiz_results = () => {
           })
         });
         const result = await response.json();
-        const data = result.datadata[0];
+        const data = result.data[0];
         setQuizData(data);
         console.log('Quiz result submitted:', data);
         setIsQuizSubmitted(true); // Set the submission state to true after success
@@ -214,7 +214,7 @@ const quiz_results = () => {
         const result = await response.json();
 
         if (result.response === 'success') {
-          setLeaderboardData(result.response_message);
+          setLeaderboardData(result.data);
         } else {
           console.error('Failed to fetch leaderboard data:', result.message);
         }
@@ -373,7 +373,7 @@ const quiz_results = () => {
     alt="Calendar Icon"
     className={styles.icon2}
   />
-          <span>Taken on </span>
+          <span>Taken on {quizData.quiz_start_date}</span>
         </div>
         </div>
         <div className={styles.sentencesContainer}>
@@ -414,7 +414,7 @@ const quiz_results = () => {
     alt="Calendar Icon"
     className={styles.icon2}
   />
-          <span className={styles.sentence3}>You have scored {quizData.attained_score_percentage}%</span>
+          <span className={styles.sentence3}>You have scored {quizData.attained_score_percentage}%, {quizData.quiz_grade} Grade, {quizData.pass_flag ? 'Pass' : 'Fail'}</span>
         </div>
        
         

@@ -1,5 +1,6 @@
 // Dashboard.js
 import React , { useState, useEffect } from "react";
+import Select from 'react-select';
 import styles from "./quiz.module.css";
 import Navigation from "../navbar/navbar.jsx"
 import LogoutBar from "../logoutbar/logoutbar.jsx"
@@ -27,32 +28,38 @@ const Quiz = () => {
   const currentValue2 = 30;
   const maxValue2 = 80; 
 
-   
+  const [allquizzes, setAllquizzes] = useState([]);
+  const [filteredQuizzes, setFilteredQuizzes] = useState([]);
+
   const [dataRanges, setDataRanges] = useState([]);
-  const [selectedDateRange, setSelectedDateRange] = useState('');
+  const [selectedDateRange, setSelectedDateRange] = useState([]);
 
   const [popularity, setPopularity] = useState([]);
-  const [selectedPopularity,setSelectedPopularity]=useState("");
+  const [selectedPopularity,setSelectedPopularity]=useState([]);
 
-  const [cources, setCources] = useState([]);
-  const [selectedCources,setSelectedCources]=useState("");
+  const [courses, setCourses] = useState([]);
+  const [selectedCourses,setSelectedCourses]=useState([]);
 
   const [classes, setClasses] = useState([]);
-  const [selectedClasses,setSelectedClasses]=useState("");
+  const [selectedClasses,setSelectedClasses]=useState([]);
 
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState([]);
 
   const [subCategories, setSubCategories] = useState([]);
-  const [selectedSubCategory, setSelectedSubCategory] = useState("");
+  const [selectedSubCategory, setSelectedSubCategory] = useState([]);
 
-  const [complexity, setComplexity] = useState("");
   const [complexities, setComplexities] = useState([]);
+  const [selectedComplexity, setSelectedComplexity] = useState([]);
 
-  const [selectedComplexity, setSelectedComplexity] = useState("");
+  const [createdBy, setCreatedBy] = useState([]);
+  const [selectedCreatedBy, setSelectedCreatedBy] = useState([]);
+
+  const [data, setData] = useState("")
   const [timeData, setTimeData] = useState(null);
   const [weeklyQuizCount, setWeeklyQuizCount] = useState(null);
   const [averageScorePercentage, setAverageScorePercentage] = useState(null);
+
   const [getMoreQuizzes, setGetMoreQuizzes] = useState(false);
   const [allquizzes, setAllquizzes] = useState([]);
  
@@ -67,6 +74,7 @@ const Quiz = () => {
   //   );
   // });
   const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -91,25 +99,34 @@ const Quiz = () => {
         console.log("quizzes received data:", result);
         
         const data = result.data[0];
+        if (!data) {
+          throw new Error('No data found');
+        }
+  
         setTimeData(data.time_spent || []);
         setWeeklyQuizCount(data.weekly_quiz_count || 0);
         setAverageScorePercentage(parseFloat(data.average_score_percentage) || 0);
         setAllquizzes(data.all_quizzes || []);
-       
-         // Extract unique date ranges
-         const uniqueDateRanges = [...new Set(data.all_quizzes.map(quiz => quiz.date_range))];
-         setDataRanges(uniqueDateRanges);
-         
 
-       const userDetails = data.audit_details;
-       setUsername(userDetails.full_name);
+          // Extract unique dropdowns and sort them alphabetically
+        const uniqueValues = (key) =>[...new Set(data.all_quizzes.map(quiz => quiz[key]))].sort();
+        setDataRanges(uniqueValues('date_range'));
+        setPopularity(uniqueValues('attempts_rank'));
+        setCategories(uniqueValues('category'));
+        setSubCategories(uniqueValues('sub_category'));
+        setComplexities(uniqueValues('complexity'));
+        setCourses(uniqueValues('course_name'));
+        setClasses(uniqueValues('class_name'));
+        setCreatedBy(uniqueValues('created_by'));
   
+        const userDetails = data.audit_details;
+        setUsername(userDetails.full_name);
 
       } catch (error) {
         console.error('Error fetching quiz data:', error);
       } 
     };
-
+  
     fetchQuizData();
   }, [userId]);
 
@@ -142,6 +159,7 @@ const Quiz = () => {
     navigate('/quiz-results1', { state: { quizId } })
   };
 
+
   const quizresults = (quizId, attemptId) => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     localStorage.setItem("quiz_level_attempt_id", attemptId); // Store attempt_id in local storage
@@ -153,6 +171,89 @@ const Quiz = () => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     navigate(`/quizaccess`);
   };
+
+  useEffect(() => {
+    const filtered = allquizzes.filter((quizItem) => {
+      const matchesCategory = !selectedCategory.length || selectedCategory.includes(quizItem.category);
+      const matchesSubCategory = !selectedSubCategory.length || selectedSubCategory.includes(quizItem.sub_category);
+      const matchesComplexity = !selectedComplexity.length || selectedComplexity.includes(quizItem.complexity);
+      const matchesCourse = !selectedCourses.length || selectedCourses.includes(quizItem.course_name);
+      const matchesClass = !selectedClasses.length || selectedClasses.includes(quizItem.class_name);
+      const matchesCreatedBy = !selectedCreatedBy.length || selectedCreatedBy.includes(quizItem.created_by);
+      return matchesCategory && matchesSubCategory && matchesComplexity && matchesCourse && matchesCreatedBy && matchesClass;
+    });
+    setFilteredQuizzes(filtered);
+  }, [allquizzes, selectedCategory, selectedSubCategory, selectedComplexity, selectedCourses, selectedClasses,selectedCreatedBy]);
+  
+  // Custom styles for react-select to match your existing dropdown design
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      width: 'auto',
+      minWidth: '183px',
+      padding: '2px',
+      marginLeft: '-2px',
+      borderRadius: '4px',
+      cursor: 'pointer',
+      fontSize: '11px',
+      backgroundColor: '#f3d0d5',
+      border: 'none',
+      outline: 'none',
+      boxShadow: state.isFocused ? '0 0 0 1px #2684FF' : 'none', // Focused state border
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: '#f3d0d5',
+      overflowX: 'hidden',
+      zIndex: 9999,
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isFocused ? '#A5CCE3' : '#f3d0d5',
+      color: 'black',
+      fontSize: '10px',
+      whiteSpace: 'nowrap',
+      maxWidth: '100%',
+      padding: '5px 10px', // Adjusted padding for better alignment
+      lineHeight: '1.2', // Adjusted line-height for better alignment
+    }),
+    multiValue: (provided) => ({
+      ...provided,
+      backgroundColor: '#e5e5e5',
+      height: 'auto', // Adjusted to auto height for better text wrapping
+      padding: '2px', // Adjusted padding for better text alignment
+    }),
+    multiValueLabel: (provided) => ({
+      ...provided,
+      color: 'black',
+      fontSize: '10px',
+      lineHeight: 'normal',
+      maxWidth: '100px', // Adjusted to prevent text overflow
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+    }),
+    multiValueRemove: (provided) => ({
+      ...provided,
+      fontSize: '10px', // Adjust font size for remove icon
+      cursor: 'pointer',
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      fontWeight: 'bold',
+      color: '#495487', // Custom color for the placeholder
+      fontSize: '10px',
+    }),
+    dropdownIndicator: (provided) => ({
+      ...provided,
+      color: '#495487', // Custom color for the dropdown indicator arrow
+    }),
+    indicatorSeparator: () => ({
+      display: 'none', // Remove the indicator separator
+    }),
+  };
+
+
   return (
     <div className={styles.container}>
       <Navigation/>
@@ -193,83 +294,88 @@ const Quiz = () => {
          
   <div className={styles.infoCards} >
  <div className={styles.sortBy}>
-  {/* <p className="ml-8 my-3 font-Poppins font-medium">Sort by:</p> */}
-  <div className="gap-1 mb-3 bg-[#f3d0d5] border-none px-2 ml-6 -pl-[30px] rounded-md">
-  <select
-        className="w-[90px] rounded-md ml-4 cursor-pointer text-[10px] bg-[#f3d0d5] border-none"
-        style={{ border: 'none', outline: 'none' }}
-        value={selectedDateRange}
-        onChange={e => setSelectedDateRange(e.target.value)}
-      >
-        <option value="" style={{ background: '#A5CCE3' }}>
-          Date Range
-        </option>
-        {dataRanges.map((range, index) => (
-          <option key={index} value={range}>
-            {range}
-          </option>
-        ))}
-        {/* {dataRanges.map((range, index) => (
-          <option key={index} value={range.DateRange}>
-            {range.DateRange}
-          </option>
-        ))} */}
-      </select>
-      <select
-        className="w-[90px] rounded-md ml-4 cursor-pointer text-[10px] bg-[#f3d0d5] border-none text-black"
-        style={{ border: 'none', outline: 'none' }}
-        // value={selectedPopularity}
-        // onChange={handleSelectPopularity}
-        // disabled={!selectedDataRange}  // Disable until a date range is selected
-      >
-        <option value="" disabled style={{ background: '#A5CCE3' }}>
-          Popularity
-        </option>
-        {/* {popularity.map((popularityValue, index) => (
-          <option key={index} value={popularityValue}>
-            {popularityValue}
-          </option>
-        ))} */}
-      </select>
-  <select
-        className="w-[90px] p-2 rounded-md ml-1 cursor-pointer text-[11px] bg-[#f3d0d5] border-none"
-        style={{ border: "none", outline: "none" }}
-      >
-        <option value="" disabled>Category</option>
-      </select>
-
-    <select
-        className="w-[115px] p-2 rounded-md ml-1 cursor-pointer text-[11px] bg-[#f3d0d5]"
-        style={{ border: "none", outline: "none" }}
-      >
-        <option value="" disabled style={{background:"#A5CCE3"}}>Sub Category</option>
-      </select>
-
-    <select
-        className="w-[100px] p-2 rounded-md ml-1 mt-2 cursor-pointer text-[11px] bg-[#f3d0d5]"
-        style={{ border: "none", outline: "none" }}
-      >
-        <option value="" disabled style={{background:"#A5CCE3"}}>Complexity</option>
-      </select>
-      <select
-        className="w-[90px] p-2 rounded-md ml-1 cursor-pointer text-[11px] bg-[#f3d0d5]"
-        style={{ border: "none", outline: "none" }}
-      >
-        <option value="" disabled>Courses</option>
-      </select>
-      <select
-        className="w-[90px] p-2 rounded-md ml-1 cursor-pointer text-[11px] bg-[#f3d0d5] pr-[15px] mr-[10px]"
-        style={{ border: "none", outline: "none" }}
-      >
-        <option value="" disabled style={{background:"#A5CCE3"}}>Classes</option>
-      </select>
+  <div className="flex gap-1 mb-3 bg-[#f3d0d5] border-none px-2 ml-8 mr-4 -pl-[30px] rounded-md">
+    {/* DataRange  */}
+    <Select
+        isMulti
+        options={dataRanges.map(dtrng => ({ value: dtrng, label: dtrng }))}
+        value={selectedDateRange.map(dtrng => ({ value: dtrng, label: dtrng }))}
+        onChange={(selected) => setSelectedDateRange(selected.map(item => item.value))}
+        styles={customStyles}
+        placeholder="Data Range"
+      />
+      {/* Popularity  */}
+      <Select
+        isMulti
+        options={popularity.map(plr => ({ value: plr, label: plr }))}
+        value={selectedPopularity.map(plr => ({ value: plr, label: plr }))}
+        onChange={(selected) => setSelectedPopularity(selected.map(item => item.value))}
+        styles={customStyles}
+        placeholder="Popularity"
+      />
+       {/* Category */}
+   <Select
+        isMulti
+        options={categories.map(cat => ({ value: cat, label: cat }))}
+        value={selectedCategory.map(cat => ({ value: cat, label: cat }))}
+        onChange={(selected) => setSelectedCategory(selected.map(item => item.value))}
+        styles={customStyles}
+        placeholder="Category"
+      />
+{/* subcategories  */}
+      <Select
+        isMulti
+        options={subCategories.map(subcat => ({ value: subcat, label: subcat }))}
+        value={selectedSubCategory.map(subcat => ({ value: subcat, label: subcat }))}
+        onChange={(selected) => setSelectedSubCategory(selected.map(item => item.value))}
+        styles={customStyles}
+        placeholder="Sub Category"
+       />
+  </div>
+  <div className="flex gap-1 mb-3 bg-[#f3d0d5] border-none px-2 ml-8 mr-4 -pl-[30px] rounded-md">
+    {/* complexity    */}
+    <Select
+        isMulti
+        options={complexities.map(complex => ({ value: complex, label: complex }))}
+        value={selectedComplexity.map(complex => ({ value: complex, label: complex }))}
+        onChange={(selected) => setSelectedComplexity(selected.map(item => item.value))}
+        styles={customStyles}
+        placeholder="Complecity"
+      />
+   {/* Courses  */}
+   <Select
+        isMulti
+        options={courses.map(crs => ({ value: crs, label: crs }))}
+        value={selectedCourses.map(crs => ({ value: crs, label: crs }))}
+        onChange={(selected) => setSelectedCourses(selected.map(item => item.value))}
+        styles={customStyles}
+        placeholder="Courses"
+      />
+    {/* classes    */}
+    <Select
+        isMulti
+        options={classes.map(cls => ({ value: cls, label: cls }))}
+        value={selectedClasses.map(cls => ({ value: cls, label: cls }))}
+        onChange={(selected) => setSelectedClasses(selected.map(item => item.value))}
+        styles={customStyles}
+        placeholder="Classes"
+      />
+     {/* CreatedBy   */}
+     <Select
+        isMulti
+        options={createdBy.map(ctdBy => ({ value: ctdBy, label: ctdBy }))}
+        value={selectedCreatedBy.map(ctdBy => ({ value: ctdBy, label: ctdBy }))}
+        onChange={(selected) => setSelectedCreatedBy(selected.map(item => item.value))}
+        styles={customStyles}
+        placeholder="Created By"
+      />
   </div>
 </div>
 </div>
 
  <div className="mx-auto">
- <div className="flex flex-wrap mx-auto ml-[35px] mt-[10px]">
-            {allquizzes.map((quizItem, index) => (
+ <div className="flex flex-wrap mx-auto ml-[35px] -mt-[10px]">
+            {filteredQuizzes.map((quizItem, index) => (
                <div
                key={index}
                className=""         
@@ -281,7 +387,7 @@ const Quiz = () => {
                   width:"245px",
                   paddingTop: "8px",
                   paddingTop:"20px",
-                  marginTop:"10px",
+                  marginTop:"20px",
                   marginRight:"10px",
                   backgroundColor: "#fee2e2",               
                 }}
@@ -295,7 +401,7 @@ const Quiz = () => {
                 </span>
               </span>
                   <div className={styles.iconContainer}>
-                    <div className="z-40 mb-[2px] pl-[36px] font-normal rounded -mt-[13px]">
+                    <div className="z-20 mb-[2px] pl-[36px] font-normal rounded -mt-[13px]">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -427,7 +533,7 @@ const Quiz = () => {
                       style={{ marginTop: "20px",marginRight:"20px" }}
                     ></div>
                     <div className="z-0">
-                      <div className="text-[7px] flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
+                      <div className="text-[7px] flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[8px] -top-[90px] hover:text-black ">
                         <img
                           className={styles.attemptsimage}
                           src={Attempt1}
@@ -447,11 +553,12 @@ const Quiz = () => {
 
                     <span className="text-[8px] flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
                       <img
-                        className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                        className="pb-[1px] pt-[4px] -mt-1  relative bottom-[2px]"
                         src={high_score}
                         alt="Number of question Icon"
                         width={15}
-                        height={10}
+                        height={15}
+
                       />{" "}
                       {quizItem.attained_score}/
                       {quizItem.quiz_total_marks}
@@ -508,7 +615,7 @@ const Quiz = () => {
                 width: "245px",
                 paddingTop: "8px",
                 marginRight: "10px",
-                marginTop:"10px",
+                marginTop:"20px",
                 backgroundColor: "#CBF2FB",
               }}
             >

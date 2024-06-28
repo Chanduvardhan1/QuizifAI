@@ -61,7 +61,7 @@ const Quiz = () => {
   const [averageScorePercentage, setAverageScorePercentage] = useState(null);
 
   const [getMoreQuizzes, setGetMoreQuizzes] = useState(false);
-  const [allquizzes, setAllquizzes] = useState([]);
+  // const [allquizzes, setAllquizzes] = useState([]);
  
   // Filtered quizzes based on selected dropdown options
   // const filteredQuizzes = allquizzes.filter((quizItem) => {

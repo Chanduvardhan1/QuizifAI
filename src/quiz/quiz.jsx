@@ -18,7 +18,6 @@ import Attempt1 from "../../public/images/dashboard/Attempt1.png";
 import NoOfQuestion from "../../public/images/dashboard/NoOfQuestion.png";
 import Easy from "../../public/images/dashboard/Easy.png";
 import Clock from "../../public/images/dashboard/Clock.png";
-// import zIndex from "@mui/material/styles/zIndex.js";
 
 
 const Quiz = () => {
@@ -149,7 +148,7 @@ const Quiz = () => {
   
   // Custom styles for react-select to match your existing dropdown design
   const customStyles = {
-    control: (provided) => ({
+    control: (provided, state) => ({
       ...provided,
       width: 'auto',
       minWidth: '183px',
@@ -161,27 +160,57 @@ const Quiz = () => {
       backgroundColor: '#f3d0d5',
       border: 'none',
       outline: 'none',
+      boxShadow: state.isFocused ? '0 0 0 1px #2684FF' : 'none', // Focused state border
     }),
     menu: (provided) => ({
       ...provided,
       backgroundColor: '#f3d0d5',
-      overflowX: 'hidden', // Prevent horizontal scrolling
-      zIndex: 9999, // Set z-index to a high value
+      overflowX: 'hidden',
+      zIndex: 9999,
     }),
     option: (provided, state) => ({
       ...provided,
       backgroundColor: state.isFocused ? '#A5CCE3' : '#f3d0d5',
       color: 'black',
-      whiteSpace: 'nowrap', // Prevent text wrapping
-      maxWidth: '100%', // Ensure the option fits within the container
+      fontSize: '10px',
+      whiteSpace: 'nowrap',
+      maxWidth: '100%',
+      padding: '5px 10px', // Adjusted padding for better alignment
+      lineHeight: '1.2', // Adjusted line-height for better alignment
     }),
     multiValue: (provided) => ({
       ...provided,
       backgroundColor: '#e5e5e5',
+      height: 'auto', // Adjusted to auto height for better text wrapping
+      padding: '2px', // Adjusted padding for better text alignment
     }),
     multiValueLabel: (provided) => ({
       ...provided,
       color: 'black',
+      fontSize: '10px',
+      lineHeight: 'normal',
+      maxWidth: '100px', // Adjusted to prevent text overflow
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+    }),
+    multiValueRemove: (provided) => ({
+      ...provided,
+      fontSize: '10px', // Adjust font size for remove icon
+      cursor: 'pointer',
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      fontWeight: 'bold',
+      color: '#495487', // Custom color for the placeholder
+      fontSize: '10px',
+    }),
+    dropdownIndicator: (provided) => ({
+      ...provided,
+      color: '#495487', // Custom color for the dropdown indicator arrow
+    }),
+    indicatorSeparator: () => ({
+      display: 'none', // Remove the indicator separator
     }),
   };
 
@@ -260,7 +289,7 @@ const Quiz = () => {
         value={selectedSubCategory.map(subcat => ({ value: subcat, label: subcat }))}
         onChange={(selected) => setSelectedSubCategory(selected.map(item => item.value))}
         styles={customStyles}
-        placeholder="SubCategory"
+        placeholder="Sub Category"
        />
   </div>
   <div className="flex gap-1 mb-3 bg-[#f3d0d5] border-none px-2 ml-8 mr-4 -pl-[30px] rounded-md">
@@ -298,7 +327,7 @@ const Quiz = () => {
         value={selectedCreatedBy.map(ctdBy => ({ value: ctdBy, label: ctdBy }))}
         onChange={(selected) => setSelectedCreatedBy(selected.map(item => item.value))}
         styles={customStyles}
-        placeholder="CreatedBy"
+        placeholder="Created By"
       />
   </div>
 </div>

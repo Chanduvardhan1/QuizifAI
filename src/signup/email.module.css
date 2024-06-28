@@ -543,7 +543,12 @@ margin-right: 120px;
 .emailinputbox{
   display: flex;
   text-align: center;
-  gap: 5px;
+  gap: 10px;
+  flex-direction: column;
+    justify-content: center;
+    align-items: end;
+    
+    margin-top: 10px;
 }
 .checkboxContainer1 {
   display: flex;

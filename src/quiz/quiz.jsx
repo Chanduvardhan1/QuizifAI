@@ -66,6 +66,7 @@ const Quiz = () => {
   //     (selectedClasses === "" || quizItem.class === selectedClasses)
   //   );
   // });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -129,7 +130,29 @@ const Quiz = () => {
       return updatedStates;
     });
   };
+  
+  const Edit = (quizId) => {
+    // navigate(`/quizaccess/${quizId}`);
+    localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
+    navigate(`/editmanuly`);
+  };
 
+  const leaderboard = (quizId) => {
+    localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
+    navigate('/quiz-results1', { state: { quizId } })
+  };
+
+  const quizresults = (quizId, attemptId) => {
+    localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
+    localStorage.setItem("quiz_level_attempt_id", attemptId); // Store attempt_id in local storage
+    navigate(`/quizview_results`);
+  };
+
+  const handleStartQuiz = (quizId) => {
+    // navigate(`/quizaccess/${quizId}`);
+    localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
+    navigate(`/quizaccess`);
+  };
   return (
     <div className={styles.container}>
       <Navigation/>

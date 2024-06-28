@@ -247,7 +247,13 @@ font-size: 14px;
     gap: 25px;
     padding-left: 13px;
 }
-  
+.pass {
+  color: green;
+}
+
+.fail {
+  color: red;
+}
   .column {
     margin-top: 10px; 
     text-align: center;

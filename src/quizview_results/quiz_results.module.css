@@ -927,3 +927,10 @@ margin-top: 30px;
   font-size: 14px;
  
 }
+.pass {
+  color: green;
+}
+
+.fail {
+  color: red;
+}

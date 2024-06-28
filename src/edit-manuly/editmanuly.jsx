@@ -597,7 +597,7 @@ export default function editmanuly() {
       
       const questionDuration = calculateQuizDuration();
       
-      const response = await fetch(`https://quizifai.com:8010/edit_quiz_mnlly/`, {
+      const response = await fetch(`https://quizifai.com:8010/edit_quiz/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -555,40 +555,46 @@ export default function editmanuly() {
       selectedComplexity,
       duration,
       quiztotalmarks,
-  ];
-  
-  const isAnyFieldEmpty = requiredFields.some(field => !field);
-  
-  if (isAnyFieldEmpty) {
+    ];
+    
+    const isAnyFieldEmpty = requiredFields.some(field => !field);
+    
+    if (isAnyFieldEmpty) {
       alert("Please fill in all the required fields before proceeding.");
       return; // Prevent further execution
-  }
-  const hasInvalidMultiAnswer = questions.some(question => {
-    if (question.multi_answer_flag) {
-      const correctAnswers = question.options.filter(option => option.correct_answer_flag);
-      return correctAnswers.length <= 1; // Invalid if not more than one correct answer
     }
-    return false;
-  });
-
-  if (hasInvalidMultiAnswer) {
-    alert("For multi-answer questions, there should be more than one correct answer.");
-    return;
-  }
-  const totalWeightage = questions.reduce((total, question) => total + question.question_weightage, 0);
-  if (totalWeightage !== quiztotalmarks) {
-    alert("Total question weightage does not match quiz total marks.");
-    return;
-  }
+    
+    if (multiAnswer) {
+      const hasInvalidMultiAnswer = questions.some(question => {
+        if (question.multi_answer_flag) {
+          const correctAnswers = question.options.filter(option => option.correct_answer_flag);
+          return correctAnswers.length <= 1; // Invalid if not more than one correct answer
+        }
+        return false;
+      });
+  
+      if (hasInvalidMultiAnswer) {
+        alert("For multi-answer questions, there should be more than one correct answer.");
+        return;
+      }
+    }
+  
+    const totalWeightage = questions.reduce((total, question) => total + question.question_weightage, 0);
+    if (totalWeightage !== quiztotalmarks) {
+      alert("Total question weightage does not match quiz total marks.");
+      return;
+    }
+  
     try {
-         const user_id = localStorage.getItem('user_id');
-         const quiz_id = localStorage.getItem('quiz_id');
-
+      const user_id = localStorage.getItem('user_id');
+      const quiz_id = localStorage.getItem('quiz_id');
+  
       // Check if user_id is retrieved successfully
       if (!user_id) {
         setErrorMessage("User ID not found. Please log in again.");
         return;
       }
+      
       const questionDuration = calculateQuizDuration();
       
       const response = await fetch(`https://quizifai.com:8010/edit_quiz_mnlly/`, {
@@ -597,7 +603,7 @@ export default function editmanuly() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          user_id:user_id,
+          user_id: user_id,
           quiz_id: quiz_id,
           quiz_title: title,
           num_questions: numQuestions,
@@ -628,8 +634,10 @@ export default function editmanuly() {
           })),
         }),
       });
+  
       const responseData = await response.json();
       console.log(responseData, "data");
+  
       if (response.ok) {
         if (responseData.response === "success") {
           setIsModified(false);
@@ -967,32 +975,54 @@ const handleNumQuestionsChange = (e) => {
   const value = parseInt(e.target.value, 10);
   setNumQuestions(value);
 
-  if (value > questions.length) {
-    const additionalQuestions = Array.from({ length: value - questions.length }, () => ({
-      question_text: "",
-      question_weightage: 0,
-      multi_answer_flag: false,
-      question_duration: 0,
+  if (value >= quizData.num_questions) {
+    // If increasing or equal to the originally fetched number of questions
+    const newQuestions = quizData.questions.slice(0, quizData.num_questions).map(question => ({
+      ...question,
       options: [
-        { answer_option_text: "" },
-        { answer_option_text: "" },
-        { answer_option_text: "" },
-        { answer_option_text: "" },
-      ]
+        { answer_option_text: question.quiz_ans_option_1_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_1_text },
+        { answer_option_text: question.quiz_ans_option_2_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_2_text },
+        { answer_option_text: question.quiz_ans_option_3_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_3_text },
+        { answer_option_text: question.quiz_ans_option_4_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_4_text }
+      ],
+      question_duration: question.question_duration || 0, // Provide default value if missing
     }));
-    setQuestions([...questions, ...additionalQuestions]);
-  } else if (value === 0) {
-    setQuestions([]);  // Clear questions if number of questions is set to zero
+
+    for (let i = quizData.num_questions; i < value; i++) {
+      // Add empty question structure for new questions
+      newQuestions.push({
+        quiz_question_id: `new_question_${i + 1}`,
+        quiz_question_text: '',
+        question_duration: 0, // Default value for new questions
+        options: [
+          { answer_option_text: '', correct_answer_flag: false },
+          { answer_option_text: '', correct_answer_flag: false },
+          { answer_option_text: '', correct_answer_flag: false },
+          { answer_option_text: '', correct_answer_flag: false }
+        ]
+      });
+    }
+    setQuestions(newQuestions);
   } else {
-    setQuestions(questions.slice(0, value));
+    // If decreasing, retain the originally fetched questions up to the new value
+    const updatedQuestions = quizData.questions.slice(0, value).map(question => ({
+      ...question,
+      options: [
+        { answer_option_text: question.quiz_ans_option_1_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_1_text },
+        { answer_option_text: question.quiz_ans_option_2_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_2_text },
+        { answer_option_text: question.quiz_ans_option_3_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_3_text },
+        { answer_option_text: question.quiz_ans_option_4_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_4_text }
+      ],
+      question_duration: question.question_duration || 0, // Provide default value if missing
+    }));
+    setQuestions(updatedQuestions);
   }
 };
-
-useEffect(() => {
-  if (numQuestions > 0 && questions.length === 0) {
-    fetchQuizData();
-  }
-}, [numQuestions])
+// useEffect(() => {
+//   if (numQuestions > 0 && questions.length === 0) {
+//     fetchQuizData();
+//   }
+// }, [numQuestions])
   return (
     <>
       <div>
@@ -1576,6 +1606,7 @@ useEffect(() => {
 
               <div className="absolute top-[653px] left-[1020px]">
                 <input
+                type="number"
                   className="rounded-lg w-[156px] h-[43px] flex border-solid border-[#B8BBC2] border-[1.8px]
                text-[12px]  px-3 py-3 cursor-pointer "
                   placeholder="Total marks"

@@ -414,7 +414,7 @@ const quiz_results = () => {
     alt="Calendar Icon"
     className={styles.icon2}
   />
-          <span className={styles.sentence3}>You have scored {quizData.attained_score_percentage}%, {quizData.quiz_grade} Grade, {quizData.pass_flag ? 'Pass' : 'Fail'}</span>
+          <span className={styles.sentence3}>You have scored {quizData.attained_score_percentage}%, {quizData.quiz_grade} Grade,<span className={`${quizData.pass_flag ? styles.pass : styles.fail}`}>{quizData.pass_flag ? 'Pass' : 'Fail'}</span></span>
         </div>
        
         

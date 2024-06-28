@@ -896,9 +896,10 @@ const LoginPage = () => {
                           fontSize: "30px",
                           fontWeight: 700,
                         }}
-                      >
+                        >
                         Forgot Password
                       </p>
+                      
                       <p
                         className={styles.secondParagraph}
                         style={{
@@ -907,8 +908,9 @@ const LoginPage = () => {
                           fontWeight: 700,
                         }}
                       >
-                        Reset using phone or email
+                        Reset using {loginMethod === "email" && (<span>email</span>)} {loginMethod === "mobile" && (<span>mobile</span>)}
                       </p>
+                        
                       <div className={styles.emailinputbox}>
                       {loginMethod === "email" && (
                       <div
@@ -924,12 +926,13 @@ const LoginPage = () => {
                             backgroundSize: "19px 16px",
                             backgroundPosition: "10px center",
                             backgroundRepeat: "no-repeat",
-                            width: 270,
+                            width: "325px",
                             height: 40,
                             backgroundColor: "#F0EFFF",
                             border: "none",
                             fontFamily: "poppins",
-                            paddingLeft: "40px",
+                          padding:"10px",
+                          paddingLeft:"35px",
                             borderRadius: "10px",
                           }}
                           value={email}
@@ -963,7 +966,7 @@ const LoginPage = () => {
                             backgroundSize: "14px 24px",
                             backgroundPosition: "10px center",
                             backgroundRepeat: "no-repeat",
-                            width: 270,
+                            width: "325px",
                             height: 40,
                             backgroundColor: "#F0EFFF",
                             border: "none",
@@ -1010,7 +1013,7 @@ const LoginPage = () => {
                             fontFamily: "poppins",
                           }}
                         >
-                          Sendotp
+                          Send OTP
                         </button>
                         {/* <button
                           className={`${styles.cancelButton} ${styles.button1}`}
@@ -1032,6 +1035,7 @@ const LoginPage = () => {
                 </>
               )}
                     </div>
+                 
                   </div>
                 </div>
               ) : (  

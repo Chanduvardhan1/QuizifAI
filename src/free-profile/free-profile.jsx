@@ -202,7 +202,8 @@ const FreeProfile = () => {
         setOccupation(userProfileDetails.occupation_name);
         setInitialLoginData(initialData);
         setPreferredLoginMethod(userProfileDetails.preferred_login_method);
-
+          
+        console.log("Gender:", userProfileDetails.gender); 
         // const userDetails = data.user_details;
         // setUserName(userDetails.full_name);
       } catch (error) {
@@ -516,10 +517,10 @@ setIsEditingLogin(true);
                           onChange={(e) => setOccupation(e.target.value)}
                           disabled={!isEditing}
                 >
-                 <option value="">{occupation}</option>
-                 <option value="">Student</option>
-                 <option value="Male">Teacher</option>
-                 <option value="Female">Professional</option>
+                 <option value={occupation}>{occupation}</option>
+                 <option value="Student">Student</option>
+                 <option value="Teacher">Teacher</option>
+                 <option value="Professional">Professional</option>
                  <option value="Other">Other</option> 
                 </select>
                 <hr className="h-[0.5px] w-[270px] bg-gray-100"></hr>
@@ -626,27 +627,27 @@ setIsEditingLogin(true);
         <div className="flex ml-[29%] -mt-[5px] my-[10px]">
           {/* gender*/}
           <div className={styles.inputGroup1} style={{ marginLeft: "-50px" }}>
-            <label className="text-blue-800 font-semibold">Gender</label>
-            <select
-      className="border-transparent 
-                   border-b-2   
-                 hover:border-blue-200 
-                   ml-[10px] 
-                   h-[30px] 
-                   w-[190px] 
-                   text-[11px] 
-                   focus:outline-none"
-      value={gender}
-      onChange={(e) => setGender(e.target.value)}
-      disabled={!isEditing}
-    >
-      <option value="">{gender}</option>
-      <option value="Male">Male</option>
-      <option value="Female">Female</option>
-      <option value="Other">Other</option>
-    </select>
-            <hr className="h-[0.5px] w-[250px] bg-gray-200"></hr>
-          </div>
+  <label className="text-blue-800 font-semibold">Gender</label>
+  <select
+    className="border-transparent 
+               border-b-2   
+               hover:border-blue-200 
+               ml-[10px] 
+               h-[30px] 
+               w-[190px] 
+               text-[11px] 
+               focus:outline-none"
+    value={gender}
+    onChange={(e) => setGender(e.target.value)}
+    disabled={!isEditing}
+  >
+    <option value={gender}>{gender}</option>
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+    <option value="Other">Other</option>
+  </select>
+  <hr className="h-[0.5px] w-[250px] bg-gray-200"></hr>
+</div>
           {/* city name  */}
           <div className={styles.inputGroup1} style={{ marginLeft: "40px" }}>
             <label className="text-blue-800 font-semibold">City Name</label>
@@ -665,6 +666,7 @@ setIsEditingLogin(true);
               onChange={(e) => setCity(e.target.value)}
               disabled={!isEditing}
             >
+              <option value={city}>{city}</option>
              {locations.map((location) => (
             <option key={location.location_id} value={location.location}>
               {location.location}
@@ -777,20 +779,20 @@ setIsEditingLogin(true);
         <div className="flex justify-start ml-[23%] mt-[20px] mb-[20px]">
         {isEditing ? (
         <button
-          className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[#FA3D49] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] text-white"
+          className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] text-white"
           onClick={handleSaveClick}
         >
           Save
         </button>
       ) : (
         <button
-          className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[#FA3D49] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] text-white"
+          className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] text-white"
           onClick={handleEditClick}
         >
           Edit
         </button>
       )}
-       <button className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[#FA3D49] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] ml-[5%] text-white"
+       <button className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] ml-[5%] text-white"
        onClick={handleCancelClick}
        >
        Cancel
@@ -848,7 +850,7 @@ setIsEditingLogin(true);
       </div>
       {isEditingLogin ? (
         <button
-          className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[#FA3D49] 
+          className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)]
           transition-transform duration-300 ease-in-out h-[30px] w-[90px] text-[13px] font-semibold 
           rounded-[20px] ml-[200px] mb-[20px] text-white mt-[20px]"
           onClick={handleLoginSaveClick}
@@ -857,7 +859,7 @@ setIsEditingLogin(true);
         </button>
       ) : (
         <button
-          className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[#FA3D49] 
+          className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)]
           transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold 
           rounded-[20px] ml-[200px] mb-[20px] text-white mt-[20px]"
           onClick={handleLoginEditClick}
@@ -865,7 +867,7 @@ setIsEditingLogin(true);
           Edit
         </button>
       )}
-      <button className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[#FA3D49] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] ml-[4%] text-white"
+      <button className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] ml-[4%] text-white"
        onClick={handleLoginCancelClick}
        >
        Cancel
@@ -882,7 +884,7 @@ setIsEditingLogin(true);
             onChange={(e) => setOtp(e.target.value)}
           />
           <button
-            className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[#FA3D49] 
+            className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] 
             transition-transform duration-300 ease-in-out h-[30px] w-[90px] text-[13px] font-semibold 
             rounded-[20px] ml-[10px] text-white"
             onClick={handleOtpVerifyClick}
@@ -919,7 +921,7 @@ setIsEditingLogin(true);
               focus:outline-gray-300 
             `}
             type={passwordVisible ? 'text' : 'password'}
-            placeholder="Enter your old password"
+            placeholder="old password"
             value={oldPassword}
             onChange={(e) => setOldPassword(e.target.value)}
           />
@@ -950,7 +952,7 @@ setIsEditingLogin(true);
             focus:outline-gray-300
           `}
           type={newPasswordVisible ? 'text' : 'password'}
-          placeholder="Enter new password"
+          placeholder="new password"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
         />
@@ -967,7 +969,7 @@ setIsEditingLogin(true);
               {newPasswordError && <div className="text-red-500 text-xs mt-1 w-[190px] mx-[10px]">{newPasswordError}</div>}
       </div>
       <div className={styles.inputGroup1}>
-        <label className="text-blue-800 font-semibold ml-[20px]">Confirm Password</label>
+        <label className="text-blue-800 font-semibold ml-[20px]">Confirm new Password</label>
         <input
           className={`
             border-transparent 
@@ -975,12 +977,12 @@ setIsEditingLogin(true);
             hover:border-blue-200  
             ml-[20px] 
             h-[30px] 
-            w-[168px] 
+            w-[178px] 
             text-[11px] 
             focus:outline-gray-300
           `}
           type={confirmPasswordVisible ? 'text' : 'password'}
-          placeholder="Enter confirm password"
+          placeholder="confirm new password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
@@ -998,7 +1000,7 @@ setIsEditingLogin(true);
       </div>
     </div>
         <button
-          className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[#FA3D49] 
+          className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] 
           transition-transform duration-300 ease-in-out h-[30px] w-[150px] text-[13px] font-semibold 
           rounded-[20px] ml-[200px] mb-[20px] text-white mt-[20px] text-nowrap"
           onClick={handleUpdatePassword}

@@ -7,68 +7,177 @@ import Edit from "../../src/assets/Images/Assets/Edit.png"
 import Delete from "../../src/assets/Images/Assets/Delete.png"
 import Line from "../../src/assets/Images/Assets/Line.png"
 const category = () => {
-    const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+  const [categoryId, setCategoryId] = useState('');
+  const [categoryName, setCategoryName] = useState('');
+  const [categoryDescription, setCategoryDescription] = useState('');
+  const [parentCategory, setParentCategory] = useState('');
+  const [createdBy, setCreatedBy] = useState(0); // Assuming a default value for demonstration
+  const [categories, setCategories] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editIndex, setEditIndex] = useState(null);
 
-    const toggleNavbar = () => {
-        setIsNavbarOpen((prevState) => !prevState);
-      };
+  const toggleNavbar = () => {
+    setIsNavbarOpen(!isNavbarOpen);
+  };
+
+  const handleAddOrUpdateCategory = async () => {
+    const categoryData = {
+      category: categoryName,
+      category_description: categoryDescription,
+      parent_category: parentCategory,
+      created_by: createdBy,
+    };
+
+    if (isEditing) {
+      const updatedCategories = categories.map((category, index) =>
+        index === editIndex
+          ? { ...categoryData, id: categoryId }
+          : category
+      );
+      setCategories(updatedCategories);
+      setIsEditing(false);
+      setEditIndex(null);
+    } else {
+      try {
+        const response = await fetch('https://quizifai.com:8010/create_category/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(categoryData),
+        });
+
+        if (response.ok) {
+          const newCategory = { id: categoryId, ...categoryData };
+          setCategories([...categories, newCategory]);
+        } else {
+          console.error('Failed to create category');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    setCategoryId('');
+    setCategoryName('');
+    setCategoryDescription('');
+    setParentCategory('');
+    setIsNavbarOpen(false);
+  };
+
+  const handleEdit = (index) => {
+    const category = categories[index];
+    setCategoryId(category.id);
+    setCategoryName(category.category);
+    setCategoryDescription(category.category_description);
+    setParentCategory(category.parent_category);
+    setCreatedBy(category.created_by);
+    setIsEditing(true);
+    setEditIndex(index);
+    setIsNavbarOpen(true);
+  };
+
+  const handleDelete = (index) => {
+    const updatedCategories = categories.filter((_, i) => i !== index);
+    setCategories(updatedCategories);
+  };
+
   return (
     <>
     <div className='flex w-full font-Poppins'>
     <Navigation/> 
-    {/* <div className='flex w-full bg-slate-400'>
+    <div className='flex w-full flex-col'>
+      <div className='flex justify-end mt-[30px]'>
+        <div className='w-[118px] h-[41px] rounded-[10px] bg-[#FFEDCD]'>
+          <div className="flex" onClick={toggleNavbar}>
+            <img className="w-[25px] h-[25px] ml-2 mt-2" src={Plus} alt="Plus Icon" />
+            <a className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3">
+              Category
+            </a>
+          </div>
+        </div>
+      </div>
 
-    </div> */}
-    {/* <div className='w-[118px] relative left-1 h-[41px] right-0 mt-[30px] rounded-[10px] bg-[#FFEDCD]'>
-    <div className="flex" onClick={toggleNavbar}>
+      {isNavbarOpen && (
+        <div className='h-[60px] mt-[30px] w-fit rounded-md bg-slate-200 flex flex-row gap-[10px] p-4'>
+          <input
+            type='text'
+            placeholder='Category ID'
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
+            className='bg-white w-[120px] text-center rounded-3xl py-4 pl-1 text-[#9696BB]'
+          />
+          <input
+            type='text'
+            placeholder='Category Name'
+            value={categoryName}
+            onChange={(e) => setCategoryName(e.target.value)}
+            className='bg-white w-[150px] rounded-3xl text-center py-4 text-[#9696BB]'
+          />
+          <input
+            type='text'
+            placeholder='Category Description'
+            value={categoryDescription}
+            onChange={(e) => setCategoryDescription(e.target.value)}
+            className='bg-white w-[190px] rounded-3xl text-center py-4 text-[#9696BB]'
+          />
+          <input
+            type='text'
+            placeholder='Parent Category'
+            value={parentCategory}
+            onChange={(e) => setParentCategory(e.target.value)}
+            className='bg-white w-[150px] rounded-3xl text-center py-4 text-[#9696BB]'
+          />
+          <button
+            onClick={handleAddOrUpdateCategory}
+            className='bg-gray-700 w-[80px] text-center rounded-3xl text-white'
+          >
+            {isEditing ? 'Update' : 'Add'}
+          </button>
+        </div>
+      )}
+
+      <table className='table-auto mt-[30px] w-full text-left bg-[#2a4e9c] text-white'>
+        <thead>
+          <tr>
+            <th className='px-4 py-2'>Category Id</th>
+            <th className='px-4 py-2'>Category Name</th>
+            <th className='px-4 py-2'>Category Description</th>
+            <th className='px-4 py-2'>Parent Category</th>
+            <th className='px-4 py-2'>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {categories.map((category, index) => (
+            <tr key={index} className='bg-slate-200 text-black'>
+              <td className='border px-4 py-2'>{category.id}</td>
+              <td className='border px-4 py-2'>{category.category}</td>
+              <td className='border px-4 py-2'>{category.category_description}</td>
+              <td className='border px-4 py-2'>{category.parent_category}</td>
+              <td className='border px-4 py-2 flex gap-2'>
                 <img
-                  className="w-[25px] h-[25px] ml-2 mt-2"
-                  src={Plus}
-                  alt="Plus Icon"
+                  className='h-[20px] w-[20px] cursor-pointer'
+                  src={Edit}
+                  alt="Edit"
+                  onClick={() => handleEdit(index)}
                 />
-                <a
-                  className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
-                >
-                  Category                
-                </a>
-              </div>
-    </div> */}
-     {isNavbarOpen &&(
-     <div></div>
-    )}
-     {/* <div className='h-[60px] mt-[100px] w-fit rounded-md bg-slate-200 flex gap-[15px]'>
-   <button className='bg-white rounded-3xl my-2 px-2 text-[#9696BB]'>Category ID</button> 
-   <button className='bg-white rounded-3xl my-2 px-2 text-[#9696BB] '>Category Name</button> 
-   <button className='bg-white rounded-3xl my-2 px-2 text-[#9696BB]'>Parent Category</button> 
-   <button className='bg-gray-700 rounded-3xl my-2 px-6  text-white'>Add</button> 
-    </div> */}
-
-    <div className='w-fit flex mt-[150px] pl-[15px] items-center h-[50px] border bg-[#2a4e9c] text-white gap-[20px] text-nowrap mr-auto'>
-      <div className='flex'>
-        <h1>Category Id</h1>
-        <img className=' w-[7px] ml-[10px] relative left-[25px]' src={Line}/>
-      </div>
-      <div className='h-[250px] w-[2px] mt-[300px] bg-slate-500'></div>
-      <div className='flex'>
-        <h1>Category Name</h1>
-        <img className=' w-[7px] relative left-[25px]' src={Line}/>
-      </div>
-      <div className='h-[250px] w-[2px] mt-[300px] bg-slate-500'></div>
-      <div className='flex'>
-        <h1>Category Description</h1>
-        <img className=' w-[7px] relative left-[25px]' src={Line}/>
-      </div>
-      <div className='h-[250px] w-[2px] mt-[300px] bg-slate-500'></div>
-      <div className='flex'>
-        <h1>Parent Category</h1>
-      <img className=' w-[7px] relative left-[25px]' src={Line}/>
-      </div>
-      <div className='h-[250px] w-[2px] mt-[300px] bg-slate-500'></div>
-      <div className='flex gap-3'>
-      <img className='h-[20px] w-[20px] mt-[120px]' src={Edit}/>
-      <img className='h-[20px] w-[15px] mt-[120px] mr-3' src={Delete}/>
-      </div>
+                <img
+                  className='h-[20px] w-[15px] cursor-pointer'
+                  src={Delete}
+                  alt="Delete"
+                  onClick={() => handleDelete(index)}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
+    
+     
+
+   
     <LogoutBar />
     </div>
     </>

@@ -15,12 +15,12 @@ const configure = () => {
   };
 
   const items = [
-      { id: 1, title: 'Organization', content: 'Categories, Courses' },
-      { id: 2, title: 'Configuration', content: '' },
+      { id: 1, title: 'Configuration', content: 'Categories, Courses' },
+      { id: 2, title: 'Organization', content: '' },
       { id: 3, title: 'Notification', content: '' },
-      { id: 4, title: 'User & Roles', content: 'Categories, Courses' },
-      { id: 5, title: 'Subscription', content: '' },
-      { id: 6, title: 'Preferences', content: '' },
+    //   { id: 4, title: 'User & Roles', content: '' },
+    //   { id: 5, title: 'Subscription', content: '' },
+    //   { id: 6, title: 'Preferences', content: '' },
   ];
   
   const filteredItems = items.filter(item => 
@@ -73,11 +73,13 @@ const configure = () => {
                     key={item.id}
                     className='h-[300px] w-[200px] bg-[#F5F5F5] rounded-md shadow-xl transition-all duration-300 scale-95 hover:scale-100 flex-none'
                 >
-                    <h1 className='text-[12px] text-[#214082] underline underline-offset-4 cursor-pointer font-medium hover:no-underline text-center pt-2'>
+                    <h1 className='text-[12px] text-[#214082] underline underline-offset-4 cursor-pointer font-medium hover:no-underline text-center pt-2'
+                    onClick={() =>navigatetocategory(item.title)}
+                    >
                         {highlightText(item.title, searchQuery)}
                     </h1>
                     {item.content.split(', ').map((contentItem, index) => (
-                        <p key={index} className='mt-3 text-[10px] ml-11'>
+                        <p key={index} className='mt-3 text-[10px] ml-[20px]'>
                             {highlightText(contentItem, searchQuery)}
                         </p>
                     ))}

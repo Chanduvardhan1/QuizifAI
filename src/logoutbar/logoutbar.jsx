@@ -47,10 +47,11 @@ const LogoutBar = (data) => {
   
  
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
-  const [username, setUsername] = useState("");
+  const [userName, setUserName] = useState('');
   const [occupation, setOccupation] = useState(localStorage.getItem("occupation_name"));
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
+  const [district, setDistrict] = useState("")
   const [globalRank, setGlobalRank] = useState("");
   const [totalQuizzes, setTotalQuizzes] = useState("");
   const [totalMinutes, setTotalMinutes] = useState("");
@@ -95,6 +96,12 @@ const LogoutBar = (data) => {
           setRegisteredOn(auditDetails.created_date || "");
           setLastLogin(auditDetails.last_login_timestamp || "");
           setPasswordChanged(auditDetails.user_password_change_date || "");
+
+          const userDetails = auditDetails;
+          setUserName(userDetails.full_name);
+
+          const UserProfileDetails = data.data[0].user_profile_details;
+          setDistrict(UserProfileDetails.district_name);
 
           const subscriptionDetails = auditDetails.subscription_details && auditDetails.subscription_details[0];
           if (subscriptionDetails) {
@@ -166,7 +173,7 @@ const LogoutBar = (data) => {
         </div>
         <div style={{ textAlign: "center" }}>
           <p style={{ fontSize: "15px", marginBottom: "5px", fontWeight: 600 ,color:"#002366"}}>
-            {username}
+            {userName}
           </p>
           <p
             style={{
@@ -210,7 +217,10 @@ const LogoutBar = (data) => {
 
           <div className="text-[13px] ml-[30px] text-[#002366] mx-5">
           <p>{city}</p><br/>
-          <p className="-pl-[10px] -mt-4">{country}</p>
+          <div className="flex -mt-[20px] pl-2">
+          <p className="pl-4">{district} ,</p>
+          <p className="pl-1">{country}</p>
+          </div>
           </div>
          
          <div className="h-[15px] w-[15px] rotate-[90deg] cursor-pointer ml-[195px]">

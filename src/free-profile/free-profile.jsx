@@ -42,6 +42,7 @@ const FreeProfile = () => {
   const [gender, setGender] = useState("");
   const [dob, setDob] = useState("");
   const [postalCode, setPostalCode] = useState("");
+  const [error, setError] = useState('');
   const [city, setCity] = useState("");
   const [locations, setLocations] = useState([]);
   const [state, setState] = useState("");
@@ -63,6 +64,7 @@ const FreeProfile = () => {
   const [oldPasswordError, setOldPasswordError] = useState('');
   const [newPasswordError, setNewPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [locationId, setLocationId] = useState("");
 
   const [weeklyQuizCount, setWeeklyQuizCount] = useState(0);
   const [averageScorePercentage, setAverageScorePercentage] = useState(0);
@@ -113,6 +115,7 @@ const FreeProfile = () => {
     // Allow only digits and limit to 6 characters
     if (/^\d{0,6}$/.test(value)) {
       setPostalCode(value);
+      setError('');
     }
   };
 
@@ -126,6 +129,7 @@ const FreeProfile = () => {
         setCountry(data.country);
         setState(data.state);
         setDistrict(data.district);
+        setLocationId(data.location_id);
   
         const locationData = response.data.data;
         setLocations(locationData);
@@ -138,9 +142,13 @@ const FreeProfile = () => {
       }
     };
 
-  const handleSearchClick = () =>{
-    fetchDetailsByPincode(postalCode);
-  }
+    const handleSearchClick = () => {
+      if (postalCode.length < 6) {
+        setError('* Pincode must be 6 digits.');
+        return;
+      }
+      fetchDetailsByPincode(postalCode);
+    };
 
   // Get profile details integration part******************
   useEffect(() => {
@@ -253,7 +261,7 @@ const FreeProfile = () => {
       date_of_birth: dob,
       preferred_login_method: preferredLoginMethod,
       user_address_id: null,
-      user_location_id: null,
+      user_location_id: locationId,
       user_address_line_1: " ",
       user_address_line_2: " ",
       occupation: occupation,
@@ -328,7 +336,7 @@ setIsEditingLogin(true);
   
     try {
       const response = await fetch(
-        `https://quizifai.com:8010/register_email_mobile`,
+        `https://quizifai.com:8010/chnge_email_mobile`,
         {
           method: "POST",
           headers: {
@@ -372,6 +380,11 @@ setIsEditingLogin(true);
     } else {
       setMessage('Invalid OTP. Please try again.');
     }
+  };
+  const verifyOtp = (enteredOtp) => {
+    // Implement your OTP verification logic here
+    // For this example, let's assume the OTP is "123456"
+    return enteredOtp === "123456";
   };
 
 
@@ -571,7 +584,8 @@ setIsEditingLogin(true);
           className="h-[15px] w-[15px] -mt-[15px] ml-[71%] relative -top-[8px] cursor-pointer"
           src={search}
           onClick={handleSearchClick}
-        />            
+        />     
+         {error && <div className="text-red-500 text-[10px] mt-2">{error}</div>}       
             <hr className="h-[0.5px] w-[270px] bg-gray-200"></hr>
           </div>
         </div>
@@ -802,105 +816,76 @@ setIsEditingLogin(true);
       </div>
 
       <div className="bg-white w-full mt-[8%]">
-      <h1 className="ml-[6%] mt-4 text-[13px] text-[#EF5130] font-semibold">Login User Details</h1>
-      <div className="flex ml-[30%] mt-[20px]">
-        {/* Email */}
-        <div className={styles.inputGroup1} style={{ marginLeft: "-50px" }}>
-          <label className="text-blue-800 font-semibold">Email</label>
-          <input
-            className={`
-              border-transparent 
-              border-b-2   
-              hover:border-blue-200   
-              mr-[40px]
-              ml-[10px]
-              h-[30px] 
-              w-[200px] 
-              text-[11px] 
-              focus:outline-gray-300
-              ${isEditing ? 'highlight' : ''}
-            `}
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            disabled={!isEditingLogin}
-          />
-        </div>
-        {/* Mobile */}
-        <div className={styles.inputGroup1}>
-          <label className="text-blue-800 font-semibold ml-[20px]">Mobile</label>
-          <input
-            className={`
-              border-transparent 
-              border-b-2   
-              hover:border-blue-200  
-              ml-[10px] 
-              h-[30px] 
-              w-[213px] 
-              text-[11px] 
-              focus:outline-gray-300
-              ${isEditing ? 'highlight' : ''}
-            `}
-            type="tel"
-            value={mobileNumber}
-            onChange={(e) => setMobileNumber(e.target.value)}
-            disabled={!isEditingLogin}
-          />
-        </div>
+    <h1 className="ml-[6%] mt-4 text-[13px] text-[#EF5130] font-semibold">Login User Details</h1>
+    <div className="flex ml-[30%] mt-[20px]">
+      <div className={styles.inputGroup1} style={{ marginLeft: "-50px" }}>
+        <label className="text-blue-800 font-semibold">Email</label>
+        <input
+          className={`border-transparent border-b-2 hover:border-blue-200 mr-[40px] ml-[10px] h-[30px] w-[200px] text-[11px] focus:outline-gray-300 ${isEditing ? 'highlight' : ''}`}
+          type="text"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          disabled={!isEditingLogin}
+        />
       </div>
-      {isEditingLogin ? (
+      <div className={styles.inputGroup1}>
+        <label className="text-blue-800 font-semibold ml-[20px]">Mobile</label>
+        <input
+          className={`border-transparent border-b-2 hover:border-blue-200 ml-[10px] h-[30px] w-[213px] text-[11px] focus:outline-gray-300 ${isEditing ? 'highlight' : ''}`}
+          type="tel"
+          value={mobileNumber}
+          onChange={(e) => setMobileNumber(e.target.value)}
+          disabled={!isEditingLogin}
+        />
+      </div>
+    </div>
+    {isEditingLogin ? (
+      <>
         <button
-          className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)]
-          transition-transform duration-300 ease-in-out h-[30px] w-[90px] text-[13px] font-semibold 
-          rounded-[20px] ml-[200px] mb-[20px] text-white mt-[20px]"
+          className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[90px] text-[13px] font-semibold rounded-[20px] ml-[200px] mb-[20px] text-white mt-[20px]"
           onClick={handleLoginSaveClick}
         >
-          Send Otp
+          Send OTP
         </button>
-      ) : (
-        <button
-          className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)]
-          transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold 
-          rounded-[20px] ml-[200px] mb-[20px] text-white mt-[20px]"
-          onClick={handleLoginEditClick}
-        >
-          Edit
-        </button>
-      )}
-      <button className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] ml-[4%] text-white"
-       onClick={handleLoginCancelClick}
-       >
-       Cancel
-       </button>
-
-      {isOtpSent && (
-        <div className="mt-[20px]">
-          <label className="text-blue-800 font-semibold">Enter OTP</label>
-          <input
-            className="border-transparent border-b-2 hover:border-blue-200 ml-[10px] h-[30px] w-[200px] text-[11px] focus:outline-gray-300"
-            placeholder="Enter otp"
-            type="text"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-          />
-          <button
-            className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] 
-            transition-transform duration-300 ease-in-out h-[30px] w-[90px] text-[13px] font-semibold 
-            rounded-[20px] ml-[10px] text-white"
-            onClick={handleOtpVerifyClick}
-          >
-            Verify OTP
-          </button>
-          
-        </div>
-      )}
-      {message && (
-        <div className="mt-[20px] text-green-500 font-semibold">
-          {message}
-        </div>
-      )}
-      
-    </div>
+        
+      </>
+    ) : (
+      <button
+        className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] ml-[200px] mb-[20px] text-white mt-[20px]"
+        onClick={handleLoginEditClick}
+      >
+        Edit
+      </button>
+    )}
+    <button
+      className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] ml-[4%] text-white"
+      onClick={handleLoginCancelClick}
+    >
+      Cancel
+    </button>
+    {message && (
+      <div className="mt-[20px] text-green-500 font-semibold">
+        {message}
+      </div>
+    )}
+    {isOtpSent && (
+          <div className="flex items-center ml-[50%] relative -top-[48px]">
+            <input
+              className="border-transparent border-b-2 hover:border-blue-200 h-[30px] w-[200px] text-[11px] focus:outline-gray-300"
+              placeholder="Enter OTP"
+              type="text"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+            />
+            <button
+              className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[90px] text-[13px] font-semibold rounded-[20px] ml-[10px] text-white"
+              onClick={handleOtpVerifyClick}
+            >
+              Verify OTP
+            </button>
+          </div>
+        )}
+  </div>
 
       <div className="bg-white w-full">
       <h1 className="ml-[6%] mt-4 text-[13px] text-[#EF5130] font-semibold">Update Password </h1>

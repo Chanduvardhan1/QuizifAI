@@ -971,9 +971,23 @@ export default function editmanuly() {
 //     fetchQuizData();
 //   }
 // }, [numQuestions]);
+
+const updateQuestionWeightage = (totalMarks, numQuestions) => {
+  if (numQuestions > 0) {
+    const weightagePerQuestion = totalMarks / numQuestions;
+    
+    const newQuestions = questions.map(question => ({
+      ...question,
+      question_weightage: weightagePerQuestion,
+    }));
+    setQuestions(newQuestions);
+  }
+};
+
 const handleNumQuestionsChange = (e) => {
   const value = parseInt(e.target.value, 10);
   setNumQuestions(value);
+  updateQuestionWeightage(quiztotalmarks, value);
 
   if (value >= quizData.num_questions) {
     // If increasing or equal to the originally fetched number of questions
@@ -1017,6 +1031,12 @@ const handleNumQuestionsChange = (e) => {
     }));
     setQuestions(updatedQuestions);
   }
+};
+const handleQuizTotalMarksChange = (e) => {
+  const value = parseInt(e.target.value, 10);
+  setquiztotalmarks(value);
+  setIsModified(true);
+  updateQuestionWeightage(value, numQuestions);
 };
 // useEffect(() => {
 //   if (numQuestions > 0 && questions.length === 0) {
@@ -1611,11 +1631,7 @@ const handleNumQuestionsChange = (e) => {
                text-[12px]  px-3 py-3 cursor-pointer "
                   placeholder="Total marks"
                   value={quiztotalmarks}
-                  onChange={(e) => {
-                    const value = parseInt(e.target.value, 10);
-                    setquiztotalmarks(value);
-                    setIsModified(true);
-                  }}
+                  onChange={handleQuizTotalMarksChange}
                 ></input>
               </div>
             </div>
@@ -1672,20 +1688,21 @@ const handleNumQuestionsChange = (e) => {
       {/* Input field for question weightage */}
       <input
         type="number"
-        placeholder="Weightage"
-        className="w-[60px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal "
+        placeholder="Marks"
+        className="w-[80px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal "
         value={question.question_weightage}
-        onChange={(e) => {
-          const value = parseInt(e.target.value,10);
-          const updatedQuestions = questions.map((q, index) => {
-            if (index === questionIndex) {
-              return { ...q, question_weightage: value };
-            }
-            return q;
-          });
-          setQuestions(updatedQuestions);
-          setIsModified(true);
-        }}
+        // onChange={(e) => {
+        //   const value = parseInt(e.target.value,10);
+        //   const updatedQuestions = questions.map((q, index) => {
+        //     if (index === questionIndex) {
+        //       return { ...q, question_weightage: value };
+        //     }
+        //     return q;
+        //   });
+        //   setQuestions(updatedQuestions);
+        //   setIsModified(true);
+        // }}
+        readOnly
       />
 
       {/* Input field for question duration */}

@@ -43,14 +43,19 @@ function quizcreated1() {
   const location = useLocation();
 
   useEffect(() => {
+    // Debugging: Log the entire location state
+    console.log('Location State:', location.state);
+
     // Check if quizData exists in location state before accessing its properties
     if (location.state && location.state.quizData) {
       // Access the quizData from the location state
       const quizData = location.state.quizData;
-      setQuizData(quizData)
+      setQuizData(quizData.data);
 
       // Show quizData in the console
-      console.log(quizData);
+      console.log('Quiz Data:', quizData);
+    } else {
+      console.log('No quizData found in location state');
     }
   }, [location.state]);
   const navigate = useNavigate();
@@ -62,6 +67,9 @@ const Edit = (quizId) => {
   localStorage.setItem('quiz_id', quizId); // Store quiz_id in local storage
   navigate(`/editmanuly`);
 };
+if (!quizData) {
+  return <div>Loading...</div>;
+}
   return (
     <>
       <div className="flex">
@@ -152,7 +160,7 @@ const Edit = (quizId) => {
                 Created Successfully
               </h1>
             </div>
-            {quizData && (
+          
               <div className="w-[948px] h-[464px]">
                  <div className=" absolute top-[40px]">
                 <div className="flex">
@@ -396,7 +404,7 @@ const Edit = (quizId) => {
                   </div>
                 </div>
               </div>
-            )}
+           
           </div>
 
           <div className=" absolute top-[-150px]">

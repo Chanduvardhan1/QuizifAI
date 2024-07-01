@@ -696,9 +696,12 @@ if (isAnyFieldEmpty) {
   
       const responseData = JSON.parse(responseText);
       console.log(responseData, "data");
-  
       if (responseData.response === "success") {
-        setQuestions(responseData.data[0].questions);
+        if (responseData.data && responseData.data.questions) {
+          setQuestions(responseData.data.questions);
+        } else {
+          setErrorMessage("Questions data is missing from the response.");
+        }
       } else {
         if (
           responseData.detail &&

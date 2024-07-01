@@ -210,7 +210,10 @@ const FreeProfile = () => {
         setOccupation(userProfileDetails.occupation_name);
         setInitialLoginData(initialData);
         setPreferredLoginMethod(userProfileDetails.preferred_login_method);
-          
+         
+        const userDetails = data.audit_details;
+        setUserName(userDetails.full_name);
+
         console.log("Gender:", userProfileDetails.gender); 
         // const userDetails = data.user_details;
         // setUserName(userDetails.full_name);
@@ -448,7 +451,7 @@ setIsEditingLogin(true);
               </div>
             </div>
             <div className={styles.headerRight}>
-              <div>{getFormattedDate()}</div>
+              <div className="text-[#002366]">{getFormattedDate()}</div>
               <div className={styles.searchIconContainer}>
                 <img
                   src={searchIcon}
@@ -498,6 +501,7 @@ setIsEditingLogin(true);
                           mr-[70px]
                           h-[30px] 
                           w-[165px] 
+                          pl-[21px]
                           text-[11px] 
                           focus:outline-none ${isEditing ? 'input-highlight' : ''}`}"
                           type="text"
@@ -524,6 +528,7 @@ setIsEditingLogin(true);
                           h-[30px] 
                           w-[183px] 
                           text-[11px] 
+                          pl-[17px]
                           focus:outline-none"
                           type="text"
                           value={occupation}
@@ -554,6 +559,7 @@ setIsEditingLogin(true);
                           h-[30px] 
                           w-[153px] 
                           text-[11px] 
+                          pl-2
                           focus:outline-none"
               type="text"
               value={middleName}
@@ -573,7 +579,8 @@ setIsEditingLogin(true);
                           // mr-[90px]
                           h-[30px] 
                           w-[205px] 
-                          text-[11px] 
+                          text-[11px]
+                          pl-[44px] 
                           focus:outline-none"
               type="text"
               value={postalCode}
@@ -601,7 +608,8 @@ setIsEditingLogin(true);
                           mr-[70px]
                           h-[30px] 
                           w-[170px] 
-                          text-[11px] 
+                          text-[11px]
+                          pl-[26px] 
                           focus:outline-none"
               type="text"
               value={lastName}
@@ -624,6 +632,7 @@ setIsEditingLogin(true);
                           h-[30px] 
                           w-[170px] 
                           text-[11px] 
+                          pl-2
                           focus:outline-none"
               type="text"
               value={district}
@@ -650,6 +659,7 @@ setIsEditingLogin(true);
                h-[30px] 
                w-[190px] 
                text-[11px] 
+               pl-[43px]
                focus:outline-none"
     value={gender}
     onChange={(e) => setGender(e.target.value)}
@@ -673,6 +683,7 @@ setIsEditingLogin(true);
                           mr-[90px]
                           h-[30px] 
                           w-[190px] 
+                          pl-[25px]
                           text-[11px] 
                           focus:outline-none"
               type="text"
@@ -696,7 +707,7 @@ setIsEditingLogin(true);
             className={styles.inputGroup1}
             style={{ marginLeft: "-50px", textWrap: "nowrap" }}
           >
-            <label className="text-blue-800 font-semibold">DOB</label>
+            <label className="text-blue-800 font-semibold">Date of birth</label>
             <input
               className="border-transparent 
                            border-b-2   
@@ -705,7 +716,8 @@ setIsEditingLogin(true);
                           mr-[90px]
                           h-[30px] 
                           w-[213px] 
-                          text-[11px] 
+                          text-[11px]
+                          pl-[14px] 
                           focus:outline-none"
               type="date"
               value={dob}
@@ -715,7 +727,7 @@ setIsEditingLogin(true);
             <hr className="h-[1px] w-[250px] bg-gray-200"></hr>
           </div>
           {/* state */}
-          <div className={styles.inputGroup1} style={{ marginLeft: "-50px" }}>
+          <div className={styles.inputGroup1} style={{ marginLeft: "-105px" }}>
             <label className="text-blue-800 font-semibold">State Name</label>
             <input
               className="border-transparent 
@@ -725,6 +737,7 @@ setIsEditingLogin(true);
                           h-[30px] 
                           w-[183px] 
                           text-[11px] 
+                          pl-[19px]
                           focus:outline-none"
               type="text"
               value={state}
@@ -751,6 +764,7 @@ setIsEditingLogin(true);
                           h-[30px] 
                           w-[155px] 
                           text-[11px] 
+                          pl-[10px]
                           focus:outline-none"
                           type="text"
                           value={preferredLoginMethod}
@@ -793,14 +807,14 @@ setIsEditingLogin(true);
         <div className="flex justify-start ml-[23%] mt-[20px] mb-[20px]">
         {isEditing ? (
         <button
-          className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] text-white"
+          className="bg-[#3B61C8] hover:transform hover:scale-110  transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] text-white"
           onClick={handleSaveClick}
         >
           Save
         </button>
       ) : (
         <button
-          className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] text-white"
+          className="bg-[#3B61C8] hover:transform hover:scale-110 transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] text-white"
           onClick={handleEditClick}
         >
           Edit

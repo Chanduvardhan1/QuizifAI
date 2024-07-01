@@ -176,7 +176,7 @@ export default function editmanuly() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isRetakeOn, setIsRetakeOn] = useState(false);
-  const [selectedValue, setSelectedValue] = useState("0");
+  const [selectedValue, setSelectedValue] = useState("");
   const [showRegistrationSuccess, setShowRegistrationSuccess] = useState(false);
 
   const [quiztotalmarks, setquiztotalmarks] = useState("");
@@ -614,7 +614,7 @@ export default function editmanuly() {
           class_name: selectedClass,
           pass_percentage: percentage,
           quiz_complexity_name: selectedComplexity,
-          retake_flag: retake,
+          retake_flag: selectedValue,
           quiz_duration: duration,
           course_name: selectedCourse,
           quiz_time_bounded_questions: timings,
@@ -786,9 +786,10 @@ export default function editmanuly() {
         setMultiAnswer(data.data.multi_answer);
         setSelectedSubCategory(data.data.quiz_sub_category_name);
         setPercentage(data.data.pass_percentage);
-        setRetake(data.data.retake_flag);
+        setSelectedValue(data.data.retake_flag);
         setPublicAccess(data.data.quiz_public_access);
         setDuration(data.data.quiz_duration);
+        setIsRetakeOn(data.data.retake_flag > 0);
         setTimings(data.data.quiz_time_bounded_questions);
         setavailablefrom(data.data.available_from);
         setdisabledon(data.data.disabled_on);

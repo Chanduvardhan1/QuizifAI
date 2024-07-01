@@ -94,10 +94,10 @@ const quizview = () => {
     // Check if quizData exists in location state before accessing its properties
     if (location.state && location.state.quizData) {
       // Access the quizData from the location state
-      const quizDataFromLocation = location.state.quizData;
+      const quizData = location.state.quizData;
 
       // Set the quizData state with the data from location state
-      setQuizData(quizDataFromLocation);
+      setQuizData(quizData);
     } else {
       console.log("No quiz data found in location state:", location.state);
     }
@@ -290,7 +290,7 @@ const quizview = () => {
         </div> */}
        
         <div className={styles.boxContainer}>
-        {quizData[0] && quizData[0].questions && quizData[0].questions.map((question, index) => (
+        {quizData.questions && quizData.questions.map((question, index) => (
   <div key={index} className={styles.questionContainer}>
     <div className={styles.question}>
       <span className={styles.questionText}>{index + 1}. {question.question_text}</span>

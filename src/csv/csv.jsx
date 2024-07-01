@@ -455,7 +455,7 @@ export default function quiztype() {
 
       if (response.ok) {
         // Assuming router and state setter are defined properly
-        navigate("/quizcreated1", { state: { quizData: responseData } });
+        navigate("/quizcreated1", { state: { quizData: responseData.data } });
       } else {
         if (
           responseData.detail &&

@@ -66,7 +66,7 @@ const Navigation = () => {
           <img src={Settings} alt="Settings Icon" className={styles.pageIcon} />
           <span className={styles.pageLink}>Settings</span>
         </NavLink>
-        <img className="h-[122px] w-[60px] ml-[35px] mt-[50px]" src={rocket} alt="rocket"/>
+        {/* <img className="h-[122px] w-[60px] ml-[35px] mt-[50px]" src={rocket} alt="rocket"/> */}
       </div>
     </div>
   );

@@ -357,7 +357,10 @@ const Dashboard = () => {
           </div>
 
           <div className="flex flex-wrap mx-auto ml-[15px] -mt-[20px]">
-            {allquizzes.slice(0,3).map((quizItem, index) => (
+            {allquizzes
+            .filter(quizItem.active_flag === 'true')
+            .slice(0,3)
+            .map((quizItem, index) => (
                <div
                key={index}
                className=""         

@@ -51,17 +51,17 @@ const resetpasswordmobile = () => {
   const [responseMessage, setResponseMessage] = useState("");
   const [termsChecked, setTermsChecked] = useState(false);
   const [errors, setErrors] = useState({});
-  const [mobile, setMobile] = useState("");
+  const [mobile2, setMobile2] = useState("");
   const [mobile1, setMobile1] = useState("");
   const [resendAvailable, setResendAvailable] = useState(false);
   const [resendTime, setResendTime] = useState(600);
   const location = useLocation();
-  const { userId } = location.state || {};
-  // const { userId,email } = location.state || {};
+  // const { userId } = location.state || {};
+  const { userId,mobile } = location.state || {};
 
   useEffect(() => {
     if (userId) {
-        setMobile(userId);
+        setMobile2(userId);
     }
   }, [userId]);
   const navigate = useNavigate();
@@ -74,20 +74,22 @@ const resetpasswordmobile = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
- useEffect(() => {
-    const timer = setInterval(() => {
-      setResendTime((prevTime) => {
-        if (prevTime <= 1) {
-          clearInterval(timer);
-          setResendAvailable(true);
-          return 0;
-        }
-        return prevTime - 1;
-      });
-    }, 1000);
+  useEffect(() => {
+    if (!resendAvailable) {
+      const timer = setInterval(() => {
+        setResendTime((prevTime) => {
+          if (prevTime <= 1) {
+            clearInterval(timer);
+            setResendAvailable(true);
+            return 0;
+          }
+          return prevTime - 1;
+        });
+      }, 1000);
 
-    return () => clearInterval(timer);
-  }, []);
+      return () => clearInterval(timer);
+    }
+  }, [resendAvailable]);
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -124,6 +126,8 @@ const resetpasswordmobile = () => {
         console.log("OTP resend successful:", data);
         // Handle successful OTP resend, e.g., show success message
         alert("OTP has been successfully resent");
+        setResendAvailable(false);
+        setResendTime(600);
       })
       .catch((error) => {
         console.error("Error resending OTP:", error);
@@ -152,7 +156,7 @@ const resetpasswordmobile = () => {
 
     const userData = {
       reset_option: loginMethod,
-      user_id: loginMethod === "email" ? email : mobile,
+      user_id:userId,
       otp: otp,
       new_password: password,
       confirm_new_password: confirmpassword,
@@ -207,7 +211,7 @@ const resetpasswordmobile = () => {
   const handleMobileChange1 = (e) => {
     const inputValue = e.target.value;
     if (/^\d*$/.test(inputValue)) {
-      setMobile(inputValue);
+      setMobile2(inputValue);
     }
   };
   return (

@@ -48,6 +48,7 @@ const register = () => {
   const [emailValid, setEmailValid] = useState(false);
   const [mobileValid, setMobileValid] = useState(false);
 
+  const [occupations, setOccupations] = useState([]);
   //   const router = useRouter();
   const [Districtname, setDistrictname] = useState("");
   const [emailOrMobile, setemailOrMobile] = useState('');
@@ -895,6 +896,21 @@ const register = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchOccupations = async () => {
+      try {
+        const response = await fetch('https://quizifai.com:8010/occupations/', {
+          headers: { 'accept': 'application/json' },
+        });
+        const data = await response.json();
+        setOccupations(data.data);
+      } catch (error) {
+        console.error('Error fetching occupations:', error);
+      }
+    };
+
+    fetchOccupations();
+  }, []);
   return (
     <div>
       <Navbarhome/>
@@ -1484,10 +1500,11 @@ const register = () => {
                     {/* <option value="" disabled selected>
                       Occupation
                     </option> */}
-                    <MenuItem value="Student">Student</MenuItem>
-                    <MenuItem value="Teacher">Teacher</MenuItem>
-                    <MenuItem value="Professional">Professional</MenuItem>
-                    <MenuItem value="Other">Other</MenuItem>
+                       {occupations.map((occupation) => (
+        <MenuItem key={occupation.occupation_id} value={occupation.occupation_name}>
+          {occupation.occupation_name}
+        </MenuItem>
+      ))}
                     {/* occupation options  */}
                   </TextField>
                   <TextField

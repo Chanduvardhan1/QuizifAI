@@ -229,13 +229,13 @@ const LoginPage = () => {
         } else if (responseData.response === "fail") {
           let errorMessage = responseData.message || "An unknown error occurred while logging in.";
           if (responseData.response_message === "Password is incorrect.Please try again.") {
-            errorMessage = "Password is incorrect.Please try again.";
+            errorMessage = "please enter your password";
           } else if (responseData.response_message === "Email is not valid.Please check your email") {
-            errorMessage = "Email is not valid.Please check your email";
+            errorMessage = "Check your email to complete the verification process";
           } else if (responseData.response_message === "Mobile Number is incorrect or account doesn't exist pls sinup.") {
             errorMessage = "Mobile Number is not valid.Please check your number";
           } else if (responseData.response_message === "Email is not verified, please verify your email") {
-            errorMessage = "Email is already registered but not verified. Please verify your email and try again.";
+            errorMessage = "Check your email to complete the verification process";
           } else if (responseData.response_message === "Registration is not yet completed.") {
             errorMessage = "Registration is not yet completed.";
           } else if (responseData.response_message === "Mobile Number is not valid.Please check your number") {
@@ -292,7 +292,7 @@ const LoginPage = () => {
       if (data.response === "success") {
         const userId = data.data[0]?.user_id;
         if (data.response_message === "OTP Succuessfully Sent") {
-          navigate("/resetpasswordmobile", { state: { userId,email } });
+          navigate("/resetpasswordmobile", { state: { userId,mobile } });
         } else if (data.response_message === "OTP Sent Successfully,Please reset your password") {
           navigate("/resetpassword", { state: { userId,email} });
         }

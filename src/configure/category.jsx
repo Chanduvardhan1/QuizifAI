@@ -89,7 +89,7 @@ const category = () => {
     <Navigation/> 
     <div className='flex w-full flex-col'>
       <div className='flex justify-end mt-[30px]'>
-        <div className='w-[118px] h-[41px] rounded-[10px] bg-[#FFEDCD]'>
+        <div className='w-[118px] h-[40px] rounded-[10px] bg-[#F3D0D5] mr-[20px]'>
           <div className="flex" onClick={toggleNavbar}>
             <img className="w-[25px] h-[25px] ml-2 mt-2" src={Plus} alt="Plus Icon" />
             <a className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3">
@@ -100,45 +100,46 @@ const category = () => {
       </div>
 
       {isNavbarOpen && (
-        <div className='h-[60px] mt-[30px] w-fit rounded-md bg-slate-200 flex flex-row gap-[10px] p-4'>
+        <div className='text-[10px] mx-[20px] text-[#214082] h-[60px] mt-[30px] rounded-md bg-[#CBF2FB] flex flex-row gap-[50px] p-4'>
           <input
             type='text'
             placeholder='Category ID'
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value)}
-            className='bg-white w-[120px] text-center rounded-3xl py-4 pl-1 text-[#9696BB]'
+            className=' w-[90px] text-center rounded-3xl py-4 pl-1 text-[#214082] placeholder:text-[#214082]'
+            style={{ '::placeholder': { color: '#214082' } }}
           />
           <input
             type='text'
             placeholder='Category Name'
             value={categoryName}
             onChange={(e) => setCategoryName(e.target.value)}
-            className='bg-white w-[150px] rounded-3xl text-center py-4 text-[#9696BB]'
+            className=' w-[120px] rounded-3xl text-center py-4 text-[#214082] placeholder:text-[#214082]'
           />
           <input
             type='text'
             placeholder='Category Description'
             value={categoryDescription}
             onChange={(e) => setCategoryDescription(e.target.value)}
-            className='bg-white w-[190px] rounded-3xl text-center py-4 text-[#9696BB]'
+            className=' w-[150px] rounded-3xl text-center py-4 text-[#214082] placeholder:text-[#214082]'
           />
           <input
             type='text'
             placeholder='Parent Category'
             value={parentCategory}
             onChange={(e) => setParentCategory(e.target.value)}
-            className='bg-white w-[150px] rounded-3xl text-center py-4 text-[#9696BB]'
+            className='w-[120px] rounded-3xl text-center py-4 text-[#214082] placeholder:text-[#214082]'
           />
           <button
             onClick={handleAddOrUpdateCategory}
-            className='bg-gray-700 w-[80px] text-center rounded-3xl text-white'
+            className='bg-[#214082] w-[80px] text-center rounded-3xl text-white'
           >
             {isEditing ? 'Update' : 'Add'}
           </button>
         </div>
       )}
 
-      <table className='table-auto mt-[30px] w-full text-left bg-[#2a4e9c] text-white'>
+      <table className='table-auto mt-[30px] mx-[20px] rounded text-left bg-[#F3D0D5] text-[#214082] text-[13px] font-light'>
         <thead>
           <tr>
             <th className='px-4 py-2'>Category Id</th>
@@ -150,14 +151,14 @@ const category = () => {
         </thead>
         <tbody>
           {categories.map((category, index) => (
-            <tr key={index} className='bg-slate-200 text-black'>
+            <tr key={index} className='bg-[#d8f6fc] text-black'>
               <td className='border px-4 py-2'>{category.id}</td>
               <td className='border px-4 py-2'>{category.category}</td>
               <td className='border px-4 py-2'>{category.category_description}</td>
               <td className='border px-4 py-2'>{category.parent_category}</td>
               <td className='border px-4 py-2 flex gap-2'>
                 <img
-                  className='h-[20px] w-[20px] cursor-pointer'
+                  className='h-[20px] w-[20px] mr-1 cursor-pointer'
                   src={Edit}
                   alt="Edit"
                   onClick={() => handleEdit(index)}

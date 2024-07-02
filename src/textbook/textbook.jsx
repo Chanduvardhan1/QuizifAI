@@ -161,7 +161,7 @@ export default function quiztype() {
   const [isRetakeOn, setIsRetakeOn] = useState(false);
   const [selectedValue, setSelectedValue] = useState("0");
   const [showRegistrationSuccess, setShowRegistrationSuccess] = useState(false);
-
+  // const [showRegistrationSuccess1, setShowRegistrationSuccess1] = useState(true);
   const [quiztotalmarks, setquiztotalmarks] = useState("");
   const [questionWeightage, setquestionWeightage] = useState("");
   const [multiAnswerFlag, setmultiAnswerFlag] = useState("");
@@ -636,16 +636,30 @@ if (isAnyFieldEmpty) {
       );
       const responseData = await response.json();
       console.log(responseData, "data");
+      if (responseData.response === "success") {
+        if (responseData.data && responseData.data.questions) {
+          // setShowRegistrationSuccess1(true)
+          setQuestions(responseData.data.questions);
+          
+            setDocument(responseData.data.document_name);
+            setAuthor(responseData.data.author_name);
+            setPublisher(responseData.data.publisher_name);
+            setReleased(responseData.data.released_date);
+            setRevision(responseData.data.revision_year);
+            setDocumentType(responseData.data.document_type);
+        } else {
+          setErrorMessage("Questions data is missing from the response.");
+        }
 
-      if (response.ok) {
-        // Assuming router and state setter are defined properly
-        setQuestions(responseData.questions);
-        setDocument(responseData.document_name);
-        setAuthor(responseData.author_name);
-        setPublisher(responseData.publisher_name);
-        setReleased(responseData.released_date);
-        setRevision(responseData.revision_year);
-        setDocumentType(responseData.document_type);
+      // if (response.ok) {
+      //   // Assuming router and state setter are defined properly
+      //   setQuestions(responseData.questions);
+      //   setDocument(responseData.document_name);
+      //   setAuthor(responseData.author_name);
+      //   setPublisher(responseData.publisher_name);
+      //   setReleased(responseData.released_date);
+      //   setRevision(responseData.revision_year);
+      //   setDocumentType(responseData.document_type);
       } else {
         if (
           responseData.detail &&
@@ -910,7 +924,7 @@ if (isAnyFieldEmpty) {
 
               <div className="w-[201px] h-[22px] absolute top-[111px] left-[284px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Quiz Title
+                  Quiz Title<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
               </div>
 
@@ -924,7 +938,7 @@ if (isAnyFieldEmpty) {
 
               <div className="w-[210px] h-[23px] absolute top-[110px] left-[941px] mb-10 justify-center items-center grid">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Number of Questions
+                  Number of Questions<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
                 {/* <h1 className="font-Poppins font-semibold text-[15px] ml-5 leading-[22.5px]">
                   of
@@ -967,7 +981,7 @@ if (isAnyFieldEmpty) {
 
               <div className="w-[201px] h-[22px] absolute top-[174px] left-[284px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Quiz Description
+                  Quiz Description<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
               </div>
 
@@ -983,7 +997,7 @@ if (isAnyFieldEmpty) {
             <div className="flex">
               <div className="w-[201px] h-[27px] absolute top-[248px] left-[284px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Quiz Category
+                  Quiz Category<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
               </div>
 
@@ -1009,7 +1023,7 @@ if (isAnyFieldEmpty) {
 
               <div className="w-[164px] h-[30px] absolute top-[458px] left-[820px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Multiple Answers
+                  Multiple Answers<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
               </div>
 
@@ -1029,7 +1043,7 @@ if (isAnyFieldEmpty) {
             <div className="flex">
               <div className="w-[201px] h-[27px] absolute top-[248px] left-[820px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Sub Category
+                  Sub Category<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
               </div>
 
@@ -1053,7 +1067,7 @@ if (isAnyFieldEmpty) {
 
             <div className="w-[164px] h-[30px] absolute top-[314px] left-[284px]">
               <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                Course{" "}
+                Course
               </h1>
             </div>
 
@@ -1105,7 +1119,7 @@ if (isAnyFieldEmpty) {
             <div className="flex">
               <div className="w-[164px] h-[30px] absolute top-[383px] left-[284px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Pass percentage
+                  Pass percentage<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
               </div>
 
@@ -1125,7 +1139,7 @@ if (isAnyFieldEmpty) {
 
               <div className="w-[164px] h-[30px] absolute top-[383px] left-[820px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Complexity{" "}
+                  Complexity<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
               </div>
 
@@ -1150,7 +1164,7 @@ if (isAnyFieldEmpty) {
             <div className="flex">
               <div className="w-[164px] h-[30px] absolute top-[458px] left-[284px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Retake Option
+                  Retake Option<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
               </div>
 
@@ -1184,7 +1198,7 @@ if (isAnyFieldEmpty) {
             <div className="flex">
               <div className="w-[174px] h-[30px] absolute top-[527px] left-[284px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Quiz Duration
+                  Quiz Duration<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
               </div>
 
@@ -1241,7 +1255,7 @@ if (isAnyFieldEmpty) {
               </div>
               <div className="w-[238px] h-[30px] absolute top-[527px] left-[820px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Time bounded Questions{" "}
+                  Time bounded Questions<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
               </div>
 
@@ -1262,12 +1276,13 @@ if (isAnyFieldEmpty) {
 
             <div className="w-[253px] h-[30px] absolute top-[590px] left-[284px]">
               <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                Quiz will be available from
+                Quiz will be available from<span className="required ml-[1px] text-red-500">*</span>
               </h1>
             </div>
 
             <div className="absolute top-[584px] left-[498px]">
               <input
+              type="date"
                 className="rounded-lg w-[166px] h-[43px] flex border-solid border-[#B8BBC2] border-[1.8px]
               text-[#9696BB] leading-[22.5px] text-[15p] font-medium bg-[#F4F4F4] px-4"
                 placeholder="YYYY-MM-DD"
@@ -1276,7 +1291,7 @@ if (isAnyFieldEmpty) {
               ></input>
             </div>
 
-            <div className="w-[233px] h-[30px] absolute top-[590px] left-[820px]">
+            <div className="w-[253px] h-[30px] absolute top-[590px] left-[820px]">
               <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                 Quiz must be disable on{" "}
               </h1>
@@ -1284,7 +1299,8 @@ if (isAnyFieldEmpty) {
 
             <div className=" absolute top-[584px] left-[1020px]">
               <input
-                className="rounded-lg w-[156px] h-[43px] flex border-solid border-[#B8BBC2] border-[1.8px]
+                type="date"
+                className="rounded-lg w-[166px] h-[43px] flex border-solid border-[#B8BBC2] border-[1.8px]
               text-[#9696BB] leading-[22.5px] text-[15p] font-medium bg-[#F4F4F4] px-4"
                 placeholder="YYYY-MM-DD"
                 value={disabledon}
@@ -1295,7 +1311,7 @@ if (isAnyFieldEmpty) {
             <div className="flex">
               <div className="w-[156px] h-[30px] absolute top-[660px] left-[284px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Public access
+                  Public access<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
               </div>
 
@@ -1305,13 +1321,13 @@ if (isAnyFieldEmpty) {
 
               <div className="w-[174px] h-[30px] absolute top-[660px] left-[820px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Quiz total marks{" "}
+                  Quiz total marks<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
               </div>
 
               <div className="absolute top-[653px] left-[1020px]">
                 <input
-                  className="rounded-lg w-[156px] h-[43px] flex border-solid border-[#B8BBC2] border-[1.8px]
+                  className="rounded-lg w-[166px] h-[43px] flex border-solid border-[#B8BBC2] border-[1.8px]
               text-[#9696BB] text-[15p] font-medium bg-[#ffffff] px-4"
                   placeholder="Total marks"
                   value={quiztotalmarks}
@@ -1321,7 +1337,7 @@ if (isAnyFieldEmpty) {
             </div>
             <div className="w-[201px] h-[22px] absolute top-[730px] left-[284px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                subject name
+                subject name<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
               </div>
               <div className="">
@@ -1332,9 +1348,11 @@ if (isAnyFieldEmpty) {
                   onChange={(e) => setsubject(e.target.value)}
                 ></input>
               </div>
+              {/* {showRegistrationSuccess1 && (
+                <div> */}
               <div className="w-[201px] h-[22px] absolute top-[730px] left-[820px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                document name
+                document name<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
               </div>
               <div className="">
@@ -1347,7 +1365,7 @@ if (isAnyFieldEmpty) {
               </div>
               <div className="w-[201px] h-[22px] absolute top-[800px] left-[284px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                author name
+                author name<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
               </div>
               <div className="">
@@ -1360,7 +1378,7 @@ if (isAnyFieldEmpty) {
               </div>
               <div className="w-[201px] h-[22px] absolute top-[800px] left-[820px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                publisher name
+                publisher name<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
               </div>
               <div className="">
@@ -1373,7 +1391,7 @@ if (isAnyFieldEmpty) {
               </div>
               <div className="w-[201px] h-[22px] absolute top-[870px] left-[284px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                released date
+                released date<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
               </div>
               <div className="">
@@ -1386,7 +1404,7 @@ if (isAnyFieldEmpty) {
               </div>
               <div className="w-[201px] h-[22px] absolute top-[870px] left-[820px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                revision year
+                revision year<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
               </div>
               <div className="">
@@ -1399,7 +1417,7 @@ if (isAnyFieldEmpty) {
               </div>
               <div className="w-[201px] h-[22px] absolute top-[940px] left-[284px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                document type
+                document type<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
               </div>
               <div className="">
@@ -1410,6 +1428,8 @@ if (isAnyFieldEmpty) {
                   onChange={(e) => setDocumentType(e.target.value)}
                 ></input>
               </div>
+              {/* </div>
+              )} */}
               </div>
           <div className="w-[145.68px] h-[37.09px] absolute top-[1010px] left-[653.43px] rounded-[10px] bg-[#1E4DE9]">
           <label htmlFor="fileInput" className="font-Poppins font-medium text-[15px] leading-[22.5px] flex justify-start px-4 py-2 text-white cursor-pointer" >
@@ -1441,6 +1461,12 @@ if (isAnyFieldEmpty) {
               >
                 Upload
               </button> */}
+        {/* <div className="absolute w-[137.09px] h-[9.05px] top-[725.11px] -mt-[680px] left-[10px]">
+        <Line percent={uploadProgress} strokeWidth={5} strokeColor="#B1FB9B" />
+        <h1 className="font-Poppins text-[#214082] font-normal text-[10px] leading-[15px]  mt-1 ml-8">
+          {`Uploading ${uploadProgress}%`}
+        </h1>
+      </div> */}
       </div>
             <div className="w-[98px] h-[32px] absolute top-[1000px] left-[1182px] rounded-[10px] bg-[#1E4DE9]">
               <button

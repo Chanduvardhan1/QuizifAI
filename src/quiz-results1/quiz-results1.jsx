@@ -120,6 +120,28 @@ const topThree = leaderboardData.slice(0, 3);
 /> */}
           <span className={styles.quizname}>{quizData.quiz_name}</span>
           <p className={styles.quizdescription}>{quizData.quiz_description}</p>
+          {/* <div className={styles.Questionslines }>
+        <div className={styles.Questions}>
+
+        <span className={styles.Question} >Questions :</span>{" "}
+          <span className={styles.username1} >{`${quizData.total_questions}`}</span>
+        </div>
+        <div>
+
+        <span className={styles.Question} >Duration:</span>{" "}
+          <span className={styles.username1} >{`${quizData.quiz_duration}`}</span>
+        </div>
+        <div>
+
+<span className={styles.Question} >Total Score:</span>{" "}
+  <span className={styles.username1} >{`${quizData.quiz_total_marks}`}</span>
+</div>
+<div>
+
+<span className={styles.Question } >Pass Score :</span>{" "}
+  <span className={styles.username1} >{`${quizData.attempt_percentage}`}</span>
+</div>
+        </div> */}
           <div className={styles.Createdbyupdated}>
         <div className={styles.Created}>
 

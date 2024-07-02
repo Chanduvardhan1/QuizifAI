@@ -414,20 +414,20 @@ if (!quizData) {
             <div className="absolute top-[729px] left-[524px]">
               <a onClick={() => Edit(quizData.quiz_id)}>
                 <button className="w-[123px] h-[32px] rounded-[10px] bg-[#214082] text-white">
-                  Edit
+                 Edit
                 </button>
               </a>
             </div>
 
             <a href="/publish">
-              <button className="w-[123px] h-[32px] absolute top-[729px] left-[675px] rounded-[10px] bg-[#214082] text-white">
+              <button className="w-[123px] h-[32px] absolute top-[729px] left-[675px] rounded-[10px] bg-gray-500 cursor-not-allowed text-white">
                 Publish
               </button>
             </a>
 
             <div className="absolute top-[729px] left-[834px]">
               <a href="/print">
-                <button className="w-[123px] h-[32px] rounded-[10px] bg-[#214082] text-white">
+                <button className="w-[123px] h-[32px] rounded-[10px] bg-gray-500 cursor-not-allowed text-white">
                   Print
                 </button>
               </a>

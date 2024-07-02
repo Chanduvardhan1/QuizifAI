@@ -17,7 +17,7 @@ import { useLocation } from 'react-router-dom';
 
 const resetpassword = () => {
   const [loginMethod, setLoginMethod] = useState("email");
-  const [email, setEmail] = useState("");
+  const [email2, setEmail2] = useState("");
   const [email1, setEmail1] = useState("email");
   const [otp, setOtp] = useState("");
   const [password, setPassword] = useState("");
@@ -57,12 +57,12 @@ const resetpassword = () => {
   const [resendAvailable, setResendAvailable] = useState(false);
   const [resendTime, setResendTime] = useState(600);
   const location = useLocation();
-  // const { userId,email } = location.state || {};
-  const { userId } = location.state || {};
+  const { userId,email } = location.state || {};
+  // const { userId } = location.state || {};
 
   useEffect(() => {
     if (userId) {
-      setEmail(userId);
+      setEmail2(userId);
     }
   }, [userId]);
 
@@ -160,7 +160,7 @@ const resetpassword = () => {
     }
     const userData = {
       reset_option: loginMethod,
-      user_id: loginMethod === "email" ? email : mobile,
+      user_id: userId,
       otp: otp,
       new_password: password,
       confirm_new_password: confirmpassword,

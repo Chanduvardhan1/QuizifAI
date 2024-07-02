@@ -884,13 +884,25 @@ text-align: left;
   }
   
   .textOverImage1 {
-    margin-top: 35px;
+    margin-top: 100px;
     margin-left: 175px;
     display: flex;
     flex-direction: column;
     text-align: center;
   }
-  
+  .Questionslines{
+    display: flex;
+    gap: 74px;
+  }
+  .Question{
+    font-family: Poppins;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .username1{
+    font-size: 14px;
+    font-weight: 400;
+  }
   .textOverImage2 {
     margin-top: 120px;
     margin-left: -70px;

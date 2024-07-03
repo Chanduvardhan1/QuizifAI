@@ -219,7 +219,6 @@ const FreeProfile = () => {
 
     fetchQuizData();
   }, [userId]);
-  const storedPassword = localStorage.getItem('password');
   console.log("Stored password:", storedPassword);
   
   // Edit profile details **********************

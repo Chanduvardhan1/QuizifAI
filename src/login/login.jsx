@@ -221,6 +221,7 @@ const LoginPage = () => {
           if (userId) {
             localStorage.setItem('user_id', userId);
             localStorage.setItem('Password:', password);
+            console.log('Stored password:', localStorage.getItem('password'));
             setErrorMessage(""); // Clear any previous error message
             navigate("/dashboard");
             console.log("Login successful!");

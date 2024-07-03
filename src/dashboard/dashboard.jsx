@@ -98,6 +98,11 @@ const Dashboard = () => {
     navigate('/quiz-results1', { state: { quizId } })
   };
 
+  // const leaderboard = (quizId, attemptId) => {
+  //   localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
+  //   localStorage.setItem("quiz_level_attempt_id", attemptId); // Store attempt_id in local storage
+  //   navigate(`/quizview_results`);
+  // };
   const Edit = (quizId) => {
     // navigate(`/quizaccess/${quizId}`);
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage

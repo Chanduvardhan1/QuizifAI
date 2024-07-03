@@ -244,7 +244,9 @@ export default function quiztype() {
       setSubCategories(category.sub_categories.map(subCat => subCat.sub_category_name));
     }
   };
-
+  const sortedCategories = [...categories].sort((a, b) =>
+    a.category_name.localeCompare(b.category_name)
+  );
   // Handle subcategory selection
   const handleSelectSubCategory = (event) => {
     const selectedSubCategory = event.target.value;
@@ -795,8 +797,8 @@ export default function quiztype() {
         <div className="absolute top-[30px] left-[1260px] cursor-pointer text-[#eeb600f0] " onClick={Back}><MdOutlineCancel /></div>
         {!showRegistrationSuccess && (
           <main className="w-max-auto">
-            <div className="w-[719px] h-[48px] absolute top-[30px] left-[200px] rounded-[10px] bg-[#E0FFE8] z-0">
-              <h className="font-Poppins font-semibold text-[25px] leading-[37.5px] text-[#555555] flex justify-center items-center mt-1l">
+            <div className="w-[719px] h-[48px] absolute top-[30px] left-[200px] rounded-[10px] bg-[#fee2e2] z-0">
+              <h className="font-Poppins font-semibold text-[25px] leading-[37.5px] text-[#214082] flex justify-center items-center mt-1l">
                 Configure and click next to type in your Quiz
               </h>
             </div>
@@ -813,7 +815,7 @@ export default function quiztype() {
 
               <div className="">
                 <input
-                  className="w-[420px] h-[43px] absolute top-[99px] left-[498px] rounded-[10px] border bg-[#F4F4F4] p-3"
+                  className="w-[420px] h-[43px] absolute top-[99px] left-[498px] rounded-[10px] border  p-3"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 ></input>
@@ -878,7 +880,7 @@ export default function quiztype() {
 
               <div className="">
                 <input
-                  className="w-[780px] h-[45px] absolute top-[163px] left-[498px] rounded-[10px] border bg-[#F4F4F4] p-3"
+                  className="w-[780px] h-[45px] absolute top-[163px] left-[498px] rounded-[10px] border  p-3"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 ></input>
@@ -907,16 +909,16 @@ export default function quiztype() {
   ))}
                 </select>  */}
                       <select
-        className="w-[260px] h-[41.6px] border-solid border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer text-[12px]"
+        className="w-[260px] h-[41.6px] border-solid border-[1px] border-[#B8BBC2] p-2 rounded-md cursor-pointer text-[12px]"
         value={selectedCategory}
         onChange={handleSelectCategory}
       >
         <option value="" disabled>Select a category</option>
-        {categories.map(category => (
-          <option key={category.category_id} value={category.category_name}>
-            {category.category_name}
-          </option>
-        ))}
+        {sortedCategories.map((category) => (
+    <option key={category.category_id} value={category.category_name}>
+      {category.category_name}
+    </option>
+  ))}
       </select>
 
               </div>
@@ -1001,7 +1003,7 @@ export default function quiztype() {
                 ))}
               </select>  */}
       <select
-        className="w-[260px] h-[41.6px] border-solid  text-[12px] border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer"
+        className="w-[260px] h-[41.6px] border-solid  text-[12px] border-[1px] border-[#B8BBC2] p-2 rounded-md cursor-pointer"
         value={selectedCourse}
         onChange={handleSelectCourse}
       >
@@ -1224,7 +1226,7 @@ export default function quiztype() {
               <input
               type="date"
                 className="rounded-lg w-[166px] h-[43px]  border-solid border-[#B8BBC2] border-[1.8px]
-              text-[#9696BB] leading-[22.5px] text-[15px] font-medium bg-[#F4F4F4] px-4"
+              text-[#9696BB] leading-[22.5px] text-[15px] font-medium  px-4"
                 placeholder="YYYY-MM-DD"
                 value={availablefrom}
                 onChange={(e) => setavailablefrom(e.target.value)}
@@ -1241,7 +1243,7 @@ export default function quiztype() {
               <input
               type="date"
                 className="rounded-lg w-[156px] h-[43px]  border-solid border-[#B8BBC2] border-[1.8px]
-              text-[#9696BB] leading-[22.5px] text-[15px] font-medium bg-[#F4F4F4] px-4"
+              text-[#9696BB] leading-[22.5px] text-[15px] font-medium  px-4"
                 placeholder="YYYY-MM-DD"
                 value={disabledon}
                 onChange={(e) => setdisabledon(e.target.value)}
@@ -1330,7 +1332,7 @@ export default function quiztype() {
       <input
         type="text"
         placeholder={`Question`}
-        className="w-[70%] h-[50px] rounded-[20px] border-solid border-[#B8BBC2] border-[1.8px] p-[15px] "
+        className="w-[70%] h-[35px] rounded-[20px] border-solid border-[#B8BBC2] border-[1.8px] p-[15px] "
         value={question.question_text}
         onChange={(e) => {
           const newQuestions = [...questions];
@@ -1343,7 +1345,7 @@ export default function quiztype() {
     <input
         type="number"
         placeholder="Weightage"
-        className="w-[130px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
+        className="w-[130px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
         value={calculateWeightage(numQuestions, quiztotalmarks)}
         onChange={(e) => {
           const value = parseInt(e.target.value);
@@ -1372,7 +1374,7 @@ export default function quiztype() {
       
           type="number"
           placeholder="Duration"
-          className="w-[130px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal hidden"
+          className="w-[130px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal hidden"
           value={duration}
           onChange={(e) => setDuration(parseInt(e.target.value))}
           disabled
@@ -1382,7 +1384,7 @@ export default function quiztype() {
         <input
           type="number"
           placeholder="Duration"
-          className="w-[130px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
+          className="w-[130px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
           value={calculateQuizDuration()}
           onChange={() => {}}
           disabled
@@ -1390,7 +1392,7 @@ export default function quiztype() {
       ) : (
         // Each question has different time
         <select
-        className="w-[130px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[2px] font-normal"
+        className="w-[130px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[2px] font-normal"
         value={questionDuration}
         onChange={(e) => {
           const newQuestionDuration = parseInt(e.target.value);
@@ -1421,7 +1423,7 @@ export default function quiztype() {
         <input
           type="text"
           placeholder={`Option Text`}
-          className="w-[70%] h-[50px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[15px] font-normal"
+          className="w-[70%] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[15px] font-normal"
           value={option.answer_option_text}
           onChange={(e) => {
             const newOptions = [...questions[questionIndex].options];
@@ -1453,14 +1455,14 @@ export default function quiztype() {
 
 <div className=" flex justify-between items-center pr-[55px] ">
                 <button
-                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white"
+                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNext2}
                 >
                   Back
                 </button>
 
                 <button
-                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white"
+                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNext}
                 >
                   Create

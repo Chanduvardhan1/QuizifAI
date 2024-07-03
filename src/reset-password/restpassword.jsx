@@ -77,19 +77,21 @@ const resetpassword = () => {
     setShowPassword(!showPassword);
   };
   useEffect(() => {
-    const timer = setInterval(() => {
-      setResendTime((prevTime) => {
-        if (prevTime <= 1) {
-          clearInterval(timer);
-          setResendAvailable(true);
-          return 0;
-        }
-        return prevTime - 1;
-      });
-    }, 1000);
+    if (!resendAvailable) {
+      const timer = setInterval(() => {
+        setResendTime((prevTime) => {
+          if (prevTime <= 1) {
+            clearInterval(timer);
+            setResendAvailable(true);
+            return 0;
+          }
+          return prevTime - 1;
+        });
+      }, 1000);
 
-    return () => clearInterval(timer);
-  }, []);
+      return () => clearInterval(timer);
+    }
+  }, [resendAvailable]);
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -126,6 +128,8 @@ const resetpassword = () => {
         console.log("OTP resend successful:", data);
         // Handle successful OTP resend, e.g., show success message
         alert("OTP has been successfully resent");
+        setResendAvailable(false);
+        setResendTime(600);
       })
       .catch((error) => {
         console.error("Error resending OTP:", error);

@@ -86,7 +86,7 @@ import Editexcel from "./edit-excel/editexcel.jsx";
 import Editpdf from "./edit-pdf/editpdf.jsx";
 import Edittextbook from "./edit-textbook/edittextbook.jsx";
 import Quizresults1 from "./quizview_results/quiz_results.jsx";
-
+import Leaderboard from "./leaderboard/leaderboard.jsx";
 // import Home from "./pages/Home.jsx";
 // import ContactUs from "./pages/ContactUs.jsx";
 // import NoPage from "./pages/NoPage.jsx";
@@ -295,6 +295,9 @@ import Quizresults1 from "./quizview_results/quiz_results.jsx";
             <Route path="contact" element={<Contact />} />
             <Route path="contact1" element={<Contact1 />} />
             <Route path="termsandconditions" element={<Termsandconditions />} />
+
+            
+            <Route path="leaderboard" element={<Leaderboard />} />
 
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="quizcreated" element={<Quizcreated />} />

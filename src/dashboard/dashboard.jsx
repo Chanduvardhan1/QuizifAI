@@ -93,11 +93,20 @@ const Dashboard = () => {
     navigate(`/quizaccess`);
   };
 
-  const leaderboard = (quizId) => {
+  // const leaderboard = (quizId) => {
+  //   localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
+  //   navigate('/quiz-results1', { state: { quizId } })
+  // };
+  const leaderboard = (quizId, quizTotalMarks, passPercentage) => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
-    navigate('/quiz-results1', { state: { quizId } })
+    navigate('/quiz-results1', { state: { quizId, quizTotalMarks, passPercentage } });
   };
 
+  // const leaderboard = (quizId, attemptId) => {
+  //   localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
+  //   localStorage.setItem("quiz_level_attempt_id", attemptId); // Store attempt_id in local storage
+  //   navigate(`/quizview_results`);
+  // };
   const Edit = (quizId) => {
     // navigate(`/quizaccess/${quizId}`);
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
@@ -640,7 +649,7 @@ const Dashboard = () => {
                     </div>
                     <div className={styles.leaderboard}>
                       <img className={styles.leaderboardimage} src={leaderboard_button} alt="Leaderboard icon" />
-                      <span className={styles.leaderboardtext} onClick={() => leaderboard(quizItem.quiz_id)}>Leaderboard</span>
+                      <span className={styles.leaderboardtext}  onClick={() => leaderboard(quizItem.quiz_id, quizItem.quiz_total_marks, quizItem.pass_percentage)}>Leaderboard</span>
                     </div>
                     <div className={styles.share}>
                       <img className={styles.shareimage} src={Share_button} alt="Share icon" />
@@ -813,7 +822,7 @@ const Dashboard = () => {
                           />
                           <span
                             className={styles.leaderboardtext}
-                            onClick={() => leaderboard(quizItem.quiz_id)}
+                            onClick={() => leaderboard(quizItem.quiz_id, quizItem.quiz_total_marks, quizItem.pass_percentage)}
                           >
                             Leaderboard
                           </span>

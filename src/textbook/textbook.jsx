@@ -248,7 +248,9 @@ export default function quiztype() {
       );
     }
   };
-
+  const sortedCategories = [...categories].sort((a, b) =>
+    a.category_name.localeCompare(b.category_name)
+  );
   // Handle subcategory selection
   const handleSelectSubCategory = (event) => {
     const selectedSubCategory = event.target.value;
@@ -565,16 +567,24 @@ export default function quiztype() {
 
     return selectedOptions;
   };
-  const handleFileChange = async (event) => {
-    const file = event.target.files[0];
-    if (file) {
-        setUploadedFile(file);
-        await handleNext();
-    }
+//   const handleFileChange = async (event) => {
+//     const file = event.target.files[0];
+//     if (file) {
+//         setUploadedFile(file);
+//         await handleNext();
+//     }
+// };
+
+const handleFileChange = (event) => {
+  const file = event.target.files[0];
+  setUploadedFile(file);
+  if (file) {
+    handleNext(file);
+  }
 };
 
-  const handleNext = async () => {
-  //      if (!uploadedFile) {
+const handleNext = async (file) => {
+  //   if (!uploadedFile) {
   //     alert("Please upload a file before proceeding.");
   //     return; // Prevent further execution
   // }
@@ -589,7 +599,7 @@ export default function quiztype() {
     duration,
     timings,
     availablefrom,
-    disabledon,
+ 
     quiztotalmarks
 ];
 
@@ -619,28 +629,64 @@ if (isAnyFieldEmpty) {
       formData.append("disabled_on", disabledon);
       formData.append("subject_name", subject);
       formData.append("quiz_total_marks", quiztotalmarks);
-      formData.append("file", uploadedFile); // Assuming you have a ref for file input
-
-      const response = await fetch(
+      formData.append("file", file);
+   
+      const options = {
+        method: 'POST',
+        body: formData,
+      };
+  
+      const uploadFileWithSimulatedProgress = (url, options) => {
+        return new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.open(options.method, url);
+  
+          xhr.onload = () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+              resolve(xhr.response);
+            } else {
+              reject(xhr.statusText);
+            }
+          };
+  
+          xhr.onerror = () => reject(xhr.statusText);
+  
+          Object.keys(options.headers || {}).forEach(key => {
+            xhr.setRequestHeader(key, options.headers[key]);
+          });
+  
+          xhr.send(options.body);
+  
+          // Simulate progress
+          let progress = 0;
+          const interval = setInterval(() => {
+            if (progress < 95) {
+              progress += 1;
+              setUploadProgress(progress);
+            } else {
+              clearInterval(interval);
+            }
+          }, 100); // Update every 100ms
+  
+          xhr.onreadystatechange = () => {
+            if (xhr.readyState === 4) {
+              clearInterval(interval);
+              setUploadProgress(100); // Set to 100% on completion
+            }
+          };
+        });
+      };
+  
+      const responseText = await uploadFileWithSimulatedProgress(
         "https://quizifai.com:8010/uploadTextbook/",
-        {
-          method: "POST",
-          body: formData,
-          onUploadProgress: (progressEvent) => {
-            const progress = Math.round(
-              (progressEvent.loaded / progressEvent.total) * 100
-            );
-            setUploadProgress(progress);
-          },
-        }
+        options
       );
-      const responseData = await response.json();
+  
+      const responseData = JSON.parse(responseText);
       console.log(responseData, "data");
       if (responseData.response === "success") {
         if (responseData.data && responseData.data.questions) {
-          // setShowRegistrationSuccess1(true)
           setQuestions(responseData.data.questions);
-          
             setDocument(responseData.data.document_name);
             setAuthor(responseData.data.author_name);
             setPublisher(responseData.data.publisher_name);
@@ -650,16 +696,6 @@ if (isAnyFieldEmpty) {
         } else {
           setErrorMessage("Questions data is missing from the response.");
         }
-
-      // if (response.ok) {
-      //   // Assuming router and state setter are defined properly
-      //   setQuestions(responseData.questions);
-      //   setDocument(responseData.document_name);
-      //   setAuthor(responseData.author_name);
-      //   setPublisher(responseData.publisher_name);
-      //   setReleased(responseData.released_date);
-      //   setRevision(responseData.revision_year);
-      //   setDocumentType(responseData.document_type);
       } else {
         if (
           responseData.detail &&
@@ -667,9 +703,7 @@ if (isAnyFieldEmpty) {
           responseData.detail[0].loc[1] === "body" &&
           responseData.detail[0].loc[2] === "num_questions"
         ) {
-          setErrorMessage(
-            "Please provide the number of questions for the quiz."
-          );
+          setErrorMessage("Please provide the number of questions for the quiz.");
         } else {
           setErrorMessage(responseData.detail);
         }
@@ -679,7 +713,117 @@ if (isAnyFieldEmpty) {
       setErrorMessage("An error occurred while choosing the type of the quiz");
     }
   };
+  
 
+//   const handleNext = async () => {
+//   //      if (!uploadedFile) {
+//   //     alert("Please upload a file before proceeding.");
+//   //     return; // Prevent further execution
+//   // }
+//   const requiredFields = [
+//     title,
+//     numQuestions,
+//     description,
+//     selectedCategory,
+//     selectedSubCategory,
+//     percentage,
+//     selectedComplexity,
+//     duration,
+//     timings,
+//     availablefrom,
+//     quiztotalmarks
+// ];
+
+// const isAnyFieldEmpty = requiredFields.some(field => !field);
+
+// if (isAnyFieldEmpty) {
+//     alert("Please fill in all the required fields before proceeding.");
+//     return; // Prevent further execution
+// }
+//     try {
+//       const formData = new FormData();
+//       formData.append("quiz_title", title);
+//       formData.append("number_of_questions", numQuestions);
+//       formData.append("quiz_description", description);
+//       formData.append("quiz_category_name", selectedCategory);
+//       formData.append("multi_answer", multiAnswer);
+//       formData.append("quiz_sub_category_name", selectedSubCategory);
+//       formData.append("class_name", selectedClass);
+//       formData.append("pass_percentage", percentage);
+//       formData.append("quiz_complexity_name", selectedComplexity);
+//       formData.append("retake_flag", retake);
+//       formData.append("quiz_duration", duration);
+//       formData.append("course_name", selectedCourse);
+//       formData.append("quiz_time_bounded_questions", timings);
+//       formData.append("quiz_public_access", publicAccess);
+//       formData.append("available_from", availablefrom);
+//       formData.append("disabled_on", disabledon);
+//       formData.append("subject_name", subject);
+//       formData.append("quiz_total_marks", quiztotalmarks);
+//       formData.append("file", uploadedFile); // Assuming you have a ref for file input
+
+//       const response = await fetch(
+//         "https://quizifai.com:8010/uploadTextbook/",
+//         {
+//           method: "POST",
+//           body: formData,
+//           onUploadProgress: (progressEvent) => {
+//             const progress = Math.round(
+//               (progressEvent.loaded / progressEvent.total) * 100
+//             );
+//             setUploadProgress(progress);
+//           },
+//         }
+//       );
+//       const responseData = await response.json();
+//       console.log(responseData, "data");
+//       if (responseData.response === "success") {
+//         if (responseData.data && responseData.data.questions) {
+//           // setShowRegistrationSuccess1(true)
+//           setQuestions(responseData.data.questions);
+          
+//             setDocument(responseData.data.document_name);
+//             setAuthor(responseData.data.author_name);
+//             setPublisher(responseData.data.publisher_name);
+//             setReleased(responseData.data.released_date);
+//             setRevision(responseData.data.revision_year);
+//             setDocumentType(responseData.data.document_type);
+//         } else {
+//           setErrorMessage("Questions data is missing from the response.");
+//         }
+
+//       // if (response.ok) {
+//       //   // Assuming router and state setter are defined properly
+//       //   setQuestions(responseData.questions);
+//       //   setDocument(responseData.document_name);
+//       //   setAuthor(responseData.author_name);
+//       //   setPublisher(responseData.publisher_name);
+//       //   setReleased(responseData.released_date);
+//       //   setRevision(responseData.revision_year);
+//       //   setDocumentType(responseData.document_type);
+//       } else {
+//         if (
+//           responseData.detail &&
+//           responseData.detail[0].type === "missing" &&
+//           responseData.detail[0].loc[1] === "body" &&
+//           responseData.detail[0].loc[2] === "num_questions"
+//         ) {
+//           setErrorMessage(
+//             "Please provide the number of questions for the quiz."
+//           );
+//         } else {
+//           setErrorMessage(responseData.detail);
+//         }
+//       }
+//     } catch (error) {
+//       console.error("Type-Quiz failed:", error);
+//       setErrorMessage("An error occurred while choosing the type of the quiz");
+//     }
+//   };
+
+
+
+  
   const handleNext4 = async () => {
     try {
       const user_id = localStorage.getItem('user_id');
@@ -907,12 +1051,12 @@ if (isAnyFieldEmpty) {
           </div> */}
           <Navigation/>
         </header>
-        <div className="absolute top-[30px] left-[1260px] cursor-pointer text-[#eeb600f0]" onClick={Back}><MdOutlineCancel /></div>
+        <div className="absolute top-[30px] left-[1260px] w-[25px] h-[25px]  cursor-pointer text-[#214082]" onClick={Back}><MdOutlineCancel /></div>
 
         {!showRegistrationSuccess && (
         <main className="w-max-auto ">
-          <div className="w-[761px] h-[48px] absolute top-[30px] left-[161px] rounded-[10px] bg-[#FFEDCD] z-0">
-            <h1 className="font-Poppins font-semibold text-[25px] leading-[37.5px] text-[#555555] flex justify-center items-center mt-2 ml-20">
+          <div className="w-[761px] h-[48px] absolute top-[30px] left-[161px] rounded-[10px] bg-[#fee2e2] z-0">
+            <h1 className="font-Poppins font-semibold text-[25px] leading-[37.5px] text-[#214082] flex justify-center items-center mt-2 ml-20">
             Configure and click next to import your Text Book
             </h1>
           </div>
@@ -930,7 +1074,7 @@ if (isAnyFieldEmpty) {
 
               <div className="">
                 <input
-                  className="w-[420px] h-[43px] absolute top-[99px] left-[498px] rounded-[10px] border bg-[#F4F4F4] p-2"
+                  className="w-[420px] h-[43px] absolute top-[99px] left-[498px] rounded-[10px] border-solid border-[2px] border-[#B8BBC2] p-2"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 ></input>
@@ -951,8 +1095,8 @@ if (isAnyFieldEmpty) {
               <div className=" rounded-lg absolute top-[99px] left-[1144px]">
                 <input
                   type="number"
-                  className="w-[135px] border-solid border-[#B8BBC2] border-[1.8px] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer"
-                  placeholder="Number of question "
+                  className="w-[135px] border-solid border-[2px] border-[#B8BBC2] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer"
+                  placeholder="No of question "
                   value={numQuestions}
                   onChange={(e) => setNumQuestions(e.target.value)}
                   // onChange={(e) => {
@@ -987,7 +1131,7 @@ if (isAnyFieldEmpty) {
 
               <div className="">
                 <input
-                  className="w-[780px] h-[45px] absolute top-[163px] left-[498px] rounded-[10px] border bg-[#F4F4F4] p-2"
+                  className="w-[780px] h-[45px] absolute top-[163px] left-[498px] rounded-[10px] border-solid border-[2px] border-[#B8BBC2] p-2"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 ></input>
@@ -1003,21 +1147,18 @@ if (isAnyFieldEmpty) {
 
               <div className="  absolute top-[240px] left-[498px]">
                 <select
-                  className="w-[260px] h-[41.6px] border-solid border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer text-[12px]"
+                  className="w-[260px] h-[41.6px] border-solid border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer text-[12px] "
                   value={selectedCategory}
                   onChange={handleSelectCategory}
                 >
                   <option value="" disabled>
                     Select a category
                   </option>
-                  {categories.map((category) => (
-                    <option
-                      key={category.category_id}
-                      value={category.category_name}
-                    >
-                      {category.category_name}
-                    </option>
-                  ))}
+                  {sortedCategories.map((category) => (
+    <option key={category.category_id} value={category.category_name}>
+      {category.category_name}
+    </option>
+  ))}  
                 </select>
               </div>
 
@@ -1049,7 +1190,7 @@ if (isAnyFieldEmpty) {
 
               <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] text-[12px] font-medium leading-[18px] absolute top-[240px] left-[1020px]">
                 <select
-                  className="w-[260px] text-[12px]  border-solid border-[#B8BBC2] px-3 py-3 rounded-md cursor-pointer"
+                  className="w-[260px] text-[12px] border-solid border-[2px] border-[#B8BBC2] px-3 py-3 rounded-md cursor-pointer "
                   onChange={handleSelectSubCategory}
                   value={selectedSubCategory}
                 >
@@ -1077,7 +1218,7 @@ if (isAnyFieldEmpty) {
 
             <div className="w-[260px]  absolute top-[309px] left-[500px]">
               <select
-                className="w-[260px] h-[41.6px] border-solid  text-[12px] border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer"
+                className="w-[260px] h-[41.6px] text-[12px] border-solid border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer "
                 value={selectedCourse}
                 onChange={handleSelectCourse}
               >
@@ -1100,7 +1241,7 @@ if (isAnyFieldEmpty) {
 
             <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] text-[12px] font-medium leading-[18px] absolute top-[306px] left-[1020px]">
               <select
-                className="w-[260px] border-solid border-[#B8BBC2] px-3 py-3 text-[12px] rounded-md cursor-pointer"
+                className="w-[260px] border-solid border-[2px] border-[#B8BBC2] px-3 py-3 text-[12px] rounded-md cursor-pointer "
                 onChange={handleSelectClass}
                 value={selectedClass}
                 disabled={classes.length === 0}
@@ -1129,6 +1270,9 @@ if (isAnyFieldEmpty) {
                   onChange={handleSelect5}
                   value={percentage}
                 >
+                    {/* <option className="text-[#9696BB]" value="" disabled>
+                    Percentage
+                  </option> */}
                   {options5.map((options5) => (
                     <option className="border-grey-400 leading-[18px] font-medium rounded">
                       {options5.label}
@@ -1143,13 +1287,13 @@ if (isAnyFieldEmpty) {
                 </h1>
               </div>
 
-              <div className=" rounded-lg w-[129px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[376px] left-[1020px]">
+              <div className=" rounded-lg w-[129px] flex border-solid border-[2px] border-[#B8BBC2] absolute top-[376px] left-[1020px]">
                 <select
-                  className="w-[264px] p-2 rounded-md cursor-pointer text-[12px]"
+                  className="w-[264px] p-2 rounded-md cursor-pointer text-[12px] "
                   onChange={handleSelectComplexity}
                   value={selectedComplexity}
                 >
-                  <option value="" disabled>
+                  <option className="text-[#9696BB]" value="" disabled>
                     Complexities
                   </option>
                   {complexities.map((complexity, index) => (
@@ -1174,7 +1318,7 @@ if (isAnyFieldEmpty) {
               <div className="">
                 {isRetakeOn ? (
                   <select
-                    className="w-[48px] h-[35px] absolute top-[455px] left-[568px] rounded-[10px] border-[1.8px] bg-[#F4F4F4]"
+                    className="w-[48px] h-[35px] absolute top-[455px] left-[568px] rounded-[10px]  border-solid border-[2px] border-[#B8BBC2] bg-[#F4F4F4]"
                     value={selectedValue}
                     onChange={handleDropdownChange}
                   >
@@ -1187,7 +1331,7 @@ if (isAnyFieldEmpty) {
                   </select>
                 ) : (
                   <input
-                    className="w-[48px] h-[35px] absolute top-[455px] left-[568px] rounded-[10px] border-[1.8px] bg-[#F4F4F4]"
+                    className="w-[48px] h-[35px] absolute top-[455px] left-[568px] rounded-[10px] border-solid border-[2px] border-[#B8BBC2] bg-[#F4F4F4]"
                     value={selectedValue}
                     readOnly
                   />
@@ -1202,7 +1346,7 @@ if (isAnyFieldEmpty) {
                 </h1>
               </div>
 
-              <div className=" rounded-lg w-[166px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[520px] left-[498px]">
+              <div className=" rounded-lg w-[166px] flex border-solid border-[2px] border-[#B8BBC2]  absolute top-[520px] left-[498px]">
                 <select
                   className="w-[166px] px-3 py-3 rounded-md cursor-pointer text-[12px]"
                   onChange={handleSelect7}
@@ -1228,7 +1372,7 @@ if (isAnyFieldEmpty) {
                     <FiAlertCircle />
                   </button>
                   {isOpen && (
-                    <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-white border border-gray-300 p-4 rounded shadow-md w-[350px] ">
+                    <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-white border-solid border-[2px] border-[#B8BBC2] p-4 rounded shadow-md w-[350px] ">
                       <p>The maximum duration time is 180 mints.</p>
                       <button
                         onClick={() => setIsOpen(false)}
@@ -1259,9 +1403,9 @@ if (isAnyFieldEmpty) {
                 </h1>
               </div>
 
-              <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[520px] left-[1020px]">
+              <div className=" rounded-lg w-[260px] flex border-solid border-[2px] border-[#B8BBC2] absolute top-[520px] left-[1020px]">
                 <select
-                  className="w-[260px] px-3 py-3 rounded-md cursor-pointer text-[12px]"
+                  className="w-[260px] px-3 py-3 rounded-md cursor-pointer text-[12px] "
                   onChange={handleSelect8}
                   value={timings}
                 >
@@ -1283,8 +1427,8 @@ if (isAnyFieldEmpty) {
             <div className="absolute top-[584px] left-[498px]">
               <input
               type="date"
-                className="rounded-lg w-[166px] h-[43px] flex border-solid border-[#B8BBC2] border-[1.8px]
-              text-[#9696BB] leading-[22.5px] text-[15p] font-medium bg-[#F4F4F4] px-4"
+                className="rounded-lg w-[166px] h-[43px] flex border-solid border-[2px] border-[#B8BBC2] 
+              leading-[22.5px] text-[15p] font-medium  px-4"
                 placeholder="YYYY-MM-DD"
                 value={availablefrom}
                 onChange={(e) => setavailablefrom(e.target.value)}
@@ -1300,8 +1444,8 @@ if (isAnyFieldEmpty) {
             <div className=" absolute top-[584px] left-[1020px]">
               <input
                 type="date"
-                className="rounded-lg w-[166px] h-[43px] flex border-solid border-[#B8BBC2] border-[1.8px]
-              text-[#9696BB] leading-[22.5px] text-[15p] font-medium bg-[#F4F4F4] px-4"
+                className="rounded-lg w-[166px] h-[43px] flex border-solid border-[2px] border-[#B8BBC2]
+               leading-[22.5px] text-[15p] font-medium  px-4"
                 placeholder="YYYY-MM-DD"
                 value={disabledon}
                 onChange={(e) => setdisabledon(e.target.value)}
@@ -1327,8 +1471,8 @@ if (isAnyFieldEmpty) {
 
               <div className="absolute top-[653px] left-[1020px]">
                 <input
-                  className="rounded-lg w-[166px] h-[43px] flex border-solid border-[#B8BBC2] border-[1.8px]
-              text-[#9696BB] text-[15p] font-medium bg-[#ffffff] px-4"
+                  className="rounded-lg w-[166px] h-[43px] flex border-solid border-[2px] border-[#B8BBC2]
+               text-[15px] font-medium px-4"
                   placeholder="Total marks"
                   value={quiztotalmarks}
                   onChange={(e) => setquiztotalmarks(e.target.value)}
@@ -1343,7 +1487,7 @@ if (isAnyFieldEmpty) {
               <div className="">
                 <input
                 placeholder="subject"
-                  className="w-[166px] h-[43px] absolute top-[720px] left-[498px] rounded-[10px]  bg-[#ffffff] border-solid border-[#B8BBC2] border-[1.8px] text-black p-2"
+                  className="w-[166px] h-[43px] absolute top-[720px] left-[498px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2]  p-2"
                   value={subject}
                   onChange={(e) => setsubject(e.target.value)}
                 ></input>
@@ -1358,7 +1502,7 @@ if (isAnyFieldEmpty) {
               <div className="">
                 <input
                 placeholder="document"
-                  className="w-[166px] h-[43px] absolute top-[720px] left-[1020px] rounded-[10px]  bg-[#ffffff] border-solid border-[#B8BBC2] border-[1.8px] text-black p-2"
+                  className="w-[166px] h-[43px] absolute top-[720px] left-[1020px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2]  p-2"
                   value={document}
                   onChange={(e) => setDocument(e.target.value)}
                 ></input>
@@ -1371,7 +1515,7 @@ if (isAnyFieldEmpty) {
               <div className="">
                 <input
                 placeholder="author"
-                  className="w-[166px] h-[43px] absolute top-[790px] left-[498px] rounded-[10px]  bg-[#ffffff] border-solid border-[#B8BBC2] border-[1.8px] text-black p-2"
+                  className="w-[166px] h-[43px] absolute top-[790px] left-[498px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2] p-2"
                   value={author}
                   onChange={(e) => setAuthor(e.target.value)}
                 ></input>
@@ -1384,7 +1528,7 @@ if (isAnyFieldEmpty) {
               <div className="">
                 <input
                 placeholder="publisher"
-                  className="w-[166px] h-[43px] absolute top-[790px] left-[1020px] rounded-[10px]  bg-[#ffffff] border-solid border-[#B8BBC2] border-[1.8px] text-black p-2"
+                  className="w-[166px] h-[43px] absolute top-[790px] left-[1020px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2] p-2"
                   value={publisher}
                   onChange={(e) => setPublisher(e.target.value)}
                 ></input>
@@ -1397,7 +1541,7 @@ if (isAnyFieldEmpty) {
               <div className="">
                 <input
                 placeholder="released"
-                  className="w-[166px] h-[43px] absolute top-[860px] left-[498px] rounded-[10px]  bg-[#ffffff] border-solid border-[#B8BBC2] border-[1.8px] text-black p-2"
+                  className="w-[166px] h-[43px] absolute top-[860px] left-[498px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2] p-2"
                   value={released}
                   onChange={(e) => setReleased(e.target.value)}
                 ></input>
@@ -1410,7 +1554,7 @@ if (isAnyFieldEmpty) {
               <div className="">
                 <input
                 placeholder="revision"
-                  className="w-[166px] h-[43px] absolute top-[860px] left-[1020px] rounded-[10px]  bg-[#ffffff] border-solid border-[#B8BBC2] border-[1.8px] text-black p-2"
+                  className="w-[166px] h-[43px] absolute top-[860px] left-[1020px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2]  p-2"
                   value={revision}
                   onChange={(e) => setRevision(e.target.value)}
                 ></input>
@@ -1423,7 +1567,7 @@ if (isAnyFieldEmpty) {
               <div className="">
                 <input
                 placeholder="documentType"
-                  className="w-[166px] h-[43px] absolute top-[930px] left-[498px] rounded-[10px]  bg-[#ffffff] border-solid border-[#B8BBC2] border-[1.8px] text-black p-2"
+                  className="w-[166px] h-[43px] absolute top-[930px] left-[498px] rounded-[10px]  border-solid border-[2px] border-[#B8BBC2] p-2 "
                   value={documentType}
                   onChange={(e) => setDocumentType(e.target.value)}
                 ></input>
@@ -1461,12 +1605,12 @@ if (isAnyFieldEmpty) {
               >
                 Upload
               </button> */}
-        {/* <div className="absolute w-[137.09px] h-[9.05px] top-[725.11px] -mt-[680px] left-[10px]">
+        <div className="absolute w-[137.09px] h-[9.05px] top-[725.11px] -mt-[680px] left-[10px]">
         <Line percent={uploadProgress} strokeWidth={5} strokeColor="#B1FB9B" />
         <h1 className="font-Poppins text-[#214082] font-normal text-[10px] leading-[15px]  mt-1 ml-8">
           {`Uploading ${uploadProgress}%`}
         </h1>
-      </div> */}
+      </div>
       </div>
             <div className="w-[98px] h-[32px] absolute top-[1000px] left-[1182px] rounded-[10px] bg-[#1E4DE9]">
               <button
@@ -1500,24 +1644,24 @@ if (isAnyFieldEmpty) {
             {questions.map((question, questionIndex) => (
         <div key={questionIndex} className="mb-8">
           <h2>{question.lesson}</h2>
-          <h3>{question.sub_heading}</h3>
+          <h3 className="mb-[10px]">{question.sub_heading}</h3>
           <div className="mb-8">
             {/* Input field for lesson */}
-            <div className="flex items-center mb-4">
+            <div className="flex items-center mb-4 pl-[23px]">
               <input
                 type="text"
                 placeholder="Lesson"
-                className="w-[70%] h-[50px] rounded-[20px] border-solid border-[#B8BBC2] border-[1.8px] p-[15px]"
+                className="w-[70%] h-[35px] rounded-[20px] border-solid border-[#B8BBC2] border-[1.8px] p-[15px] text-[#214082]"
                 value={question.lesson}
                 onChange={(e) => handleInputChange(questionIndex, "lesson", e.target.value)}
               />
             </div>
             {/* Input field for sub-heading */}
-            <div className="flex items-center mb-4">
+            <div className="flex items-center mb-4 pl-[23px]">
               <input
                 type="text"
                 placeholder="Sub-heading"
-                className="w-[70%] h-[50px] rounded-[20px] border-solid border-[#B8BBC2] border-[1.8px] p-[15px]"
+                className="w-[70%] h-[35px] rounded-[20px] border-solid border-[#B8BBC2] border-[1.8px] p-[15px] text-[#214082]"
                 value={question.sub_heading}
                 onChange={(e) => handleInputChange(questionIndex, "sub_heading", e.target.value)}
               />
@@ -1530,21 +1674,22 @@ if (isAnyFieldEmpty) {
               <input
                 type="text"
                 placeholder="Question"
-                className="w-[70%] h-[50px] rounded-[20px] border-solid border-[#B8BBC2] border-[1.8px] p-[15px]"
+                className="w-[70%] h-[35px] rounded-[20px] text-[#214082] border-solid border-[#B8BBC2] border-[1.8px] p-[15px]"
                 value={question.question_text}
                 onChange={(e) => handleInputChange(questionIndex, "question_text", e.target.value)}
               />
               <input
                 type="number"
                 placeholder="Weightage"
-                className="w-[130px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
+                className="w-[115px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
                 value={question.question_weightage}
                 onChange={(e) => handleInputChange(questionIndex, "question_weightage", parseInt(e.target.value))}
               />
               <input
                 type="text"
+                hidden
                 placeholder="Duration"
-                className="w-[130px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
+                className="w-[130px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
                 value={question.question_duration / 60 || ""}
                 onChange={(e) => handleInputChange(questionIndex, "question_duration", parseInt(e.target.value) * 60)}
               />
@@ -1558,7 +1703,7 @@ if (isAnyFieldEmpty) {
                 <input
                   type="text"
                   placeholder="Option Text"
-                  className="w-[339px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[15px] font-normal"
+                  className="w-[850px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[15px] font-normal text-[#214082]"
                   value={option.answer_option_text}
                   onChange={(e) => handleOptionChange(questionIndex, optionIndex, e.target.value)}
                 />
@@ -1577,14 +1722,14 @@ if (isAnyFieldEmpty) {
       ))}
               <div className=" flex justify-between items-center pr-[55px] ">
                 <button
-                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white"
+                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNext2}
                 >
                   Back
                 </button>
 
                 <button
-                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white"
+                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNext4}
                 >
                   Create

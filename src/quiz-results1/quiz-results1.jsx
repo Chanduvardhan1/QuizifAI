@@ -51,7 +51,7 @@ import Easy from "../../public/images/dashboard/Easy.png";
 
 const Questions = () => {
   const location = useLocation();
-  const { quizId } = location.state || {};
+  const { quizId , quizTotalMarks, passPercentage} = location.state || {};
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [quizData, setQuizData] = useState({});
 
@@ -120,7 +120,7 @@ const topThree = leaderboardData.slice(0, 3);
 /> */}
           <span className={styles.quizname}>{quizData.quiz_name}</span>
           <p className={styles.quizdescription}>{quizData.quiz_description}</p>
-          {/* <div className={styles.Questionslines }>
+          <div className={styles.Questionslines }>
         <div className={styles.Questions}>
 
         <span className={styles.Question} >Questions :</span>{" "}
@@ -134,14 +134,14 @@ const topThree = leaderboardData.slice(0, 3);
         <div>
 
 <span className={styles.Question} >Total Score:</span>{" "}
-  <span className={styles.username1} >{`${quizData.quiz_total_marks}`}</span>
+  <span className={styles.username1} >{quizTotalMarks}</span>
 </div>
 <div>
 
 <span className={styles.Question } >Pass Score :</span>{" "}
-  <span className={styles.username1} >{`${quizData.attempt_percentage}`}</span>
+  <span className={styles.username1} >{passPercentage}</span>
 </div>
-        </div> */}
+        </div>
           <div className={styles.Createdbyupdated}>
         <div className={styles.Created}>
 

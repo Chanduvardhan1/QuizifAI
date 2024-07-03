@@ -1074,7 +1074,7 @@ if (isAnyFieldEmpty) {
 
               <div className="">
                 <input
-                  className="w-[420px] h-[43px] absolute top-[99px] left-[498px] rounded-[10px] border-solid border-[2px] border-[#B8BBC2] p-2"
+                  className="w-[420px] h-[35px] texr-[12px] absolute top-[99px] left-[498px] rounded-[10px] border-solid border-[2px] border-[#B8BBC2] p-2"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 ></input>
@@ -1095,7 +1095,7 @@ if (isAnyFieldEmpty) {
               <div className=" rounded-lg absolute top-[99px] left-[1144px]">
                 <input
                   type="number"
-                  className="w-[135px] border-solid border-[2px] border-[#B8BBC2] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer"
+                  className="w-[135px] h-[35px] border-solid border-[2px] border-[#B8BBC2] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer"
                   placeholder="No of question "
                   value={numQuestions}
                   onChange={(e) => setNumQuestions(e.target.value)}
@@ -1131,7 +1131,7 @@ if (isAnyFieldEmpty) {
 
               <div className="">
                 <input
-                  className="w-[780px] h-[45px] absolute top-[163px] left-[498px] rounded-[10px] border-solid border-[2px] border-[#B8BBC2] p-2"
+                  className="w-[780px] h-[35px] absolute top-[163px] left-[498px] rounded-[10px] border-solid border-[2px] border-[#B8BBC2] p-2"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 ></input>
@@ -1147,7 +1147,7 @@ if (isAnyFieldEmpty) {
 
               <div className="  absolute top-[240px] left-[498px]">
                 <select
-                  className="w-[260px] h-[41.6px] border-solid border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer text-[12px] "
+                  className="w-[260px] h-[35px] border-solid border-[2px] border-[#B8BBC2]  rounded-md cursor-pointer text-[12px] "
                   value={selectedCategory}
                   onChange={handleSelectCategory}
                 >
@@ -1190,7 +1190,7 @@ if (isAnyFieldEmpty) {
 
               <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] text-[12px] font-medium leading-[18px] absolute top-[240px] left-[1020px]">
                 <select
-                  className="w-[260px] text-[12px] border-solid border-[2px] border-[#B8BBC2] px-3 py-3 rounded-md cursor-pointer "
+                  className="w-[260px] h-[35px] text-[12px] border-solid border-[2px] border-[#B8BBC2] px-3  rounded-md cursor-pointer "
                   onChange={handleSelectSubCategory}
                   value={selectedSubCategory}
                 >
@@ -1218,7 +1218,7 @@ if (isAnyFieldEmpty) {
 
             <div className="w-[260px]  absolute top-[309px] left-[500px]">
               <select
-                className="w-[260px] h-[41.6px] text-[12px] border-solid border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer "
+                className="w-[260px] h-[35px] text-[12px] border-solid border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer "
                 value={selectedCourse}
                 onChange={handleSelectCourse}
               >
@@ -1241,7 +1241,7 @@ if (isAnyFieldEmpty) {
 
             <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] text-[12px] font-medium leading-[18px] absolute top-[306px] left-[1020px]">
               <select
-                className="w-[260px] border-solid border-[2px] border-[#B8BBC2] px-3 py-3 text-[12px] rounded-md cursor-pointer "
+                className="w-[260px] h-[35px] border-solid border-[2px] border-[#B8BBC2] px-3 text-[12px] rounded-md cursor-pointer "
                 onChange={handleSelectClass}
                 value={selectedClass}
                 disabled={classes.length === 0}
@@ -1266,7 +1266,7 @@ if (isAnyFieldEmpty) {
 
               <div className=" rounded-lg w-[129px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[376px] left-[498px]">
                 <select
-                  className="w-[264px] px-3 py-3 rounded-md cursor-pointer text-[12px]"
+                  className="w-[264px] h-[35px] px-3  rounded-md cursor-pointer text-[12px]"
                   onChange={handleSelect5}
                   value={percentage}
                 >
@@ -1289,7 +1289,7 @@ if (isAnyFieldEmpty) {
 
               <div className=" rounded-lg w-[129px] flex border-solid border-[2px] border-[#B8BBC2] absolute top-[376px] left-[1020px]">
                 <select
-                  className="w-[264px] p-2 rounded-md cursor-pointer text-[12px] "
+                  className="w-[264px] h-[35px] p-2 rounded-md cursor-pointer text-[12px] "
                   onChange={handleSelectComplexity}
                   value={selectedComplexity}
                 >
@@ -1348,7 +1348,7 @@ if (isAnyFieldEmpty) {
 
               <div className=" rounded-lg w-[166px] flex border-solid border-[2px] border-[#B8BBC2]  absolute top-[520px] left-[498px]">
                 <select
-                  className="w-[166px] px-3 py-3 rounded-md cursor-pointer text-[12px]"
+                  className="w-[166px] h-[35px] px-3 rounded-md cursor-pointer text-[12px]"
                   onChange={handleSelect7}
                   value={duration}
                 >
@@ -1405,7 +1405,7 @@ if (isAnyFieldEmpty) {
 
               <div className=" rounded-lg w-[260px] flex border-solid border-[2px] border-[#B8BBC2] absolute top-[520px] left-[1020px]">
                 <select
-                  className="w-[260px] px-3 py-3 rounded-md cursor-pointer text-[12px] "
+                  className="w-[260px] h-[35px] px-3  rounded-md cursor-pointer text-[12px] "
                   onChange={handleSelect8}
                   value={timings}
                 >
@@ -1427,7 +1427,7 @@ if (isAnyFieldEmpty) {
             <div className="absolute top-[584px] left-[498px]">
               <input
               type="date"
-                className="rounded-lg w-[166px] h-[43px] flex border-solid border-[2px] border-[#B8BBC2] 
+                className="rounded-lg w-[166px] h-[35px] flex border-solid border-[2px] border-[#B8BBC2] 
               leading-[22.5px] text-[15p] font-medium  px-4"
                 placeholder="YYYY-MM-DD"
                 value={availablefrom}
@@ -1444,7 +1444,7 @@ if (isAnyFieldEmpty) {
             <div className=" absolute top-[584px] left-[1020px]">
               <input
                 type="date"
-                className="rounded-lg w-[166px] h-[43px] flex border-solid border-[2px] border-[#B8BBC2]
+                className="rounded-lg w-[166px] h-[35px] flex border-solid border-[2px] border-[#B8BBC2]
                leading-[22.5px] text-[15p] font-medium  px-4"
                 placeholder="YYYY-MM-DD"
                 value={disabledon}
@@ -1471,7 +1471,7 @@ if (isAnyFieldEmpty) {
 
               <div className="absolute top-[653px] left-[1020px]">
                 <input
-                  className="rounded-lg w-[166px] h-[43px] flex border-solid border-[2px] border-[#B8BBC2]
+                  className="rounded-lg w-[166px] h-[35px] flex border-solid border-[2px] border-[#B8BBC2]
                text-[15px] font-medium px-4"
                   placeholder="Total marks"
                   value={quiztotalmarks}
@@ -1487,7 +1487,7 @@ if (isAnyFieldEmpty) {
               <div className="">
                 <input
                 placeholder="subject"
-                  className="w-[166px] h-[43px] absolute top-[720px] left-[498px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2]  p-2"
+                  className="w-[166px] h-[35px] absolute top-[720px] left-[498px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2]  p-2"
                   value={subject}
                   onChange={(e) => setsubject(e.target.value)}
                 ></input>
@@ -1502,7 +1502,7 @@ if (isAnyFieldEmpty) {
               <div className="">
                 <input
                 placeholder="document"
-                  className="w-[166px] h-[43px] absolute top-[720px] left-[1020px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2]  p-2"
+                  className="w-[166px] h-[35px] absolute top-[720px] left-[1020px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2]  p-2"
                   value={document}
                   onChange={(e) => setDocument(e.target.value)}
                 ></input>
@@ -1528,7 +1528,7 @@ if (isAnyFieldEmpty) {
               <div className="">
                 <input
                 placeholder="publisher"
-                  className="w-[166px] h-[43px] absolute top-[790px] left-[1020px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2] p-2"
+                  className="w-[166px] h-[35px] absolute top-[790px] left-[1020px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2] p-2"
                   value={publisher}
                   onChange={(e) => setPublisher(e.target.value)}
                 ></input>
@@ -1541,7 +1541,7 @@ if (isAnyFieldEmpty) {
               <div className="">
                 <input
                 placeholder="released"
-                  className="w-[166px] h-[43px] absolute top-[860px] left-[498px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2] p-2"
+                  className="w-[166px] h-[35px] absolute top-[860px] left-[498px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2] p-2"
                   value={released}
                   onChange={(e) => setReleased(e.target.value)}
                 ></input>
@@ -1554,7 +1554,7 @@ if (isAnyFieldEmpty) {
               <div className="">
                 <input
                 placeholder="revision"
-                  className="w-[166px] h-[43px] absolute top-[860px] left-[1020px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2]  p-2"
+                  className="w-[166px] h-[35px] absolute top-[860px] left-[1020px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2]  p-2"
                   value={revision}
                   onChange={(e) => setRevision(e.target.value)}
                 ></input>
@@ -1567,7 +1567,7 @@ if (isAnyFieldEmpty) {
               <div className="">
                 <input
                 placeholder="documentType"
-                  className="w-[166px] h-[43px] absolute top-[930px] left-[498px] rounded-[10px]  border-solid border-[2px] border-[#B8BBC2] p-2 "
+                  className="w-[166px] h-[35px] absolute top-[930px] left-[498px] rounded-[10px]  border-solid border-[2px] border-[#B8BBC2] p-2 "
                   value={documentType}
                   onChange={(e) => setDocumentType(e.target.value)}
                 ></input>
@@ -1575,8 +1575,8 @@ if (isAnyFieldEmpty) {
               {/* </div>
               )} */}
               </div>
-          <div className="w-[145.68px] h-[37.09px] absolute top-[1010px] left-[653.43px] rounded-[10px] bg-[#1E4DE9]">
-          <label htmlFor="fileInput" className="font-Poppins font-medium text-[15px] leading-[22.5px] flex justify-start px-4 py-2 text-white cursor-pointer" >
+          <div className="w-[145.68px] h-[37px] absolute top-[1010px] left-[653.43px] rounded-[10px] bg-[#1E4DE9]">
+          <label htmlFor="fileInput" className="font-Poppins font-medium text-[15px] leading-[22.5px] flex justify-between px-4 py-2 text-white cursor-pointer" >
           <div className="relative group">
           <span className="block truncate max-w-[60px]">
             {uploadedFile ? uploadedFile.name : 'Select'}
@@ -1589,7 +1589,7 @@ if (isAnyFieldEmpty) {
         </div>
         <input id="fileInput" type="file" accept="application/pdf" onChange={handleFileChange} className="hidden" />
           <img className="w-[24px] h-[24px] ml-4 -rotate-90" src={Next} alt="Next"/>
-          <img className="w-[26px] h-[26px] ml-1" src={Book}/>
+          {/* <img className="w-[26px] h-[26px] ml-1" src={Book}/> */}
         </label>
 
             {/* <div className="w-[137.09px] h-[9.05px] absolute top-[740.11px] -mt-[680px]">
@@ -1612,11 +1612,11 @@ if (isAnyFieldEmpty) {
         </h1>
       </div>
       </div>
-            <div className="w-[98px] h-[32px] absolute top-[1000px] left-[1182px] rounded-[10px] bg-[#1E4DE9]">
+            <div className="w-[98px] h-[37px] absolute top-[1010px] left-[1085px] rounded-[10px] bg-[#1E4DE9]">
               <button
                 // href="./enter-quiz"
                 onClick={handleNext1}
-                className="font-Poppins font-medium text-[15px] leading-[22.5px] flex justify-start px-4 py-1 text-white"
+                className="font-Poppins font-medium text-[15px] leading-[29.5px] flex justify-start px-4 py-1 text-white"
               >
                 Next
                 <img
@@ -1634,7 +1634,7 @@ if (isAnyFieldEmpty) {
               <h1 className="font-Poppins font-bold text-[30px] leading-[45px] text-orange-400">
                 Create / Edit your Quiz
               </h1>
-              <h1 className="font-Poppins font-medium text-[12px] leading-[18px]">
+              <h1 className="font-Poppins font-medium text-[12px] leading-[18px] text-[#214082]">
                 Enter all your questions, options, and answers
               </h1>
             </div>
@@ -1643,11 +1643,11 @@ if (isAnyFieldEmpty) {
             <div className="absolute top-[210px] left-[298px] w-[1212px] h-[450px] ">
             {questions.map((question, questionIndex) => (
         <div key={questionIndex} className="mb-8">
-          <h2>{question.lesson}</h2>
-          <h3 className="mb-[10px]">{question.sub_heading}</h3>
+          <span className=" text-[rgb(239,81,48)] font-bold mb-[10px]">{question.lesson}<span className="mb-[10px] text-[#214082]">({question.sub_heading})</span></span>
+          {/* <h3 className="mb-[10px]">{question.sub_heading}</h3> */}
           <div className="mb-8">
             {/* Input field for lesson */}
-            <div className="flex items-center mb-4 pl-[23px]">
+            {/* <div className="flex items-center mb-4 pl-[23px]">
               <input
                 type="text"
                 placeholder="Lesson"
@@ -1655,9 +1655,9 @@ if (isAnyFieldEmpty) {
                 value={question.lesson}
                 onChange={(e) => handleInputChange(questionIndex, "lesson", e.target.value)}
               />
-            </div>
+            </div> */}
             {/* Input field for sub-heading */}
-            <div className="flex items-center mb-4 pl-[23px]">
+            {/* <div className="flex items-center mb-4 pl-[23px]">
               <input
                 type="text"
                 placeholder="Sub-heading"
@@ -1665,16 +1665,16 @@ if (isAnyFieldEmpty) {
                 value={question.sub_heading}
                 onChange={(e) => handleInputChange(questionIndex, "sub_heading", e.target.value)}
               />
-            </div>
+            </div> */}
             {/* Input field for question */}
-            <div className="flex items-center mb-4">
-              <div className="mr-2 text-xl font-normal">
+            <div className="flex items-center mb-4 mt-[10px]">
+              <div className="mr-2 text-xl text-[#214082] font-bold">
                 {questionIndex + 1}.
               </div>
               <input
                 type="text"
                 placeholder="Question"
-                className="w-[70%] h-[35px] rounded-[20px] text-[#214082] border-solid border-[#B8BBC2] border-[1.8px] p-[15px]"
+                className="w-[70%] h-[35px] rounded-[10px] text-[#214082] border-solid border-[#B8BBC2] border-[1.8px] p-[15px] text-[14px] font-bold"
                 value={question.question_text}
                 onChange={(e) => handleInputChange(questionIndex, "question_text", e.target.value)}
               />
@@ -1703,7 +1703,7 @@ if (isAnyFieldEmpty) {
                 <input
                   type="text"
                   placeholder="Option Text"
-                  className="w-[850px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[15px] font-normal text-[#214082]"
+                  className="w-[850px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[15px] font-normal text-black"
                   value={option.answer_option_text}
                   onChange={(e) => handleOptionChange(questionIndex, optionIndex, e.target.value)}
                 />
@@ -1720,7 +1720,7 @@ if (isAnyFieldEmpty) {
           </div>
         </div>
       ))}
-              <div className=" flex justify-between items-center pr-[55px] ">
+              <div className=" flex justify-between items-center pr-[355px] ">
                 <button
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNext2}
@@ -1732,7 +1732,7 @@ if (isAnyFieldEmpty) {
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNext4}
                 >
-                  Create
+                  Save
                 </button>
               </div>
             </div>

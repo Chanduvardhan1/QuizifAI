@@ -156,7 +156,7 @@ if (!quizData) {
           {/* <div className=" h-[1000px] max-w-full bg-gradient-to-t from-[#CEE4FF80] to-[#E2EFFF80]"> */}
           <div className=" h-[1000px] max-w-full ">
             <div className="w-[802px] h-[45px] absolute top-[120px] left-[297px]">
-              <h1 className="font-Poppins text-[#214082] text-[30px] font-bold leading-[45px]  flex justify-center">
+              <h1 className="font-Poppins text-[#ff5c38] text-[30px] font-bold leading-[45px]  flex justify-center">
                 Created Successfully
               </h1>
             </div>
@@ -434,7 +434,7 @@ if (!quizData) {
             </div>
           </div>
         </main>
-        <LogoutBar/>
+        {/* <LogoutBar/> */}
       </div>
     </>
   );

@@ -4,7 +4,7 @@ import Select from 'react-select';
 import styles from "./quiz.module.css";
 import Navigation from "../navbar/navbar.jsx"
 import LogoutBar from "../logoutbar/logoutbar.jsx"
-import searchIcon from "../assets/Images/images/dashboard/searchBar.png";
+import searchIcon from "../assets/Images/images/dashboard/Search.png";
 import { useNavigate } from "react-router-dom";
 import Plus from "../../src/assets/Images/dashboard/Plus.png";
 import Start_button from "../../public/images/dashboard/Start-button.png";
@@ -60,7 +60,8 @@ const Quiz = () => {
   const [weeklyQuizCount, setWeeklyQuizCount] = useState(null);
   const [averageScorePercentage, setAverageScorePercentage] = useState(null);
 
-  const [getMoreQuizzes, setGetMoreQuizzes] = useState(false);
+
+  // const [cardStates, setCardStates] = useState({});
   // const [allquizzes, setAllquizzes] = useState([]);
  
   // Filtered quizzes based on selected dropdown options
@@ -130,6 +131,11 @@ const Quiz = () => {
     fetchQuizData();
   }, [userId]);
 
+  const [searchQuery, setSearchQuery] = useState('');
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
   const [cardStates, setCardStates] = useState(Array(allquizzes.length).fill(false));
   const toggleNavbar = (index) => {
     setCardStates((prevState) => {
@@ -147,6 +153,20 @@ const Quiz = () => {
       return updatedStates;
     });
   };
+
+  // const highlightText = (text, term) => {
+  //   if (!term) return text;
+  //   const parts = text.split(new RegExp(`(${term})`, 'gi'));
+  //   return parts.map((part, index) =>
+  //     part.toLowerCase() === term.toLowerCase() ? (
+  //       <span key={index} style={{ backgroundColor: 'yellow' }}>
+  //         {part}
+  //       </span>
+  //     ) : (
+  //       part
+  //     )
+  //   );
+  // };
   
   const Edit = (quizId) => {
     // navigate(`/quizaccess/${quizId}`);
@@ -262,14 +282,14 @@ const Quiz = () => {
           {/* Header content */}
           <p>Welcome {username}</p>
           <div className={styles.headerRight}>
-          <div className="w-[99px] h-[41px] absolute mr-[170px] -mt-2 rounded-[10px] bg-[#f3d0d5]">
+          <div className="w-[99px] h-[35px] absolute mr-[280px] -mt-2 rounded-[10px] bg-[#f3d0d5]">
             <div className="flex">
               <img
-                className="w-[25px] h-[25px] ml-2 mt-2"
+                className="w-[23px] h-[23px] ml-2 mt-1.5"
                 src={Plus}
                 alt="Plus Icon"
               />
-              <a href="./create-quiz" className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3">
+              <a href="./create-quiz" className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-2">
                 Quiz
               </a>
             </div>
@@ -278,14 +298,23 @@ const Quiz = () => {
               <img
                 src={searchIcon}
                 alt="Search Icon"
-                className={styles.searchIcon}
+                className="h-[14px] w-[14px] absolute top-[10px] left-[20px]"
               />
+              <input
+               className='text-[10px] px-[20px] -mt-[1px] rounded-md h-[38px] mr-[10px] w-fit bg-[#F5F5F5] text-center placeholder-[#214082] border-none focus:border-none outline-none'
+               type='text'
+               placeholder='Search here'
+               value={searchQuery}
+               onChange={handleSearchChange}
+               />
             </div>
           </div>
         </div>
-        <div className={styles.completionInfo} style={{background:"#30CDF040"}}>
-        You've completed  {weeklyQuizCount} Quizzes this week with an average score of {averageScorePercentage}%
-        </div>
+        <div className=" h-[41px] mx-[33px] pl-[20px] text-[15px] mr-[58px] font-Poppins font-medium flex items-center -mt-[15px] leading-6 text-left justify-left
+         text-[#002366] rounded-md" style={{ background: "#30CDF040" }}>
+          You've completed {weeklyQuizCount} Quizzes this week with an average score of {averageScorePercentage}%
+       </div>
+
        
         <div className={styles.contentWrapper1}>
           {/* <div className={styles.latestQuizHeader}>
@@ -294,45 +323,49 @@ const Quiz = () => {
          
   <div className={styles.infoCards} >
  <div className={styles.sortBy}>
-  <div className="flex gap-1 mb-3 bg-[#f3d0d5] border-none px-2 ml-8 mr-4 -pl-[30px] rounded-md">
-    {/* DataRange  */}
-    <Select
-        isMulti
-        options={dataRanges.map(dtrng => ({ value: dtrng, label: dtrng }))}
-        value={selectedDateRange.map(dtrng => ({ value: dtrng, label: dtrng }))}
-        onChange={(selected) => setSelectedDateRange(selected.map(item => item.value))}
-        styles={customStyles}
-        placeholder="Data Range"
-      />
-      {/* Popularity  */}
-      <Select
-        isMulti
-        options={popularity.map(plr => ({ value: plr, label: plr }))}
-        value={selectedPopularity.map(plr => ({ value: plr, label: plr }))}
-        onChange={(selected) => setSelectedPopularity(selected.map(item => item.value))}
-        styles={customStyles}
-        placeholder="Popularity"
-      />
-       {/* Category */}
-   <Select
-        isMulti
-        options={categories.map(cat => ({ value: cat, label: cat }))}
-        value={selectedCategory.map(cat => ({ value: cat, label: cat }))}
-        onChange={(selected) => setSelectedCategory(selected.map(item => item.value))}
-        styles={customStyles}
-        placeholder="Category"
-      />
-{/* subcategories  */}
-      <Select
-        isMulti
-        options={subCategories.map(subcat => ({ value: subcat, label: subcat }))}
-        value={selectedSubCategory.map(subcat => ({ value: subcat, label: subcat }))}
-        onChange={(selected) => setSelectedSubCategory(selected.map(item => item.value))}
-        styles={customStyles}
-        placeholder="Sub Category"
-       />
-  </div>
-  <div className="flex gap-1 mb-3 bg-[#f3d0d5] border-none px-2 ml-8 mr-4 -pl-[30px] rounded-md">
+ <div className="flex flex-wrap gap-1 mb-3 bg-[#f3d0d5] border-none px-2 ml-[25px] -mr-[20px] mx-auto mt-[10px] rounded-md">
+    <div className="flex-1 min-w-[150px]">
+        <Select
+            isMulti
+            options={dataRanges.map(dtrng => ({ value: dtrng, label: dtrng }))}
+            value={selectedDateRange.map(dtrng => ({ value: dtrng, label: dtrng }))}
+            onChange={(selected) => setSelectedDateRange(selected.map(item => item.value))}
+            styles={customStyles}
+            placeholder="Data Range"
+        />
+    </div>
+    <div className="flex-1 min-w-[150px]">
+        <Select
+            isMulti
+            options={popularity.map(plr => ({ value: plr, label: plr }))}
+            value={selectedPopularity.map(plr => ({ value: plr, label: plr }))}
+            onChange={(selected) => setSelectedPopularity(selected.map(item => item.value))}
+            styles={customStyles}
+            placeholder="Popularity"
+        />
+    </div>
+    <div className="flex-1 min-w-[150px]">
+        <Select
+            isMulti
+            options={categories.map(cat => ({ value: cat, label: cat }))}
+            value={selectedCategory.map(cat => ({ value: cat, label: cat }))}
+            onChange={(selected) => setSelectedCategory(selected.map(item => item.value))}
+            styles={customStyles}
+            placeholder="Category"
+        />
+    </div>
+    <div className="flex-1 min-w-[150px]">
+        <Select
+            isMulti
+            options={subCategories.map(subcat => ({ value: subcat, label: subcat }))}
+            value={selectedSubCategory.map(subcat => ({ value: subcat, label: subcat }))}
+            onChange={(selected) => setSelectedSubCategory(selected.map(item => item.value))}
+            styles={customStyles}
+            placeholder="Sub Category"
+        />
+    </div>
+</div>
+ <div className="flex flex-wrap gap-1 mb-3 bg-[#f3d0d5] w-full border-none px-2 ml-[25px] -mr-[20px] mx-auto mt-[10px] rounded-md">
     {/* complexity    */}
     <Select
         isMulti

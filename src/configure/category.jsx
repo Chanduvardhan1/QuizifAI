@@ -1,6 +1,7 @@
 import React from 'react'
 import Navigation from "../navbar/navbar.jsx"
 import LogoutBar from "../logoutbar/logoutbar.jsx";
+import searchIcon from "../assets/Images/images/dashboard/Search.png";
 import { useState } from 'react';
 import Plus from "../../src/assets/Images/dashboard/Plus.png";
 import Edit from "../../src/assets/Images/Assets/Edit.png"
@@ -89,10 +90,10 @@ const category = () => {
     <Navigation/> 
     <div className='flex w-full flex-col'>
       <div className='flex justify-end mt-[30px]'>
-        <div className='w-[118px] h-[40px] rounded-[10px] bg-[#F3D0D5] mr-[20px]'>
+        <div className='w-[118px] h-[30px] rounded-[10px] bg-[#F3D0D5] mr-[20px]'>
           <div className="flex" onClick={toggleNavbar}>
-            <img className="w-[25px] h-[25px] ml-2 mt-2" src={Plus} alt="Plus Icon" />
-            <a className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3">
+            <img className="w-[20px] h-[20px] ml-2 mt-1" src={Plus} alt="Plus Icon" />
+            <a className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-1.5">
               Category
             </a>
           </div>
@@ -100,13 +101,13 @@ const category = () => {
       </div>
 
       {isNavbarOpen && (
-        <div className='text-[10px] mx-[20px] text-[#214082] h-[60px] mt-[30px] rounded-md bg-[#CBF2FB] flex flex-row gap-[50px] p-4'>
+        <div className='text-[10px] mx-[20px] text-[#214082] h-[40px] mt-[30px] rounded-md bg-[#CBF2FB] flex flex-row gap-[40px] p-4'>
           <input
             type='text'
             placeholder='Category ID'
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value)}
-            className=' w-[90px] text-center rounded-3xl py-4 pl-1 text-[#214082] placeholder:text-[#214082]'
+            className=' w-[90px] -mt-[10px] text-center rounded-3xl py-[14px] pl-1 text-[#214082] placeholder:text-[#214082] outline-[#214082]'
             style={{ '::placeholder': { color: '#214082' } }}
           />
           <input
@@ -114,39 +115,52 @@ const category = () => {
             placeholder='Category Name'
             value={categoryName}
             onChange={(e) => setCategoryName(e.target.value)}
-            className=' w-[120px] rounded-3xl text-center py-4 text-[#214082] placeholder:text-[#214082]'
+            className=' w-[120px] rounded-3xl text-center -mt-[10px]  py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'
           />
           <input
             type='text'
             placeholder='Category Description'
             value={categoryDescription}
             onChange={(e) => setCategoryDescription(e.target.value)}
-            className=' w-[150px] rounded-3xl text-center py-4 text-[#214082] placeholder:text-[#214082]'
+            className=' w-[150px] rounded-3xl text-center -mt-[10px]  py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'
           />
           <input
             type='text'
             placeholder='Parent Category'
             value={parentCategory}
             onChange={(e) => setParentCategory(e.target.value)}
-            className='w-[120px] rounded-3xl text-center py-4 text-[#214082] placeholder:text-[#214082]'
+            className='w-[120px] rounded-3xl text-center -mt-[10px] py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'
           />
-          <button
-            onClick={handleAddOrUpdateCategory}
-            className='bg-[#214082] w-[80px] text-center rounded-3xl text-white'
-          >
-            {isEditing ? 'Update' : 'Add'}
-          </button>
+         <button
+  onClick={handleAddOrUpdateCategory}
+  className='bg-[#214082] w-[80px] -mt-[10px] py-[14px] rounded-3xl text-white flex items-center justify-center'
+>
+  {isEditing ? 'Update' : 'Add'}
+</button>
         </div>
       )}
 
-      <table className='table-auto mt-[30px] mx-[20px] rounded text-left bg-[#F3D0D5] text-[#214082] text-[13px] font-light'>
+      <table className='h-[20px] table-auto mt-[30px] mx-[20px] rounded text-left bg-[#F3D0D5] text-[#214082] text-[13px] font-light'>
         <thead>
           <tr>
             <th className='px-4 py-2'>Category Id</th>
             <th className='px-4 py-2'>Category Name</th>
             <th className='px-4 py-2'>Category Description</th>
             <th className='px-4 py-2'>Parent Category</th>
-            <th className='px-4 py-2'>Actions</th>
+            <div className='flex -mt-[5px]'>
+            <input
+                className='text-[10px] px-[15px] h-[25px] rounded-[20px] mt-[10px] mr-[15px] w-fit bg-white text-center placeholder-[#214082] outline-[#214082]'
+                type='text'
+                placeholder='Search'
+                // value={searchQuery}
+                // onChange={handleInputChange}
+            />
+            <img
+                className='h-[12px] w-[10px] relative top-[17px] -left-[40px]'
+                src={searchIcon}
+                alt="Search Icon"
+            />
+          </div>
           </tr>
         </thead>
         <tbody>

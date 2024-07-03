@@ -363,17 +363,16 @@ const Dashboard = () => {
                className=""         
              >
               {quizItem.latest_flag === 'Y' ?(
-                <div
-                key={index} className={styles.card}
-                style={{
-                  width:"245px",
-                  paddingTop: "8px",
-                  paddingTop:"20px",
-                  marginTop:"10px",
-                  marginRight:"10px",
-                  backgroundColor: "#fee2e2",               
-                }}
-              >
+                 <div
+                 key={index} className={styles.card}
+                 style={{
+                   flexGrow: 1,
+                   paddingTop: "20px",
+                   marginTop: "10px",
+                   marginRight: "10px",
+                   backgroundColor: "#fee2e2",               
+                 }}
+               >
                 <span className="relative group">
                 <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate -mt-[10px]">
                 {quizItem.quiz_name}
@@ -591,15 +590,15 @@ const Dashboard = () => {
                 </div>
               ):(
                 <div
-              className={styles.card}
-              style={{
-                width: "245px",
-                paddingTop: "8px",
-                marginRight: "10px",
-                marginTop:"10px",
-                backgroundColor: "#CBF2FB",
-              }}
-            >
+                key={index} className={styles.card}
+                style={{
+                  flexGrow: 1,
+                  paddingTop: "20px",
+                  marginTop: "10px",
+                  marginRight: "10px",
+                  backgroundColor: "#fee2e2",               
+                }}
+              >
              <span className="relative group">
               <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate">
                 {quizItem.quiz_name}

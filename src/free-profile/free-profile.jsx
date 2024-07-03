@@ -71,7 +71,7 @@ const FreeProfile = () => {
   const [weeklyQuizCount, setWeeklyQuizCount] = useState(0);
   const [averageScorePercentage, setAverageScorePercentage] = useState(0);
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
-  const [password, setPassword] = useState(localStorage.getItem("password"));
+  const storedPassword = localStorage.getItem('password');
   const [userName, setUserName] = useState("");
   const [profileData, setProfileData] = useState(null);
   const [profession, setProfession] = useState("");
@@ -140,8 +140,7 @@ const FreeProfile = () => {
   // Get profile details integration part******************
   useEffect(() => {
     const fetchQuizData = async () => {
-      console.log("User ID:", userId);
-      
+      console.log("User ID:", userId);     
       try {
         const response = await fetch(
           `https://quizifai.com:8010/dashboard`,
@@ -162,10 +161,19 @@ const FreeProfile = () => {
         const data = await response.json();
         console.log("Data:", data);
 
+        const dashboardData = data.data[0];
+            if (dashboardData) {
+                setWeeklyQuizCount(dashboardData.weekly_quiz_count);
+                setAverageScorePercentage(dashboardData.average_score_percentage);
+            } else {
+                console.error("Dashboard data not found");
+            }
+      
         const userProfileDetails = data.data[0].user_profile_details;
         if(!userProfileDetails){
           throw new Error("User profile details not found");
         }
+        
         const initialData = {
           firstName: userProfileDetails.first_name,
           middleName: userProfileDetails.middle_name,
@@ -468,9 +476,9 @@ const validatePassword = (password) => {
         <div className={styles.header}>
           {/* Header content */}
           <div className="flex">
-            <div className="absolute left-0 ml-[20px]">
+            <div className="absolute left-0 ml-[20px] w-full">
               <p className="text-[#002366] ml-[16px]">Welcome {userName}</p>
-              <div className="bg-[#30CDF040] mt-[10px] pl-[20px] text-[15px] font-medium text-[#214082] leading-6 py-[10px] rounded-[10px] w-[770px]">
+              <div className="bg-[#30CDF040] mr-[40px] mt-[10px] pl-[20px] text-[15px] font-medium text-[#214082] leading-6 py-[10px] rounded-[10px]">
                 You've completed {weeklyQuizCount} Quizzes this week with an
                 average score of {averageScorePercentage}%
               </div>
@@ -487,6 +495,7 @@ const validatePassword = (password) => {
             </div>
           </div>
         </div>
+
         {/* Main content  */}
         <div className="relative top-[70px] bg-white flex-col">
         <div
@@ -507,13 +516,13 @@ const validatePassword = (password) => {
               {/* <a href="./old-password" className="text-[10px] ml-[14px] text-blue-700 font-medium hover:underline">Update Password</a> */}
             </div>
           </div>
-
-          <div className="flex">
-            {/* first name */}
-            <div className="flex my-[15px]">
+            
+        </div>
+        {/* first name */}
+        <div className="flex flex-nowrap -mt-[25px]">
               <div
                 className={styles.inputGroup1}
-                style={{ marginLeft: "-55px" }}
+                style={{ marginLeft: "195px",marginTop:"-50px" }}
               >
                 <label className="text-blue-800 font-semibold">
                   First Name
@@ -523,7 +532,7 @@ const validatePassword = (password) => {
                           border-b-2  
                         hover:border-blue-200 
                           ml-[10px] 
-                          mr-[70px]
+                          mr-[73px]
                           h-[30px] 
                           w-[165px] 
                           pl-[21px]
@@ -539,7 +548,7 @@ const validatePassword = (password) => {
               </div>
               <div
                 className={styles.inputGroup1}
-                style={{ marginLeft: "-30px" }}
+                style={{ marginLeft: "-30px" ,marginTop:"-50px"}}
               >
                 <label className="text-blue-800 font-semibold">
                   Occupation
@@ -560,7 +569,7 @@ const validatePassword = (password) => {
                           onChange={(e) => setOccupation(e.target.value)}
                           disabled={!isEditing}
                 >
-                 <option value={occupation}>{occupation}</option>
+                 {/* <option value={occupation}>{occupation}</option> */}
                  <option value="Student">Student</option>
                  <option value="Teacher">Teacher</option>
                  <option value="Professional">Professional</option>
@@ -569,20 +578,18 @@ const validatePassword = (password) => {
                 <hr className="h-[0.5px] w-[270px] bg-gray-100"></hr>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="flex ml-[29%] -mt-[40px] my-[10px]">
+        <div className="flex ml-[29%] -mt-[15px] my-[10px]">
           {/* Middle name */}
-          <div className={styles.inputGroup1} style={{ marginLeft: "-50px" }}>
+          <div className={styles.inputGroup1} style={{ marginLeft: "-46px" }}>
             <label className="text-blue-800 font-semibold">Middle Name</label>
             <input
               className="border-transparent 
                           border-b-2   
                         hover:border-blue-200 
-                          ml-[10px] 
-                          mr-[80px]
+                          ml-[8px] 
+                          mr-[133px]
                           h-[30px] 
-                          w-[153px] 
+                          w-[103px] 
                           text-[11px] 
                           pl-2
                           focus:outline-none"
@@ -603,7 +610,7 @@ const validatePassword = (password) => {
                           ml-[10px] 
                           // mr-[90px]
                           h-[30px] 
-                          w-[205px] 
+                          w-[85px] 
                           text-[11px]
                           pl-[44px] 
                           focus:outline-none"
@@ -613,7 +620,7 @@ const validatePassword = (password) => {
               disabled={!isEditing}
             />
           <img
-          className="h-[15px] w-[15px] -mt-[15px] ml-[71%] relative -top-[8px] cursor-pointer"
+          className="h-[15px] w-[15px] -mt-[15px] ml-[93%] relative -top-[8px] cursor-pointer"
           src={search}
           onClick={handleSearchClick}
         />     
@@ -630,7 +637,7 @@ const validatePassword = (password) => {
                            border-b-2   
                         hover:border-blue-200 
                           ml-[10px] 
-                          mr-[70px]
+                          mr-[75px]
                           h-[30px] 
                           w-[170px] 
                           text-[11px]
@@ -685,12 +692,13 @@ const validatePassword = (password) => {
                w-[190px] 
                text-[11px] 
                pl-[43px]
+               mr-[5px]
                focus:outline-none"
     value={gender}
     onChange={(e) => setGender(e.target.value)}
     disabled={!isEditing}
   >
-    <option value={gender}>{gender}</option>
+    {/* <option value={gender}>{gender}</option> */}
     <option value="Male">Male</option>
     <option value="Female">Female</option>
     <option value="Other">Other</option>
@@ -702,14 +710,13 @@ const validatePassword = (password) => {
             <label className="text-blue-800 font-semibold">City Name</label>
             <select
               className="border-transparent 
-                           border-b-2  
+                           border-b-2   
                         hover:border-blue-200 
                           ml-[10px] 
-                          mr-[90px]
                           h-[30px] 
-                          w-[190px] 
-                          pl-[25px]
+                          w-[183px] 
                           text-[11px] 
+                          pl-[25px]
                           focus:outline-none"
               type="text"
               value={city}
@@ -738,9 +745,9 @@ const validatePassword = (password) => {
                            border-b-2   
                         hover:border-blue-200 
                           ml-[10px] 
-                          mr-[90px]
+                          mr-[150px]
                           h-[30px] 
-                          w-[213px] 
+                          w-[158px] 
                           text-[11px]
                           pl-[14px] 
                           focus:outline-none"
@@ -774,30 +781,7 @@ const validatePassword = (password) => {
           
         </div>
         <div className="flex ml-[29%] -mt-[5px] my-[10px]">
-          {/* login method*/}
-          <div
-            className={styles.inputGroup1}
-            style={{ marginLeft: "-50px", textWrap: "nowrap" }}
-          >
-            <label className="text-blue-800 font-semibold">login Method</label>
-            <input
-              className="border-transparent 
-                           border-b-2   
-                        hover:border-blue-200 
-                          ml-[10px] 
-                          mr-[90px]
-                          h-[30px] 
-                          w-[155px] 
-                          text-[11px] 
-                          pl-[10px]
-                          focus:outline-none"
-                          type="text"
-                          value={preferredLoginMethod}
-                          onChange={(e) => setPreferredLoginMethod(e.target.value)}
-                          disabled={!isEditing}
-            />
-            <hr className="h-[1px] w-[250px] bg-gray-200"></hr>
-          </div>
+         
           {/* Country */}
           <div
             className={styles.inputGroup1}
@@ -856,6 +840,34 @@ const validatePassword = (password) => {
 
       <div className="bg-white w-full mt-[8%]">
     <h1 className="ml-[6%] mt-4 text-[13px] text-[#EF5130] font-semibold">Login User Details</h1>
+     {/* login method*/}
+     <div
+            className={styles.inputGroup1}
+            style={{ marginLeft: "200px", textWrap: "nowrap",marginTop:"5px" }}
+          >
+            <label className="text-blue-800 font-semibold">login Method</label>
+            <select
+              className="border-transparent 
+                           border-b-2   
+                        hover:border-blue-200 
+                          ml-[10px] 
+                          mr-[90px]
+                          h-[30px] 
+                          w-[155px] 
+                          text-[11px] 
+                          pl-[10px]
+                          focus:outline-none"
+                          type="text"
+                          value={preferredLoginMethod}
+                          onChange={(e) => setPreferredLoginMethod(e.target.value)}
+                          disabled={!isEditingLogin}
+            >
+              {/* <option value={preferredLoginMethod}>{preferredLoginMethod}</option> */}
+              <option value="Email">Email</option>
+              <option value="Mobile">Mobile</option>
+              </select>
+            <hr className="h-[1px] w-[250px] bg-gray-200"></hr>
+          </div>
     <div className="flex ml-[30%] mt-[20px]">
       <div className={styles.inputGroup1} style={{ marginLeft: "-50px" }}>
         <label className="text-blue-800 font-semibold">Email</label>
@@ -935,7 +947,7 @@ const validatePassword = (password) => {
             className="border-transparent border-b-2 hover:border-blue-200 mr-[40px] ml-[px] h-[30px] w-[173px] text-[11px] focus:outline-gray-300 pl-[5px]"
             type={oldPasswordVisible ? 'text' : 'password'}
             placeholder="password"
-            value={password}
+            value={storedPassword}
             onChange={(e) => setOldPassword(e.target.value)}
           />
           <span onClick={() => togglePasswordVisibility('old')} className='cursor-pointer'>
@@ -970,11 +982,11 @@ const validatePassword = (password) => {
             </div>
 
             <div className="inputGroup1">
-              <label className="text-blue-800 font-semibold ml-[20px] text-[13px]">Confirm new Password</label>
+              <label className="text-blue-800 font-semibold ml-[20px] text-[13px]">Confirm Password</label>
               <input
                 className="border-transparent border-b-2 hover:border-blue-200 ml-[20px] h-[30px] w-[178px] text-[11px] focus:outline-gray-300"
                 type={confirmPasswordVisible ? 'text' : 'password'}
-                placeholder="confirm new password"
+                placeholder="confirm password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />

@@ -108,7 +108,7 @@ const configure = () => {
                 alt="Search Icon"
             />
             <input
-                className='text-[10px] px-[20px] h-[30px] mr-[15px] w-fit bg-white text-center placeholder-[#214082] border-none'
+                className='text-[10px] px-[20px] h-[30px] mr-[15px] w-fit bg-white text-center placeholder-[#214082] border-none outline-[#214082]'
                 type='text'
                 placeholder='Search your settings'
                 value={searchQuery}
@@ -144,7 +144,7 @@ const configure = () => {
           You've completed {weeklyQuizCount} Quizzes this week with an average score of {averageScorePercentage}%
        </div>
 
-        <div className='flex bg-[#F3D0D5] h-[50px] mt-[20px] rounded-md ml-[20px] mr-[20px]'>     
+        <div className='flex bg-[#F3D0D5] h-[41px] mt-[20px] rounded-md ml-[20px] mr-[20px]'>     
             <h1 className='mt-[10px] ml-[20px] font-Poppins font-semibold text-[#214082] text-[16px]'>All Settings</h1>
             <div className='flex gap-1 h-[30px] p-2 ml-auto mr-[2%] mt-[1%] rounded'>
                 {/* <h1 className='text-[10px]'>Cancel settings</h1> */}
@@ -152,7 +152,7 @@ const configure = () => {
             </div>
         </div>
 
-        <div className='flex flex-wrap gap-[20px] mt-[60px] ml-[15px] mr-[10px] justify-center'>
+        <div className='flex flex-wrap gap-[20px] mt-[20px] ml-[15px] mr-[10px] justify-center'>
          {filteredItems.map(item => (
         <div
             key={item.id}

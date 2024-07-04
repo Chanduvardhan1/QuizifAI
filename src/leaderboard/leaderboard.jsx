@@ -64,42 +64,42 @@ const leaderboard = () => {
     option4: 'D'
   };
 
- useEffect(() => {
-    const userId = localStorage.getItem("user_id");
-    const quizId = localStorage.getItem("quiz_id");
-    const attemptNo = localStorage.getItem("quiz_level_attempt_id");
+//  useEffect(() => {
+//     const userId = localStorage.getItem("user_id");
+//     const quizId = localStorage.getItem("quiz_id");
+//     const attemptNo = localStorage.getItem("quiz_level_attempt_id");
 
-    const fetchQuizReport = async () => {
-      try {
-        const response = await fetch('https://quizifai.com:8010/quiz_report', {
-          method: 'POST',
-          headers: {
-            'accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            quiz_id: quizId,
-            user_id: userId,
-            attempt_no: attemptNo
-          })
-        });
+//     const fetchQuizReport = async () => {
+//       try {
+//         const response = await fetch('https://quizifai.com:8010/quiz_report', {
+//           method: 'POST',
+//           headers: {
+//             'accept': 'application/json',
+//             'Content-Type': 'application/json'
+//           },
+//           body: JSON.stringify({
+//             quiz_id: quizId,
+//             user_id: userId,
+//             attempt_no: attemptNo
+//           })
+//         });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+//         if (!response.ok) {
+//           throw new Error(`HTTP error! status: ${response.status}`);
+//         }
 
-        const data = await response.json();
-        setQuizData1(data.data);
-      } catch (error) {
-        console.error('Error fetching quiz report:', error);
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+//         const data = await response.json();
+//         setQuizData1(data.data);
+//       } catch (error) {
+//         console.error('Error fetching quiz report:', error);
+//         setError(error);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
 
-    fetchQuizReport();
-  }, []);
+//     fetchQuizReport();
+//   }, []);
 
 
   // useEffect(() => {
@@ -161,6 +161,7 @@ const leaderboard = () => {
   //     sendQuizResult(); // Trigger the POST request only if quizId and attemptNo are available
   //   }
   // }, [quizId, attemptNo]);
+  const quizduration = localStorage.getItem("quiz_duration");
   useEffect(() => {
     const quizId = localStorage.getItem("quiz_id");
     const attemptNo = localStorage.getItem("quiz_level_attempt_id");
@@ -231,23 +232,15 @@ const leaderboard = () => {
   if (!quizData) {
     return <div>Loading...</div>;
   }
-  if (loading) {
-      return <div>Loading...</div>;
-    }
+ 
   
-    if (error) {
-      return <div>Error loading quiz data: {error.message}</div>;
-    }
-  
-    if (!quizData1 || !quizData1.questions) {
-      return <div>No quiz data available</div>;
-    }
+ 
   const Back = () => {
     
    /* fetch or store quizId */;
   navigate(`/dashboard`);
 };
-  const questions = quizData1.questions;
+  // const questions = quizData1.questions;
   const topThree = leaderboardData.slice(0, 3);
   const handleDownload = () => {
     const input = resultRef.current;
@@ -295,9 +288,7 @@ const leaderboard = () => {
 
           <span className={styles.quizname}>{quizData.quiz_name}</span>
 </div>
-<div className={styles.download} >
-<button className={styles.downbutton} onClick={handleDownload}>download</button>
-</div>
+
 </div>
 
           <p className={styles.quizdescription}>{quizData.quiz_description}</p>
@@ -310,7 +301,7 @@ const leaderboard = () => {
         <div>
 
         <span className={styles.Question} >Duration:</span>{" "}
-          <span className={styles.username1} >{`${quizData.attempt_duration}`}</span>
+          <span className={styles.username1} >{quizduration}</span>
         </div>
         <div>
 
@@ -601,68 +592,7 @@ const leaderboard = () => {
     </div>
     </div>
     <div className={styles.horizontalLine} style={{marginTop:"0px"}}></div>
-    <div className={styles.boxContainer}>
-      <div className={styles.parentContainer}>
-      {questions.map((question, index) => (
-        <div className={styles.sentencesContainer1} style={{ marginLeft: "0px", marginTop: "40px", height:"220px" }} key={index}>
-          <div className={styles.sentence}>
-            {/* <img
-              src={one1Image} // Replace with dynamic image selection if needed
-              alt="Calendar Icon"
-              className={styles.icon2}
-            /> */}
-             <span style={{ color: "#F4774B" }}>{index + 1}. {question.question_text}</span>
-            {/* <span className={styles.iconContainer}>
-              <img
-                src={question.selected_option === question.correct_option ? rightIcon : wrongIcon}
-                alt="Result Icon"
-                className={styles.righticon}
-              />
-            </span> */}
-          </div>
-
-          {Object.keys(question.options).map((optionKey, idx) => {
-            const optionText = question.options[optionKey];
-            const isSelected = optionText === question.selected_option;
-            const isCorrect = optionText === question.correct_option;
-
-            return (
-              <div className={styles.box} key={idx} style={{ backgroundColor: isCorrect ? '#A9FFB7' : isSelected ? '#FFB7B7' : 'white' }}>
-                <div className={styles.iconA}>
-                  {/* <img
-                    src={optionKey === 'optionA' ? iconA : optionKey === 'optionB' ? iconB : optionKey === 'optionC' ? iconC : iconD}
-                    alt={`Icon ${idx + 1}`}
-                    width={15}
-                    height={15}
-                  /> */}
-                  <span className={styles.iconText}>{optionLabels[optionKey]}. {optionText}</span>
-                </div>
-              </div>
-            );
-          })}
-
-<span className={styles.newContainer}>
-            <span className={styles.iconContainer}>
-              {/* <img
-                src={answerTimerIcon}
-                alt="Answer Timer Icon"
-                className={styles.icon5}
-              /> */}
-              <img
-                src={question.selected_option === question.correct_option ? rightIcon1 : wrongIcon1}
-                alt="Answer Icon"
-                className={styles.icon6}
-              />
-            </span>
-            <span className={styles.textContainer}>
-              {/* <p>Answered in 53 Sec</p> */}
-              <p>{question.selected_option === question.correct_option ? 'Correct Answer' : 'Wrong Answer'}</p>
-            </span>
-          </span>
-        </div>
-      ))}
-      </div>
-    </div>
+   
       
         </div>
          <LogoutBar/>

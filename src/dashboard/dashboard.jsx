@@ -101,12 +101,16 @@ const Dashboard = () => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     navigate('/quiz-results1', { state: { quizId, quizTotalMarks, passPercentage } });
   };
-
-  // const leaderboard = (quizId, attemptId) => {
+  // const leaderboard1 = (quizId, quizTotalMarks, passPercentage) => {
   //   localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
-  //   localStorage.setItem("quiz_level_attempt_id", attemptId); // Store attempt_id in local storage
-  //   navigate(`/quizview_results`);
+  //   navigate('/leaderboard', { state: { quizId, quizTotalMarks, passPercentage } });
   // };
+
+  const leaderboard1 = (quizId, attemptId) => {
+    localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
+    localStorage.setItem("quiz_level_attempt_id", attemptId); // Store attempt_id in local storage
+    navigate(`/leaderboard`);
+  };
   const Edit = (quizId) => {
     // navigate(`/quizaccess/${quizId}`);
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
@@ -436,7 +440,7 @@ const Dashboard = () => {
                           />
                           <span
                             className={styles.leaderboardtext}
-                            onClick={() => leaderboard(quizItem.quiz_id)}
+                            onClick={() => leaderboard1(quizItem.quiz_id,quizItem.quiz_level_attempt_id)}
                           >
                             Leaderboard
                           </span>
@@ -821,7 +825,7 @@ const Dashboard = () => {
                           />
                           <span
                             className={styles.leaderboardtext}
-                            onClick={() => leaderboard(quizItem.quiz_id, quizItem.quiz_total_marks, quizItem.pass_percentage)}
+                            onClick={() => leaderboard1(quizItem.quiz_id,quizItem.quiz_level_attempt_id)}
                           >
                             Leaderboard
                           </span>

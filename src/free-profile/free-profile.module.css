@@ -344,7 +344,7 @@ text-align: left;
     align-items: row;
     font-family: Poppins;
     margin-right: 30px;
-    margin-top: -10px;
+    margin-top: 5px;
 font-size: 15px;
 font-weight: 500;
 line-height: 23px;
@@ -635,11 +635,7 @@ top: 130px;
 left: 668px;
 
   }
-  .contentContainer {
-    display: flex;
-    align-items: center; 
-    gap: 80px;
-  }
+  
   .contentContainer1 {
     display: flex;
     align-items: center; 

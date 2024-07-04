@@ -883,7 +883,7 @@ const validatePassword = (password) => {
         <label className="text-blue-800 font-semibold ml-[20px]">Mobile</label>
         <input
           className={`border-transparent border-b-2 hover:border-blue-200 ml-[10px] h-[30px] w-[213px] text-[11px] focus:outline-gray-300 ${isEditing ? 'highlight' : ''}`}
-          type="tel"
+          type="Number"
           value={mobileNumber}
           onChange={(e) => setMobileNumber(e.target.value)}
           disabled={!isEditingLogin}

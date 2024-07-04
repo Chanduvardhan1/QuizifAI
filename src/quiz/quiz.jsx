@@ -331,7 +331,7 @@ const Quiz = () => {
             value={selectedDateRange.map(dtrng => ({ value: dtrng, label: dtrng }))}
             onChange={(selected) => setSelectedDateRange(selected.map(item => item.value))}
             styles={customStyles}
-            placeholder="Data Range"
+            placeholder="Date Range"
         />
     </div>
     <div className="flex-1 min-w-[150px]">
@@ -373,7 +373,7 @@ const Quiz = () => {
         value={selectedComplexity.map(complex => ({ value: complex, label: complex }))}
         onChange={(selected) => setSelectedComplexity(selected.map(item => item.value))}
         styles={customStyles}
-        placeholder="Complecity"
+        placeholder="Complexity"
       />
    {/* Courses  */}
    <Select

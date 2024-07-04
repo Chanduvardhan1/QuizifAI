@@ -46,6 +46,7 @@ const FreeProfile = () => {
   const [city, setCity] = useState("");
   const [locations, setLocations] = useState([]);
   const [state, setState] = useState("");
+  const [address, setAddress] = useState('');
   const [country, setCountry] = useState("");
   const [district, setDistrict] = useState("");
   const [email, setEmail] = useState("");
@@ -181,14 +182,15 @@ const FreeProfile = () => {
           gender: userProfileDetails.gender,
           dob: userProfileDetails.date_of_birth,
           district : userProfileDetails.district_name,
-          email: userProfileDetails.user_email,
-          mobileNumber: userProfileDetails.user_phone_number,
+          // email: userProfileDetails.user_email,
+          // mobileNumber: userProfileDetails.user_phone_number,
           country: userProfileDetails.country_name,
           state: userProfileDetails.state_name,
           city: userProfileDetails.location_name ,
           postalCode: userProfileDetails.pin_code,
           occupation: userProfileDetails.occupation_name,
           preferredLoginMethod: userProfileDetails.preferred_login_method,
+          address: userProfileDetails.user_address_line_1,
         };
         setFirstName(userProfileDetails.first_name);
         setMiddleName(userProfileDetails.middle_name);
@@ -196,8 +198,9 @@ const FreeProfile = () => {
         setGender(userProfileDetails.gender);
         setDob(userProfileDetails.date_of_birth);
         setDistrict(userProfileDetails.district_name);
-        setEmail(userProfileDetails.user_email);
-        setMobileNumber(userProfileDetails.user_phone_number);
+        // setEmail(userProfileDetails.user_email);
+        // setMobileNumber(userProfileDetails.user_phone_number);
+        setAddress(userProfileDetails.user_address_line_1);
         setCountry(userProfileDetails.country_name);
         setState(userProfileDetails.state_name);
         setCity(userProfileDetails.location_name);
@@ -230,8 +233,9 @@ const FreeProfile = () => {
           gender,
           dob,
           district,
-          email,
-          mobileNumber,
+          // email,
+          // mobileNumber,
+          address,
           country,
           state,
           city,
@@ -248,9 +252,9 @@ const FreeProfile = () => {
       first_name: firstName,
       middle_name: middleName,
       last_name: lastName,
-      user_email: email,
+      // user_email: email,
       email_otp: " ",
-      user_phone_number: mobileNumber,
+      // user_phone_number: mobileNumber,
       otp: " ",
       user_role: "quiz user", // Example value, adjust as needed
       user_type: "public", 
@@ -261,7 +265,7 @@ const FreeProfile = () => {
       preferred_login_method: preferredLoginMethod,
       user_address_id: null,
       user_location_id: locationId,
-      user_address_line_1: " ",
+      user_address_line_1: address,
       user_address_line_2: " ",
       occupation: occupation,
       other_occupation: " ",
@@ -303,8 +307,9 @@ const FreeProfile = () => {
     setGender(initialFormData.gender);
     setDob(initialFormData.dob);
     setDistrict(initialFormData.district);
-    setEmail(initialFormData.email);
-    setMobileNumber(initialFormData.mobileNumber);
+    // setEmail(initialFormData.email);
+    // setMobileNumber(initialFormData.mobileNumber);
+    setAddress(initialFormData.address);
     setCountry(initialFormData.country);
     setState(initialFormData.state);
     setCity(initialFormData.city);
@@ -403,6 +408,7 @@ const togglePasswordVisibility = (type) => {
       break;
   }
 };
+
 const handleUpdatePassword = async (e) => {
   e.preventDefault();
 
@@ -441,7 +447,6 @@ const handleUpdatePassword = async (e) => {
     });
 
     if (response.data.success) {
-      alert("Password updated successfully");
       setOldPassword('');
       setNewPassword('');
       setConfirmPassword('');
@@ -452,9 +457,9 @@ const handleUpdatePassword = async (e) => {
       setButtonText('Update Password');
     } else if (response.data.error === 'Incorrect old password') {
       setOldPasswordError('Incorrect old password.');
-      alert("Incorrect old password");
-    } else {
-      alert("Failed to update password.");
+    }
+     else {
+      alert("Failed to update password. Please try again.");
     }
   } catch (error) {
     console.error("Error updating password", error);
@@ -486,26 +491,17 @@ const validatePassword = (password) => {
             </div>
             <div className={styles.headerRight}>
               <div className="text-[#002366]">{getFormattedDate()}</div>
-              <div className={styles.searchIconContainer}>
-                <img
-                  src={searchIcon}
-                  alt="Search Icon"
-                  className={styles.searchIcon}
-                />
-              </div>
             </div>
           </div>
         </div>
 
-        {/* Main content  */}
+    {/* Main content  */}
         <div className="relative top-[70px] bg-white flex-col">
-        <div
-          className={styles.contentContainer}
-          style={{ marginLeft: "30px", marginTop: "" }}
-        >
+          <div className="flex">
+          <div className="relative left-[35px]">
           <div className={styles.imgAndTextContainer}>
             <div className={styles.profileimgContainer}>
-            <h1 className=" text-[13px] text-[#EF5130] font-semibold relative top-3 left-2">
+            <h1 className=" text-[13px] text-[#EF5130] font-semibold relative top-3 left-2 text-nowrap">
                   Personal Information
                 </h1>
               <img
@@ -514,17 +510,14 @@ const validatePassword = (password) => {
                 className={styles.profileimg}
                 style={{ width: "113px", height: "110px", marginLeft: "20px",position:"relative", top:"35px"}}
               />
-              {/* <a href="./old-password" className="text-[10px] ml-[14px] text-blue-700 font-medium hover:underline">Update Password</a> */}
             </div>
-          </div>
-            
+          </div>  
         </div>
-        {/* first name */}
-        <div className="flex flex-nowrap -mt-[25px]">
-              <div
-                className={styles.inputGroup1}
-                style={{ marginLeft: "195px",marginTop:"-50px" }}
-              >
+
+        <div className="-ml-[5px]">
+           {/* first name and occupation  */}
+        <div className="flex flex-nowrap mt-[55px] ml-[85px]">
+              <div className={styles.inputGroup1}>
                 <label className="text-blue-800 font-semibold">
                   First Name
                 </label>
@@ -532,11 +525,11 @@ const validatePassword = (password) => {
                   className="border-transparent 
                           border-b-2  
                         hover:border-blue-200 
-                          ml-[10px] 
+                          ml-[25px] 
                           mr-[73px]
                           h-[30px] 
-                          w-[165px] 
-                          pl-[21px]
+                          w-[155px] 
+                          pl-[8px]
                           text-[11px] 
                           focus:outline-none ${isEditing ? 'input-highlight' : ''}`}"
                           type="text"
@@ -547,10 +540,8 @@ const validatePassword = (password) => {
                 />
                 <hr className={`h-[1px] w-[250px] ${isEditing ? 'hr-highlight' : 'bg-whitet'}`}></hr>
               </div>
-              <div
-                className={styles.inputGroup1}
-                style={{ marginLeft: "-30px" ,marginTop:"-50px"}}
-              >
+
+              <div className={styles.inputGroup1}>
                 <label className="text-blue-800 font-semibold">
                   Occupation
                 </label>
@@ -559,11 +550,11 @@ const validatePassword = (password) => {
                   className="border-transparent 
                            border-b-2   
                         hover:border-blue-200 
-                          ml-[10px] 
+                          ml-[25px] 
                           h-[30px] 
-                          w-[183px] 
+                          w-[165px] 
                           text-[11px] 
-                          pl-[17px]
+                          pl-[3px]
                           focus:outline-none"
                           type="text"
                           value={occupation}
@@ -579,21 +570,22 @@ const validatePassword = (password) => {
                 <hr className="h-[0.5px] w-[270px] bg-gray-100"></hr>
               </div>
             </div>
-        <div className="flex ml-[29%] -mt-[15px] my-[10px]">
-          {/* Middle name */}
-          <div className={styles.inputGroup1} style={{ marginLeft: "-46px" }}>
+
+           {/* Middle name and pincode*/}  
+        <div className="flex ml-[85px] mt-[5px]">
+          <div className={styles.inputGroup1} style={{flexWrap: "nowrap"}}>
             <label className="text-blue-800 font-semibold">Middle Name</label>
             <input
               className="border-transparent 
-                          border-b-2   
+                          border-b-2  
                         hover:border-blue-200 
-                          ml-[8px] 
-                          mr-[133px]
+                          ml-[10px] 
+                          mr-[73px]
                           h-[30px] 
-                          w-[103px] 
+                          w-[155px] 
+                          pl-[7px]
                           text-[11px] 
-                          pl-2
-                          focus:outline-none"
+                          focus:outline-none ${isEditing ? 'input-highlight' : ''}`}"
               type="text"
               value={middleName}
               onChange={(e) => setMiddleName(e.target.value)}
@@ -601,20 +593,19 @@ const validatePassword = (password) => {
             />
             <hr className="h-[0.5px] w-[250px] bg-gray-200"></hr>
           </div>
-          {/* pincode  */}
-          <div className={styles.inputGroup1} style={{ marginLeft: "-40px",display:"" }}>
+
+          <div className={styles.inputGroup1}>
             <label className="text-blue-800 font-semibold">Pincode</label>
             <input
               className="border-transparent 
-                           border-b-2   
+                          border-b-2  
                         hover:border-blue-200 
-                          ml-[10px] 
-                          // mr-[90px]
+                          ml-[50px] 
                           h-[30px] 
-                          w-[85px] 
-                          text-[11px]
-                          pl-[44px] 
-                          focus:outline-none"
+                          w-[165px] 
+                          pl-[7px]
+                          text-[11px] 
+                          focus:outline-none ${isEditing ? 'input-highlight' : ''}`}"
               type="text"
               value={postalCode}
               onChange={handlePostalCodeChange}
@@ -625,47 +616,45 @@ const validatePassword = (password) => {
           src={search}
           onClick={handleSearchClick}
         />     
-         {error && <div className="text-red-500 text-[10px] mt-2">{error}</div>}       
+         {error && <div className="text-red-500 text-[10px] mt-1">{error}</div>}       
             <hr className="h-[0.5px] w-[270px] bg-gray-200"></hr>
           </div>
         </div>
-        <div className="flex ml-[29%] -mt-[5px] my-[10px]">
-          {/* Last name */}
-          <div className={styles.inputGroup1} style={{ marginLeft: "-50px" }}>
+
+           {/* Last name and district name */}
+        <div className="flex ml-[85px] mt-[5px]">
+          <div className={styles.inputGroup1}>
             <label className="text-blue-800 font-semibold">Last Name</label>
             <input
               className="border-transparent 
                            border-b-2   
                         hover:border-blue-200 
-                          ml-[10px] 
-                          mr-[75px]
+                          ml-[28px] 
+                          mr-[72px]
                           h-[30px] 
-                          w-[170px] 
+                          w-[155px] 
                           text-[11px]
-                          pl-[26px] 
+                          pl-[7px] 
                           focus:outline-none"
               type="text"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               disabled={!isEditing}
             />
-            <hr className="h-[1px] w-[250px] bg-gray-200"></hr>
+            <hr className="h-[0.5px] w-[250px] bg-gray-200"></hr>
           </div>
-          {/* district name  */}
-          <div
-            className={styles.inputGroup1}
-            style={{ marginLeft: "-30px", textWrap: "nowrap" }}
-          >
+
+          <div className={styles.inputGroup1}>
             <label className="text-blue-800 font-semibold">District Name</label>
             <input
               className="border-transparent 
                            border-b-2   
                         hover:border-blue-200 
-                          ml-[10px] 
+                          ml-[15px] 
                           h-[30px] 
                           w-[170px] 
                           text-[11px] 
-                          pl-2
+                          pl-[7px]
                           focus:outline-none"
               type="text"
               value={district}
@@ -673,51 +662,50 @@ const validatePassword = (password) => {
               disabled={!isEditing}
             />
             <hr
-              className={`h-[1px] w-[270px] bg-gray-200 ${
+              className={`h-[0.5px] w-[270px] bg-gray-200 ${
                 isFocused ? "bg-blue-500" : ""
               }`}
             />
-          </div>
-          
-        </div>
-        <div className="flex ml-[29%] -mt-[5px] my-[10px]">
-          {/* gender*/}
-          <div className={styles.inputGroup1} style={{ marginLeft: "-50px" }}>
-  <label className="text-blue-800 font-semibold">Gender</label>
-  <select
-    className="border-transparent 
-               border-b-2   
-               hover:border-blue-200 
-               ml-[10px] 
-               h-[30px] 
-               w-[190px] 
-               text-[11px] 
-               pl-[43px]
-               mr-[5px]
-               focus:outline-none"
+          </div>  
+        </div> 
+
+           {/* gender and city name*/}
+         <div className="flex ml-[85px] mt-[5px]">
+         <div className={styles.inputGroup1}>
+           <label className="text-blue-800 font-semibold">Gender</label>
+         <select
+              className="border-transparent 
+                           border-b-2   
+                        hover:border-blue-200 
+                          ml-[50px] 
+                          mr-[72px]
+                          h-[30px] 
+                          w-[155px] 
+                          text-[11px]
+                          pl-[3px] 
+                          focus:outline-none"
     value={gender}
     onChange={(e) => setGender(e.target.value)}
     disabled={!isEditing}
   >
-    {/* <option value={gender}>{gender}</option> */}
     <option value="Male">Male</option>
     <option value="Female">Female</option>
     <option value="Other">Other</option>
   </select>
   <hr className="h-[0.5px] w-[250px] bg-gray-200"></hr>
             </div>
-          {/* city name  */}
-          <div className={styles.inputGroup1} style={{ marginLeft: "40px" }}>
+  
+          <div className={styles.inputGroup1}>
             <label className="text-blue-800 font-semibold">City Name</label>
             <select
               className="border-transparent 
                            border-b-2   
                         hover:border-blue-200 
-                          ml-[10px] 
+                          ml-[35px] 
                           h-[30px] 
-                          w-[183px] 
+                          w-[165px] 
                           text-[11px] 
-                          pl-[25px]
+                          pl-[3px]
                           focus:outline-none"
               type="text"
               value={city}
@@ -733,24 +721,22 @@ const validatePassword = (password) => {
             </select>
             <hr className="h-[1px] w-[270px] bg-gray-200"></hr>
           </div>  
-        </div>
-        <div className="flex ml-[29%] -mt-[5px] my-[10px]">
-          {/* email*/}
-          <div
-            className={styles.inputGroup1}
-            style={{ marginLeft: "-50px", textWrap: "nowrap" }}
-          >
+        </div> 
+         
+         {/* addrress and country  */}
+        <div className="flex ml-[85px] mt-[5px]">
+          <div className={styles.inputGroup1}>
             <label className="text-blue-800 font-semibold">Date of birth</label>
             <input
               className="border-transparent 
                            border-b-2   
                         hover:border-blue-200 
-                          ml-[10px] 
-                          mr-[150px]
+                          ml-[20px] 
+                          mr-[72px]
                           h-[30px] 
-                          w-[158px] 
+                          w-[152px] 
                           text-[11px]
-                          pl-[14px] 
+                          pl-[3px] 
                           focus:outline-none"
               type="date"
               value={dob}
@@ -759,18 +745,17 @@ const validatePassword = (password) => {
             />
             <hr className="h-[1px] w-[250px] bg-gray-200"></hr>
           </div>
-          {/* state */}
-          <div className={styles.inputGroup1} style={{ marginLeft: "-105px" }}>
+          <div className={styles.inputGroup1}>
             <label className="text-blue-800 font-semibold">State Name</label>
             <input
               className="border-transparent 
                            border-b-2   
                         hover:border-blue-200 
-                          ml-[10px] 
+                          ml-[28px] 
                           h-[30px] 
-                          w-[183px] 
+                          w-[165px] 
                           text-[11px] 
-                          pl-[19px]
+                          pl-[7px]
                           focus:outline-none"
               type="text"
               value={state}
@@ -781,13 +766,29 @@ const validatePassword = (password) => {
           </div>
           
         </div>
-        <div className="flex ml-[29%] -mt-[5px] my-[10px]">
-         
-          {/* Country */}
-          <div
-            className={styles.inputGroup1}
-            style={{ marginLeft: "-50px", textWrap: "nowrap" }}
-          >
+
+        <div className="flex ml-[85px] mt-[5px]">
+          <div className={styles.inputGroup1}>
+            <label for="address" className="text-blue-800 font-semibold">User Address</label>
+            <input
+              className="border-transparent 
+                           border-b-2   
+                        hover:border-blue-200 
+                          ml-[20px] 
+                          mr-[75px]
+                          h-[30px] 
+                          w-[145px] 
+                          text-[11px]
+                          pl-[3px] 
+                          focus:outline-none"
+              type="text" id="address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+               disabled={!isEditing}
+            />
+            <hr className="h-[1px] w-[250px] bg-gray-200"></hr>
+          </div>
+          <div className={styles.inputGroup1}>
             <label className="text-blue-800 font-semibold">Country Name</label>
             <input
               className="border-transparent 
@@ -797,6 +798,7 @@ const validatePassword = (password) => {
                           h-[30px] 
                           w-[164px] 
                           text-[11px] 
+                          pl-[7px]
                           focus:outline-none"
               type="text"
               value={country}
@@ -811,37 +813,41 @@ const validatePassword = (password) => {
               }`}
             />
           </div>
+          
         </div>
+     </div>
+  </div>
+       
+  <div className="flex justify-start ml-[24%] mt-[20px] mb-[20px]">
+  {isEditing ? (
+    <>
+      <button
+        className="bg-[#3B61C8] hover:transform hover:scale-110 transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] text-white"
+        onClick={handleSaveClick}
+      >
+        Save
+      </button>
+      <button
+        className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] ml-[5%] text-white"
+        onClick={handleCancelClick}
+      >
+        Cancel
+      </button>
+    </>
+  ) : (
+    <button
+      className="bg-[#3B61C8] hover:transform hover:scale-110 transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] text-white"
+      onClick={handleEditClick}
+    >
+      Edit
+    </button>
+  )}
+</div>
+  </div>
 
-
-        <div className="flex justify-start ml-[23%] mt-[20px] mb-[20px]">
-        {isEditing ? (
-        <button
-          className="bg-[#3B61C8] hover:transform hover:scale-110  transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] text-white"
-          onClick={handleSaveClick}
-        >
-          Save
-        </button>
-      ) : (
-        <button
-          className="bg-[#3B61C8] hover:transform hover:scale-110 transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] text-white"
-          onClick={handleEditClick}
-        >
-          Edit
-        </button>
-      )}
-       <button className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] ml-[5%] text-white"
-       onClick={handleCancelClick}
-       >
-       Cancel
-       </button>
-          {/* <button className="bg-[#3B61C8] py-2 px-4 rounded-[20px] text-white">verify</button> */}
-        </div>
-      </div>
-
-      <div className="bg-white w-full mt-[8%]">
+{/* *************login details ******************************* */}
+  <div className="bg-white w-full mt-[8%]">
     <h1 className="ml-[6%] mt-4 text-[13px] text-[#EF5130] font-semibold">Login User Details</h1>
-     {/* login method*/}
      <div
             className={styles.inputGroup1}
             style={{ marginLeft: "200px", textWrap: "nowrap",marginTop:"5px" }}
@@ -863,7 +869,7 @@ const validatePassword = (password) => {
                           onChange={(e) => setPreferredLoginMethod(e.target.value)}
                           disabled={!isEditingLogin}
             >
-              {/* <option value={preferredLoginMethod}>{preferredLoginMethod}</option> */}
+            
               <option value="Email">Email</option>
               <option value="Mobile">Mobile</option>
               </select>
@@ -939,6 +945,7 @@ const validatePassword = (password) => {
         )}
   </div>
 
+{/* *************password details ******************************* */}
   <div className="bg-white w-full">
       <h1 className="ml-[6%] mt-4 text-[13px] text-[#EF5130] font-semibold">Update Password</h1>
       <div className="flex ml-[30%] mt-[20px]">

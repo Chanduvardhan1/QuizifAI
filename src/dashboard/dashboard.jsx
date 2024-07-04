@@ -366,16 +366,18 @@ const Dashboard = () => {
             </span>
             <img className="h-[10px] w-[9px] mt-[9px] -ml-[15px]" src={arrow}/>
         </span>
-
-          </div>
+     </div>
 
           <div className="flex flex-wrap mx-auto ml-[15px] -mt-[20px]">
-            {allquizzes.slice(0,3).map((quizItem, index) => (
-               <div
-               key={index}
-               className=""         
-             >
-              {quizItem.latest_flag === 'Y' ?(
+            {allquizzes
+            .filter(
+              (quizItem) => 
+                quizItem.active_flag === true && quizItem.latest_flag === 'Y'
+                )
+            .slice(0,3)
+            .map((quizItem, index) => (
+               <div key={index} >
+              {quizItem.attempt_flag === 'Y' ?(
                  <div
                  key={index} className={styles.card}
                  style={{
@@ -609,7 +611,7 @@ const Dashboard = () => {
                   paddingTop: "20px",
                   marginTop: "10px",
                   marginRight: "10px",
-                  backgroundColor: "#fee2e2",               
+                  backgroundColor: "#CBF2FB",               
                 }}
               >
              <span className="relative group">
@@ -743,7 +745,7 @@ const Dashboard = () => {
           <div className="flex justify-between mx-[30px]" style={{marginTop:"10px",marginBottom:"20px"}}>
             <p className="text-[#002366] text-[15px] font-medium leading-6">Most Popular Quizzes</p>
             <span className="flex">
-        <span
+            <span
               className="text-[#EF5130] text-[12px] mr-[20px] mt-1 cursor-pointer" style={{fontWeight:"600"}}
               onClick={handleBackToQuizzes}
             >
@@ -754,12 +756,18 @@ const Dashboard = () => {
           </div>
           
           <div className="flex flex-wrap mx-auto ml-[15px] -mt-[20px]">
-            {allquizzes.slice(0,3).map((quizItem, index) => (
+            {allquizzes
+            .filter(
+              (quizItem)=>
+              quizItem.active_flag === true && quizItem.popularity_flag === 'Y'
+            )
+            .slice(0,3)
+            .map((quizItem, index) => (
                <div
                key={index}
                className=""         
              >
-              {quizItem.popularity_flag === 'Y' ?(
+              {quizItem.attempt_flag === 'Y' ?(
                 <div
                 key={index} className={styles.card}
                 style={{

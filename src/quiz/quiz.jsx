@@ -30,6 +30,7 @@ const Quiz = () => {
 
   const [allquizzes, setAllquizzes] = useState([]);
   const [filteredQuizzes, setFilteredQuizzes] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const [dataRanges, setDataRanges] = useState([]);
   const [selectedDateRange, setSelectedDateRange] = useState([]);
@@ -110,7 +111,14 @@ const Quiz = () => {
         setAllquizzes(data.all_quizzes || []);
 
           // Extract unique dropdowns and sort them alphabetically
-        const uniqueValues = (key) =>[...new Set(data.all_quizzes.map(quiz => quiz[key]))].sort();
+          const uniqueValues = (key) => [...new Set(data.all_quizzes.map(quiz => quiz[key]))]
+         .sort((a, b) => {
+        if (typeof a === 'string' && typeof b === 'string') {
+            return a.toLowerCase().localeCompare(b.toLowerCase());
+        }
+        // Handle non-string values or cases where a or b is not a string
+        return 0; // or handle as per your specific logic
+    });
         setDataRanges(uniqueValues('date_range'));
         setPopularity(uniqueValues('attempts_rank'));
         setCategories(uniqueValues('category'));
@@ -131,10 +139,6 @@ const Quiz = () => {
     fetchQuizData();
   }, [userId]);
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
 
   const [cardStates, setCardStates] = useState(Array(allquizzes.length).fill(false));
   const toggleNavbar = (index) => {
@@ -206,10 +210,26 @@ const Quiz = () => {
       const matchesCourse = !selectedCourses.length || selectedCourses.includes(quizItem.course_name);
       const matchesClass = !selectedClasses.length || selectedClasses.includes(quizItem.class_name);
       const matchesCreatedBy = !selectedCreatedBy.length || selectedCreatedBy.includes(quizItem.created_by);
-      return matchesCategory && matchesSubCategory && matchesComplexity && matchesCourse && matchesCreatedBy && matchesClass;
+      const matchesSearch = searchQuery.length === 0 || 
+                            quizItem.quiz_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            quizItem.quiz_description.toLowerCase().includes(searchQuery.toLowerCase());
+
+      return matchesCategory && matchesSubCategory && matchesComplexity && matchesCourse && matchesCreatedBy && matchesClass && matchesSearch;
     });
     setFilteredQuizzes(filtered);
-  }, [allquizzes, selectedCategory, selectedSubCategory, selectedComplexity, selectedCourses, selectedClasses,selectedCreatedBy]);
+  }, [allquizzes, selectedCategory, selectedSubCategory, selectedComplexity, selectedCourses, selectedClasses, selectedCreatedBy, searchQuery]);
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const highlightText = (text, query) => {
+    if (!query) return text;
+    const parts = text.split(new RegExp(`(${query})`, 'gi'));
+    return parts.map((part, index) =>
+      part.toLowerCase() === query.toLowerCase() ? <span key={index} style={{ backgroundColor: 'yellow' }}>{part}</span> : part
+    );
+  };
   
   // Custom styles for react-select to match your existing dropdown design
   const customStyles = {
@@ -307,12 +327,12 @@ const Quiz = () => {
                 className="h-[14px] w-[14px] absolute top-[10px] left-[20px]"
               />
               <input
-               className='text-[10px] px-[20px] -mt-[1px] rounded-md h-[38px] mr-[10px] w-fit bg-[#F5F5F5] text-center placeholder-[#214082] border-none focus:border-none outline-none'
-               type='text'
-               placeholder='Search here'
-               value={searchQuery}
-               onChange={handleSearchChange}
-               />
+          className='text-[10px] px-[20px] -mt-[1px] rounded-md h-[38px] mr-[10px] w-fit bg-[#F5F5F5] text-center placeholder-[#214082] border-none focus:border-none outline-none'
+          type='text'
+          placeholder='Search here'
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
             </div>
           </div>
         </div>
@@ -337,18 +357,18 @@ const Quiz = () => {
             value={selectedDateRange.map(dtrng => ({ value: dtrng, label: dtrng }))}
             onChange={(selected) => setSelectedDateRange(selected.map(item => item.value))}
             styles={customStyles}
-            placeholder="Data Range"
+            placeholder="Date Range"
         />
     </div>
     <div className="flex-1 min-w-[150px]">
-        <Select
-            isMulti
-            options={popularity.map(plr => ({ value: plr, label: plr }))}
-            value={selectedPopularity.map(plr => ({ value: plr, label: plr }))}
-            onChange={(selected) => setSelectedPopularity(selected.map(item => item.value))}
-            styles={customStyles}
-            placeholder="Popularity"
-        />
+    <Select
+        isMulti
+        options={popularity.map(plr => ({ value: plr, label: `Top ${plr}` }))}
+        value={selectedPopularity.map(plr => ({ value: plr, label: `Top ${plr}` }))}
+        onChange={(selected) => setSelectedPopularity(selected.map(item => item.value))}
+        styles={customStyles}
+        placeholder="Popularity"
+    />
     </div>
     <div className="flex-1 min-w-[150px]">
         <Select
@@ -379,7 +399,7 @@ const Quiz = () => {
         value={selectedComplexity.map(complex => ({ value: complex, label: complex }))}
         onChange={(selected) => setSelectedComplexity(selected.map(item => item.value))}
         styles={customStyles}
-        placeholder="Complecity"
+        placeholder="Complexity"
       />
    {/* Courses  */}
    <Select
@@ -414,7 +434,12 @@ const Quiz = () => {
 
  <div className="mx-auto">
  <div className="flex flex-wrap mx-auto ml-[35px] -mt-[10px]">
-            {filteredQuizzes.map((quizItem, index) => (
+            {filteredQuizzes
+            .filter(
+              (quizItem) =>
+              quizItem.active_flag === true
+            )
+            .map((quizItem, index) => (
                <div
                key={index}
                className=""         
@@ -433,10 +458,10 @@ const Quiz = () => {
               >
                 <span className="relative group">
                 <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate -mt-[10px]">
-                {quizItem.quiz_name}
+                {highlightText(quizItem.quiz_name, searchQuery)}
                 </span>
                 <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-                {quizItem.quiz_name}
+                {highlightText(quizItem.quiz_name, searchQuery)}
                 </span>
               </span>
                   <div className={styles.iconContainer}>
@@ -503,10 +528,10 @@ const Quiz = () => {
  <div className="flex mt-5">
   <span className="relative group">
     <span className="text-[#002366] ml-[10px] mt-4 w-[50px] cursor-pointer z-0 truncate text-[9px] font-normal">
-    {quizItem.category}
+    {highlightText(quizItem.category, searchQuery)}
     </span>
     <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-    {quizItem.category}
+    {highlightText(quizItem.category, searchQuery)}
     </span>  
   </span>
 
@@ -514,10 +539,10 @@ const Quiz = () => {
   
   <span className="relative group">
     <span className="text-[#002366] w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
-    {quizItem.sub_category}
+    {highlightText(quizItem.sub_category, searchQuery)}
     </span>
     <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-    {quizItem.sub_category}
+    {highlightText(quizItem.sub_category, searchQuery)}
     </span>  
   </span>
       </div>
@@ -526,10 +551,10 @@ const Quiz = () => {
 {/* <div className="h-[3px] w-full bg-white"></div> */}
   <div className="relative group mt-1">
   <span className="text-wrap mt-[6px] text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate line-clamp-4">
-    {quizItem.quiz_description}
+  {highlightText(quizItem.quiz_description, searchQuery)}
   </span>
   <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-0 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
-    {quizItem.quiz_description}
+  {highlightText(quizItem.quiz_description, searchQuery)}
   </span>
 </div>
 <div className="h-[2px] w-full bg-white"></div>
@@ -558,7 +583,7 @@ const Quiz = () => {
                   </div>
                   <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[50px] left-[10px]">
                   <div>Created By :
-                    <span className="pl-[2px]">{quizItem.created_by}</span>
+                    <span className="pl-[2px]">{highlightText(quizItem.created_by, searchQuery)}</span>
                   </div>
                   {/* <div>Created On</div> */}
                   </div>
@@ -660,10 +685,10 @@ const Quiz = () => {
             >
              <span className="relative group">
               <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate">
-                {quizItem.quiz_name}
+              {highlightText(quizItem.quiz_name, searchQuery)}
               </span>
               <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-                {quizItem.quiz_name}
+              {highlightText(quizItem.quiz_name, searchQuery)}
               </span>
             </span>
   
@@ -712,25 +737,25 @@ const Quiz = () => {
             <div className="flex mt-[10px] relative top-[9px]">
               <span className="relative group">
                 <span className="text-[#002366] ml-[10px] w-[50px] cursor-pointer z-0 truncate text-[9px] font-normal">
-                  {quizItem.category}
+                {highlightText(quizItem.category, searchQuery)}
                 </span>
                 <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-                  {quizItem.category}
+                {highlightText(quizItem.category, searchQuery)}
                 </span>
               </span>
               <p className="px-[2px] font-normal">|</p>
               <span className="relative group">
                 <span className="text-[#002366] mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
-                  {quizItem.sub_category}
+                {highlightText(quizItem.sub_category, searchQuery)}
                 </span>
                 <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-                  {quizItem.sub_category}
+                {highlightText(quizItem.sub_category, searchQuery)}
                 </span>
               </span>
             </div>
             <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[75px] left-[12px]">
             <div>Created By :
-                      <span className="pl-[2px]">{quizItem.created_by}</span>
+                      <span className="pl-[2px]">{highlightText(quizItem.created_by, searchQuery)}</span>
                     </div>
                     {/* <div>Created On</div> */}
                     </div>
@@ -740,10 +765,10 @@ const Quiz = () => {
   
             <div className="relative group mt-1 ">
               <span className="mt-[6px] text-wrap text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate line-clamp-4">
-                {quizItem.quiz_description}
+              {highlightText(quizItem.quiz_description, searchQuery)}
               </span>
               <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-0 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
-                {quizItem.quiz_description}
+              {highlightText(quizItem.quiz_description, searchQuery)}
               </span>
             </div>
             
@@ -784,7 +809,7 @@ const Quiz = () => {
               )}
               </div>
             ))}
-    </div>
+  </div>
   </div>         
             
     </div>

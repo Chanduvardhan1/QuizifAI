@@ -179,10 +179,11 @@ const Quiz = () => {
     navigate('/quiz-results1', { state: { quizId } })
   };
 
-  const leaderboard1 = (quizId, attemptId,quizduration) => {
+  const leaderboard1 = (quizId, attemptId,quizduration,complexity) => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     localStorage.setItem("quiz_level_attempt_id", attemptId);
-    localStorage.setItem("quiz_duration",quizduration ); // Store attempt_id in local storage
+    localStorage.setItem("quiz_duration",quizduration ); 
+    localStorage.setItem("complexity",complexity );// Store attempt_id in local storage
     navigate(`/leaderboard`);
   };
   const quizresults = (quizId, attemptId) => {
@@ -484,7 +485,7 @@ const Quiz = () => {
                           />
                           <span
                             className={styles.leaderboardtext}
-                            onClick={() => leaderboard1(quizItem.quiz_id,quizItem.quiz_level_attempt_id,quizItem.quiz_duration)}
+                            onClick={() => leaderboard1(quizItem.quiz_id,quizItem.quiz_level_attempt_id,quizItem.quiz_duration,quizItem.complexity)}
                           >
                             Leaderboard
                           </span>

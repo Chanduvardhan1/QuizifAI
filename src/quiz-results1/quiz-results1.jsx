@@ -47,14 +47,25 @@ import Attempt1 from "../../public/images/dashboard/Attempt1.png";
 import NoOfQuestion from "../../public/images/dashboard/NoOfQuestion.png";
 import Clock from "../../public/images/dashboard/Clock.png";
 import Easy from "../../public/images/dashboard/Easy.png";
+import rankimage from "../../src/assets/Images/images/quizresults/rank.jpg"
+import sucess from "../../src/assets/Images/images/quizresults/success.png"
+import sucess1 from "../../src/assets/Images/images/quizresults/success1.png"
+import Top1 from "../../src/assets/Images/images/quizresults/top-score.png"
+import fast from "../../src/assets/Images/images/quizresults/fast.png"
 
+import percentIcon1 from "../../src/assets/Images/images/quizresults/discount.png"; 
+import timeIcon1 from "../../src/assets/Images/images/quizresults/stopwatch1.png";
+import dateIcon1 from "../../src/assets/Images/images/quizresults/schedule.png";
+import current from "../../src/assets/Images/images/quizresults/faq.png"
+import average1 from "../../src/assets/Images/images/quizresults/average1.png"
+import questions from "../../src/assets/Images/images/quizresults/question-mark.png"
 
 const Questions = () => {
   const location = useLocation();
   const { quizId , quizTotalMarks, passPercentage} = location.state || {};
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [quizData, setQuizData] = useState({});
-
+  const [quizMetrics, setQuizMetrics] = useState({})
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -85,6 +96,8 @@ const Questions = () => {
             complexity: result.data[0].complexity,
 
           });
+          setQuizMetrics(result.quiz_metrices);
+
         } else {
           console.error('Failed to fetch leaderboard data:', result.message);
         }
@@ -133,7 +146,7 @@ const topThree = leaderboardData.slice(0, 3);
         </div>
         <div>
 
-<span className={styles.Question} >Total Score:</span>{" "}
+<span className={styles.Question} >Total Marks:</span>{" "}
   <span className={styles.username1} >{quizTotalMarks}</span>
 </div>
 <div>
@@ -141,11 +154,16 @@ const topThree = leaderboardData.slice(0, 3);
 <span className={styles.Question } >Pass Score :</span>{" "}
   <span className={styles.username1} >{passPercentage}</span>
 </div>
+<div>
+
+<span className={styles.Question } >Complexity:</span>{" "}
+  <span className={styles.username1} >{`${quizData.complexity}`}</span>
+</div>
         </div>
           <div className={styles.Createdbyupdated}>
         <div className={styles.Created}>
 
-        <span className={styles.Createdby} >Created By:</span>{" "}
+        <span className={styles.Createdby} >Created By:</span>
           <span className={styles.username} >{`${quizData.created_by}`}</span>
         </div>
         <div>
@@ -167,22 +185,71 @@ const topThree = leaderboardData.slice(0, 3);
         {/* </div>  */}
     <div className={styles.flexcontent} >
       <div className={styles.flexcolumnecontent}>
+      <div className={styles.verticaliconsContainer}>
+          <img  className={styles.verticalicon4} style={{width:"40px" , height:"35px"}}
+         src={questions} />
+        <img
+    src={rankimage} 
+    alt="Icon 1"
+    className={styles.verticalicon1}
+  />
+  <h1 className={styles.rank1}>Your Rank</h1>
+      </div>
 <div className={styles.alldetails}>
-  <img className={styles.Allimg} src={Attempt1} alt="" />
-  <div>{quizData.attempts_count} attempts</div>
+  <img className={styles.Allimg} src={sucess} alt="" />
+  <span  className={styles.Question}>Total Attempts: </span>
+  <span className={styles.username1} ></span>
+
 </div>
 <div className={styles.alldetails}>
-<img className={styles.Allimg}  src={NoOfQuestion} a alt="" />
-<div>{quizData.total_questions} question</div>
+<img className={styles.Allimg}  src={dateIcon1} a alt="" />
+<span  className={styles.Question}>Most Recent Attempt: </span>
+<span className={styles.username1} ></span>
+
 </div>
 <div className={styles.alldetails}>
-<img className={styles.Allimg}  src={Clock} alt="" />
-<div>{quizData.quiz_duration} Minutes</div>
+<img className={styles.Allimg}  src={timeIcon1} alt="" />
+<span  className={styles.Question}>Average Completion Time: </span>
+<span className={styles.username1} > Minutes</span>
+
 </div>
 <div className={styles.alldetails}>
-<img className={styles.Allimg}  src={Easy} alt="" />
-<div>{quizData.complexity}</div>
+<img className={styles.Allimg}  src={fast} alt="" style={{ width:"30px", height:"40px", marginRight:"5px"}} />
+<span  className={styles.Question}>Record Fastest Completion: </span>
+<span className={styles.username1} ></span>
+
 </div>
+<div className={styles.alldetails}>
+  <img className={styles.Allimg} src={Top1} alt="" style={{ width:"42px", height:"44px",marginRight:"-10px",position:"relative",right:"5px"}}/>
+  <span  className={styles.Question}>Top Score:</span>
+  <span className={styles.username1} >{quizMetrics.highest_score}</span>
+
+</div>
+<div className={styles.alldetails}>
+<img className={styles.Allimg}  src={average1} a alt="" />
+<span  className={styles.Question}>Average Score: </span>
+<span className={styles.username1} >{quizMetrics.average_attained_score}</span>
+
+</div>
+<div className={styles.alldetails}>
+<img className={styles.Allimg}  src={current} alt="" />
+<span  className={styles.Question}>Total Questions Attempted: </span>
+<span className={styles.username1} > Minutes</span>
+
+</div>
+<div className={styles.alldetails}>
+<img className={styles.Allimg}  src={sucess1} alt="" />
+<span  className={styles.Question}>Success Rate: </span>
+<span className={styles.username1} >{quizData.complexity}</span>
+
+</div>
+<div className={styles.alldetails}>
+<img className={styles.Allimg}  src={percentIcon1} alt="" />
+<span  className={styles.Question}>Number of Perfect Scores (100%): </span>
+<span className={styles.username1} ></span>
+
+</div>
+
       </div>
         <div className={styles.boxContainer1}>
 

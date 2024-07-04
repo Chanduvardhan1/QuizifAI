@@ -815,7 +815,7 @@ export default function quiztype() {
 
               <div className="">
                 <input
-                  className="w-[420px] h-[43px] absolute top-[99px] left-[498px] rounded-[10px] border  p-3"
+                  className="w-[420px] h-[35px] absolute top-[99px] left-[498px] rounded-[10px] border  p-3"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 ></input>
@@ -836,7 +836,7 @@ export default function quiztype() {
               <div className=" rounded-lg absolute top-[99px] left-[1144px]">
                 <input
                   type="number"
-                  className="w-[135px] border-solid border-[#B8BBC2] border-[1.8px] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer"
+                  className="w-[135px] h-[35px] border-solid border-[#B8BBC2] border-[1.8px] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer"
                   placeholder="No of question "
                   value={numQuestions}
                   onChange={(e) => {
@@ -880,7 +880,7 @@ export default function quiztype() {
 
               <div className="">
                 <input
-                  className="w-[780px] h-[45px] absolute top-[163px] left-[498px] rounded-[10px] border  p-3"
+                  className="w-[780px] h-[35px] absolute top-[163px] left-[498px] rounded-[10px] border  p-3"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 ></input>
@@ -909,7 +909,7 @@ export default function quiztype() {
   ))}
                 </select>  */}
                       <select
-        className="w-[260px] h-[41.6px] border-solid border-[1px] border-[#B8BBC2] p-2 rounded-md cursor-pointer text-[12px]"
+        className="w-[260px] h-[35px] border-solid border-[1px] border-[#B8BBC2] p-2 rounded-md cursor-pointer text-[12px]"
         value={selectedCategory}
         onChange={handleSelectCategory}
       >
@@ -964,7 +964,7 @@ export default function quiztype() {
                   ))}
                 </select>  */}
                   <select
-        className="w-[260px] text-[12px]  border-solid border-[#B8BBC2] px-3 py-3 rounded-md cursor-pointer"
+        className="w-[260px] h-[35px] text-[12px]  border-solid border-[#B8BBC2] px-3 rounded-md cursor-pointer"
         onChange={handleSelectSubCategory}
         value={selectedSubCategory}
       >
@@ -1003,7 +1003,7 @@ export default function quiztype() {
                 ))}
               </select>  */}
       <select
-        className="w-[260px] h-[41.6px] border-solid  text-[12px] border-[1px] border-[#B8BBC2] p-2 rounded-md cursor-pointer"
+        className="w-[260px] h-[35px] border-solid  text-[12px] border-[1px] border-[#B8BBC2] p-2 rounded-md cursor-pointer"
         value={selectedCourse}
         onChange={handleSelectCourse}
       >
@@ -1037,7 +1037,7 @@ export default function quiztype() {
                 ))}
               </select> */}
          <select
-        className="w-[260px] border-solid border-[#B8BBC2] px-3 py-3 text-[12px] rounded-md cursor-pointer"
+        className="w-[260px] h-[35px] border-solid border-[#B8BBC2] px-3  text-[12px] rounded-md cursor-pointer"
         onChange={handleSelectClass}
         value={selectedClass}
         disabled={classes.length === 0}
@@ -1060,7 +1060,7 @@ export default function quiztype() {
 
               <div className=" rounded-lg w-[129px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[376px] left-[498px]">
                 <select
-                  className="w-[264px] p-2 rounded-md cursor-pointer text-[12px]"
+                  className="w-[264px] h-[35px] p-2 rounded-md cursor-pointer text-[12px]"
                   onChange={handleSelect5}
                   value={percentage}
                 >
@@ -1092,7 +1092,7 @@ export default function quiztype() {
                   ))}
                 </select> */}
                     <select
-        className="w-[264px] p-2 rounded-md cursor-pointer text-[12px]"
+        className="w-[264px] h-[35px] p-2 rounded-md cursor-pointer text-[12px]"
         onChange={handleSelectComplexity}
         value={selectedComplexity}
       >
@@ -1148,7 +1148,7 @@ export default function quiztype() {
 
               <div className=" rounded-lg w-[166px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[520px] left-[498px]">
                 <select
-                  className="w-[166px] px-3 py-3 rounded-md cursor-pointer text-[12px]"
+                  className="w-[166px] h-[35px] px-3  rounded-md cursor-pointer text-[12px]"
                   onChange={handleSelect7}
                   value={duration}
                 >
@@ -1205,7 +1205,7 @@ export default function quiztype() {
 
               <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[520px] left-[1020px]">
               <select
-        className="w-[260px] px-3 py-3 rounded-md cursor-pointer text-[12px]"
+        className="w-[260px] h-[35px] px-3 rounded-md cursor-pointer text-[12px]"
         onChange={handleSelect8}
         value={timings}
       >
@@ -1225,7 +1225,7 @@ export default function quiztype() {
             <div className="absolute top-[584px] left-[498px]">
               <input
               type="date"
-                className="rounded-lg w-[166px] h-[43px]  border-solid border-[#B8BBC2] border-[1.8px]
+                className="rounded-lg w-[166px] h-[35px]  border-solid border-[#B8BBC2] border-[1.8px]
               text-[#9696BB] leading-[22.5px] text-[15px] font-medium  px-4"
                 placeholder="YYYY-MM-DD"
                 value={availablefrom}
@@ -1242,7 +1242,7 @@ export default function quiztype() {
             <div className=" absolute top-[584px] left-[1020px]">
               <input
               type="date"
-                className="rounded-lg w-[156px] h-[43px]  border-solid border-[#B8BBC2] border-[1.8px]
+                className="rounded-lg w-[156px] h-[35px]  border-solid border-[#B8BBC2] border-[1.8px]
               text-[#9696BB] leading-[22.5px] text-[15px] font-medium  px-4"
                 placeholder="YYYY-MM-DD"
                 value={disabledon}
@@ -1284,7 +1284,7 @@ export default function quiztype() {
 
               <div className="absolute top-[653px] left-[1020px]">
                 <input
-                  className="rounded-lg w-[156px] h-[43px] flex border-solid border-[#B8BBC2] border-[1.8px]
+                  className="rounded-lg w-[156px] h-[35px] flex border-solid border-[#B8BBC2] border-[1.8px]
                text-[12px]  px-3 py-3 cursor-pointer "
                   placeholder="Total marks"
                   value={quiztotalmarks}
@@ -1315,7 +1315,7 @@ export default function quiztype() {
               <h1 className="font-Poppins font-bold text-[30px] leading-[45px] text-orange-400">
                 Create / Edit your Quiz
               </h1>
-              <h1 className="font-Poppins font-medium text-[12px] leading-[18px]">
+              <h1 className="font-Poppins font-medium text-[12px] text-[#214082] leading-[18px]">
                 Enter all your questions, options, and answers
               </h1>
             </div>
@@ -1326,13 +1326,13 @@ export default function quiztype() {
   <div key={questionIndex} className="mb-8 ">
     {/* Input field for question */}
     <div className="flex items-center mb-4">
-      <div className="mr-2 text-xl font-normal">
+      <div className="mr-2 text-xl font-bold text-[#214082]">
         {questionIndex + 1}.
       </div>
       <input
         type="text"
         placeholder={`Question`}
-        className="w-[70%] h-[35px] rounded-[20px] border-solid border-[#B8BBC2] border-[1.8px] p-[15px] "
+        className="w-[70%] h-[35px] text-[#214082] font-bold rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] p-[15px] "
         value={question.question_text}
         onChange={(e) => {
           const newQuestions = [...questions];
@@ -1344,8 +1344,8 @@ export default function quiztype() {
     {/* Input field for question weightage */}
     <input
         type="number"
-        placeholder="Weightage"
-        className="w-[130px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
+        placeholder="Marks"
+        className="w-[85px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
         value={calculateWeightage(numQuestions, quiztotalmarks)}
         onChange={(e) => {
           const value = parseInt(e.target.value);
@@ -1416,8 +1416,8 @@ export default function quiztype() {
        </div>
     {/* Input fields for options */}
     {question.options.map((option, optionIndex) => (
-      <div key={optionIndex} className="flex items-center mb-2">
-        <div className="mr-2 text-xl font-normal">
+      <div key={optionIndex} className="flex items-center mb-2 ">
+        <div className="mr-2 text-xl font-normal w-[25px] rounded-[10px] p-2 border-[1px] border-solid border-[#B8BBC2] flex justify-center text-center h-[35px] justify-items-center items-center">
           {String.fromCharCode(97 + optionIndex)}.
         </div>
         <input
@@ -1453,7 +1453,7 @@ export default function quiztype() {
   </div>
 ))}
 
-<div className=" flex justify-between items-center pr-[55px] ">
+<div className=" flex justify-between items-center pr-[330px] ">
                 <button
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNext2}

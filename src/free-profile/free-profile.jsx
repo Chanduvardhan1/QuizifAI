@@ -219,14 +219,11 @@ const FreeProfile = () => {
 
     fetchQuizData();
   }, [userId]);
-  console.log("Stored password:", storedPassword);
+  // console.log("Stored password:", storedPassword);
   
   // Edit profile details **********************
   const handleEditClick = () => {
-    setInitialFormData({
-          firstName,
-          middleName,
-          lastName,
+    setInitialFormData({firstName,middleName,lastName,
           gender,
           dob,
           district,
@@ -440,7 +437,7 @@ const handleUpdatePassword = async (e) => {
       confirm_password: confirmPassword,
     });
 
-    if (response.data.success) {
+    if (response === "success") {
       alert("Password updated successfully");
       setOldPassword('');
       setNewPassword('');

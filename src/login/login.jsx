@@ -196,6 +196,7 @@ const LoginPage = () => {
   const handleLogin = async (loginOption, email, mobile, password) => {
     try {
       console.log("email - ", email);
+      // console.log("password before storing:", password);
 
       const platform = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
       ? "mobile" // If any of the identifiers are found, return 'Mobile'.
@@ -220,8 +221,8 @@ const LoginPage = () => {
           const userId = responseData.data && responseData.data[0] && responseData.data[0].user_id;
           if (userId) {
             localStorage.setItem('user_id', userId);
-            localStorage.setItem('Password:', password);
-            console.log('Stored password:', localStorage.getItem('password'));
+            localStorage.setItem('password', password); // Store the password in localStorage
+            // console.log('Stored password:', localStorage.getItem('password')); 
             setErrorMessage(""); // Clear any previous error message
             navigate("/dashboard");
             console.log("Login successful!");
@@ -231,7 +232,7 @@ const LoginPage = () => {
         } else if (responseData.response === "fail") {
           let errorMessage = responseData.message || "An unknown error occurred while logging in.";
           if (responseData.response_message === "Password is incorrect.Please try again.") {
-            errorMessage = "please enter your password";
+            errorMessage = "Please enter your password";
           } else if (responseData.response_message === "Email is not valid.Please check your email") {
             errorMessage = "Check your email to complete the verification process";
           } else if (responseData.response_message === "Mobile Number is incorrect or account doesn't exist pls sinup.") {

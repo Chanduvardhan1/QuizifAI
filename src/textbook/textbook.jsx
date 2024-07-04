@@ -1643,7 +1643,7 @@ if (isAnyFieldEmpty) {
             <div className="absolute top-[210px] left-[298px] w-[1212px] h-[450px] ">
             {questions.map((question, questionIndex) => (
         <div key={questionIndex} className="mb-8">
-          <span className=" text-[rgb(239,81,48)] font-bold mb-[10px]">{question.lesson}<span className="mb-[10px] text-[#214082]">({question.sub_heading})</span></span>
+          <span className=" text-[#f25822] font-bold mb-[10px]">{question.lesson}<span className="mb-[10px] text-[#214082]">({question.sub_heading})</span></span>
           {/* <h3 className="mb-[10px]">{question.sub_heading}</h3> */}
           <div className="mb-8">
             {/* Input field for lesson */}

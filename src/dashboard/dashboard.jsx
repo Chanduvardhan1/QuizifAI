@@ -105,10 +105,10 @@ const Dashboard = () => {
   //   localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
   //   navigate('/leaderboard', { state: { quizId, quizTotalMarks, passPercentage } });
   // };
-
-  const leaderboard1 = (quizId, attemptId) => {
+  const leaderboard1 = (quizId, attemptId,quizduration) => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
-    localStorage.setItem("quiz_level_attempt_id", attemptId); // Store attempt_id in local storage
+    localStorage.setItem("quiz_level_attempt_id", attemptId);
+    localStorage.setItem("quiz_duration",quizduration ); // Store attempt_id in local storage
     navigate(`/leaderboard`);
   };
   const Edit = (quizId) => {
@@ -825,7 +825,7 @@ const Dashboard = () => {
                           />
                           <span
                             className={styles.leaderboardtext}
-                            onClick={() => leaderboard1(quizItem.quiz_id,quizItem.quiz_level_attempt_id)}
+                            onClick={() => leaderboard1(quizItem.quiz_id,quizItem.quiz_level_attempt_id,quizItem.quiz_duration)}
                           >
                             Leaderboard
                           </span>

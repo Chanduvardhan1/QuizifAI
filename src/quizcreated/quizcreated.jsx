@@ -146,7 +146,7 @@ const Edit = (quizId) => {
         <main className="w-full">
           <div className=" h-[1000px] max-w-full">
             <div className="w-[802px] h-[45px] absolute top-[78px] left-[297px]">
-              <h1 className="font-Poppins text-[#214082] text-[30px] font-bold leading-[45px] text-[#2c3f7e] flex justify-center">
+              <h1 className="font-Poppins text-[#214082] text-[30px] font-bold leading-[45px]  flex justify-center">
                 Created Successfully
               </h1>
             </div>

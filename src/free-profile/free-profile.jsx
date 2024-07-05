@@ -56,7 +56,7 @@ const FreeProfile = () => {
   const [isEditingLogin, setIsEditingLogin] = useState(false);
   const [initialFormData, setInitialFormData] = useState({}); 
   const [initialLoginData, setInitialLoginData] = useState({});
-  const [oldPassword1, setOldPassword] = useState('********');
+  const [oldPassword, setOldPassword] = useState('********');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [oldPasswordVisible, setOldPasswordVisible] = useState(false);
@@ -72,7 +72,7 @@ const FreeProfile = () => {
   const [weeklyQuizCount, setWeeklyQuizCount] = useState(0);
   const [averageScorePercentage, setAverageScorePercentage] = useState(0);
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
-  const oldPassword = localStorage.getItem('password');
+  // const oldPassword = localStorage.getItem('password');
   const [userName, setUserName] = useState("");
   const [profileData, setProfileData] = useState(null);
   const [profession, setProfession] = useState("");
@@ -186,8 +186,8 @@ const FreeProfile = () => {
           gender: userProfileDetails.gender,
           dob: userProfileDetails.date_of_birth,
           district : userProfileDetails.district_name,
-          // email: userProfileDetails.user_email,
-          // mobileNumber: userProfileDetails.user_phone_number,
+          email: userProfileDetails.user_email,
+          mobileNumber: userProfileDetails.user_phone_number,
           country: userProfileDetails.country_name,
           state: userProfileDetails.state_name,
           city: userProfileDetails.location_name ,
@@ -203,7 +203,7 @@ const FreeProfile = () => {
         setDob(userProfileDetails.date_of_birth);
         setDistrict(userProfileDetails.district_name);
         setEmail(userProfileDetails.user_email);
-        setMobileNumber(userProfileDetails.user_phone_number);
+        // setMobileNumber(userProfileDetails.user_phone_number);
         setAddress(userProfileDetails.user_address_line_1);
         setCountry(userProfileDetails.country_name);
         setState(userProfileDetails.state_name);
@@ -234,8 +234,8 @@ const FreeProfile = () => {
           gender,
           dob,
           district,
-          // email,
-          // mobileNumber,
+          email,
+          mobileNumber,
           address,
           country,
           state,
@@ -294,10 +294,14 @@ const FreeProfile = () => {
 
       const data = await response.json();
       console.log("Updated Data:", data);
-      alert("Profile Updated successfully...!")
-      setIsEmailOtpSent(false);
-      setIsMobileOtpSent(false);
-      setIsEditing(false);
+      if (data.detail && data.detail.response === "fail" && data.detail.response_message === "Invalid or incorrect OTP.") {
+        alert("Invalid or incorrect OTP. Please try again.");
+      } else {
+        alert("Profile Updated successfully...!");
+        setIsEmailOtpSent(false);
+        setIsMobileOtpSent(false);
+        setIsEditing(false);
+      }
     } catch (error) {
       console.error("Error updating profile:", error);
     }
@@ -343,6 +347,8 @@ handleEditClick();
   
     console.log("Sending OTP with payload:", payload);
   
+    let alertMessage = ''; // Initialize alertMessage
+  
     try {
       const response = await fetch(
         `https://quizifai.com:8010/chnge_email_mobile`,
@@ -364,13 +370,15 @@ handleEditClick();
       const data = await response.json();
       console.log("OTP Sent Data:", data);
   
-      // Variable to track if an alert has been shown
-      let alertMessage = '';
-  
       // Check for detailed response message
-      if (data.detail && data.detail.response === "fail" && data.detail.response_message.includes("Account already exists with the given email")) {
-        console.error("Account already exists with the given email");
-        alertMessage = "Account already exists with the given email";
+      if (data.detail && data.detail.response === "fail") {
+        if (data.detail.response_message.includes("Account already exists with the given email")) {
+          console.error("Account already exists with the given email");
+          alertMessage = data.detail.response_message; // Use the response message directly
+        } else if (data.detail.response_message.includes("Account already exists with the given mobile number")) {
+          console.error("Account already exists with the given mobile number");
+          alertMessage = data.detail.response_message; // Use the response message directly
+        }
       } else {
         setIsEditingLogin(false);
         setIsOtpSent(true);
@@ -385,8 +393,6 @@ handleEditClick();
         } else if (data.response_message === "Given mobile is already registered.but not verified,Please verify your OTP") {
           alertMessage = 'Given mobile is already registered but not verified. Please verify your OTP.';
           setIsMobileOtpSent(true);
-        } else if (data.response === "fail" && data.response_message === "Account already exists with the given mobile number") {
-          alertMessage = 'Account already exists with the given mobile number.';
         } else if (isEmailSelected) {
           setIsEmailOtpSent(true);
           alertMessage = 'OTP sent successfully!';
@@ -408,10 +414,13 @@ handleEditClick();
     } catch (error) {
       console.error("Error sending OTP:", error.message);
       if (!alertMessage) {
-        alert("Error sending OTP. Please try again.");
+        alertMessage = "Error sending OTP. Please try again.";
+        alert(alertMessage);
       }
     }
   };
+  
+  
   
   
   
@@ -442,21 +451,22 @@ handleEditClick();
     return enteredOtp === "123456";
   };
 
-
+ 
 //update password****************************
+
+useEffect(() => {
+  const oldPassword = localStorage.getItem('password');
+  if (oldPassword) {
+    setOldPassword(oldPassword);
+  }
+}, []);
 const togglePasswordVisibility = (type) => {
-  switch (type) {
-    case 'old':
-      setOldPasswordVisible(!oldPasswordVisible);
-      break;
-    case 'new':
-      setNewPasswordVisible(!newPasswordVisible);
-      break;
-    case 'confirm':
-      setConfirmPasswordVisible(!confirmPasswordVisible);
-      break;
-    default:
-      break;
+  if (type === 'old') {
+    setOldPasswordVisible(!oldPasswordVisible);
+  } else if (type === 'new') {
+    setNewPasswordVisible(!newPasswordVisible);
+  } else if (type === 'confirm') {
+    setConfirmPasswordVisible(!confirmPasswordVisible);
   }
 };
 
@@ -499,8 +509,9 @@ const handleUpdatePassword = async (e) => {
 
     if (response.data.response === "success") {
       alert(response.data.response_message);
+      localStorage.setItem('password', newPassword); // Store the new password in localStorage
 
-      setOldPassword('');
+      setOldPassword(newPassword);
       setNewPassword('');
       setConfirmPassword('');
       setOldPasswordError('');
@@ -527,7 +538,11 @@ const validatePassword = (password) => {
     /[0-9]/.test(password) &&
     /[!@#$%^&*(),.?":{}|<>]/.test(password);
 };
+const handleLoginCancelClick1 = () =>{
+ 
+  setShowNewPasswords(false);
 
+}
   return (
     <div className={styles.container}>
       <Navigation />
@@ -875,7 +890,7 @@ const validatePassword = (password) => {
   {isEditing ? (
     <>
       <button
-        className="bg-[#3B61C8] hover:transform hover:scale-110 transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] text-white"
+        className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] text-white"
         onClick={handleSaveClick}
       >
         Save
@@ -1090,6 +1105,12 @@ const validatePassword = (password) => {
       >
         {buttonText}
       </button>
+      <button
+      className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] ml-[4%] text-white"
+      onClick={handleLoginCancelClick1}
+    >
+      Cancel
+    </button>
     </div>
        
       </div>

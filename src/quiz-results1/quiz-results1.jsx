@@ -62,7 +62,7 @@ import questions from "../../src/assets/Images/images/quizresults/question-mark.
 
 const Questions = () => {
   const location = useLocation();
-  const { quizId , quizTotalMarks, passPercentage} = location.state || {};
+  const { quizId , quizTotalMarks, passPercentage,quizname,quizdescription,createdby,complexity,numberofquestions,quizduration} = location.state || {};
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [quizData, setQuizData] = useState({});
   const [quizMetrics, setQuizMetrics] = useState({})
@@ -131,18 +131,18 @@ const topThree = leaderboardData.slice(0, 3);
   alt="User Icon"
   className={styles.icon1}
 /> */}
-          <span className={styles.quizname}>{quizData.quiz_name}</span>
-          <p className={styles.quizdescription}>{quizData.quiz_description}</p>
+          <span className={styles.quizname}>{quizname}</span>
+          <p className={styles.quizdescription}>{quizdescription}</p>
           <div className={styles.Questionslines }>
         <div className={styles.Questions}>
 
         <span className={styles.Question} >Questions :</span>{" "}
-          <span className={styles.username1} >{`${quizData.total_questions}`}</span>
+          <span className={styles.username1} >{complexity}</span>
         </div>
         <div>
 
         <span className={styles.Question} >Duration:</span>{" "}
-          <span className={styles.username1} >{`${quizData.quiz_duration}`}</span>
+          <span className={styles.username1} >{quizduration}</span>
         </div>
         <div>
 
@@ -157,14 +157,14 @@ const topThree = leaderboardData.slice(0, 3);
 <div>
 
 <span className={styles.Question } >Complexity:</span>{" "}
-  <span className={styles.username1} >{`${quizData.complexity}`}</span>
+  <span className={styles.username1} >{numberofquestions}</span>
 </div>
         </div>
           <div className={styles.Createdbyupdated}>
         <div className={styles.Created}>
 
         <span className={styles.Createdby} >Created By:</span>
-          <span className={styles.username} >{`${quizData.created_by}`}</span>
+          <span className={styles.username} >{createdby}</span>
         </div>
         <div>
 
@@ -186,7 +186,7 @@ const topThree = leaderboardData.slice(0, 3);
     <div className={styles.flexcontent} >
       <div className={styles.flexcolumnecontent}>
       <div className={styles.verticaliconsContainer}>
-          <img  className={styles.verticalicon4} style={{width:"40px" , height:"35px"}}
+          <img  className={styles.verticalicon4} style={{width:"80px" , height:"65px"}}
          src={questions} />
         <img
     src={rankimage} 

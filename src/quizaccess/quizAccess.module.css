@@ -114,7 +114,7 @@
     align-items: center;
     /* justify-content: space-between; */
     /* margin-top: 30px; */
-    gap: 143px;
+    gap: 162px;
   }
   
   .icon {
@@ -204,7 +204,7 @@ border: 1;
     margin-top: 20px;
     margin-left: 50px;
     align-items: flex-start;
-    gap: 217px;
+    gap: 154px;
 }
   .sentencesContainer {
     display: flex;

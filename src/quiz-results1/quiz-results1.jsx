@@ -240,7 +240,7 @@ const topThree = leaderboardData.slice(0, 3);
 <div className={styles.alldetails}>
 <img className={styles.Allimg}  src={sucess1} alt="" />
 <span  className={styles.Question}>Success Rate: </span>
-<span className={styles.username1} >{quizData.complexity}</span>
+<span className={styles.username1} ></span>
 
 </div>
 <div className={styles.alldetails}>

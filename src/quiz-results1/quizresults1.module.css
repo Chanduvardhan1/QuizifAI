@@ -375,9 +375,8 @@
   }
   
   .verticalicon1 {
-    width: 91.01px; /* Adjust size as needed */
-    height: 58.62px; /* Adjust size as needed */
-    margin-top: 10px; /* Adjust margin as needed */
+    width: 130.01px;
+    height: 108.62px;
   }
   .verticalicon2 {
     width: 139px;
@@ -393,7 +392,7 @@
   }
 .verticalicon4{
   position: relative;
-  top: 50px;
+  top: 75px;
 }
   .boxContainer1{
     /* position: relative; */

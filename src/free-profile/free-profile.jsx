@@ -295,7 +295,8 @@ const FreeProfile = () => {
       const data = await response.json();
       console.log("Updated Data:", data);
       alert("Profile Updated successfully...!")
-
+      setIsEmailOtpSent(false);
+      setIsMobileOtpSent(false);
       setIsEditing(false);
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -333,13 +334,11 @@ handleEditClick();
 
 
   };
-
   const handleLoginSaveClick = async () => {
     const payload = {
       user_id: userId,
       email: email,
       mobile: mobileNumber,
-      // otp: otp,     
     };
   
     console.log("Sending OTP with payload:", payload);
@@ -365,46 +364,56 @@ handleEditClick();
       const data = await response.json();
       console.log("OTP Sent Data:", data);
   
+      // Variable to track if an alert has been shown
+      let alertMessage = '';
+  
       // Check for detailed response message
       if (data.detail && data.detail.response === "fail" && data.detail.response_message.includes("Account already exists with the given email")) {
         console.error("Account already exists with the given email");
-        alert("Account already exists with the given email");
-        return;
-      }
-  
-      setIsEditingLogin(false);
-      setIsOtpSent(true);
-  
-      // Check response message to determine which OTP input box to show
-      if (data.response_message === "Your email account is successfully created and verify your OTP on your email.") {
-        setIsEmailOtpSent(true);
-        handleEditClick(); 
-      } else if ( data.response_message === "Given email is already registered.but not verified,Please verify your OTP") {
-        setIsEmailOtpSent(true);
-        handleEditClick(); 
-      }else if ( data.response_message === "Given mobile is already registered.but not verified,Please verify your OTP") {
-        setIsMobileOtpSent(true);
-        handleEditClick(); 
-      }else if ( data.response ==="fail" &&  data.response_message === "Account already exists with the given mobile number") {
-        alert('Account already exists with the given email');
-        return;
-      }  else if (isEmailSelected) {
-        setIsEmailOtpSent(true);
+        alertMessage = "Account already exists with the given email";
       } else {
-        setIsMobileOtpSent(true);
+        setIsEditingLogin(false);
+        setIsOtpSent(true);
+  
+        // Check response message to determine which OTP input box to show
+        if (data.response_message === "Your email account is successfully created and verify your OTP on your email.") {
+          alertMessage = 'Your email account is successfully created and verify your OTP on your email.';
+          setIsEmailOtpSent(true);
+        } else if (data.response_message === "Given email is already registered.but not verified,Please verify your OTP") {
+          alertMessage = 'Given email is already registered but not verified. Please verify your OTP.';
+          setIsEmailOtpSent(true);
+        } else if (data.response_message === "Given mobile is already registered.but not verified,Please verify your OTP") {
+          alertMessage = 'Given mobile is already registered but not verified. Please verify your OTP.';
+          setIsMobileOtpSent(true);
+        } else if (data.response === "fail" && data.response_message === "Account already exists with the given mobile number") {
+          alertMessage = 'Account already exists with the given mobile number.';
+        } else if (isEmailSelected) {
+          setIsEmailOtpSent(true);
+          alertMessage = 'OTP sent successfully!';
+        } else {
+          setIsMobileOtpSent(true);
+          alertMessage = 'OTP sent successfully!';
+        }
       }
-      alert('OTP sent successfully!');
-      handleEditClick(); 
+  
+      if (alertMessage) {
+        alert(alertMessage);
+      }
+  
+      if (!alertMessage.includes('Error')) {
+        handleEditClick();
+        fetchDetailsByPincode(postalCode); // Call fetchDetailsByPincode here
+        handlePostalCodeChange(postalCode);
+      }
     } catch (error) {
       console.error("Error sending OTP:", error.message);
-      // Display appropriate error message based on the error
-      if (error.message.includes("Account already exists with the given email")) {
-        alert("Account already exists with the given email");
-      } else {
+      if (!alertMessage) {
         alert("Error sending OTP. Please try again.");
       }
     }
   };
+  
+  
   
   const handleLoginCancelClick = () =>{
     setEmail(initialFormData.email);
@@ -897,31 +906,29 @@ const validatePassword = (password) => {
             style={{ marginLeft: "200px", textWrap: "nowrap",marginTop:"5px" }}
           >
             <label className="text-blue-800 font-semibold">login Method</label>
-            <select
-              className="border-transparent 
-                           border-b-2   
-                        hover:border-blue-200 
-                          ml-[10px] 
-                          mr-[90px]
-                          h-[30px] 
-                          w-[155px] 
-                          text-[11px] 
-                          pl-[10px]
-                          focus:outline-none"
-                          type="text"
-                          value={preferredLoginMethod}
-                          onChange={(e) => setPreferredLoginMethod(e.target.value)}
-                          disabled={!isEditingLogin}
-            >
-            
-              <option value="Email">Email</option>
-              <option value="Mobile">Mobile</option>
-              </select>
-            <hr className="h-[1px] w-[250px] bg-gray-200"></hr>
+            <button
+        className={`border-b-2 w-[77.5px] text-[11px] pl-[10px] ml-[10px] focus:outline-none ${
+          preferredLoginMethod === 'Email' ? 'border-blue-200' : 'border-transparent'
+        } ${!isEditingLogin && 'cursor-not-allowed'}`}
+        onClick={() => isEditingLogin && setPreferredLoginMethod('Email')}
+        disabled={!isEditingLogin}
+      >
+        Email
+      </button>
+      <button
+        className={`border-b-2 w-[77.5px] text-[11px] pl-[10px] focus:outline-none ${
+          preferredLoginMethod === 'Mobile' ? 'border-blue-200' : 'border-transparent'
+        } ${!isEditingLogin && 'cursor-not-allowed'}`}
+        onClick={() => isEditingLogin && setPreferredLoginMethod('Mobile')}
+        disabled={!isEditingLogin}
+      >
+        Mobile
+      </button>
+            <hr className="h-[1px] w-[90px] bg-gray-200"></hr>
           </div>
     <div className="flex ml-[30%] mt-[20px]">
     {preferredLoginMethod === 'Email' && (
-        <div className={styles.inputGroup1} style={{ marginLeft: "-10px" }}>
+        <div className={styles.inputGroup1} style={{ marginLeft: "-60px" }}>
           <label className="text-blue-800 font-semibold">Email</label>
           <input
             className={`border-transparent border-b-2 hover:border-blue-200 mr-[40px] ml-[10px] h-[30px] w-[200px] text-[11px] focus:outline-gray-300 ${isEditingLogin ? 'highlight' : ''}`}
@@ -933,8 +940,8 @@ const validatePassword = (password) => {
         </div>
       )}
        {preferredLoginMethod === 'Mobile' && (
-        <div className={styles.inputGroup1}>
-          <label className="text-blue-800 font-semibold ml-[20px]">Mobile</label>
+        <div className={styles.inputGroup1} style={{ marginLeft: "-60px" }}>
+          <label className="text-blue-800 font-semibold ">Mobile</label>
           <input
             className={`border-transparent border-b-2 hover:border-blue-200 ml-[10px] h-[30px] w-[213px] text-[11px] focus:outline-gray-300 ${isEditingLogin ? 'highlight' : ''}`}
             type="number"

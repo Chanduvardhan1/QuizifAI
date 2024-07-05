@@ -155,7 +155,7 @@ export default function quiztype() {
   const [availablefrom, setavailablefrom] = useState("");
   const [disabledon, setdisabledon] = useState("");
 
-  const [publicAccess, setPublicAccess] = useState(false);
+  const [publicAccess, setPublicAccess] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isRetakeOn, setIsRetakeOn] = useState(false);
@@ -1457,7 +1457,7 @@ export default function quiztype() {
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNext}
                 >
-                  Create
+                  Save
                 </button>
               </div>
             </div>

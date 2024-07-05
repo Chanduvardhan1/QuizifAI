@@ -97,9 +97,9 @@ const Dashboard = () => {
   //   localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
   //   navigate('/quiz-results1', { state: { quizId } })
   // };
-  const leaderboard = (quizId, quizTotalMarks, passPercentage) => {
+  const leaderboard = (quizId, quizTotalMarks, passPercentage,quizname,quizdescription,createdby,numberofquestions,quizduration,complexity) => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
-    navigate('/quiz-results1', { state: { quizId, quizTotalMarks, passPercentage } });
+    navigate('/quiz-results1', { state: { quizId, quizTotalMarks, passPercentage, quizname,quizdescription,createdby,numberofquestions,quizduration,complexity} });
   };
   // const leaderboard1 = (quizId, quizTotalMarks, passPercentage) => {
   //   localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
@@ -416,7 +416,7 @@ const Dashboard = () => {
                         {cardStates[index] ? "Close Navbar" : "Open Navbar"}
                       </svg>
                       {cardStates[index]  && (
-                        <div className={styles.infoIcons}>
+                        <div className={styles.infoIcons1}>
                           <img
                             className="absolute h-[1px] w-[1px] left-[6px] top-1"
                             src={eye}
@@ -430,11 +430,11 @@ const Dashboard = () => {
                           </span>
                           <img
                             className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[17px]"
-                            src={download}
+                            src={Share_button}
                             alt="download icon"
                           />
-                          <span className="text-[8px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
-                            Download
+                          <span className="text-[8px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black" onClick={() => handleStartQuiz(quizItem.quiz_id)}>
+                          Retake
                           </span>
                           <img
                             className={styles.leaderboardimage} style={{marginTop:"1px"}}
@@ -447,12 +447,13 @@ const Dashboard = () => {
                           >
                             Leaderboard
                           </span>
-                          <img
+                          {/* <img
                             className={styles.shareimage} style={{marginTop:"2px"}}
-                            src={Share_button}
+                            
+                            src={download}
                             alt="Play icon"
                           />
-                          <span className={styles.sharetext} onClick={() => handleStartQuiz(quizItem.quiz_id)}>Retake</span>
+                          <span className={styles.sharetext} >Download</span> */}
                         </div>
                       )}
                     </div>
@@ -655,12 +656,12 @@ const Dashboard = () => {
                     </div>
                     <div className={styles.leaderboard}>
                       <img className={styles.leaderboardimage} src={leaderboard_button} alt="Leaderboard icon" />
-                      <span className={styles.leaderboardtext}  onClick={() => leaderboard(quizItem.quiz_id, quizItem.quiz_total_marks, quizItem.pass_percentage)}>Leaderboard</span>
+                      <span className={styles.leaderboardtext}  onClick={() => leaderboard(quizItem.quiz_id, quizItem.quiz_total_marks, quizItem.pass_percentage,quizItem.quiz_name,quizItem.quiz_description,quizItem.created_by,quizItem.complexity,quizItem.quiz_duration,quizItem.number_of_questions)}>Leaderboard</span>
                     </div>
-                    <div className={styles.share}>
+                    {/* <div className={styles.share}>
                       <img className={styles.shareimage} src={Share_button} alt="Share icon" />
                       <span className={styles.sharetext}>Share</span>
-                    </div>
+                    </div> */}
                   </div>
                 )}
               </div>
@@ -807,7 +808,7 @@ const Dashboard = () => {
                         {cardStates[index] ? "Close Navbar" : "Open Navbar"}
                       </svg>
                       {cardStates[index]  && (
-                        <div className={styles.infoIcons}>
+                        <div className={styles.infoIcons1}>
                           <img
                             className="absolute h-[1px] w-[1px] left-[6px] top-1"
                             src={eye}
@@ -821,11 +822,12 @@ const Dashboard = () => {
                           </span>
                           <img
                             className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[17px]"
-                            src={download}
+                            src={Share_button}
                             alt="download icon"
                           />
-                          <span className="text-[8px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black">
-                            Download
+                          <span className="text-[8px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black" onClick={() => handleStartQuiz(quizItem.quiz_id)}>
+                            
+                            Retake
                           </span>
                           <img
                             className={styles.leaderboardimage} style={{marginTop:"1px"}}
@@ -838,12 +840,13 @@ const Dashboard = () => {
                           >
                             Leaderboard
                           </span>
-                          <img
+                          {/* <img
                             className={styles.shareimage} style={{marginTop:"2px"}}
-                            src={Share_button}
+                            
+                            src={download}
                             alt="Play icon"
                           />
-                          <span className={styles.sharetext} onClick={() => handleStartQuiz(quizItem.quiz_id)}>Retake</span>
+                          <span className={styles.sharetext} >Download</span> */}
                         </div>
                       )}
                     </div>
@@ -1046,7 +1049,7 @@ const Dashboard = () => {
                     </div>
                     <div className={styles.leaderboard}>
                       <img className={styles.leaderboardimage} src={leaderboard_button} alt="Leaderboard icon" />
-                      <span className={styles.leaderboardtext} onClick={() => leaderboard(quizItem.quiz_id)}>Leaderboard</span>
+                      <span className={styles.leaderboardtext}  onClick={() => leaderboard(quizItem.quiz_id, quizItem.quiz_total_marks, quizItem.pass_percentage,quizItem.quiz_name,quizItem.quiz_description,quizItem.created_by,quizItem.complexity,quizItem.quiz_duration,quizItem.number_of_questions)}>Leaderboard</span>
                     </div>
                     <div className={styles.share}>
                       <img className={styles.shareimage} src={Share_button} alt="Share icon" />

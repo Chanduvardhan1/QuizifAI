@@ -171,7 +171,7 @@ export default function quiztype() {
   const [availablefrom, setavailablefrom] = useState("");
   const [disabledon, setdisabledon] = useState("");
 
-  const [publicAccess, setPublicAccess] = useState(false);
+  const [publicAccess, setPublicAccess] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isRetakeOn, setIsRetakeOn] = useState(false);
@@ -571,7 +571,7 @@ export default function quiztype() {
           class_name: selectedClass,
           pass_percentage: percentage,
           quiz_complexity_name: selectedComplexity,
-          retake_flag: retake,
+          retake_flag: selectedValue,
           quiz_duration: duration,
           course_name: selectedCourse,
           quiz_time_bounded_questions: timings,
@@ -1235,7 +1235,7 @@ export default function quiztype() {
 
             <div className="w-[233px] h-[30px] absolute top-[590px] left-[820px]">
               <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                Quiz must be disable on<span className="required ml-[1px] text-red-500">*</span>
+                Quiz must be disable on
               </h1>
             </div>
 
@@ -1465,7 +1465,7 @@ export default function quiztype() {
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNext}
                 >
-                  Create
+                  Save
                 </button>
               </div>
             </div>

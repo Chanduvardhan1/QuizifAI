@@ -41,6 +41,7 @@ function quizcreated1() {
   const [quizData, setQuizData] = useState(null);
   // Use useLocation hook to access the location object
   const location = useLocation();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Debugging: Log the entire location state
@@ -50,14 +51,21 @@ function quizcreated1() {
     if (location.state && location.state.quizData) {
       // Access the quizData from the location state
       const quizData = location.state.quizData;
-      setQuizData(quizData.data);
+      setQuizData(quizData);
+      setLoading(false);
 
       // Show quizData in the console
       console.log('Quiz Data:', quizData);
     } else {
       console.log('No quizData found in location state');
+      setLoading(false);
     }
   }, [location.state]);
+
+  useEffect(() => {
+    console.log('Current quizData state:', quizData);
+  }, [quizData]);
+
   const navigate = useNavigate();
 const Preview = () => {
   navigate("/quizview1", { state: { quizData: quizData } });
@@ -67,8 +75,12 @@ const Edit = (quizId) => {
   localStorage.setItem('quiz_id', quizId); // Store quiz_id in local storage
   navigate(`/editmanuly`);
 };
-if (!quizData) {
+if (loading) {
   return <div>Loading...</div>;
+}
+
+if (!quizData) {
+  return <div>No quiz data available</div>;
 }
   return (
     <>
@@ -383,18 +395,18 @@ if (!quizData) {
                     className="w-[32px] h-[32px] absolute top-[603px] left-[767px]"
                     src={AiBot}
                   /> */}
-                  <div className="w-[182px] h-[27px] absolute top-[599px] left-[585px]">
+                  {/* <div className="w-[182px] h-[27px] absolute top-[599px] left-[585px]">
                     {/* <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] leading-[40px] text-[#555555]">
                       AI support needed: No
                     </h1> */}
-                    <span className="font-Poppins text-[#214082] text-[15px] font-bold leading-[40px] ">AI support needed:</span>
+                    {/* <span className="font-Poppins text-[#214082] text-[15px] font-bold leading-[40px] ">AI support needed:</span>
                     <span> No</span>
-                  </div>
+                  </div>  */}
                   {/* <img
                     className="w-[38px] h-[38px] absolute top-[600px] left-[997px]"
                     src={Globe}
                   /> */}
-                  <div className="w-[182px] h-[27px] absolute top-[599px] left-[915px]">
+                  <div className="w-[182px] h-[27px] absolute top-[599px] left-[725px]">
                     {/* <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] leading-[40px] text-[#555555]">
                       Public access:{" "}
                       {quizData.quiz_public_access ? "Yes" : "No"}

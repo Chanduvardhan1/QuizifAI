@@ -296,7 +296,7 @@ const quiz_results = () => {
           <span className={styles.quizname}>{quizData.quiz_name}</span>
 </div>
 <div className={styles.download} >
-<button className={styles.downbutton} onClick={handleDownload}>download</button>
+<button className={styles.downbutton} onClick={handleDownload}>Download</button>
 </div>
 </div>
 
@@ -405,7 +405,7 @@ const quiz_results = () => {
     alt="Calendar Icon"
     className={styles.icon2}
   />
-          <span>{quizData.correct_answers} correct answer</span>
+          <span>{quizData.correct_answers} Correct answer</span>
         </div>
       <div className={styles.sentencesContainer}>
         <div className={styles.sentence}>

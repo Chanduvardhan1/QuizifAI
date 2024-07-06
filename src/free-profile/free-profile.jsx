@@ -72,7 +72,7 @@ const FreeProfile = () => {
   const [weeklyQuizCount, setWeeklyQuizCount] = useState(0);
   const [averageScorePercentage, setAverageScorePercentage] = useState(0);
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
-  const storedPassword = localStorage.getItem('password');
+  // const oldPassword = localStorage.getItem('password');
   const [userName, setUserName] = useState("");
   const [profileData, setProfileData] = useState(null);
   const [profession, setProfession] = useState("");
@@ -83,6 +83,10 @@ const FreeProfile = () => {
   const [usertype, setusertype] = useState("public");
   const [displayname, setdisplayname] = useState(null);
   const [professions, setProfessions] = useState("student");
+  const [emailOtp, setEmailOtp] = useState('');
+
+  const [isEmailOtpSent, setIsEmailOtpSent] = useState(false);
+  const [isMobileOtpSent, setIsMobileOtpSent] = useState(false);
 
   const handleButtonClick = (buttonName) => {
     setSelectedButton(buttonName);
@@ -182,8 +186,8 @@ const FreeProfile = () => {
           gender: userProfileDetails.gender,
           dob: userProfileDetails.date_of_birth,
           district : userProfileDetails.district_name,
-          // email: userProfileDetails.user_email,
-          // mobileNumber: userProfileDetails.user_phone_number,
+          email: userProfileDetails.user_email,
+          mobileNumber: userProfileDetails.user_phone_number,
           country: userProfileDetails.country_name,
           state: userProfileDetails.state_name,
           city: userProfileDetails.location_name ,
@@ -198,7 +202,7 @@ const FreeProfile = () => {
         setGender(userProfileDetails.gender);
         setDob(userProfileDetails.date_of_birth);
         setDistrict(userProfileDetails.district_name);
-        // setEmail(userProfileDetails.user_email);
+        setEmail(userProfileDetails.user_email);
         // setMobileNumber(userProfileDetails.user_phone_number);
         setAddress(userProfileDetails.user_address_line_1);
         setCountry(userProfileDetails.country_name);
@@ -230,8 +234,8 @@ const FreeProfile = () => {
           gender,
           dob,
           district,
-          // email,
-          // mobileNumber,
+          email,
+          mobileNumber,
           address,
           country,
           state,
@@ -249,10 +253,10 @@ const FreeProfile = () => {
       first_name: firstName,
       middle_name: middleName,
       last_name: lastName,
-      // user_email: email,
-      email_otp: " ",
-      // user_phone_number: mobileNumber,
-      otp: " ",
+      user_email: email,
+      email_otp: emailOtp,
+      user_phone_number: mobileNumber,
+      otp: otp,
       user_role: "quiz user", // Example value, adjust as needed
       user_type: "public", 
       user_org_id: null,
@@ -290,9 +294,14 @@ const FreeProfile = () => {
 
       const data = await response.json();
       console.log("Updated Data:", data);
-      alert("Profile Updated successfully...!")
-
-      setIsEditing(false);
+      if (data.detail && data.detail.response === "fail" && data.detail.response_message === "Invalid or incorrect OTP.") {
+        alert("Invalid or incorrect OTP. Please try again.");
+      } else {
+        alert("Profile Updated successfully...!");
+        setIsEmailOtpSent(false);
+        setIsMobileOtpSent(false);
+        setIsEditing(false);
+      }
     } catch (error) {
       console.error("Error updating profile:", error);
     }
@@ -304,8 +313,8 @@ const FreeProfile = () => {
     setGender(initialFormData.gender);
     setDob(initialFormData.dob);
     setDistrict(initialFormData.district);
-    // setEmail(initialFormData.email);
-    // setMobileNumber(initialFormData.mobileNumber);
+    setEmail(initialFormData.email);
+    setMobileNumber(initialFormData.mobileNumber);
     setAddress(initialFormData.address);
     setCountry(initialFormData.country);
     setState(initialFormData.state);
@@ -323,17 +332,22 @@ const FreeProfile = () => {
       mobileNumber,
 });
 setIsEditingLogin(true);
-  };
+setIsEmailOtpSent(false);
+setIsMobileOtpSent(false);
+handleEditClick(); 
 
+
+  };
   const handleLoginSaveClick = async () => {
     const payload = {
       user_id: userId,
       email: email,
       mobile: mobileNumber,
-      // otp: otp,     
     };
   
     console.log("Sending OTP with payload:", payload);
+  
+    let alertMessage = ''; // Initialize alertMessage
   
     try {
       const response = await fetch(
@@ -356,18 +370,67 @@ setIsEditingLogin(true);
       const data = await response.json();
       console.log("OTP Sent Data:", data);
   
-      setIsEditingLogin(false);
-      setIsOtpSent(true);
-      alert('OTP sent successfully!');
+      // Check for detailed response message
+      if (data.detail && data.detail.response === "fail") {
+        if (data.detail.response_message.includes("Account already exists with the given email")) {
+          console.error("Account already exists with the given email");
+          alertMessage = data.detail.response_message; // Use the response message directly
+        } else if (data.detail.response_message.includes("Account already exists with the given mobile number")) {
+          console.error("Account already exists with the given mobile number");
+          alertMessage = data.detail.response_message; // Use the response message directly
+        }
+      } else {
+        setIsEditingLogin(false);
+        setIsOtpSent(true);
+  
+        // Check response message to determine which OTP input box to show
+        if (data.response_message === "Your email account is successfully created and verify your OTP on your email.") {
+          alertMessage = 'Your email account is successfully created and verify your OTP on your email.';
+          setIsEmailOtpSent(true);
+        } else if (data.response_message === "Given email is already registered.but not verified,Please verify your OTP") {
+          alertMessage = 'Given email is already registered but not verified. Please verify your OTP.';
+          setIsEmailOtpSent(true);
+        } else if (data.response_message === "Given mobile is already registered.but not verified,Please verify your OTP") {
+          alertMessage = 'Given mobile is already registered but not verified. Please verify your OTP.';
+          setIsMobileOtpSent(true);
+        } else if (isEmailSelected) {
+          setIsEmailOtpSent(true);
+          alertMessage = 'OTP sent successfully!';
+        } else {
+          setIsMobileOtpSent(true);
+          alertMessage = 'OTP sent successfully!';
+        }
+      }
+  
+      if (alertMessage) {
+        alert(alertMessage);
+      }
+  
+      if (!alertMessage.includes('Error')) {
+        handleEditClick();
+        fetchDetailsByPincode(postalCode); // Call fetchDetailsByPincode here
+        handlePostalCodeChange(postalCode);
+      }
     } catch (error) {
       console.error("Error sending OTP:", error.message);
-      // Display error message to the user
-      alert("Error sending OTP. Please try again.");
+      if (!alertMessage) {
+        alertMessage = "Error sending OTP. Please try again.";
+        alert(alertMessage);
+      }
     }
   };
+  
+  
+  
+  
+  
   const handleLoginCancelClick = () =>{
     setEmail(initialFormData.email);
     setMobileNumber(initialFormData.mobileNumber);
+    setIsEmailOtpSent(false);
+setIsMobileOtpSent(false);
+handleEditClick(); 
+
   }
 
   const handleOtpVerifyClick = () => {
@@ -388,21 +451,22 @@ setIsEditingLogin(true);
     return enteredOtp === "123456";
   };
 
-
+ 
 //update password****************************
+
+useEffect(() => {
+  const oldPassword = localStorage.getItem('password');
+  if (oldPassword) {
+    setOldPassword(oldPassword);
+  }
+}, []);
 const togglePasswordVisibility = (type) => {
-  switch (type) {
-    case 'old':
-      setOldPasswordVisible(!oldPasswordVisible);
-      break;
-    case 'new':
-      setNewPasswordVisible(!newPasswordVisible);
-      break;
-    case 'confirm':
-      setConfirmPasswordVisible(!confirmPasswordVisible);
-      break;
-    default:
-      break;
+  if (type === 'old') {
+    setOldPasswordVisible(!oldPasswordVisible);
+  } else if (type === 'new') {
+    setNewPasswordVisible(!newPasswordVisible);
+  } else if (type === 'confirm') {
+    setConfirmPasswordVisible(!confirmPasswordVisible);
   }
 };
 
@@ -443,10 +507,11 @@ const handleUpdatePassword = async (e) => {
       confirm_password: confirmPassword,
     });
 
-    if (response === "success") {
-      alert("Password updated successfully");
+    if (response.data.response === "success") {
+      alert(response.data.response_message);
+      localStorage.setItem('password', newPassword); // Store the new password in localStorage
 
-      setOldPassword('');
+      setOldPassword(newPassword);
       setNewPassword('');
       setConfirmPassword('');
       setOldPasswordError('');
@@ -473,7 +538,11 @@ const validatePassword = (password) => {
     /[0-9]/.test(password) &&
     /[!@#$%^&*(),.?":{}|<>]/.test(password);
 };
+const handleLoginCancelClick1 = () =>{
+ 
+  setShowNewPasswords(false);
 
+}
   return (
     <div className={styles.container}>
       <Navigation />
@@ -821,7 +890,7 @@ const validatePassword = (password) => {
   {isEditing ? (
     <>
       <button
-        className="bg-[#3B61C8] hover:transform hover:scale-110 transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] text-white"
+        className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] text-white"
         onClick={handleSaveClick}
       >
         Save
@@ -852,49 +921,85 @@ const validatePassword = (password) => {
             style={{ marginLeft: "200px", textWrap: "nowrap",marginTop:"5px" }}
           >
             <label className="text-blue-800 font-semibold">login Method</label>
-            <select
-              className="border-transparent 
-                           border-b-2   
-                        hover:border-blue-200 
-                          ml-[10px] 
-                          mr-[90px]
-                          h-[30px] 
-                          w-[155px] 
-                          text-[11px] 
-                          pl-[10px]
-                          focus:outline-none"
-                          type="text"
-                          value={preferredLoginMethod}
-                          onChange={(e) => setPreferredLoginMethod(e.target.value)}
-                          disabled={!isEditingLogin}
-            >
-            
-              <option value="Email">Email</option>
-              <option value="Mobile">Mobile</option>
-              </select>
-            <hr className="h-[1px] w-[250px] bg-gray-200"></hr>
+            <button
+        className={`border-b-2 w-[77.5px] text-[11px] pl-[10px] ml-[10px] focus:outline-none ${
+          preferredLoginMethod === 'Email' ? 'border-blue-200' : 'border-transparent'
+        } ${!isEditingLogin && 'cursor-not-allowed'}`}
+        onClick={() => isEditingLogin && setPreferredLoginMethod('Email')}
+        disabled={!isEditingLogin}
+      >
+        Email
+      </button>
+      <button
+        className={`border-b-2 w-[77.5px] text-[11px] pl-[10px] focus:outline-none ${
+          preferredLoginMethod === 'Mobile' ? 'border-blue-200' : 'border-transparent'
+        } ${!isEditingLogin && 'cursor-not-allowed'}`}
+        onClick={() => isEditingLogin && setPreferredLoginMethod('Mobile')}
+        disabled={!isEditingLogin}
+      >
+        Mobile
+      </button>
+            <hr className="h-[1px] w-[90px] bg-gray-200"></hr>
           </div>
     <div className="flex ml-[30%] mt-[20px]">
-      <div className={styles.inputGroup1} style={{ marginLeft: "-50px" }}>
-        <label className="text-blue-800 font-semibold">Email</label>
-        <input
-          className={`border-transparent border-b-2 hover:border-blue-200 mr-[40px] ml-[10px] h-[30px] w-[200px] text-[11px] focus:outline-gray-300 ${isEditing ? 'highlight' : ''}`}
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          disabled={!isEditingLogin}
-        />
-      </div>
-      <div className={styles.inputGroup1}>
-        <label className="text-blue-800 font-semibold ml-[20px]">Mobile</label>
-        <input
-          className={`border-transparent border-b-2 hover:border-blue-200 ml-[10px] h-[30px] w-[213px] text-[11px] focus:outline-gray-300 ${isEditing ? 'highlight' : ''}`}
-          type="Number"
-          value={mobileNumber}
-          onChange={(e) => setMobileNumber(e.target.value)}
-          disabled={!isEditingLogin}
-        />
-      </div>
+    {preferredLoginMethod === 'Email' && (
+        <div className={styles.inputGroup1} style={{ marginLeft: "-60px" }}>
+          <label className="text-blue-800 font-semibold">Email</label>
+          <input
+            className={`border-transparent border-b-2 hover:border-blue-200 mr-[40px] ml-[10px] h-[30px] w-[200px] text-[11px] focus:outline-gray-300 ${isEditingLogin ? 'highlight' : ''}`}
+            type="text"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={!isEditingLogin}
+          />
+        </div>
+      )}
+       {preferredLoginMethod === 'Mobile' && (
+        <div className={styles.inputGroup1} style={{ marginLeft: "-60px" }}>
+          <label className="text-blue-800 font-semibold ">Mobile</label>
+          <input
+            className={`border-transparent border-b-2 hover:border-blue-200 ml-[10px] h-[30px] w-[213px] text-[11px] focus:outline-gray-300 ${isEditingLogin ? 'highlight' : ''}`}
+            type="number"
+            value={mobileNumber}
+            onChange={(e) => setMobileNumber(e.target.value)}
+            disabled={!isEditingLogin}
+          />
+        </div>
+      )}
+        {isEmailOtpSent && (
+        <div className="flex items-center  relative ">
+          <input
+            className="border-transparent border-b-2 hover:border-blue-200 h-[30px] w-[200px] text-[11px] focus:outline-gray-300"
+            placeholder="Enter OTP"
+            type="text"
+            value={emailOtp}
+            onChange={(e) => setEmailOtp(e.target.value)}
+          />
+          <button
+            className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[90px] text-[13px] font-semibold rounded-[20px] ml-[10px] text-white"
+            onClick={handleSaveClick}
+          >
+            Verify OTP
+          </button>
+        </div>
+      )}
+      {isMobileOtpSent && (
+        <div className="flex items-center  relative ">
+          <input
+            className="border-transparent border-b-2 hover:border-blue-200 h-[30px] w-[200px] text-[11px] focus:outline-gray-300"
+            placeholder="Enter OTP"
+            type="text"
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
+          />
+          <button
+            className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[90px] text-[13px] font-semibold rounded-[20px] ml-[10px] text-white"
+            onClick={handleSaveClick}
+          >
+            Verify OTP
+          </button>
+        </div>
+      )}
     </div>
     {isEditingLogin ? (
       <>
@@ -925,23 +1030,7 @@ const validatePassword = (password) => {
         {message}
       </div>
     )}
-    {isOtpSent && (
-          <div className="flex items-center ml-[50%] relative -top-[48px]">
-            <input
-              className="border-transparent border-b-2 hover:border-blue-200 h-[30px] w-[200px] text-[11px] focus:outline-gray-300"
-              placeholder="Enter OTP"
-              type="text"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-            />
-            <button
-              className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[90px] text-[13px] font-semibold rounded-[20px] ml-[10px] text-white"
-              onClick={handleOtpVerifyClick}
-            >
-              Verify OTP
-            </button>
-          </div>
-        )}
+   
   </div>
 
 {/* *************password details ******************************* */}
@@ -954,7 +1043,7 @@ const validatePassword = (password) => {
             className="border-transparent border-b-2 hover:border-blue-200 mr-[40px] ml-[px] h-[30px] w-[173px] text-[11px] focus:outline-gray-300 pl-[5px]"
             type={oldPasswordVisible ? 'text' : 'password'}
             placeholder="password"
-            value={storedPassword}
+            value={oldPassword}
             onChange={(e) => setOldPassword(e.target.value)}
           />
           <span onClick={() => togglePasswordVisibility('old')} className='cursor-pointer'>
@@ -1016,6 +1105,12 @@ const validatePassword = (password) => {
       >
         {buttonText}
       </button>
+      <button
+      className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] ml-[4%] text-white"
+      onClick={handleLoginCancelClick1}
+    >
+      Cancel
+    </button>
     </div>
        
       </div>

@@ -209,6 +209,7 @@ const quizresults = () => {
 
         if (result.response === 'success') {
           setLeaderboardData(result.data);
+       
         } else {
           console.error('Failed to fetch leaderboard data:', result.message);
         }
@@ -380,6 +381,11 @@ if (!Array.isArray(leaderboardData)) {
 <span className={styles.Question } >Pass Score :</span>{" "}
   <span className={styles.username1} >{`${quizData.attempt_percentage}`}</span>
 </div>
+{/* <div>
+
+<span className={styles.Question } >complexity :</span>{" "}
+  <span className={styles.username1} >{leaderboardData.complexity}</span>
+</div> */}
         </div>
           <div className={styles.Createdbyupdated}>
         <div className={styles.Created}>

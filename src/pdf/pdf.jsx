@@ -153,7 +153,7 @@ export default function quiztype() {
   const [availablefrom, setavailablefrom] = useState("");
   const [disabledon, setdisabledon] = useState("");
 
-  const [publicAccess, setPublicAccess] = useState(false);
+  const [publicAccess, setPublicAccess] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isRetakeOn, setIsRetakeOn] = useState(false);
@@ -612,8 +612,7 @@ export default function quiztype() {
     duration,
     timings,
     availablefrom,
- 
-    quiztotalmarks
+    quiztotalmarks,
 ];
 
 const isAnyFieldEmpty = requiredFields.some(field => !field);
@@ -633,7 +632,7 @@ if (isAnyFieldEmpty) {
       formData.append("class_name", selectedClass);
       formData.append("pass_percentage", percentage);
       formData.append("quiz_complexity_name", selectedComplexity);
-      formData.append("retake_flag", retake);
+      formData.append("retake_flag", selectedValue);
       formData.append("quiz_duration", duration);
       formData.append("course_name", selectedCourse);
       formData.append("quiz_time_bounded_questions", timings);
@@ -747,7 +746,7 @@ if (isAnyFieldEmpty) {
             class_name: selectedClass,
             pass_percentage: percentage,
             quiz_complexity_name: selectedComplexity,
-            retake_flag: retake,
+            retake_flag: selectedValue,
             quiz_duration: duration,
             course_name: selectedCourse,
             quiz_time_bounded_questions: timings,
@@ -1592,7 +1591,7 @@ if (isAnyFieldEmpty) {
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNext4}
                 >
-                  Create
+                  Save
                 </button>
               </div>
             </div>

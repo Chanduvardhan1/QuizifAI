@@ -155,7 +155,7 @@ export default function quiztype() {
   const [availablefrom, setavailablefrom] = useState("");
   const [disabledon, setdisabledon] = useState("");
 
-  const [publicAccess, setPublicAccess] = useState(false);
+  const [publicAccess, setPublicAccess] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isRetakeOn, setIsRetakeOn] = useState(false);

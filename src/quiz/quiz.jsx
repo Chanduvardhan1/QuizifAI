@@ -32,7 +32,7 @@ const Quiz = () => {
   const [filteredQuizzes, setFilteredQuizzes] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const [dataRanges, setDataRanges] = useState([]);
+  const [dateRanges, setDateRanges] = useState([]);
   const [selectedDateRange, setSelectedDateRange] = useState([]);
 
   const [popularity, setPopularity] = useState([]);
@@ -45,7 +45,11 @@ const Quiz = () => {
   const [selectedClasses, setSelectedClasses] = useState([]);
 
   const [categories, setCategories] = useState([]);
+  const [allSubCategories, setAllSubCategories] = useState([]);
+  const [filteredSubCategories, setFilteredSubCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
+  const [allClasses, setAllClasses] = useState([]);
+  const [filteredClasses, setFilteredClasses] = useState([]);
 
   const [subCategories, setSubCategories] = useState([]);
   const [selectedSubCategory, setSelectedSubCategory] = useState([]);
@@ -64,11 +68,52 @@ const Quiz = () => {
   const navigate = useNavigate();
   const userRole = localStorage.getItem('user_role');
 
+  const sortAlphabetically = (arr) => {
+    return arr.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+  };
+  useEffect(() => {
+    const fetchDropdownValues = async () => {
+      try {
+        // Fetch date range and popularity
+        const dateRangeResponse = await fetch('https://dev.quizifai.com:8010/get_date_rnge/');
+        const dateRangeResult = await dateRangeResponse.json();
+        console.log("Date Range and Popularity data:", dateRangeResult);
+        setDateRanges(sortAlphabetically(dateRangeResult["Date Range"]));
+        setPopularity(sortAlphabetically(dateRangeResult["Popularity"]));
+
+        // Fetch categories and subcategories
+        const categoriesResponse = await fetch('https://dev.quizifai.com:8010/categories&sub_categories/');
+        const categoriesResult = await categoriesResponse.json();
+        console.log("Categories and Subcategories data:", categoriesResult);
+        setCategories(sortAlphabetically(categoriesResult.data.map(item => item.category_name)));
+        setAllSubCategories(categoriesResult.data);
+
+        // Fetch complexities
+        const complexitiesResponse = await fetch('https://dev.quizifai.com:8010/complexities/');
+        const complexitiesResult = await complexitiesResponse.json();
+        console.log("Complexities data:", complexitiesResult);
+        setComplexities(complexitiesResult.data.map(item => item.complexity_name));
+
+        // Fetch courses and classes
+        const coursesResponse = await fetch('https://dev.quizifai.com:8010/courses-clsses/');
+        const coursesResult = await coursesResponse.json();
+        console.log("Courses and Classes data:", coursesResult);
+        setCourses(sortAlphabetically(coursesResult.data.map(item => item.course_name)));
+        setAllClasses(coursesResult.data);
+
+      } catch (error) {
+        console.error('Error fetching dropdown values:', error);
+      }
+    };
+
+    fetchDropdownValues();
+  }, []);
+
   useEffect(() => {
     const fetchQuizData = async () => {
       console.log("User ID:", userId);
       try {
-        const response = await fetch(`https://quizifai.com:8010/dashboard`, {
+        const response = await fetch(`https://dev.quizifai.com:8010/dashboard`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -97,27 +142,31 @@ const Quiz = () => {
         setFilteredQuizzes(data.all_quizzes || []);
 
         // Extract unique dropdowns and sort them alphabetically
-        const uniqueValues = (key) =>
-          [...new Set(data.all_quizzes.map((quiz) => quiz[key]))].sort(
-            (a, b) => {
-              if (typeof a === "string" && typeof b === "string") {
-                return a.toLowerCase().localeCompare(b.toLowerCase());
-              }
+        // const uniqueValues = (key) =>
+        //   [...new Set(data.all_quizzes.map((quiz) => quiz[key]))].sort(
+        //     (a, b) => {
+        //       if (typeof a === "string" && typeof b === "string") {
+        //         return a.toLowerCase().localeCompare(b.toLowerCase());
+        //       }
               // Handle non-string values or cases where a or b is not a string
-              return 0; // or handle as per your specific logic
-            }
-          );
-        setDataRanges(uniqueValues("date_range"));
-        setPopularity(uniqueValues("quiz_attempts"));
-        setCategories(uniqueValues("category"));
-        setSubCategories(uniqueValues("sub_category"));
-        setComplexities(uniqueValues("complexity"));
-        setCourses(uniqueValues("course_name"));
-        setClasses(uniqueValues("class_name"));
-        setCreatedBy(uniqueValues("created_by"));
+          //     return 0; 
+          //   }
+          // );
+        // setDataRanges(uniqueValues("date_range"));
+        // setPopularity(uniqueValues("quiz_attempts"));
+        // setCategories(uniqueValues("category"));
+        // setSubCategories(uniqueValues("sub_category"));
+        // setComplexities(uniqueValues("complexity"));
+        // setCourses(uniqueValues("course_name"));
+        // setClasses(uniqueValues("class_name"));
+        // setCreatedBy(uniqueValues("created_by"));
 
         const userDetails = data.audit_details;
         setUsername(userDetails.full_name);
+
+        // Fetch created by details
+        const uniqueCreatedBy = sortAlphabetically([...new Set(data.all_quizzes.map(quiz => quiz.created_by))]);
+        setCreatedBy(uniqueCreatedBy);
       } catch (error) {
         console.error("Error fetching quiz data:", error);
       }
@@ -125,6 +174,55 @@ const Quiz = () => {
 
     fetchQuizData();
   }, [userId]);
+
+
+  useEffect(() => {
+    if (selectedCategory.length > 0) {
+      const selectedCategories = allSubCategories.filter(item =>
+        selectedCategory.includes(item.category_name)
+      );
+
+      const newSubCategories = selectedCategories.flatMap(item =>
+        item.sub_categories.map(sub => sub.sub_category_name)
+      );
+
+      setFilteredSubCategories(sortAlphabetically(newSubCategories));
+    } else {
+      setFilteredSubCategories(sortAlphabetically(allSubCategories.flatMap(item =>
+        item.sub_categories.map(sub => sub.sub_category_name)
+      )));
+    }
+  }, [selectedCategory, allSubCategories]);
+
+  // useEffect(() => {
+  //   if (selectedDateRange.length > 0) {
+  //     const newPopularity = dateRanges
+  //       .filter(item => selectedDateRange.includes(item.date_range))
+  //       .flatMap(item => item.popularity);
+
+  //     setPopularity((newPopularity));
+  //   } else {
+  //     setPopularity((dateRanges.flatMap(item => item.popularity)));
+  //   }
+  // }, [selectedDateRange, dateRanges]);
+
+  useEffect(() => {
+    if (selectedCourses.length > 0) {
+      const selectedCoursesClasses = allClasses.filter(item =>
+        selectedCourses.includes(item.course_name)
+      );
+
+      const newClasses = selectedCoursesClasses.flatMap(item =>
+        item.classes.map(cls => cls.class_name)
+      );
+
+      setFilteredClasses(sortAlphabetically(newClasses));
+    } else {
+      setFilteredClasses(sortAlphabetically(allClasses.flatMap(item =>
+        item.classes.map(cls => cls.class_name)
+      )));
+    }
+  }, [selectedCourses, allClasses]);
 
   const [cardStates, setCardStates] = useState(
     Array(allquizzes.length).fill(false)
@@ -180,41 +278,17 @@ const Quiz = () => {
 
   useEffect(() => {
     const filtered = allquizzes.filter((quizItem) => {
-      const matchesCategory =
-        !selectedCategory.length ||
-        selectedCategory.includes(quizItem.category);
-      const matchesSubCategory =
-        !selectedSubCategory.length ||
-        selectedSubCategory.includes(quizItem.sub_category);
-      const matchesComplexity =
-        !selectedComplexity.length ||
-        selectedComplexity.includes(quizItem.complexity);
-      const matchesCourse =
-        !selectedCourses.length ||
-        selectedCourses.includes(quizItem.course_name);
-      const matchesClass =
-        !selectedClasses.length ||
-        selectedClasses.includes(quizItem.class_name);
-      const matchesCreatedBy =
-        !selectedCreatedBy.length ||
-        selectedCreatedBy.includes(quizItem.created_by);
-      const matchesSearch =
-        searchQuery.length === 0 ||
-        quizItem.quiz_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        quizItem.quiz_description
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase());
+      const matchesCategory = !selectedCategory.length || selectedCategory.includes(quizItem.category);
+      const matchesSubCategory = !selectedSubCategory.length || selectedSubCategory.includes(quizItem.sub_category);
+      const matchesComplexity = !selectedComplexity.length || selectedComplexity.includes(quizItem.complexity);
+      const matchesCourse = !selectedCourses.length || selectedCourses.includes(quizItem.course_name);
+      const matchesClass = !selectedClasses.length || selectedClasses.includes(quizItem.class_name);
+      const matchesCreatedBy = !selectedCreatedBy.length || selectedCreatedBy.includes(quizItem.created_by);
+      const matchesSearch = searchQuery.length === 0 || quizItem.quiz_name.toLowerCase().includes(searchQuery.toLowerCase()) || quizItem.quiz_description.toLowerCase().includes(searchQuery.toLowerCase());
 
-      return (
-        matchesCategory &&
-        matchesSubCategory &&
-        matchesComplexity &&
-        matchesCourse &&
-        matchesCreatedBy &&
-        matchesClass &&
-        matchesSearch
-      );
+      return matchesCategory && matchesSubCategory && matchesComplexity && matchesCourse && matchesCreatedBy && matchesClass && matchesSearch;
     });
+
     setFilteredQuizzes(filtered);
   }, [
     allquizzes,
@@ -347,7 +421,7 @@ const Quiz = () => {
               <input
                 className="text-[10px] pl-[38px] pr-[10px] rounded-md h-[38px] mr-[10px] w-fit bg-[#F5F5F5] text-left placeholder-[#214082] border-none focus:border-none outline-none"
                 type="text"
-                placeholder="Search here"
+                placeholder="Search quizzes"
                 value={searchQuery}
                 onChange={handleSearchChange}
               />
@@ -372,124 +446,74 @@ const Quiz = () => {
             <div className={styles.sortBy}>
               <div className="flex flex-wrap gap-1 mb-3 bg-[#f3d0d5] border-none px-2 ml-[25px] -mr-[20px] mx-auto mt-[10px] rounded-md">
                 <div className="flex-1 min-w-[150px]">
-                  <Select
-                    isMulti
-                    options={dataRanges.map((dtrng) => ({
-                      value: dtrng,
-                      label: dtrng,
-                    }))}
-                    value={selectedDateRange.map((dtrng) => ({
-                      value: dtrng,
-                      label: dtrng,
-                    }))}
-                    onChange={(selected) =>
-                      setSelectedDateRange(selected.map((item) => item.value))
-                    }
-                    styles={customStyles}
-                    placeholder="Date Range"
-                  />
+                   <Select
+            isMulti
+            options={dateRanges.map(dtrng => ({ value: dtrng, label: dtrng }))}
+            value={selectedDateRange.map(dtrng => ({ value: dtrng, label: dtrng }))}
+            onChange={selected => setSelectedDateRange(selected.map(item => item.value))}
+            styles={customStyles}
+            placeholder="Date Range"
+          />
                 </div>
                 <div className="flex-1 min-w-[150px]">
-                  <Select
-                    isMulti
-                    options={popularity.map((plr) => ({
-                      value: plr,
-                      label: plr ? `Top ${plr}` : plr,
-                    }))}
-                    value={selectedPopularity.map((plr) => ({
-                      value: plr,
-                      label: plr ? `Top ${plr}` : plr,
-                    }))}
-                    onChange={(selected) =>
-                      setSelectedPopularity(selected.map((item) => item.value))
-                    }
-                    styles={customStyles}
-                    placeholder="Popularity"
-                  />
+                <Select
+            isMulti
+            options={popularity.map(plr => ({ value: plr, label: plr ? ` ${plr}` : plr }))}
+            value={selectedPopularity.map(plr => ({ value: plr, label: plr ? ` ${plr}` : plr }))}
+            onChange={selected => setSelectedPopularity(selected.map(item => item.value))}
+            styles={customStyles}
+            placeholder="Popularity"
+          />
                 </div>
                 <div className="flex-1 min-w-[150px]">
-                  <Select
-                    isMulti
-                    options={categories.map((cat) => ({
-                      value: cat,
-                      label: cat,
-                    }))}
-                    value={selectedCategory.map((cat) => ({
-                      value: cat,
-                      label: cat,
-                    }))}
-                    onChange={(selected) =>
-                      setSelectedCategory(selected.map((item) => item.value))
-                    }
-                    styles={customStyles}
-                    placeholder="Category"
-                  />
+                <Select
+            isMulti
+            options={categories.map(cat => ({ value: cat, label: cat }))}
+            value={selectedCategory.map(cat => ({ value: cat, label: cat }))}
+            onChange={selected => setSelectedCategory(selected.map(item => item.value))}
+            styles={customStyles}
+            placeholder="Category"
+          />
                 </div>
                 <div className="flex-1 min-w-[150px]">
-                  <Select
-                    isMulti
-                    options={subCategories.map((subcat) => ({
-                      value: subcat,
-                      label: subcat,
-                    }))}
-                    value={selectedSubCategory.map((subcat) => ({
-                      value: subcat,
-                      label: subcat,
-                    }))}
-                    onChange={(selected) =>
-                      setSelectedSubCategory(selected.map((item) => item.value))
-                    }
-                    styles={customStyles}
-                    placeholder="Sub Category"
-                  />
+                <Select
+            isMulti
+            options={filteredSubCategories.map(subcat => ({ value: subcat, label: subcat }))}
+            value={selectedSubCategory.map(subcat => ({ value: subcat, label: subcat }))}
+            onChange={selected => setSelectedSubCategory(selected.map(item => item.value))}
+            styles={customStyles}
+            placeholder="Sub Category"
+          />
                 </div>
               </div>
               <div className="flex flex-wrap gap-1 mb-3 bg-[#f3d0d5] w-full border-none px-2 ml-[25px] -mr-[20px] mx-auto mt-[10px] rounded-md">
                 {/* complexity    */}
                 <Select
-                  isMulti
-                  options={complexities.map((complex) => ({
-                    value: complex,
-                    label: complex,
-                  }))}
-                  value={selectedComplexity.map((complex) => ({
-                    value: complex,
-                    label: complex,
-                  }))}
-                  onChange={(selected) =>
-                    setSelectedComplexity(selected.map((item) => item.value))
-                  }
-                  styles={customStyles}
-                  placeholder="Complexity"
-                />
+            isMulti
+            options={complexities.map(complex => ({ value: complex, label: complex }))}
+            value={selectedComplexity.map(complex => ({ value: complex, label: complex }))}
+            onChange={selected => setSelectedComplexity(selected.map(item => item.value))}
+            styles={customStyles}
+            placeholder="Complexity"
+          />
                 {/* Courses  */}
                 <Select
-                  isMulti
-                  options={courses.map((crs) => ({ value: crs, label: crs }))}
-                  value={selectedCourses.map((crs) => ({
-                    value: crs,
-                    label: crs,
-                  }))}
-                  onChange={(selected) =>
-                    setSelectedCourses(selected.map((item) => item.value))
-                  }
-                  styles={customStyles}
-                  placeholder="Courses"
-                />
+            isMulti
+            options={courses.map(course => ({ value: course, label: course }))}
+            value={selectedCourses.map(course => ({ value: course, label: course }))}
+            onChange={selected => setSelectedCourses(selected.map(item => item.value))}
+            styles={customStyles}
+            placeholder="Courses"
+          />
                 {/* classes    */}
                 <Select
-                  isMulti
-                  options={classes.map((cls) => ({ value: cls, label: cls }))}
-                  value={selectedClasses.map((cls) => ({
-                    value: cls,
-                    label: cls,
-                  }))}
-                  onChange={(selected) =>
-                    setSelectedClasses(selected.map((item) => item.value))
-                  }
-                  styles={customStyles}
-                  placeholder="Classes"
-                />
+            isMulti
+            options={filteredClasses.map(cls => ({ value: cls, label: cls }))}
+            value={selectedClasses.map(cls => ({ value: cls, label: cls }))}
+            onChange={selected => setSelectedClasses(selected.map(item => item.value))}
+            styles={customStyles}
+            placeholder="Classes"
+          />
                 {/* CreatedBy   */}
                 <Select
                   isMulti
@@ -561,7 +585,7 @@ const Quiz = () => {
                             {cardStates[index] && (
                               <div
                                 className={styles.infoIcons}
-                                style={{ marginTop: "-28px" }}
+                                style={{ marginTop: "-28px"}}
                               >
                                 <img
                                   className="absolute h-[9px] w-[9px] left-[6px] top-1"
@@ -625,15 +649,10 @@ const Quiz = () => {
                               </div>
                             )}
                           </div>
-                          <img
-                            className="h-8 w-9 relative -top-[9px] right-10 cursor-pointer"
-                            src={start}
-                            onClick={() => handleStartQuiz(quizItem.quiz_id)}
-                          />
                         </div>
 
-                        <div className="flex -mt-[5px]">
-                          <span className="relative group">
+                        <div className="flex mt-[9px] relative top-[21px]">
+                          <span className="relative group -top-[8px]">
                             <span className="text-[#002366] ml-[10px] mt-4 w-[50px] cursor-pointer z-0 truncate text-[9px] font-normal">
                               {highlightText(quizItem.category, searchQuery)}
                             </span>
@@ -642,22 +661,32 @@ const Quiz = () => {
                             </span>
                           </span>
 
-                          <p className="px-[2px] font-normal">|</p>
+                          <p className="px-[2px] font-normal relative -top-[8px]">|</p>
 
-                          <span className="relative group">
+                          <span className="relative group -top-[8px]">
                             <span className="text-[#002366] w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
                               {highlightText(
                                 quizItem.sub_category,
                                 searchQuery
                               )}
                             </span>
-                            <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+                            <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[10px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
                               {highlightText(
                                 quizItem.sub_category,
                                 searchQuery
                               )}
                             </span>
                           </span>
+                          <button
+                            className="cursor-pointer ml-auto relative -top-[18px] right-1"
+                            onClick={() => handleStartQuiz(quizItem.quiz_id)}
+                          >
+                            <img
+                              className="h-8 w-[34px]"
+                              src={start}
+                              alt="Start button"
+                            />
+                          </button>
                         </div>
 
                         {/* <div className="h-[1px] w-full bg-white"></div> */}
@@ -849,7 +878,7 @@ const Quiz = () => {
                             </svg>
 
                             {cardStatus[index] && (
-                              <div className={styles.infoIcons} style={{marginLeft: "-91px"}}>
+                              <div className={styles.infoIcons} style={{marginLeft: "-91px", marginTop: "-18px"}}>
                                 <div className={styles.start}>
                                   <img
                                     className={styles.startimage}
@@ -906,7 +935,7 @@ const Quiz = () => {
                           </div>
                         </div>
 
-                        <div className="flex mt-[10px] relative top-[20px]">
+                        <div className="flex mt-[9px] relative top-[22px]">
                           <span className="relative group">
                             <span className="text-[#002366] ml-[10px] w-[30px] cursor-pointer z-0 truncate text-[9px] font-normal">
                               {highlightText(quizItem.category, searchQuery)}
@@ -935,7 +964,7 @@ const Quiz = () => {
                             onClick={() => handleStartQuiz(quizItem.quiz_id)}
                           >
                             <img
-                              className="h-7 w-9"
+                              className="h-8 w-[34px]"
                               src={start}
                               alt="Start button"
                             />

@@ -114,7 +114,7 @@ const FreeProfile = () => {
   
     const fetchDetailsByPincode = async (pincode) => {
       try {
-        const response = await axios.post('https://quizifai.com:8010/location_details/', {
+        const response = await axios.post('https://dev.quizifai.com:8010/location_details/', {
           pincode: pincode
         });
         const data = response.data.data[0];
@@ -148,7 +148,7 @@ const FreeProfile = () => {
       console.log("User ID:", userId);     
       try {
         const response = await fetch(
-          `https://quizifai.com:8010/dashboard`,
+          `https://dev.quizifai.com:8010/dashboard`,
           {
             method: "POST",
             headers: {
@@ -276,7 +276,7 @@ const FreeProfile = () => {
 
     try {
       const response = await fetch(
-        `https://quizifai.com:8010/edt_prfl_dtls`,
+        `https://dev.quizifai.com:8010/edt_prfl_dtls`,
         {
           method: "POST",
           headers: {
@@ -351,7 +351,7 @@ handleEditClick();
   
     try {
       const response = await fetch(
-        `https://quizifai.com:8010/chnge_email_mobile`,
+        `https://dev.quizifai.com:8010/chnge_email_mobile`,
         {
           method: "POST",
           headers: {
@@ -500,7 +500,7 @@ const handleUpdatePassword = async (e) => {
   }
 
   try {
-    const response = await axios.post('https://quizifai.com:8010/update_password', {
+    const response = await axios.post('https://dev.quizifai.com:8010/update_password', {
       user_id: userId, // Replace with your user ID
       old_password: oldPassword,
       new_password: newPassword,

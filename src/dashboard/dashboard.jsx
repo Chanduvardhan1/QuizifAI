@@ -235,7 +235,7 @@ const Dashboard = () => {
       return "#808080"; // Gray color for invalid percentages
     }
   }
-  
+  const userRole = localStorage.getItem('user_role');
   const results = (latestResult || []).map((result, index) => {
     const percentColor = getColorPercentage(result?.quiz_percentage);
     return (
@@ -304,21 +304,23 @@ const Dashboard = () => {
                 </a>
               </div>
             </div> */}
-            <div className="w-[99px] h-[41px] absolute mr-[80px] mb-2 pb-2 -mt-[35px] rounded-[10px] bg-[#fee2e2]">
-              <div className="flex">
-                <img
-                  className="w-[25px] h-[25px] ml-2 mt-2"
-                  src={Plus}
-                  alt="Plus Icon"
-                />
-                <a
-                  href="./create-quiz"
-                  className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
-                >
-                  Quiz
-                </a>
-              </div>
-            </div>
+               {userRole === "quiz master" && (
+        <div className="w-[99px] h-[41px] absolute mr-[80px] mb-2 pb-2 -mt-[35px] rounded-[10px] bg-[#fee2e2]">
+          <div className="flex">
+            <img
+              className="w-[25px] h-[25px] ml-2 mt-2"
+              src={Plus}
+              alt="Plus Icon"
+            />
+            <a
+              href="./create-quiz"
+              className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
+            >
+              Quiz
+            </a>
+          </div>
+        </div>
+      )}
             {/* <div className={styles.searchIconContainer}>
               <img
                 src={searchIcon}
@@ -1097,10 +1099,10 @@ const Dashboard = () => {
                       <img className={styles.leaderboardimage} src={leaderboard_button} alt="Leaderboard icon" />
                       <span className={styles.leaderboardtext}  onClick={() => leaderboard(quizItem.quiz_id, quizItem.quiz_total_marks, quizItem.pass_percentage,quizItem.quiz_name,quizItem.quiz_description,quizItem.created_by,quizItem.complexity,quizItem.quiz_duration,quizItem.number_of_questions)}>Leaderboard</span>
                     </div>
-                    <div className={styles.share}>
+                    {/* <div className={styles.share}>
                       <img className={styles.shareimage} src={Share_button} alt="Share icon" />
                       <span className={styles.sharetext}>Share</span>
-                    </div>
+                    </div> */}
                   </div>
                 )}
               </div>

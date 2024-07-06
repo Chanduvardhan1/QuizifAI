@@ -49,7 +49,7 @@ const ResendOTP = () => {
 
     try {
       const response = await fetch(
-        "https://quizifai.com:8010/rsd_otp_or_email",
+        "https://dev.quizifai.com:8010/rsd_otp_or_email",
         {
           method: "POST",
           headers: {

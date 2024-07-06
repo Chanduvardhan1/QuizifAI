@@ -144,7 +144,7 @@ function contact() {
 
     try {
       const response = await fetch(
-        "https://quizifai.com:8010/contact_us_email",
+        "https://dev.quizifai.com:8010/contact_us_email",
         {
           method: "POST",
           headers: {

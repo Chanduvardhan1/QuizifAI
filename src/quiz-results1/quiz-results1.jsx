@@ -69,7 +69,7 @@ const Questions = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://quizifai.com:8010/leaderboard_result', {
+        const response = await fetch('https://dev.quizifai.com:8010/leaderboard_result', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',

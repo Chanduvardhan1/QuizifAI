@@ -128,7 +128,7 @@ const quizAccess = () => {
   useEffect(() => {
     const userId = localStorage.getItem("user_id");
     const quizId = localStorage.getItem("quiz_id");
-    fetch('https://quizifai.com:8010/access_quiz_for_master', {
+    fetch('https://dev.quizifai.com:8010/access_quiz_for_master', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

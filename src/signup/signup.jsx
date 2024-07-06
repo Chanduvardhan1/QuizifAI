@@ -187,6 +187,7 @@ const Signup = () => {
 if (hasError) {
     return;
 }
+localStorage.setItem('emailOrMobile', emailOrMobile);
     setResendAvailable(false); // Disable resend button after sending OTP
     setResendTime(10 * 60);
     const userData = {
@@ -355,6 +356,7 @@ if (hasError) {
 if (hasError) {
     return;
 }
+localStorage.setItem('mobile', mobile);
     setResendAvailable1(false); // Disable resend button after sending OTP
     setResendTime1(10 * 60);
     const userData = {

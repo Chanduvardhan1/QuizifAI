@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import {
   BrowserRouter,
   Routes,
@@ -260,7 +260,13 @@ import Leaderboard from "./leaderboard/leaderboard.jsx";
 
 //   return null; // This component doesn't render anything
 // }
+
+// const [userId, setUserId] = useState(localStorage.getItem("user_id"));
+
+
+
     function App() {
+    
   return (
     <>
       <BrowserRouter>

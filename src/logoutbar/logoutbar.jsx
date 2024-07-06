@@ -264,9 +264,9 @@ const LogoutBar = (data) => {
             <div className="flex">
             {/* <span className="text-[25px] text-[#5E81F4] ml-[20px] mt-[10px] font-semibold"></span> */}
             {remainingDays > 0 ?(
-              <img className="h-[40px] w-[35px] ml-5 -mt-2" src={infinity} />
-            ):(
-              <p className="text-[13px] text-red-500 ml-[20px] mt-[3px]">{remainingDays}</p>            
+              <p className="text-[13px] text-red-500 ml-[20px] mt-[3px]">{remainingDays}</p> 
+            ):(             
+              <img className="h-[40px] w-[35px] ml-5 -mt-2" src={infinity} />           
             )}
             <h1 className="mt-[2px] ml-[10px] text-[13px] font-normal">days remaining</h1>
             </div>

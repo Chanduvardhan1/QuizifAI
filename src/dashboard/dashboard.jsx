@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 import Plus from "../../src/assets/Images/dashboard/Plus.png";
 import Start_button from "../../public/images/dashboard/Start-button.png";
+import start from "../../src/assets/Images/dashboard/non-attempted-start.png";
 import Share_button from "../../public/images/dashboard/Share-button.png";
 import leaderboard_button from "../../public/images/dashboard/leaderboard-button.png";
 import Edit_button from "../../src/assets/Images/dashboard/Edit-button.png";
@@ -136,6 +137,7 @@ const Dashboard = () => {
   //   }
   // };
 
+  // toggle for latest quiz cards
   const [cardStates, setCardStates] = useState(Array(allquizzes.length).fill(false));
   const toggleNavbar = (index) => {
     setCardStates((prevState) => {
@@ -153,7 +155,24 @@ const Dashboard = () => {
       return updatedStates;
     });
   }
-  
+  // toggle for popular quiz cards 
+  const [cardStats, setCardStats] = useState(Array(allquizzes.length).fill(false));
+  const toggleNavbar3 = (index) => {
+    setCardStats((prevState) => {
+      const updatedStates = [...prevState];
+      updatedStates[index] = !updatedStates[index];
+      return updatedStates;
+    });
+  };
+
+  const [cardStatuss, setCardStatuss] = useState(Array(allquizzes.length).fill(false));
+  const toggleNavbar4 = (index) => {
+    setCardStatuss((prevState) => {
+      const updatedStates = [...prevState];
+      updatedStates[index] = !updatedStates[index];
+      return updatedStates;
+    });
+  }
 
   const handleBackToQuizzes = () => {
     navigate('/quiz');
@@ -405,7 +424,7 @@ const Dashboard = () => {
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                        class="w-4 h-4 rotate-90 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
                         onClick={() => toggleNavbar(index)}
                       >
                         <path
@@ -470,14 +489,14 @@ const Dashboard = () => {
 
   <p className="px-[2px] font-normal">|</p>
   
-  <span className="relative group">
-    <span className="text-[#002366] w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+  <span class="relative group">
+  <span class="text-[#002366] cursor-pointer z-0 truncate text-[9px] font-normal w-[50px]">
     {quizItem.sub_category}
-    </span>
-    <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-    {quizItem.sub_category}
-    </span>  
   </span>
+  <span class="absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded whitespace-nowrap">
+    {quizItem.sub_category}
+  </span>  
+</span>
       </div>
       
       {/* <div className="h-[1px] w-full bg-white"></div> */}
@@ -615,7 +634,7 @@ const Dashboard = () => {
                   backgroundColor: "#CBF2FB",               
                 }}
               >
-             <span className="relative group">
+             <span className="relative group -top-[12px]">
               <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate">
                 {quizItem.quiz_name}
               </span>
@@ -632,7 +651,7 @@ const Dashboard = () => {
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
                   stroke="currentColor"
-                  class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                  class="w-4 h-4 -ml-[27px] relative -top-[19px] right-[7px] rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
                   onClick={() => toggleNavbar1(index)}
                 >
                   <path
@@ -664,9 +683,11 @@ const Dashboard = () => {
                   </div>
                 )}
               </div>
+              <img style={{ height: '30px', width: '30px' }} className="relative top-[2px] right-10 -mt-[10px] cursor-pointer" src={start} 
+              onClick={() => handleStartQuiz(quizItem.quiz_id)}/>           
             </div>
   
-            <div className="flex mt-[10px] relative top-[9px]">
+            <div className="flex -mt-[2px] relative top-[9px]">
               <span className="relative group">
                 <span className="text-[#002366] ml-[10px] w-[50px] cursor-pointer z-0 truncate text-[9px] font-normal">
                   {quizItem.category}
@@ -676,14 +697,14 @@ const Dashboard = () => {
                 </span>
               </span>
               <p className="px-[2px] font-normal">|</p>
-              <span className="relative group">
-                <span className="text-[#002366] mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
-                  {quizItem.sub_category}
-                </span>
-                <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-                  {quizItem.sub_category}
-                </span>
-              </span>
+              <span class="relative group">
+  <span class="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-normal inline-block w-[100px] overflow-hidden whitespace-nowrap">
+    {quizItem.sub_category}
+  </span>
+  <span class="absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded text-nowrap">
+    {quizItem.sub_category}
+  </span>  
+</span>
             </div>
             <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[75px] left-[12px]">
             <div>Created By :
@@ -796,17 +817,17 @@ const Dashboard = () => {
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                        onClick={() => toggleNavbar(index)}
+                        class="w-4 h-4 -ml-[27px] rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
+                        onClick={() => toggleNavbar3(index)}
                       >
                         <path
                           stroke-linecap="round"
                           stroke-linejoin="round"
                           d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                         />
-                        {cardStates[index] ? "Close Navbar" : "Open Navbar"}
+                        {cardStats[index] ? "Close Navbar" : "Open Navbar"}
                       </svg>
-                      {cardStates[index]  && (
+                      {cardStats[index]  && (
                         <div className={styles.infoIcons}>
                           <img
                             className="absolute h-[1px] w-[1px] left-[6px] top-1"
@@ -847,6 +868,8 @@ const Dashboard = () => {
                         </div>
                       )}
                     </div>
+                    {/* <img style={{ height: '30px', width: '30px' }} className="relative top-[2px] right-10 -mt-[10px] cursor-pointer" src={start} 
+                    onClick={() => handleStartQuiz(quizItem.quiz_id)}/> */}
                   </div>
 
  <div className="flex mt-5">
@@ -1023,19 +1046,19 @@ const Dashboard = () => {
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
                   stroke="currentColor"
-                  class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                  onClick={() => toggleNavbar1(index)}
+                  class="w-4 h-4 -ml-[27px] relative -top-[9px] right-[1px] rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
+                  onClick={() => toggleNavbar4(index)}
                 >
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                   />
-                  {cardStatus[index] ? "Close Navbar" : "Open Navbar"}
+                  {cardStatuss[index] ? "Close Navbar" : "Open Navbar"}
                 </svg>
   
-                {cardStatus[index] && (
-                  <div className={styles.infoIcons}>
+                {cardStatuss[index] && (
+                  <div className={styles.infoIcons} style={{marginTop: "-29px"}}>
                     <div className={styles.start}>
                       <img className={styles.startimage} src={Start_button} alt="Play icon" />
                       <span className={styles.starttext} onClick={() => handleStartQuiz(quizItem.quiz_id)}>Start</span>
@@ -1055,6 +1078,8 @@ const Dashboard = () => {
                   </div>
                 )}
               </div>
+              <img style={{ height: '30px', width: '30px' }} className="relative top-[10px] right-[35px] -mt-[9px] cursor-pointer" src={start} 
+              onClick={() => handleStartQuiz(quizItem.quiz_id)}/>
             </div>
   
             <div className="flex mt-[10px] relative top-[9px]">
@@ -1133,17 +1158,6 @@ const Dashboard = () => {
               </div>
             ))}
           </div>
-          
-          {/* <div className={styles.topScoredHeader} style={{marginTop:"15px"}}>
-            <p className="text-[#002366]">Most Popular</p>
-            <span
-              className={styles.moreLink} style={{fontWeight:"600"}}
-              onClick={handleBackToQuizzes}
-            >
-              More{" "}
-            </span>
-            <p className="ml-[1px] mt-[1px] mr-[30px] text-[#EF5130]"></p>           
-          </div> */}
         </div>
       </div>
       <LogoutBar />

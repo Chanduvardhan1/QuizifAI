@@ -313,8 +313,8 @@ padding-top: 10px;
   padding-top: 6px;
   font-size: 8px;
   padding-top: 2px;
-  margin-top: -20px;
-  margin-left: -112px;
+  margin-top: -18px;
+  margin-left: -119px;
   position: absolute;
   background-color: #e2e8f0;
   clip-path: polygon(0% 0%, 80% 0, 81% 16%, 95% 26%, 81% 34%, 81% 100%, 0 100%);
@@ -434,7 +434,7 @@ margin-top: -60px;
    background-color: #cccecf;
  }
  .leaderboardimage{
-  height: 10px;
+  height: 9px;
   width: 10px;
   position: absolute;
   left: 14px;
@@ -460,8 +460,8 @@ margin-top: -60px;
   background-color: #cccecf;
 }
 .shareimage{
-  height: 10px;
-  width: 10px;
+  height: 9px;
+  width: 9px;
   position: absolute;
   left: 14px;
   top: 37px;

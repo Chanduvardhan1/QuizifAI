@@ -70,6 +70,8 @@ const register = () => {
   const [submitted, setSubmitted] = useState(false);
   const [countdown, setCountdown] = useState(5); 
    const[platform, serplatform] =useState("")
+   const [readOnly, setReadOnly] = useState(false);
+
   const handleDateChange =(e) =>{
     const dateValue = e.target.value;
     const year = dateValue.split('-')[0];
@@ -87,6 +89,25 @@ const register = () => {
       setemailOrMobile(emailMobOption === 'email' ? emailMob : '');
     }
   }, [emailMobOption, emailMob]);
+
+  useEffect(() => {
+    // Retrieve the email or mobile number from localStorage
+    const storedEmailOrMobile = localStorage.getItem('emailOrMobile');
+    if (storedEmailOrMobile) {
+      setemailOrMobile(storedEmailOrMobile);
+      setReadOnly(true); // Make the input field read-only if a value is found
+    }
+  }, []);
+
+
+  useEffect(() => {
+    // Retrieve the email or mobile number from localStorage
+    const storedmobile = localStorage.getItem('mobile');
+    if (storedmobile) {
+      setuserphonenumber(storedmobile);
+      setReadOnly(true); // Make the input field read-only if a value is found
+    }
+  }, []);
   // useEffect(() => {
   //   const searchParams = new URLSearchParams(location.search);
   //   const email = searchParams.get("email");
@@ -1133,7 +1154,7 @@ const register = () => {
                         borderRadius: "10px",
                       },
                       autoComplete: "off",
-                      // readOnly: true,
+                      readOnly: true,
                     }}
                     // value={email}
                     //onChange={(e) => handleEmailValidation(e.target.value)}
@@ -1332,7 +1353,9 @@ const register = () => {
                         borderRadius: "10px",
                       },
                       autoComplete: "off",
+                      readOnly: true, 
                     }}
+                    
                     // onChange={(e) => handleMobileChange}
                     //name="user_phone_number"
                     onChange={(e) => {

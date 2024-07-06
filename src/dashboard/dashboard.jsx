@@ -48,7 +48,29 @@ const Dashboard = () => {
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
   const [username, setUsername] = useState("");
   const navigate = useNavigate();
-
+  useEffect(() => {
+    const handleWindowClose = () => {
+      fetch('https://quizifai.com:8010/usr_logout/', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ user_id: userId })
+      })
+      .then(response => response.json())
+      .then(data => console.log('Logout successful:', data))
+      .catch(error => console.error('Error:', error));
+    };
+  
+    // Add the event listener
+    window.addEventListener('beforeunload', handleWindowClose);
+  
+    // Cleanup the event listener on component unmount
+    return () => {
+    window.removeEventListener('beforeunload', handleWindowClose);
+    };
+  }, []);
   useEffect(() => {
     const fetchQuizData = async () => {
       try {

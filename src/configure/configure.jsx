@@ -32,7 +32,7 @@ const configure = () => {
     const fetchQuizData = async () => {
       try {
         const response = await fetch(
-          `https://quizifai.com:8010/dashboard`,
+          `https://dev.quizifai.com:8010/dashboard`,
           {
             method: "POST",
             headers: {
@@ -67,10 +67,10 @@ const configure = () => {
   const items = [
       { id: 1, title: 'Configuration', content: 'Categories, Courses' },
       { id: 2, title: 'Organization', content: 'Profile, Manage Subscription, Performance Metrics, Marketing and Sales, Financial Information, Mission and Vision, Goals and Objectives' },
-      { id: 3, title: 'Notification', content: 'Contact Information, Target Audience, Date and Time, Main Content, Additional Information' },
-      { id: 4, title: 'User & Roles', content: 'User Information, Roles and Permissions, Training and Development, Communication, Security and Compliance, Responsibilities and Expectations' },
-      { id: 5, title: 'Developer & Data', content: 'Developer Information, Data Information, Access and Permissions, Tools and Resources, Project Management' },
-      { id: 6, title: 'Preferences', content: 'User Information, Preference Categories, Default Settings, Default Settings, Application-Specific Preferences, Subscription Preferences, Feedback and Support Preferences' },
+      { id: 3, title: 'Notification', content: 'Contact Information, Date and Time, Main Content, Additional Information' },
+      { id: 4, title: 'User & Roles', content: 'User Information, Roles and Permissions, Communication, Responsibilities and Expectations' },
+      { id: 5, title: 'Developer & Data', content: 'Developer Information, Data Information, Access and Permissions' },
+      { id: 6, title: 'Preferences', content: 'User Information, Preference Categories, Default Settings, Subscription Preferences' },
   ];
   
   const filteredItems = items.filter(item => 

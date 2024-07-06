@@ -258,7 +258,7 @@ const register = () => {
   //     confirm_password: confirmpassword,
   //   };
 
-  //   fetch("https://quizifai.com:8010/signup", {
+  //   fetch("https://dev.quizifai.com:8010/signup", {
   //     method: "POST",
   //     headers: {
   //       Accept: "application/json",
@@ -292,7 +292,7 @@ const register = () => {
 
   // const handleVerification = async () => {
   //   try {
-  //     const response = await fetch("https://quizifai.com:8010/verification", {
+  //     const response = await fetch("https://dev.quizifai.com:8010/verification", {
   //       method: "POST",
   //       headers: {
   //         "Content-Type": "application/json",
@@ -325,7 +325,7 @@ const register = () => {
 
   // const handleVerification = async () => {
   //   try {
-  //     const response = await fetch('https://quizifai.com:8010/verification', {
+  //     const response = await fetch('https://dev.quizifai.com:8010/verification', {
   //       verify_option: loginMethod,
   //       email_or_mobile: emailOrMobile,
   //       otp: otp
@@ -512,7 +512,7 @@ const register = () => {
 
   //   // if (validateForm()) {
   //   try {
-  //     const response = await fetch("https://quizifai.com:8010/rgstr_dtls", {
+  //     const response = await fetch("https://dev.quizifai.com:8010/rgstr_dtls", {
   //       method: "POST",
   //       headers: {
   //         "Content-Type": "application/json",
@@ -752,7 +752,7 @@ const register = () => {
     };
 
     try {
-      const response = await fetch("https://quizifai.com:8010/rgstr_dtls", {
+      const response = await fetch("https://dev.quizifai.com:8010/rgstr_dtls", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -887,7 +887,7 @@ const register = () => {
 
     try {
       const response = await fetch(
-        "https://quizifai.com:8010/location_details/",
+        "https://dev.quizifai.com:8010/location_details/",
         {
           method: "POST",
           headers: {
@@ -920,7 +920,7 @@ const register = () => {
   useEffect(() => {
     const fetchOccupations = async () => {
       try {
-        const response = await fetch('https://quizifai.com:8010/occupations/', {
+        const response = await fetch('https://dev.quizifai.com:8010/occupations/', {
           headers: { 'accept': 'application/json' },
         });
         const data = await response.json();
@@ -1353,7 +1353,7 @@ const register = () => {
                         borderRadius: "10px",
                       },
                       autoComplete: "off",
-                      readOnly: true, 
+                      
                     }}
                     
                     // onChange={(e) => handleMobileChange}

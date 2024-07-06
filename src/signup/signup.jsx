@@ -196,7 +196,7 @@ localStorage.setItem('emailOrMobile', emailOrMobile);
       email_or_mobile: emailOrMobile,
     };
 
-    fetch('https://quizifai.com:8010/signup', {
+    fetch('https://dev.quizifai.com:8010/signup', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -366,7 +366,7 @@ localStorage.setItem('mobile', mobile);
       
     };
 
-    fetch("https://quizifai.com:8010/signup", {
+    fetch("https://dev.quizifai.com:8010/signup", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -481,7 +481,7 @@ localStorage.setItem('mobile', mobile);
       return;
     }
     try {
-      const response = await fetch("https://quizifai.com:8010/sgnup_verification", {
+      const response = await fetch("https://dev.quizifai.com:8010/sgnup_verification", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -539,7 +539,7 @@ localStorage.setItem('mobile', mobile);
       return;
     }
     try {
-      const response = await fetch("https://quizifai.com:8010/sgnup_verification", {
+      const response = await fetch("https://dev.quizifai.com:8010/sgnup_verification", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -581,7 +581,7 @@ localStorage.setItem('mobile', mobile);
   };
 
   //   try {
-  //     const response = await fetch("https://quizifai.com:8010/verification", {
+  //     const response = await fetch("https://dev.quizifai.com:8010/verification", {
   //       method: "POST",
   //       headers: {
   //         "Content-Type": "application/json",
@@ -616,7 +616,7 @@ localStorage.setItem('mobile', mobile);
 
 
   //   try {
-  //     const response = await fetch('https://quizifai.com:8010/verification', {
+  //     const response = await fetch('https://dev.quizifai.com:8010/verification', {
   //       verify_option: loginMethod,
   //       email_or_mobile: emailOrMobile,
   //       otp: otp
@@ -787,7 +787,7 @@ localStorage.setItem('mobile', mobile);
 
   //   // if (validateForm()) {
   //   try {
-  //     const response = await fetch("https://quizifai.com:8010/rgstr_dtls", {
+  //     const response = await fetch("https://dev.quizifai.com:8010/rgstr_dtls", {
   //       method: "POST",
   //       headers: {
   //         "Content-Type": "application/json",
@@ -885,7 +885,7 @@ localStorage.setItem('mobile', mobile);
 
   //   try {
   //     const response = await fetch(
-  //       "https://quizifai.com:8010/location_details/",
+  //       "https://dev.quizifai.com:8010/location_details/",
   //       {
   //         method: "POST",
   //         headers: {

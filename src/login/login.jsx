@@ -108,7 +108,7 @@ const LoginPage = () => {
   //   // }
   //   try {
   //     console.log("email - ", email);
-  //     const response = await fetch(`https://quizifai.com:8010/login`, {
+  //     const response = await fetch(`https://dev.quizifai.com:8010/login`, {
   //       method: "POST",
   //       headers: {
   //         "Content-Type": "application/json",
@@ -201,7 +201,7 @@ const LoginPage = () => {
       const platform = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
       ? "mobile" // If any of the identifiers are found, return 'Mobile'.
       : "Web";
-      const response = await fetch(`https://quizifai.com:8010/login`, {
+      const response = await fetch(`https://dev.quizifai.com:8010/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -246,7 +246,10 @@ const LoginPage = () => {
             errorMessage = "Mobile Number is not valid.Please check your number";
           } else if (responseData.response_message === "Email is incorrect or account doesn't exist.") {
             errorMessage = "Email is incorrect or account doesn't exist.";
+          } else if (responseData.response_message === "Your login request is being processed. Please wait a moment while we verify your account details.") {
+            errorMessage = "Your login request is being processed. Please wait a moment while we verify your account details.";
           }
+
           setErrorMessage(errorMessage);
         } else {
           setErrorMessage("An unknown error occurred while logging in.");
@@ -280,7 +283,7 @@ const LoginPage = () => {
       email_or_mobile: loginMethod === "email" ? email : mobile,
     });
 
-    fetch("https://quizifai.com:8010/forgotpassword", {
+    fetch("https://dev.quizifai.com:8010/forgotpassword", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -103,12 +103,12 @@ const configure = () => {
           <p className='-mt-[5px]'>Welcome {userName}</p>
           <div className='flex -mt-[5px]'>
           <img
-                className='h-[12px] w-[12px] relative top-[10px] left-[20px]'
+                className='h-[12px] w-[12px] relative top-[9px] left-[25px]'
                 src={searchIcon}
                 alt="Search Icon"
             />
             <input
-                className='text-[10px] px-[20px] h-[30px] mr-[15px] w-fit bg-white text-center placeholder-[#214082] border-none outline-[#214082]'
+                className='-mt-[5px] text-[10px] pl-[38px] pr-[10px] rounded-md h-[38px] mr-[10px] w-fit bg-[#FFFFFF] text-left placeholder-[#214082] border-none focus:border-none outline-none'
                 type='text'
                 placeholder='Search your settings'
                 value={searchQuery}

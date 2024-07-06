@@ -87,6 +87,7 @@ import Editpdf from "./edit-pdf/editpdf.jsx";
 import Edittextbook from "./edit-textbook/edittextbook.jsx";
 import Quizresults1 from "./quizview_results/quiz_results.jsx";
 import Leaderboard from "./leaderboard/leaderboard.jsx";
+import PrivateRoute from './privateRoute/privateRoute.jsx';
 // import Home from "./pages/Home.jsx";
 // import ContactUs from "./pages/ContactUs.jsx";
 // import NoPage from "./pages/NoPage.jsx";

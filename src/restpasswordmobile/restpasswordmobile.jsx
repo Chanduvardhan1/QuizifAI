@@ -105,7 +105,7 @@ const resetpasswordmobile = () => {
   const handleResendOTP = () => {
     // Implement your API call to resend OTP here
     // Example code:
-    fetch("https://quizifai.com:8010/forgotpassword", {
+    fetch("https://dev.quizifai.com:8010/forgotpassword", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -162,7 +162,7 @@ const resetpasswordmobile = () => {
       confirm_new_password: confirmpassword,
     };
 
-    fetch("https://quizifai.com:8010/resetpassword", {
+    fetch("https://dev.quizifai.com:8010/resetpassword", {
       method: "POST",
       headers: {
         Accept: "application/json",

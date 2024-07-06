@@ -224,7 +224,7 @@ export default function quiztype() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('https://quizifai.com:8010/categories&sub_categories/');
+      const response = await fetch('https://dev.quizifai.com:8010/categories&sub_categories/');
       const data = await response.json();
       if (data.response === 'success') {
         setCategories(data.data);
@@ -259,7 +259,7 @@ export default function quiztype() {
 
   const fetchCourses = async () => {
     try {
-      const response = await fetch('https://quizifai.com:8010/courses-clsses/');
+      const response = await fetch('https://dev.quizifai.com:8010/courses-clsses/');
       const data = await response.json();
       if (data.response === 'success') {
         setCourses(data.data);
@@ -310,7 +310,7 @@ export default function quiztype() {
 
   const fetchComplexities = async () => {
     try {
-      const response = await fetch('https://quizifai.com:8010/complexities/');
+      const response = await fetch('https://dev.quizifai.com:8010/complexities/');
       const data = await response.json();
       if (data.response === 'success') {
         setComplexities(data.data.map(complexity => complexity.complexity_name));
@@ -330,7 +330,7 @@ export default function quiztype() {
 
   // const fetchData = async () => {
   //   try {
-  //     const response = await fetch("https://quizifai.com:8010/complexities/", {
+  //     const response = await fetch("https://dev.quizifai.com:8010/complexities/", {
   //       method: "GET",
   //       headers: {
   //         accept: "application/json",
@@ -349,7 +349,7 @@ export default function quiztype() {
 
   // useEffect(() => {
   //   // Fetch categories
-  //   fetch("https://quizifai.com:8010/categories/", {
+  //   fetch("https://dev.quizifai.com:8010/categories/", {
   //     method: "GET",
   //     headers: {
   //       Accept: "application/json",
@@ -379,7 +379,7 @@ export default function quiztype() {
   // useEffect(() => {
   //   if (quizCategory !== "") {
   //     // Fetch subcategories based on selected category
-  //     fetch("https://quizifai.com:8010/get_categories/", {
+  //     fetch("https://dev.quizifai.com:8010/get_categories/", {
   //       method: "POST",
   //       headers: {
   //         Accept: "application/json",
@@ -420,7 +420,7 @@ export default function quiztype() {
 
   // useEffect(() => {
   //   // Fetch courses
-  //   fetch("https://quizifai.com:8010/courses/")
+  //   fetch("https://dev.quizifai.com:8010/courses/")
   //     .then((response) => {
   //       if (!response.ok) {
   //         throw new Error("Failed to fetch courses");
@@ -442,7 +442,7 @@ export default function quiztype() {
   // useEffect(() => {
   //   // Fetch classes based on selected course name
   //   if (coursename !== "") {
-  //     fetch("https://quizifai.com:8010/get_class_name/", {
+  //     fetch("https://dev.quizifai.com:8010/get_class_name/", {
   //       method: "POST",
   //       headers: {
   //         Accept: "application/json",
@@ -556,7 +556,7 @@ export default function quiztype() {
       }
       const questionDuration = calculateQuizDuration();
       
-      const response = await fetch(`https://quizifai.com:8010/crt_quiz_mnlly`, {
+      const response = await fetch(`https://dev.quizifai.com:8010/crt_quiz_mnlly`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

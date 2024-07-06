@@ -66,6 +66,7 @@ const Quiz = () => {
   const [averageScorePercentage, setAverageScorePercentage] = useState(null);
 
   const navigate = useNavigate();
+  const userRole = localStorage.getItem('user_role');
 
   const sortAlphabetically = (arr) => {
     return arr.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
@@ -251,9 +252,9 @@ const Quiz = () => {
     navigate(`/editmanuly`);
   };
 
-  const leaderboard = (quizId) => {
+  const leaderboard = (quizId, quizTotalMarks, passPercentage,quizname,quizdescription,createdby,numberofquestions,quizduration,complexity) => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
-    navigate("/quiz-results1", { state: { quizId } });
+    navigate('/quiz-results1', { state: { quizId, quizTotalMarks, passPercentage, quizname,quizdescription,createdby,numberofquestions,quizduration,complexity} });
   };
 
   const leaderboard1 = (quizId, attemptId, quizduration, complexity) => {
@@ -394,21 +395,23 @@ const Quiz = () => {
           {/* Header content */}
           <p>Welcome {username}</p>
           <div className={styles.headerRight}>
-            <div className="w-[99px] h-[35px] absolute mr-[280px] -mt-2 rounded-[10px] bg-[#f3d0d5]">
-              <div className="flex">
-                <img
-                  className="w-[23px] h-[23px] ml-2 mt-1.5"
-                  src={Plus}
-                  alt="Plus Icon"
-                />
-                <a
-                  href="./create-quiz"
-                  className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-2"
-                >
-                  Quiz
-                </a>
-              </div>
-            </div>
+          {userRole === "quiz master" && (
+        <div className="w-[99px] h-[41px] absolute mr-[80px] mb-2 pb-2 -mt-[35px] rounded-[10px] bg-[#fee2e2]">
+          <div className="flex">
+            <img
+              className="w-[25px] h-[25px] ml-2 mt-2"
+              src={Plus}
+              alt="Plus Icon"
+            />
+            <a
+              href="./create-quiz"
+              className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
+            >
+              Quiz
+            </a>
+          </div>
+        </div>
+      )}
             <div className={styles.searchIconContainer}>
               <img
                 src={searchIcon}
@@ -602,11 +605,14 @@ const Quiz = () => {
                                 </span>
                                 <img
                                   className="absolute h-[9px] w-[9px]  left-[14px] -ml-2 top-[15.5px]"
-                                  src={download}
+                                  src={Share_button}
                                   alt="download icon"
                                 />
-                                <span className="text-[8px] -ml-[18px] absolute top-[14px] left-9 cursor-pointer hover:text-black">
-                                  Download
+                                <span className="text-[8px] -ml-[18px] absolute top-[14px] left-9 cursor-pointer hover:text-black"
+                                 onClick={() =>
+                                  handleStartQuiz(quizItem.quiz_id)
+                                }>
+                                   Retake
                                 </span>
                                 <img
                                   className={styles.leaderboardimage}
@@ -627,20 +633,19 @@ const Quiz = () => {
                                 >
                                   Leaderboard
                                 </span>
-                                <img
+                                {/* <img
                                   className={styles.shareimage}
                                   style={{ marginTop: "2px" }}
-                                  src={Share_button}
+                                  
+                                  src={download}
                                   alt="Play icon"
                                 />
                                 <span
                                   className={styles.sharetext}
-                                  onClick={() =>
-                                    handleStartQuiz(quizItem.quiz_id)
-                                  }
+                                 
                                 >
-                                  Retake
-                                </span>
+                                  Download
+                                </span> */}
                               </div>
                             )}
                           </div>
@@ -910,14 +915,12 @@ const Quiz = () => {
                                   />
                                   <span
                                     className={styles.leaderboardtext}
-                                    onClick={() =>
-                                      leaderboard(quizItem.quiz_id)
-                                    }
+                                    onClick={() => leaderboard(quizItem.quiz_id, quizItem.quiz_total_marks, quizItem.pass_percentage,quizItem.quiz_name,quizItem.quiz_description,quizItem.created_by,quizItem.complexity,quizItem.quiz_duration,quizItem.number_of_questions)}
                                   >
                                     Leaderboard
                                   </span>
                                 </div>
-                                <div className={styles.share}>
+                                {/* <div className={styles.share}>
                                   <img
                                     className={styles.shareimage}
                                     src={Share_button}
@@ -926,7 +929,7 @@ const Quiz = () => {
                                   <span className={styles.sharetext}>
                                     Share
                                   </span>
-                                </div>
+                                </div> */}
                               </div>
                             )}
                           </div>

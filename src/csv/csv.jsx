@@ -209,7 +209,7 @@ export default function quiztype() {
 
   // const fetchData = async () => {
   //   try {
-  //     const response = await fetch("https://quizifai.com:8010/complexities/", {
+  //     const response = await fetch("https://dev.quizifai.com:8010/complexities/", {
   //       method: "GET",
   //       headers: {
   //         accept: "application/json",
@@ -228,7 +228,7 @@ export default function quiztype() {
 
   // useEffect(() => {
   //   // Fetch categories
-  //   fetch("https://quizifai.com:8010/categories/", {
+  //   fetch("https://dev.quizifai.com:8010/categories/", {
   //     method: "GET",
   //     headers: {
   //       Accept: "application/json",
@@ -258,7 +258,7 @@ export default function quiztype() {
   // useEffect(() => {
   //   if (quizCategory !== "") {
   //     // Fetch subcategories based on selected category
-  //     fetch("https://quizifai.com:8010/get_categories/", {
+  //     fetch("https://dev.quizifai.com:8010/get_categories/", {
   //       method: "POST",
   //       headers: {
   //         Accept: "application/json",
@@ -299,7 +299,7 @@ export default function quiztype() {
 
   // useEffect(() => {
   //   // Fetch courses
-  //   fetch("https://quizifai.com:8010/courses/")
+  //   fetch("https://dev.quizifai.com:8010/courses/")
   //     .then((response) => {
   //       if (!response.ok) {
   //         throw new Error("Failed to fetch courses");
@@ -321,7 +321,7 @@ export default function quiztype() {
   // useEffect(() => {
   //   // Fetch classes based on selected course name
   //   if (coursename !== "") {
-  //     fetch("https://quizifai.com:8010/get_class_name/", {
+  //     fetch("https://dev.quizifai.com:8010/get_class_name/", {
   //       method: "POST",
   //       headers: {
   //         Accept: "application/json",
@@ -400,7 +400,7 @@ export default function quiztype() {
     const user_id = localStorage.getItem('user_id');
     try {
       const response = await fetch(
-        `https://quizifai.com:8010/crt_qz_from_exl_csv`,
+        `https://dev.quizifai.com:8010/crt_qz_from_exl_csv`,
         {
           method: "POST",
           headers: {
@@ -555,7 +555,7 @@ export default function quiztype() {
 
     try {
       const response = await fetch(
-        "https://quizifai.com:8010/qz_from_exl_csv/",
+        "https://dev.quizifai.com:8010/qz_from_exl_csv/",
         {
           method: "POST",
           body: formData,
@@ -655,7 +655,7 @@ export default function quiztype() {
 
     try {
       const response = await fetch(
-        "https://quizifai.com:8010/crt_qz_from_exl_csv/",
+        "https://dev.quizifai.com:8010/crt_qz_from_exl_csv/",
         {
           method: "POST",
           body: formData,

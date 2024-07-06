@@ -28,7 +28,7 @@ const QuizQuestions = () => {
   // useEffect(() => {
   //   const userId = localStorage.getItem("user_id");
 
-  //   fetch('https://quizifai.com:8010/get-questions', {
+  //   fetch('https://dev.quizifai.com:8010/get-questions', {
   //     method: 'POST',
   //     headers: {
   //       'Accept': 'application/json',
@@ -84,7 +84,7 @@ const QuizQuestions = () => {
   //     }
   //   }));
 
-  //   fetch('https://quizifai.com:8010/submit', {
+  //   fetch('https://dev.quizifai.com:8010/submit', {
   //     method: 'POST',
   //     headers: {
   //       'Accept': 'application/json',
@@ -134,7 +134,7 @@ const QuizQuestions = () => {
 
   useEffect(() => {
     const quizId = localStorage.getItem("quiz_id");
-    fetch('https://quizifai.com:8010/get-questions', {
+    fetch('https://dev.quizifai.com:8010/get-questions', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -229,7 +229,7 @@ const QuizQuestions = () => {
     }));
     // const quizId = localStorage.getItem("quiz_id");
 
-    fetch('https://quizifai.com:8010/submit', {
+    fetch('https://dev.quizifai.com:8010/submit', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

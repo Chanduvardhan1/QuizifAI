@@ -72,7 +72,7 @@ const leaderboard = () => {
     const {passPercentage} = location.state || {};
     const fetchQuizReport = async () => {
       try {
-        const response = await fetch('https://quizifai.com:8010/quiz_report', {
+        const response = await fetch('https://dev.quizifai.com:8010/quiz_report', {
           method: 'POST',
           headers: {
             'accept': 'application/json',
@@ -106,7 +106,7 @@ const leaderboard = () => {
   useEffect(() => {
     const fetchLeaderboardData = async () => {
       try {
-        const response = await fetch('https://quizifai.com:8010/leaderboard_result', {
+        const response = await fetch('https://dev.quizifai.com:8010/leaderboard_result', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -137,7 +137,7 @@ const leaderboard = () => {
 
   //   const sendQuizResult = async () => {
   //     try {
-  //       const response = await fetch('https://quizifai.com:8010/quiz_result', {
+  //       const response = await fetch('https://dev.quizifai.com:8010/quiz_result', {
   //         method: 'POST',
   //         headers: {
   //           'accept': 'application/json',
@@ -170,7 +170,7 @@ const leaderboard = () => {
 
     const sendQuizResult = async () => {
       try {
-        const response = await fetch('https://quizifai.com:8010/quiz_result', {
+        const response = await fetch('https://dev.quizifai.com:8010/quiz_result', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -203,7 +203,7 @@ const leaderboard = () => {
 
     const fetchLeaderboardData = async () => {
       try {
-        const response = await fetch('https://quizifai.com:8010/leaderboard_result', {
+        const response = await fetch('https://dev.quizifai.com:8010/leaderboard_result', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',

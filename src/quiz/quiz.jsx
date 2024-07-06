@@ -153,7 +153,7 @@ const Quiz = () => {
     navigate(`/editmanuly`);
   };
 
-  const leaderboard = (quizId, quizTotalMarks, passPercentage) => {
+  const leaderboard = (quizId) => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     navigate("/quiz-results1", { state: { quizId } });
   };
@@ -533,35 +533,6 @@ const Quiz = () => {
                           </span>
                           <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                             {highlightText(quizItem.quiz_name, searchQuery)}
-
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                        />
-                        {cardStates[index] ? "Close Navbar" : "Open Navbar"}
-                      </svg>
-                      {cardStates[index]  && (
-                        <div className={styles.infoIcons1}>
-                          <img
-                            className="absolute h-[12px] w-[10px] left-[6px] "
-                            src={eye}
-                            alt="Play icon"
-                          />
-                          <span className="text-[8px] pl-[27px] -ml-[9px]  cursor-pointer hover:text-black"
-                          onClick={() =>
-                            quizresults(quizItem.quiz_id,quizItem.quiz_level_attempt_id)
-                          }>
-                            View
-                          </span>
-                          <img
-                            className="absolute h-[10px] w-[10px]  left-[14px] -ml-2 top-[17px]"
-                            src={Share_button}
-                            alt="download icon"
-                          />
-                          <span className="text-[8px] -ml-[18px] absolute top-[15px] left-9 cursor-pointer hover:text-black"  onClick={() => handleStartQuiz(quizItem.quiz_id)}>
-                          Retake
-
                           </span>
                         </span>
                         <div className={styles.iconContainer}>
@@ -682,13 +653,6 @@ const Quiz = () => {
                               )}
                             </span>
                           </span>
-                          {/* <img
-                            className={styles.shareimage} style={{marginTop:"2px"}}
-                           
-                            src={download}
-                            alt="Play icon"
-                          />
-                          <span className={styles.sharetext}>Download</span> */}
                         </div>
 
                         {/* <div className="h-[1px] w-full bg-white"></div> */}
@@ -984,102 +948,6 @@ const Quiz = () => {
                           {/* <div>Created On</div> */}
                         </div>
                         {/* <div style={{ backgroundColor: "#EFEFEF", padding: "2px 0" }}>
-                        <span className="text-[8px] -ml-[1px]">duration</span>
-                      </div>
-                    </span>
-                  </div>
-        </div>
-        </div>
-    
-                </div>
-              ):(
-                <div
-              className={styles.card}
-              style={{
-                width: "245px",
-                paddingTop: "8px",
-                marginRight: "10px",
-                marginTop:"20px",
-                backgroundColor: "#CBF2FB",
-              }}
-            >
-             <span className="relative group">
-              <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate">
-              {highlightText(quizItem.quiz_name, searchQuery)}
-              </span>
-              <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-              {highlightText(quizItem.quiz_name, searchQuery)}
-              </span>
-            </span>
-  
-            <div className={styles.iconContainer}>
-              <div className="z-40 mb-[2px] pl-[36px] font-normal rounded">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
-                  onClick={() => toggleNavbar1(index)}
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                  />
-                  {cardStatus[index] ? "Close Navbar" : "Open Navbar"}
-                </svg>
-  
-                {cardStatus[index] && (
-                  <div className={styles.infoIcons}>
-                    <div className={styles.start}>
-                      <img className={styles.startimage} src={Start_button} alt="Play icon" />
-                      <span className={styles.starttext} onClick={() => handleStartQuiz(quizItem.quiz_id)}>Start</span>
-                    </div>
-                    <div className={styles.edit}>
-                      <img className={styles.editimage} src={Edit_button} alt="Edit icon" />
-                      <span className={styles.edittext} onClick={() => Edit(quizItem.quiz_id)}>Edit</span>
-                    </div>
-                    <div className={styles.leaderboard}>
-                      <img className={styles.leaderboardimage} src={leaderboard_button} alt="Leaderboard icon" />
-                      <span className={styles.leaderboardtext} onClick={() => leaderboard(quizItem.quiz_id, quizItem.quiz_total_marks, quizItem.pass_percentage)}>Leaderboard</span>
-                    </div>
-                    {/* <div className={styles.share}>
-                      <img className={styles.shareimage} src={Share_button} alt="Share icon" />
-                      <span className={styles.sharetext}>Share</span>
-                    </div> */}
-                  </div>
-                )}
-              </div>
-            </div>
-  
-            <div className="flex mt-[10px] relative top-[9px]">
-              <span className="relative group">
-                <span className="text-[#002366] ml-[10px] w-[50px] cursor-pointer z-0 truncate text-[9px] font-normal">
-                {highlightText(quizItem.category, searchQuery)}
-                </span>
-                <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-                {highlightText(quizItem.category, searchQuery)}
-                </span>
-              </span>
-              <p className="px-[2px] font-normal">|</p>
-              <span className="relative group">
-                <span className="text-[#002366] mt-4 w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
-                {highlightText(quizItem.sub_category, searchQuery)}
-                </span>
-                <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-                {highlightText(quizItem.sub_category, searchQuery)}
-                </span>
-              </span>
-            </div>
-            <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[75px] left-[12px]">
-            <div>Created By :
-                      <span className="pl-[2px]">{highlightText(quizItem.created_by, searchQuery)}</span>
-                    </div>
-                    {/* <div>Created On</div> */}
-                    </div>
-            {/* <div style={{ backgroundColor: "#EFEFEF", padding: "2px 0" }}>
               <div className="h-[10px] w-full bg-[#D9D9D9]"></div>
             </div> */}
 

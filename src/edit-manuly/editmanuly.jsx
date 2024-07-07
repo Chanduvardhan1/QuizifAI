@@ -673,6 +673,8 @@ export default function editmanuly() {
               return "Class name should be a valid string.";
             } else if (error.type === "value_error" && error.loc.includes("quiz_time_bounded_questions")) {
               return "quiz_time_bounded_questions must be one of the following: 'No', 'All questions in same time', 'Each questions different time'.";
+            } else if (error.detail === "Option Text is missing.") {
+              return "Option Text is missing.";
             } else {
               return error.msg;
             }

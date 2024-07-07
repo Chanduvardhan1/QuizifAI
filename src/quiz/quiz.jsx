@@ -393,10 +393,10 @@ const Quiz = () => {
       <div className={styles.mainContent}>
         <div className={styles.header}>
           {/* Header content */}
-          <p>Welcome {username}</p>
+          <p className="-mt-[5px]">Welcome {username}</p>
           <div className={styles.headerRight}>
           {userRole === "quiz master" && (
-        <div className="w-[99px] h-[41px] absolute mr-[80px] mb-2 pb-2 -mt-[35px] rounded-[10px] bg-[#fee2e2]">
+        <div className="w-[99px] h-[40px] absolute mr-[300px] mb-2 pb-2 -mt-[25px] rounded-[10px] bg-[#fee2e2]">
           <div className="flex">
             <img
               className="w-[25px] h-[25px] ml-2 mt-2"

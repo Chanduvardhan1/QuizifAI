@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Navigation from "../navbar/navbar";
 import { FiAlertCircle } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
+import { FaXmark } from "react-icons/fa6";
 
 import PDF from "../assets/Images/quiz-type/PDF.png";
 import Next from "../assets/Images/quiz-type/Next.png";
@@ -1535,12 +1536,11 @@ if (isAnyFieldEmpty) {
                         setQuestions(updatedQuestions);
                       }}
                     />
-                     {/* <button
-        className="bg-red-500 text-white rounded-full w-10 h-[35px] ml-2"
-        onClick={() => handleDeleteQuestion(questionIndex)}
-      >
-        Delete
-      </button> */}
+                  
+      {/* <FaXmark 
+       onClick={() => handleDeleteQuestion(questionIndex)}  
+        className="w-[30px] h-[30px] text-orange-500"
+/> */}
                     {/* <input
   type="number"
   placeholder="Duration"
@@ -1581,7 +1581,7 @@ if (isAnyFieldEmpty) {
                 <input
                   type="text"
                   placeholder="Option Text"
-                  className="w-[820px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[15px] font-normal"
+                  className="w-[836px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[15px] font-normal"
                   value={option.answer_option_text}
                   onChange={(e) => handleOptionChange(questionIndex, optionIndex, e.target.value)}
                 />

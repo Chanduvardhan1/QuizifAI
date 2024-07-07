@@ -251,6 +251,10 @@ left: -100px !important;
   .formRow img {
     margin-right: 15px;
   }
+  .content4{
+    padding: 20px;
+    width: 100%; 
+  }
   .sendbutton1{
     display: flex;
     justify-content: end;

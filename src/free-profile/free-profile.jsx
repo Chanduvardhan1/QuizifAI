@@ -270,6 +270,8 @@ const FreeProfile = () => {
       user_address_line_2: " ",
       occupation: occupation,
       other_occupation: " ",
+      user_phone_number: mobileNumber,
+
     };
 
     console.log("Updating profile with payload:", payload);
@@ -429,7 +431,7 @@ handleEditClick();
     setMobileNumber(initialFormData.mobileNumber);
     setIsEmailOtpSent(false);
 setIsMobileOtpSent(false);
-handleEditClick(); 
+// handleEditClick(); 
 
   }
 
@@ -1105,12 +1107,14 @@ const handleLoginCancelClick1 = () =>{
       >
         {buttonText}
       </button>
+      {showNewPasswords && (
       <button
       className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] ml-[4%] text-white"
       onClick={handleLoginCancelClick1}
     >
       Cancel
     </button>
+      )}
     </div>
        
       </div>

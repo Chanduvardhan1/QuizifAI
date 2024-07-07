@@ -250,7 +250,7 @@ function contact() {
       </header>
       <div className="content">
           <div className="contactContent">
-          <div className="contactContent">
+          <div className="contactContent1">
             <img
               src={Lady}
               alt="Image Description"
@@ -258,11 +258,11 @@ function contact() {
               height={400}
               layout="fixed"
               objectFit="cover"
-              style={{
-                position: "absolute",
-                top: "102px",
-                left: "220px",
-              }}
+              // style={{
+              //   position: "absolute",
+              //   top: "102px",
+              //   left: "220px",
+              // }}
             />
             {/* <img
               src="/images/contact/whatsapp.png"
@@ -292,34 +292,38 @@ function contact() {
             </p> */}
 
             {/* Second Logo */}
+            <div className="emailcontact">
             <img
               src={ContactMail}
               alt="Logo 2"
               width={40}
               height={40}
-              style={{
-                position: "absolute",
-                top: "465px",
-                left: "248px",
-              }}
+              // style={{
+              //   position: "absolute",
+              //   top: "465px",
+              //   left: "248px",
+              // }}
             />
-            <p
+            <span
               style={{
-                position: "absolute",
-                top: "460px",
-                left: "299px",
+                // position: "absolute",
+                // top: "460px",
+                // left: "299px",
                 fontSize: "12px",
                 color: "#214082",
                 fontWeight: 600,
                 fontFamily: "poppins",
+                display:"flex",
+                gap:"5px"
                 
               }}
             >
-              <a href="mailto:info@quizifai.com" className="ContactMail1">info@quizifai.com</a>
-              <p className="line">|</p><br/>
-              <a href="mailto:sales@quizifai.com" className="ContactMail2">sales@quizifai.com</a>
-            </p>
 
+             <span> <a href="mailto:info@quizifai.com" className="ContactMail1">info@quizifai.com</a></span>
+              <span className="line">|</span>
+              <span> <a href="mailto:sales@quizifai.com" className="ContactMail2">sales@quizifai.com</a></span>
+            </span>
+            </div>
             {/* Third Logo */}
             {/* <img
               src="/images/contact/address.png"
@@ -350,9 +354,9 @@ function contact() {
             <div className="outerBox1">
             <h1
               style={{
-                position: "absolute",
-                left: "813px",
-                top: "80px",
+                // position: "absolute",
+                // left: "813px",
+                // top: "80px",
                 color: "#0B3A55",
                 fontFamily: "Open Sans",
                 fontWeight: 600,
@@ -362,7 +366,7 @@ function contact() {
               Get in Touch With Us
             </h1>
 
-            <div className="outerBox" style={{ marginLeft: "40px" }}>
+            <div className="outerBox" >
               <div className="innerBox">
                 <div className="contactForm">
                   <div className="formRow">
@@ -723,14 +727,15 @@ function contact() {
                   />
                   </div>
                   {/* <Navigate to={"/contact"}> */}
+                  <div className="sendbutton1">
                   <button 
                     className="sendbutton"
                       style={{
                       width: "80px",
                       height: "29.8px",
-                      position: "absolute",
-                      top: "315.2px",
-                      left: "280.9px",
+                      // position: "absolute",
+                      // top: "315.2px",
+                      // left: "280.9px",
                       backgroundColor: "#223F80",
                       color: "#ffffff",
                       border: "none",
@@ -744,6 +749,7 @@ function contact() {
                   >
                     Send
                   </button>
+                  </div>
                   {/* </Navigate> */}
                   </div>
                 </div>

@@ -127,7 +127,11 @@ const Dashboard = () => {
     createdby,
     numberofquestions,
     quizduration,
-    complexity
+    complexity,
+    mincompletiontime,
+    quizattempts,
+    avgscore,
+    max_percentage
   ) => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     navigate("/quiz-results1", {
@@ -141,9 +145,14 @@ const Dashboard = () => {
         numberofquestions,
         quizduration,
         complexity,
+        mincompletiontime,
+        quizattempts,
+        avgscore,
+        max_percentage
       },
     });
   };
+
   // const leaderboard1 = (quizId, quizTotalMarks, passPercentage) => {
   //   localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
   //   navigate('/leaderboard', { state: { quizId, quizTotalMarks, passPercentage } });
@@ -825,7 +834,13 @@ const Dashboard = () => {
                                       quizItem.created_by,
                                       quizItem.complexity,
                                       quizItem.quiz_duration,
-                                      quizItem.number_of_questions
+                                      quizItem.number_of_questions,
+
+                                      quizItem.min_completion_time,
+                                      quizItem.quiz_attempts,
+                                      quizItem.avg_score,
+                                      quizItem.max_percentage,
+                                      
                                     )
                                   }
                                 >
@@ -1359,21 +1374,25 @@ const Dashboard = () => {
                                       quizItem.created_by,
                                       quizItem.complexity,
                                       quizItem.quiz_duration,
-                                      quizItem.number_of_questions
+                                      quizItem.number_of_questions,
+                                      quizItem.min_completion_time,
+                                      quizItem.quiz_attempts,
+                                      quizItem.avg_score,
+                                      quizItem.max_percentage,
                                     )
                                   }
                                 >
                                   Leaderboard
                                 </span>
                               </div>
-                              <div className={styles.share}>
+                              {/* <div className={styles.share}>
                                 <img
                                   className={styles.shareimage}
                                   src={Share_button}
                                   alt="Share icon"
                                 />
                                 <span className={styles.sharetext}>Share</span>
-                              </div>
+                              </div> */}
                             </div>
                           )}
                         </div>

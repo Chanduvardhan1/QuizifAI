@@ -252,9 +252,39 @@ const Quiz = () => {
     navigate(`/editmanuly`);
   };
 
-  const leaderboard = (quizId, quizTotalMarks, passPercentage,quizname,quizdescription,createdby,numberofquestions,quizduration,complexity) => {
+  const leaderboard = (
+    quizId,
+    quizTotalMarks,
+    passPercentage,
+    quizname,
+    quizdescription,
+    createdby,
+    numberofquestions,
+    quizduration,
+    complexity,
+    mincompletiontime,
+    quizattempts,
+    avgscore,
+    max_percentage
+  ) => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
-    navigate('/quiz-results1', { state: { quizId, quizTotalMarks, passPercentage, quizname,quizdescription,createdby,numberofquestions,quizduration,complexity} });
+    navigate("/quiz-results1", {
+      state: {
+        quizId,
+        quizTotalMarks,
+        passPercentage,
+        quizname,
+        quizdescription,
+        createdby,
+        numberofquestions,
+        quizduration,
+        complexity,
+        mincompletiontime,
+        quizattempts,
+        avgscore,
+        max_percentage
+      },
+    });
   };
 
   const leaderboard1 = (quizId, attemptId, quizduration, complexity) => {
@@ -915,7 +945,24 @@ const Quiz = () => {
                                   />
                                   <span
                                     className={styles.leaderboardtext}
-                                    onClick={() => leaderboard(quizItem.quiz_id, quizItem.quiz_total_marks, quizItem.pass_percentage,quizItem.quiz_name,quizItem.quiz_description,quizItem.created_by,quizItem.complexity,quizItem.quiz_duration,quizItem.number_of_questions)}
+                                    onClick={() =>
+                                      leaderboard(
+                                        quizItem.quiz_id,
+                                        quizItem.quiz_total_marks,
+                                        quizItem.pass_percentage,
+                                        quizItem.quiz_name,
+                                        quizItem.quiz_description,
+                                        quizItem.created_by,
+                                        quizItem.complexity,
+                                        quizItem.quiz_duration,
+                                        quizItem.number_of_questions,
+                                        quizItem.min_completion_time,
+                                        quizItem.quiz_attempts,
+                                        quizItem.avg_score,
+                                        quizItem.max_percentage,
+                                        
+                                      )
+                                    }
                                   >
                                     Leaderboard
                                   </span>

@@ -723,12 +723,13 @@ if (isAnyFieldEmpty) {
   const handleNext4 = async () => {
     try {
       const user_id = localStorage.getItem('user_id');
-
+  
       // Check if user_id is retrieved successfully
       if (!user_id) {
         setErrorMessage("User ID not found. Please log in again.");
         return;
       }
+  
       const response = await fetch(
         `https://dev.quizifai.com:8010/crt_qz_from_pdf`,
         {
@@ -754,7 +755,7 @@ if (isAnyFieldEmpty) {
             available_from: availablefrom,
             disabled_on: disabledon,
             quiz_total_marks: quiztotalmarks,
-            user_id:user_id,
+            user_id: user_id,
             questions: questions.map((question) => ({
               question_text: question.question_text,
               question_weightage: question.question_weightage,
@@ -768,24 +769,28 @@ if (isAnyFieldEmpty) {
           }),
         }
       );
+  
       const responseData = await response.json();
       console.log(responseData, "data");
-
+  
       if (response.ok) {
         // Assuming router and state setter are defined properly
-        navigate("/quizcreated1", { state: { quizData: responseData } });
+        navigate("/quizcreated", { state: { quizData: responseData } });
       } else {
-        if (
-          responseData.detail &&
-          responseData.detail[0].type === "missing" &&
-          responseData.detail[0].loc[1] === "body" &&
-          responseData.detail[0].loc[2] === "num_questions"
-        ) {
-          setErrorMessage(
-            "Please provide the number of questions for the quiz."
-          );
+        if (responseData.detail) {
+          if (
+            responseData.detail[0].type === "missing" &&
+            responseData.detail[0].loc[1] === "body" &&
+            responseData.detail[0].loc[2] === "num_questions"
+          ) {
+            setErrorMessage("Please provide the number of questions for the quiz.");
+          } else if (responseData.detail === "Option Text is missing.") {
+            setErrorMessage("Option Text is missing.");
+          } else {
+            setErrorMessage(responseData.detail);
+          }
         } else {
-          setErrorMessage(responseData.detail);
+          setErrorMessage("An unexpected error occurred.");
         }
       }
     } catch (error) {
@@ -793,6 +798,7 @@ if (isAnyFieldEmpty) {
       setErrorMessage("An error occurred while choosing the type of the quiz");
     }
   };
+  
 
   const handleQuestionChange = (index, value) => {
     const updatedQuestions = [...questions];
@@ -873,6 +879,12 @@ if (isAnyFieldEmpty) {
 
     return selectedOptions;
   };
+
+  // const handleDeleteQuestion = (questionIndex) => {
+  //   const updatedQuestions = questions.filter((_, index) => index !== questionIndex);
+  //   setQuestions(updatedQuestions);
+  // };
+  
   const handleOptionChange = (questionIndex, optionIndex, value) => {
     const updatedQuestions = [...questions];
     updatedQuestions[questionIndex].options[optionIndex].answer_option_text = value;
@@ -1523,6 +1535,12 @@ if (isAnyFieldEmpty) {
                         setQuestions(updatedQuestions);
                       }}
                     />
+                     {/* <button
+        className="bg-red-500 text-white rounded-full w-10 h-[35px] ml-2"
+        onClick={() => handleDeleteQuestion(questionIndex)}
+      >
+        Delete
+      </button> */}
                     {/* <input
   type="number"
   placeholder="Duration"

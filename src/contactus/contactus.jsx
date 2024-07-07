@@ -248,7 +248,7 @@ function contact() {
           </ul>
         </nav>
       </header>
-      <div className="content">
+      <div className="content4">
           <div className="contactContent">
           <div className="contactContent1">
             <img

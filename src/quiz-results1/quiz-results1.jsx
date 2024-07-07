@@ -62,7 +62,10 @@ import questions from "../../src/assets/Images/images/quizresults/question-mark.
 
 const Questions = () => {
   const location = useLocation();
-  const { quizId , quizTotalMarks, passPercentage,quizname,quizdescription,createdby,complexity,numberofquestions,quizduration} = location.state || {};
+  const { quizId , quizTotalMarks, passPercentage,quizname,quizdescription,createdby,complexity,numberofquestions,quizduration,  mincompletiontime,
+    quizattempts,
+    avgscore,
+    max_percentage} = location.state || {};
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [quizData, setQuizData] = useState({});
   const [quizMetrics, setQuizMetrics] = useState({})
@@ -198,27 +201,27 @@ const topThree = leaderboardData.slice(0, 3);
 <div className={styles.alldetails}>
   <img className={styles.Allimg} src={sucess} alt="" />
   <span  className={styles.Question}>Total Attempts: </span>
-  <span className={styles.username1} ></span>
+  <span className={styles.username1} >{quizattempts}</span>
 
 </div>
-<div className={styles.alldetails}>
+{/* <div className={styles.alldetails}>
 <img className={styles.Allimg}  src={dateIcon1} a alt="" />
 <span  className={styles.Question}>Most Recent Attempt: </span>
 <span className={styles.username1} ></span>
 
-</div>
+</div> */}
 <div className={styles.alldetails}>
 <img className={styles.Allimg}  src={timeIcon1} alt="" />
 <span  className={styles.Question}>Average Completion Time: </span>
-<span className={styles.username1} > Minutes</span>
+<span className={styles.username1} >{mincompletiontime} Minutes</span>
 
 </div>
-<div className={styles.alldetails}>
+{/* <div className={styles.alldetails}>
 <img className={styles.Allimg}  src={fast} alt="" style={{ width:"30px", height:"40px", marginRight:"5px"}} />
 <span  className={styles.Question}>Record Fastest Completion: </span>
 <span className={styles.username1} ></span>
 
-</div>
+</div> */}
 <div className={styles.alldetails}>
   <img className={styles.Allimg} src={Top1} alt="" style={{ width:"42px", height:"44px",marginRight:"-10px",position:"relative",right:"5px"}}/>
   <span  className={styles.Question}>Top Score:</span>
@@ -228,27 +231,27 @@ const topThree = leaderboardData.slice(0, 3);
 <div className={styles.alldetails}>
 <img className={styles.Allimg}  src={average1} a alt="" />
 <span  className={styles.Question}>Average Score: </span>
-<span className={styles.username1} >{quizMetrics.average_attained_score}</span>
+<span className={styles.username1} >{avgscore}</span>
 
 </div>
-<div className={styles.alldetails}>
+{/* <div className={styles.alldetails}>
 <img className={styles.Allimg}  src={current} alt="" />
 <span  className={styles.Question}>Total Questions Attempted: </span>
 <span className={styles.username1} > Minutes</span>
 
-</div>
-<div className={styles.alldetails}>
+</div> */}
+{/* <div className={styles.alldetails}>
 <img className={styles.Allimg}  src={sucess1} alt="" />
 <span  className={styles.Question}>Success Rate: </span>
 <span className={styles.username1} ></span>
 
-</div>
-<div className={styles.alldetails}>
+</div> */}
+{/* <div className={styles.alldetails}>
 <img className={styles.Allimg}  src={percentIcon1} alt="" />
 <span  className={styles.Question}>Number of Perfect Scores (100%): </span>
 <span className={styles.username1} ></span>
 
-</div>
+</div> */}
 
       </div>
         <div className={styles.boxContainer1}>

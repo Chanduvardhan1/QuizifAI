@@ -834,7 +834,7 @@ if (isAnyFieldEmpty) {
         return;
       }
       const response = await fetch(
-        `https://dev.quizifai.com:8010/crt_qz_from_txtbuk`,
+        `https://dev.quizifai.com:8010/crt_qz_from_txtbook`,
         {
           method: "POST",
           headers: {

@@ -993,7 +993,7 @@ const Quiz = () => {
                           </span>
                           <p className="px-[2px] font-normal">|</p>
                           <span class="relative group">
-                            <span class="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-normal inline-block w-[100px] overflow-hidden whitespace-nowrap">
+                            <span class="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-normal inline-block w-[80px] overflow-hidden whitespace-nowrap">
                               {highlightText(
                                 quizItem.sub_category,
                                 searchQuery

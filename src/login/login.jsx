@@ -324,10 +324,11 @@ const LoginPage = () => {
     });
   };
 
-  // const handleEmailChange = (event) => {
-  //   setEmail(event.target.value);
-  // };
 
+  const handleEmailChange1 = (e) => {
+    const value = e.target.value.trim().toLowerCase();
+    setEmail(value);
+  };
   // const handleMobileChange = (event) => {
   //   setMobile(event.target.value);
   // };
@@ -440,7 +441,7 @@ const LoginPage = () => {
                           label="Email"
                           required
                           value={email}
-                          onChange={(e) => setEmail(e.target.value)}
+                          onChange={handleEmailChange1}
                           variant="outlined"
                           className={styles.inputField}
                           style={{ width: "325px", height: "50px" }}

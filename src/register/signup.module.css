@@ -25,11 +25,11 @@
     align-items: center;
   }
   
-  .logo {
+  .logo4 {
     width: 600px;
     /* height: 500px; */
-    margin-top: 50px;
-    margin-left: 130px;
+    margin-top: 35px;
+    margin-left: 150px;
   
   }
   .checkbox1{
@@ -715,13 +715,7 @@ margin-left: 85px;
       font-size: calc(18px + 150%); 
     }
   
-    .logo{
-   
-      width: 600px;
-      /* height: 500px; */
-      margin-top: 50px;
-      margin-left: 130px;
-    }
+
   
     .image {
       width: 50.25px;

@@ -227,6 +227,10 @@ export default function editmanuly() {
 
   const [isModified, setIsModified] = useState(false);
   const saveButtonRef = useRef(null);
+  const [selectedQuestions, setSelectedQuestions] = useState([]); // State to store selected questions
+  const [isAllSelected, setIsAllSelected] = useState(false);
+
+ 
 
   useEffect(() => {
     fetchCategories();
@@ -1092,7 +1096,32 @@ const handleNumQuestionsChange = (e) => {
     setQuestions(updatedQuestions);
   }
 };
+const toggleQuestionSelection = (index) => {
+  setSelectedQuestions(prevSelected => {
+    if (prevSelected.includes(index)) {
+      return prevSelected.filter(i => i !== index);
+    } else {
+      return [...prevSelected, index];
+    }
+  });
+};
 
+const handleDeleteSelected = () => {
+  const newQuestions = questions.filter((_, index) => !selectedQuestions.includes(index));
+  setQuestions(newQuestions);
+  setNumQuestions(newQuestions.length);
+  setSelectedQuestions([]);
+  setIsAllSelected(false);
+};
+
+const handleSelectAll = () => {
+  if (isAllSelected) {
+    setSelectedQuestions([]);
+  } else {
+    setSelectedQuestions(questions.map((_, index) => index));
+  }
+  setIsAllSelected(!isAllSelected);
+};
 const handleQuizTotalMarksChange = (e) => {
 
   const value = parseInt(e.target.value, 10);
@@ -1727,10 +1756,45 @@ const handleQuizTotalMarksChange = (e) => {
 
             {/* Questions and options */}
             <div className="absolute top-[210px] left-[284px] ">
+              <div className=" flex justify-between items-center mb-[10px]">
+              <div className="ml-[-20px] mr-[5px] " >
+        <input 
+          type="checkbox"
+          checked={isAllSelected}
+          onChange={handleSelectAll}
+        />
+        <label className="ml-[5px] font-normal text-[#214082]">Select All</label>
+      </div>
+                <div>
+            {selectedQuestions.length > 0 && (
+        <button
+          onClick={handleDeleteSelected}
+          className="bg-red-500 text-white p-2 rounded-full "
+        >
+          Delete
+        </button>
+      )}
+      </div>
+  
+      </div>
             {questions.map((question, questionIndex) => (
   <div key={questionIndex} className="mb-8">
+    
     {/* Input field for question */}
+    {/* <input
+            type="checkbox"
+            checked={selectedQuestions.includes(questionIndex)}
+            onChange={() => toggleQuestionSelection(questionIndex)}
+          /> */}
+         
+         
     <div className="flex items-center mb-4">
+    <input
+    className="ml-[-20px] mr-[5px] mt-1 flex justify-center text-center"
+            type="checkbox"
+            checked={selectedQuestions.includes(questionIndex)}
+            onChange={() => toggleQuestionSelection(questionIndex)}
+          />
       <div className="mr-2 text-xl font-normal text-[#214082]">
         {questionIndex + 1}.
       </div>
@@ -1797,10 +1861,11 @@ const handleQuizTotalMarksChange = (e) => {
           setNumQuestions(newQuestions.length);
           setIsModified(true);
         }}  
-        className="w-[30px] h-[30px] text-orange-500"
+        className="w-[25px] h-[25px] text-orange-500"
 />
+   
     </div>
-
+   
     {/* Input fields for options */}
     {question.options.map((option, optionIndex) => (
       <div key={optionIndex} className="flex items-center mb-2">

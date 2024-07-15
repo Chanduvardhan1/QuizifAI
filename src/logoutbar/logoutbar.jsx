@@ -12,6 +12,7 @@ import expand from "../assets/Images/images/dashboard/expand.png";
 import ranks from "../assets/Images/images/dashboard/ranks.png";
 import infinity from "../assets/Images/images/dashboard/infinity.png"
 import questionmark from "../assets/Images/images/dashboard/questionmark.png";
+import profileimg from "../assets/Images/images/profile/profileImage.png";
 
 
 const currentValue1 = 50; 
@@ -151,16 +152,17 @@ const LogoutBar = (data) => {
 
   </div>
 
-        <div style={{ position: "relative"}}>
+       <div style={{ position: "relative"}}>
           
         <img
-          src={user2Icon}
+          src={profileimg}
           alt="Background Image"
-          style={{ display: "block", marginLeft: "45px"}}
+          style={{ display: "block", marginLeft: "45px", width: "113px",
+            height:"110px"}}
         />
 
-<img
-          src={userIcon}
+{/* <img
+          src={profileimg}
           alt="Foreground Image"
           style={{
             position: "absolute",
@@ -168,8 +170,10 @@ const LogoutBar = (data) => {
             left: "50%",
             transform: "translate(-50%, -50%)",
             paddingRight:"9px",
+            width: "113px",
+    height:"110px"
           }}
-        />
+        /> */}
         </div>
         <div style={{ textAlign: "center" }}>
           <p style={{ fontSize: "15px", marginBottom: "5px", fontWeight: 600 ,color:"#002366"}}>

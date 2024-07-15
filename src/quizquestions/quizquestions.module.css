@@ -220,7 +220,7 @@ width: 152px;
 }
 .Createdbyandupdated{
     display: flex;
-    gap: 142px;
+    gap: 115px;
 }
 .Created{
     align-items: center;
@@ -328,7 +328,7 @@ margin-left: -130px;
   }
   .Questionslines{
     display:flex;
-    gap:70px;
+    gap:54px;
   }
   .Question{
     font-family: Poppins;

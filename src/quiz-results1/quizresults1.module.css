@@ -90,9 +90,12 @@
       font-family: Poppins;
   font-size: 18px;
   /* font-weight: 700; */
-  line-height: 40px;
+  /* line-height: 40px; */
   letter-spacing: 0em;
   text-align: left;
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
   margin-left: 50px;
   
     }
@@ -432,8 +435,8 @@ padding: 10px;
     /* align-items: center;
     margin-left: -50px;
     padding-top: 20px; */
-    position: absolute;
-    justify-content: center;
+    /* position: absolute; */
+    /* justify-content: center; */
     align-items: center;
     top: 230px;
   }
@@ -522,7 +525,7 @@ padding: 10px;
   }
   
   .textOverImage1 {
-    position: absolute;
+    /* position: absolute; */
     color: black;
     font-size: 14px;
     font-weight: 500;
@@ -582,6 +585,7 @@ padding: 10px;
     gap: 100px;
     justify-content: center;
     z-index: 1;
+    margin-bottom: 15px;
   }
   .fist{
     border-radius: 50%;
@@ -651,8 +655,8 @@ padding: 10px;
 }
 .Createdbyupdated{
   display: flex;
-  justify-content: space-between;
-  /* gap: 40px; */
+  /* justify-content: space-between; */
+  gap: 260px;
   font-size: 14px;
 }
 .Createdby {
@@ -773,9 +777,12 @@ height: 26px;
     font-family: Poppins;
 font-size: 18px;
 /* font-weight: 700; */
-line-height: 40px;
+/* line-height: 40px; */
 letter-spacing: 0em;
 text-align: left;
+gap: 20px;
+display: flex;
+flex-direction: column;
 /* margin-left: 50px; */
 
   }
@@ -893,15 +900,15 @@ text-align: left;
   }
   
   .textOverImage1 {
-    margin-top: 150px;
-    margin-left: 175px;
+    /* margin-top: 150px; */
+    margin-left: 177px;
     display: flex;
     flex-direction: column;
     text-align: center;
   }
   .Questionslines{
     display: flex;
-    gap: 51px;
+    gap: 45px;
   }
   .Question{
     font-family: Poppins;
@@ -913,7 +920,7 @@ text-align: left;
     font-weight: 400;
   }
   .textOverImage2 {
-    margin-top: 165px;
+    margin-top: 10px;
     margin-left: -70px;
     display: flex;
     flex-direction: column;
@@ -923,7 +930,7 @@ text-align: left;
   .textOverImage3 {
     /* margin-left: 25px; */
     position: relative;
-    top: 125px;
+    top: 25px;
     left: 65px;
     display: flex;
     color: black;

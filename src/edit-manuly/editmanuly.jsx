@@ -230,7 +230,7 @@ export default function editmanuly() {
   const [selectedQuestions, setSelectedQuestions] = useState([]); // State to store selected questions
   const [isAllSelected, setIsAllSelected] = useState(false);
 
- 
+ const [quizcreation , setQuizcreation] = useState('')
 
   useEffect(() => {
     fetchCategories();
@@ -568,8 +568,8 @@ export default function editmanuly() {
       alert("Please fill in all the required fields before proceeding.");
       return; // Prevent further execution
     }
-    if (numQuestions < 10) {
-      alert("You need to have at least 10 questions.");
+    if (numQuestions < 5) {
+      alert("You need to have at least 5 questions.");
       return;
     }
     
@@ -629,6 +629,7 @@ export default function editmanuly() {
           quiz_time_bounded_questions: timings,
           quiz_public_access: publicAccess,
           available_from: availablefrom,
+          quiz_creation_method:quizcreation,
           disabled_on: disabledon,
           quiz_total_marks: quiztotalmarks,
           questions: questions.map((question) => ({
@@ -805,6 +806,7 @@ export default function editmanuly() {
         setavailablefrom(data.data.available_from);
         setdisabledon(data.data.disabled_on);
         setquiztotalmarks(data.data.quiz_total_marks);
+        setQuizcreation(data.data.quiz_creation_method)
         console.log('Available classes:', data.data.class_name);
         console.log('Available subcategories:', data.data.quiz_sub_category_name);
 
@@ -1756,8 +1758,8 @@ const handleQuizTotalMarksChange = (e) => {
 
             {/* Questions and options */}
             <div className="absolute top-[210px] left-[284px] ">
-              <div className=" flex justify-between items-center mb-[10px]">
-              <div className="ml-[-20px] mr-[5px] " >
+              <div className=" flex justify-between items-center mb-[10px] pr-[40px] ">
+              <div className="ml-[-20px] mr-[5px]" >
         <input 
           type="checkbox"
           checked={isAllSelected}
@@ -1769,7 +1771,7 @@ const handleQuizTotalMarksChange = (e) => {
             {selectedQuestions.length > 0 && (
         <button
           onClick={handleDeleteSelected}
-          className="bg-red-500 text-white p-2 rounded-full "
+          className="bg-orange-500 text-white p-2 text-[14px] rounded-full "
         >
           Delete
         </button>

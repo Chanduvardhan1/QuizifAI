@@ -423,7 +423,7 @@ const Quiz = () => {
       <div className={styles.mainContent}>
         <div className={styles.header}>
           {/* Header content */}
-          <p className="-mt-[5px]">Welcome {username}</p>
+          <p className="-mt-[5px]"><span className='text-[16px]'>Welcome</span>  {username}</p>
           <div className={styles.headerRight}>
           {userRole === "Quiz Master" && (
         <div className="w-[99px] h-[40px] absolute mr-[300px] mb-2 pb-2 -mt-[25px] rounded-[10px] bg-[#fee2e2]">
@@ -463,8 +463,7 @@ const Quiz = () => {
          text-[#002366] rounded-md"
           style={{ background: "#30CDF040" }}
         >
-          You've completed {weeklyQuizCount} Quizzes this week with an average
-          score of {averageScorePercentage}%
+          You have successfully completed {weeklyQuizCount}  quizzes this week, achieving an average score of {averageScorePercentage}%
         </div>
 
         <div className={styles.contentWrapper1}>

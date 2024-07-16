@@ -157,11 +157,11 @@ const Dashboard = () => {
   //   localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
   //   navigate('/leaderboard', { state: { quizId, quizTotalMarks, passPercentage } });
   // };
-  const leaderboard1 = (quizId, attemptId, quizduration, complexity) => {
+  const leaderboard1 = (quizId, attemptId, complexity,quizduration) => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     localStorage.setItem("quiz_level_attempt_id", attemptId);
-    localStorage.setItem("quiz_duration", quizduration);
     localStorage.setItem("complexity", complexity); // Store attempt_id in local storage
+    localStorage.setItem("quiz_duration", quizduration);
     navigate(`/leaderboard`);
   };
   const Edit = (quizId) => {
@@ -329,7 +329,7 @@ const Dashboard = () => {
       <div className={styles.mainContent}>
         <div className={styles.header}>
           {/* Header content */}
-          <p>Welcome {username}</p>
+          <p><span className={styles.Welcome}>Welcome</span>  {username}</p>
 
           <div className={styles.headerRight}>
             {/* <div>{getFormattedDate()}</div> */}
@@ -375,8 +375,7 @@ const Dashboard = () => {
           </div>
         </div>
         <div className={styles.completionInfo}>
-          You've completed {weeklyQuizCount} Quizzes this week with an average
-          score of {averageScorePercentage}%
+        You have successfully completed {weeklyQuizCount} Quizzes this week, achieving an average score of {averageScorePercentage}%.
         </div>
         <div className="flex mx-auto">
           <div className={styles.resultWrapper}>
@@ -565,7 +564,8 @@ const Dashboard = () => {
                                   leaderboard1(
                                     quizItem.quiz_id,
                                     quizItem.quiz_level_attempt_id,
-                                    quizItem.complexity
+                                    quizItem.complexity,
+                                    quizItem.quiz_duration
                                   )
                                 }
                               >

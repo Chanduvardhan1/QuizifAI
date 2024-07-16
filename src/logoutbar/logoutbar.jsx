@@ -148,7 +148,7 @@ const LogoutBar = (data) => {
     .then(data => {
       console.log('Logout response:', data);
       if (data.response === 'success') {
-        alert(data.response_message)
+        
         navigate("/login");
       } else {
         console.error('Logout failed:', data.response_message);

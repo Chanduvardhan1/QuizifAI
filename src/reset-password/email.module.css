@@ -21,6 +21,14 @@
   flex: 1;
   max-width: 50%; 
 }
+.restpassword{
+  color: red;
+  display: flex;
+  width: 330px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px;
+}
 .diffColor{
   color:blue;
   cursor:pointer;

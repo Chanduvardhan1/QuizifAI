@@ -1760,14 +1760,14 @@ const handleQuizTotalMarksChange = (e) => {
             {/* Questions and options */}
             <div className="absolute top-[210px] left-[284px] ">
               <div className=" flex  items-center mb-[10px] pr-[40px] ">
-              <div className="ml-[-20px] mr-[5px]" >
+              {/* <div className="ml-[-20px] mr-[5px]" >
         <input 
           type="checkbox"
           checked={isAllSelected}
           onChange={handleSelectAll}
         />
         <label className="ml-[5px] font-normal text-[#214082]">Select</label>
-      </div>
+      </div> */}
                 <div >
             {selectedQuestions.length > 0 && (
         <button

@@ -417,6 +417,14 @@
   color: #fff;
   
 }
+.restpassword{
+  color: red;
+  display: flex;
+  width: 330px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px;
+}
 
 .resendButton{
   width: 104px;

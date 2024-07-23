@@ -112,7 +112,9 @@ const quizAccess = () => {
           quiz_duration: quizData.quiz_duration,
           pass_percentage: quizData.pass_percentage,
           num_questions: quizData.num_questions,
-          quiz_total_marks: quizData.quiz_total_marks
+          quiz_total_marks: quizData.quiz_total_marks,
+          quiz_complexity_name:quizData.quiz_complexity_name
+
         }
       });
     }

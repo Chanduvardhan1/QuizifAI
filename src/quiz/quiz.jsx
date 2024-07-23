@@ -648,6 +648,7 @@ const Quiz = () => {
                                 View
                               </span>
                               </div>
+                              
                               <div className={styles.retake}>
                               <img
                                 className=" h-[10px] w-[10px] "
@@ -663,6 +664,21 @@ const Quiz = () => {
                                 Retake
                               </span>
                               </div>
+                              {userRole === "Quiz Master" && (
+                                <div className={styles.edit}>
+                                  <img
+                                    className={styles.editimage}
+                                    src={Edit_button}
+                                    alt="Edit icon"
+                                  />
+                                  <span
+                                    className={styles.edittext}
+                                    onClick={() => Edit(quizItem.quiz_id)}
+                                  >
+                                    Edit
+                                  </span>
+                                </div>
+                                )}
                               <div className={styles.leaderboard}>
                               <img
                                 className={styles.leaderboardimage}

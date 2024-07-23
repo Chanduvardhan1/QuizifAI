@@ -191,11 +191,12 @@ padding-top: 10px;
     height: 375px;
     margin-top: 160px;
     background-color: black; /* Adjust as needed */
-    margin-right: 20px; 
+    /* margin-right: 20px;  */
     /* margin-left: 170px; */
 }
 .Totaltimer{
     /* width: 400px; */
+    padding: 5px;
 }
 .sentence1{
     font-family: Poppins;
@@ -216,11 +217,12 @@ width: 152px;
     align-items: center;
 }
 .quizdescription{
-    width: 650px;
+    width: 600px;
 }
 .Createdbyandupdated{
     display: flex;
-    gap: 110px;
+    /* gap: 110px; */
+    flex-direction: column;
 }
 .Created{
     align-items: center;
@@ -328,7 +330,14 @@ margin-left: -130px;
   }
   .Questionslines{
     display:flex;
-    gap:40px;
+    /* gap:40px; */
+    flex-direction: column;
+  }
+  .flexrow{
+    display: flex;
+    /* flex-direction: column; */
+    gap: 40px;
+  
   }
   .Question{
     font-family: Poppins;
@@ -370,4 +379,68 @@ margin-left: -130px;
     font-weight: bold;
     border-color: green;
   }
+  /* QuizComponent.module.css */
+/* QuizComponent.module.css */
+
+.questionNumbersContainer {
+  display: flex;
+  flex-wrap: nowrap;
+  margin-bottom: 20px;
+  max-width: 600px;
+}
+
+.questionNumber1 {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #f9f9f9;
+}
+
+.questionNumber1.selected {
+  background-color: lightgreen;
+  font-weight: bold;
+  border-color: green;
+}
+
+.skippedQuestionsContainer {
+  display: flex;
+  flex-wrap:wrap;
+  margin-top: 20px;
+  max-width: 600px;
+}
+
+.questionNumber1.skipped {
+  background-color: #F4774B;
+  font-weight: bold;
+  border-color: red;
+  font-size: 10px;
+  color: #214082;;
+}
+
+.skipped{
+  font-size: 14px;
+  color: #214082;
+}
+.backgroundbox{
+  background-color: white;
   
+  border: 1px solid;
+  padding: 10px;
+  border-radius: 10px;
+  color: #214082;;
+}
+.innerbox{
+  display: flex;
+    border: 1px solid;
+    flex-wrap: wrap;
+    border-color: #214082;;
+    border-radius: 10px;
+    padding: 5px;
+}

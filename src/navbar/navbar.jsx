@@ -167,10 +167,10 @@ const Navigation = () => {
       <div className="h-[5px] w-full bg-white mt-[10px]"></div>
 
 <div className="p-[10px] ml-2">
-  <h1 className="font-semibold mt-[10px] text-[15px]">Public User</h1>
+  <h1 className="font-semibold mt-[10px] text-[15px] text-[#002366]">Public User</h1>
   <h1 className="text-[12px] mt-[5px] px-[1px]">Subscribed Date : 
     <span className="text-[#5E81F4] text-nowrap">{subscriptionStartDate}</span></h1>
-  <h1 className="font-semibold -mt-[3px] text-[15px] pt-2">Subscribed</h1>
+  <h1 className="font-semibold -mt-[3px] text-[15px] pt-2 text-[#002366]">Subscribed</h1>
   
   <div className="flex">
   {/* <span className="text-[25px] text-[#5E81F4] ml-[20px] mt-[10px] font-semibold"></span> */}

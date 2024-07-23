@@ -124,13 +124,18 @@ const QuizQuestions = () => {
   const userId = localStorage.getItem("user_id");
  // Assuming quiz_id is 1592
   const [attemptNo, setAttemptNo] = useState(null);
-  
+  const [skippedQuestionsDisplay, setSkippedQuestionsDisplay] = useState([]);
   const { quizId } = useParams();
   const location = useLocation();
-  const {quiz_title, quiz_description,quiz_duration,quiz_total_marks,num_questions,pass_percentage} = location.state;
+  const {quiz_title, quiz_description,quiz_duration,quiz_total_marks,num_questions,pass_percentage,quiz_complexity_name} = location.state;
   const [elapsedTime, setElapsedTime] = useState(quiz_duration * 60); 
   const timerRef = useRef(null);
+  const lastVisitedQuestionRef = useRef(0);
+  // const [skippedQuestions, setSkippedQuestions] = useState([]);
+  // const [skippedQuestionsDisplay, setSkippedQuestionsDisplay] = useState([]);
 
+  const [quizSubmitted, setQuizSubmitted] = useState(false);
+  const [validationMessage, setValidationMessage] = useState('');
   const handleNextClick = () => {
     if (currentQuestionIndex + 1 < filteredQuizData.length) {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
@@ -191,6 +196,7 @@ const QuizQuestions = () => {
               return prevTime - 1;
             } else {
               clearInterval(timerRef.current);
+              // handleSubmit1();
               return 0;
             }
           });
@@ -207,36 +213,172 @@ const QuizQuestions = () => {
       clearInterval(timerRef.current);
     };
   }, [userId, quiz_duration]);
- 
+
   const handleOptionSelect = (optionId) => {
-    setSelectedOptions(prevOptions => ({
-      ...prevOptions,
-      [currentQuestionIndex]: optionId
-    }));
+    setSelectedOptions((prev) => {
+      const updatedOptions = {
+        ...prev,
+        [currentQuestionIndex]: optionId,
+      };
+      updateSkippedQuestions(currentQuestionIndex, updatedOptions);
+      return updatedOptions;
+    });
+  };
+
+  const updateSkippedQuestions = (questionIndex, updatedOptions = selectedOptions) => {
+    const isAnswered = updatedOptions[questionIndex] !== undefined;
+    const isAlreadySkipped = skippedQuestionsDisplay.includes(questionIndex + 1);
+
+    if (!isAnswered && !isAlreadySkipped) {
+      setSkippedQuestionsDisplay((prev) => [...prev, questionIndex + 1]);
+    } else if (isAnswered && isAlreadySkipped) {
+      setSkippedQuestionsDisplay((prev) =>
+        prev.filter((qNum) => qNum !== questionIndex + 1)
+      );
+    }
+  };
+
+  // const handleOptionSelect = (optionId) => {
+  //   setSelectedOptions(prevOptions => ({
+  //     ...prevOptions,
+  //     [currentQuestionIndex]: optionId
+  //   }));
+  // };
+
+  // const handlePreviousQuestion = () => {
+  //   setCurrentQuestionIndex(prevIndex => prevIndex - 1);
+  // };
+
+  // const handleNextQuestion = () => {
+  //   setCurrentQuestionIndex(prevIndex => prevIndex + 1);
+  // };
+  const handleNextQuestion = () => {
+    if (currentQuestionIndex < quizData.questions.length - 1) {
+      updateSkippedQuestions(currentQuestionIndex);
+      const nextIndex = currentQuestionIndex + 1;
+      setCurrentQuestionIndex(nextIndex);
+      lastVisitedQuestionRef.current = nextIndex;
+    }
   };
 
   const handlePreviousQuestion = () => {
-    setCurrentQuestionIndex(prevIndex => prevIndex - 1);
-  };
-
-  const handleNextQuestion = () => {
-    setCurrentQuestionIndex(prevIndex => prevIndex + 1);
+    if (currentQuestionIndex > 0) {
+      updateSkippedQuestions(currentQuestionIndex);
+      const prevIndex = currentQuestionIndex - 1;
+      setCurrentQuestionIndex(prevIndex);
+      lastVisitedQuestionRef.current = prevIndex;
+    }
   };
 
   const navigate = useNavigate();
-  const handleSubmit = () => {
+
+  const handleSubmit1 = () => {
     clearInterval(timerRef.current);
-    if (!quizData || !quizData.questions) {
+    if (!quizData?.questions || quizData.questions.length === 0) {
       console.error('No quiz data available to submit');
       return;
     }
-    const unansweredQuestions = quizData.questions.some((question, index) => {
-      return selectedOptions[index] === undefined;
-    });
-    if (unansweredQuestions) {
-      alert('Please answer all questions before submitting the quiz.');
+    const answers = Object.keys(selectedOptions).map(questionIndex => ({
+      question_id: quizData.questions[questionIndex].question_id,
+      options: {
+        option_1: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_1_id,
+        option_2: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_2_id,
+        option_3: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_3_id,
+        option_4: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_4_id,
+      },
+    }));
+
+    fetch('https://dev.quizifai.com:8010/submit', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        quiz_id: localStorage.getItem('quiz_id'),
+        attempt_no: attemptNo,
+        answers: answers,
+      }),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        navigate(`/quizresults`, { state: { quizId: localStorage.getItem('quiz_id'), attemptNo } });
+      })
+      .catch(error => {
+        console.error('There was a problem with your fetch operation:', error);
+      });
+  };
+
+
+
+  const handleSubmit = () => {
+    clearInterval(timerRef.current);
+    if (!quizData || !quizData.questions || quizData.questions.length === 0) {
+      console.error('No quiz data available to submit');
       return;
     }
+    // const unansweredQuestions = quizData.questions.some((question, index) => {
+    //   return selectedOptions[index] === undefined;
+    // });
+  
+    // if (unansweredQuestions) {
+    //   const skipped = quizData.questions.reduce((acc, question, index) => {
+    //     if (selectedOptions[index] === undefined) {
+    //       acc.push(index + 1); // Store 1-based index of skipped questions
+    //     }
+    //     return acc;
+    //   }, []);
+  
+    //   setSkippedQuestions(skipped);
+    //   alert(`You have skipped the following questions: ${skipped.join(', ')}. Please answer all questions before submitting the quiz.`);
+    //   return;
+    // }
+    // const unansweredQuestions = quizData.questions.some((question, index) => {
+    //   return selectedOptions[index] === undefined;
+    // });
+    // if (unansweredQuestions) {
+    //   const skipped = quizData.questions.reduce((acc, question, index) => {
+    //     if (selectedOptions[index] === undefined) {
+    //       acc.push(index + 1); // Store 1-based index of skipped questions
+    //     }
+    //     return acc;
+    //   }, []);
+    //   setSkippedQuestions(skipped);
+    //   alert(`You have skipped the following questions: ${skipped.join(', ')}. Please answer all questions before submitting the quiz.`);
+    //   return;
+    // }
+    // const skippedQuestions = quizData.questions
+    // .map((question, index) => selectedOptions[index] === undefined ? index + 1 : null)
+    // .filter(questionNumber => questionNumber !== null);
+    // const skippedQuestions = quizData.questions.reduce((acc, question, index) => {
+    //   if (selectedOptions[index] === undefined) {
+    //     acc.push(index + 1); // Store 1-based index of skipped questions
+    //   }
+    //   return acc;
+    // }, []);
+
+    // if (skippedQuestions.length > 0) {
+    //   setSkippedQuestionsDisplay(skippedQuestions);
+    //   setValidationMessage(`Please answer all questions. Skipped questions: ${skippedQuestions.join(', ')}`);
+    //   return;
+    // }
+    const unansweredQuestions = quizData.questions
+    .map((question, index) => selectedOptions[index] === undefined ? index + 1 : null)
+    .filter(questionNumber => questionNumber !== null);
+
+  if (unansweredQuestions.length > 0) {
+    alert(`Please answer all questions before submitting. You have skipped questions: ${unansweredQuestions.join(', ')}`);
+    setSkippedQuestionsDisplay(unansweredQuestions);
+    return;
+  }
+    setValidationMessage(''); 
     const answers = Object.keys(selectedOptions).map(questionIndex => ({
       question_id: quizData.questions[questionIndex].question_id,
       options: {
@@ -269,6 +411,11 @@ const QuizQuestions = () => {
     })
     .then(data => {
       console.log(data);
+    //   const skippedQuestions = quizData.questions
+    //   .map((question, index) => selectedOptions[index] === undefined ? index + 1 : null)
+    //   .filter(questionNumber => questionNumber !== null);
+
+    // setSkippedQuestions(skippedQuestions);
       navigate(`/quizresults`, { state: { quizId, attemptNo } });
       // Handle response if needed
     })
@@ -279,6 +426,7 @@ const QuizQuestions = () => {
 
   const handleQuestionClick = (index) => {
     setCurrentQuestionIndex(index);
+    lastVisitedQuestionRef.current = index;
   };
 
 
@@ -296,7 +444,17 @@ const QuizQuestions = () => {
   const currentQuestion = filteredQuizData[currentQuestionIndex];
   const optionLabels = ['A', 'B', 'C', 'D'];
   const optionKeys = ['quiz_ans_option_1_text', 'quiz_ans_option_2_text', 'quiz_ans_option_3_text', 'quiz_ans_option_4_text'];
+  // const skippedQuestionsDisplay = filteredQuizData
+  //   .map((question, index) => selectedOptions[index] === undefined ? index + 1 : null)
+  //   .filter(questionNumber => questionNumber !== null);
+  // const skippedQuestions = filteredQuizData
+  //   .map((question, index) => selectedOptions[index] === undefined ? index + 1 : null)
+  //   .filter(questionNumber => questionNumber !== null);
 
+  const visibleSkippedQuestions = skippedQuestionsDisplay.filter(questionNumber => {
+    const actualIndex = questionNumber - 1;
+    return actualIndex >= startIndex && actualIndex < startIndex + 10;
+  });
   const sortedOptionKeys = [...optionKeys].sort((a, b) => {
     const optionA = currentQuestion[a];
     const optionB = currentQuestion[b];
@@ -340,7 +498,7 @@ const QuizQuestions = () => {
       <div>
         <h1 className={styles.quiztitle} style={{color:"#214082"}}>{quiz_title}</h1>
         <p className={styles.quizdescription}>{quiz_description}</p>
-        <div className={styles.Questionslines }>
+        {/* <div className={styles.Questionslines }>
         <div className={styles.Questions}>
 
         <span className={styles.Question} >Questions :</span>{" "}
@@ -361,8 +519,8 @@ const QuizQuestions = () => {
 <span className={styles.Question } >Pass Percentage :</span>{" "}
   <span className={styles.username1} >{pass_percentage}%</span>
 </div>
-        </div>
-        <div className={styles.Createdbyandupdated}>
+        </div> */}
+        {/* <div className={styles.Createdbyandupdated}>
         <div className={styles.Createdby}>
 
         <span className={styles.Created} style={{color:"#214082"}} >Created By :</span>{" "}
@@ -372,6 +530,57 @@ const QuizQuestions = () => {
 
         <span className={styles.Created}style={{color:"#214082"}} >Created On :</span>{" "}
           <span className={styles.username} >{`${quizData.created_on}`}</span>
+        </div>
+        </div> */}
+           <div className={styles.flexrow}>
+          <div className={styles.Createdbyandupdated}>
+          <div className={styles.Questions}>
+
+<span className={styles.Question} >Questions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span>{" "}
+<span></span>
+  <span className={styles.username1} > {num_questions}</span>
+</div>
+<div>
+
+<span className={styles.Question} >Total Marks&nbsp;&nbsp;:</span>{" "}
+  <span className={styles.username1} >{quiz_total_marks}</span>
+</div>
+        <div className={styles.Createdby}>
+
+        <span className={styles.Question} >Created By &nbsp;&nbsp;&nbsp;:</span>{" "}
+          <span className={styles.username} >{`${quizData.created_by}`}</span>
+        </div>
+        
+        <div>
+
+        <span className={styles.Question} >Created On&nbsp;&nbsp;&nbsp;:</span>{" "}
+          <span className={styles.username} >{`${quizData.created_on}`}</span>
+        </div>
+        </div>
+        <div className={styles.Questionslines }>
+      
+        <div>
+
+        <span className={styles.Question} >Duration :</span>{" "}
+          <span className={styles.username1} >{quiz_duration} min</span>
+        </div>
+       
+<div>
+
+<span className={styles.Question } >Pass Percentage :</span>{" "}
+  <span className={styles.username1} >{pass_percentage}</span>
+</div>
+
+        </div>
+        <div className={styles.Questionslines }>
+      
+    
+
+<div>
+
+<span className={styles.Question } >Complexity :</span>{" "}
+  <span className={styles.username1} >{quiz_complexity_name} </span>
+</div>
         </div>
         </div>
       </div>
@@ -498,6 +707,7 @@ const QuizQuestions = () => {
         )}
 
         {/* Question Numbers */}
+        
         {filteredQuizData.slice(startIndex, startIndex + 10).map((_, index) => {
           const actualIndex = startIndex + index;
           const isSelected = selectedOptions[actualIndex] !== undefined;
@@ -513,11 +723,29 @@ const QuizQuestions = () => {
           );
         })}
 
+
         {/* Next Button */}
         {startIndex + 10 < filteredQuizData.length && (
           <button onClick={handleNextClick}>&gt;</button>
         )}
+        
       </div>
+      {/* {skippedQuestionsDisplay.length > 0 && (
+      <div className={styles.skippedQuestionsContainer}>
+        <h3>Skipped Questions:</h3>
+        {skippedQuestionsDisplay.map(questionNumber => (
+          <div
+            key={questionNumber}
+            className={`${styles.questionNumber} ${styles.skipped}`}
+            onClick={() => handleQuestionClick(questionNumber - 1)}
+          >
+            {questionNumber}
+          </div>
+        ))}
+      </div>
+    )} */}
+       
+
     <div className={styles.currentQuestion}>
       {currentQuestion && (
         <>
@@ -584,39 +812,41 @@ const QuizQuestions = () => {
                     className={styles.button}
                     style={{ color: '#FFFFFF', backgroundColor: '#FEBB42', height: '40px', borderRadius: '10px', border: 'none' }}
                     onClick={handlePreviousQuestion}
+                    disabled={currentQuestionIndex === 0}
                 >
                     Previous
                 </button>
                 </div>
             )}
-            {currentQuestionIndex < quizData.questions.filter(item => item.question_id).length - 1 && (
-               <div className={styles.button2}>
+             {currentQuestionIndex < filteredQuizData.length - 1 && (
+            <div className={styles.button2}>
               <button
-                    className={styles.button}
-                    style={{ backgroundColor: '#8453FC', height: '40px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
-                    onClick={handleNextQuestion}
-                >
-                    Next
-                </button>
-                </div>
-            )}
-            {currentQuestionIndex === quizData.questions.filter(item => item.question_id).length - 1 && (
-              <div className={styles.button3}>
-             <button
-                    className={styles.button}
-                    style={{ marginLeft: '50px', backgroundColor: 'rgb(11 87 208)', height: '40px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
-                    onClick={handleSubmit}
-                >
-                    Submit
-                </button>
-                </div>
-            )}
+                className={styles.button}
+                style={{ backgroundColor: '#8453FC', height: '40px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
+                onClick={handleNextQuestion}
+                disabled={currentQuestionIndex === filteredQuizData.length - 1}
+              >
+                Next
+              </button>
+            </div>
+          )}
+           {currentQuestionIndex === filteredQuizData.length - 1 && (
+            <div className={styles.button3}>
+              <button
+                className={styles.button}
+                style={{ marginLeft: '50px', backgroundColor: 'rgb(11 87 208)', height: '40px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
+                onClick={handleSubmit}
+              >
+                Submit
+              </button>
+            </div>
+          )}
         </div>
 
      
     </div>
           </div>
-          <div>
+          <div style={{ paddingRight:"5px"}}>
           <div className={styles.verticalLine}></div>
           </div>
       <div className={styles.Totaltimer}>
@@ -627,6 +857,70 @@ const QuizQuestions = () => {
       <div className={styles.sentence2}>
        <span> Total timer:</span> <span className={styles.sentence3}>{formatTime(elapsedTime)}</span> 
       </div>
+      {skippedQuestionsDisplay.length > 0 && (
+        <div className={styles.skippedQuestionsContainer}>
+          <div className={styles.backgroundbox}>
+
+         
+            <div  className={styles.innerbox}>
+          {skippedQuestionsDisplay.map(questionNumber => (
+          
+            <div
+              key={questionNumber}
+              className={`${styles.questionNumber1} ${styles.skipped}`}
+              onClick={() => handleQuestionClick(questionNumber - 1)}
+            >
+              {questionNumber}
+            </div>
+          ))}
+          </div>
+           <h3 className={styles.skipped}>You skipped these questions; please ensure you review them carefully before finalizing the quiz</h3>
+           </div>
+        </div>
+      )}
+      {/* {visibleSkippedQuestions.length > 0 && (
+        <div className={styles.skippedQuestionsContainer}>
+          <h3>Skipped Questions:</h3>
+          {visibleSkippedQuestions.map(questionNumber => (
+            <div
+              key={questionNumber}
+              className={`${styles.questionNumber} ${styles.skipped}`}
+              onClick={() => setCurrentQuestionIndex(questionNumber - 1)}
+            >
+              {questionNumber}
+            </div>
+          ))}
+        </div>
+      )} */}
+      {/* {skippedQuestions.length > 0 && (
+      <div className={styles.skippedQuestionsContainer}>
+        <h3>Skipped Questions:</h3>
+        {skippedQuestions.map(questionNumber => (
+          <div
+            key={questionNumber}
+            className={`${styles.questionNumber} ${styles.skipped}`}
+            onClick={() => handleQuestionClick(questionNumber - 1)}
+          >
+            {questionNumber}
+          </div>
+        ))}
+      </div>
+    )} */}
+      {/* {validationMessage && <div className={styles.validationMessage}>{validationMessage}</div>} */}
+      {/* {quizSubmitted && skippedQuestionsDisplay.length > 0 && (
+        <div className={styles.skippedQuestionsContainer}>
+          <h3>Skipped Questions:</h3>
+          {skippedQuestionsDisplay.map(questionNumber => (
+            <div
+              key={questionNumber}
+              className={`${styles.questionNumber} ${styles.skipped}`}
+              onClick={() => handleQuestionClick(questionNumber - 1)}
+            >
+              {questionNumber}
+            </div>
+          ))}
+        </div>
+      )} */}
       </div>
       <div className={styles.sentence3} style={{ marginTop: "230px" }}>
         {/* {formatTime(elapsedTime)} */}

@@ -13,6 +13,7 @@ import ranks from "../assets/Images/images/dashboard/ranks.png";
 import infinity from "../assets/Images/images/dashboard/infinity.png"
 import questionmark from "../assets/Images/images/dashboard/questionmark.png";
 import profileimg from "../assets/Images/images/profile/profileImage.png";
+import rocket from "../assets/Images/images/dashboard/rocket.png";
 
 
 const currentValue1 = 50; 
@@ -166,7 +167,7 @@ const LogoutBar = (data) => {
   };
   return (
     <div className={styles.logout}>
-     <div style={{ marginTop: "10px", display: "flex", alignItems: "center" , marginLeft:"30px"}}> 
+     <div style={{ marginTop: "-20px", display: "flex", alignItems: "center" , marginLeft:"20px",position:"relative",top:"25px"}}> 
        <div>
        <img
     src={LogoutIcon}
@@ -266,7 +267,7 @@ const LogoutBar = (data) => {
          
           <div className="h-[5px] w-full bg-white mt-2"></div>
 
-          <div style={{ marginTop: "10px" }}>
+          <div style={{ marginTop: "0px" }}>
             
             <div className="flex">
               <img className="h[60px] w-[60px] ml-7 mt-1" src={ranks}/>
@@ -288,6 +289,16 @@ const LogoutBar = (data) => {
           </div><div className="flex -mt-[15px]">
             <span className="text-[25px] text-[#E97132] ml-[35px] mt-[10px] font-semibold">{averageScorePercentage}%</span>
             <h1 className="mt-[23px] ml-[5px] text-[12px] font-normal">average</h1>
+          </div>
+          <div className=" flex items-center justify-center z-50 ">
+              <img src={rocket} alt="" className=" w-[49px] h-[112px] z-50"/>
+            </div>
+          <div className=" flex flex-col justify-center items-center p-[10px] bg-white rounded-[25px] w-[90%] ml-[10px] pt-[80px] relative top-[-75px]">
+         
+            <div>
+              <p className=" text-[#9696BB] ">Upgrade to <span className=" text-black font-bold">Pro</span>  for more resources</p>
+            </div>
+            <button className=" bg-[#5E81F4] p-[5px] px-[20px] rounded-[10px] text-white">Upgrade</button>
           </div>
           {/* <div className="h-[5px] w-full bg-white mt-[10px]"></div>
 

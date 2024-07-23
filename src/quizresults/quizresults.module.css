@@ -14,7 +14,12 @@
   position: absolute;
   left: 0;
 }
+.flexrow{
+  display: flex;
+  /* flex-direction: column; */
+  gap: 100px;
 
+}
 .pageList{
   margin-top: 100px;
 }
@@ -121,7 +126,8 @@ margin-right: 700px;
 .Createdbyupdated{
   display: flex;
   /* justify-content: space-between; */
-  gap: 122px; 
+  /* gap: 150px;  */
+flex-direction: column;
 }
   .icon1{
     width: 51px;
@@ -166,7 +172,7 @@ text-align: left;
   
 .horizontalLine {
     border: 1px dashed #555555; /* Add border style */
-    margin-top: 30px; /* Adjust margin top for spacing */
+     /* Adjust margin top for spacing */
     width: 800px;
     margin-left: 40px;
 border: 1;
@@ -247,13 +253,7 @@ font-size: 14px;
     gap: 25px;
     padding-left: 13px;
 }
-.pass {
-  color: green;
-}
-
-.fail {
-  color: red;
-}
+  
   .column {
     margin-top: 10px; 
     text-align: center;
@@ -919,7 +919,8 @@ margin-top: 30px;
 }
 .Questionslines{
   display:flex;
-  gap:43px;
+  /* gap:43px; */
+  flex-direction: column;
 }
 .Question{
   font-family: Poppins;
@@ -932,4 +933,11 @@ margin-top: 30px;
 .username1{
   font-size: 14px;
  
+}
+.pass {
+  color: green;
+}
+
+.fail {
+  color: red;
 }

@@ -237,7 +237,7 @@ const LoginPage = () => {
             setErrorMessage("An unknown error occurred while logging in.");
           }
         } else if (responseData.response === "fail") {
-          let errorMessage = responseData.message || "An unknown error occurred while logging in.";
+          let errorMessage = responseData.response_message;
           if (responseData.response_message === "Password is incorrect.Please try again.") {
             errorMessage = "Password is incorrect. Please try again.";
           } else if (responseData.response_message === "Email is not valid.Please check your email") {
@@ -260,6 +260,8 @@ const LoginPage = () => {
             errorMessage = "Mobile Number is incorrect or account doesn't exist. Please sign up.";
           }else if (responseData.response_message === "Mobile Number is not valid. Please check your number") {
             errorMessage = "Mobile Number is not valid. Please check your number";
+          }else if (responseData.response_message === "Password is incorrect. Please try again.") {
+            errorMessage = "Password is incorrect. Please try again.";
           }
 
           setErrorMessage(errorMessage);

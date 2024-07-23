@@ -360,7 +360,7 @@ if (!Array.isArray(leaderboardData)) {
 </div>
 
           <p className={styles.quizdescription}>{quizData.quiz_description}</p>
-          <div className={styles.Questionslines }>
+          {/* <div className={styles.Questionslines }>
         <div className={styles.Questions}>
 
         <span className={styles.Question} >Questions :</span>{" "}
@@ -386,8 +386,8 @@ if (!Array.isArray(leaderboardData)) {
 <span className={styles.Question } >complexity :</span>{" "}
   <span className={styles.username1} >{leaderboardData.complexity}</span>
 </div> */}
-        </div>
-          <div className={styles.Createdbyupdated}>
+        {/* </div>  */}
+          {/* <div className={styles.Createdbyupdated}>
         <div className={styles.Created}>
 
         <span className={styles.Createdby} >Created By :</span>{" "}
@@ -397,6 +397,56 @@ if (!Array.isArray(leaderboardData)) {
 
         <span className={styles.Createdby} >Created On :</span>{" "}
           <span className={styles.username} >{`${quizData.created_on}`}</span>
+        </div>
+        </div> */}
+         <div className={styles.flexrow}>
+          <div className={styles.Createdbyupdated}>
+          <div className={styles.Questions}>
+
+<span className={styles.Question} >Questions :</span>{" "}
+  <span className={styles.username1} >{`${quizData.total_questions}`}</span>
+</div>
+<div>
+
+<span className={styles.Question} >Total Marks :</span>{" "}
+  <span className={styles.username1} >{`${quizData.quiz_total_marks}`}</span>
+</div>
+        <div className={styles.Created}>
+
+        <span className={styles.Createdby} >Created By :</span>{" "}
+          <span className={styles.username} >{`${quizData.created_by}`}</span>
+        </div>
+        
+        <div>
+
+        <span className={styles.Createdby} >Created On :</span>{" "}
+          <span className={styles.username} >{`${quizData.created_on}`}</span>
+        </div>
+        </div>
+        <div className={styles.Questionslines }>
+      
+        <div>
+
+        <span className={styles.Question} >Duration :</span>{" "}
+          <span className={styles.username1} >{`${quizData.attempt_duration}`}</span>
+        </div>
+       
+<div>
+
+<span className={styles.Question } >Pass Percentage :</span>{" "}
+  <span className={styles.username1} >{`${quizData.attempt_percentage}`}%</span>
+</div>
+
+        </div>
+        <div className={styles.Questionslines }>
+      
+    
+
+<div>
+
+{/* <span className={styles.Question } >complexity :</span>{" "} */}
+  {/* <span className={styles.username1} >{complexity} </span> */}
+</div>
         </div>
         </div>
         </div>

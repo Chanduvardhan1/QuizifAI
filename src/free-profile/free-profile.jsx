@@ -97,6 +97,7 @@ const FreeProfile = () => {
 
   const [showOtherInput, setShowOtherInput] = useState(false);
   const [responseMessage, setResponseMessage] = useState("");
+  const [rolename, setrolename] = useState("");
 
   const handleButtonClick = (buttonName) => {
     setSelectedButton(buttonName);
@@ -214,6 +215,7 @@ const FreeProfile = () => {
           preferredLoginMethod: userProfileDetails.preferred_login_method,
           address: userProfileDetails.user_address_line_1,
           otheroccupation: userProfileDetails.other_occupation_name,
+          rolename:userProfileDetails.role_name
         };
         setFirstName(userProfileDetails.first_name);
         setMiddleName(userProfileDetails.middle_name);
@@ -233,7 +235,7 @@ const FreeProfile = () => {
         setPreferredLoginMethod(userProfileDetails.preferred_login_method);
         setOtherccupation(userProfileDetails.other_occupation_name);
         setShowOtherInput(userProfileDetails.occupation_name === 'Other');
-
+        setrolename(userProfileDetails.role_name)
         const userDetails = data.data[0].audit_details;
         setUserName(userDetails.full_name);
 
@@ -280,7 +282,7 @@ const FreeProfile = () => {
       email_otp: emailOtp,
       user_phone_number: mobileNumber,
       otp: otp,
-      user_role: "Quiz User", // Example value, adjust as needed
+      user_role: rolename, // Example value, adjust as needed
       user_type: "Public", 
       user_org_id: null,
       gender: gender,

@@ -1493,7 +1493,7 @@ if (isAnyFieldEmpty) {
                     <input
                       type="text"
                       placeholder={`Question`}
-                      className="w-[70%] h-[35px] font-bold text-[#214082] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] p-[15px] "
+                      className="w-[70%] h-[40px] font-bold text-[#214082] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] p-[10px] text-[14px]"
                       value={question.question_text}
                       onChange={(e) => {
                         const newQuestions = [...questions];
@@ -1507,7 +1507,7 @@ if (isAnyFieldEmpty) {
                     <input
                       type="number"
                       placeholder="Marks"
-                      className="w-[85px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
+                      className="w-[85px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
                       value={question.question_weightage}
                       onChange={(e) => {
                         const value = parseInt(e.target.value);
@@ -1526,7 +1526,7 @@ if (isAnyFieldEmpty) {
                       type="text"
                       hidden
                       placeholder="Duration"
-                      className="w-[130px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
+                      className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
                       value={question.question_duration}
                       onChange={(e) => {
                         const value = parseInt(e.target.value) * 60;
@@ -1566,22 +1566,23 @@ if (isAnyFieldEmpty) {
                 <div className="mr-2 text-xl font-normal" style={{
                   width: '40px',
                   marginRight: '10px',
-                  padding: '3px',
+                  padding: '5px',
                   textAlign: 'center' ,
                   border: '1px solid #ccc',
-                  borderRadius: '10px',
+                  borderRadius: '5px',
                   backgroundColor: '#f9f9f9',
                   justifycontent: 'center',
                   display: 'flex',
                   alignitems: 'center',
                  justifyContent:"center",
+                 fontSize:"14px"
                 }}>
-                  {String.fromCharCode(97 + optionIndex)}.
+                 {String.fromCharCode(97 + optionIndex).toUpperCase()}
                 </div>
                 <input
                   type="text"
                   placeholder="Option Text"
-                  className="w-[836px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[15px] font-normal"
+                  className="w-[836px]  rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal text-[12px]"
                   value={option.answer_option_text}
                   onChange={(e) => handleOptionChange(questionIndex, optionIndex, e.target.value)}
                 />

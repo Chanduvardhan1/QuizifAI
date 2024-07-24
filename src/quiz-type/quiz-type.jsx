@@ -1332,7 +1332,7 @@ export default function quiztype() {
       <input
         type="text"
         placeholder={`Question`}
-        className="w-[70%] h-[35px] text-[#214082] font-bold rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] p-[15px] "
+        className="w-[70%] h-[40px] text-[#214082] font-bold rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] p-[10px] text-[14px]"
         value={question.question_text}
         onChange={(e) => {
           const newQuestions = [...questions];
@@ -1345,7 +1345,7 @@ export default function quiztype() {
     <input
         type="number"
         placeholder="Marks"
-        className="w-[85px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
+        className="w-[85px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
         value={calculateWeightage(numQuestions, quiztotalmarks)}
         onChange={(e) => {
           const value = parseInt(e.target.value);
@@ -1374,7 +1374,7 @@ export default function quiztype() {
       
           type="number"
           placeholder="Duration"
-          className="w-[130px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal hidden"
+          className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal hidden"
           value={duration}
           onChange={(e) => setDuration(parseInt(e.target.value))}
           disabled
@@ -1384,7 +1384,7 @@ export default function quiztype() {
         <input
           type="number"
           placeholder="Duration"
-          className="w-[130px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
+          className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
           value={calculateQuizDuration()}
           onChange={() => {}}
           disabled
@@ -1392,7 +1392,7 @@ export default function quiztype() {
       ) : (
         // Each question has different time
         <select
-        className="w-[130px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[2px] font-normal"
+        className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[2px] font-normal"
         value={questionDuration}
         onChange={(e) => {
           const newQuestionDuration = parseInt(e.target.value);
@@ -1417,13 +1417,13 @@ export default function quiztype() {
     {/* Input fields for options */}
     {question.options.map((option, optionIndex) => (
       <div key={optionIndex} className="flex items-center mb-2 ">
-        <div className="mr-2 text-xl font-normal w-[25px] rounded-[10px] p-2 border-[1px] border-solid border-[#B8BBC2] flex justify-center text-center h-[35px] justify-items-center items-center">
-          {String.fromCharCode(97 + optionIndex)}.
+        <div className="mr-2 text-[14px] font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#B8BBC2] flex justify-center text-center  justify-items-center items-center">
+        {String.fromCharCode(97 + optionIndex).toUpperCase()}
         </div>
         <input
           type="text"
           placeholder={`Option Text`}
-          className="w-[70%] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[15px] font-normal"
+          className="w-[70%]  rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal text-[12px]"
           value={option.answer_option_text}
           onChange={(e) => {
             const newOptions = [...questions[questionIndex].options];

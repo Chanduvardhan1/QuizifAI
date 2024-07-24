@@ -1674,14 +1674,14 @@ if (isAnyFieldEmpty) {
               <input
                 type="text"
                 placeholder="Question"
-                className="w-[70%] h-[35px] rounded-[10px] text-[#214082] border-solid border-[#B8BBC2] border-[1.8px] p-[15px] text-[14px] font-bold"
+                className="w-[70%] h-[40px] rounded-[5px] text-[#214082] border-solid border-[#B8BBC2] border-[1.8px] p-[15px] text-[14px] font-bold"
                 value={question.question_text}
                 onChange={(e) => handleInputChange(questionIndex, "question_text", e.target.value)}
               />
               <input
                 type="number"
                 placeholder="Weightage"
-                className="w-[115px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
+                className="w-[115px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
                 value={question.question_weightage}
                 onChange={(e) => handleInputChange(questionIndex, "question_weightage", parseInt(e.target.value))}
               />
@@ -1689,7 +1689,7 @@ if (isAnyFieldEmpty) {
                 type="text"
                 hidden
                 placeholder="Duration"
-                className="w-[130px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
+                className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
                 value={question.question_duration / 60 || ""}
                 onChange={(e) => handleInputChange(questionIndex, "question_duration", parseInt(e.target.value) * 60)}
               />
@@ -1697,13 +1697,13 @@ if (isAnyFieldEmpty) {
             {/* Input fields for options */}
             {getOptions(question.options).map((option, optionIndex) => (
               <div key={optionIndex} className="flex items-center mb-2">
-                <div className="mr-2 text-xl font-normal">
-                  {String.fromCharCode(97 + optionIndex)}.
+                <div className="mr-2 text-[14px] font-normal  w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#B8BBC2] flex justify-center text-center justify-items-center items-center">
+                {String.fromCharCode(97 + optionIndex).toUpperCase()}
                 </div>
                 <input
                   type="text"
                   placeholder="Option Text"
-                  className="w-[850px] h-[35px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[15px] font-normal text-black"
+                  className="w-[850px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal text-black text-[12px]"
                   value={option.answer_option_text}
                   onChange={(e) => handleOptionChange(questionIndex, optionIndex, e.target.value)}
                 />

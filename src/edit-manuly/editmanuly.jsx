@@ -1805,7 +1805,7 @@ const handleQuizTotalMarksChange = (e) => {
       <input
         type="text"
         placeholder="Question"
-        className="w-[90%] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] p-[15px] text-[14px] text-[#214082] font-bold"
+        className="w-[90%] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] p-[10px] text-[14px] text-[#214082] font-bold"
         value={question.question_text}
         onChange={(e) => {
           const newQuestions = [...questions];
@@ -1819,7 +1819,7 @@ const handleQuizTotalMarksChange = (e) => {
       <input
         type="number"
         placeholder="Marks"
-        className="w-[80px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal "
+        className="w-[80px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal "
         value={question.question_weightage}
         // onChange={(e) => {
         //   const value = parseInt(e.target.value,10);
@@ -1840,7 +1840,7 @@ const handleQuizTotalMarksChange = (e) => {
         type="text"
         hidden
         placeholder="Duration"
-        className="w-[130px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
+        className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
         value={question.question_duration}
         onChange={(e) => {
           const value = parseInt(e.target.value) * 60;
@@ -1874,13 +1874,13 @@ const handleQuizTotalMarksChange = (e) => {
     {question.options.map((option, optionIndex) => (
       <div key={optionIndex} className="flex items-center mb-2">
         {/* Option input field */}
-        <div className="mr-2 text-xl font-normal">
-          {String.fromCharCode(97 + optionIndex)}.
+        <div className="mr-2 font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#B8BBC2] flex justify-center text-center justify-items-center items-center text-[14px]">
+        {String.fromCharCode(97 + optionIndex).toUpperCase()}
         </div>
         <input
           type="text"
           placeholder="Option Text"
-          className="w-[850px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[15px] font-normal text-[12px]"
+          className="w-[850px]  rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal text-[12px]"
           value={option.answer_option_text}
           onChange={(e) => {
             const newOptions = [...question.options];

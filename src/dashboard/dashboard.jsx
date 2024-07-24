@@ -257,6 +257,9 @@ const Dashboard = () => {
       return updatedStates;
     });
   };
+  const handleDelete = (index) => {
+    setAllquizzes(prevAllquizzes => prevAllquizzes.filter((_, i) => i !== index));
+  };
 
   const handleBackToQuizzes = () => {
     navigate("/quiz");
@@ -620,6 +623,21 @@ const Dashboard = () => {
                                 Leaderboard
                               </span>
                               </div>
+                              {userRole === "Quiz Master" && (
+                              <div className={styles.edit}>
+                                <img
+                                  className={styles.editimage}
+                                  src={Edit_button}
+                                  alt="Edit icon"
+                                />
+                                <span
+                                  className={styles.edittext}
+                                  onClick={() => handleDelete(index)}
+                                >
+                                  Delete
+                                </span>
+                              </div>
+                              )}
                               {/* <img
                             className={styles.shareimage} style={{marginTop:"2px"}}
                             
@@ -899,6 +917,21 @@ const Dashboard = () => {
                                   Leaderboard
                                 </span>
                               </div>
+                              {userRole === "Quiz Master" && (
+                              <div className={styles.edit}>
+                                <img
+                                  className={styles.editimage}
+                                  src={Edit_button}
+                                  alt="Edit icon"
+                                />
+                                <span
+                                  className={styles.edittext}
+                                  onClick={() => handleDelete(index)}
+                                >
+                                  Delete
+                                </span>
+                              </div>
+                              )}
                               {/* <div className={styles.share}>
                       <img className={styles.shareimage} src={Share_button} alt="Share icon" />
                       <span className={styles.sharetext}>Share</span>
@@ -1182,6 +1215,21 @@ const Dashboard = () => {
                                 Leaderboard
                               </span>
                               </div>
+                              {userRole === "Quiz Master" && (
+                              <div className={styles.edit}>
+                                <img
+                                  className={styles.editimage}
+                                  src={Edit_button}
+                                  alt="Edit icon"
+                                />
+                                <span
+                                  className={styles.edittext}
+                                  onClick={() => handleDelete(index)}
+                                >
+                                  Delete
+                                </span>
+                              </div>
+                              )}
                               {/* <img
                             className={styles.shareimage} style={{marginTop:"2px"}}
                             
@@ -1466,6 +1514,21 @@ const Dashboard = () => {
                                   Leaderboard
                                 </span>
                               </div>
+                              {userRole === "Quiz Master" && (
+                              <div className={styles.edit}>
+                                <img
+                                  className={styles.editimage}
+                                  src={Edit_button}
+                                  alt="Edit icon"
+                                />
+                                <span
+                                  className={styles.edittext}
+                                  onClick={() => handleDelete(index)}
+                                >
+                                  Delete
+                                </span>
+                              </div>
+                              )}
                               {/* <div className={styles.share}>
                                 <img
                                   className={styles.shareimage}

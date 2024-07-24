@@ -119,6 +119,8 @@ const QuizQuestions = () => {
 
   // const currentQuestion = quizData.questions.data[currentQuestionIndex];
   const [quizData, setQuizData] = useState(null);
+  // const [quizData, setQuizData] = useState({ questions: [] });
+  const [isLoading, setIsLoading] = useState(true);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState({});
   const userId = localStorage.getItem("user_id");
@@ -130,89 +132,199 @@ const QuizQuestions = () => {
   const {quiz_title, quiz_description,quiz_duration,quiz_total_marks,num_questions,pass_percentage,quiz_complexity_name} = location.state;
   const [elapsedTime, setElapsedTime] = useState(quiz_duration * 60); 
   const timerRef = useRef(null);
+  const [showWarning, setShowWarning] = useState(false);
   const lastVisitedQuestionRef = useRef(0);
+  const selectedOptionsRef = useRef({});
   // const [skippedQuestions, setSkippedQuestions] = useState([]);
   // const [skippedQuestionsDisplay, setSkippedQuestionsDisplay] = useState([]);
 
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [validationMessage, setValidationMessage] = useState('');
+
+  const markPreviousQuestionsAsSkipped = (targetIndex) => {
+    const newSkippedQuestions = [];
+    for (let i = 0; i < targetIndex; i++) {
+      if (selectedOptions[i] === undefined && !skippedQuestionsDisplay.includes(i + 1)) {
+        newSkippedQuestions.push(i + 1);
+      }
+    }
+    setSkippedQuestionsDisplay((prev) => [...new Set([...prev, ...newSkippedQuestions])]);
+  };
+
   const handleNextClick = () => {
+    markPreviousQuestionsAsSkipped();
     if (currentQuestionIndex + 1 < filteredQuizData.length) {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+      lastVisitedQuestionRef.current = currentQuestionIndex + 1;
     }
   };
 
+
   const handlePrevClick = () => {
+    markPreviousQuestionsAsSkipped();
     if (currentQuestionIndex - 1 >= 0) {
       setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
+      lastVisitedQuestionRef.current = currentQuestionIndex - 1;
     }
   };
 
   const startIndex = Math.floor(currentQuestionIndex / 10) * 10; // Calculate startIndex based on currentQuestionIndex
+  // const endIndex = Math.min(startIndex + 10, filteredQuizData.length);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const quizId = localStorage.getItem("quiz_id");
+  //     try {
+  //       const response = await fetch('https://dev.quizifai.com:8010/get-questions', {
+  //         method: 'POST',
+  //         headers: {
+  //           'Accept': 'application/json',
+  //           'Content-Type': 'application/json'
+  //         },
+  //         body: JSON.stringify({
+  //           quiz_id: quizId,
+  //           user_id: userId
+  //         })
+  //       });
+
+  //       if (!response.ok) {
+  //         throw new Error('Network response was not ok');
+  //       }
+
+  //       const data = await response.json();
+  //       console.log('Fetched data:', data);
+
+  //       if (data && data.data && Array.isArray(data.data)) {
+  //         const questions = data.data.filter(item => item.question_id !== undefined);
+  //         const attemptData = data.data.find(item => item.quiz_level_attempt_id !== undefined);
+
+  //         console.log('Setting quiz data:', questions);
+  //         setQuizData({ questions });
+  //         setIsLoading(false);
+
+  //         if (attemptData) {
+  //           setAttemptNo(attemptData.quiz_level_attempt_id);
+  //           setQuizData(prevState => ({
+  //             ...prevState,
+  //             created_by: attemptData.created_by,
+  //             created_on: attemptData.created_on
+  //           }));
+  //           console.log('Attempt No:', attemptData.quiz_level_attempt_id);
+  //         } else {
+  //           console.warn('No object with quiz_level_attempt_id found');
+  //         }
+
+  //         // Start the countdown timer only after data is set
+  //         if (questions.length > 0) {
+  //           timerRef.current = setInterval(() => {
+  //             setElapsedTime(prevTime => {
+  //               if (prevTime > 0) {
+  //                 return prevTime - 1;
+  //               } else {
+  //                 clearInterval(timerRef.current);
+  //                 handleSubmit(); // Auto-submit when timer runs out
+  //                 return 0;
+  //               }
+  //             });
+  //           }, 1000);
+  //         }
+  //       } else {
+  //         throw new Error('Unexpected response format');
+  //       }
+  //     } catch (error) {
+  //       console.error('There was a problem with your fetch operation:', error);
+  //     }
+  //   };
+
+  //   fetchData();
+
+  //   return () => {
+  //     clearInterval(timerRef.current);
+  //   };
+  // }, [userId, quiz_duration]);
 
   useEffect(() => {
-    const quizId = localStorage.getItem("quiz_id");
-    fetch('https://dev.quizifai.com:8010/get-questions', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        quiz_id: quizId,
-        user_id: userId
-      })
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log(data);
+    const fetchData = async () => {
+      const quizId = localStorage.getItem("quiz_id");
+      try {
+        const response = await fetch('https://dev.quizifai.com:8010/get-questions', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            quiz_id: quizId,
+            user_id: userId
+          })
+        });
 
-      if (data && data.data && Array.isArray(data.data)) {
-        const questions = data.data.filter(item => item.question_id !== undefined);
-        const attemptData = data.data.find(item => item.quiz_level_attempt_id !== undefined);
-
-        setQuizData({ questions });
-
-        if (attemptData) {
-          setAttemptNo(attemptData.quiz_level_attempt_id);
-          setQuizData(prevState => ({
-            ...prevState,
-            created_by: attemptData.created_by,
-            created_on: attemptData.created_on
-          }));
-        } else {
-          console.warn('No object with quiz_level_attempt_id found');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
         }
-        
-        // Start the countdown timer
-        timerRef.current = setInterval(() => {
-          setElapsedTime(prevTime => {
-            if (prevTime > 0) {
-              return prevTime - 1;
-            } else {
-              clearInterval(timerRef.current);
-              // handleSubmit1();
-              return 0;
-            }
-          });
-        }, 1000);
-      } else {
-        throw new Error('Unexpected response format');
+
+        const data = await response.json();
+        console.log('Fetched data:', data);
+
+        if (data && data.data && Array.isArray(data.data)) {
+          const questions = data.data.filter(item => item.question_id !== undefined);
+          const attemptData = data.data.find(item => item.quiz_level_attempt_id !== undefined);
+
+          console.log('Setting quiz data:', questions);
+          setQuizData({ questions });
+          setIsLoading(false);
+
+          if (attemptData) {
+            setAttemptNo(attemptData.quiz_level_attempt_id);
+            setQuizData(prevState => ({
+              ...prevState,
+              created_by: attemptData.created_by,
+              created_on: attemptData.created_on
+            }));
+            console.log('Attempt No:', attemptData.quiz_level_attempt_id);
+          } else {
+            console.warn('No object with quiz_level_attempt_id found');
+          }
+        } else {
+          throw new Error('Unexpected response format');
+        }
+      } catch (error) {
+        console.error('There was a problem with your fetch operation:', error);
       }
-    })
-    .catch(error => {
-      console.error('There was a problem with your fetch operation:', error);
-    });
+    };
+
+    fetchData();
+  }, [userId]);
+
+  useEffect(() => {
+    if (quizData && quizData.questions && quizData.questions.length > 0) {
+      timerRef.current = setInterval(() => {
+        setElapsedTime(prevTime => {
+          if (prevTime > 0) {
+            return prevTime - 1;
+          } else {
+            clearInterval(timerRef.current);
+            handleSubmit1(true); // Auto-submit when timer runs out
+            return 0;
+          }
+        });
+      }, 1000);
+    }
 
     return () => {
       clearInterval(timerRef.current);
     };
-  }, [userId, quiz_duration]);
+  }, [quizData]);
+
+  useEffect(() => {
+    if (elapsedTime <= 300 && !showWarning) { // 5 minutes = 300 seconds
+      setShowWarning(true);
+    }
+  }, [elapsedTime, showWarning]);
+
+  useEffect(() => {
+    selectedOptionsRef.current = selectedOptions;
+    console.log('Updated selectedOptions:', selectedOptions);
+  }, [selectedOptions]);
 
   const handleOptionSelect = (optionId) => {
     setSelectedOptions((prev) => {
@@ -220,6 +332,7 @@ const QuizQuestions = () => {
         ...prev,
         [currentQuestionIndex]: optionId,
       };
+      console.log('Updated selectedOptions in handleOptionSelect:', updatedOptions); // Log to check state
       updateSkippedQuestions(currentQuestionIndex, updatedOptions);
       return updatedOptions;
     });
@@ -253,8 +366,8 @@ const QuizQuestions = () => {
   //   setCurrentQuestionIndex(prevIndex => prevIndex + 1);
   // };
   const handleNextQuestion = () => {
+    updateSkippedQuestions(currentQuestionIndex);
     if (currentQuestionIndex < quizData.questions.length - 1) {
-      updateSkippedQuestions(currentQuestionIndex);
       const nextIndex = currentQuestionIndex + 1;
       setCurrentQuestionIndex(nextIndex);
       lastVisitedQuestionRef.current = nextIndex;
@@ -262,8 +375,8 @@ const QuizQuestions = () => {
   };
 
   const handlePreviousQuestion = () => {
+    updateSkippedQuestions(currentQuestionIndex);
     if (currentQuestionIndex > 0) {
-      updateSkippedQuestions(currentQuestionIndex);
       const prevIndex = currentQuestionIndex - 1;
       setCurrentQuestionIndex(prevIndex);
       lastVisitedQuestionRef.current = prevIndex;
@@ -272,123 +385,93 @@ const QuizQuestions = () => {
 
   const navigate = useNavigate();
 
-  const handleSubmit1 = () => {
+
+  // const handleSubmit1 = (isAutoSubmit = false) => {
+  //   clearInterval(timerRef.current);
+  //   if (!quizData || !quizData.questions || quizData.questions.length === 0) {
+  //     console.error('No quiz data available to submit');
+  //     return;
+  //   }
+
+ 
+  //   const answers = Object.keys(selectedOptions).map(questionIndex => ({
+  //     question_id: quizData.questions[questionIndex].question_id,
+  //     options: {
+  //       option_1: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_1_id,
+  //       option_2: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_2_id,
+  //       option_3: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_3_id,
+  //       option_4: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_4_id
+  //     }
+  //   }));
+
+  //   const quizId = localStorage.getItem("quiz_id");
+
+  //   fetch('https://dev.quizifai.com:8010/submit', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify({
+  //       user_id: userId,
+  //       quiz_id: quizId,
+  //       attempt_no: attemptNo,
+  //       answers: answers
+  //     })
+  //   })
+  //   .then(response => {
+  //     if (!response.ok) {
+  //       throw new Error('Network response was not ok');
+  //     }
+  //     return response.json();
+  //   })
+  //   .then(data => {
+  //     console.log(data);
+  //     navigate(`/quizresults`, { state: { quizId, attemptNo } });
+  //   })
+  //   .catch(error => {
+  //     console.error('There was a problem with your fetch operation:', error);
+  //   });
+  // };
+
+ 
+  const handleSubmit1 = (isAutoSubmit = false) => {
     clearInterval(timerRef.current);
-    if (!quizData?.questions || quizData.questions.length === 0) {
-      console.error('No quiz data available to submit');
-      return;
-    }
-    const answers = Object.keys(selectedOptions).map(questionIndex => ({
-      question_id: quizData.questions[questionIndex].question_id,
-      options: {
-        option_1: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_1_id,
-        option_2: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_2_id,
-        option_3: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_3_id,
-        option_4: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_4_id,
-      },
-    }));
 
-    fetch('https://dev.quizifai.com:8010/submit', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        user_id: userId,
-        quiz_id: localStorage.getItem('quiz_id'),
-        attempt_no: attemptNo,
-        answers: answers,
-      }),
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log(data);
-        navigate(`/quizresults`, { state: { quizId: localStorage.getItem('quiz_id'), attemptNo } });
-      })
-      .catch(error => {
-        console.error('There was a problem with your fetch operation:', error);
-      });
-  };
+    // Capture the most recent selectedOptions state
+    const currentSelectedOptions = selectedOptionsRef.current;
 
+    console.log('Submitting selectedOptions in handleSubmit:', currentSelectedOptions); // Log to check state before submitting
 
-
-  const handleSubmit = () => {
-    clearInterval(timerRef.current);
     if (!quizData || !quizData.questions || quizData.questions.length === 0) {
       console.error('No quiz data available to submit');
       return;
     }
-    // const unansweredQuestions = quizData.questions.some((question, index) => {
-    //   return selectedOptions[index] === undefined;
-    // });
-  
-    // if (unansweredQuestions) {
-    //   const skipped = quizData.questions.reduce((acc, question, index) => {
-    //     if (selectedOptions[index] === undefined) {
-    //       acc.push(index + 1); // Store 1-based index of skipped questions
-    //     }
-    //     return acc;
-    //   }, []);
-  
-    //   setSkippedQuestions(skipped);
-    //   alert(`You have skipped the following questions: ${skipped.join(', ')}. Please answer all questions before submitting the quiz.`);
-    //   return;
-    // }
-    // const unansweredQuestions = quizData.questions.some((question, index) => {
-    //   return selectedOptions[index] === undefined;
-    // });
-    // if (unansweredQuestions) {
-    //   const skipped = quizData.questions.reduce((acc, question, index) => {
-    //     if (selectedOptions[index] === undefined) {
-    //       acc.push(index + 1); // Store 1-based index of skipped questions
-    //     }
-    //     return acc;
-    //   }, []);
-    //   setSkippedQuestions(skipped);
-    //   alert(`You have skipped the following questions: ${skipped.join(', ')}. Please answer all questions before submitting the quiz.`);
-    //   return;
-    // }
-    // const skippedQuestions = quizData.questions
-    // .map((question, index) => selectedOptions[index] === undefined ? index + 1 : null)
-    // .filter(questionNumber => questionNumber !== null);
-    // const skippedQuestions = quizData.questions.reduce((acc, question, index) => {
-    //   if (selectedOptions[index] === undefined) {
-    //     acc.push(index + 1); // Store 1-based index of skipped questions
-    //   }
-    //   return acc;
-    // }, []);
 
-    // if (skippedQuestions.length > 0) {
-    //   setSkippedQuestionsDisplay(skippedQuestions);
-    //   setValidationMessage(`Please answer all questions. Skipped questions: ${skippedQuestions.join(', ')}`);
-    //   return;
-    // }
     const unansweredQuestions = quizData.questions
-    .map((question, index) => selectedOptions[index] === undefined ? index + 1 : null)
-    .filter(questionNumber => questionNumber !== null);
+      .map((question, index) => currentSelectedOptions[index] === undefined ? index + 1 : null)
+      .filter(questionNumber => questionNumber !== null);
 
-  if (unansweredQuestions.length > 0) {
-    alert(`Please answer all questions before submitting. You have skipped questions: ${unansweredQuestions.join(', ')}`);
-    setSkippedQuestionsDisplay(unansweredQuestions);
-    return;
-  }
-    setValidationMessage(''); 
-    const answers = Object.keys(selectedOptions).map(questionIndex => ({
+    if (unansweredQuestions.length > 0 && !isAutoSubmit) {
+      alert(`Please answer all questions before submitting. You have skipped questions: ${unansweredQuestions.join(', ')}`);
+      setSkippedQuestionsDisplay(unansweredQuestions);
+      return;
+    }
+
+    setValidationMessage('');
+    const answers = Object.keys(currentSelectedOptions).map(questionIndex => ({
       question_id: quizData.questions[questionIndex].question_id,
       options: {
-        option_1: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_1_id,
-        option_2: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_2_id,
-        option_3: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_3_id,
-        option_4: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_4_id
+        option_1: currentSelectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_1_id,
+        option_2: currentSelectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_2_id,
+        option_3: currentSelectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_3_id,
+        option_4: currentSelectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_4_id
       }
     }));
-    // const quizId = localStorage.getItem("quiz_id");
+
+    console.log('Submitting answers:', answers); // Log to check the answers array
+
+    const quizId = localStorage.getItem("quiz_id");
 
     fetch('https://dev.quizifai.com:8010/submit', {
       method: 'POST',
@@ -411,20 +494,244 @@ const QuizQuestions = () => {
     })
     .then(data => {
       console.log(data);
-    //   const skippedQuestions = quizData.questions
-    //   .map((question, index) => selectedOptions[index] === undefined ? index + 1 : null)
-    //   .filter(questionNumber => questionNumber !== null);
-
-    // setSkippedQuestions(skippedQuestions);
       navigate(`/quizresults`, { state: { quizId, attemptNo } });
-      // Handle response if needed
     })
     .catch(error => {
       console.error('There was a problem with your fetch operation:', error);
     });
   };
 
+  const handleSubmit = () => {
+    clearInterval(timerRef.current);
+    if (!quizData || !quizData.questions || quizData.questions.length === 0) {
+      console.error('No quiz data available to submit');
+      return;
+    }
+
+    const unansweredQuestions = quizData.questions
+      .map((question, index) => selectedOptions[index] === undefined ? index + 1 : null)
+      .filter(questionNumber => questionNumber !== null);
+
+    if (unansweredQuestions.length > 0) {
+      alert(`Please answer all questions before submitting. You have skipped questions: ${unansweredQuestions.join(', ')}`);
+      setSkippedQuestionsDisplay(unansweredQuestions);
+      return;
+    }
+
+    setValidationMessage('');
+    const answers = Object.keys(selectedOptions).map(questionIndex => ({
+      question_id: quizData.questions[questionIndex].question_id,
+      options: {
+        option_1: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_1_id,
+        option_2: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_2_id,
+        option_3: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_3_id,
+        option_4: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_4_id
+      }
+    }));
+
+    const quizId = localStorage.getItem("quiz_id");
+
+    fetch('https://dev.quizifai.com:8010/submit', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        quiz_id: quizId,
+        attempt_no: attemptNo,
+        answers: answers
+      })
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log(data);
+      navigate(`/quizresults`, { state: { quizId, attemptNo } });
+    })
+    .catch(error => {
+      console.error('There was a problem with your fetch operation:', error);
+    });
+  };
+
+  // const handleSubmit = (isAutoSubmit = false) => {
+  //   clearInterval(timerRef.current);
+  //   const currentSelectedOptions = selectedOptions;
+
+  //   console.log('Submitting selectedOptions in handleSubmit:', currentSelectedOptions); 
+    
+  //   if (!quizData || !quizData.questions || quizData.questions.length === 0) {
+  //     console.error('No quiz data available to submit');
+  //     return;
+  //   }
+
+  //   const unansweredQuestions = quizData.questions
+  //     .map((question, index) => selectedOptions[index] === undefined ? index + 1 : null)
+  //     .filter(questionNumber => questionNumber !== null);
+
+  //   if (unansweredQuestions.length > 0 && !isAutoSubmit) {
+  //     alert(`Please answer all questions before submitting. You have skipped questions: ${unansweredQuestions.join(', ')}`);
+  //     setSkippedQuestionsDisplay(unansweredQuestions);
+  //     return;
+  //   }
+
+  //   setValidationMessage('');
+  //   const answers = Object.keys(selectedOptions).map(questionIndex => ({
+  //     question_id: quizData.questions[questionIndex].question_id,
+  //     options: {
+  //       option_1: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_1_id,
+  //       option_2: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_2_id,
+  //       option_3: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_3_id,
+  //       option_4: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_4_id
+  //     }
+  //   }));
+
+  //   console.log('Submitting answers:', answers); // Log to check the answers array
+
+  //   const quizId = localStorage.getItem("quiz_id");
+
+  //   fetch('https://dev.quizifai.com:8010/submit', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify({
+  //       user_id: userId,
+  //       quiz_id: quizId,
+  //       attempt_no: attemptNo,
+  //       answers: answers
+  //     })
+  //   })
+  //   .then(response => {
+  //     if (!response.ok) {
+  //       throw new Error('Network response was not ok');
+  //     }
+  //     return response.json();
+  //   })
+  //   .then(data => {
+  //     console.log(data);
+  //     navigate(`/quizresults`, { state: { quizId, attemptNo } });
+  //   })
+  //   .catch(error => {
+  //     console.error('There was a problem with your fetch operation:', error);
+  //   });
+  // };
+
+
+  // const handleSubmit = () => {
+  //   clearInterval(timerRef.current);
+  //   if (!quizData || !quizData.questions || quizData.questions.length === 0) {
+  //     console.error('No quiz data available to submit');
+  //     return;
+  //   }
+  //   // const unansweredQuestions = quizData.questions.some((question, index) => {
+  //   //   return selectedOptions[index] === undefined;
+  //   // });
+  
+  //   // if (unansweredQuestions) {
+  //   //   const skipped = quizData.questions.reduce((acc, question, index) => {
+  //   //     if (selectedOptions[index] === undefined) {
+  //   //       acc.push(index + 1); // Store 1-based index of skipped questions
+  //   //     }
+  //   //     return acc;
+  //   //   }, []);
+  
+  //   //   setSkippedQuestions(skipped);
+  //   //   alert(`You have skipped the following questions: ${skipped.join(', ')}. Please answer all questions before submitting the quiz.`);
+  //   //   return;
+  //   // }
+  //   // const unansweredQuestions = quizData.questions.some((question, index) => {
+  //   //   return selectedOptions[index] === undefined;
+  //   // });
+  //   // if (unansweredQuestions) {
+  //   //   const skipped = quizData.questions.reduce((acc, question, index) => {
+  //   //     if (selectedOptions[index] === undefined) {
+  //   //       acc.push(index + 1); // Store 1-based index of skipped questions
+  //   //     }
+  //   //     return acc;
+  //   //   }, []);
+  //   //   setSkippedQuestions(skipped);
+  //   //   alert(`You have skipped the following questions: ${skipped.join(', ')}. Please answer all questions before submitting the quiz.`);
+  //   //   return;
+  //   // }
+  //   // const skippedQuestions = quizData.questions
+  //   // .map((question, index) => selectedOptions[index] === undefined ? index + 1 : null)
+  //   // .filter(questionNumber => questionNumber !== null);
+  //   // const skippedQuestions = quizData.questions.reduce((acc, question, index) => {
+  //   //   if (selectedOptions[index] === undefined) {
+  //   //     acc.push(index + 1); // Store 1-based index of skipped questions
+  //   //   }
+  //   //   return acc;
+  //   // }, []);
+
+  //   // if (skippedQuestions.length > 0) {
+  //   //   setSkippedQuestionsDisplay(skippedQuestions);
+  //   //   setValidationMessage(`Please answer all questions. Skipped questions: ${skippedQuestions.join(', ')}`);
+  //   //   return;
+  //   // }
+  //   const unansweredQuestions = quizData.questions
+  //   .map((question, index) => selectedOptions[index] === undefined ? index + 1 : null)
+  //   .filter(questionNumber => questionNumber !== null);
+
+  // if (unansweredQuestions.length > 0) {
+  //   alert(`Please answer all questions before submitting. You have skipped questions: ${unansweredQuestions.join(', ')}`);
+  //   setSkippedQuestionsDisplay(unansweredQuestions);
+  //   return;
+  // }
+  //   setValidationMessage(''); 
+  //   const answers = Object.keys(selectedOptions).map(questionIndex => ({
+  //     question_id: quizData.questions[questionIndex].question_id,
+  //     options: {
+  //       option_1: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_1_id,
+  //       option_2: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_2_id,
+  //       option_3: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_3_id,
+  //       option_4: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_4_id
+  //     }
+  //   }));
+  //   // const quizId = localStorage.getItem("quiz_id");
+
+  //   fetch('https://dev.quizifai.com:8010/submit', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify({
+  //       user_id: userId,
+  //       quiz_id: quizId,
+  //       attempt_no: attemptNo,
+  //       answers: answers
+  //     })
+  //   })
+  //   .then(response => {
+  //     if (!response.ok) {
+  //       throw new Error('Network response was not ok');
+  //     }
+  //     return response.json();
+  //   })
+  //   .then(data => {
+  //     console.log(data);
+  //   //   const skippedQuestions = quizData.questions
+  //   //   .map((question, index) => selectedOptions[index] === undefined ? index + 1 : null)
+  //   //   .filter(questionNumber => questionNumber !== null);
+
+  //   // setSkippedQuestions(skippedQuestions);
+  //     navigate(`/quizresults`, { state: { quizId, attemptNo } });
+  //     // Handle response if needed
+  //   })
+  //   .catch(error => {
+  //     console.error('There was a problem with your fetch operation:', error);
+  //   });
+  // };
+
   const handleQuestionClick = (index) => {
+    markPreviousQuestionsAsSkipped(index);
     setCurrentQuestionIndex(index);
     lastVisitedQuestionRef.current = index;
   };
@@ -438,6 +745,9 @@ const QuizQuestions = () => {
   };
 
   if (!quizData || !quizData.questions) {
+    return <div>Loading...</div>;
+  }
+  if (isLoading) {
     return <div>Loading...</div>;
   }
   const filteredQuizData = quizData.questions.filter(item => item.question_id);
@@ -477,7 +787,8 @@ const QuizQuestions = () => {
       return 0;
     }
   });
-  
+  const endIndex = Math.min(startIndex + 10, filteredQuizData.length);
+
 
   const Back = () => {
     
@@ -708,7 +1019,7 @@ const QuizQuestions = () => {
 
         {/* Question Numbers */}
         
-        {filteredQuizData.slice(startIndex, startIndex + 10).map((_, index) => {
+        {filteredQuizData.slice(startIndex,endIndex ).map((_, index) => {
           const actualIndex = startIndex + index;
           const isSelected = selectedOptions[actualIndex] !== undefined;
 

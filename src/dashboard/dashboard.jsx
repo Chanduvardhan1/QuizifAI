@@ -21,6 +21,8 @@ import Easy from "../../public/images/dashboard/Easy.png";
 import Clock from "../../public/images/dashboard/Clock.png";
 import arrow from "../../src/assets/Images/dashboard/rightArrow.png";
 import "react-sweet-progress/lib/style.css";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Dashboard = () => {
   const getFormattedDate = () => {
@@ -120,7 +122,15 @@ const Dashboard = () => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     navigate(`/quizaccess`);
   };
-
+  const handleStartQuiz1 = (quizId, attemptsCount, retakeFlag) => {
+    if (attemptsCount >= retakeFlag) {
+      toast.error('You have reached the maximum number of retake attempts for this quiz.');
+    } else {
+      localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
+      navigate(`/quizaccess`);
+      setMessage(''); // Clear any previous messages
+    }
+  };
   // const leaderboard = (quizId) => {
   //   localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
   //   navigate('/quiz-results1', { state: { quizId } })
@@ -354,6 +364,7 @@ const Dashboard = () => {
   return (
     <div className={styles.container}>
       <Navigation />
+      <ToastContainer />
       <div className={styles.mainContent}>
         <div className={styles.header}>
           {/* Header content */}
@@ -569,7 +580,8 @@ const Dashboard = () => {
                                 View
                               </span>
                               </div>
-                              {quizItem.retake_flag > 0 && (
+                              {quizItem.attempts_count < quizItem.retake_flag && (
+
                               <div className={styles.retake}>
                               <img
                                 className=" h-[10px] w-[10px] "
@@ -623,7 +635,7 @@ const Dashboard = () => {
                                 Leaderboard
                               </span>
                               </div>
-                              {userRole === "Quiz Master" && (
+                              {/* {userRole === "Quiz Master" && (
                               <div className={styles.edit}>
                                 <img
                                   className={styles.editimage}
@@ -637,7 +649,7 @@ const Dashboard = () => {
                                   Delete
                                 </span>
                               </div>
-                              )}
+                              )} */}
                               {/* <img
                             className={styles.shareimage} style={{marginTop:"2px"}}
                             
@@ -673,7 +685,7 @@ const Dashboard = () => {
 
                           <button
                             className="cursor-pointer ml-auto relative -top-[10px] right-1"
-                            onClick={() => handleStartQuiz(quizItem.quiz_id)}
+                            onClick={() => handleStartQuiz1(quizItem.quiz_id, quizItem.attempts_count, quizItem.retake_flag)}
                           >
                             <img
                               className="h-8 w-[34px]"
@@ -870,7 +882,7 @@ const Dashboard = () => {
                                   Start
                                 </span>
                               </div>
-                              {userRole === "Quiz Master" && (
+                              {/* {userRole === "Quiz Master" && ( */}
                               <div className={styles.edit}>
                                 <img
                                   className={styles.editimage}
@@ -884,7 +896,7 @@ const Dashboard = () => {
                                   Edit
                                 </span>
                               </div>
-                              )}
+                              {/* )} */}
                               <div className={styles.leaderboard}>
                                 <img
                                   className={styles.leaderboardimage}
@@ -917,7 +929,7 @@ const Dashboard = () => {
                                   Leaderboard
                                 </span>
                               </div>
-                              {userRole === "Quiz Master" && (
+                              {/* {userRole === "Quiz Master" && (
                               <div className={styles.edit}>
                                 <img
                                   className={styles.editimage}
@@ -931,7 +943,7 @@ const Dashboard = () => {
                                   Delete
                                 </span>
                               </div>
-                              )}
+                              )} */}
                               {/* <div className={styles.share}>
                       <img className={styles.shareimage} src={Share_button} alt="Share icon" />
                       <span className={styles.sharetext}>Share</span>
@@ -962,7 +974,9 @@ const Dashboard = () => {
 
                           <button
                             className="cursor-pointer ml-auto relative -top-[10px] right-1"
-                            onClick={() => handleStartQuiz(quizItem.quiz_id)}
+                            onClick={() =>
+                              handleStartQuiz(quizItem.quiz_id)
+                            }
                           >
                             <img
                               className="h-8 w-[34px]"
@@ -1161,7 +1175,8 @@ const Dashboard = () => {
                                 View
                               </span>
                               </div>
-                              {quizItem.retake_flag > 0 && (
+                              {quizItem.attempts_count < quizItem.retake_flag && (
+
                               <div className={styles.retake}>
                               <img
                                 className=" h-[10px] w-[10px] "
@@ -1215,7 +1230,7 @@ const Dashboard = () => {
                                 Leaderboard
                               </span>
                               </div>
-                              {userRole === "Quiz Master" && (
+                              {/* {userRole === "Quiz Master" && (
                               <div className={styles.edit}>
                                 <img
                                   className={styles.editimage}
@@ -1229,7 +1244,7 @@ const Dashboard = () => {
                                   Delete
                                 </span>
                               </div>
-                              )}
+                              )} */}
                               {/* <img
                             className={styles.shareimage} style={{marginTop:"2px"}}
                             
@@ -1267,8 +1282,9 @@ const Dashboard = () => {
 
                           <button
                             className="cursor-pointer ml-auto relative -top-[10px] right-1"
-                            onClick={() => handleStartQuiz(quizItem.quiz_id)}
+                            onClick={() => handleStartQuiz1(quizItem.quiz_id, quizItem.attempts_count, quizItem.retake_flag)}
                           >
+                            
                             <img
                               className="h-8 w-[34px]"
                               src={start}
@@ -1514,7 +1530,7 @@ const Dashboard = () => {
                                   Leaderboard
                                 </span>
                               </div>
-                              {userRole === "Quiz Master" && (
+                              {/* {userRole === "Quiz Master" && (
                               <div className={styles.edit}>
                                 <img
                                   className={styles.editimage}
@@ -1528,7 +1544,7 @@ const Dashboard = () => {
                                   Delete
                                 </span>
                               </div>
-                              )}
+                              )} */}
                               {/* <div className={styles.share}>
                                 <img
                                   className={styles.shareimage}

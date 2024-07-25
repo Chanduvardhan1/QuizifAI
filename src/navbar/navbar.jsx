@@ -7,8 +7,8 @@ import quizIcon from "../assets/Images/images/dashboard/quiz1.png";
 import profileIcon from "../assets/Images/images/dashboard/profile1.png";
 import Settings from "../assets/Images/images/dashboard/Settings1.png";
 import rocket from "../assets/Images/images/dashboard/rocket.png";
-import infinity from "../assets/Images/images/dashboard/infinity.png"
-
+import infinity from "../assets/Images/images/dashboard/infinity.png";
+import mail from "../assets/Images/images/dashboard/mail.png";
 const Navigation = () => {
   // Initialize activePage state to the current pathname
   const [activePage, setActivePage] = useState(window.location.pathname);
@@ -160,6 +160,14 @@ const Navigation = () => {
           <img src={Settings} alt="Settings Icon" className={styles.pageIcon} />
           <span className={styles.pageLink}>Settings</span>
         </NavLink>
+        {/* <NavLink
+          to="/contact"
+          className={`${styles.pageItem} ${activePage === '/contact' ? styles.bold : ''}`}
+          onClick={() => handleNavigation('/contact')}
+        >
+          <img src={mail} alt="Settings Icon" className={styles.pageIcon} />
+          <span className={styles.pageLink}>Contact US</span>
+        </NavLink> */}
         {/* <img className="h-[122px] w-[60px] ml-[35px] mt-[50px]" src={rocket} alt="rocket"/> */}
       </div>
       </div>

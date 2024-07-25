@@ -336,7 +336,7 @@ margin-left: -130px;
   .flexrow{
     display: flex;
     /* flex-direction: column; */
-    gap: 40px;
+    gap: 30px;
   
   }
   .Question{

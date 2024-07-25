@@ -383,20 +383,20 @@ const topThree = leaderboardData.slice(0, 3);
       
         <div className={styles.columns}>
     <span className={styles.column}>Rank</span>
-    <span className={styles.column}>User Name</span>
+    <span className={`${styles.column} ${styles.userName}`}>User Name</span>
     <span className={styles.column}>Percentage</span>
     <span className={styles.column}>Attempts</span>
     <span className={styles.column}>Duration</span>
   </div>
         
   {remaining.map((item, index) => (
-        <div className={styles.values} key={index + 3}>
-          <div className={styles.value}>{item.rank}</div>
-          <div className={styles.value}>{item.user_name}</div>
-          <div className={styles.value}>{item.attained_percentage}</div>
-          <div className={styles.value}>{item.attempts_count}</div>
-          <div className={styles.value}>{item.attempt_duration_mins}</div>
-        </div>
+         <div key={entry.rank} className={styles.values}>
+         <div className={`${styles.value} ${styles.rank}`}>{entry.rank}</div>
+         <div className={`${styles.value} ${styles.userName}`}>{entry.user_name}</div>
+         <div className={`${styles.value} ${styles.percentage}`}>{entry.attained_percentage}</div>
+         <div className={`${styles.value} ${styles.attempts}`}>{entry.attempts_count}</div>
+         <div className={`${styles.value} ${styles.duration}`}>{entry.attempt_duration_mins}</div>
+       </div>
       ))}
           </div>
           </div>

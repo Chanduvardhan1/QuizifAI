@@ -589,11 +589,11 @@ export default function editmanuly() {
       }
     }
   
-    const totalWeightage = questions.reduce((total, question) => total + question.question_weightage, 0);
-    if (totalWeightage !== quiztotalmarks) {
-      alert("Total question weightage does not match quiz total marks.");
-      return;
-    }
+    // const totalWeightage = questions.reduce((total, question) => total + question.question_weightage, 0);
+    // if (totalWeightage !== quiztotalmarks) {
+    //   alert("Total question weightage does not match quiz total marks.");
+    //   return;
+    // }
   
     try {
       const user_id = localStorage.getItem('user_id');
@@ -1112,7 +1112,7 @@ const toggleQuestionSelection = (index) => {
 const handleDeleteSelected = () => {
   const newQuestions = questions.filter((_, index) => !selectedQuestions.includes(index));
   setQuestions(newQuestions);
-  setNumQuestions(newQuestions.length);
+  // setNumQuestions(newQuestions.length);
   setSelectedQuestions([]);
   setIsAllSelected(false);
 };
@@ -1862,7 +1862,7 @@ const handleQuizTotalMarksChange = (e) => {
        <RiDeleteBinLine onClick={() => {
           const newQuestions = questions.filter((_, index) => index !== questionIndex);
           setQuestions(newQuestions);
-          setNumQuestions(newQuestions.length);
+          // setNumQuestions(newQuestions.length);
           setIsModified(true);
         }}  
         className="w-[25px] h-[25px] text-orange-500"

@@ -149,7 +149,7 @@ export default function quiztype() {
   const [retakeOption, setRetakeOption] = useState("");
   const [retake, setRetake] = useState(0);
   const [duration, setDuration] = useState("");
-  const [timings, setTimings] = useState();
+  const [timings, setTimings] = useState("No");
   const [minutes, setMinutes] = useState("");
   const [availablefrom, setavailablefrom] = useState("");
   const [disabledon, setdisabledon] = useState("");
@@ -161,7 +161,7 @@ export default function quiztype() {
   const [selectedValue, setSelectedValue] = useState("0");
   const [showRegistrationSuccess, setShowRegistrationSuccess] = useState(false);
 
-  const [quiztotalmarks, setquiztotalmarks] = useState("");
+  const [quiztotalmarks, setquiztotalmarks] = useState("100");
   const [questionWeightage, setquestionWeightage] = useState("");
   const [multiAnswerFlag, setmultiAnswerFlag] = useState("");
   const [questionDuration, setquestionDuration] = useState("");
@@ -221,7 +221,24 @@ export default function quiztype() {
       console.error("Error fetching categories:", error);
     }
   };
-
+  useEffect(() => {
+    // Set default category to 'General'
+    const generalCategory = categories.find(category => category.category_name === 'General');
+    if (generalCategory) {
+      setSelectedCategory(generalCategory.category_name);
+      setSubCategories(generalCategory.sub_categories.map(sub => sub.sub_category_name));
+    }
+  }, [categories]);
+  
+  useEffect(() => {
+    // Set default sub-category to 'General' if available
+    if (subCategories.length > 0) {
+      const generalSubCategory = subCategories.find(subCategory => subCategory === 'General');
+      if (generalSubCategory) {
+        setSelectedSubCategory(generalSubCategory);
+      }
+    }
+  }, [subCategories]);
   // Handle category selection
   const handleSelectCategory = (event) => {
     const selectedCategory = event.target.value;
@@ -236,7 +253,11 @@ export default function quiztype() {
       );
     }
   };
-
+  useEffect(() => {
+    // Get the current date and format it as YYYY-MM-DD
+    const today = new Date().toISOString().split('T')[0];
+    setavailablefrom(today);
+  }, []);
   // Handle subcategory selection
   const handleSelectSubCategory = (event) => {
     const selectedSubCategory = event.target.value;

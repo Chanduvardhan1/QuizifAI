@@ -37,6 +37,8 @@ import Delete from "../assets/Images/quiz-type/Delete.png";
 import Refresh from "../assets/Images/quiz-type/Refresh.png";
 import RefreshOptions from "../assets/Images/quiz-type/Refresh-options.png";
 import { Alert } from "@mui/material";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // const options1 =[
 //   {label: "Numbers"},
@@ -566,11 +568,11 @@ export default function editmanuly() {
     const isAnyFieldEmpty = requiredFields.some(field => !field);
     
     if (isAnyFieldEmpty) {
-      alert("Please fill in all the required fields before proceeding.");
+      toast.error("Please fill in all the required fields before proceeding.");
       return; // Prevent further execution
     }
     if (numQuestions < 5) {
-      alert("You need to have at least 5 questions.");
+      toast.error("You need to have at least 5 questions.");
       return;
     }
     
@@ -584,14 +586,14 @@ export default function editmanuly() {
       });
   
       if (hasInvalidMultiAnswer) {
-        alert("For multi-answer questions, there should be more than one correct answer.");
+        toast.error("For multi-answer questions, there should be more than one correct answer.");
         return;
       }
     }
   
     // const totalWeightage = questions.reduce((total, question) => total + question.question_weightage, 0);
     // if (totalWeightage !== quiztotalmarks) {
-    //   alert("Total question weightage does not match quiz total marks.");
+    //   toast.error("Total question weightage does not match quiz total marks.");
     //   return;
     // }
   
@@ -656,14 +658,14 @@ export default function editmanuly() {
           navigate("/quizcreated", { state: { quizData: responseData } });
         } else if (responseData.data && responseData.data.length > 0) {
           // Handle the specific message about the inactive quiz
-          alert(responseData.data[0]);
+          toast.error(responseData.data[0]);
         } else {
-          alert("An unexpected error occurred.");
+          toast.error("An unexpected error occurred.");
         }
       } else {
         if (responseData.detail) {
           if (responseData.detail === "'int' object has no attribute 'version_number'") {
-            alert("An error occurred due to an incorrect data type for 'version_number'. Please contact support.");
+            toast.error("An error occurred due to an incorrect data type for 'version_number'. Please contact support.");
             return;
           }
           const errorMessages = responseData.detail.map(error => {
@@ -685,14 +687,14 @@ export default function editmanuly() {
               return error.msg;
             }
           });
-          alert(errorMessages.join("\n"));
+          toast.error(errorMessages.join("\n"));
         } else {
-          alert("An unexpected error occurred.");
+          toast.error("An unexpected error occurred.");
         }
       }
     } catch (error) {
       console.error("Type-Quiz failed:", error);
-      alert("An error occurred while choosing the type of the quiz");
+      toast.error("An error occurred while choosing the type of the quiz");
     }
   };
   // useEffect(() => {
@@ -1217,6 +1219,7 @@ const handleQuizTotalMarksChange = (e) => {
             </a>
           </div> */}
           <Navigation />
+          <ToastContainer/>
         </header>
         <div className="absolute top-[30px] left-[1260px] cursor-pointer text-[#eeb600f0] " onClick={Back}><MdOutlineCancel /></div>
 

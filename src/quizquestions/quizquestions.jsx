@@ -15,7 +15,8 @@ import { MdOutlineCancel } from "react-icons/md";
 import { useLocation } from 'react-router-dom';
 import Navigation from "../navbar/navbar.jsx";
 import LogoutBar from "../logoutbar/logoutbar.jsx";
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const QuizQuestions = () => {
 
@@ -453,7 +454,7 @@ const QuizQuestions = () => {
       .filter(questionNumber => questionNumber !== null);
 
     if (unansweredQuestions.length > 0 && !isAutoSubmit) {
-      alert(`Please answer all questions before submitting. You have skipped questions: ${unansweredQuestions.join(', ')}`);
+      toast.error(`Please answer all questions before submitting. You have skipped questions: ${unansweredQuestions.join(', ')}`);
       setSkippedQuestionsDisplay(unansweredQuestions);
       return;
     }
@@ -513,7 +514,7 @@ const QuizQuestions = () => {
       .filter(questionNumber => questionNumber !== null);
 
     if (unansweredQuestions.length > 0) {
-      alert(`Please answer all questions before submitting. You have skipped questions: ${unansweredQuestions.join(', ')}`);
+      toast.error(`Please answer all questions before submitting. You have skipped questions: ${unansweredQuestions.join(', ')}`);
       setSkippedQuestionsDisplay(unansweredQuestions);
       return;
     }
@@ -805,6 +806,7 @@ const QuizQuestions = () => {
         />
       </Head>*/}
       <Navigation/>
+      <ToastContainer/>
       <div className={styles.mainContent}>
       <div>
         <h1 className={styles.quiztitle} style={{color:"#214082"}}>{quiz_title}</h1>

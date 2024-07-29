@@ -333,6 +333,8 @@ const Quiz = () => {
       setMessage(''); // Clear any previous messages
     }
   };
+  const currentDate = new Date();
+
   useEffect(() => {
     const filtered = allquizzes.filter((quizItem) => {
       const matchesCategory = !selectedCategory.length || selectedCategory.includes(quizItem.category);
@@ -595,7 +597,13 @@ const Quiz = () => {
           <div className="mx-auto">
             <div className="flex flex-wrap mx-auto ml-[35px] -mt-[10px]">
               {filteredQuizzes
-                .filter((quizItem) => quizItem.active_flag === true)
+                .filter((quizItem) => {
+                  const quizCreateDate = new Date(quizItem.quiz_create_date);
+                  const quizEndDate = new Date(quizItem.quiz_end_date);
+                  return quizItem.active_flag === true &&         
+                         currentDate >= quizCreateDate &&
+                         currentDate <= quizEndDate;
+                } )
                 .map((quizItem, index) => (
                   <div key={index} className="">
                     {quizItem.attempt_flag === "Y" ? (

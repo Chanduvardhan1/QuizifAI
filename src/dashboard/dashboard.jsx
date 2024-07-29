@@ -310,6 +310,8 @@ const Dashboard = () => {
       return "#808080"; // Gray color for invalid percentages
     }
   }
+  const currentDate = new Date();
+
   const userRole = localStorage.getItem('user_role');
 
   const results = (latestResult || []).map((result, index) => {
@@ -516,8 +518,14 @@ const Dashboard = () => {
           <div className="flex flex-wrap mx-auto ml-[15px] -mt-[20px]">
             {allquizzes
               .filter(
-                (quizItem) =>
-                  quizItem.active_flag === true && quizItem.latest_flag === "Y"
+                (quizItem) =>{
+                  const quizCreateDate = new Date(quizItem.quiz_start_date);
+                  const quizEndDate = new Date(quizItem.quiz_end_date);
+                  return quizItem.active_flag === true &&
+                         quizItem.latest_flag === "Y" &&
+                         currentDate >= quizCreateDate &&
+                         currentDate <= quizEndDate;
+                }
               )
               .slice(0, 3)
               .map((quizItem, index) => (
@@ -882,7 +890,7 @@ const Dashboard = () => {
                                   Start
                                 </span>
                               </div>
-                              {/* {userRole === "Quiz Master" && ( */}
+                              {userRole === "Quiz Master" && (
                               <div className={styles.edit}>
                                 <img
                                   className={styles.editimage}
@@ -896,7 +904,7 @@ const Dashboard = () => {
                                   Edit
                                 </span>
                               </div>
-                              {/* )} */}
+                               )}
                               <div className={styles.leaderboard}>
                                 <img
                                   className={styles.leaderboardimage}
@@ -1108,8 +1116,14 @@ const Dashboard = () => {
             {allquizzes
               .filter(
                 (quizItem) =>
-                  quizItem.active_flag === true &&
-                  quizItem.popularity_flag === "Y"
+                  {
+                    const quizCreateDate = new Date(quizItem.quiz_start_date);
+                    const quizEndDate = new Date(quizItem.quiz_end_date);
+                    return quizItem.active_flag === true &&
+                           quizItem.latest_flag === "Y" &&
+                           currentDate >= quizCreateDate &&
+                           currentDate <= quizEndDate;
+                  }
               )
               .sort((a,b) =>b.quiz_attempts - a.quiz_attempts)
               .slice(0, 3)

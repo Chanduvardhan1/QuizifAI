@@ -575,7 +575,10 @@ export default function editmanuly() {
       toast.error("You need to have at least 5 questions.");
       return;
     }
-    
+    if (questions.length < numQuestions) {
+      toast.error(`You have deleted some questions. You currently have ${questions.length} questions, but 'Number of questions' is set to ${numQuestions}. Please update the 'Number of questions' accordingly.`);
+      return; // Prevent further execution
+    }
     if (multiAnswer) {
       const hasInvalidMultiAnswer = questions.some(question => {
         if (question.multi_answer_flag) {
@@ -959,37 +962,6 @@ export default function editmanuly() {
   
 };
 
-// const handleNumQuestionsChange = (e) => {
-//   const value = parseInt(e.target.value, 10);
-//   setNumQuestions(value);
-
-//   if (value === quizData?.num_questions) {
-//     fetchQuizData();
-//   } else if (value > questions.length) {
-//     const additionalQuestions = Array.from({ length: value - questions.length }, () => ({
-//       question_text: "",
-//       question_weightage: 0,
-//       multi_answer_flag: false,
-//       question_duration: 0,
-//       options: [
-//         { answer_option_text: "" },
-//         { answer_option_text: "" },
-//         { answer_option_text: "" },
-//         { answer_option_text: "" },
-//       ]
-//     }));
-//     setQuestions([...questions, ...additionalQuestions]);
-//   } else if (value === 0) {
-//     setQuestions([]); // Clear questions if number of questions is set to zero
-//   } else {
-//     setQuestions(questions.slice(0, value));
-//   }
-// };
-// useEffect(() => {
-//   if (numQuestions > 0 && questions.length === 0) {
-//     fetchQuizData();
-//   }
-// }, [numQuestions]);
 
 const updateQuestionWeightage = (totalMarks, numQuestions) => {
   if (numQuestions > 0) {
@@ -1003,15 +975,15 @@ const updateQuestionWeightage = (totalMarks, numQuestions) => {
   }
 };
 
-// const handleNumQuestionsChange = (e) => {
 
+// const handleNumQuestionsChange = (e) => {
 //   const value = parseInt(e.target.value, 10);
 //   setNumQuestions(value);
 //   updateQuestionWeightage(quiztotalmarks, value);
 
-//   if (value >= quizData.num_questions) {
+//   if (value >= quizData.questions.length) {
 //     // If increasing or equal to the originally fetched number of questions
-//     const newQuestions = quizData.questions.slice(0, quizData.num_questions).map(question => ({
+//     const newQuestions = quizData.questions.slice(0, quizData.questions.length).map(question => ({
 //       ...question,
 //       options: [
 //         { answer_option_text: question.quiz_ans_option_1_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_1_text },
@@ -1022,7 +994,7 @@ const updateQuestionWeightage = (totalMarks, numQuestions) => {
 //       question_duration: question.question_duration || 0, // Provide default value if missing
 //     }));
 
-//     for (let i = quizData.num_questions; i < value; i++) {
+//     for (let i = quizData.questions.length; i < value; i++) {
 //       // Add empty question structure for new questions
 //       newQuestions.push({
 //         quiz_question_id: `new_question_${i + 1}`,
@@ -1053,52 +1025,29 @@ const updateQuestionWeightage = (totalMarks, numQuestions) => {
 //   }
 // };
 
+
+// const handleNumQuestionsChange = (e) => {
+//   const value = parseInt(e.target.value, 10);
+//   setNumQuestions(value);
+//   updateQuestionWeightage(quiztotalmarks, value);
+  
+//   if (value > questions.length) {
+//     // If increasing, just update the state without modifying questions
+//     setQuestions([...questions]);
+//   } else {
+//     // If decreasing, slice the existing questions array to the new value
+//     const updatedQuestions = questions.slice(0, value);
+//     setQuestions(updatedQuestions);
+//   }
+// };
+
 const handleNumQuestionsChange = (e) => {
   const value = parseInt(e.target.value, 10);
-  setNumQuestions(value);
-  updateQuestionWeightage(quiztotalmarks, value);
-
-  if (value >= quizData.questions.length) {
-    // If increasing or equal to the originally fetched number of questions
-    const newQuestions = quizData.questions.slice(0, quizData.questions.length).map(question => ({
-      ...question,
-      options: [
-        { answer_option_text: question.quiz_ans_option_1_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_1_text },
-        { answer_option_text: question.quiz_ans_option_2_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_2_text },
-        { answer_option_text: question.quiz_ans_option_3_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_3_text },
-        { answer_option_text: question.quiz_ans_option_4_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_4_text }
-      ],
-      question_duration: question.question_duration || 0, // Provide default value if missing
-    }));
-
-    for (let i = quizData.questions.length; i < value; i++) {
-      // Add empty question structure for new questions
-      newQuestions.push({
-        quiz_question_id: `new_question_${i + 1}`,
-        quiz_question_text: '',
-        question_duration: 0, // Default value for new questions
-        options: [
-          { answer_option_text: '', correct_answer_flag: false },
-          { answer_option_text: '', correct_answer_flag: false },
-          { answer_option_text: '', correct_answer_flag: false },
-          { answer_option_text: '', correct_answer_flag: false }
-        ]
-      });
-    }
-    setQuestions(newQuestions);
+  if (value > questions.length) {
+    setErrorMessage('The number of questions cannot exceed the fetched questions.');
   } else {
-    // If decreasing, retain the originally fetched questions up to the new value
-    const updatedQuestions = quizData.questions.slice(0, value).map(question => ({
-      ...question,
-      options: [
-        { answer_option_text: question.quiz_ans_option_1_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_1_text },
-        { answer_option_text: question.quiz_ans_option_2_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_2_text },
-        { answer_option_text: question.quiz_ans_option_3_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_3_text },
-        { answer_option_text: question.quiz_ans_option_4_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_4_text }
-      ],
-      question_duration: question.question_duration || 0, // Provide default value if missing
-    }));
-    setQuestions(updatedQuestions);
+    setNumQuestions(value);
+    setErrorMessage('');
   }
 };
 const toggleQuestionSelection = (index) => {
@@ -1292,6 +1241,8 @@ const handleQuizTotalMarksChange = (e) => {
         placeholder="No of questions"
         value={numQuestions}
         onChange={handleNumQuestionsChange}
+        // onChange={(e) => setNumQuestions(e.target.value)}
+        // onChange={handleNumQuestionsChange}
       />
               </div>
               {/* <div className=" rounded-lg absolute top-[99px] left-[1200px]">
@@ -1780,7 +1731,6 @@ const handleQuizTotalMarksChange = (e) => {
            <RiDeleteBinLine className=" text-orange-500 w-[20px] h-[20px] ml-[-5px]"  /> <span className=" text-[#214082]">Delete</span>
         </button>
       )}
-       
       </div>
   
       </div>

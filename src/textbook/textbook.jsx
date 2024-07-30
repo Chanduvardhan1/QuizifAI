@@ -5,6 +5,7 @@ import Switch from "react-switch";
 import { useNavigate } from "react-router-dom";
 import { FiAlertCircle } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
+import { RiDeleteBinLine } from "react-icons/ri";
 
 // import ToggleButton from 'react-toggle-button'
 
@@ -215,6 +216,8 @@ export default function quiztype() {
   const [released, setReleased] = useState("");
   const [revision, setRevision] = useState("");
   const [documentType, setDocumentType] = useState("");
+
+  const [selectedQuestions, setSelectedQuestions] = useState([]); 
 
   useEffect(() => {
     fetchCategories();
@@ -991,6 +994,28 @@ if (isAnyFieldEmpty) {
     navigate("/create-quiz");
   
 };
+
+const handleDeleteQuestion = (questionIndex) => {
+  setQuestions(prevQuestions =>
+    prevQuestions.filter((_, index) => index !== questionIndex)
+  );
+};
+const toggleQuestionSelection = (index) => {
+  setSelectedQuestions(prevSelected => {
+    if (prevSelected.includes(index)) {
+      return prevSelected.filter(i => i !== index);
+    } else {
+      return [...prevSelected, index];
+    }
+  });
+};
+const handleDeleteSelected = () => {
+  const newQuestions = questions.filter((_, index) => !selectedQuestions.includes(index));
+  setQuestions(newQuestions);
+  // setNumQuestions(newQuestions.length);
+  setSelectedQuestions([]);
+  // setIsAllSelected(false);
+};
   return (
     
     <>
@@ -1077,10 +1102,10 @@ if (isAnyFieldEmpty) {
 
         {!showRegistrationSuccess && (
         <main className="w-max-auto ">
-          <div className="w-[761px] h-[48px] absolute top-[30px] left-[161px] rounded-[10px] bg-[#fee2e2] z-0">
-            <h1 className="font-Poppins font-semibold text-[25px] leading-[37.5px] text-[#214082] flex justify-center items-center mt-2 ml-20">
-            Configure and click next to import your Text Book
-            </h1>
+          <div className="w-[79%] p-[5px] absolute top-[30px] left-[200px] rounded-[10px] bg-[#fee2e2] z-0">
+              <h className="font-Poppins font-semibold text-[20px] leading-[37.5px] text-[#214082] flex justify-center items-center mt-1l">
+              Finalize the configuration and click 'Next' to proceed with adding your quiz questions.
+              </h>
           </div>
           <div className="">
           <div className="flex">
@@ -1663,6 +1688,27 @@ if (isAnyFieldEmpty) {
 
             {/* Questions and options */}
             <div className="absolute top-[210px] left-[298px] w-[1212px] h-[450px] ">
+            <div className=" flex  items-center mb-[10px] pr-[40px] ">
+              {/* <div className="ml-[-20px] mr-[5px]" >
+        <input 
+          type="checkbox"
+          checked={isAllSelected}
+          onChange={handleSelectAll}
+        />
+        <label className="ml-[5px] font-normal text-[#214082]">Select</label>
+      </div> */}
+                <div >
+            {selectedQuestions.length > 0 && (
+        <button
+          onClick={handleDeleteSelected}
+          className="  text-black p-2 text-[14px] rounded-full  flex justify-center items-center gap-[3px]"
+        >
+           <RiDeleteBinLine className=" text-orange-500 w-[20px] h-[20px] ml-[-5px]"  /> <span className=" text-[#214082]">Delete</span>
+        </button>
+      )}
+      </div>
+  
+      </div>
             {questions.map((question, questionIndex) => (
         <div key={questionIndex} className="mb-8">
           <span className=" text-[#f25822] font-bold mb-[10px]">{question.lesson}<span className="mb-[10px] text-[#214082]">({question.sub_heading})</span></span>
@@ -1690,6 +1736,12 @@ if (isAnyFieldEmpty) {
             </div> */}
             {/* Input field for question */}
             <div className="flex items-center mb-4 mt-[10px]">
+            <input
+    className="ml-[-20px] mr-[5px] mt-1 flex justify-center text-center"
+            type="checkbox"
+            checked={selectedQuestions.includes(questionIndex)}
+            onChange={() => toggleQuestionSelection(questionIndex)}
+          />
               <div className="mr-2 text-xl text-[#214082] font-bold">
                 {questionIndex + 1}.
               </div>
@@ -1715,6 +1767,11 @@ if (isAnyFieldEmpty) {
                 value={question.question_duration / 60 || ""}
                 onChange={(e) => handleInputChange(questionIndex, "question_duration", parseInt(e.target.value) * 60)}
               />
+                  
+            <RiDeleteBinLine 
+                          onClick={() => handleDeleteQuestion(questionIndex)}
+        className="w-[25px] h-[25px] text-orange-500"
+/>
             </div>
             {/* Input fields for options */}
             {getOptions(question.options).map((option, optionIndex) => (
@@ -1736,7 +1793,7 @@ if (isAnyFieldEmpty) {
                   <span
                     className={`block ${option.correct_answer_flag ? "translate-x-5" : "translate-x-0"} transform -translate-y-1.5 w-[18px] h-[18px] relative top-[6px] bg-white rounded-full shadow-md transition-transform duration-300`}
                   ></span>
-                </button>
+                </button>               
               </div>
             ))}
           </div>

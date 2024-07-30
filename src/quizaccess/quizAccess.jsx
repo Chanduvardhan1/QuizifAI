@@ -342,7 +342,7 @@ const quizAccess = () => {
     className={styles.icon2}
   /> */}
           <span  className={styles.sentence5} style={{color:"#214082"}}>Pass Percentage :</span>
-          <span  className={styles.sentence3}>{`${quizData.pass_percentage}%`}</span>
+          <span  className={styles.sentence3}>{`${quizData.pass_percentage}`}</span>
         </div>
         <div className={styles.sentence4}>
         {/* <img

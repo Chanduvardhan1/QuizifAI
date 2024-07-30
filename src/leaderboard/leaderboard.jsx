@@ -49,6 +49,7 @@ const leaderboard = () => {
   const [quizData, setQuizData] = useState(null);
   const [quizData1, setQuizData1] = useState(null);
   const [loading, setLoading] = useState(true);
+  
   const [error, setError] = useState(null);
   const location = useLocation();
   const { quizId, attemptNo } = location.state || {};
@@ -68,7 +69,7 @@ const leaderboard = () => {
     const userId = localStorage.getItem("user_id");
     const quizId = localStorage.getItem("quiz_id");
     // const attemptNo = localStorage.getItem("quiz_level_attempt_id");
-    const {passPercentage} = location.state || {};
+    // const {passPercentage} = location.state || {};
     const fetchQuizReport = async () => {
       try {
         const response = await fetch('https://dev.quizifai.com:8010/quiz_report', {
@@ -170,7 +171,7 @@ const leaderboard = () => {
 
     const sendQuizResult = async () => {
       try {
-        const response = await fetch('https://dev.quizifai.com:8010/quiz_result', {
+        const response = await fetch('https://dev.quizifai.com:8010/quiz_result_view', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -235,7 +236,12 @@ const leaderboard = () => {
     return <div>Loading...</div>;
   }
  
-  
+  if (loading) return <div>Loading...</div>;
+if (error) return <div>Error: {error.message}</div>;
+
+if (!quizData1 || !quizData1.questions) {
+  return <div>No quiz data available</div>;
+}
  
   const Back = () => {
     
@@ -325,23 +331,23 @@ const leaderboard = () => {
           <div className={styles.Createdbyupdated}>
           <div className={styles.Questions}>
 
-<span className={styles.Question} >Questions :</span>{" "}
+<span className={styles.Question} >Questions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span>{" "}
   <span className={styles.username1} >{`${quizData.total_questions}`}</span>
 </div>
 <div>
 
-<span className={styles.Question} >Total Marks:</span>{" "}
+<span className={styles.Question} >Total Marks&nbsp;&nbsp;:</span>{" "}
   <span className={styles.username1} >{`${quizData.quiz_total_marks}`}</span>
 </div>
         <div className={styles.Created}>
 
-        <span className={styles.Createdby} >Created By:</span>{" "}
+        <span className={styles.Createdby} >Created By&nbsp;&nbsp;&nbsp;&nbsp;:</span>{" "}
           <span className={styles.username} >{`${quizData.created_by}`}</span>
         </div>
         
         <div>
 
-        <span className={styles.Createdby} >Created On:</span>{" "}
+        <span className={styles.Createdby} >Created On&nbsp;&nbsp;&nbsp;&nbsp;:</span>{" "}
           <span className={styles.username} >{`${quizData.created_on}`}</span>
         </div>
         </div>
@@ -349,14 +355,14 @@ const leaderboard = () => {
       
         <div>
 
-        <span className={styles.Question} >Duration:</span>{" "}
-          <span className={styles.username1} >{quizduration} min</span>
+        <span className={styles.Question} >Duration&nbsp;&nbsp;&nbsp;&nbsp;:</span>{" "}
+          <span className={styles.username1} >{`${quizData.quiz_duration}`} min</span>
         </div>
        
 <div>
 
 <span className={styles.Question } >Pass Percentage :</span>{" "}
-  <span className={styles.username1} >{passpercentage}%</span>
+  <span className={styles.username1} >{`${quizData.pass_percentage}`}</span>
 </div>
 
         </div>
@@ -367,7 +373,7 @@ const leaderboard = () => {
 <div>
 
 <span className={styles.Question } >complexity :</span>{" "}
-  <span className={styles.username1} >{complexity} </span>
+  <span className={styles.username1} >{`${quizData.complexity}`}</span>
 </div>
         </div>
         </div>

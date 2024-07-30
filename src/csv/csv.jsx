@@ -808,10 +808,10 @@ export default function quiztype() {
         <div className="absolute top-[30px] left-[1260px] cursor-pointer text-[#eeb600f0] " onClick={Back}><MdOutlineCancel /></div>
         {!showRegistrationSuccess && (
           <main className="w-max-auto">
-            <div className="w-[844px] h-[48px] absolute top-[30px] left-[125px] rounded-[10px] bg-[#fee2e2] z-0">
-              <h1 className="font-Poppins font-semibold text-[25px] leading-[37.5px] text-[#214082] flex justify-center items-center mt-2 ml-20">
-                Configure and click next to import your Excel file
-              </h1>
+            <div className="w-[79%] p-[5px] absolute top-[30px] left-[200px] rounded-[10px] bg-[#fee2e2] z-0">
+              <h className="font-Poppins font-semibold text-[20px] leading-[37.5px] text-[#214082] flex justify-center items-center mt-1l">
+              Finalize the configuration and click 'Next' to proceed with adding your quiz questions.
+              </h>
             </div>
 
             <div className=" absolute top-[100px]">

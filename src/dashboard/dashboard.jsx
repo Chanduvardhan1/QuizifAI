@@ -199,6 +199,8 @@ const Dashboard = () => {
       },
     });
   };
+
+ 
   const Edit = (quizId) => {
     // navigate(`/quizaccess/${quizId}`);
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
@@ -316,6 +318,12 @@ const Dashboard = () => {
 
   const results = (latestResult || []).map((result, index) => {
     const percentColor = getColorPercentage(result?.quiz_percentage);
+    const handleQuizClick = () => {
+      leaderboard1(
+        result?.quiz_id,
+        result?.quiz_level_attempt_id
+      );
+    };
     return (
       <div key={index}>
         <div className={styles.infoLine}>
@@ -325,7 +333,8 @@ const Dashboard = () => {
           >
             {result?.attempt_date}
             <span className="relative group">
-              <span className="absolute ml-[10px] w-[100px] cursor-pointer z-0 truncate">
+              <span className="absolute ml-[10px] w-[100px] cursor-pointer z-0 truncate"
+              onClick={handleQuizClick}>
                 {result?.quiz_name}
               </span>
               <span className="cursor-pointer hidden group-hover:inline-block absolute left-0 top-5 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">

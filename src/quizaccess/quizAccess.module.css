@@ -114,7 +114,7 @@
     align-items: center;
     /* justify-content: space-between; */
     /* margin-top: 30px; */
-    gap: 162px;
+    gap: 133px;
   }
   
   .icon {
@@ -204,7 +204,7 @@ border: 1;
     margin-top: 20px;
     margin-left: 50px;
     align-items: flex-start;
-    gap: 150px;
+    gap: 218px;
 }
   .sentencesContainer {
     display: flex;
@@ -289,7 +289,7 @@ text-align: left;
     justify-content: flex-start;
     margin-top: 20px; 
     margin-left: 45px;
-    gap: 82px;
+    gap: 128px;
     /* justify-content: space-between; */
     /* margin-right: 447px; */
    
@@ -325,11 +325,11 @@ text-align: left;
   }
   .buttonContainer {
     display: flex;
-    /* justify-content: end; */
+    justify-content: end;
     margin-top: 36px;
     margin-bottom: 80px;
-    margin-left: 750px;
-    /* padding-right: 130px; */
+    /* margin-left: 750px; */
+    padding-right: 40px;
   }
   
   .imageButton {

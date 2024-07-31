@@ -237,8 +237,7 @@ const category = () => {
               <td className='px-4 py-2 border text-[#214082] font-medium text-[10px]'>
               {category.parent_category_name ? category.parent_category_name : ''}
               </td>
-              <td className='h-full border text-[#214082] flex gap-2 pl-[40px] pt-2 text-[12px] cursor-pointer hover:font-medium hover:underline'>
-                Edit
+              <td className='h-full border text-[#214082] flex gap-2 pl-[40px] pt-2 text-[12px] cursor-pointer hover:font-medium hover:underline'>         
                 <img
                   className='h-[13px] w-[13px] mr-1 cursor-pointer'
                   src={Edit}

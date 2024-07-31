@@ -6,6 +6,7 @@ import {
   useNavigate,
   useLocation,
 } from "react-router-dom";
+import { AuthProvider } from '../src/Authcontext/AuthContext.jsx';
 import Home from "./home/home.jsx";
 import NoPage from "./pages/NoPage.jsx";
 import Signup from "./signup/signup.jsx";
@@ -270,98 +271,88 @@ import PrivateRoute from './privateRoute/privateRoute.jsx';
     
   return (
     <>
+       <AuthProvider>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="*" element={<NoPage />} />
-            <Route path="signup" element={<Signup />} />
-            <Route path="login" element={<Login />} />
-            <Route path="contact" element={<Contact />} />
+      <Routes>
+  <Route path="/" element={<Layout />}>
+    <Route index element={<Home />} />
+    <Route path="*" element={<NoPage />} />
+    <Route path="signup" element={<Signup />} />
+    <Route path="login" element={<Login />} />
+    <Route path="contact" element={<Contact />} />
 
+    <Route path="history" element={<PrivateRoute> <History /></PrivateRoute>} />
+    <Route path="create-quiz" element={<PrivateRoute> <Createquiz /></PrivateRoute>} />
+    <Route path="csv" element={<PrivateRoute><Csv /></PrivateRoute>} />
+    <Route path="detailed-report" element={<PrivateRoute><Detailedreport /></PrivateRoute>} />
+    <Route path="enter-quiz" element={<PrivateRoute><Enterquiz /></PrivateRoute>} />
+    <Route path="free-quiz" element={<PrivateRoute><Freequiz /></PrivateRoute>} />
+    <Route path="textbook" element={<PrivateRoute><Textbook /></PrivateRoute>} />
+    <Route path="quiz-type" element={<PrivateRoute><Quiztype /></PrivateRoute>} />
+    <Route path="pdf" element={<PrivateRoute><Pdf /></PrivateRoute>} />
+    <Route path="print" element={<PrivateRoute><Print /></PrivateRoute>} />
+    <Route path="publish" element={<PrivateRoute><Publish /></PrivateRoute>} />
+    <Route path="org-admin" element={<PrivateRoute><Orgadmin /></PrivateRoute>} />
+    <Route path="org-admin1" element={<PrivateRoute><Orgadmin1 /></PrivateRoute>} />
+    <Route path="paid-version" element={<PrivateRoute><Paidversion /></PrivateRoute>} />
+    <Route path="user-administration" element={<PrivateRoute><Useradministration /></PrivateRoute>} />
+    <Route path="print-quizresults" element={<PrivateRoute><Printquizresults /></PrivateRoute>} />
+    <Route path="pdf1" element={<PrivateRoute><Pdf1 /></PrivateRoute>} />
+    <Route path="pdf2" element={<PrivateRoute><Pdf2 /></PrivateRoute>} />
+    <Route path="pdf3" element={<PrivateRoute><Pdf3 /></PrivateRoute>} />
+    <Route path="contact" element={<PrivateRoute><Contact /></PrivateRoute>} />
+    <Route path="contact1" element={<PrivateRoute><Contact1 /></PrivateRoute>} />
+    <Route path="termsandconditions" element={<PrivateRoute><Termsandconditions /></PrivateRoute>} />
+    <Route path="leaderboard" element={<PrivateRoute><Leaderboard /></PrivateRoute>} />
+    <Route path="dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+    <Route path="quizcreated" element={<PrivateRoute><Quizcreated /></PrivateRoute>} />
+    <Route path="quizresults" element={<PrivateRoute><Quizresults /></PrivateRoute>} />
+    <Route path="quizview_results" element={<PrivateRoute><Quizresults1 /></PrivateRoute>} />
+    <Route path="quizview" element={<PrivateRoute><Quizview /></PrivateRoute>} />
+    <Route path="quizmaster" element={<PrivateRoute><Quizmaster /></PrivateRoute>} />
+    <Route path="quizview1" element={<PrivateRoute><Quizview1 /></PrivateRoute>} />
+    <Route path="quizcreated1" element={<PrivateRoute><Quizcreated1 /></PrivateRoute>} />
+    <Route path="quizcreated2" element={<PrivateRoute><Quizcreated2 /></PrivateRoute>} />
+    <Route path="/quizaccess" element={<PrivateRoute><QuizAccess /></PrivateRoute>} />
+    <Route path="Schedule" element={<PrivateRoute><Schedule /></PrivateRoute>} />
+    <Route path="subscription" element={<PrivateRoute><Subscription /></PrivateRoute>} />
+    <Route path="useradmin" element={<PrivateRoute><Useradmin /></PrivateRoute>} />
+    <Route path="quizadmin" element={<PrivateRoute><Quizadmin /></PrivateRoute>} />
+    <Route path="Register" element={<PrivateRoute><Register /></PrivateRoute>} />
+    <Route path="navbar" element={<PrivateRoute><Navigation /></PrivateRoute>} />
+    <Route path="logoutbar" element={<PrivateRoute><LogoutBar /></PrivateRoute>} />
+    <Route path="notification" element={<PrivateRoute><Notification /></PrivateRoute>} />
+    <Route path="quiz" element={<PrivateRoute><Quiz /></PrivateRoute>} />
+    <Route path="profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+    <Route path="dashboard-quizmaster" element={<PrivateRoute><Quizmaster /></PrivateRoute>} />
+    <Route path="dashboard-superadmin" element={<PrivateRoute><Superadmin /></PrivateRoute>} />
+    <Route path="free-profile" element={<PrivateRoute><FreeProfile /></PrivateRoute>} />
+    <Route path="configure" element={<PrivateRoute><Configure /></PrivateRoute>} />
+    <Route path="category" element={<PrivateRoute><Category /></PrivateRoute>} />
+    <Route path="quiz-view" element={<PrivateRoute><QuizView /></PrivateRoute>} />
+    <Route path="leftbar" element={<PrivateRoute><LeftBar /></PrivateRoute>} />
+    <Route path="navbarhome" element={<PrivateRoute><Navbarhome /></PrivateRoute>} />
+    <Route path="quiz-results" element={<PrivateRoute><QuestionsPage /></PrivateRoute>} />
+    <Route path="quiz-results1" element={<PrivateRoute><Questions /></PrivateRoute>} />
+    <Route path="quizmaster-orgadmin" element={<PrivateRoute><Orgadmin3 /></PrivateRoute>} />
+    <Route path="/quizquestions/:quizId" element={<PrivateRoute><QuizQuestions /></PrivateRoute>} />
+    <Route path="resendotp" element={<PrivateRoute><ResendOTP /></PrivateRoute>} />
+    <Route path="superadmin-profile" element={<PrivateRoute><SuperadminProfile /></PrivateRoute>} />
+    <Route path="superadmin" element={<PrivateRoute><Superadmins /></PrivateRoute>} />
+    <Route path="superadmin1" element={<PrivateRoute><Superadmin1 /></PrivateRoute>} />
+    <Route path="resetpassword" element={<PrivateRoute><Resetpassword /></PrivateRoute>} />
+    <Route path="resetpasswordmobile" element={<PrivateRoute><Resetpasswordmobile /></PrivateRoute>} />
+    <Route path="create-editquiz" element={<PrivateRoute><Createeditquiz /></PrivateRoute>} />
+    <Route path="editmanuly" element={<PrivateRoute><Editmanuly /></PrivateRoute>} />
+    <Route path="editexcel" element={<PrivateRoute><Editexcel /></PrivateRoute>} />
+    <Route path="editpdf" element={<PrivateRoute><Editpdf /></PrivateRoute>} />
+    <Route path="edittextbook" element={<PrivateRoute><Edittextbook /></PrivateRoute>} />
+  </Route>
+</Routes>
 
-            <Route path="history" element={<History />} />
-            <Route path="create-quiz" element={<Createquiz />} />
-            <Route path="csv" element={<Csv />} />
-            <Route path="detailed-report" element={<Detailedreport />} />
-            <Route path="enter-quiz" element={<Enterquiz />} />
-            <Route path="free-quiz" element={<Freequiz />} />
-            <Route path="textbook" element={<Textbook />} />
-            <Route path="quiz-type" element={<Quiztype />} />
-            <Route path="pdf" element={<Pdf />} />
-            <Route path="print" element={<Print />} />
-            <Route path="publish" element={<Publish />} />
-            <Route path="org-admin" element={<Orgadmin />} />
-            <Route path="org-admin1" element={<Orgadmin1 />} />
-            <Route path="paid-version" element={<Paidversion />} />
-            <Route path="user-administration" element={<Useradministration />} />
-            <Route path="print-quizresults" element={<Printquizresults />} />
-            <Route path="pdf1" element={<Pdf1 />} />
-            <Route path="pdf2" element={<Pdf2/>} />
-            <Route path="pdf3" element={<Pdf3/>} />
-            <Route path="contact" element={<Contact />} />
-            <Route path="contact1" element={<Contact1 />} />
-            <Route path="termsandconditions" element={<Termsandconditions />} />
-
-            
-            <Route path="leaderboard" element={<Leaderboard />} />
-
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="quizcreated" element={<Quizcreated />} />
-            <Route path="quizresults" element={<Quizresults />} />
-            <Route path="quizview_results" element={<Quizresults1 />} />
-            <Route path="quizview" element={<Quizview />} />
-            <Route path="quizmaster" element={<Quizmaster />} />
-            <Route path="quizview1" element={<Quizview1 />} />
-            <Route path="quizcreated1" element={<Quizcreated1 />} />
-            {/* <Route path="/quizaccess/:quizId" element={<QuizAccess />} /> */}
-            <Route path="quizcreated2" element={<Quizcreated2 />} />
-            <Route path="/quizaccess" element={<QuizAccess />} />
-
-            <Route path="Schedule" element={<Schedule />} />
-            <Route path="subscription" element={<Subscription />} />
-            <Route path="useradmin" element={<Useradmin />} />
-            <Route path="quizadmin" element={<Quizadmin />} />
-            <Route path="Register" element={<Register />} />
-            <Route path="navbar" element={<Navigation />} />
-            <Route path="logoutbar" element={<LogoutBar />} />
-
-            <Route path="notification" element={<Notification/>} />
-            <Route path="quiz" element={<Quiz/>} />
-            <Route path="profile" element={<Profile/>} />
-            <Route path="dashboard-quizmaster" element={<Quizmaster/>} />
-            <Route path="dashboard-superadmin" element={<Superadmin/>} />
-            <Route path="free-profile" element={<FreeProfile/>} />
-            {/* <Route path="old-password" element={<OldPassword/>} /> */}
-            <Route path="configure" element={<Configure/>} />
-            <Route path="category" element={<Category/>} />
-           
-            <Route path="quiz-view" element={<QuizView/>} />
-            {/* <Route path="quiz-view" element={<QuizView />} /> */}
-            <Route path="leftbar" element={<LeftBar/>} />
-            <Route path="navbarhome" element={<Navbarhome/>} />
-            <Route path="quiz-results" element={<QuestionsPage/>} />
-            <Route path="quiz-results1" element={<Questions/>} />
-            <Route path="quizmaster-orgadmin" element={<Orgadmin3/>} />
-            <Route path="/quizquestions/:quizId" element={<QuizQuestions/>} />
-            <Route path="resendotp" element={<ResendOTP/>} />
-            <Route path="superadmin-profile" element={<SuperadminProfile/>} />
-            <Route path="superadmin" element={<Superadmins/>} />
-            <Route path="superadmin1" element={<Superadmin1/>} />
-            <Route path="resetpassword" element={<Resetpassword/>} />
-            <Route path="resetpasswordmobile" element={<Resetpasswordmobile/>} />
-            <Route path="create-editquiz" element={<Createeditquiz/>} />
-
-            <Route path="editmanuly" element={<Editmanuly/>} />
-            <Route path="editexcel" element={<Editexcel/>} />
-            <Route path="editpdf" element={<Editpdf/>} />
-            <Route path="edittextbook" element={<Edittextbook/>} />
-
-            
-          </Route>
-        </Routes>
         {/* <VerificationHandler /> */}
       </BrowserRouter>
+      </AuthProvider>
     </>
   );
 }

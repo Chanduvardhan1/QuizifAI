@@ -211,6 +211,10 @@ const Dashboard = () => {
     localStorage.setItem("quiz_level_attempt_id", attemptId); // Store attempt_id in local storage
     navigate(`/quizview_results`);
   };
+  const createQuiz = () => {
+
+    navigate(`/create-quiz`);
+  };
 
   // const quizresults = () => {
   //   if (quizItem && quizItem.quiz_title && quizItem.quiz_id) {
@@ -407,7 +411,8 @@ const Dashboard = () => {
               alt="Plus Icon"
             />
             <a
-              href="./create-quiz"
+            
+              onClick={createQuiz}
               className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
             >
               Quiz

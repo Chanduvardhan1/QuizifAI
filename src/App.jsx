@@ -279,7 +279,7 @@ import PrivateRoute from './privateRoute/privateRoute.jsx';
     <Route path="*" element={<NoPage />} />
     <Route path="signup" element={<Signup />} />
     <Route path="login" element={<Login />} />
-    <Route path="contact" element={<Contact />} />
+    <Route path="contact" element={<PrivateRoute><Contact /></PrivateRoute>} />
 
     <Route path="history" element={<PrivateRoute> <History /></PrivateRoute>} />
     <Route path="create-quiz" element={<PrivateRoute> <Createquiz /></PrivateRoute>} />

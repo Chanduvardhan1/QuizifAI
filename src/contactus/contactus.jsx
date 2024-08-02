@@ -18,6 +18,7 @@ import signupIcon from "../../src/assets/Images/images/home/signup.png";
 import loginIcon from "../../src/assets/Images/images/home/login.png";
 import { Link, NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Navigation from "../navbar/navbar.jsx"
 
 
 function contact() {
@@ -178,14 +179,15 @@ function contact() {
     }
   };
   return (
-    <div className="container">
+    <div className="flex">
+      <Navigation/>
       {/* <Head>
         <link
           href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600;700&display=swap"
           rel="stylesheet"
         />
       </Head> */}
-      <header className="header">
+      {/* <header className="header">
         <div className="logo">
           <Link to={"/"}>
             <img src={quizifailogo} alt="Logo" width={160} height={63} />
@@ -200,7 +202,7 @@ function contact() {
               Pricing
             </li> */}
 
-         
+{/*          
             <li className="buttons">
               <Link to={"/signup"}>
                 <button
@@ -218,7 +220,7 @@ function contact() {
                     className="icon"
                     style={{ marginRight: "10px" }}
                   /> */}
-                  Sign Up
+                  {/* Sign Up
                 </button>
               </Link>
             </li>
@@ -239,16 +241,16 @@ function contact() {
                     className="icon"
                     style={{ marginRight: "10px" }}
                   /> */}
-                  Login
+                 {/* Login
                 </button>
               </Link>
             </li>
             <li onClick={handleClick} className="navItem">
               Contact Us
-            </li>
-          </ul>
+            </li>  */}
+        {/*}  </ul>
         </nav>
-      </header>
+      </header> */}
       <div className="content4">
           <div className="contactContent">
           <div className="contactContent1">

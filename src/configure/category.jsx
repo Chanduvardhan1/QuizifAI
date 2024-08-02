@@ -15,15 +15,21 @@ const category = () => {
   const [data, setData] = useState([]);
   const [categoryId, setCategoryId] = useState('');
   const [categoryName, setCategoryName] = useState('');
-  const [parentCategoryFlag, setParentCategoryFlag] = useState('Parent Category Flag');
+  const [parentCategoryFlag, setParentCategoryFlag] = useState('N');
   const [parentCategory, setParentCategory] = useState('');
   const [parentCategoryId, setParentCategoryId] = useState('');
   const [isToggleEnabled, setIsToggleEnabled] = useState(false);
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+  const [isNavbarOpen1, setIsNavbarOpen1] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [createdBy, setCreatedBy] = useState(0);
+  const [parentCategories, setParentCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+  const [filteredData, setFilteredData] = useState([]);
+  const [searchInput, setSearchInput] = useState('');
 
   const navigate = useNavigate();
   const handleBanckToDashbaord = () =>{
@@ -31,24 +37,32 @@ const category = () => {
   }
   
   // toggle button for parent category 
-  useEffect(() => {
+  const fetchCategories = () => {
     fetch('https://dev.quizifai.com:8010/categories/')
       .then(response => response.json())
       .then(data => {
         if (data.response === "success") {
           setData(data.data);
           setParentCategories(data.data.filter(category => category.parent_category_flag === 'Y'));
+          setFilteredData(data.data); 
         }
       })
       .catch(error => console.error('Error fetching data:', error));
-  }, []);
+  };
 
+  useEffect(() => {
+    fetchCategories();
+  }, []);
   const handleToggleChange = (checked) => {
-    setIsToggleEnabled(checked);
     setParentCategoryFlag(checked ? 'Y' : 'N');
+    setIsToggleEnabled(checked);
     if (!checked) {
       setParentCategoryId(''); // Clear parent category ID if toggle is off
     }
+  };
+  const handleToggleChange1 = (checked) => {
+    setIsToggleEnabled(checked);
+    setParentCategoryFlag(checked ? 'Y' : 'N');
   };
 
   const toggleNavbar = () => {
@@ -57,85 +71,201 @@ const category = () => {
 
   useEffect(() => {
     if (isToggleEnabled) {
-      setParentCategory('YES');
+      setParentCategoryFlag('Y');
       setParentCategoryId(null);
-    } else if (parentCategory !== '') {
-      setParentCategory('NO');
+    } else if (parentCategoryFlag !== '') {
+      setParentCategoryFlag('N');
     }
   }, [isToggleEnabled]);
+  
+  const handleParentCategoryChange = (e) => {
+    setParentCategoryId(e.target.value);
+  };
 
-  const handleAddOrUpdateCategory = async () => {
+  // const handleAddOrUpdateCategory = async () => {
+  //   const categoryData = {
+  //     parent_category_flag: parentCategoryFlag,
+  //     category_name: categoryName,
+  //     parent_category_id: parentCategoryId,
+  //     user_id: createdBy,
+  //   };
+
+  //   if (isEditing) {
+  //     const updatedCategories = categories.map((category, index) =>
+  //       index === editIndex
+  //         ? { ...categoryData, category_id: categoryId }
+  //         : category
+  //     );
+  //     setCategories(updatedCategories);
+  //     setIsEditing(false);
+  //     setEditIndex(null);
+  //     try {
+  //       await fetch('https://dev.quizifai.com:8010/update_category/', {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify(categoryData),
+  //       });
+  //       fetchCategories();
+  //     } catch (error) {
+  //       console.error('Error:', error);
+  //     }
+  //   } else {
+  //     try {
+  //       const response = await fetch('https://dev.quizifai.com:8010/create_category/', {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify(categoryData),
+  //       });
+
+  //       if (response.ok) {
+  //         const newCategory = { category_id: categoryId, ...categoryData };
+  //         setCategories([...categories, newCategory]);
+  //         fetchCategories();
+  //       } else {
+  //         console.error('Failed to create category');
+  //       }
+  //     } catch (error) {
+  //       console.error('Error:', error);
+  //     }
+  //   }
+
+  //   setCategoryId('');
+  //   setCategoryName('');
+  //   setParentCategoryFlag('');
+  //   setParentCategory('');
+  //   setIsNavbarOpen(false);
+  // };
+  const handleCreateCategory = async () => {
     const categoryData = {
       parent_category_flag: parentCategoryFlag,
       category_name: categoryName,
       parent_category_id: parentCategoryId,
       user_id: createdBy,
     };
-
-    if (isEditing) {
-      const updatedCategories = categories.map((category, index) =>
-        index === editIndex
-          ? { ...categoryData, category_id: categoryId }
-          : category
-      );
-      setCategories(updatedCategories);
-      setIsEditing(false);
-      setEditIndex(null);
-      try {
-        await fetch('https://dev.quizifai.com:8010/update_category/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(categoryData),
-        });
-      } catch (error) {
-        console.error('Error:', error);
+  
+    try {
+      const response = await fetch('https://dev.quizifai.com:8010/create_category/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(categoryData),
+      });
+  
+      if (response.ok) {
+        const newCategory = { category_id: categoryId, ...categoryData };
+        setCategories([...categories, newCategory]);
+        fetchCategories(); // Refresh categories list after creation
+        setCategoryId(''); // Reset form fields
+        setCategoryName('');
+        setParentCategoryFlag('');
+        setParentCategoryId('');
+        setIsNavbarOpen(false);
+      } else {
+        console.error('Failed to create category');
       }
-    } else {
-      try {
-        const response = await fetch('https://dev.quizifai.com:8010/create_category/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(categoryData),
-        });
-
-        if (response.ok) {
-          const newCategory = { category_id: categoryId, ...categoryData };
-          setCategories([...categories, newCategory]);
-        } else {
-          console.error('Failed to create category');
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
+    } catch (error) {
+      console.error('Error:', error);
     }
-
-    setCategoryId('');
-    setCategoryName('');
-    setParentCategoryFlag('');
-    setParentCategory('');
-    setIsNavbarOpen(false);
   };
-
-  const handleEdit = (index) => {
-    const category = categories[index];
-    setCategoryId(category.category_id);
-    setCategoryName(category.category_name);
-    setParentCategory(category.parent_category_flag);
-    setParentCategoryId(category.parent_category_id);
-    setCreatedBy(category.user_id);
-    setIsEditing(true);
-    setEditIndex(index);
-    setIsNavbarOpen(true);
+  const handleUpdateCategory = async () => {
+    const categoryData = {
+      category_id: categoryId,
+      category_name: categoryName,
+      parent_category_flag: parentCategoryFlag,
+      // parent_category_id: parentCategoryId,
+      user_id: createdBy,
+    };
+  
+    try {
+      const response = await fetch('https://dev.quizifai.com:8010/update_category/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(categoryData),
+      });
+  
+      if (response.ok) {
+        const updatedCategories = categories.map((category, index) =>
+          index === editIndex ? { ...categoryData } : category
+        );
+        setCategories(updatedCategories);
+        fetchCategories(); // Refresh categories list after update
+        setCategoryId(''); // Reset form fields
+        setCategoryName('');
+        setParentCategoryFlag('');
+        setParentCategoryId('');
+        setIsNavbarOpen(false);
+        setIsEditing(false); // Exit edit mode
+        setEditIndex(null);
+      } else {
+        console.error('Failed to update category');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
+  const handleSubmit = () => {
+    if (isEditing) {
+      handleUpdateCategory();
+    } else {
+      handleCreateCategory();
+    }
+  };
+  
 
-  const filteredData = data.filter(category => 
-    category.category_name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const handleEdit = (category) => {
+    if (selectedCategoryId === category.category_id) {
+      // Toggle the form visibility if the same category ID is clicked
+      setIsNavbarOpen(!isNavbarOpen);
+    } else {
+      // Open the form with new category details
+      setCategoryId(category.category_id);
+      setCategoryName(category.category_name);
+      setParentCategoryFlag(category.parent_category_flag);
+      setParentCategoryId(category.parent_category_id);
+      setIsToggleEnabled(category.parent_category_flag === 'Y');
+      setIsNavbarOpen(true);
+      setIsEditing(true);
+      setSelectedCategoryId(category.category_id);
+    }
+  };
+  useEffect(() => {
+    const searchInputLower = searchInput.toLowerCase();
 
+    // Filter and sort data
+    const filteredAndSortedData = data
+      .filter(category => 
+        category.category_id.toString().includes(searchInputLower) ||
+        category.category_name.toLowerCase().includes(searchInputLower) ||
+        category.parent_category_flag.toLowerCase().includes(searchInputLower) ||
+        (category.parent_category_name && category.parent_category_name.toLowerCase().includes(searchInputLower))
+      )
+      .sort((a, b) => {
+        const aIncludes = a.category_name.toLowerCase().includes(searchInputLower);
+        const bIncludes = b.category_name.toLowerCase().includes(searchInputLower);
+        return bIncludes - aIncludes; // Ensure matching rows come first
+      });
+
+    setFilteredData(filteredAndSortedData);
+  }, [searchInput, data]);
+
+  const highlightText = (text, highlight) => {
+    if (!highlight) return text;
+    const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
+    return parts.map((part, index) =>
+      part.toLowerCase() === highlight.toLowerCase() ? (
+        <span key={index} style={{ backgroundColor: 'yellow' }}>{part}</span>
+      ) : (
+        part
+      )
+    );
+  };
   return (
     <>
     <div className='flex w-full font-Poppins'>
@@ -172,7 +302,7 @@ const category = () => {
           />
            <input
         type='text'
-        placeholder='Parent Category Flag'
+        placeholder='N'
         value={parentCategoryFlag}
         onChange={(e) => setParentCategoryFlag(e.target.value)}
         className='w-[120px] rounded-3xl text-center -mt-[10px] py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'
@@ -188,23 +318,90 @@ const category = () => {
               uncheckedIcon={<span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: "white" }}>✖</span>}
             />
            </div>
-        <input
-        type='text'
-        placeholder='Parent Category Name'
-        value={parentCategoryId}
-        onChange={(e) => setParentCategoryId(e.target.value)}
-        className={`rounded-3xl text-center -mt-[10px] py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082] ${parentCategoryFlag === 'Y' ? 'hidden' : ''}`}
-        disabled={parentCategoryFlag === 'Y'}
-      />
-          
+           {parentCategoryFlag === 'N' && (
+        <select
+          onChange={handleParentCategoryChange}
+          value={parentCategoryId || ''}
+          className="rounded-3xl text-center  -mt-[10px] w-[150px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
+        >
+          <option value="">Select a parent category</option>
+          {data
+            .filter(category => category.parent_category_flag === 'Y')
+            .map(category => (
+              <option key={category.category_id} value={category.category_id}>
+                {category.category_name}
+              </option>
+            ))}
+        </select>
+      )}
          <button
-  onClick={handleAddOrUpdateCategory}
+  onClick={handleSubmit}
   className='bg-[#214082] w-[80px] -mt-[10px] ml-[20px] py-[14px] rounded-3xl text-white flex items-center justify-center'
 >
   {isEditing ? 'Update' : 'Add'}
 </button>
         </div>
       )}
+        {/* {isNavbarOpen1 && (
+        <div className='text-[10px] mx-[10px] text-[#214082] h-[50px] mt-[30px] rounded-md bg-[#CBF2FB] flex flex-row justify-around p-4'>
+          <input
+            type='text'
+            placeholder='Category ID'
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
+            className=' w-[75px] -mt-[10px] text-center rounded-3xl py-[14px] pl-1 text-[#214082] placeholder:text-[#214082] outline-[#214082]'
+            style={{ '::placeholder': { color: '#214082' } }}
+            
+          />
+          <input
+            type='text'
+            placeholder='Category Name'
+            value={categoryName}
+            onChange={(e) => setCategoryName(e.target.value)}
+            className=' w-[95px] rounded-3xl text-center -mt-[10px]  py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'
+          />
+           <input
+        type='text'
+        placeholder='N'
+        value={parentCategoryFlag}
+        onChange={(e) => setParentCategoryFlag(e.target.value)}
+        className='w-[120px] rounded-3xl text-center -mt-[10px] py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'
+        readOnly
+      />
+          <div className='h-[2px] w-[2px] -mt-[10px] -ml-[40px] mr-[20px]'>
+          <Switch
+              onChange={handleToggleChange1}
+              checked={isToggleEnabled}
+              offColor="#888"
+              onColor="#008800"
+              checkedIcon={<span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: "white" }}>✔</span>}
+              uncheckedIcon={<span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: "white" }}>✖</span>}
+            />
+           </div>
+           {parentCategoryFlag === 'N' && (
+        <select
+          onChange={handleParentCategoryChange}
+          value={parentCategoryId || ''}
+          className="rounded-3xl text-center  -mt-[10px] w-[150px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
+        >
+          <option value="">Select a parent category</option>
+          {data
+            .filter(category => category.parent_category_flag === 'Y')
+            .map(category => (
+              <option key={category.category_id} value={category.category_id}>
+                {category.category_name}
+              </option>
+            ))}
+        </select>
+      )}
+         <button
+  onClick={handleSubmit}
+  className='bg-[#214082] w-[80px] -mt-[10px] ml-[20px] py-[14px] rounded-3xl text-white flex items-center justify-center'
+>
+  {isEditing ? 'Update' : 'Add'}
+</button>
+        </div>
+      )} */}
 
       <table className='h-[20px] table-auto mt-[30px] mx-[20px] rounded text-left bg-[#F7E0E3] text-[#2b51a1] text-[13px] font-light'>
         <thead>
@@ -218,8 +415,8 @@ const category = () => {
                 className='mt-[15px] text-[10px] pl-[30px] pr-[10px] rounded-[20px] h-[28px] mr-[10px] w-fit bg-[#FFFFFF] text-left placeholder-[#214082] border-none focus:border-none outline-none'
                 type='text'
                 placeholder='Search'
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
+                value={searchInput}
+              onChange={e => setSearchInput(e.target.value)}
             />
             <img
                 className='h-[12px] w-[12px] relative top-[25px] right-[160px]'
@@ -229,24 +426,30 @@ const category = () => {
           </tr>
         </thead>
         <tbody className='bg-white border-gray-500 '>
-          {filteredData.map(category => (
-              <tr key={category.category_id}>
-              <td className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>{category.category_id}</td>
-              <td className='px-4 py-2 border text-[#214082] font-medium text-[10px]'>{category.category_name}</td>
-              <td className='px-4 py-2 border text-[#214082] font-medium text-[10px] text-center'>{category.parent_category_flag}</td>
-              <td className='px-4 py-2 border text-[#214082] font-medium text-[10px]'>
-              {category.parent_category_name ? category.parent_category_name : ''}
-              </td>
-              <td className='h-full border text-[#214082] flex gap-2 pl-[40px] pt-2 text-[12px] cursor-pointer hover:font-medium hover:underline'>         
-                <img
-                  className='h-[13px] w-[13px] mr-1 cursor-pointer'
-                  src={Edit}
-                  alt="Edit"
-                  onClick={() => handleEdit(index)}
-                />
-              </td>
-            </tr>
-          ))}
+        {filteredData.map(category => (
+          <tr key={category.category_id}>
+            <td className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
+              {highlightText(category.category_id.toString(), searchInput)}
+            </td>
+            <td className='px-4 py-2 border text-[#214082] font-medium text-[10px]'>
+              {highlightText(category.category_name, searchInput)}
+            </td>
+            <td className='px-4 py-2 border text-[#214082] font-medium text-[10px] text-center'>
+              {highlightText(category.parent_category_flag, searchInput)}
+            </td>
+            <td className='px-4 py-2 border text-[#214082] font-medium text-[10px]'>
+              {highlightText(category.parent_category_name ? category.parent_category_name : '', searchInput)}
+            </td>
+            <td className='h-full border text-[#214082] flex gap-2 pl-[40px] pt-2 text-[12px] cursor-pointer hover:font-medium hover:underline'>         
+              <img
+                className='h-[13px] w-[13px] mr-1 cursor-pointer'
+                src={Edit}
+                alt="Edit"
+                onClick={() => handleEdit(category)}
+              />
+            </td>
+          </tr>
+        ))}
         </tbody>
         
         <tbody>

@@ -70,11 +70,18 @@ const quizresults = () => {
 
     const fetchQuizReport = async () => {
       try {
+        const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+        if (!authToken) {
+          console.error('No authentication token found');
+          return;
+        }
         const response = await fetch('https://dev.quizifai.com:8010/quiz_report', {
           method: 'POST',
           headers: {
             'accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
           },
           body: JSON.stringify({
             quiz_id: quizId,
@@ -163,11 +170,18 @@ const quizresults = () => {
   useEffect(() => {
     const sendQuizResult = async () => {
       try {
+        const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+        if (!authToken) {
+          console.error('No authentication token found');
+          return;
+        }
         const response = await fetch('https://dev.quizifai.com:8010/quiz_result', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
           },
           body: JSON.stringify({
             user_id: userId,
@@ -194,11 +208,18 @@ const quizresults = () => {
   useEffect(() => {
     const fetchLeaderboardData = async () => {
       try {
+        const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+        if (!authToken) {
+          console.error('No authentication token found');
+          return;
+        }
         const response = await fetch('https://dev.quizifai.com:8010/leaderboard_result', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
           },
           body: JSON.stringify({
             quiz_id: quizId

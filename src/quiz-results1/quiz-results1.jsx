@@ -72,11 +72,17 @@ const Questions = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
+
+        if (!authToken) {
+          throw new Error('No authentication token found');
+        }
         const response = await fetch('https://dev.quizifai.com:8010/leaderboard_result', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
           },
           body: JSON.stringify({
             quiz_id: quizId

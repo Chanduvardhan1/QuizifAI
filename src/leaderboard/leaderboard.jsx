@@ -72,11 +72,18 @@ const leaderboard = () => {
     // const {passPercentage} = location.state || {};
     const fetchQuizReport = async () => {
       try {
+        const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+        if (!authToken) {
+          console.error('No authentication token found. Please log in again.');
+          return;
+        }
         const response = await fetch('https://dev.quizifai.com:8010/quiz_report', {
           method: 'POST',
           headers: {
             'accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
           },
           body: JSON.stringify({
             quiz_id: quizId,
@@ -106,11 +113,18 @@ const leaderboard = () => {
   useEffect(() => {
     const fetchLeaderboardData = async () => {
       try {
+        const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+        if (!authToken) {
+          console.error('No authentication token found. Please log in again.');
+          return;
+        }
         const response = await fetch('https://dev.quizifai.com:8010/leaderboard_result', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
           },
           body: JSON.stringify({
             quiz_id: quizId
@@ -171,11 +185,18 @@ const leaderboard = () => {
 
     const sendQuizResult = async () => {
       try {
+        const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+        if (!authToken) {
+          console.error('No authentication token found. Please log in again.');
+          return;
+        }
         const response = await fetch('https://dev.quizifai.com:8010/quiz_result_view', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
           },
           body: JSON.stringify({
             user_id: userId,
@@ -204,11 +225,18 @@ const leaderboard = () => {
 
     const fetchLeaderboardData = async () => {
       try {
+        const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+    if (!authToken) {
+      console.error('No authentication token found. Please log in again.');
+      return;
+    }
         const response = await fetch('https://dev.quizifai.com:8010/leaderboard_result', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
           },
           body: JSON.stringify({
             quiz_id: quizId

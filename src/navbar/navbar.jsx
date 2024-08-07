@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect,useContext } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import styles from "./dashboard.module.css";
 import quizifailogo from "../assets/Images/images/home/Quizifai3.png";
@@ -9,6 +9,9 @@ import Settings from "../assets/Images/images/dashboard/Settings1.png";
 import rocket from "../assets/Images/images/dashboard/rocket.png";
 import infinity from "../assets/Images/images/dashboard/infinity.png";
 import mail from "../assets/Images/images/dashboard/mail.png";
+import { AuthContext } from "../Authcontext/AuthContext.jsx"
+
+
 const Navigation = () => {
   // Initialize activePage state to the current pathname
   const [activePage, setActivePage] = useState(window.location.pathname);
@@ -28,76 +31,83 @@ const Navigation = () => {
   const [totalQuizzes, setTotalQuizzes] = useState(0);
   const [totalMinutes, setTotalMinutes] = useState(0);
   const [averageScorePercentage, setAverageScorePercentage] = useState(0);
+  const { authToken } = useContext(AuthContext);
 
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
   useEffect(() => {
     const fetchQuizData = async () => {
+      console.log("User ID:", userId);
+
       try {
+       
         const response = await fetch(
-          `https://quizifai.com:8010/dashboard`,
+          `https://dev.quizifai.com:8010/dashboard`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "Authorization": `Bearer ${authToken}`,
             },
-            body: JSON.stringify({ user_id: userId }),
+            body: JSON.stringify({
+               user_id: userId
+            }),
           }
         );
-  
+
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
-  
         const data = await response.json();
-        console.log("Full API Response:", data);
-  
-        // Check the structure of data.data[0].audit_details
-        const auditDetails = data.data[0]?.audit_details;
-        console.log("Audit Details:", auditDetails);
-  
+        console.log("Data:", data);
+
+        const auditDetails = data.data[0].audit_details;
         if (auditDetails) {
+          // setCity(auditDetails.location_name || "");
           setCountry(auditDetails.country_name || "");
-          setGlobalRank(auditDetails.global_rank || "");
+          // setGlobalRank(auditDetails.global_score_rank || "");
+          // setGlobalscore(auditDetails.global_score || "");
           setRegisteredOn(auditDetails.created_date || "");
           setLastLogin(auditDetails.last_login_timestamp || "");
           setPasswordChanged(auditDetails.user_password_change_date || "");
-  
+
           const userDetails = auditDetails;
-          setUserName(userDetails.full_name || "");
-  
-          const userProfileDetails = data.data[0]?.user_profile_details;
-          console.log("User Profile Details:", userProfileDetails);
-          
-          setDistrict(userProfileDetails.district_name || "");
-          setOccupation(userProfileDetails.occupation_name || "");
-          setCity(userProfileDetails.location_name || "");
-          setOtherOccupation(userProfileDetails.other_occupation_name || "");
-  
-          const subscriptionDetails = auditDetails.subscription_details?.[0];
-          console.log("Subscription Details:", subscriptionDetails);
-  
-          setSubscriptionStartDate(subscriptionDetails?.start_date || "");
-          setSubscriptionEndDate(subscriptionDetails?.end_date || "");
-          setRemainingDays(subscriptionDetails?.remaining_days || "");
-  
-          const userMetrics = data.data[0]?.user_metrics;
-          console.log("User Metrics:", userMetrics);
-  
-          setTotalQuizzes(userMetrics?.total_quizzes || 0);
-          setTotalMinutes(userMetrics?.total_minutes || 0);
-          setAverageScorePercentage(userMetrics?.average_total_percentage || 0);
-          setGlobalRank(userMetrics?.global_rank || "");
+          setUserName(userDetails.full_name);
+
+          const UserProfileDetails = data.data[0].user_profile_details;
+          setDistrict(UserProfileDetails.district_name);
+          setOccupation(UserProfileDetails.occupation_name);
+          setCity(UserProfileDetails.location_name);
+          setOtherOccupation(UserProfileDetails.other_occupation_name);
+
+          const subscriptionDetails = auditDetails.subscription_details && auditDetails.subscription_details[0];
+          if (subscriptionDetails) {
+            setSubscriptionStartDate(subscriptionDetails.start_date || "");
+            setSubscriptionEndDate(subscriptionDetails.end_date || "");
+            setRemainingDays(subscriptionDetails.remaining_days || "");
+          } else {
+            console.error("No subscription details found.");
+          }
         } else {
-          console.error("No audit details found.");
+          console.error("No user details found.");
+        }
+
+        const usermetrics = data.data[0].user_metrics;
+        if (usermetrics) {
+          setTotalQuizzes(usermetrics.countofquizes || 0);
+          setTotalMinutes(usermetrics.total_minutes || 0);
+          setAverageScorePercentage(usermetrics.average_total_percentage || 0);
+          // setGlobalRank(usermetrics.global_score_rank || "");
+        } else {
+          console.error("No user metrics found.");
         }
       } catch (error) {
         console.error("Error fetching quiz data:", error);
       }
     };
-  
+
     fetchQuizData();
-  }, [userId]);
-  
+  }, [userId,authToken]); 
+
   useEffect(() => {
     console.log("Registered On:", registeredOn);
     console.log("Last Login:", lastLogin);
@@ -195,22 +205,16 @@ const Navigation = () => {
 
 
 </div>
-<div className="h-[5px] w-full bg-white mt-[10px]"></div>
-
-<div className="mt-[15px] ml-2 p-[10px]">
-      <h1 className="text-[13px] text-start">
-        Registered On :
-        <span className="text-[#5E81F4] pl-1">{registeredOn}</span>
-      </h1>
-      <h1 className="text-[13px] text-start">
-        Last Login :
-        <span className="text-[#5E81F4]">{lastLogin}</span>
-      </h1>
-      <h1 className="text-[13px] text-start">
-        Password Changed :
-        <span className="text-[#5E81F4]">{passwordChanged}</span>
-      </h1>
-    </div>
+<div className=" flex items-center justify-center z-50 ">
+              <img src={rocket} alt="" className=" w-[49px] h-[112px] z-50"/>
+            </div>
+          <div className=" flex flex-col justify-center items-center p-[10px] bg-white rounded-[25px] w-[90%] ml-[10px] pt-[80px] relative top-[-75px]">
+         
+            <div>
+              <p className=" text-[#9696BB] ">Upgrade to <span className=" text-black font-bold">Pro</span>  for more resources</p>
+            </div>
+            <button className=" bg-[#5E81F4] p-[5px] px-[20px] rounded-[10px] text-white">Upgrade</button>
+          </div>
 </div>
     </div>
   );

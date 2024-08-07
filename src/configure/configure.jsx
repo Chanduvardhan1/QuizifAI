@@ -27,16 +27,26 @@ const configure = () => {
   const handleCategoriesClick = () => {
     navigate('/category'); 
   };
+  const handleCoursesClick = () => {
+    navigate('/Course');
+  };
 
   useEffect(() => {
     const fetchQuizData = async () => {
       try {
+        const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+  if (!authToken) {
+    console.error('No authentication token found');
+    return;
+  }
         const response = await fetch(
           `https://dev.quizifai.com:8010/dashboard`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              'Authorization': `Bearer ${authToken}`,
             },
             body: JSON.stringify({
               user_id: userId,         
@@ -165,7 +175,11 @@ const configure = () => {
                  <p
                  key={index} 
                  className={`mt-3 text-[10px] ml-[20px] font-semibold cursor-pointer ${item.title === 'Configuration' && 'text-[#3340AF]'} ${item.title === 'Configuration' ? 'hover:underline hover:underline-offset-2' : 'text-gray-500'}`} 
-                 onClick={contentItem === 'Categories' ? handleCategoriesClick : null}
+                 onClick={
+                  contentItem === 'Categories' ? handleCategoriesClick : 
+                  contentItem === 'Courses' ? handleCoursesClick : 
+                  null
+                }
              >
                  {highlightText(contentItem, searchQuery)}
              </p>

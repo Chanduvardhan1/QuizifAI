@@ -1,5 +1,5 @@
 // quizzes.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import Select from "react-select";
 import styles from "./quiz.module.css";
 import Navigation from "../navbar/navbar.jsx";
@@ -21,6 +21,7 @@ import Easy from "../../public/images/dashboard/Easy.png";
 import Clock from "../../public/images/dashboard/Clock.png";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AuthContext } from "../Authcontext/AuthContext.jsx"
 
 const Quiz = () => {
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
@@ -66,6 +67,7 @@ const Quiz = () => {
   const [timeData, setTimeData] = useState(null);
   const [weeklyQuizCount, setWeeklyQuizCount] = useState(null);
   const [averageScorePercentage, setAverageScorePercentage] = useState(null);
+  const { authToken } = useContext(AuthContext);
 
   const navigate = useNavigate();
   const userRole = localStorage.getItem('user_role');
@@ -76,28 +78,46 @@ const Quiz = () => {
   useEffect(() => {
     const fetchDropdownValues = async () => {
       try {
+        const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
+
+        if (!authToken) {
+          throw new Error('No authentication token found');
+        }
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+        };
+
         // Fetch date range and popularity
-        const dateRangeResponse = await fetch('https://dev.quizifai.com:8010/get_date_rnge/');
+        const dateRangeResponse = await fetch('https://dev.quizifai.com:8010/get_date_rnge/', {
+          headers,
+        });
         const dateRangeResult = await dateRangeResponse.json();
         console.log("Date Range and Popularity data:", dateRangeResult);
         setDateRanges(sortAlphabetically(dateRangeResult["Date Range"]));
         setPopularity(sortAlphabetically(dateRangeResult["Popularity"]));
 
         // Fetch categories and subcategories
-        const categoriesResponse = await fetch('https://dev.quizifai.com:8010/categories&sub_categories/');
+        const categoriesResponse = await fetch('https://dev.quizifai.com:8010/categories&sub_categories/', {
+          headers,
+        });
         const categoriesResult = await categoriesResponse.json();
         console.log("Categories and Subcategories data:", categoriesResult);
         setCategories(sortAlphabetically(categoriesResult.data.map(item => item.category_name)));
         setAllSubCategories(categoriesResult.data);
 
         // Fetch complexities
-        const complexitiesResponse = await fetch('https://dev.quizifai.com:8010/complexities/');
+        const complexitiesResponse = await fetch('https://dev.quizifai.com:8010/complexities/', {
+          headers,
+        });
         const complexitiesResult = await complexitiesResponse.json();
         console.log("Complexities data:", complexitiesResult);
         setComplexities(complexitiesResult.data.map(item => item.complexity_name));
 
         // Fetch courses and classes
-        const coursesResponse = await fetch('https://dev.quizifai.com:8010/courses-clsses/');
+        const coursesResponse = await fetch('https://dev.quizifai.com:8010/courses-clsses/', {
+          headers,
+        });
         const coursesResult = await coursesResponse.json();
         console.log("Courses and Classes data:", coursesResult);
         setCourses(sortAlphabetically(coursesResult.data.map(item => item.course_name)));
@@ -119,6 +139,7 @@ const Quiz = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${authToken}`,
           },
           body: JSON.stringify({
             user_id: userId,
@@ -175,7 +196,7 @@ const Quiz = () => {
     };
 
     fetchQuizData();
-  }, [userId]);
+  }, [userId,authToken]);
 
 
   useEffect(() => {
@@ -616,7 +637,7 @@ const Quiz = () => {
                           paddingTop: "20px",
                           marginTop: "20px",
                           marginRight: "10px",
-                          backgroundColor: "#fee2e2",
+                          backgroundColor: quizItem.attempts_count < quizItem.retake_flag ? "#fee2e2" : "#55505026",
                         }}
                       >
                         <span className="relative group">
@@ -1127,7 +1148,7 @@ const Quiz = () => {
                                     height={10}
                                   />
                                   <p>{quizItem.quiz_attempts}</p>
-                                  <span className="text-[8px] ml-1">
+                                  <span className="text-[8px] -ml-1">
                                     attempts
                                   </span>
                                 </div>

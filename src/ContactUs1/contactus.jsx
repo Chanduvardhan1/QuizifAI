@@ -19,9 +19,10 @@ import loginIcon from "../../src/assets/Images/images/home/login.png";
 import { Link, NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Navigation from "../navbar/navbar.jsx"
+import Navbarhome from "../navbarhome/navbarhome";
 
 
-function contact() {
+function contactus() {
   const [submitted, setSubmitted] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [message, setMessage] = useState("");
@@ -186,79 +187,16 @@ function contact() {
     }
   };
   return (
-    <div className="flex">
-      <Navigation/>
+    <div className="">
+      <Navbarhome/>
       {/* <Head>
         <link
           href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600;700&display=swap"
           rel="stylesheet"
         />
       </Head> */}
-      {/* <header className="header">
-        <div className="logo">
-          <Link to={"/"}>
-            <img src={quizifailogo} alt="Logo" width={160} height={63} />
-          </Link>
-        </div>
-        <nav className="navigation">
-          <ul>
-            <li onClick={handleClick1} className="navItem">
-              Home
-            </li>
-            {/* <li onClick={() => setActiveSection("pricing")} className="navItem">
-              Pricing
-            </li> */}
-
-{/*          
-            <li className="buttons">
-              <Link to={"/signup"}>
-                <button
-                  className="signup"
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                //   onClick={handleClick}
-                >
-                  {/* <img
-                    src={signupIcon}
-                    alt="Signup Icon"
-                    className="icon"
-                    style={{ marginRight: "10px" }}
-                  /> */}
-                  {/* Sign Up
-                </button>
-              </Link>
-            </li>
-            <li className="buttons">
-              <Link to="/login">
-                <button
-                  className="login"
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                //   onClick={handleClick1}
-                >
-                  {/* <img
-                    src={loginIcon}
-                    alt="Login Icon"
-                    className="icon"
-                    style={{ marginRight: "10px" }}
-                  /> */}
-                 {/* Login
-                </button>
-              </Link>
-            </li>
-            <li onClick={handleClick} className="navItem">
-              Contact Us
-            </li>  */}
-        {/*}  </ul>
-        </nav>
-      </header> */}
-      <div className="content4">
+     
+      <div className="content1">
           <div className="contactContent">
           <div className="contactContent1">
             <img
@@ -361,7 +299,7 @@ function contact() {
               Karnataka 560049
             </p> */}
             </div>
-            <div className="outerBox1">
+            <div className="outerBox2">
             <h1
               style={{
                 // position: "absolute",
@@ -772,4 +710,4 @@ function contact() {
   );
 }
 
-export default contact;
+export default contactus;

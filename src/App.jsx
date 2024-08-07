@@ -1,12 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   BrowserRouter,
   Routes,
   Route,
-  useNavigate,
-  useLocation,
 } from "react-router-dom";
-import { AuthProvider } from '../src/Authcontext/AuthContext.jsx';
+import { AuthProvider } from "../src/Authcontext/AuthContext.jsx";
 import Home from "./home/home.jsx";
 import NoPage from "./pages/NoPage.jsx";
 import Signup from "./signup/signup.jsx";
@@ -266,7 +264,8 @@ import PrivateRoute from './privateRoute/privateRoute.jsx';
 // const [userId, setUserId] = useState(localStorage.getItem("user_id"));
 
 
-
+import Course from './configure/course.jsx';
+import Contactus from './ContactUs1/contactus.jsx';
     function App() {
     
   return (
@@ -279,9 +278,11 @@ import PrivateRoute from './privateRoute/privateRoute.jsx';
     <Route path="*" element={<NoPage />} />
     <Route path="signup" element={<Signup />} />
     <Route path="login" element={<Login />} />
+    <Route path="contactus" element={<Contactus />} />
     <Route path="contact" element={<PrivateRoute><Contact /></PrivateRoute>} />
 
     <Route path="history" element={<PrivateRoute> <History /></PrivateRoute>} />
+    <Route path="course" element={<PrivateRoute> <Course /></PrivateRoute>} />
     <Route path="create-quiz" element={<PrivateRoute> <Createquiz /></PrivateRoute>} />
     <Route path="csv" element={<PrivateRoute><Csv /></PrivateRoute>} />
     <Route path="detailed-report" element={<PrivateRoute><Detailedreport /></PrivateRoute>} />

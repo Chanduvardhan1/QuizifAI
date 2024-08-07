@@ -219,14 +219,45 @@ function Home() {
         </div>
         <nav className="navigation">
           <ul>
-            <li onClick={() => setActiveSection("home")} className="navItem">
+            {/* <li onClick={() => setActiveSection("home")} className="navItem">
               Home
+            </li> */}
+            <li className="buttons1">
+              <Link to="/">
+                <button
+                  className="login"
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  // onClick={handleClick1}
+                >
+                  
+                  Home
+                </button>
+              </Link>
             </li>
             {/* <li onClick={() => setActiveSection("pricing")} className="navItem">
               Pricing
             </li> */}
           
-          
+          <li className="buttons2">
+              <Link to="/Contactus">
+                <button
+                  className="login"
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  // onClick={handleClick1}
+                >
+                  
+                  Contact Us
+                </button>
+              </Link>
+            </li>
 
             <li className="buttons">
               <Link to={"/signup"}>

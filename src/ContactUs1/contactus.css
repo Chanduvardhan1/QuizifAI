@@ -1,3 +1,4 @@
+
 /* home.module.css */
 
 .container {
@@ -67,6 +68,11 @@
     border-radius: 20px; */
     /* padding-top: 5px; */
   }
+  /* .navItem:hover{
+    background-color: rgb(239,81,48);
+    color:white;
+
+  } */
 
   .navigation ul li:nth-child(-n+2) {
     margin-right: 10px;
@@ -104,74 +110,33 @@
     margin-right: 6px;
     margin-left: 4px;
   }
-  .buttons1 button {
-    width: 80px;
-    height: 30px;
-    border-radius: 20px;
-    /* background: #3B61C8; */
-    font-family: Poppins;
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 30px;
-    letter-spacing: 0em;
-    text-align: center;
-    color: #555555;
-    cursor: pointer;
-    margin-right: -15px;
-    margin-left: 4px;
-  }
-  .buttons1 button:hover{
-    background-color: rgb(239,81,48);
-    transform: scale(1.1); /* Zoom effect on hover */
-    transition: transform 0.3s ease;
-  }
-  .buttons2 button {
-    width: 80px;
-    height: 30px;
-    border-radius: 20px;
-    /* background: #3B61C8; */
-    font-family: Poppins;
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 30px;
-    letter-spacing: 0em;
-    text-align: center;
-    color: #555555;
-    cursor: pointer;
-    margin-right: 0px;
-    margin-left: 4px;
-  }
-  .buttons2 button:hover{
-    background-color: rgb(239,81,48);
-    transform: scale(1.1); /* Zoom effect on hover */
-    transition: transform 0.3s ease;
-  } 
+  
   .content {
     padding: 20px;
-    width: 100%;
-    display: flex;
-    /* align-items: end;
-    flex-direction: column;
-    justify-content: center; */
   }
-.textContent{
-  width: 50%;
-  display: flex;
-  align-items: end;
-  flex-direction: column;
-  justify-content: center;
-  padding-right: 34px;
-  padding-top: 100px;
-}
 
   .navItem {
     cursor: pointer;
   }
-
+  .contactContent1{
+    display: flex;
+    flex-direction: column;
+    padding-left: 100px; 
+  }
+.outerBox2{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-right: 20px;
+}
   .navigation {
     cursor: pointer;
   }
-  
+  .contactContent{
+    display: flex;
+    justify-content: space-between;
+  }
   
   .text-content {
     width: 376px;
@@ -183,36 +148,6 @@
     
   }
   
-  .line1 {
-    font-family: Poppins;
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 50px;
-    letter-spacing: 0em;
-    text-align: left;
-    color: #555555;
-    /* margin-left: 790px;
-    position: absolute;
-    top: 280px; */
-  }
-
-  .line2 {
-    font-family: Poppins;
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 50px;
-    letter-spacing: 0em;
-    text-align: left;
-    color: #555555;
-    /* margin-left: 780px;
-    position: absolute;
-    top: 320px; */
-  }
-  
-  .line1,
-  .line2 {
-    font-size: 18px;
-  }
   
   .line3 {
     font-family: Poppins;
@@ -224,12 +159,12 @@
     color: white;
    
   }
-  /* .line3:hover{
-    background-color: #F15A3D;
+  .line3:hover{
+    /* background-color: #F15A3D;
     padding: 9px;
     padding-left: 18px;
-    border-radius: 10px;
-  } */
+    border-radius: 10px; */
+  }
   .ContactMail1{
     /* position: absolute;
     top: 18px; */
@@ -237,7 +172,6 @@
   }
   .ContactMail2{
     /* padding-left: 133px; */
-
     text-decoration: underline;
   }
   .line{
@@ -245,37 +179,11 @@
     left: 120px;
     top: 18px; */
   }
-  .backgroundButton:hover{
-    background-color: #F15A3D;
-  }
+  /* .backgroundButton:hover{
+    background-color: orange;
+  } */
   
-.backgroundButton{
-  font-family: Poppins;
-  font-size: 13px;
-  font-weight: 700;
-  /* line-height: 40px; */
-  letter-spacing: 0em;
-  text-align: center;
-  color: white;
-  display: flex;
- align-items: center;
- justify-content: center;
- width: 103px;
- height: 36px;
 
- background-color: darkblue;
- border-Radius: 10px;
- border: none;
- cursor: pointer;
-}
-.backgroundButton:hover{
-  background-color: rgb(239,81,48); /* Change background color on hover */
-  transform: scale(1.1); /* Zoom effect on hover */
-  
-}
-/* .link:hover{
-  background-color: #F15A3D;
-} */
   .buttons {
     display: flex; 
   }
@@ -300,14 +208,7 @@
     cursor: pointer;
   } */
   
-  .line3Container {
-    display: flex;
-    /* align-items: flex-end; */
-    /* justify-content: flex-end; */
-    /* width: 261px; */
-    align-items: center;
-    flex-direction: column;
-  }
+ 
   
   .text-content .line3 {
     font-family: Poppins;
@@ -322,17 +223,8 @@ left: -100px !important;
 
   }
 
-  .homeImage {
-    width: 50%;
-    /* height: 546px; */
-    /* position: absolute;
-    top: 156px;
-    left: 45px; */
-    padding-left: 85px;
-  }
-.homeImage1{
-  width: 800px;
-}
+
+
   .outerBox {
     /* position: absolute;
     top: 140px;
@@ -365,7 +257,21 @@ left: -100px !important;
   .formRow img {
     margin-right: 15px;
   }
-  
+  .content1{
+    padding: 20px;
+    width: 100%; 
+  }
+  .sendbutton1{
+    display: flex;
+    justify-content: end;
+    padding-right: 10px;
+  }
+  .emailcontact{
+    justify-content: center;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
   .input[type="text"],
   .input[type="email"],
   .textarea {

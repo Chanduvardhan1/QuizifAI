@@ -1,6 +1,6 @@
 // LogoutBar.js
 
-import React from "react";
+import React , { useContext }from "react";
 //import Image from "next/image";
 import { useNavigate } from "react-router-dom";
 import { useState,useEffect } from "react";
@@ -14,6 +14,7 @@ import infinity from "../assets/Images/images/dashboard/infinity.png"
 import questionmark from "../assets/Images/images/dashboard/questionmark.png";
 import profileimg from "../assets/Images/images/profile/profileImage.png";
 import rocket from "../assets/Images/images/dashboard/rocket.png";
+import { AuthContext } from "../Authcontext/AuthContext.jsx"
 
 
 const currentValue1 = 50; 
@@ -67,18 +68,22 @@ const LogoutBar = (data) => {
   const [subscriptionEndDate, setSubscriptionEndDate] = useState('');
   const [remainingDays, setRemainingDays] = useState('');
   const [otherOccupation, setOtherOccupation] = useState("");
-  
+  const { user, logout } = useContext(AuthContext);
+  const { authToken } = useContext(AuthContext);
+
   useEffect(() => {
     const fetchQuizData = async () => {
       console.log("User ID:", userId);
 
       try {
+       
         const response = await fetch(
           `https://dev.quizifai.com:8010/dashboard`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "Authorization": `Bearer ${authToken}`,
             },
             body: JSON.stringify({
                user_id: userId
@@ -138,35 +143,44 @@ const LogoutBar = (data) => {
     };
 
     fetchQuizData();
-  }, [userId]); 
+  }, [userId,authToken]); 
 
   const handleBackToLogin = () => {
+    // Retrieve the authentication token from AuthContext or localStorage
+    const authToken = localStorage.getItem('authToken') || null;
+  
     fetch('https://dev.quizifai.com:8010/usr_logout/', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`, // Include the authentication token
       },
       body: JSON.stringify({
-        user_id: userId
+        user_id: userId, // Ensure user.userId is available
+      }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Logout response:', data);
+        if (data.response === 'success') {
+          localStorage.removeItem('authToken');
+          localStorage.removeItem('user_id');
+          localStorage.removeItem('user_role');
+          localStorage.removeItem('password');
+          logout(); // Clear the token from AuthContext
+          navigate("/login");// Redirect to login page
+        } else {
+          console.error('Logout failed:', data.response_message);
+          // Handle unsuccessful logout (optional)
+        }
       })
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Logout response:', data);
-      if (data.response === 'success') {
-        
-        navigate("/login");
-      } else {
-        console.error('Logout failed:', data.response_message);
-        // Handle unsuccessful logout (optional)
-      }
-    })
       .catch(error => {
         console.error('Error logging out:', error);
         // Handle errors appropriately
       });
   };
+  
   return (
     <div className={styles.logout}>
      <div style={{ marginTop: "-20px", display: "flex", alignItems: "center" , marginLeft:"20px",position:"relative",top:"25px"}}> 
@@ -298,16 +312,7 @@ const LogoutBar = (data) => {
             <span className="text-[25px] text-[#E97132] ml-[25px] mt-[10px] font-semibold">{averageScorePercentage}%</span>
             <h1 className="mt-[23px] ml-[5px] text-[12px] font-normal">Average</h1>
           </div>
-          <div className=" flex items-center justify-center z-50 ">
-              <img src={rocket} alt="" className=" w-[49px] h-[112px] z-50"/>
-            </div>
-          <div className=" flex flex-col justify-center items-center p-[10px] bg-white rounded-[25px] w-[90%] ml-[10px] pt-[80px] relative top-[-75px]">
-         
-            <div>
-              <p className=" text-[#9696BB] ">Upgrade to <span className=" text-black font-bold">Pro</span>  for more resources</p>
-            </div>
-            <button className=" bg-[#5E81F4] p-[5px] px-[20px] rounded-[10px] text-white">Upgrade</button>
-          </div>
+          
           {/* <div className="h-[5px] w-full bg-white mt-[10px]"></div>
 
           <div>
@@ -324,8 +329,8 @@ const LogoutBar = (data) => {
               <img className="h-[40px] w-[35px] ml-5 -mt-2" src={infinity} />           
             )} */}
             {/* <h1 className="mt-[2px] ml-[10px] text-[13px] font-normal">days remaining</h1> */}
-            {/* </div>
-          </div>
+           {/* </div>
+          </div> */}
           <div className="h-[5px] w-full bg-white mt-[10px]"></div>
         
           <div className="mt-[15px] ml-2">
@@ -333,7 +338,7 @@ const LogoutBar = (data) => {
             <h1 className="text-[13px] text-start">Last Login : <span className="text-[#5E81F4]">{lastLogin}</span></h1>
             <h1 className="text-[13px] text-start">Password Changed : <span className="text-[#5E81F4]">{passwordChanged}</span></h1>
           </div>
-                   */}
+                 
             
           </div>
         </div>

@@ -38,7 +38,18 @@ const category = () => {
   
   // toggle button for parent category 
   const fetchCategories = () => {
-    fetch('https://dev.quizifai.com:8010/categories/')
+    const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+    if (!authToken) {
+      console.error('No authentication token found');
+      return;
+    }
+    fetch('https://dev.quizifai.com:8010/categories/', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`, // Include the auth token in the Authorization header
+      },
+    })
       .then(response => response.json())
       .then(data => {
         if (data.response === "success") {
@@ -148,10 +159,17 @@ const category = () => {
     };
   
     try {
+      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+      if (!authToken) {
+        console.error('No authentication token found');
+        return;
+      }
       const response = await fetch('https://dev.quizifai.com:8010/create_category/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
         },
         body: JSON.stringify(categoryData),
       });
@@ -182,10 +200,17 @@ const category = () => {
     };
   
     try {
+      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+  if (!authToken) {
+    console.error('No authentication token found');
+    return;
+  }
       const response = await fetch('https://dev.quizifai.com:8010/update_category/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
         },
         body: JSON.stringify(categoryData),
       });
@@ -452,7 +477,7 @@ const category = () => {
         ))}
         </tbody>
         
-        <tbody>
+        {/* <tbody>
           {categories.map((category, index) => (
             <tr key={index} className='bg-white text-[#214082] font-medium text-[10px]'>
               <td className='px-4 py-2 border '>{category.id}</td>
@@ -469,7 +494,7 @@ const category = () => {
               </td>
             </tr>
           ))}
-        </tbody>
+        </tbody> */}
         
       </table>
     </div>

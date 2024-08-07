@@ -1,5 +1,5 @@
 // Dashboard.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import styles from "./dashboard.module.css";
 import Navigation from "../navbar/navbar.jsx";
 import LogoutBar from "../logoutbar/logoutbar.jsx";
@@ -23,6 +23,7 @@ import arrow from "../../src/assets/Images/dashboard/rightArrow.png";
 import "react-sweet-progress/lib/style.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AuthContext } from '../Authcontext/AuthContext'; // Adjust the import path if needed
 
 const Dashboard = () => {
   const getFormattedDate = () => {
@@ -53,9 +54,29 @@ const Dashboard = () => {
   const [retakeCount, setRetakeCount] = useState(0);
   const [retakeFlag, setRetakeFlag] = useState(0);
 
+
   const navigate = useNavigate();
+  const { isAuthenticated, authToken, logout } = useContext(AuthContext);
 
+  // useEffect(() => {
+  //   const token = localStorage.getItem('authToken');
+  //   console.log("Token from localStorage:", token); // Debugging line
+  //   if (token) {
+  //     setIsAuthenticated(true);
+  //   } else {
+  //     console.log("No token found, user is not authenticated."); // Debugging line
+  //   }
+  // }, []);
+  
 
+  useEffect(() => {
+    // Example: Checking authentication state on component mount
+    console.log('User is authenticated:', isAuthenticated);
+    // You might not need to directly use setIsAuthenticated here
+    // It's typically handled within the AuthContext
+  }, [isAuthenticated]);
+
+ 
   
   useEffect(() => {
     const handleWindowClose = () => {
@@ -81,12 +102,17 @@ const Dashboard = () => {
     };
   }, []);
   useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login'); // Redirect to login if not authenticated
+      return;
+    }
     const fetchQuizData = async () => {
       try {
         const response = await fetch(`https://dev.quizifai.com:8010/dashboard`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            'Authorization': `Bearer ${authToken}`,
           },
           body: JSON.stringify({
             user_id: userId,
@@ -115,7 +141,7 @@ const Dashboard = () => {
     };
 
     fetchQuizData();
-  }, [userId]);
+  }, [authToken, isAuthenticated, navigate, userId]);
 
   const handleStartQuiz = (quizId) => {
     // navigate(`/quizaccess/${quizId}`);
@@ -371,7 +397,7 @@ const Dashboard = () => {
             {result?.quiz_percentage}%
           </span>
         </div>
-        <hr className={styles.divider} />
+        {index < 3 && <hr className={styles.divider} />}
       </div>
     );
   });
@@ -551,7 +577,7 @@ const Dashboard = () => {
                         paddingTop: "20px",
                         marginTop: "10px",
                         marginRight: "10px",
-                        backgroundColor: "#fee2e2",
+                        backgroundColor: quizItem.attempts_count < quizItem.retake_flag ? "#fee2e2" : "gray",
                       }}
                     >
                       <span className="relative group">
@@ -1051,7 +1077,7 @@ const Dashboard = () => {
                                   height={10}
                                 />
                                 <p>{quizItem.quiz_attempts}</p>
-                                <span className="text-[8px] ml-1">
+                                <span className="text-[8px] -ml-[1px]">
                                   attempts
                                 </span>
                               </div>
@@ -1148,7 +1174,7 @@ const Dashboard = () => {
                         paddingTop: "20px",
                         marginTop: "10px",
                         marginRight: "10px",
-                        backgroundColor: "#fee2e2",
+                        backgroundColor: quizItem.attempts_count < quizItem.retake_flag ? "#fee2e2" : "#55505026",
                       }}
                     >
                       <span className="relative group">
@@ -1658,7 +1684,7 @@ const Dashboard = () => {
                                   height={10}
                                 />
                                 <p>{quizItem.quiz_attempts}</p>
-                                <span className="text-[8px] ml-1">
+                                <span className="text-[8px] -ml-1">
                                   attempts
                                 </span>
                               </div>

@@ -45,7 +45,10 @@ const LoginPage = () => {
   const [platform, setplatform] = useState("")
   const [Forgotmassage, setForgotmassage] = useState("")
   const [Forgotmobile, setForgotmobile] = useState("")
-  const { login } = useContext(AuthContext)
+  const { login } =  useContext(AuthContext);
+  const [username, setUsername] = useState('');
+  // const { handleLogin } = useAuth();
+
   const validateEmail = () => {
     return /\S+@\S+\.\S+/.test(email);
   };
@@ -105,13 +108,15 @@ const LoginPage = () => {
     setShowResendOTPForm(true);
   };
   const navigate = useNavigate();
-  // const handleLogin = async (loginOption, email, mobile, password) => {
+  // const handleLogin1 = async (loginOption, email, mobile, password) => {
   //   // if (!termsChecked) {
   //   //   setErrorMessage("Please agree to the terms and conditions");
   //   //   return;
   //   // }
   //   try {
+  //     const response = await loginUser(loginOption, email, mobile, password);
   //     console.log("email - ", email);
+
   //     const response = await fetch(`https://dev.quizifai.com:8010/login`, {
   //       method: "POST",
   //       headers: {
@@ -197,7 +202,24 @@ const LoginPage = () => {
   //     setErrorMessage("An error occurred while logging in.");
   //   }
   // };
-  const handleLogin = async (loginOption, email, mobile, password) => {
+
+  // const handleLogin1 = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!password) {
+  //     setErrorMessage('Please enter your password');
+  //     return;
+  //   }
+
+  //   try {
+  //     await login(loginOption, email, mobile, password);
+  //   } catch (error) {
+  //     setErrorMessage('Login failed. Please check your credentials and try again.');
+  //   }
+  // };
+
+  const handleLogin1 = async (loginOption, email, mobile, password) => {
+
     if (!password) {
       setErrorMessage("Please enter your password");
       return;
@@ -209,10 +231,30 @@ const LoginPage = () => {
       const platform = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
       ? "mobile" // If any of the identifiers are found, return 'Mobile'.
       : "Web";
+      const tokenResponse = await fetch('https://dev.quizifai.com:8010/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          accept: 'application/json',
+        },
+        body: new URLSearchParams({
+          username:  loginOption === "email" ? email : mobile, // Use the fixed username
+          password: password, // Use the fixed password
+        }),
+      });
+  
+      if (!tokenResponse.ok) {
+        throw new Error('Failed to retrieve access token');
+      }
+  
+      const tokenData = await tokenResponse.json();
+      const accessToken = tokenData.access_token;
+  
       const response = await fetch(`https://dev.quizifai.com:8010/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
           login_option: loginOption,
@@ -229,7 +271,7 @@ const LoginPage = () => {
           const userId = responseData.data && responseData.data[0] && responseData.data[0].user_id;
         const userRole = responseData.data && responseData.data[0] && responseData.data[0].user_role;
         if (userId && userRole) {
-          login({ userId, userRole });
+          login(accessToken);
           localStorage.setItem('user_id', userId);
           localStorage.setItem('user_role', userRole);
           localStorage.setItem('password', password);
@@ -281,7 +323,12 @@ const LoginPage = () => {
     }
   };
   
+  // const handleLogin1 = (e) => {
+  //   e.preventDefault();
+  //   handleLogin(loginOption, email, mobile, password);
+  // };
   
+ 
   
   const validateEmail1 = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -324,11 +371,13 @@ const LoginPage = () => {
         } else if (data.response_message === "OTP Sent Successfully,Please reset your password") {
           navigate("/resetpassword", { state: { userId,email} });
         }
+      }else if (data.response === "fail" && data.response_message === "Email is incorrect or not registered.") {
+        setForgotmassage(data.response_message);
       } else {
         setForgotmassage(data.response_message);
-        setForgotmassage(data.output);
       }
     })
+    
     .catch((error) => {
       console.error("Error occurred:", error);
     });
@@ -870,7 +919,7 @@ const LoginPage = () => {
               
               <button
                 onClick={() =>
-                  handleLogin(loginMethod, email, mobile, password)
+                  handleLogin1(loginMethod, email, mobile, password)
                 }
                 className={styles.loginButton}
               >

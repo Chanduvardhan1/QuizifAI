@@ -245,13 +245,20 @@ const QuizQuestions = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+      if (!authToken) {
+        console.error('No authentication token found');
+        return;
+      }
       const quizId = localStorage.getItem("quiz_id");
       try {
         const response = await fetch('https://dev.quizifai.com:8010/get-questions', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
           },
           body: JSON.stringify({
             quiz_id: quizId,
@@ -317,10 +324,16 @@ const QuizQuestions = () => {
   }, [quizData]);
 
   useEffect(() => {
-    if (elapsedTime <= 300 && !showWarning) { // 5 minutes = 300 seconds
+    if (elapsedTime <= 120 && !showWarning) { // 5 minutes = 300 seconds
       setShowWarning(true);
     }
   }, [elapsedTime, showWarning]);
+
+  useEffect(() => {
+    if (showWarning) {
+      toast.error("You have 2 minutes left!");
+    }
+  }, [showWarning]);
 
   useEffect(() => {
     selectedOptionsRef.current = selectedOptions;
@@ -473,12 +486,19 @@ const QuizQuestions = () => {
     console.log('Submitting answers:', answers); // Log to check the answers array
 
     const quizId = localStorage.getItem("quiz_id");
+    const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+    if (!authToken) {
+      console.error('No authentication token found');
+      return;
+    }
 
     fetch('https://dev.quizifai.com:8010/submit', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`,
       },
       body: JSON.stringify({
         user_id: userId,
@@ -529,14 +549,20 @@ const QuizQuestions = () => {
         option_4: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_4_id
       }
     }));
+    const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
 
+    if (!authToken) {
+      console.error('No authentication token found');
+      return;
+    }
     const quizId = localStorage.getItem("quiz_id");
 
     fetch('https://dev.quizifai.com:8010/submit', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`,
       },
       body: JSON.stringify({
         user_id: userId,
@@ -1170,6 +1196,8 @@ const QuizQuestions = () => {
       <div className={styles.sentence2}>
        <span> Total timer:</span> <span className={styles.sentence3}>{formatTime(elapsedTime)}</span> 
       </div>
+      {/* {showWarning && <div className={styles.warningMessage}>Warning: You have 5 minutes left!</div>} */}
+
       {skippedQuestionsDisplay.length > 0 && (
         <div className={styles.skippedQuestionsContainer}>
           <div className={styles.backgroundbox}>

@@ -127,9 +127,19 @@ const FreeProfile = () => {
   
     const fetchDetailsByPincode = async (pincode) => {
       try {
+        const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
+
+        if (!authToken) {
+          throw new Error('No authentication token found');
+        }
         const response = await axios.post('https://dev.quizifai.com:8010/location_details/', {
-          pincode: pincode
-        });
+          pincode: pincode },
+          {
+            headers: {
+              'Authorization': `Bearer ${authToken}`, // Include the auth token in the Authorization header
+            },
+          }
+        );
         const data = response.data.data[0];
         setCountry(data.country);
         setState(data.state);
@@ -168,12 +178,18 @@ const FreeProfile = () => {
     const fetchQuizData = async () => {
       console.log("User ID:", userId);     
       try {
+        const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
+
+        if (!authToken) {
+          throw new Error('No authentication token found');
+        }
         const response = await fetch(
           `https://dev.quizifai.com:8010/dashboard`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              'Authorization': `Bearer ${authToken}`,
             },
             body: JSON.stringify({
               user_id: userId,
@@ -304,12 +320,18 @@ const FreeProfile = () => {
     console.log("Updating profile with payload:", payload);
 
     try {
+      const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
+
+      if (!authToken) {
+        throw new Error('No authentication token found');
+      }
       const response = await fetch(
         `https://dev.quizifai.com:8010/edt_prfl_dtls`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            'Authorization': `Bearer ${authToken}`,
           },
           body: JSON.stringify(payload),
         }
@@ -369,11 +391,17 @@ handleEditClick();
 
   };
   useEffect(() => {
+    const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
+
+    if (!authToken) {
+      throw new Error('No authentication token found');
+    }
     // Fetch the data from the API
     fetch('https://dev.quizifai.com:8010/occupations/', {
       method: 'GET',
       headers: {
-        'accept': 'application/json'
+        'accept': 'application/json',
+        'Authorization': `Bearer ${authToken}`,
       }
     })
       .then(response => response.json())
@@ -406,12 +434,18 @@ handleEditClick();
     let alertMessage = ''; // Initialize alertMessage
   
     try {
+      const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
+
+      if (!authToken) {
+        throw new Error('No authentication token found');
+      }
       const response = await fetch(
         `https://dev.quizifai.com:8010/chnge_email_mobile`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            'Authorization': `Bearer ${authToken}`,
           },
           body: JSON.stringify(payload),
         }
@@ -558,11 +592,21 @@ const handleUpdatePassword = async (e) => {
   }
 
   try {
+    const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
+
+    if (!authToken) {
+      throw new Error('No authentication token found');
+    }
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authToken}`,
+    };
     const response = await axios.post('https://dev.quizifai.com:8010/update_password', {
       user_id: userId, // Replace with your user ID
       old_password: oldPassword,
       new_password: newPassword,
       confirm_password: confirmPassword,
+      headers,
     });
 
     if (response.data.response === "success") {
@@ -969,7 +1013,7 @@ const handleLoginCancelClick1 = () =>{
                           focus:outline-none"
               type="text"
               value={otheroccupation}
-              disabled={!isEditingLogin}
+              disabled={!isEditing}
               onChange={(e) => setOtherccupation(e.target.value)}
 
             />

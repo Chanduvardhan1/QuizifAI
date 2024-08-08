@@ -312,13 +312,12 @@ function Home() {
       <div className="content">
       <div className="homeImage">
         <div className="homeImage1"> 
-
-              <img src={homeImage} alt="home Image" width={550} height={496}   />
+              <img src={homeImage} alt="home Image" width={550} height={486}   />
         </div>
             </div>
         {activeSection === "home" && (
            <div className="textContent">
-          <div className="textContent1">
+          <div className="-mt-[170px]">
             <h1>
               <span className="line1">Exploring online resources for</span>
               <br />

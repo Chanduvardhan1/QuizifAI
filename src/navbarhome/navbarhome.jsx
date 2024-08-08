@@ -198,9 +198,7 @@ function navbarhome() {
             </li>
             {/* <li onClick={() => setActiveSection("pricing")} className="navItem">
               Pricing
-            </li> */}
-
-           
+            </li> */}          
             <li className="buttons">
               <Link to={"/signup"}>
                 <button

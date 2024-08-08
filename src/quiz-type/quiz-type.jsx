@@ -251,24 +251,25 @@ export default function quiztype() {
     }
   };
   useEffect(() => {
-    // Set default category to 'General'
-    const generalCategory = categories.find(category => category.category_name === 'General');
-    if (generalCategory) {
-      setSelectedCategory(generalCategory.category_name);
-      setSubCategories(generalCategory.sub_categories.map(sub => sub.sub_category_name));
+    if (categories.length > 0) {
+      const generalCategory = categories.find(category => category.category_name === 'General');
+      if (generalCategory) {
+        setSelectedCategory(generalCategory.category_name);
+        setSubCategories(generalCategory.sub_categories.map(sub => sub.sub_category_name));
+      }
     }
   }, [categories]);
   
   useEffect(() => {
-    // Set default sub-category to 'General' if available
     if (subCategories.length > 0) {
       const generalSubCategory = subCategories.find(subCategory => subCategory === 'General');
       if (generalSubCategory) {
         setSelectedSubCategory(generalSubCategory);
+      } else {
+        setSelectedSubCategory(subCategories[0]); // Default to the first subcategory if 'General' is not available
       }
     }
   }, [subCategories]);
-
 
   useEffect(() => {
     // Get the current date and format it as YYYY-MM-DD
@@ -279,10 +280,10 @@ export default function quiztype() {
   const handleSelectCategory = (event) => {
     const selectedCategory = event.target.value;
     setSelectedCategory(selectedCategory);
-    // Filter subcategories based on the selected category
     const category = categories.find(cat => cat.category_name === selectedCategory);
     if (category) {
       setSubCategories(category.sub_categories.map(subCat => subCat.sub_category_name));
+      setSelectedSubCategory(''); // Reset subcategory when a new category is selected
     }
   };
   const sortedCategories = [...categories].sort((a, b) =>

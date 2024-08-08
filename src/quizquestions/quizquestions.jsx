@@ -136,6 +136,8 @@ const QuizQuestions = () => {
   const [showWarning, setShowWarning] = useState(false);
   const lastVisitedQuestionRef = useRef(0);
   const selectedOptionsRef = useRef({});
+  const [isBlocking, setIsBlocking] = useState(false);
+
   // const [skippedQuestions, setSkippedQuestions] = useState([]);
   // const [skippedQuestionsDisplay, setSkippedQuestionsDisplay] = useState([]);
 
@@ -1181,8 +1183,17 @@ const QuizQuestions = () => {
               </button>
             </div>
           )} */}
+        
         </div>
-
+        <div className={styles.button3}>
+              <button
+                className={styles.button}
+                style={{marginTop: '-53px', backgroundColor: 'rgb(11 87 208)', height: '40px', borderRadius: '10px', border: 'none', color: '#FFFFFF',marginRight:'-165px' }}
+                onClick={handleSubmit}
+              >
+                Submit
+              </button>
+            </div>
      
     </div>
           </div>
@@ -1220,15 +1231,7 @@ const QuizQuestions = () => {
            </div>
         </div>
       )}
-      <div className={styles.button3}>
-              <button
-                className={styles.button}
-                style={{marginTop: '10px', backgroundColor: 'rgb(11 87 208)', height: '40px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
-                onClick={handleSubmit}
-              >
-                Submit
-              </button>
-            </div>
+      
       {/* {visibleSkippedQuestions.length > 0 && (
         <div className={styles.skippedQuestionsContainer}>
           <h3>Skipped Questions:</h3>

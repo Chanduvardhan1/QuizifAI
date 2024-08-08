@@ -31,10 +31,15 @@ const Navigation = () => {
   const [totalQuizzes, setTotalQuizzes] = useState(0);
   const [totalMinutes, setTotalMinutes] = useState(0);
   const [averageScorePercentage, setAverageScorePercentage] = useState(0);
-  const { authToken } = useContext(AuthContext);
+  const { isAuthenticated, authToken, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
   useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login'); // Redirect to login if not authenticated
+      return;
+    }
     const fetchQuizData = async () => {
       console.log("User ID:", userId);
 
@@ -106,7 +111,7 @@ const Navigation = () => {
     };
 
     fetchQuizData();
-  }, [userId,authToken]); 
+  }, [userId,authToken, isAuthenticated, navigate]); 
 
   useEffect(() => {
     console.log("Registered On:", registeredOn);
@@ -120,7 +125,6 @@ const Navigation = () => {
     setActivePage(page);
   };
 
-  const navigate = useNavigate();
 
   const handleBackToDashboard = () => {
     navigate('/dashboard');

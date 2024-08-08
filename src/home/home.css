@@ -191,6 +191,7 @@
     letter-spacing: 0em;
     text-align: left;
     color: #555555;
+    margin-top: 30px;
     /* margin-left: 790px;
     position: absolute;
     top: 280px; */
@@ -204,6 +205,7 @@
     letter-spacing: 0em;
     text-align: left;
     color: #555555;
+    /* margin-top: -10px */
     /* margin-left: 780px;
     position: absolute;
     top: 320px; */
@@ -331,6 +333,7 @@ left: -100px !important;
     padding-left: 85px;
   }
 .homeImage1{
+  margin-top: -30px;
   width: 800px;
 }
   .outerBox {

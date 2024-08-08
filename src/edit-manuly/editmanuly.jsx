@@ -298,10 +298,10 @@ export default function editmanuly() {
   const handleSelectCategory = (event) => {
     const selectedCategory = event.target.value;
     setSelectedCategory(selectedCategory);
-    // Filter subcategories based on the selected category
     const category = categories.find(cat => cat.category_name === selectedCategory);
     if (category) {
       setSubCategories(category.sub_categories.map(subCat => subCat.sub_category_name));
+      setSelectedSubCategory(''); // Reset subcategory when a new category is selected
     }
   };
 
@@ -310,7 +310,6 @@ export default function editmanuly() {
     const selectedSubCategory = event.target.value;
     setSelectedSubCategory(selectedSubCategory);
   };
-
   useEffect(() => {
     fetchCourses();
   }, []);

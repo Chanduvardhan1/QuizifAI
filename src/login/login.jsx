@@ -567,7 +567,7 @@ const LoginPage = () => {
 
                               borderRadius: "10px",
                             },
-                            endAdornment: (
+                            endAdornment: showPassword !== undefined &&(
                               <div
                                 className={styles.passwordToggleIcon}
                                 onClick={togglePasswordVisibility}

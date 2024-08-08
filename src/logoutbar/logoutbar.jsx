@@ -68,10 +68,14 @@ const LogoutBar = (data) => {
   const [subscriptionEndDate, setSubscriptionEndDate] = useState('');
   const [remainingDays, setRemainingDays] = useState('');
   const [otherOccupation, setOtherOccupation] = useState("");
-  const { user, logout } = useContext(AuthContext);
-  const { authToken } = useContext(AuthContext);
+  // const { user, logout } = useContext(AuthContext);
+  const { isAuthenticated, authToken, logout } = useContext(AuthContext);
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login'); // Redirect to login if not authenticated
+      return;
+    }
     const fetchQuizData = async () => {
       console.log("User ID:", userId);
 
@@ -143,7 +147,30 @@ const LogoutBar = (data) => {
     };
 
     fetchQuizData();
-  }, [userId,authToken]); 
+  }, [userId,isAuthenticated,authToken]); 
+  useEffect(() => {
+    const handleWindowClose = () => {
+      fetch("https://quizifai.com:8010/usr_logout/", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_id: localStorage.getItem("user_id") }),
+      })
+        .then((response) => response.json())
+        .then((data) => console.log("Logout successful:", data))
+        .catch((error) => console.error("Error:", error));
+    };
+
+    // Add the event listener
+    window.addEventListener("beforeunload", handleWindowClose);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener("beforeunload", handleWindowClose);
+    };
+  }, []);
 
   const handleBackToLogin = () => {
     // Retrieve the authentication token from AuthContext or localStorage
@@ -331,12 +358,13 @@ const LogoutBar = (data) => {
             {/* <h1 className="mt-[2px] ml-[10px] text-[13px] font-normal">days remaining</h1> */}
            {/* </div>
           </div> */}
-          <div className="h-[5px] w-full bg-white mt-[10px]"></div>
-        
-          <div className="mt-[15px] ml-2">
+          <div className="mt-[15px] ">
+          <div className="h-[5px] w-full bg-white mt-[80px]"></div>
+        <div className="ml-2 mt-[10px]">
             <h1 className="text-[13px] text-start">Registered On :<span className="text-[#5E81F4] pl-1">{registeredOn}</span></h1>
             <h1 className="text-[13px] text-start">Last Login : <span className="text-[#5E81F4]">{lastLogin}</span></h1>
             <h1 className="text-[13px] text-start">Password Changed : <span className="text-[#5E81F4]">{passwordChanged}</span></h1>
+          </div>
           </div>
                  
             

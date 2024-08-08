@@ -56,7 +56,7 @@ const Dashboard = () => {
 
 
   const navigate = useNavigate();
-  const { isAuthenticated, authToken, logout } = useContext(AuthContext);
+  const { isAuthenticated, authToken } = useContext(AuthContext);
 
   // useEffect(() => {
   //   const token = localStorage.getItem('authToken');

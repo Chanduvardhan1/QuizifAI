@@ -5,6 +5,11 @@ import { AuthContext } from "../Authcontext/AuthContext.jsx";
 const PrivateRoute = ({ children }) => {
   const { isAuthenticated } = useContext(AuthContext);
 
+  if (isAuthenticated === null) {
+    // Optional: Add a loading indicator while checking authentication state
+    return <div>Loading...</div>;
+  }
+
   return isAuthenticated ? children : <Navigate to="/login" />;
 };
 

@@ -577,7 +577,7 @@ const Dashboard = () => {
                         paddingTop: "20px",
                         marginTop: "10px",
                         marginRight: "10px",
-                        backgroundColor: quizItem.attempts_count < quizItem.retake_flag ? "#fee2e2" : "gray",
+                        backgroundColor: quizItem.attempts_count < quizItem.retake_flag ? "#fee2e2" : "#55505026",
                       }}
                     >
                       <span className="relative group">

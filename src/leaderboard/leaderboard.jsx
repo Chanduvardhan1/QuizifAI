@@ -475,7 +475,7 @@ if (!quizData1 || !quizData1.questions) {
     alt="Calendar Icon"
     className={styles.icon2}
   />
-          <span>{quizData.correct_answers} correct answer</span>
+          <span className={styles.correct_answers} >{quizData.correct_answers} correct answer</span>
         </div>
       <div className={styles.sentencesContainer}>
         <div className={styles.sentence}>

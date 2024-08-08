@@ -928,3 +928,6 @@ margin-top: 30px;
 .fail {
   color: red;
 }
+.correct_answers{
+  margin-left: 5px;
+}

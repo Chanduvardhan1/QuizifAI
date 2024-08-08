@@ -444,3 +444,10 @@ margin-left: -130px;
     border-radius: 10px;
     padding: 5px;
 }
+.skipped1{
+  background-color: #F4774B;
+  font-weight: bold;
+
+  border-color: red;
+  color: #214082;
+}

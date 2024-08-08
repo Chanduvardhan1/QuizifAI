@@ -308,7 +308,7 @@ const LoginPage = () => {
           }else if (responseData.response_message === "Password is incorrect. Please try again.") {
             errorMessage = "Password is incorrect. Please try again.";
           }else if (responseData.response_message === "You've chosen mobile as your login method, so please log in using your mobile number.") {
-            errorMessage = "You've chosen mobile as your login method, so please log in using your mobile number.";
+            errorMessage = "You've chosen mobile as your login method, So, please login by using your mobile number.";
           }
 
           setErrorMessage(errorMessage);

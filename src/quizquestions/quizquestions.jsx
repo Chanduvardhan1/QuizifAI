@@ -1050,11 +1050,12 @@ const QuizQuestions = () => {
         {filteredQuizData.slice(startIndex,endIndex ).map((_, index) => {
           const actualIndex = startIndex + index;
           const isSelected = selectedOptions[actualIndex] !== undefined;
-
+          const isSkipped = skippedQuestionsDisplay.includes(actualIndex + 1);
           return (
             <div
               key={actualIndex}
-              className={`${styles.questionNumber} ${isSelected ? styles.selected : ''}`}
+              className={`${styles.questionNumber} ${isSelected ? styles.selected : ''} ${isSkipped ? styles.skipped1 : ''}`}
+
               onClick={() => handleQuestionClick(actualIndex)}
             >
               {actualIndex + 1}
@@ -1169,7 +1170,7 @@ const QuizQuestions = () => {
               </button>
             </div>
           )}
-           {currentQuestionIndex === filteredQuizData.length - 1 && (
+           {/* {currentQuestionIndex === filteredQuizData.length - 1 && (
             <div className={styles.button3}>
               <button
                 className={styles.button}
@@ -1179,7 +1180,7 @@ const QuizQuestions = () => {
                 Submit
               </button>
             </div>
-          )}
+          )} */}
         </div>
 
      
@@ -1219,6 +1220,15 @@ const QuizQuestions = () => {
            </div>
         </div>
       )}
+      <div className={styles.button3}>
+              <button
+                className={styles.button}
+                style={{marginTop: '10px', backgroundColor: 'rgb(11 87 208)', height: '40px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
+                onClick={handleSubmit}
+              >
+                Submit
+              </button>
+            </div>
       {/* {visibleSkippedQuestions.length > 0 && (
         <div className={styles.skippedQuestionsContainer}>
           <h3>Skipped Questions:</h3>

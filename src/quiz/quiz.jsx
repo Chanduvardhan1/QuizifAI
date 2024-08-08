@@ -268,6 +268,9 @@ const Quiz = () => {
       return updatedStates;
     });
   };
+const createquiz=() =>{
+  navigate('/create-quiz')
+}
 
   const Edit = (quizId) => {
     // navigate(`/quizaccess/${quizId}`);
@@ -485,7 +488,8 @@ const Quiz = () => {
               alt="Plus Icon"
             />
             <a
-              href="./create-quiz"
+            onClick={createquiz}
+              // href="./create-quiz"
               className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
             >
               Quiz

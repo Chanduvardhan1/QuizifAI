@@ -30,7 +30,10 @@ const configure = () => {
   const handleCoursesClick = () => {
     navigate('/Course');
   };
-
+  const handleSpecialisationsClick = () => {
+    navigate('/specialisations');
+  };
+  
   useEffect(() => {
     const fetchQuizData = async () => {
       try {
@@ -75,7 +78,7 @@ const configure = () => {
   }, [userId]);
 
   const items = [
-      { id: 1, title: 'Configuration', content: 'Categories, Courses' },
+      { id: 1, title: 'Configuration', content: 'Categories, Courses, Specialisations, Classes, Subjects ' },
       { id: 2, title: 'Organization', content: 'Profile, Manage Subscription, Performance Metrics, Marketing and Sales, Financial Information, Mission and Vision, Goals and Objectives' },
       { id: 3, title: 'Notification', content: 'Contact Information, Date and Time, Main Content, Additional Information' },
       { id: 4, title: 'User & Roles', content: 'User Information, Roles and Permissions, Communication, Responsibilities and Expectations' },
@@ -178,6 +181,8 @@ const configure = () => {
                  onClick={
                   contentItem === 'Categories' ? handleCategoriesClick : 
                   contentItem === 'Courses' ? handleCoursesClick : 
+                  
+                  contentItem === 'Specialisations' ? handleSpecialisationsClick : 
                   null
                 }
              >

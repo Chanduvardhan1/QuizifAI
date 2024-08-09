@@ -60,6 +60,7 @@ import FreeProfile from "./free-profile/free-profile.jsx";
 // import OldPassword from "./free-profile/old-password.jsx";
 import Configure from "./configure/configure.jsx";
 import Category from "./configure/category.jsx";
+import Specialisations from './configure/specialisations.jsx';
 import Navbarhome from "./navbarhome/navbarhome.jsx";
 import LeftBar from "./leftbar/leftbar.jsx";
 import QuestionsPage from "./quiz-results/quiz-results.jsx";
@@ -283,6 +284,7 @@ import Contactus from './ContactUs1/contactus.jsx';
 
     <Route path="history" element={<PrivateRoute> <History /></PrivateRoute>} />
     <Route path="course" element={<PrivateRoute> <Course /></PrivateRoute>} />
+    <Route path="specialisations" element={<PrivateRoute> <Specialisations /></PrivateRoute>} />
     <Route path="create-quiz" element={<PrivateRoute> <Createquiz /></PrivateRoute>} />
     <Route path="csv" element={<PrivateRoute><Csv /></PrivateRoute>} />
     <Route path="detailed-report" element={<PrivateRoute><Detailedreport /></PrivateRoute>} />

@@ -10,7 +10,7 @@ import Plus from "../../src/assets/Images/dashboard/Plus.png";
 import Edit from "../../src/assets/Images/Assets/Edit.png"
 import Delete from "../../src/assets/Images/Assets/Delete.png"
 import Line from "../../src/assets/Images/Assets/Line.png"
-const course = () => {
+const specialisations = () => {
   const [categories, setCategories] = useState([]);
   const [data, setData] = useState([]);
   const [categoryId, setCategoryId] = useState('');
@@ -20,7 +20,6 @@ const course = () => {
   const [isToggleEnabled, setIsToggleEnabled] = useState(false);
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [courseDuration, setCourseDuration] = useState('');
 
   const [courseName, setCourseName] = useState('');
   const [courseShortName, setCourseShortName] = useState('');
@@ -71,17 +70,16 @@ const course = () => {
 
   const handleCreateCategory = () => {
 
-    const userId = localStorage.getItem("user_id");
 
     const courseData = {
       course_name: courseName,
       course_short_name: courseShortName,
-      course_duration: '0',
+      course_duration: '',
       course_duration_unit: '',
       specialization_name: '',
       specialization_short_name: '',
       class_name: '',
-      created_by: userId,
+      created_by: '',
     };
 
     addCourse(courseData);
@@ -136,11 +134,11 @@ const course = () => {
     <Navigation/> 
     <div className='flex w-full flex-col'>
     <div className='flex justify-end mt-[30px]'>
-        <div className='w-[118px] h-[30px] rounded-[10px] bg-[#F7E0E3] mr-[10px]'>
+        <div className='w-[137px] h-[30px] rounded-[10px] bg-[#F7E0E3] mr-[10px]'>
           <div className="flex"onClick={toggleNavbar} >
             <img className="w-[20px] h-[20px] ml-2 mt-1" src={Plus} alt="Plus Icon" />
             <a className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-1.5">
-            Courses
+            Specialisations
             </a>
           </div>
         </div>
@@ -150,7 +148,7 @@ const course = () => {
         <div className='text-[10px] mx-[10px] text-[#214082] h-[50px] mt-[30px] rounded-md bg-[#CBF2FB] flex flex-row justify-around p-4'>
           <input
             type='text'
-            placeholder='Course ID'
+            placeholder='Specialisations ID'
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value)}
             className=' w-[75px] -mt-[10px] text-center rounded-3xl py-[14px] pl-1 text-[#214082] placeholder:text-[#214082] outline-[#214082]'
@@ -159,14 +157,14 @@ const course = () => {
           />
           <input
             type='text'
-            placeholder='Course Name'
+            placeholder='Specialisations Name'
             value={courseName}
             onChange={(e) => setCourseName(e.target.value)}
             className=' w-[95px] rounded-3xl text-center -mt-[10px]  py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'
           />
            <input
         type='text'
-        placeholder='Course Short Name'
+        placeholder='Specialisations Short Name'
         value={courseShortName}
         onChange={(e) => setCourseShortName(e.target.value)}
         className='w-[120px] rounded-3xl text-center -mt-[10px] py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'
@@ -187,10 +185,10 @@ onClick={handleSubmit}
       <table className='h-[20px] table-auto mt-[30px] mx-[20px] rounded text-left bg-[#F7E0E3] text-[#2b51a1] text-[13px] font-light'>
         <thead>
           <tr className='h-[50px]'>
-            <th className='px-4 py-2 text-nowrap'>Course ID</th>
-            <th className='pl-[10px] ml-[15px] py-2'>Course Name</th>
-            <th className='px-4 py-2 text-nowrap'>Course Short Name</th>
-            {/* <th className='px-2 py-2 text-wrap'>Classes</th> */}
+            <th className='px-4 py-2 text-nowrap'>Specialisations ID</th>
+            <th className='pl-[10px] ml-[15px] py-2'>Specialisations Name</th>
+            <th className='px-4 py-2 text-nowrap'>Specialisations Short Name</th>
+            <th className='px-2 py-2 text-wrap'>course</th>
             <div className='flex -mt-[5px]'>
             <input
                 className='mt-[15px] text-[10px] pl-[30px] pr-[10px] rounded-[20px] h-[28px] mr-[10px] w-fit bg-[#FFFFFF] text-left placeholder-[#214082] border-none focus:border-none outline-none'
@@ -210,17 +208,21 @@ onClick={handleSubmit}
           {courses.map((course) => (
             <tr key={course.course_id}>
               <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>{course.course_id}</td>
-              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>{course.course_name}</td>
-              {/* <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
+              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
               {course.specializations.map((spec) => (
                   <div key={spec.specialization_id}>
                     {spec.specialization_name}
                   </div>
                 ))}
-              </td> */}
-              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
-              {course.course_short_name}
               </td>
+              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>{}</td>
+
+                <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>{course.course_name}</td>
+              {/* <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
+              {course.classes.map((cls) => (
+                  <div key={cls.class_id}>{cls.class_name}</div>
+                ))}
+              </td> */}
               <td className='h-full border text-[#214082] flex gap-2 pl-[40px] pt-2 text-[12px] cursor-pointer hover:font-medium hover:underline'>         
               <img
                 className='h-[13px] w-[13px] mr-1 cursor-pointer'
@@ -250,4 +252,4 @@ onClick={handleSubmit}
   )
 }
 
-export default course
+export default specialisations

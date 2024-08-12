@@ -1,15 +1,7 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState,useContext } from "react";
 import styles from "../signup/email.module.css";
 import quizifailogo from "../../src/assets/Images/images/home/home.jpg";
-import butterflyImg from "../assets/Images/images/butterfly1.png";
-import icon1 from "../assets/Images/images/mdi_gmail.png";
-import icon2 from "../assets/Images/images/clarity_mobile-line.png";
-import icon3 from "../assets/Images/images/logos_google-gmail.png";
-import img2 from "../assets/Images/images/img2.png";
-import logo2 from "../assets/Images/images/narmtech-logo.png";
 import closeIcon from "../assets/Images/images/gmail/closeIcon.png";
-import { FaSyncAlt } from "react-icons/fa";
-import { BsFillVolumeUpFill, BsFillVolumeMuteFill } from "react-icons/bs";
 import forgotPasswordIcon from "../assets/Images/images/back1.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import TextField from "@mui/material/TextField";
@@ -18,6 +10,7 @@ import { useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Navbarhome from "../navbarhome/navbarhome";
 import { AuthContext } from "../Authcontext/AuthContext.jsx"
+import HeaderSection from "../HeaderSection/HeaderSection.jsx";
 
 
 const LoginPage = () => {
@@ -39,7 +32,6 @@ const LoginPage = () => {
   const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
   const [termsChecked, setTermsChecked] = useState(false);
-  // const router = useRouter();
   const [emailError, setEmailError] = useState(false);
   const [loginOption, setloginOption] = useState("");
   const [platform, setplatform] = useState("")
@@ -108,115 +100,6 @@ const LoginPage = () => {
     setShowResendOTPForm(true);
   };
   const navigate = useNavigate();
-  // const handleLogin1 = async (loginOption, email, mobile, password) => {
-  //   // if (!termsChecked) {
-  //   //   setErrorMessage("Please agree to the terms and conditions");
-  //   //   return;
-  //   // }
-  //   try {
-  //     const response = await loginUser(loginOption, email, mobile, password);
-  //     console.log("email - ", email);
-
-  //     const response = await fetch(`https://dev.quizifai.com:8010/login`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         login_option: loginMethod,
-  //         email_or_mobile: loginMethod === "email" ? email : mobile,
-  //         password: password,
-  //       }),
-  //     });
-  //     const responseData = await response.json();
-  //     console.log("API Response:", responseData);
-  //     console.log(responseData);
-
-  //     console.log("User ID:", responseData[0].user_id[0]);
-  //     console.log("User Name:", responseData[0].user_name);
-     
-  //     // Store user_id and user_name in localStorage
-  //     localStorage.setItem('user_id', responseData[0].user_id[0]);
-  //     localStorage.setItem('user_name', responseData[0].user_name)
-    
-
-  //     {
-  //       /*const userId = responseData[0].user_id[0]; 
-  //     console.log('User ID:', userId);
-      
-     
-  //     sessionStorage.setItem('userId', userId);*/
-  //     }
-
-  //     if (response.ok) {
-  //       if (
-  //         Array.isArray(responseData) &&
-  //         responseData[0] &&
-  //         responseData[0].response === "fail"
-  //       ) {
-  //         setErrorMessage(
-  //           responseData[0].message ||
-  //             "An unknown error occurred while logging in."
-  //         );
-  //         console.error(errorMessage);
-  //       } else if (
-  //         typeof responseData === "object" &&
-  //         responseData.response === "fail"
-  //       ) {
-  //         setErrorMessage(
-  //           responseData.data || "An unknown error occurred while logging in."
-  //         );
-  //         console.error(errorMessage);
-  //       }else if (
-     
-  //         responseData.response === "fail" && responseData.data ==="Mobile Number is incorrect or account doesn't exist pls sinup." ) {
-  //         setErrorMessage(
-  //           responseData.data || "Mobile Number is incorrect or account doesn't exist pleass signup."
-  //         );
-  //         console.error(errorMessage);
-  //       }  else if (responseData.response === "success") {
-  //         // const userId = responseData.data.user_id;
-  //         // sessionStorage.setItem('userId', userId);
-
-  //         // const userName = responseData.response.user_name.user_id;
-  //         // sessionStorage.setItem('userName', userName);
-  //         // // sessionStorage.setItem('userid', userId);
-  //         // navigate("/dashboard");
-          
-          
-  //       } else {
-  //         setErrorMessage("");
-  //         navigate("/dashboard");
-  //         console.log("Login successful!");
-  //       }
-  //     } else if (responseData.data === "Mobile Number is incorrect or account doesn't exist pls sinup.") {
-  //       setErrorMessage("Mobile Number is incorrect or account doesn't exist. Please sign up.");
-  //     } else {
-  //       setErrorMessage(
-  //         responseData.message || "An unknown error occurred while logging in."
-  //       );
-  //       console.error(errorMessage);
-  //     }
-  //   } catch (error) {
-  //     console.error("Login failed:", error);
-  //     setErrorMessage("An error occurred while logging in.");
-  //   }
-  // };
-
-  // const handleLogin1 = async (e) => {
-  //   e.preventDefault();
-
-  //   if (!password) {
-  //     setErrorMessage('Please enter your password');
-  //     return;
-  //   }
-
-  //   try {
-  //     await login(loginOption, email, mobile, password);
-  //   } catch (error) {
-  //     setErrorMessage('Login failed. Please check your credentials and try again.');
-  //   }
-  // };
 
   const handleLogin1 = async (loginOption, email, mobile, password) => {
 
@@ -225,9 +108,6 @@ const LoginPage = () => {
       return;
     }
     try {
-      // console.log("email - ", email);
-      // console.log("password before storing:", password);
-
       const platform = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
       ? "mobile" // If any of the identifiers are found, return 'Mobile'.
       : "Web";
@@ -323,13 +203,6 @@ const LoginPage = () => {
     }
   };
   
-  // const handleLogin1 = (e) => {
-  //   e.preventDefault();
-  //   handleLogin(loginOption, email, mobile, password);
-  // };
-  
- 
-  
   const validateEmail1 = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -388,15 +261,12 @@ const LoginPage = () => {
     const value = e.target.value.trim().toLowerCase();
     setEmail(value);
   };
-  // const handleMobileChange = (event) => {
-  //   setMobile(event.target.value);
-  // };
   const handleBackToDashboard = () => {
     navigate("/signup");
   };
   return (
     <div>
-        <Navbarhome/>
+       <HeaderSection/>
       <div className="container" style={{display:"flex"}}>
         <div className={styles.leftSection}>
           <div className={styles.logo1}>
@@ -410,59 +280,10 @@ const LoginPage = () => {
             <>
               <div className={styles.loginHeader}>
                 <h1 className={styles.loginTitle}>Login</h1>
-                {/* <p className={styles.loginDescription}>
-                  Login by using the method you registered
-                </p> */}
               </div>
               <div className={styles.totalBox1}>
               <div className={styles.formContainer1}>
-              {/* <div className={styles.toggleOptions}>
-                <label className={styles.toggleLabel}>
-                  <input
-                    type="radio"
-                    name="contactMethod"
-                    className={`${styles.toggleRadio} ${styles.greyScale}`}
-                    value="email"
-                    checked={loginMethod === "email"}
-                    onChange={() => handleLoginMethodChange("email")}
-                  />
-                  <div className={styles.icon1}>
-                    <img src={icon1} alt="Logo" width={24} height={24} />
-                  </div>
-                  Email
-                </label>
 
-                <label className={styles.toggleLabel}>
-                  <input
-                    type="radio"
-                    name="contactMethod"
-                    className={`${styles.toggleRadio} ${styles.greyScale}`}
-                    value="mobile"
-                    checked={loginMethod === "mobile"}
-                    onChange={() => handleLoginMethodChange("mobile")}
-                  />
-                  <div className={styles.icon2}>
-                    <img src={icon2} alt="Logo" width={30} height={30} />
-                  </div>
-                  Mobile
-                </label>
-
-                {/*<label className={styles.toggleLabel}>
-                  <input
-                    type="radio"
-                    name="contactMethod"
-                    className={`${styles.toggleRadio} ${styles.greyScale}`}
-                    value="gmail"
-                    checked={loginMethod === "gmail"}
-                    onChange={() => handleLoginMethodChange("gmail")}
-                  />
-                  <div className={styles.icon3}>
-                    <img src={icon3} alt="Logo" width={22} height={17} />
-                  </div>
-                  Gmail
-                </label>
-          */}
-              {/* </div>  */}
               <div className={styles.toggleOptions}>
                     <div
                       className={`${styles.toggleLabel} ${
@@ -591,98 +412,6 @@ const LoginPage = () => {
                       </div>
                     </div>
                   </div>
-
-                  {/*<div
-                    className={styles.captcha}
-                    style={{ display: "flex", alignItems: "center" }}
-                  >
-                    <div
-                      style={{
-                        width: "145px",
-                        height: "20px",
-                        borderRadius: "20px",
-                        border: "1px solid #223F80",
-                        padding: "10px",
-                        marginRight: "10px",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <span style={{ fontWeight: "bold", fontSize: "20px" }}>
-                        Captcha
-                      </span>
-                    </div>
-
-                    <div style={{ display: "flex", flexDirection: "column" }}>
-                      <div style={{ cursor: "pointer" }}>
-                        <FaSyncAlt size={12} />
-                      </div>
-
-                      <div style={{ cursor: "pointer" }}>
-                        {soundOn ? (
-                          <BsFillVolumeUpFill
-                            size={18}
-                            onClick={() => setSoundOn(!soundOn)}
-                          />
-                        ) : (
-                          <BsFillVolumeMuteFill
-                            size={20}
-                            onClick={() => setSoundOn(!soundOn)}
-                          />
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div
-                    className={styles.captchaText}
-                    style={{
-                      marginTop: "10px",
-                      display: "flex",
-                      alignItems: "center",
-                      marginRight: "30px",
-                    }}
-                  >
-                    <input
-                      type="text"
-                      placeholder="Type the word above"
-                      style={{
-                        width: "240px",
-                        height: "25px",
-                        backgroundColor: "#F0EFFF",
-                        borderRadius: "5px",
-                        padding: "5px",
-                        fontFamily: "Poppins",
-                        textAlign: "left",
-                        border: "none",
-                      }}
-                    />
-
-                    <div
-                      style={{
-                        width: "30px",
-                        height: "30px",
-                        backgroundColor: "#223F80",
-                        marginLeft: "10px",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        borderRadius: "5px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <span
-                        style={{
-                          color: "white",
-                          fontSize: "18px",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        ✓
-                      </span>{" "}
-                    </div>
-                      </div>*/}
                 </div>
               )}
 
@@ -869,54 +598,7 @@ const LoginPage = () => {
                 Don't have an account yet?{" "}
                 <span className={styles.diffColor}
                 onClick={handleBackToDashboard}>Sign up</span>{" "}
-              </p>
-              {/* <div className={styles.checkboxContainer}>
-              <input
-                  type="checkbox"
-                  id="termsCheckbox"
-                  className={styles.checkboxInput1}
-                  style={{
-                    width: "20px",
-                    height: "20px",
-                  }}
-                  // checked={termsChecked}
-                  // onChange={() => setTermsChecked(!termsChecked)}
-                />
-            
-             
-                <span className={styles.termsText}>
-                  I agree with the terms and conditions
-                </span>
-              </div> */}
-          {/* <div className={styles.checkbox1}>
-                <input
-                  type="checkbox"
-                  id="termsCheckbox"
-                  className={styles.checkboxInput1}
-                  style={{
-                    width: "15px",
-                    height: "15px",
-                  }}
-                  checked={termsChecked}
-                  onChange={() => setTermsChecked(!termsChecked)}
-                />
-                <span className={styles.span}>
-                  {" "}
-                  I agree with the   <a className={styles.terms} href="/termsandconditions">
-                        terms and conditions
-                      </a>
-                </span>
-                {/* <p className={styles.span2} > and Please read over children police</p> */}
-             
-                {/* <label
-                  htmlFor="termsCheckbox"
-                  className={styles.checkboxLabel}
-                  style={{ marginRight: "80px", marginLeft: "20px"  }}
-                >
-                  I agree with the terms and conditions
-                </label> */}
-              {/* </div>  */}
-              
+              </p>             
               <button
                 onClick={() =>
                   handleLogin1(loginMethod, email, mobile, password)
@@ -932,16 +614,7 @@ const LoginPage = () => {
                   <p className={styles.displayError}>{errorMessage}</p>
                 </>
               )}
-              </div>
-              {/* {loginMethod === "mobile" && (
-                <button
-                  onClick={handleResendOTP}
-                  className={styles.resendButton}
-                >
-                  Resend OTP
-                </button>
-              )} */}
-            
+              </div>           
             </>
           ) : (
             <>
@@ -1059,28 +732,6 @@ const LoginPage = () => {
                         />
                       </div>
                         )}
-                      {/* <div
-                        className={styles.checkboxContainer1}
-                        styles={{ marginTop: "150px" }}
-                      > */}
-{/*                     
-                          <input
-                            type="checkbox"
-                            id="termsCheckbox"
-                            className={styles.checkboxInput}
-                            checked={termsChecked}
-                            onChange={() => setTermsChecked(!termsChecked)}
-                          />
-                          <label
-                            htmlFor="termsCheckbox"
-                            className={styles.checkboxLabel}
-                          ></label>
-                       
-                        <span className={styles.termsText}>
-                          I agree with the terms and conditions
-                        </span> */}
-                      {/* </div> */}
-                  
                       <div className={styles.buttonContainer}>
                      
                         <button
@@ -1235,23 +886,7 @@ const LoginPage = () => {
                       className={styles.checkboxContainer1}
                       styles={{ marginTop: "150px" }}
                     >
-{/*                     
-                        <input
-                          type="checkbox"
-                          id="termsCheckbox"
-                          className={styles.checkboxInput}
-                          checked={termsChecked}
-                          onChange={() => setTermsChecked(!termsChecked)}
-                        />
-                        <label
-                          htmlFor="termsCheckbox"
-                          className={styles.checkboxLabel}
-                        ></label>
-                     
-                      <span className={styles.termsText}>
-                        I agree with the terms and conditions
-                      </span> */}
-                    </div>
+                  </div>
                     {errorMessage && (
               <>
                 {console.log("Error message:", errorMessage)}

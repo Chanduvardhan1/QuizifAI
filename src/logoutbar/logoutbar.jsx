@@ -358,15 +358,14 @@ const LogoutBar = (data) => {
             {/* <h1 className="mt-[2px] ml-[10px] text-[13px] font-normal">days remaining</h1> */}
            {/* </div>
           </div> */}
-          <div className="mt-[15px] ">
-          <div className="h-[5px] w-full bg-white mt-[80px]"></div>
-        <div className="ml-2 mt-[10px]">
-            <h1 className="text-[13px] text-start">Registered On :<span className="text-[#5E81F4] pl-1">{registeredOn}</span></h1>
-            <h1 className="text-[13px] text-start">Last Login : <span className="text-[#5E81F4]">{lastLogin}</span></h1>
-            <h1 className="text-[13px] text-start">Password Changed : <span className="text-[#5E81F4]">{passwordChanged}</span></h1>
-          </div>
-          </div>
-                 
+
+          <div className="h-[5px] w-full bg-white mt-[10px]"></div>
+        
+          <div className="mt-[15px] ml-2">
+            <h1 className="text-[13px] text-start text-[#002366] font-semibold">Registered On :<span className="pl-1 font-normal text-[12px]">{registeredOn}</span></h1>
+            <h1 className="text-[13px] text-start text-[#002366] font-semibold">Last Login : <span className="font-normal text-[12px]">{lastLogin}</span></h1>
+            <h1 className="text-[13px] text-start text-[#002366] font-semibold">Password Changed : <span className="font-normal text-[12px]">{passwordChanged}</span></h1>
+          </div>               
             
           </div>
         </div>

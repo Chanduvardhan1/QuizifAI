@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import Plus from "../../src/assets/Images/dashboard/Plus.png";
 import Start_button from "../../public/images/dashboard/Start-button.png";
 import start from "../../src/assets/Images/dashboard/non-attempted-start.png";
+import PlayButton from "../../src/assets/Images/dashboard/playButton.png";
 import Share_button from "../../public/images/dashboard/Share-button.png";
 import leaderboard_button from "../../public/images/dashboard/leaderboard-button.png";
 import Edit_button from "../../src/assets/Images/dashboard/Edit-button.png";
@@ -708,7 +709,7 @@ const Dashboard = () => {
                         </div>
                       </div>
 
-                      <div className="flex mt-[9px] relative top-[15px]">
+                      <div className="flex mt-[9px] mb-4 relative top-[15px]">
                         <span className="relative group">
                           <span className="text-[#002366] ml-[10px] mt-4 w-[50px] cursor-pointer z-0 truncate text-[9px] font-normal">
                             {quizItem.category}
@@ -730,14 +731,15 @@ const Dashboard = () => {
                           </span>
 
                           <button
-                            className="cursor-pointer ml-auto relative -top-[10px] right-1"
+                            className="cursor-pointer ml-auto relative -top-[5px] right-1 flex gap-[2px] border-2 bg-[#F5F8F9] rounded-xl border-[#472E86] h-4 w-[46px]"
                             onClick={() => handleStartQuiz1(quizItem.quiz_id, quizItem.attempts_count, quizItem.retake_flag)}
                           >
                             <img
-                              className="h-8 w-[34px]"
-                              src={start}
+                              className="h-[5.5px] w-[5px] relative top-[3px] left-1"
+                              src={PlayButton}
                               alt="Start button"
                             />
+                            <h1  className="text-[#472E86] text-[8px] pl-1 font-bold">Retake</h1>
                           </button>
                       </div>
 
@@ -1308,7 +1310,7 @@ const Dashboard = () => {
                     onClick={() => handleStartQuiz(quizItem.quiz_id)}/> */}
                       </div>
 
-                      <div className="flex mt-[9px] relative top-[15px]">
+                      <div className="flex mt-[9px] mb-[18px] relative top-[15px]">
                         <span className="relative group">
                           <span className="text-[#002366] ml-[10px] mt-4 w-[50px] cursor-pointer z-0 truncate text-[9px] font-normal">
                             {quizItem.category}
@@ -1330,15 +1332,15 @@ const Dashboard = () => {
                           </span>
 
                           <button
-                            className="cursor-pointer ml-auto relative -top-[10px] right-1"
+                            className="cursor-pointer ml-auto relative -top-[5px] right-1 flex gap-[2px] border-2 bg-[#F5F8F9] rounded-xl border-[#472E86] h-4 w-[46px]"
                             onClick={() => handleStartQuiz1(quizItem.quiz_id, quizItem.attempts_count, quizItem.retake_flag)}
                           >
-                            
                             <img
-                              className="h-8 w-[34px]"
-                              src={start}
+                              className="h-[5.5px] w-[5px] relative top-[3px] left-1"
+                              src={PlayButton}
                               alt="Start button"
                             />
+                            <h1  className="text-[#472E86] text-[8px] pl-1 font-bold">Retake</h1>
                           </button>
                       </div>
 

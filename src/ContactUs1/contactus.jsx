@@ -3,23 +3,16 @@ import React, { useState, useEffect } from "react";
 // import { useRouter } from "next/router";
 import "./contactus.css";
 import TextField from "@mui/material/TextField";
-import quizifailogo from "../assets/Images/images/home/Quizifai3.png";
 import Lady from "../assets/Images/images/contact/lady.png";
 import ContactMail from "../assets/Images/images/contact/ContactMail.png";
-import aiImage from "../../src/assets/Images/images/home/ai-img.png";
-import homeImage from "../../src/assets/Images/images/home/home-img.png";
 // import Head from "next/head";
-import FirstNameIcon from "../../src/assets/Images/images/contact/first.png";
 import LastNameIcon from "../../src/assets/Images/images/contact/last.png";
 import PhoneIcon from "../../src/assets/Images/images/contact/mobile.png";
 import EmailIcon from "../../src/assets/Images/images/contact/mailImg.png";
 import MessageIcon from "../../src/assets/Images/images/contact/msg.png";
-import signupIcon from "../../src/assets/Images/images/home/signup.png";
-import loginIcon from "../../src/assets/Images/images/home/login.png";
-import { Link, NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import Navigation from "../navbar/navbar.jsx"
 import Navbarhome from "../navbarhome/navbarhome";
+import HeaderSection from "../HeaderSection/HeaderSection";
 
 
 function contactus() {
@@ -29,7 +22,6 @@ function contactus() {
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [userEmail, setUserEmail] = useState("");
-  const [activeSection, setActiveSection] = useState("home");
   // const router = useRouter();
 
   const navigate = useNavigate();
@@ -40,83 +32,8 @@ function contactus() {
   const handleClick1 = () => {
     navigate("/");
   };
-  // const location = useLocation();
-  // const searchParams = new URLSearchParams(location.search);
-  // const token = searchParams.get('token');
-  // useEffect(() => {
-  //   if (token) {
-  //     const requestOptions = {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'accept': 'application/json'
-  //       },
-  //       body: JSON.stringify({
-  //         verify_option: "string",
-  //         email_or_mobile: "string",
-  //         otp: "string"
-  //       })
-  //     };
-
-  //     fetch('https://nt-adhyn.centralindia.cloudapp.azure.com:8010/verification', requestOptions)
-  //       .then(response => response.json())
-  //       .then(token => {
-  //         // Handle the verification result here
-  //         console.log('Verification Result:', token);
-  //         setVerificationResult(token);
-  //       })
-  //       .catch(error => {
-  //         console.error('Error:', error);
-  //         // Handle error if any
-  //       });
-  //   }
-  // }, [token]);
-  const [verificationResponse, setVerificationResult] = useState("");
-
-  // const { email } = router.query;
-  // const { email } = "";
-
-  // console.log("email:", email);
- 
-  // // Ensure email value is properly populated before calling handleVerification
-  // if (router.query && router.query.email) {
-  //   const email = router.query.email;
-  //   handleVerification(email); // Call handleVerification function with email value
-  // } else {
-  //   console.error('Email not found in router query');
-  // }
-  // useEffect(() => {
-  //   if (email) {
-  //     const requestOptions = {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'accept': 'application/json'
-  //       },
-  //       body: JSON.stringify({
-  //         verify_option: email,
-  //         email_or_mobile: email,
-  //         otp: "string"
-  //       })
-  //     };
-
-  //     fetch('https://nt-adhyn.centralindia.cloudapp.azure.com:8010/verification', requestOptions)
-  //       .then(response => response.json())
-  //       .then(email => {
-  //         console.log('Verification Result:', email);
-  //         setVerificationResult(email);
-  //       })
-  //       .catch(error => {
-  //         console.error('Error:', email);
-  //         // Handle error if any
-  //       });
-  //   }
-  // }, [email]);
-
-  // Now you have access to the token
 
   const submitContactForm = async () => {
-    // Swal.fire("Your message has been sent to our QuizifAi team take an deep breath our team will reach you within 24hours");
     const data = {
       first_name: firstName,
       last_name: lastName,
@@ -134,16 +51,6 @@ function contactus() {
           setPhoneNumber(inputValue);
          }
     }
-
-    // const setUserEmail = (e) => {
-    //   const inputValue = e.target.value;
-    //   if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputValue)) {
-    //     setUserEmail(inputValue);
-    //   };
-      
-  
-    // };
-
     try {
       const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
 
@@ -188,17 +95,10 @@ function contactus() {
   };
   return (
     <div className="">
-      <Navbarhome/>
-      {/* <Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </Head> */}
-     
-      <div className="content1">
-          <div className="contactContent">
-          <div className="contactContent1">
+     <HeaderSection/>
+      <div className="p-5 w-full">
+          <div className="flex justify-between md:flex-row">
+          <div className="flex flex-col pl-[100px] md:w-1/2">
             <img
               src={Lady}
               alt="Image Description"
@@ -206,39 +106,7 @@ function contactus() {
               height={400}
               layout="fixed"
               objectFit="cover"
-              // style={{
-              //   position: "absolute",
-              //   top: "102px",
-              //   left: "220px",
-              // }}
             />
-            {/* <img
-              src="/images/contact/whatsapp.png"
-              alt="Logo 1"
-              width={40}
-              height={40}
-              style={{
-                position: "absolute",
-                top: "500px",
-                left: "200px",
-              }}
-            /> */}
-
-            {/* <p
-              style={{
-                position: "absolute",
-                top: "480px",
-                left: "250px",
-                fontSize: "12px",
-                color: "#214082",
-                fontWeight: 600,
-                fontFamily: "poppins",
-              }}
-            >
-              +91 9611291621 - Sales and Services <br></br>+91 9663901621 -
-              Hiring Queries <br></br>+91 8297902227 - Whatsapp
-            </p> */}
-
             {/* Second Logo */}
             <div className="emailcontact">
             <img
@@ -246,17 +114,9 @@ function contactus() {
               alt="Logo 2"
               width={40}
               height={40}
-              // style={{
-              //   position: "absolute",
-              //   top: "465px",
-              //   left: "248px",
-              // }}
             />
             <span
               style={{
-                // position: "absolute",
-                // top: "460px",
-                // left: "299px",
                 fontSize: "12px",
                 color: "#214082",
                 fontWeight: 600,
@@ -272,39 +132,11 @@ function contactus() {
               <span> <a href="mailto:sales@quizifai.com" className="ContactMail2">sales@quizifai.com</a></span>
             </span>
             </div>
-            {/* Third Logo */}
-            {/* <img
-              src="/images/contact/address.png"
-              alt="Logo 3"
-              width={40}
-              height={40}
-              style={{
-                position: "absolute",
-                top: "640px",
-                left: "200px",
-              }}
-            />
-            <p
-              style={{
-                position: "absolute",
-                top: "630px",
-                left: "250px",
-                fontSize: "12px",
-                color: "#214082",
-                fontWeight: 600,
-                fontFamily: "poppins",
-              }}
-            >
-              #92, 3rd Main, Virgo Nagar, Post, <br></br>Seegehalli, Bengaluru,
-              Karnataka 560049
-            </p> */}
+
             </div>
             <div className="outerBox2">
             <h1
               style={{
-                // position: "absolute",
-                // left: "813px",
-                // top: "80px",
                 color: "#0B3A55",
                 fontFamily: "Open Sans",
                 fontWeight: 600,
@@ -322,41 +154,8 @@ function contactus() {
                       className="icon"
                       style={{
                         backgroundImage: `url('/images/email/mail.png')`,
-                      }}
-                    ></div>
-                    {/* <TextField
-                      id="First Name"
-                      label="First Name"
-                      variant="outlined"
-                      required
-                      error={submitted && firstName.trim() === ""}
-                       helperText={
-                         submitted && firstName.trim() === ""
-                           ? "First Name is required"
-                           : ""
-                       }
-                      className="inputField"
-                      InputProps={{
-                        style: {
-                          backgroundImage: `url('/images/contact/first.png')`,
-                        // backgroundSize: "23px 20px",
-                        backgroundPosition: "145px",
-                        backgroundRepeat: "no-repeat",
-                        width: "180px",
-                        height: "50px",
-                        top: "0px",
-                        marginRight: "30px",
-                        border: "none",
-                        fontSize:"10px",
-                        fontFamily: "poppins",
-                        borderRadius: "10px",
-                        color: "#D7D7D7"
-                        },
-                        autoComplete: "off",
-                      }}
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                    /> */}
+                      }}>                       
+                      </div>
                     <TextField
                     id="FirstName"
                     label="First Name"
@@ -395,36 +194,8 @@ function contactus() {
                   />
                     <div
                       className="icon"
-                      style={{ backgroundImage: `url(${LastNameIcon})` }}
-                    ></div>
-                    {/* <TextField
-                       id="Last Name"
-                       label="Last Name"
-                       variant="outlined"
-                       required
-                       error={submitted && lastName.trim() === ""}
-                        helperText={
-                          submitted && lastName.trim() === ""
-                            ? "Last Name is required"
-                            : ""
-                        }
-                      className="inputField"
-                      style={{
-                        backgroundImage: `url('/images/contact/last.png')`,
-                        backgroundSize: "23px 20px",
-                        backgroundPosition: "120px",
-                        backgroundRepeat: "no-repeat",
-                        width: 180,
-                        height: "50px",
-                        top: "0px",
-                        border: "none",
-                        fontFamily: "poppins",
-                        borderRadius: "10px",
-                      }}
-                      value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
-                    /> */}
-                  
+                      style={{ backgroundImage: `url(${LastNameIcon})` }}>                       
+                      </div>                 
                   <TextField
                     id="LastName"
                     label="Last Name"
@@ -469,35 +240,8 @@ function contactus() {
                   <div className="formRow">
                     <div
                       className="icon"
-                      style={{ backgroundImage: `url(${PhoneIcon})` }}
-                    ></div>
-                    {/* <TextField
-                     id="Number"
-                     label="Number"
-                     variant="outlined"
-                     required
-                     error={submitted && phoneNumber.trim() === ""}
-                      helperText={
-                        submitted && phoneNumber.trim() === ""
-                          ? "Number is required"
-                          : "" 
-                      }
-                      className="inputField"
-                      style={{
-                        backgroundImage: `url('/images/contact/mobile.png')`,
-                        backgroundSize: "26px 30px",
-                        backgroundPosition: "310px",
-                        backgroundRepeat: "no-repeat",
-                        width: 350,
-                        height: 65,
-                        border: "none",
-                        fontFamily: "poppins",
-                        borderRadius: "10px",
-                      }}
-                      value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                    /> */}
-
+                      style={{ backgroundImage: `url(${PhoneIcon})` }}>                        
+                      </div>             
                   <TextField
                    id="MobileNumber"
                    type="tel"
@@ -537,36 +281,8 @@ function contactus() {
                   <div className="formRow">
                     <div
                       className="icon"
-                      style={{ backgroundImage: `url(${EmailIcon})` }}
-                    ></div>
-                    {/* <TextField
-                      id="Email Address"
-                      label="Email Address"
-                      variant="outlined"
-                      required
-                      error={submitted && userEmail.trim() === ""}
-                       helperText={
-                         submitted && userEmail.trim() === ""
-                           ? "Email Address required"
-                           : "" 
-                       }
-                      className="inputField"
-                      style={{
-                        backgroundImage: `url('/images/contact/mailImg.png')`,
-                        backgroundSize: "19px 16px",
-                        backgroundPosition: "310px",
-                        backgroundRepeat: "no-repeat",
-                        width: 350,
-                        height: 65,
-                        // border: "none",
-                        fontFamily: "poppins",
-                        borderRadius: "10px",
-                        outline: "none",
-                        border: "none",
-                      }}
-                      value={userEmail}
-                      onChange={(e) => setUserEmail(e.target.value)}
-                    /> */}
+                      style={{ backgroundImage: `url(${EmailIcon})` }}>
+                      </div>
 
                    <TextField
                     id="Email"
@@ -606,38 +322,7 @@ function contactus() {
                   <div className="formRow">
                     <div
                       className="icon"
-                      style={{ backgroundImage: `url(${MessageIcon})` }}
-                    ></div>
-                    {/* <TextField
-                     id="Your Message"
-                     label="Your Message"
-                     variant="outlined"
-                     required
-                      error={submitted && message.trim() === ""}
-                       helperText={
-                         submitted && message.trim() === ""
-                           ? "Your message required"
-                           : "" 
-                       }
-                      className="inputField"
-                      style={{
-                        display: "flex",
-                        backgroundImage: `url('/images/contact/msg.png')`,
-                        backgroundSize: "19px 16px",
-                        backgroundPosition: "310px",
-                        backgroundRepeat: "no-repeat",
-                        width: 350,
-                        height: 50,
-                        // border: "none",
-                        fontFamily: "poppins",
-                        borderRadius: "10px",
-                        outline: "none",
-                        border: "none",
-                      }}
-                      rows={8}
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                    /> */}
+                      style={{ backgroundImage: `url(${MessageIcon})` }}></div>                   
 
                   <TextField
                     id="yourmessage"
@@ -698,13 +383,11 @@ function contactus() {
                     Send
                   </button>
                   </div>
-                  {/* </Navigate> */}
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-      
+          </div>     
       </div>
     </div>
   );

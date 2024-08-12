@@ -267,6 +267,7 @@ import PrivateRoute from './privateRoute/privateRoute.jsx';
 
 import Course from './configure/course.jsx';
 import Contactus from './ContactUs1/contactus.jsx';
+import HeaderSection from './HeaderSection/HeaderSection.jsx';
     function App() {
     
   return (
@@ -350,6 +351,7 @@ import Contactus from './ContactUs1/contactus.jsx';
     <Route path="editexcel" element={<PrivateRoute><Editexcel /></PrivateRoute>} />
     <Route path="editpdf" element={<PrivateRoute><Editpdf /></PrivateRoute>} />
     <Route path="edittextbook" element={<PrivateRoute><Edittextbook /></PrivateRoute>} />
+    <Route path='headersection' element={<HeaderSection/>}/>
   </Route>
 </Routes>
 

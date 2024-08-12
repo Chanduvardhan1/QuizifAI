@@ -324,14 +324,14 @@ const topThree = leaderboardData.slice(0, 3);
         <img src={FirstRank} alt="First Rank" style={{width:"60px",height:"52px"}} />
         </div> */}
         <div className={styles.ranksiconsContainer}>
-          <img src={rank1Icon} alt="Icon 1" className={styles.rankicon1} />
+          <img src={rank1Icon} alt="Icon 1" className={styles.rankicon2} />
       
-          <img src={rank2Icon} alt="" className={styles.rankicon2} />
+          <img src={rank2Icon} alt="" className={styles.rankicon1} />
           <img src={rank3Icon} alt="Rank 3 Icon" className={styles.rankicon3} />
         </div>
         <div className={styles.ranksiconsContainer1}>
-     <p className={styles.second}>2<span  className={styles.st}>nd</span></p>
-        <p className={styles.fist}>1<span  className={styles.st}>st</span></p> 
+     <p className={styles.second}>1<span  className={styles.st}>st</span></p>
+        <p className={styles.fist}>2<span  className={styles.st}>nd</span></p> 
       
         <p className={styles.thired}>3<span  className={styles.st}>rd</span></p>
         </div>

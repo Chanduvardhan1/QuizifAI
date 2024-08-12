@@ -545,16 +545,17 @@ if (!quizData1 || !quizData1.questions) {
         </div> */}
         <div className={styles.ranksiconsContainer}>
         <img
-    src={rank1Icon} 
-    alt="Icon 1"
-    className={styles.rankicon1}
-  />
-         
-         <img
     src={rank2Icon} 
     alt="" 
+    className={styles.rankicon1}
+  />
+        <img
+    src={rank1Icon} 
+    alt="Icon 1"
     className={styles.rankicon2}
   />
+         
+      
            <img
     src={rank3Icon} 
     alt="Rank 3 Icon"
@@ -562,8 +563,8 @@ if (!quizData1 || !quizData1.questions) {
   />
         </div>
         <div className={styles.ranksiconsContainer1}>
-     <p className={styles.second}>2<span  className={styles.st}>nd</span></p>
-        <p className={styles.fist}>1<span  className={styles.st}>st</span></p> 
+        <p className={styles.second}>1<span  className={styles.st}>st</span></p> 
+     <p className={styles.fist}>2<span  className={styles.st}>nd</span></p>
       
         <p className={styles.thired}>3<span  className={styles.st}>rd</span></p>
         </div>

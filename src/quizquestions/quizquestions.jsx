@@ -20,137 +20,39 @@ import "react-toastify/dist/ReactToastify.css";
 import useBlocker from '../useBlocker/useBlocker.jsx';
 // import usePrompt from '../usePrompt/usePrompt.jsx';
 const QuizQuestions = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  // const [quizData, setQuizData] = useState(null);
-  // const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  // const [selectedOptions, setSelectedOptions] = useState({});
-  // const [answers, setAnswers] = useState({});
-  // const [attemptNo, setAttemptNo] = useState(null);
-  // const { quizId } = useParams();
-  // useEffect(() => {
-  //   const userId = localStorage.getItem("user_id");
-
-  //   fetch('https://dev.quizifai.com:8010/get-questions', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify({
-  //       quiz_id: 46,
-  //       user_id: userId
-  //     })
-  //   })
-  //     .then(response => {
-  //       if (!response.ok) {
-  //         throw new Error('Network response was not ok');
-  //       }
-  //       return response.json();
-  //     })
-  //     .then(data => {
-  //       console.log(data);
-  //       setQuizData(data.data);
-  //       setAttemptNo(data.data.quiz_level_attempt_id);
-  //     })
-  //     .catch(error => {
-  //       console.error('There was a problem with your fetch operation:', error);
-  //     });
-  // }, []); 
-
-  // if (!quizData) {
-  //   return <div>Loading...</div>;
-  // }
-
-
-  // const handleOptionSelect = (optionId) => {
-  //   setSelectedOptions(prevOptions => ({
-  //     ...prevOptions,
-  //     [currentQuestionIndex]: optionId
-  //   }));
-  // };
-
-  // const handlePreviousQuestion = () => {
-  //   setCurrentQuestionIndex(prevIndex => prevIndex - 1);
-  // };
-
-  // const handleNextQuestion = () => {
-  //   setCurrentQuestionIndex(prevIndex => prevIndex + 1);
-  // };
-
-  // const handleSubmit = () => {
-  //   const userId = localStorage.getItem("user_id");
-  //   const answers = Object.keys(selectedOptions).map(questionIndex => ({
-  //     question_id: quizData.questions[questionIndex].question_id,
-  //     options: {
-  //       [`option_${selectedOptions[questionIndex]}`]: true
-  //     }
-  //   }));
-
-  //   fetch('https://dev.quizifai.com:8010/submit', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify({
-  //       user_id: userId,
-  //       quiz_id: quizId,
-  //       attempt_no: attemptNo,
-  //       answers: answers
-  //     })
-  //   })
-  //   .then(response => {
-  //     if (!response.ok) {
-  //       throw new Error('Network response was not ok');
-  //     }
-  //     return response.json();
-  //   })
-  //   .then(data => {
-  //     console.log(data);
-  //     // Handle response if needed
-  //     setAttemptNo(data.data.quiz_level_attempt_id);
-  //   })
-  //   .catch(error => {
-  //     console.error('There was a problem with your fetch operation:', error);
-  //   });
-  // };
-
-  // if (!quizData) {
-  //   return <div>Loading...</div>;
-  // }
-
-  // const currentQuestion = quizData.questions.data[currentQuestionIndex];
   const [quizData, setQuizData] = useState(null);
-  // const [quizData, setQuizData] = useState({ questions: [] });
   const [isLoading, setIsLoading] = useState(true);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState({});
   const userId = localStorage.getItem("user_id");
- // Assuming quiz_id is 1592
   const [attemptNo, setAttemptNo] = useState(null);
   const [skippedQuestionsDisplay, setSkippedQuestionsDisplay] = useState([]);
   const { quizId } = useParams();
-  const location = useLocation();
-
+  
   const timerRef = useRef(null);
   const [showWarning, setShowWarning] = useState(false);
   const lastVisitedQuestionRef = useRef(0);
   const selectedOptionsRef = useRef({});
   const [isBlocking, setIsBlocking] = useState(false);
-  const navigate = useNavigate();
   const [isNavigating, setIsNavigating] = useState(false);
-  const previousPathRef = useRef(location.pathname);
+  // const prevLocation = useRef(location.pathname);
 
-  const {quiz_title, quiz_description,quiz_duration,quiz_total_marks,num_questions,pass_percentage,quiz_complexity_name} = location.state;
+  const {quiz_title, quiz_description,quiz_duration,quiz_total_marks,num_questions,pass_percentage,quiz_complexity_name} = location.state || {};
   const [elapsedTime, setElapsedTime] = useState(quiz_duration * 60); 
-  const isSubmitting = useRef(false);
+  // const isSubmitting = useRef(false);
   const submittedRef = useRef(false);
-  // const [skippedQuestions, setSkippedQuestions] = useState([]);
-  // const [skippedQuestionsDisplay, setSkippedQuestionsDisplay] = useState([]);
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false); // Track if the quiz is submitted
+  const [shouldSubmitOnLeave, setShouldSubmitOnLeave] = useState(false);
+  const [confirmNavigation, setConfirmNavigation] = useState(false);
+  
 
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [validationMessage, setValidationMessage] = useState('');
+  const initialRender = useRef(true);
 
   const markPreviousQuestionsAsSkipped = (targetIndex) => {
     const newSkippedQuestions = [];
@@ -180,78 +82,105 @@ const QuizQuestions = () => {
   };
 
   const startIndex = Math.floor(currentQuestionIndex / 10) * 10; // Calculate startIndex based on currentQuestionIndex
-  // const endIndex = Math.min(startIndex + 10, filteredQuizData.length);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const quizId = localStorage.getItem("quiz_id");
-  //     try {
-  //       const response = await fetch('https://dev.quizifai.com:8010/get-questions', {
-  //         method: 'POST',
-  //         headers: {
-  //           'Accept': 'application/json',
-  //           'Content-Type': 'application/json'
-  //         },
-  //         body: JSON.stringify({
-  //           quiz_id: quizId,
-  //           user_id: userId
-  //         })
-  //       });
+  // const handleSubmit2 = (isAutoSubmit = false) => {
+  //   if (isSubmitting) return;
 
+  //   setIsSubmitting(true);
+  //   clearInterval(timerRef.current);
+
+  //   const currentSelectedOptions = selectedOptionsRef.current;
+
+  //   if (!quizData || !quizData.questions || quizData.questions.length === 0) {
+  //     console.error('No quiz data available to submit');
+  //     return;
+  //   }
+
+  //   // Handle unanswered questions
+  //   const unansweredQuestions = quizData.questions
+  //     .map((question, index) => currentSelectedOptions[index] === undefined ? index + 1 : null)
+  //     .filter(questionNumber => questionNumber !== null);
+
+  //   if (unansweredQuestions.length > 0 && !isAutoSubmit) {
+  //     // Show a warning if there are unanswered questions
+  //     setIsSubmitting(false);
+  //     return;
+  //   }
+
+  //   // Build answers array
+  //   const answers = Object.keys(currentSelectedOptions).map(questionIndex => ({
+  //     question_id: quizData.questions[questionIndex].question_id,
+  //     options: {
+  //       option_1: currentSelectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_1_id,
+  //       option_2: currentSelectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_2_id,
+  //       option_3: currentSelectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_3_id,
+  //       option_4: currentSelectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_4_id,
+  //     },
+  //   }));
+
+  //   const quizId = localStorage.getItem("quiz_id");
+  //   const authToken = localStorage.getItem('authToken');
+
+  //   if (!authToken) {
+  //     console.error('No authentication token found');
+  //     return;
+  //   }
+
+  //   fetch('https://dev.quizifai.com:8010/submit', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json',
+  //       'Authorization': `Bearer ${authToken}`,
+  //     },
+  //     body: JSON.stringify({
+  //       user_id: userId,
+  //       quiz_id: quizId,
+  //       attempt_no: attemptNo,
+  //       answers: answers,
+  //     }),
+  //   })
+  //     .then(response => {
   //       if (!response.ok) {
   //         throw new Error('Network response was not ok');
   //       }
-
-  //       const data = await response.json();
-  //       console.log('Fetched data:', data);
-
-  //       if (data && data.data && Array.isArray(data.data)) {
-  //         const questions = data.data.filter(item => item.question_id !== undefined);
-  //         const attemptData = data.data.find(item => item.quiz_level_attempt_id !== undefined);
-
-  //         console.log('Setting quiz data:', questions);
-  //         setQuizData({ questions });
-  //         setIsLoading(false);
-
-  //         if (attemptData) {
-  //           setAttemptNo(attemptData.quiz_level_attempt_id);
-  //           setQuizData(prevState => ({
-  //             ...prevState,
-  //             created_by: attemptData.created_by,
-  //             created_on: attemptData.created_on
-  //           }));
-  //           console.log('Attempt No:', attemptData.quiz_level_attempt_id);
-  //         } else {
-  //           console.warn('No object with quiz_level_attempt_id found');
-  //         }
-
-  //         // Start the countdown timer only after data is set
-  //         if (questions.length > 0) {
-  //           timerRef.current = setInterval(() => {
-  //             setElapsedTime(prevTime => {
-  //               if (prevTime > 0) {
-  //                 return prevTime - 1;
-  //               } else {
-  //                 clearInterval(timerRef.current);
-  //                 handleSubmit(); // Auto-submit when timer runs out
-  //                 return 0;
-  //               }
-  //             });
-  //           }, 1000);
-  //         }
-  //       } else {
-  //         throw new Error('Unexpected response format');
-  //       }
-  //     } catch (error) {
+  //       return response.json();
+  //     })
+  //     .then(data => {
+  //       console.log(data);
+  //       navigate(`/quizresults`, { state: { quizId, attemptNo } });
+  //     })
+  //     .catch(error => {
   //       console.error('There was a problem with your fetch operation:', error);
-  //     }
+  //     })
+  //     .finally(() => {
+  //       setIsSubmitting(false);
+  //     });
+  // };
+
+
+  // useEffect(() => {
+  //   const handleBeforeUnload = (event) => {
+  //     handleSubmit2(true);
+  //     event.preventDefault();
+  //     event.returnValue = '';
   //   };
 
-  //   fetchData();
+  //   window.addEventListener('beforeunload', handleBeforeUnload);
 
   //   return () => {
-  //     clearInterval(timerRef.current);
+  //     window.removeEventListener('beforeunload', handleBeforeUnload);
   //   };
-  // }, [userId, quiz_duration]);
+  // }, []);
+
+  // useEffect(() => {
+  //   if (prevLocation.current !== location.pathname) {
+  //     handleSubmit2(true);
+  //     prevLocation.current = location.pathname;
+  //   }
+  // }, [location]);
+
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -345,10 +274,10 @@ const QuizQuestions = () => {
     }
   }, [showWarning]);
 
-  useEffect(() => {
-    selectedOptionsRef.current = selectedOptions;
-    console.log('Updated selectedOptions:', selectedOptions);
-  }, [selectedOptions]);
+  // useEffect(() => {
+  //   selectedOptionsRef.current = selectedOptions;
+  //   console.log('Updated selectedOptions:', selectedOptions);
+  // }, [selectedOptions]);
 
   const handleOptionSelect = (optionId) => {
     setSelectedOptions((prev) => {
@@ -356,7 +285,7 @@ const QuizQuestions = () => {
         ...prev,
         [currentQuestionIndex]: optionId,
       };
-      console.log('Updated selectedOptions in handleOptionSelect:', updatedOptions); // Log to check state
+      // console.log('Updated selectedOptions in handleOptionSelect:', updatedOptions); // Log to check state
       updateSkippedQuestions(currentQuestionIndex, updatedOptions);
       return updatedOptions;
     });
@@ -375,20 +304,7 @@ const QuizQuestions = () => {
     }
   };
 
-  // const handleOptionSelect = (optionId) => {
-  //   setSelectedOptions(prevOptions => ({
-  //     ...prevOptions,
-  //     [currentQuestionIndex]: optionId
-  //   }));
-  // };
-
-  // const handlePreviousQuestion = () => {
-  //   setCurrentQuestionIndex(prevIndex => prevIndex - 1);
-  // };
-
-  // const handleNextQuestion = () => {
-  //   setCurrentQuestionIndex(prevIndex => prevIndex + 1);
-  // };
+ 
   const handleNextQuestion = () => {
     updateSkippedQuestions(currentQuestionIndex);
     if (currentQuestionIndex < quizData.questions.length - 1) {
@@ -409,54 +325,69 @@ const QuizQuestions = () => {
 
 
 
-  // const handleSubmit1 = (isAutoSubmit = false) => {
-  //   clearInterval(timerRef.current);
-  //   if (!quizData || !quizData.questions || quizData.questions.length === 0) {
-  //     console.error('No quiz data available to submit');
-  //     return;
-  //   }
+  const handleSubmit = () => {
+    clearInterval(timerRef.current);
+    if (!quizData || !quizData.questions || quizData.questions.length === 0) {
+      console.error('No quiz data available to submit');
+      return;
+    }
 
- 
-  //   const answers = Object.keys(selectedOptions).map(questionIndex => ({
-  //     question_id: quizData.questions[questionIndex].question_id,
-  //     options: {
-  //       option_1: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_1_id,
-  //       option_2: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_2_id,
-  //       option_3: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_3_id,
-  //       option_4: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_4_id
-  //     }
-  //   }));
+    const unansweredQuestions = quizData.questions
+      .map((question, index) => selectedOptions[index] === undefined ? index + 1 : null)
+      .filter(questionNumber => questionNumber !== null);
 
-  //   const quizId = localStorage.getItem("quiz_id");
+    // if (unansweredQuestions.length > 0) {
+    //   toast.error(`Please answer all questions before submitting. You have skipped questions: ${unansweredQuestions.join(', ')}`);
+    //   setSkippedQuestionsDisplay(unansweredQuestions);
+    //   return;
+    // }
 
-  //   fetch('https://dev.quizifai.com:8010/submit', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify({
-  //       user_id: userId,
-  //       quiz_id: quizId,
-  //       attempt_no: attemptNo,
-  //       answers: answers
-  //     })
-  //   })
-  //   .then(response => {
-  //     if (!response.ok) {
-  //       throw new Error('Network response was not ok');
-  //     }
-  //     return response.json();
-  //   })
-  //   .then(data => {
-  //     console.log(data);
-  //     navigate(`/quizresults`, { state: { quizId, attemptNo } });
-  //   })
-  //   .catch(error => {
-  //     console.error('There was a problem with your fetch operation:', error);
-  //   });
-  // };
+    setValidationMessage('');
+    const answers = Object.keys(selectedOptions).map(questionIndex => ({
+      question_id: quizData.questions[questionIndex].question_id,
+      options: {
+        option_1: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_1_id,
+        option_2: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_2_id,
+        option_3: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_3_id,
+        option_4: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_4_id
+      }
+    }));
+    const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
 
+    if (!authToken) {
+      console.error('No authentication token found');
+      return;
+    }
+    const quizId = localStorage.getItem("quiz_id");
+
+    fetch('https://dev.quizifai.com:8010/submit', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`,
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        quiz_id: quizId,
+        attempt_no: attemptNo,
+        answers: answers
+      })
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log(data);
+      navigate(`/quizresults`, { state: { quizId, attemptNo } });
+    })
+    .catch(error => {
+      console.error('There was a problem with your fetch operation:', error);
+    });
+  };
  
   const handleSubmit1 = (isAutoSubmit = false) => {
     clearInterval(timerRef.current);
@@ -532,40 +463,46 @@ const QuizQuestions = () => {
     });
   };
 
-  const handleSubmit = () => {
+
+  const handleSubmit2 = (isAutoSubmit = false) => {
+    if (submittedRef.current) return; // Prevent multiple submissions
+    submittedRef.current = true; // Mark as submitted
+
     clearInterval(timerRef.current);
+    const currentSelectedOptions = selectedOptions;
+
     if (!quizData || !quizData.questions || quizData.questions.length === 0) {
       console.error('No quiz data available to submit');
       return;
     }
 
     const unansweredQuestions = quizData.questions
-      .map((question, index) => selectedOptions[index] === undefined ? index + 1 : null)
+      .map((question, index) => currentSelectedOptions[index] === undefined ? index + 1 : null)
       .filter(questionNumber => questionNumber !== null);
 
-    // if (unansweredQuestions.length > 0) {
-    //   toast.error(`Please answer all questions before submitting. You have skipped questions: ${unansweredQuestions.join(', ')}`);
-    //   setSkippedQuestionsDisplay(unansweredQuestions);
-    //   return;
-    // }
+    if (unansweredQuestions.length > 0 && !isAutoSubmit) {
+      // Show a warning or notification if needed
+      console.warn(`Please answer all questions before submitting. You have skipped questions: ${unansweredQuestions.join(', ')}`);
+      return;
+    }
 
-    setValidationMessage('');
-    const answers = Object.keys(selectedOptions).map(questionIndex => ({
+    const answers = Object.keys(currentSelectedOptions).map(questionIndex => ({
       question_id: quizData.questions[questionIndex].question_id,
       options: {
-        option_1: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_1_id,
-        option_2: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_2_id,
-        option_3: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_3_id,
-        option_4: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_4_id
+        option_1: currentSelectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_1_id,
+        option_2: currentSelectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_2_id,
+        option_3: currentSelectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_3_id,
+        option_4: currentSelectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_4_id
       }
     }));
-    const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+    const quizId = localStorage.getItem("quiz_id");
+    const authToken = localStorage.getItem('authToken');
 
     if (!authToken) {
       console.error('No authentication token found');
       return;
     }
-    const quizId = localStorage.getItem("quiz_id");
 
     fetch('https://dev.quizifai.com:8010/submit', {
       method: 'POST',
@@ -590,100 +527,26 @@ const QuizQuestions = () => {
     .then(data => {
       console.log(data);
       navigate(`/quizresults`, { state: { quizId, attemptNo } });
-    })
-    .catch(error => {
-      console.error('There was a problem with your fetch operation:', error);
-    });
-  };
-  const handleSubmit2 = (isAutoSubmit = false) => {
-    if (submittedRef.current) return; // Prevent multiple submissions
-    submittedRef.current = true;
-    clearInterval(timerRef.current);
-
-    // Capture the most recent selectedOptions state
-    const currentSelectedOptions = selectedOptionsRef.current;
-
-    console.log('Submitting selectedOptions in handleSubmit:', currentSelectedOptions); // Log to check state before submitting
-
-    if (!quizData || !quizData.questions || quizData.questions.length === 0) {
-      console.error('No quiz data available to submit');
-      return;
-    }
-
-    const unansweredQuestions = quizData.questions
-      .map((question, index) => currentSelectedOptions[index] === undefined ? index + 1 : null)
-      .filter(questionNumber => questionNumber !== null);
-
-    if (unansweredQuestions.length > 0 && !isAutoSubmit) {
-      toast.error(`Please answer all questions before submitting. You have skipped questions: ${unansweredQuestions.join(', ')}`);
-      setSkippedQuestionsDisplay(unansweredQuestions);
-      return;
-    }
-
-    setValidationMessage('');
-    const answers = Object.keys(currentSelectedOptions).map(questionIndex => ({
-      question_id: quizData.questions[questionIndex].question_id,
-      options: {
-        option_1: currentSelectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_1_id,
-        option_2: currentSelectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_2_id,
-        option_3: currentSelectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_3_id,
-        option_4: currentSelectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_4_id
-      }
-    }));
-
-    console.log('Submitting answers:', answers); // Log to check the answers array
-
-    const quizId = localStorage.getItem("quiz_id");
-    const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
-
-    if (!authToken) {
-      console.error('No authentication token found');
-      return;
-    }
-
-    fetch('https://dev.quizifai.com:8010/submit', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authToken}`,
-      },
-      body: JSON.stringify({
-        user_id: userId,
-        quiz_id: quizId,
-        attempt_no: attemptNo,
-        answers: answers
-      })
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log(data);
-      // navigate(`/quizresults`, { state: { quizId, attemptNo } });
       console.log('Quiz submitted');
     })
     .catch(error => {
       console.error('There was a problem with your fetch operation:', error);
     });
-  };
-  useBlocker(() => {
-    console.log('Blocking navigation');
 
-    handleSubmit2(true); // Submit the quiz before navigating away
-  });
+    setShouldSubmitOnLeave(false);
+
+  };
+
+  const handleBeforeUnload = (event) => {
+    if (!submittedRef.current) {
+      event.preventDefault();
+      event.returnValue = ''; // Display the confirmation dialog
+      setShouldSubmitOnLeave(true); // Indicate that the quiz should be submitted
+      return ''; // Required for compatibility with some browsers
+    }
+  };
 
   useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      console.log('Handling beforeunload event');
-
-      handleSubmit2(true);
-      event.returnValue = ''; // Required for Chrome to show the warning dialog
-    };
-
     window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
@@ -692,103 +555,87 @@ const QuizQuestions = () => {
   }, []);
 
   useEffect(() => {
-    if (localStorage.getItem('quizSubmitted') === 'true') {
-      // Handle any logic when the quiz has been submitted
-    }
-  }, []);
-  // Block navigation within the app and submit quiz if navigating away
+    const handleRouteChange = () => {
+      if (shouldSubmitOnLeave && !submittedRef.current) {
+        handleSubmit2(true); 
+        console.log('Quiz not');
+        // Auto-submit quiz on route change
+      }
+    };
 
-  // const submitQuiz = async () => {
-  //   if (isSubmitting.current) return;
-  //   isSubmitting.current = true;
-
-  //   if (!quizData || !quizData.questions || quizData.questions.length === 0) {
-  //     console.error('No quiz data available to submit');
-  //     return;
-  //   }
-
-  //   const answers = Object.keys(selectedOptions).map((questionIndex) => ({
-  //     question_id: quizData.questions[questionIndex].question_id,
-  //     options: {
-  //       option_1: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_1_id,
-  //       option_2: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_2_id,
-  //       option_3: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_3_id,
-  //       option_4: selectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_4_id,
-  //     },
-  //   }));
-
-  //   try {
-  //     const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
-
-  //   if (!authToken) {
-  //     console.error('No authentication token found');
-  //     return;
-  //   }
-  //     const response = await fetch('https://dev.quizifai.com:8010/submit', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Accept': 'application/json',
-  //         'Content-Type': 'application/json',
-  //         'Authorization': `Bearer ${authToken}`,
-  //       },
-  //       body: JSON.stringify({
-  //         user_id: localStorage.getItem('userId'),
-  //         quiz_id: quizId,
-  //         answers: answers,
-  //       }),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('Network response was not ok');
+    handleRouteChange();
+  }, [location, shouldSubmitOnLeave]);
+  // useEffect(() => {
+  //   const handleRouteChange = (event) => {
+  //     if (quizData && quizData.questions && quizData.questions.length > 0 && !submittedRef.current) {
+  //       event.preventDefault();
+  //       setConfirmNavigation(true);
   //     }
-
-  //     const data = await response.json();
-  //     console.log('Quiz submitted successfully:', data);
-  //   } catch (error) {
-  //     console.error('There was a problem with your fetch operation:', error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const handleBeforeUnload = (event) => {
-  //     const confirmationMessage = 'Are you sure you want to leave? Your quiz may not be submitted.';
-  //     event.preventDefault();
-  //     event.returnValue = confirmationMessage; // Standard for most browsers
-  //     return confirmationMessage; // For some older browsers
   //   };
 
-  //   const handleUnload = () => {
-  //     submitQuiz(); // Submit the quiz when the window is closed or refreshed
-  //   };
-
-  //   window.addEventListener('beforeunload', handleBeforeUnload);
-  //   window.addEventListener('unload', handleUnload);
+  //   // Add a listener for navigation changes
+  //   window.addEventListener('beforeunload', handleRouteChange);
 
   //   return () => {
-  //     window.removeEventListener('beforeunload', handleBeforeUnload);
-  //     window.removeEventListener('unload', handleUnload);
+  //     window.removeEventListener('beforeunload', handleRouteChange);
   //   };
-  // }, [submitQuiz]);
-
-  // const handleNavigationPrompt = (event) => {
-  //   if (isSubmitting.current) return;
-  //   const confirmationMessage = 'Are you sure you want to leave? Your quiz may not be submitted.';
-  //   const confirmation = window.confirm(confirmationMessage);
-  //   if (confirmation) {
-  //     submitQuiz();
-  //   } else {
-  //     event.preventDefault();
+  // }, [location.pathname, quizData]);
+ 
+  // useEffect(() => {
+  //   if (shouldSubmitOnLeave) {
+  //     handleSubmit2(true); // Auto-submit quiz on navigation if needed
   //   }
-  // };
+
+  //   // Reset flags after handling
+  //   setShouldSubmitOnLeave(false);
+  //   setConfirmNavigation(false);
+  // }, [shouldSubmitOnLeave]);
 
   // useEffect(() => {
-  //   window.history.pushState(null, null, window.location.href);
-  //   window.addEventListener('popstate', handleNavigationPrompt);
+  //   if (confirmNavigation) {
+  //     // Handle navigation based on user confirmation
+  //     const handleNavigation = (event) => {
+  //       if (!confirm('You have unsaved changes. Are you sure you want to leave?')) {
+  //         event.preventDefault();
+  //       } else {
+  //         handleSubmit2(true); // Submit quiz on leaving if confirmed
+  //       }
+  //     };
+
+  //     window.addEventListener('beforeunload', handleNavigation);
+      
+  //     return () => {
+  //       window.removeEventListener('beforeunload', handleNavigation);
+  //     };
+  //   }
+  // }, [confirmNavigation]);
+
+
+  // useEffect(() => {
+  //   if (initialRender.current) {
+  //     initialRender.current = false;
+  //     return; // Skip the first render
+  //   }
+
+   
+  //   const handleRouteChange = () => {
+  //     if (quizData && quizData.questions && quizData.questions.length > 0 && !submitted) {
+  //       console.log('Route change detected with valid quiz data');
+  //       handleSubmit2(true); // Auto-submit quiz
+  //     } else {
+  //       console.warn('Route change detected, but no valid quiz data to submit');
+  //     }
+  //   };
+
+  //   handleRouteChange(); // Trigger on route change
 
   //   return () => {
-  //     window.removeEventListener('popstate', handleNavigationPrompt);
+  //     // Cleanup logic if needed
   //   };
-  // }, [handleNavigationPrompt]);
+  // }, [location.pathname, quizData]);
+
+
+
 
   const handleQuestionClick = (index) => {
     markPreviousQuestionsAsSkipped(index);
@@ -814,12 +661,6 @@ const QuizQuestions = () => {
   const currentQuestion = filteredQuizData[currentQuestionIndex];
   const optionLabels = ['A', 'B', 'C', 'D'];
   const optionKeys = ['quiz_ans_option_1_text', 'quiz_ans_option_2_text', 'quiz_ans_option_3_text', 'quiz_ans_option_4_text'];
-  // const skippedQuestionsDisplay = filteredQuizData
-  //   .map((question, index) => selectedOptions[index] === undefined ? index + 1 : null)
-  //   .filter(questionNumber => questionNumber !== null);
-  // const skippedQuestions = filteredQuizData
-  //   .map((question, index) => selectedOptions[index] === undefined ? index + 1 : null)
-  //   .filter(questionNumber => questionNumber !== null);
 
   const visibleSkippedQuestions = skippedQuestionsDisplay.filter(questionNumber => {
     const actualIndex = questionNumber - 1;
@@ -870,40 +711,8 @@ const QuizQuestions = () => {
       <div>
         <h1 className={styles.quiztitle} style={{color:"#214082"}}>{quiz_title}</h1>
         <p className={styles.quizdescription}>{quiz_description}</p>
-        {/* <div className={styles.Questionslines }>
-        <div className={styles.Questions}>
-
-        <span className={styles.Question} >Questions :</span>{" "}
-          <span className={styles.username1} >{num_questions}</span>
-        </div>
-        <div>
-
-        <span className={styles.Question} >Duration :</span>{" "}
-          <span className={styles.username1} >{quiz_duration} min</span>
-        </div>
-        <div>
-
-<span className={styles.Question} >Total Marks :</span>{" "}
-  <span className={styles.username1} >{quiz_total_marks}</span>
-</div>
-<div>
-
-<span className={styles.Question } >Pass Percentage :</span>{" "}
-  <span className={styles.username1} >{pass_percentage}%</span>
-</div>
-        </div> */}
-        {/* <div className={styles.Createdbyandupdated}>
-        <div className={styles.Createdby}>
-
-        <span className={styles.Created} style={{color:"#214082"}} >Created By :</span>{" "}
-          <span className={styles.username} >{`${quizData.created_by}`}</span>
-        </div>
-        <div>
-
-        <span className={styles.Created}style={{color:"#214082"}} >Created On :</span>{" "}
-          <span className={styles.username} >{`${quizData.created_on}`}</span>
-        </div>
-        </div> */}
+      
+      
            <div className={styles.flexrow}>
           <div className={styles.Createdbyandupdated}>
           <div className={styles.Questions}>
@@ -956,168 +765,16 @@ const QuizQuestions = () => {
         </div>
         </div>
       </div>
-          {/* <h1 className={styles.quizTitle}>{quizData.data.quiz_title}</h1> */}
-          {/* <div className={styles.imageContainer}>
-          {/* <img
-    src={numberIcon} 
-    alt="Logo"
-    width={59}
-    height={59}
-    className={styles.logoImage}
-  /> */}
-        {/* <div className={styles.textContainer}>
-        <p>{`${currentQuestionIndex + 1}. ${currentQuestion.question_text}`}</p>
-
-        </div> */}
         
-    {/* </div>  */}
-    {/* <div className={styles.boxesContainer}>
-{/* 
-    <div className={styles.icon}>
-    <ul>
-        {Object.keys(currentQuestion).map(key => {
-          if (key.startsWith('quiz_ans_option_') && key.endsWith('_text')) {
-            const optionId = currentQuestion[key.replace('_text', '_id')];
-            return (
-              <li key={optionId}>
-                <button
-                  className={styles.box}
-                  onClick={() => handleOptionSelect(optionId)}
-                  style={{ fontWeight: selectedOption === optionId ? 'bold' : 'normal' }}
-                >
-                  {currentQuestion[key]}
-                </button>
-              </li>
-            );
-          }
-          return null;
-        })}
-      </ul>
-    </div> */}
-
-    {/* <div className={styles.buttonsContainer}>
-        <button
-          className={styles.button}
-          style={{ color: '#FFFFFF', backgroundColor: '#FEBB42', height: '52px', borderRadius: '10px', border: 'none' }}
-          onClick={handlePreviousQuestion}
-          disabled={currentQuestionIndex === 0}
-        >
-          Previous
-        </button>
-        {currentQuestionIndex === quizData.questions.length - 1 && (
-          <button
-            className={styles.button}
-            style={{ marginLeft: '50px', backgroundColor: '#8453FC', height: '52px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
-            onClick={handleSubmit}
-          >
-            Submit
-          </button>
-        )}
-        <button
-          className={styles.button}
-          style={{ marginLeft: '50px', backgroundColor: '#8453FC', height: '52px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
-          onClick={handleNextQuestion}
-          disabled={currentQuestionIndex === quizData.questions.length - 1}
-        >
-          Next
-        </button>
-      </div> */}
-  {/* <div>
-      <ul>
-        {currentQuestion && Object.keys(currentQuestion).map(key => {
-          if (key.startsWith('quiz_ans_option_') && key.endsWith('_text')) {
-            const optionId = currentQuestion[key.replace('_text', '_id')];
-            return (
-              <li key={optionId}>
-                <button
-                  className={styles.box}
-                  onClick={() => handleOptionSelect(optionId)}
-                  style={{ fontWeight: selectedOptions[currentQuestionIndex] === optionId ? 'bold' : 'normal' }}
-                >
-                  {currentQuestion[key]}
-                </button>
-              </li>
-            );
-          }
-          return null;
-        })}
-      </ul>
-      <div className={styles.buttonsContainer}>
-        <button
-          className={styles.button}
-          style={{ color: '#FFFFFF', backgroundColor: '#FEBB42', height: '52px', borderRadius: '10px', border: 'none' }}
-          onClick={handlePreviousQuestion}
-          disabled={currentQuestionIndex === 0}
-        >
-          Previous
-        </button>
-        {currentQuestionIndex === quizData.data.length - 1 && (
-          <button
-            className={styles.button}
-            style={{ marginLeft: '50px', backgroundColor: '#8453FC', height: '52px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
-            onClick={handleSubmit}
-          >
-            Submit
-          </button>
-        )}
-        <button
-          className={styles.button}
-          style={{ marginLeft: '50px', backgroundColor: '#8453FC', height: '52px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
-          onClick={handleNextQuestion}
-          disabled={currentQuestionIndex === quizData.data.length - 1}
-        >
-          Next
-        </button>
-      </div>
-    </div> */}
-
-    {/* </div> */}
-    <div className={styles.questionNumbersContainer}>
-        {/* Previous Button */}
-        {startIndex >= 10 && (
-          <button onClick={handlePrevClick}>&lt;</button>
-        )}
-
-        {/* Question Numbers */}
-        
-        {filteredQuizData.slice(startIndex,endIndex ).map((_, index) => {
-          const actualIndex = startIndex + index;
-          const isSelected = selectedOptions[actualIndex] !== undefined;
-          const isSkipped = skippedQuestionsDisplay.includes(actualIndex + 1);
-          return (
-            <div
-              key={actualIndex}
-              className={`${styles.questionNumber} ${isSelected ? styles.selected : ''} ${isSkipped ? styles.skipped1 : ''}`}
-
-              onClick={() => handleQuestionClick(actualIndex)}
-            >
-              {actualIndex + 1}
-            </div>
-          );
-        })}
-
-
-        {/* Next Button */}
-        {startIndex + 10 < filteredQuizData.length && (
-          <button onClick={handleNextClick}>&gt;</button>
-        )}
-        
-      </div>
-      {/* {skippedQuestionsDisplay.length > 0 && (
-      <div className={styles.skippedQuestionsContainer}>
-        <h3>Skipped Questions:</h3>
-        {skippedQuestionsDisplay.map(questionNumber => (
-          <div
-            key={questionNumber}
-            className={`${styles.questionNumber} ${styles.skipped}`}
-            onClick={() => handleQuestionClick(questionNumber - 1)}
-          >
-            {questionNumber}
-          </div>
-        ))}
-      </div>
-    )} */}
        
+   
+
+   
+ 
+
+   
+   
+    
 
     <div className={styles.currentQuestion}>
       {currentQuestion && (
@@ -1203,17 +860,7 @@ const QuizQuestions = () => {
               </button>
             </div>
           )}
-           {/* {currentQuestionIndex === filteredQuizData.length - 1 && (
-            <div className={styles.button3}>
-              <button
-                className={styles.button}
-                style={{ marginLeft: '50px', backgroundColor: 'rgb(11 87 208)', height: '40px', borderRadius: '10px', border: 'none', color: '#FFFFFF' }}
-                onClick={handleSubmit}
-              >
-                Submit
-              </button>
-            </div>
-          )} */}
+         
         
         </div>
         <div className={styles.button3}>
@@ -1233,11 +880,42 @@ const QuizQuestions = () => {
           </div>
       <div className={styles.Totaltimer}>
       <div className={styles.back1} onClick={Back}><MdOutlineCancel /></div>
-      <div className={styles.sentence1} style={{ marginTop: "220px" }}>
+      <div className={styles.sentence1} style={{ marginTop: "140px" }}>
         {`${currentQuestionIndex + 1} out of ${filteredQuizData.length}`}
       </div>
       <div className={styles.sentence2}>
        <span> Total timer:</span> <span className={styles.sentence3}>{formatTime(elapsedTime)}</span> 
+      </div>
+      <div className={styles.questionNumbersContainer}>
+        {/* Previous Button */}
+        {startIndex >= 10 && (
+          <button onClick={handlePrevClick}>&lt;</button>
+        )}
+
+        {/* Question Numbers */}
+        
+        {filteredQuizData.slice(startIndex,endIndex ).map((_, index) => {
+          const actualIndex = startIndex + index;
+          const isSelected = selectedOptions[actualIndex] !== undefined;
+          const isSkipped = skippedQuestionsDisplay.includes(actualIndex + 1);
+          return (
+            <div
+              key={actualIndex}
+              className={`${styles.questionNumber} ${isSelected ? styles.selected : ''} ${isSkipped ? styles.skipped1 : ''}`}
+
+              onClick={() => handleQuestionClick(actualIndex)}
+            >
+              {actualIndex + 1}
+            </div>
+          );
+        })}
+
+
+        {/* Next Button */}
+        {startIndex + 10 < filteredQuizData.length && (
+          <button onClick={handleNextClick}>&gt;</button>
+        )}
+        
       </div>
       {/* {showWarning && <div className={styles.warningMessage}>Warning: You have 5 minutes left!</div>} */}
 
@@ -1263,63 +941,12 @@ const QuizQuestions = () => {
         </div>
       )}
       
-      {/* {visibleSkippedQuestions.length > 0 && (
-        <div className={styles.skippedQuestionsContainer}>
-          <h3>Skipped Questions:</h3>
-          {visibleSkippedQuestions.map(questionNumber => (
-            <div
-              key={questionNumber}
-              className={`${styles.questionNumber} ${styles.skipped}`}
-              onClick={() => setCurrentQuestionIndex(questionNumber - 1)}
-            >
-              {questionNumber}
-            </div>
-          ))}
-        </div>
-      )} */}
-      {/* {skippedQuestions.length > 0 && (
-      <div className={styles.skippedQuestionsContainer}>
-        <h3>Skipped Questions:</h3>
-        {skippedQuestions.map(questionNumber => (
-          <div
-            key={questionNumber}
-            className={`${styles.questionNumber} ${styles.skipped}`}
-            onClick={() => handleQuestionClick(questionNumber - 1)}
-          >
-            {questionNumber}
-          </div>
-        ))}
-      </div>
-    )} */}
-      {/* {validationMessage && <div className={styles.validationMessage}>{validationMessage}</div>} */}
-      {/* {quizSubmitted && skippedQuestionsDisplay.length > 0 && (
-        <div className={styles.skippedQuestionsContainer}>
-          <h3>Skipped Questions:</h3>
-          {skippedQuestionsDisplay.map(questionNumber => (
-            <div
-              key={questionNumber}
-              className={`${styles.questionNumber} ${styles.skipped}`}
-              onClick={() => handleQuestionClick(questionNumber - 1)}
-            >
-              {questionNumber}
-            </div>
-          ))}
-        </div>
-      )} */}
+      
       </div>
       <div className={styles.sentence3} style={{ marginTop: "230px" }}>
         {/* {formatTime(elapsedTime)} */}
       </div>
-          {/* <div className={styles.sentence4} style={{marginTop:"290px", marginLeft:"-140px"}}>Quiz timer: </div>
-          <div className={styles.imageContainer} style={{marginTop: "350px", marginLeft: "-100px"}}>
-    <img
-      src={clockIcon} 
-      alt="Icon"
-      width={100}
-      height={100}
-      className={styles.clockIcon}
-    />
-  </div> */}
+        
 
         <LogoutBar/>
       </div>

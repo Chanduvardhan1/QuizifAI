@@ -33,6 +33,12 @@ const configure = () => {
   const handleSpecialisationsClick = () => {
     navigate('/specialisations');
   };
+  const handleClassesClick = () => {
+    navigate('/classes');
+  };
+  const handleSubjectsClick = () => {
+    navigate('/Subjects');
+  };
   
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -78,7 +84,7 @@ const configure = () => {
   }, [userId]);
 
   const items = [
-      { id: 1, title: 'Configuration', content: 'Categories, Courses, Specialisations, Classes, Subjects ' },
+      { id: 1, title: 'Configuration', content: 'Categories, Courses, Specialisations, Classes, Subjects' },
       { id: 2, title: 'Organization', content: 'Profile, Manage Subscription, Performance Metrics, Marketing and Sales, Financial Information, Mission and Vision, Goals and Objectives' },
       { id: 3, title: 'Notification', content: 'Contact Information, Date and Time, Main Content, Additional Information' },
       { id: 4, title: 'User & Roles', content: 'User Information, Roles and Permissions, Communication, Responsibilities and Expectations' },
@@ -182,7 +188,10 @@ const configure = () => {
                   contentItem === 'Categories' ? handleCategoriesClick : 
                   contentItem === 'Courses' ? handleCoursesClick : 
                   
-                  contentItem === 'Specialisations' ? handleSpecialisationsClick : 
+                  contentItem === 'Specialisations' ? handleSpecialisationsClick :
+                  contentItem === 'Classes' ? handleClassesClick :
+                  contentItem === 'Subjects' ? handleSubjectsClick :
+
                   null
                 }
              >

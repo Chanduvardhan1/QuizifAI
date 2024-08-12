@@ -10,7 +10,7 @@ import Plus from "../../src/assets/Images/dashboard/Plus.png";
 import Edit from "../../src/assets/Images/Assets/Edit.png"
 import Delete from "../../src/assets/Images/Assets/Delete.png"
 import Line from "../../src/assets/Images/Assets/Line.png"
-const specialisations = () => {
+const classes = () => {
   const [categories, setCategories] = useState([]);
   const [data, setData] = useState([]);
   const [categoryId, setCategoryId] = useState('');
@@ -30,7 +30,9 @@ const specialisations = () => {
 
   const [courses, setCourses] = useState([]);
   const [selectedCourseId, setSelectedCourseId] = useState('');
-  const [selectedSpecialization, setSelectedSpecialization] = useState('');
+  const [specializations, setSpecializations] = useState([]);
+  const [selectedSpecializationId, setSelectedSpecializationId] = useState('');
+  const [selectedSpecialization, setSelectedSpecialization] = useState(null);
 
   const navigate = useNavigate();
   const handleBanckToDashbaord = () =>{
@@ -67,6 +69,11 @@ const specialisations = () => {
       console.error('Error:', error);
     }
   };
+//   const handleCourseChange = (courseId) => {
+//     setSelectedCourseId(courseId);
+//     const selectedCourse = courses.find(course => course.course_id === parseInt(courseId));
+//     setSpecializations(selectedCourse ? selectedCourse.specializations : []);
+//   };
 
   const handleCreateCategory = () => {
 
@@ -120,14 +127,31 @@ const specialisations = () => {
       console.error('Error fetching data:', error);
     }
   };
-  
+
   useEffect(() => {
     fetchCourses();
   }, []);
   const toggleNavbar = () => {
     setIsNavbarOpen(!isNavbarOpen);
   };
-
+  const handleCourseChange = (e) => {
+    const courseId = e.target.value;
+    const selectedCourse = courses.find(course => course.course_id === parseInt(courseId));
+    console.log('Selected Course:', selectedCourse); // Debugging log
+    if (selectedCourse && selectedCourse.specializations.length > 0) {
+      selectedCourse.specializations.forEach(spec => {
+        console.log('Specialization:', spec.specialization_name); // Log each specialization name
+      });
+    } else {
+      console.log('No specializations available for this course');
+    }
+    setSelectedCourse(selectedCourse);
+    setSpecializations(selectedCourse ? selectedCourse.specializations : []);
+    setSelectedSpecialization(null); // Reset specialization when course changes
+  };
+  const handleSpecializationChange = (e) => {
+    setSelectedSpecialization(e.target.value);
+  };
   return (
     <>
     <div className='flex w-full font-Poppins'>
@@ -138,7 +162,7 @@ const specialisations = () => {
           <div className="flex"onClick={toggleNavbar} >
             <img className="w-[20px] h-[20px] ml-2 mt-1" src={Plus} alt="Plus Icon" />
             <a className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-1.5">
-            Specializations
+            Class
             </a>
           </div>
         </div>
@@ -148,7 +172,7 @@ const specialisations = () => {
         <div className='text-[10px] mx-[10px] text-[#214082] h-[50px] mt-[30px] rounded-md bg-[#CBF2FB] flex flex-row justify-around p-4'>
           <input
             type='text'
-            placeholder='Specializations ID'
+            placeholder='Class ID'
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value)}
             className=' w-[100px] -mt-[10px] text-center rounded-3xl py-[14px] pl-1 text-[#214082] placeholder:text-[#214082] outline-[#214082]'
@@ -157,23 +181,36 @@ const specialisations = () => {
           />
           <input
             type='text'
-            placeholder='Specializations Name'
+            placeholder='Class Name'
             value={courseName}
             onChange={(e) => setCourseName(e.target.value)}
             className=' w-[120px] rounded-3xl text-center -mt-[10px]  py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'
           />
-           <input
-        type='text'
-        placeholder='Specializations Short Name'
-        value={courseShortName}
-        onChange={(e) => setCourseShortName(e.target.value)}
-        className='w-[150px] rounded-3xl text-center -mt-[10px] py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'
+     
+  
         
-      />
+     <select
+      className="rounded-3xl text-center -mt-[10px] w-[150px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
+      value={selectedSpecialization}
+      onChange={handleSpecializationChange}
+    >
+      <option value="">Select a specialization</option>
+      {courses.map(course => 
+        course.specializations.map(specialization => (
+          <option key={specialization.specialization_id} value={specialization.specialization_id}>
+            {specialization.specialization_name}
+          </option>
+        ))
+      )}
+    </select>
+    
+    
+        
        <select
   className="rounded-3xl text-center -mt-[10px] w-[150px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
   value={selectedCourseId}
-  onChange={(e) => setSelectedCourseId(e.target.value)}
+  onChange={handleCourseChange}
+
 >
   <option value="">Select a parent category</option>
   {courses.map((course) => (
@@ -196,9 +233,9 @@ onClick={handleSubmit}
       <table className='h-[20px] table-auto mt-[30px] mx-[20px] rounded text-left bg-[#F7E0E3] text-[#2b51a1] text-[13px] font-light'>
         <thead>
           <tr className='h-[50px]'>
-            <th className='px-4 py-2 text-nowrap'>Specializations ID</th>
-            <th className='pl-[10px] ml-[15px] py-2'>Specializations Name</th>
-            <th className='px-4 py-2 text-nowrap'>Specializations Short Name</th>
+            <th className='px-4 py-2 text-nowrap'>Class ID</th>
+            <th className='pl-[10px] ml-[15px] py-2'>Class Name</th>
+            <th className='px-4 py-2 text-nowrap'>SpecialiZations Name</th>
             <th className='px-2 py-2 text-wrap'>Course</th>
             <div className='flex -mt-[5px]'>
             <input
@@ -218,15 +255,25 @@ onClick={handleSubmit}
         <tbody  className='bg-white border-gray-500 '>
           {courses.map((course) => (
             <tr key={course.course_id}>
-              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>{course.course_id}</td>
+              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>   {course.classes.map((cls) => (
+        <div key={cls.class_id}>
+          {cls.class_id}
+        </div>
+      ))}</td>
               <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
-              {course.specializations.map((spec) => (
-                  <div key={spec.specialization_id}>
-                    {spec.specialization_name}
-                  </div>
-                ))}
+             
+              {course.classes.map((cls) => (
+        <div key={cls.class_id}>
+          {cls.class_name}
+        </div>
+      ))}
+
               </td>
-              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>{}</td>
+              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>  {course.specializations.map((specialization) => (
+        <div key={specialization.specialization_id}>
+          {specialization.specialization_name}
+        </div>
+      ))}</td>
 
                 <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>{course.course_name}</td>
               {/* <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
@@ -263,4 +310,4 @@ onClick={handleSubmit}
   )
 }
 
-export default specialisations
+export default classes

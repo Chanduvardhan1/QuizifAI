@@ -118,11 +118,6 @@
   .navItem {
     cursor: pointer;
   }
-  .contactContent1{
-    display: flex;
-    flex-direction: column;
-    padding-left: 100px; 
-  }
 .outerBox2{
   display: flex;
   flex-direction: column;
@@ -132,10 +127,6 @@
 }
   .navigation {
     cursor: pointer;
-  }
-  .contactContent{
-    display: flex;
-    justify-content: space-between;
   }
   
   .text-content {
@@ -256,10 +247,6 @@ left: -100px !important;
   
   .formRow img {
     margin-right: 15px;
-  }
-  .content1{
-    padding: 20px;
-    width: 100%; 
   }
   .sendbutton1{
     display: flex;

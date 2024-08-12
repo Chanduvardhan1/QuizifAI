@@ -184,21 +184,20 @@ const Navigation = () => {
       <div>
       <div className="h-[5px] w-full bg-white mt-[10px]"></div>
 
-<div className="p-[10px] ml-2">
-  <h1 className="font-semibold mt-[10px] text-[15px] text-[#002366]">Subscription Type : <span className=" text-black text-[12px] font-normal">Public</span> </h1>
-  <h1 className=" mt-[5px] px-[1px] font-semibold text-[15px] text-[#002366]">Subscribed Date :
+<div className="p-[10px] ml-2 font-bold">
+  <h1 className="text-[14px] text-[#002366]">Subscription</h1>
+  <h1 className="font-semibold mt-[10px] text-[13px] text-[#002366]">Type : <span className=" text-black text-[12px] font-normal">Public</span> </h1>
+  <h1 className="mt-[3px] px-[1px] font-semibold text-[13px] text-[#002366]">Date :
   <span className=" text-black text-[12px] font-normal">{subscriptionStartDate}</span> 
     </h1>
-  <h1 className="font-semibold  text-[15px] text-[#002366]"> Days Remaining:
-  </h1>
+  <h1 className="mt-[3px] px-[1px] font-semibold text-[13px] text-[#002366]">Days :</h1>
   <span className="text-black text-[12px] font-normal">
   {/* <span className="text-[25px] text-[#5E81F4] ml-[20px] mt-[10px] font-semibold"></span> */}
   {/* <span><img className=" w-[35px] " src={infinity} /></span> */}
   {remainingDays > 0 ?(
     <p className="text-[13px] text-red-500 ml-[20px] mt-[3px]">{remainingDays}</p> 
-  ):(             
-           
-  <h1 className="mt-[2px] text-[13px] font-normal">Unlimited Days Remaining </h1>
+  ):(                       
+  <h1 className="mt-[2px] text-[12px] font-normal">Unlimited Days Remaining </h1>
   )}
   </span>
  
@@ -211,9 +210,9 @@ const Navigation = () => {
           <div className=" flex flex-col justify-center items-center p-[10px] bg-white rounded-[25px] w-[90%] ml-[10px] pt-[80px] relative top-[-75px]">
          
             <div>
-              <p className=" text-[#9696BB] ">Upgrade to <span className=" text-black font-bold">Pro</span>  for more resources</p>
+              <p className=" text-[#9696BB] text-[13px]">Upgrade to <span className=" text-black font-bold">Pro</span>  for more resources</p>
             </div>
-            <button className=" bg-[#5E81F4] p-[5px] px-[20px] rounded-[10px] text-white">Upgrade</button>
+            <button className=" bg-[#5E81F4] p-[5px] px-[20px] rounded-[10px] text-white text-[13px] mt-2">Upgrade</button>
           </div>
 </div>
     </div>

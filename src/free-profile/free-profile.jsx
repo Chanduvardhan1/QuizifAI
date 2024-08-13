@@ -1066,7 +1066,7 @@ const handleLoginCancelClick1 = () =>{
             className={styles.inputGroup1}
             style={{ marginLeft: "200px", textWrap: "nowrap",marginTop:"5px" }}
           >
-            <label className="text-blue-800 font-semibold">login Method</label>
+            <label className="text-blue-800 font-semibold">Login Method</label>
             <button
         className={`border-b-2 w-[77.5px] text-[11px] pl-[10px] ml-[10px] focus:outline-none ${
           preferredLoginMethod === 'Email' ? 'border-blue-200' : 'border-transparent'

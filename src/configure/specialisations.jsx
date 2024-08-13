@@ -10,6 +10,8 @@ import Plus from "../../src/assets/Images/dashboard/Plus.png";
 import Edit from "../../src/assets/Images/Assets/Edit.png"
 import Delete from "../../src/assets/Images/Assets/Delete.png"
 import Line from "../../src/assets/Images/Assets/Line.png"
+import { RiDeleteBinLine } from "react-icons/ri";
+
 const specialisations = () => {
   const [categories, setCategories] = useState([]);
   const [data, setData] = useState([]);
@@ -31,64 +33,66 @@ const specialisations = () => {
   const [courses, setCourses] = useState([]);
   const [selectedCourseId, setSelectedCourseId] = useState('');
   const [selectedSpecialization, setSelectedSpecialization] = useState('');
+  const [specializationName, setSpecializationName] = useState('');
+  const [specializationShortName, setSpecializationShortName] = useState('');
+  const [courseId, setCourseId] = useState(0);
+  const userId = localStorage.getItem("user_id");
 
   const navigate = useNavigate();
   const handleBanckToDashbaord = () =>{
     navigate('/dashboard');
   }
- const addCourse = async (courseData) => {
+
+  const handleSubmit1 = async () => {
+
+
+
+    const data = {
+      specialization_name: specializationName,
+      specialization_short_name: specializationShortName,
+      course_id: courseId,
+      created_by: userId
+    };
+
     try {
-      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+        const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
   
-      if (!authToken) {
-        console.error('No authentication token found');
-        return;
-      }
-  
-      const response = await fetch('https://dev.quizifai.com:8010/add_courses/', {
+        if (!authToken) {
+          console.error('No authentication token found');
+          return;
+        }
+      const response = await fetch('https://dev.quizifai.com:8010/adding_specialization/', {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
+          'accept': 'application/json',
           'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(courseData),
+        body: JSON.stringify(data),
       });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Specialization added successfully:', result);
+        fetchCourses();
+        setIsNavbarOpen(false);
+        setSpecializationName('');
+        setSpecializationShortName('');
+        setCourseId('');
+      } else {
+        console.error('Failed to add specialization:', response.status, response.statusText);
       }
-
-      const result = await response.json();
-      console.log('Success:', result);
-      setIsEditing(false);
-      fetchCourses();
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
-  const handleCreateCategory = () => {
-
-
-    const courseData = {
-      course_name: courseName,
-      course_short_name: courseShortName,
-      course_duration: '',
-      course_duration_unit: '',
-      specialization_name: '',
-      specialization_short_name: '',
-      class_name: '',
-      created_by: '',
-    };
-
-    addCourse(courseData);
-  };
   const handleSubmit = () => {
     if (isEditing) {
-      handleUpdateCategory();
+        handleCreateCategory();
     } else {
-      handleCreateCategory();
+        handleSubmit1();
+    
     }
   };
   
@@ -138,7 +142,7 @@ const specialisations = () => {
           <div className="flex"onClick={toggleNavbar} >
             <img className="w-[20px] h-[20px] ml-2 mt-1" src={Plus} alt="Plus Icon" />
             <a className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-1.5">
-            Specializations
+            Specialization
             </a>
           </div>
         </div>
@@ -148,7 +152,7 @@ const specialisations = () => {
         <div className='text-[10px] mx-[10px] text-[#214082] h-[50px] mt-[30px] rounded-md bg-[#CBF2FB] flex flex-row justify-around p-4'>
           <input
             type='text'
-            placeholder='Specializations ID'
+            placeholder='Specialization ID'
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value)}
             className=' w-[100px] -mt-[10px] text-center rounded-3xl py-[14px] pl-1 text-[#214082] placeholder:text-[#214082] outline-[#214082]'
@@ -157,25 +161,25 @@ const specialisations = () => {
           />
           <input
             type='text'
-            placeholder='Specializations Name'
-            value={courseName}
-            onChange={(e) => setCourseName(e.target.value)}
+            placeholder='Specialization Name'
+            value={specializationName}
+            onChange={(e) => setSpecializationName(e.target.value)}
             className=' w-[120px] rounded-3xl text-center -mt-[10px]  py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'
           />
            <input
         type='text'
-        placeholder='Specializations Short Name'
-        value={courseShortName}
-        onChange={(e) => setCourseShortName(e.target.value)}
+        placeholder='Specialization Short Name'
+        value={specializationShortName}
+        onChange={(e) => setSpecializationShortName(e.target.value)}
         className='w-[150px] rounded-3xl text-center -mt-[10px] py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'
         
       />
        <select
   className="rounded-3xl text-center -mt-[10px] w-[150px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
-  value={selectedCourseId}
-  onChange={(e) => setSelectedCourseId(e.target.value)}
+  value={courseId}
+  onChange={(e) => setCourseId(e.target.value)}
 >
-  <option value="">Select a parent category</option>
+  <option value="">Select a course</option>
   {courses.map((course) => (
     <option key={course.course_id} value={course.course_id}>
       {course.course_name}
@@ -196,10 +200,10 @@ onClick={handleSubmit}
       <table className='h-[20px] table-auto mt-[30px] mx-[20px] rounded text-left bg-[#F7E0E3] text-[#2b51a1] text-[13px] font-light'>
         <thead>
           <tr className='h-[50px]'>
-            <th className='px-4 py-2 text-nowrap'>Specializations ID</th>
-            <th className='pl-[10px] ml-[15px] py-2'>Specializations Name</th>
-            <th className='px-4 py-2 text-nowrap'>Specializations Short Name</th>
-            <th className='px-2 py-2 text-wrap'>Course</th>
+            <th className='px-4 py-2 text-nowrap'>Specialization ID</th>
+            <th className='pl-[10px] ml-[15px] py-2'>Specialization Name</th>
+            <th className='px-4 py-2 text-nowrap'>Specialization Short Name</th>
+            <th className='px-2 py-2 text-wrap'>Courses</th>
             <div className='flex -mt-[5px]'>
             <input
                 className='mt-[15px] text-[10px] pl-[30px] pr-[10px] rounded-[20px] h-[28px] mr-[10px] w-fit bg-[#FFFFFF] text-left placeholder-[#214082] border-none focus:border-none outline-none'
@@ -218,7 +222,11 @@ onClick={handleSubmit}
         <tbody  className='bg-white border-gray-500 '>
           {courses.map((course) => (
             <tr key={course.course_id}>
-              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>{course.course_id}</td>
+              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>    {course.specializations.map((spec) => (
+                  <div key={spec.specialization_id}>
+                    {spec.specialization_id}
+                  </div>
+                ))}</td>
               <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
               {course.specializations.map((spec) => (
                   <div key={spec.specialization_id}>
@@ -226,7 +234,11 @@ onClick={handleSubmit}
                   </div>
                 ))}
               </td>
-              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>{}</td>
+              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>{course.specializations.map((spec) => (
+                  <div key={spec.specialization_id}>
+                    {spec.specialization_short_name}
+                  </div>
+                ))}</td>
 
                 <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>{course.course_name}</td>
               {/* <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
@@ -241,6 +253,8 @@ onClick={handleSubmit}
                 alt="Edit"
              
               />
+             <button className='flex text-orange-500 w-[30px] h-[30px]' ><RiDeleteBinLine/></button>
+
             </td>
             </tr>
           ))}

@@ -10,6 +10,8 @@ import Plus from "../../src/assets/Images/dashboard/Plus.png";
 import Edit from "../../src/assets/Images/Assets/Edit.png"
 import Delete from "../../src/assets/Images/Assets/Delete.png"
 import Line from "../../src/assets/Images/Assets/Line.png"
+import { RiDeleteBinLine } from "react-icons/ri";
+
 const category = () => {
   const [categories, setCategories] = useState([]);
   const [data, setData] = useState([]);
@@ -472,6 +474,8 @@ const category = () => {
                 alt="Edit"
                 onClick={() => handleEdit(category)}
               />
+             <button className='flex text-orange-500 w-[30px] h-[30px]' ><RiDeleteBinLine/></button>
+
             </td>
           </tr>
         ))}

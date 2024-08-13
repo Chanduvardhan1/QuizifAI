@@ -31,13 +31,13 @@ const HeaderSection = () => {
                 </button>
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link to="/Contactus">
                 <button className={`w-[84px] h-[30px] text-[#555555] text-[13px] leading-7 font-bold flex items-center justify-center rounded-full hover:bg-[#EF512F] transition-transform transform hover:scale-110 ${currentPath === '/Contactus' ? 'font-bold' : ''}`}>
                   Contact Us
                 </button>
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link to={"/signup"}>
                 <button className={`w-20 h-[30px] rounded-full font-Poppins bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center hover:bg-[#EF512F] transition-transform transform hover:scale-110 ${currentPath === '/signup' ? 'font-bold' : ''}`}>
@@ -63,9 +63,9 @@ const HeaderSection = () => {
               <Link to="/" onClick={toggleMenu}>
                 <button className={getButtonClassName('/')}>Home</button>
               </Link>
-              <Link to="/Contactus" onClick={toggleMenu}>
+              {/* <Link to="/Contactus" onClick={toggleMenu}>
                 <button className={getButtonClassName('/Contactus')}>Contact Us</button>
-              </Link>
+              </Link> */}
               <Link to={"/signup"} onClick={toggleMenu}>
                 <button className={getButtonClassName('/signup')}>Sign Up</button>
               </Link>

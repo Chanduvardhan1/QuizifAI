@@ -76,6 +76,10 @@ const Quiz = () => {
   const sortAlphabetically = (arr) => {
     return arr.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
   };
+
+  const normalizeAndRemoveDuplicates = (arr) => {
+    return [...new Set(arr.map(item => item.toLowerCase()))];
+  };
   useEffect(() => {
     const fetchDropdownValues = async () => {
       try {
@@ -121,8 +125,12 @@ const Quiz = () => {
         });
         const coursesResult = await coursesResponse.json();
         console.log("Courses and Classes data:", coursesResult);
-        setCourses(sortAlphabetically(coursesResult.data.map(item => item.course_name)));
-        setAllClasses(coursesResult.data);
+
+        const uniqueCourseNames = Array.from(new Set(coursesResult.data.map(item => item.course_name)));
+        setCourses(sortAlphabetically(uniqueCourseNames));
+
+        const uniqueClasses = Array.from(new Set(coursesResult.data.map(item => JSON.stringify(item)))).map(item => JSON.parse(item));
+        setAllClasses(uniqueClasses);
 
       } catch (error) {
         console.error('Error fetching dropdown values:', error);
@@ -646,15 +654,15 @@ const createquiz=() =>{
                         }}
                       >
                         <span className="relative group">
-                          <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate -mt-[10px]">
+                          <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate -mt-[13px]">
                             {highlightText(quizItem.quiz_name, searchQuery)}
                           </span>
-                          <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+                          <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[2px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                             {highlightText(quizItem.quiz_name, searchQuery)}
                           </span>
                         </span>
                         <div className={styles.iconContainer}>
-                          <div className="z-20 mb-[2px] pl-[36px] font-normal rounded -mt-[13px]">
+                          <div className="z-20 mb-[2px] pl-[45px] font-normal rounded -mt-[13px]">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
@@ -760,9 +768,9 @@ const createquiz=() =>{
                           </div>
                         </div>
 
-                        <div className="flex mt-[9px] mb-[19px] relative top-[21px]">
-                          <span className="relative group -top-[8px]">
-                            <span className="text-[#002366] ml-[10px] mt-4 w-[50px] cursor-pointer z-0 truncate text-[9px] font-normal">
+                        <div className="flex mt-[9px] mb-[19px] relative top-[19px]">
+                          <span className="relative group -top-[13px]">
+                            <span className="text-[#002366] ml-[10px] mt-4 w-[50px] cursor-pointer z-0 truncate text-[9px] font-semibold">
                               {highlightText(quizItem.category, searchQuery)}
                             </span>
                             <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
@@ -770,35 +778,38 @@ const createquiz=() =>{
                             </span>
                           </span>
 
-                          <p className="px-[2px] font-normal relative -top-[8px]">|</p>
+                          <p className="px-[2px] font-normal relative -top-[13px]">|</p>
 
-                          <span className="relative group -top-[8px]">
-                            <span className="text-[#002366] w-[100px] cursor-pointer z-0 truncate text-[9px] font-normal">
+                          <span className="relative group -top-[13px]">
+                            <span className="text-[#002366] w-[100px] cursor-pointer z-0 truncate text-[9px] font-semibold">
                               {highlightText(
                                 quizItem.sub_category,
                                 searchQuery
                               )}
                             </span>
-                            <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[10px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+                            <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
                               {highlightText(
                                 quizItem.sub_category,
                                 searchQuery
                               )}
                             </span>
                           </span>
+                          
                           <button
-                            className="cursor-pointer ml-auto relative -top-[12px] right-1 flex gap-[2px] border-2 bg-[#F5F8F9] rounded-xl border-[#472E86] h-4 w-[46px]"
+                            className="cursor-pointer ml-auto relative -top-[5px] right-1 flex gap-[2px] border-2 bg-[#F5F8F9] rounded-xl border-[#472E86] h-[16px] w-[34.5px]"
                             onClick={() => handleStartQuiz1(quizItem.quiz_id, quizItem.attempts_count, quizItem.retake_flag)}
                           >
                             <img
-                              className="h-[5.5px] w-[5px] relative top-[3px] left-1"
+                              className="h-[5.5px] w-[4.5px] relative top-[3.5px] left-[2px]"
                               src={PlayButton}
                               alt="Start button"
                             />
-                            <h1  className="text-[#472E86] text-[8px] pl-1 font-bold">Retake</h1>
+                            <h1 className="text-[#472E86] text-[6px] relative top-[2px] pl-[1px] font-bold">Retake</h1>
                           </button>
                         </div>
-
+                           <div className="h-1 -mt-[8px] pl-[10px] text-[7px] font-normal text-[#002366] relative -top-[6px]">
+                            <h3>Quiz ID : {highlightText(quizItem.quiz_id, searchQuery)}</h3>
+                          </div>
                         {/* <div className="h-[1px] w-full bg-white"></div> */}
                         {/* <div className="h-[3px] w-full bg-white"></div> */}
                         <div className="relative group mt-1">
@@ -958,7 +969,7 @@ const createquiz=() =>{
                         }}
                       >
                         <span className="relative group">
-                          <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate">
+                          <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate -mt-[1px]">
                             {highlightText(quizItem.quiz_name, searchQuery)}
                           </span>
                           <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
@@ -967,7 +978,7 @@ const createquiz=() =>{
                         </span>
 
                         <div className={styles.iconContainer}>
-                          <div className="z-40 mb-[2px] pl-[10px] font-normal rounded">
+                          <div className="z-40 mb-[2px] pl-[17px] font-normal rounded">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
@@ -1064,9 +1075,9 @@ const createquiz=() =>{
                           </div>
                         </div>
 
-                        <div className="flex mt-[9px] relative top-[22px]">
+                        <div className="flex mt-[9px] relative top-[17px]">
                           <span className="relative group">
-                            <span className="text-[#002366] ml-[10px] w-[30px] cursor-pointer z-0 truncate text-[9px] font-normal">
+                            <span className="text-[#002366] ml-[10px] w-[30px] cursor-pointer z-0 truncate text-[9px] font-semibold">
                               {highlightText(quizItem.category, searchQuery)}
                             </span>
                             <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
@@ -1075,7 +1086,7 @@ const createquiz=() =>{
                           </span>
                           <p className="px-[2px] font-normal">|</p>
                           <span class="relative group">
-                            <span class="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-normal inline-block w-[80px] overflow-hidden whitespace-nowrap">
+                            <span class="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
                               {highlightText(
                                 quizItem.sub_category,
                                 searchQuery
@@ -1089,7 +1100,7 @@ const createquiz=() =>{
                             </span>
                           </span>
                           <button
-                            className="cursor-pointer ml-auto relative -top-[10px] right-1"
+                            className="cursor-pointer ml-auto relative -top-[1px] right-1"
                             onClick={() => handleStartQuiz(quizItem.quiz_id)}
                           >
                             <img
@@ -1099,6 +1110,9 @@ const createquiz=() =>{
                             />
                           </button>
                         </div>
+                        <div className="h-1 -mt-[3px] pl-[10px] text-[7px] text-[#002366] font-normal relative top-[3px]">
+                            <h3>Quiz ID : {highlightText(quizItem.quiz_id, searchQuery)}</h3>
+                          </div>
                         <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[75px] left-[12px]">
                           <div>
                             Created By :

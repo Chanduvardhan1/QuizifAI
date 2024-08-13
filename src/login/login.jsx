@@ -267,7 +267,7 @@ const LoginPage = () => {
   return (
     <div>
        <HeaderSection/>
-      <div className="container" style={{display:"flex"}}>
+      <div className="flex font-Poppins" style={{display:"flex"}}>
         <div className={styles.leftSection}>
           <div className={styles.logo1}>
             <img src={quizifailogo} alt="Logo"  width={1000} height={1000}

@@ -194,16 +194,16 @@ const Navigation = () => {
   <h1 className="mt-[3px] px-[1px] font-semibold text-[13px] text-[#002366]">Date :
   <span className=" text-black text-[12px] font-normal">{subscriptionStartDate}</span> 
     </h1>
-  <h1 className="mt-[3px] px-[1px] font-semibold text-[13px] text-[#002366]">Days :</h1>
+    <div className="flex">
+    <h1 className="mt-[3px] px-[1px] font-semibold text-[13px] text-[#002366]">Days :</h1>
   <span className="text-black text-[12px] font-normal">
-  {/* <span className="text-[25px] text-[#5E81F4] ml-[20px] mt-[10px] font-semibold"></span> */}
-  {/* <span><img className=" w-[35px] " src={infinity} /></span> */}
   {remainingDays > 0 ?(
     <p className="text-[13px] text-red-500 ml-[20px] mt-[3px]">{remainingDays}</p> 
   ):(                       
-  <h1 className="mt-[2px] text-[12px] font-normal">Unlimited Days Remaining </h1>
+  <h1 className="mt-[2px] text-[12px] font-normal pl-[2px] pt-[2px]">Unlimited</h1>
   )}
   </span>
+    </div>
  
 
 

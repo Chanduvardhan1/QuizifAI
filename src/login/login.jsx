@@ -241,7 +241,7 @@ const LoginPage = () => {
         const userId = data.data[0]?.user_id;
         if (data.response_message === "OTP Succuessfully Sent") {
           navigate("/resetpasswordmobile", { state: { userId,mobile } });
-        } else if (data.response_message === "OTP Sent Successfully,Please reset your password") {
+        } else if (data.response_message === "OTP Sent Successfully, Please reset your password") {
           navigate("/resetpassword", { state: { userId,email} });
         }
       }else if (data.response === "fail" && data.response_message === "Email is incorrect or not registered.") {

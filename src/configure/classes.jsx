@@ -10,6 +10,8 @@ import Plus from "../../src/assets/Images/dashboard/Plus.png";
 import Edit from "../../src/assets/Images/Assets/Edit.png"
 import Delete from "../../src/assets/Images/Assets/Delete.png"
 import Line from "../../src/assets/Images/Assets/Line.png"
+import { RiDeleteBinLine } from "react-icons/ri";
+
 const classes = () => {
   const [categories, setCategories] = useState([]);
   const [data, setData] = useState([]);
@@ -212,7 +214,7 @@ const classes = () => {
   onChange={handleCourseChange}
 
 >
-  <option value="">Select a parent category</option>
+  <option value="">Select a course</option>
   {courses.map((course) => (
     <option key={course.course_id} value={course.course_id}>
       {course.course_name}
@@ -235,8 +237,8 @@ onClick={handleSubmit}
           <tr className='h-[50px]'>
             <th className='px-4 py-2 text-nowrap'>Class ID</th>
             <th className='pl-[10px] ml-[15px] py-2'>Class Name</th>
-            <th className='px-4 py-2 text-nowrap'>SpecialiZations Name</th>
-            <th className='px-2 py-2 text-wrap'>Course</th>
+            <th className='px-4 py-2 text-nowrap'>Specialization</th>
+            <th className='px-2 py-2 text-wrap'>Courses</th>
             <div className='flex -mt-[5px]'>
             <input
                 className='mt-[15px] text-[10px] pl-[30px] pr-[10px] rounded-[20px] h-[28px] mr-[10px] w-fit bg-[#FFFFFF] text-left placeholder-[#214082] border-none focus:border-none outline-none'
@@ -288,6 +290,8 @@ onClick={handleSubmit}
                 alt="Edit"
              
               />
+                           <button className='flex text-orange-500 w-[30px] h-[30px]' ><RiDeleteBinLine/></button>
+
             </td>
             </tr>
           ))}

@@ -23,22 +23,21 @@ const configure = () => {
   const handleBanckToDashbaord = () =>{
     navigate('/dashboard');
   }
+  const userRole = localStorage.getItem('user_role');
+  const allowedRoles = ['Quiz Master']; // Roles allowed to access the pages
 
-  const handleCategoriesClick = () => {
-    navigate('/category'); 
+  const handleRestrictedClick = (navigateTo) => {
+    if (allowedRoles.includes(userRole)) {
+      navigate(navigateTo);
+    } else {
+      alert('You do not have permission to access this page.');
+    }
   };
-  const handleCoursesClick = () => {
-    navigate('/Course');
-  };
-  const handleSpecialisationsClick = () => {
-    navigate('/specialisations');
-  };
-  const handleClassesClick = () => {
-    navigate('/classes');
-  };
-  const handleSubjectsClick = () => {
-    navigate('/Subjects');
-  };
+  const handleCategoriesClick = () => handleRestrictedClick('/category');
+  const handleCoursesClick = () => handleRestrictedClick('/Course');
+  const handleSpecialisationsClick = () => handleRestrictedClick('/specialisations');
+  const handleClassesClick = () => handleRestrictedClick('/classes');
+  const handleSubjectsClick = () => handleRestrictedClick('/Subjects');
   
   useEffect(() => {
     const fetchQuizData = async () => {

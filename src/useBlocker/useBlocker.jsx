@@ -1,18 +1,27 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const useBlocker = (blocker) => {
+const useBlocker = (blocker, when) => {
+  const navigate = useNavigate();
+  const [isBlocking, setIsBlocking] = useState(when);
+
   useEffect(() => {
-    const handleBeforeUnload = (event) => {
+    if (!when) return;
+
+    const handleBlockedNavigation = (event) => {
+      event.preventDefault();
       blocker();
-      event.returnValue = ''; // Required for Chrome to show the warning dialog
+      return false; // Prevent navigation
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('beforeunload', handleBlockedNavigation);
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('beforeunload', handleBlockedNavigation);
     };
-  }, [blocker]);
+  }, [blocker, when, navigate]);
+
+  return [isBlocking, setIsBlocking];
 };
 
 export default useBlocker;

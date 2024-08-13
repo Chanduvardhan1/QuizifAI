@@ -16,6 +16,8 @@ import { useLocation } from 'react-router-dom';
 import Navigation from "../navbar/navbar.jsx";
 import LogoutBar from "../logoutbar/logoutbar.jsx";
 import { toast, ToastContainer } from "react-toastify";
+// import useBlocker from '../useBlocker/useBlocker.jsx';
+
 import "react-toastify/dist/ReactToastify.css";
 import useBlocker from '../useBlocker/useBlocker.jsx';
 // import usePrompt from '../usePrompt/usePrompt.jsx';
@@ -36,7 +38,6 @@ const QuizQuestions = () => {
   const [showWarning, setShowWarning] = useState(false);
   const lastVisitedQuestionRef = useRef(0);
   const selectedOptionsRef = useRef({});
-  const [isBlocking, setIsBlocking] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
   // const prevLocation = useRef(location.pathname);
 
@@ -53,6 +54,7 @@ const QuizQuestions = () => {
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [validationMessage, setValidationMessage] = useState('');
   const initialRender = useRef(true);
+  const [isBlocking, setIsBlocking] = useState(true);
 
   const markPreviousQuestionsAsSkipped = (targetIndex) => {
     const newSkippedQuestions = [];
@@ -82,105 +84,6 @@ const QuizQuestions = () => {
   };
 
   const startIndex = Math.floor(currentQuestionIndex / 10) * 10; // Calculate startIndex based on currentQuestionIndex
-  // const handleSubmit2 = (isAutoSubmit = false) => {
-  //   if (isSubmitting) return;
-
-  //   setIsSubmitting(true);
-  //   clearInterval(timerRef.current);
-
-  //   const currentSelectedOptions = selectedOptionsRef.current;
-
-  //   if (!quizData || !quizData.questions || quizData.questions.length === 0) {
-  //     console.error('No quiz data available to submit');
-  //     return;
-  //   }
-
-  //   // Handle unanswered questions
-  //   const unansweredQuestions = quizData.questions
-  //     .map((question, index) => currentSelectedOptions[index] === undefined ? index + 1 : null)
-  //     .filter(questionNumber => questionNumber !== null);
-
-  //   if (unansweredQuestions.length > 0 && !isAutoSubmit) {
-  //     // Show a warning if there are unanswered questions
-  //     setIsSubmitting(false);
-  //     return;
-  //   }
-
-  //   // Build answers array
-  //   const answers = Object.keys(currentSelectedOptions).map(questionIndex => ({
-  //     question_id: quizData.questions[questionIndex].question_id,
-  //     options: {
-  //       option_1: currentSelectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_1_id,
-  //       option_2: currentSelectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_2_id,
-  //       option_3: currentSelectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_3_id,
-  //       option_4: currentSelectedOptions[questionIndex] === quizData.questions[questionIndex].quiz_ans_option_4_id,
-  //     },
-  //   }));
-
-  //   const quizId = localStorage.getItem("quiz_id");
-  //   const authToken = localStorage.getItem('authToken');
-
-  //   if (!authToken) {
-  //     console.error('No authentication token found');
-  //     return;
-  //   }
-
-  //   fetch('https://dev.quizifai.com:8010/submit', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json',
-  //       'Authorization': `Bearer ${authToken}`,
-  //     },
-  //     body: JSON.stringify({
-  //       user_id: userId,
-  //       quiz_id: quizId,
-  //       attempt_no: attemptNo,
-  //       answers: answers,
-  //     }),
-  //   })
-  //     .then(response => {
-  //       if (!response.ok) {
-  //         throw new Error('Network response was not ok');
-  //       }
-  //       return response.json();
-  //     })
-  //     .then(data => {
-  //       console.log(data);
-  //       navigate(`/quizresults`, { state: { quizId, attemptNo } });
-  //     })
-  //     .catch(error => {
-  //       console.error('There was a problem with your fetch operation:', error);
-  //     })
-  //     .finally(() => {
-  //       setIsSubmitting(false);
-  //     });
-  // };
-
-
-  // useEffect(() => {
-  //   const handleBeforeUnload = (event) => {
-  //     handleSubmit2(true);
-  //     event.preventDefault();
-  //     event.returnValue = '';
-  //   };
-
-  //   window.addEventListener('beforeunload', handleBeforeUnload);
-
-  //   return () => {
-  //     window.removeEventListener('beforeunload', handleBeforeUnload);
-  //   };
-  // }, []);
-
-  // useEffect(() => {
-  //   if (prevLocation.current !== location.pathname) {
-  //     handleSubmit2(true);
-  //     prevLocation.current = location.pathname;
-  //   }
-  // }, [location]);
-
-
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -462,14 +365,13 @@ const QuizQuestions = () => {
       console.error('There was a problem with your fetch operation:', error);
     });
   };
-
-
   const handleSubmit2 = (isAutoSubmit = false) => {
-    if (submittedRef.current) return; // Prevent multiple submissions
-    submittedRef.current = true; // Mark as submitted
+    if (submittedRef.current) return; // Avoid multiple submissions
 
     clearInterval(timerRef.current);
-    const currentSelectedOptions = selectedOptions;
+    submittedRef.current = true; // Mark as submitted
+
+    const currentSelectedOptions = { ...selectedOptions };
 
     if (!quizData || !quizData.questions || quizData.questions.length === 0) {
       console.error('No quiz data available to submit');
@@ -481,8 +383,7 @@ const QuizQuestions = () => {
       .filter(questionNumber => questionNumber !== null);
 
     if (unansweredQuestions.length > 0 && !isAutoSubmit) {
-      // Show a warning or notification if needed
-      console.warn(`Please answer all questions before submitting. You have skipped questions: ${unansweredQuestions.join(', ')}`);
+      toast.error(`Please answer all questions before submitting. You have skipped questions: ${unansweredQuestions.join(', ')}`);
       return;
     }
 
@@ -496,8 +397,8 @@ const QuizQuestions = () => {
       }
     }));
 
-    const quizId = localStorage.getItem("quiz_id");
     const authToken = localStorage.getItem('authToken');
+    const userId = localStorage.getItem("user_id");
 
     if (!authToken) {
       console.error('No authentication token found');
@@ -514,7 +415,6 @@ const QuizQuestions = () => {
       body: JSON.stringify({
         user_id: userId,
         quiz_id: quizId,
-        attempt_no: attemptNo,
         answers: answers
       })
     })
@@ -525,118 +425,39 @@ const QuizQuestions = () => {
       return response.json();
     })
     .then(data => {
-      console.log(data);
-      navigate(`/quizresults`, { state: { quizId, attemptNo } });
-      console.log('Quiz submitted');
+      navigate('/quizresults', { state: { quizId } });
     })
     .catch(error => {
       console.error('There was a problem with your fetch operation:', error);
     });
-
-    setShouldSubmitOnLeave(false);
-
   };
 
-  const handleBeforeUnload = (event) => {
-    if (!submittedRef.current) {
-      event.preventDefault();
-      event.returnValue = ''; // Display the confirmation dialog
-      setShouldSubmitOnLeave(true); // Indicate that the quiz should be submitted
-      return ''; // Required for compatibility with some browsers
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleRouteChange = () => {
-      if (shouldSubmitOnLeave && !submittedRef.current) {
-        handleSubmit2(true); 
-        console.log('Quiz not');
-        // Auto-submit quiz on route change
-      }
-    };
-
-    handleRouteChange();
-  }, [location, shouldSubmitOnLeave]);
   // useEffect(() => {
-  //   const handleRouteChange = (event) => {
-  //     if (quizData && quizData.questions && quizData.questions.length > 0 && !submittedRef.current) {
+  //   const handleBeforeUnload = (event) => {
+  //     if (!submittedRef.current) {
   //       event.preventDefault();
-  //       setConfirmNavigation(true);
+  //       event.returnValue = '';
+  //       handleSubmit2(true); // Auto-submit on page unload
   //     }
   //   };
 
-  //   // Add a listener for navigation changes
-  //   window.addEventListener('beforeunload', handleRouteChange);
+  //   const handleNavigation = () => {
+  //     if (!submittedRef.current) {
+  //       handleSubmit2(true); // Auto-submit on route change
+  //     }
+  //   };
+
+  //   window.addEventListener('beforeunload', handleBeforeUnload);
+  //   navigate(handleNavigation);
 
   //   return () => {
-  //     window.removeEventListener('beforeunload', handleRouteChange);
+  //     window.removeEventListener('beforeunload', handleBeforeUnload);
+  //     navigate(handleNavigation);
   //   };
-  // }, [location.pathname, quizData]);
+  // }, [navigate]);
+
+
  
-  // useEffect(() => {
-  //   if (shouldSubmitOnLeave) {
-  //     handleSubmit2(true); // Auto-submit quiz on navigation if needed
-  //   }
-
-  //   // Reset flags after handling
-  //   setShouldSubmitOnLeave(false);
-  //   setConfirmNavigation(false);
-  // }, [shouldSubmitOnLeave]);
-
-  // useEffect(() => {
-  //   if (confirmNavigation) {
-  //     // Handle navigation based on user confirmation
-  //     const handleNavigation = (event) => {
-  //       if (!confirm('You have unsaved changes. Are you sure you want to leave?')) {
-  //         event.preventDefault();
-  //       } else {
-  //         handleSubmit2(true); // Submit quiz on leaving if confirmed
-  //       }
-  //     };
-
-  //     window.addEventListener('beforeunload', handleNavigation);
-      
-  //     return () => {
-  //       window.removeEventListener('beforeunload', handleNavigation);
-  //     };
-  //   }
-  // }, [confirmNavigation]);
-
-
-  // useEffect(() => {
-  //   if (initialRender.current) {
-  //     initialRender.current = false;
-  //     return; // Skip the first render
-  //   }
-
-   
-  //   const handleRouteChange = () => {
-  //     if (quizData && quizData.questions && quizData.questions.length > 0 && !submitted) {
-  //       console.log('Route change detected with valid quiz data');
-  //       handleSubmit2(true); // Auto-submit quiz
-  //     } else {
-  //       console.warn('Route change detected, but no valid quiz data to submit');
-  //     }
-  //   };
-
-  //   handleRouteChange(); // Trigger on route change
-
-  //   return () => {
-  //     // Cleanup logic if needed
-  //   };
-  // }, [location.pathname, quizData]);
-
-
-
-
   const handleQuestionClick = (index) => {
     markPreviousQuestionsAsSkipped(index);
     setCurrentQuestionIndex(index);
@@ -773,7 +594,10 @@ const QuizQuestions = () => {
  
 
    
-   
+   <div>
+    <h1 className={styles.sentence1}>Question <span> {`${currentQuestionIndex + 1} of ${filteredQuizData.length}`}</span></h1>
+    <h1 className={styles.Question}>Choose the correct answer then click the <span className={styles.sentence1}>"Next"</span> button</h1>
+   </div>
     
 
     <div className={styles.currentQuestion}>
@@ -881,7 +705,7 @@ const QuizQuestions = () => {
       <div className={styles.Totaltimer}>
       <div className={styles.back1} onClick={Back}><MdOutlineCancel /></div>
       <div className={styles.sentence1} style={{ marginTop: "140px" }}>
-        {`${currentQuestionIndex + 1} out of ${filteredQuizData.length}`}
+        {/* {`${currentQuestionIndex + 1} out of ${filteredQuizData.length}`} */}
       </div>
       <div className={styles.sentence2}>
        <span> Total timer:</span> <span className={styles.sentence3}>{formatTime(elapsedTime)}</span> 

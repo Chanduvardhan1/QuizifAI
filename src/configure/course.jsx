@@ -10,6 +10,8 @@ import Plus from "../../src/assets/Images/dashboard/Plus.png";
 import Edit from "../../src/assets/Images/Assets/Edit.png"
 import Delete from "../../src/assets/Images/Assets/Delete.png"
 import Line from "../../src/assets/Images/Assets/Line.png"
+import { RiDeleteBinLine } from "react-icons/ri";
+
 const course = () => {
   const [categories, setCategories] = useState([]);
   const [data, setData] = useState([]);
@@ -28,16 +30,27 @@ const course = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
   const [searchInput, setSearchInput] = useState('');
+  const [courseDurationUnit, setCourseDurationUnit] = useState('');
 
   const [courses, setCourses] = useState([]);
   const [selectedClass, setSelectedClass] = useState('');
   const [selectedSpecialization, setSelectedSpecialization] = useState('');
+  const userId = localStorage.getItem("user_id");
 
   const navigate = useNavigate();
   const handleBanckToDashbaord = () =>{
     navigate('/dashboard');
   }
- const addCourse = async (courseData) => {
+  const addCourse = async () => {
+  
+    const data = {
+      course_name: courseName,
+      course_short_name: courseShortName,
+      course_duration: courseDuration,
+      course_duration_unit: courseDurationUnit,
+      created_by: userId
+    };
+  
     try {
       const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
   
@@ -45,33 +58,40 @@ const course = () => {
         console.error('No authentication token found');
         return;
       }
-  
-      const response = await fetch('https://dev.quizifai.com:8010/add_courses/', {
+      const response = await fetch('https://dev.quizifai.com:8010/adding_courses/', {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
+          'accept': 'application/json',
           'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(courseData),
+        body: JSON.stringify(data),
       });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+  
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Course added successfully:', result);
+        fetchCourses();
+        setIsNavbarOpen(false);
+        setCourseName('');
+        setCourseShortName('');
+        setCourseDuration('');
+        setCourseDurationUnit('');
+      } else {
+        console.error('Failed to add course:', response.status, response.statusText);
       }
-
-      const result = await response.json();
-      console.log('Success:', result);
-      setIsEditing(false);
-      fetchCourses();
     } catch (error) {
       console.error('Error:', error);
     }
   };
+  
+
+  const handleCourseDurationUnitChange = (event) => {
+    setCourseDurationUnit(event.target.value);
+  };
 
   const handleCreateCategory = () => {
 
-    const userId = localStorage.getItem("user_id");
 
     const courseData = {
       course_name: courseName,
@@ -88,7 +108,7 @@ const course = () => {
   };
   const handleSubmit = () => {
     if (isEditing) {
-      handleUpdateCategory();
+      addCourse();
     } else {
       handleCreateCategory();
     }
@@ -172,7 +192,26 @@ const course = () => {
         className='w-[120px] rounded-3xl text-center -mt-[10px] py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'
         
       />
-       
+        <input
+        type='text'
+        placeholder='Course duration'
+        value={courseDuration}
+        onChange={(e) => setCourseDuration(e.target.value)}
+        className='w-[120px] rounded-3xl text-center -mt-[10px] py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'
+        
+      />
+       <select
+  className="rounded-3xl text-center -mt-[10px] w-[150px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
+  value={courseDurationUnit}
+  onChange={handleCourseDurationUnitChange}
+
+>
+  <option value="">Select Duration Unit</option>
+ 
+  <option value="months">Months</option>
+            <option value="years">Years</option>
+</select>
+        
          
          <button
 onClick={handleSubmit}
@@ -228,6 +267,8 @@ onClick={handleSubmit}
                 alt="Edit"
              
               />
+             <button className='flex text-orange-500 w-[30px] h-[30px]' ><RiDeleteBinLine/></button>
+
             </td>
             </tr>
           ))}

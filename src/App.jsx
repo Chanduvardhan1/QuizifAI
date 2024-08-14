@@ -90,6 +90,7 @@ import Leaderboard from "./leaderboard/leaderboard.jsx";
 import PrivateRoute from './privateRoute/privateRoute.jsx';
 import Classes from './configure/classes.jsx';
 import Subjects from './configure/subjects.jsx';
+import Myhistory from './myhistory/myhistory.jsx';
 // import Home from "./pages/Home.jsx";
 // import ContactUs from "./pages/ContactUs.jsx";
 // import NoPage from "./pages/NoPage.jsx";
@@ -290,6 +291,7 @@ import HeaderSection from './HeaderSection/HeaderSection.jsx';
     <Route path="specialisations" element={<PrivateRoute> <Specialisations /></PrivateRoute>} />
     <Route path="classes" element={<PrivateRoute> <Classes /></PrivateRoute>} />
     <Route path="subjects" element={<PrivateRoute> <Subjects /></PrivateRoute>} />
+    <Route path="myhistory" element={ <Myhistory />} />
 
     <Route path="create-quiz" element={<PrivateRoute> <Createquiz /></PrivateRoute>} />
     <Route path="csv" element={<PrivateRoute><Csv /></PrivateRoute>} />

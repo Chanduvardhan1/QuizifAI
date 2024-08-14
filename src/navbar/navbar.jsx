@@ -147,7 +147,8 @@ const Navigation = () => {
           className={`${styles.pageItem} ${activePage === '/dashboard' ? styles.bold : ''}`}
           onClick={() => handleNavigation('/dashboard')}
         >
-          <img src={dashboardIcon} alt="Dashboard Icon" className={styles.pageIcon} />
+          <img src={dashboardIcon} alt="Dashboard Icon" 
+            className={`${styles.pageIcon} ${activePage === '/dashboard' ? styles.activeIcon : ''}`}/>
           <span className={styles.pageLink}>Dashboard</span>
         </NavLink>
         <NavLink
@@ -155,7 +156,8 @@ const Navigation = () => {
           className={`${styles.pageItem} ${activePage === '/quiz' ? styles.bold : ''}`}
           onClick={() => handleNavigation('/quiz')}
         >
-          <img src={quizIcon} alt="Quiz Icon" className={styles.pageIcon} />
+          <img src={quizIcon} alt="Quiz Icon" 
+            className={`${styles.pageIcon} ${activePage === '/quiz' ? styles.activeIcon : ''}`} />
           <span className={styles.pageLink}>Quizzes</span>
         </NavLink>
         <NavLink
@@ -163,7 +165,8 @@ const Navigation = () => {
           className={`${styles.pageItem} ${activePage === '/free-profile' ? styles.bold : ''}`}
           onClick={() => handleNavigation('/free-profile')}
         >
-          <img src={profileIcon} alt="Profile Icon" className={styles.pageIcon} />
+          <img src={profileIcon} alt="Profile Icon" 
+            className={`${styles.pageIcon} ${activePage === '/free-profile' ? styles.activeIcon : ''}`} />
           <span className={styles.pageLink}>Profile</span>
         </NavLink>
         <NavLink
@@ -171,7 +174,8 @@ const Navigation = () => {
           className={`${styles.pageItem} ${activePage === '/configure' ? styles.bold : ''}`}
           onClick={() => handleNavigation('/configure')}
         >
-          <img src={Settings} alt="Settings Icon" className={styles.pageIcon} />
+          <img src={Settings} alt="Settings Icon" 
+            className={`${styles.pageIcon} ${activePage === '/configure' ? styles.activeIcon : ''}`} />
           <span className={styles.pageLink}>Settings</span>
         </NavLink>
         <NavLink
@@ -179,9 +183,22 @@ const Navigation = () => {
           className={`${styles.pageItem} ${activePage === '/contact' ? styles.bold : ''}`}
           onClick={() => handleNavigation('/contact')}
         >
-          <img src={mail} alt="Settings Icon" className={styles.pageIcon} />
+          <img src={mail} alt="Settings Icon" 
+            className={`${styles.pageIcon} ${activePage === '/contact' ? styles.activeIcon : ''}`} />
           <span className={styles.pageLink}>Contact US</span>
         </NavLink>
+        {/* <NavLink
+          to="/myhistory"
+          className={`${styles.pageItem} ${activePage === '/myhistory' ? styles.bold : ''}`}
+          onClick={() => handleNavigation('/myhistory')}
+        >
+         <img
+        src={mail}
+        alt="Settings Icon"
+        className={`${styles.pageIcon} ${activePage === '/myhistory' ? styles.activeIcon : ''}`}
+      />
+          <span className={styles.pageLink}>My history</span>
+        </NavLink> */}
         {/* <img className="h-[122px] w-[60px] ml-[35px] mt-[50px]" src={rocket} alt="rocket"/> */}
       </div>
       </div>

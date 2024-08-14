@@ -564,7 +564,6 @@ const createquiz=() =>{
                 <div className="flex-1 min-w-[150px]">
                 <Select
             isMulti
-            options={filteredSubCategories.map(subcat => ({ value: subcat, label: subcat }))}
             value={selectedSubCategory.map(subcat => ({ value: subcat, label: subcat }))}
             onChange={selected => setSelectedSubCategory(selected.map(item => item.value))}
             styles={customStyles}

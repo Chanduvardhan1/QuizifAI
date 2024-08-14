@@ -29,18 +29,24 @@ const classes = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
   const [searchInput, setSearchInput] = useState('');
+  const [classId, setClassId] = useState('');
+  const [specializationName, setSpecializationName] = useState('');
 
   const [courses, setCourses] = useState([]);
   const [selectedCourseId, setSelectedCourseId] = useState('');
   const [specializations, setSpecializations] = useState([]);
   const [selectedSpecializationId, setSelectedSpecializationId] = useState('');
-  const [selectedSpecialization, setSelectedSpecialization] = useState(null);
+  const [className, setClassName] = useState('');
+  const [courseId, setCourseId] = useState(0);
+  const [specializationId, setSpecializationId] = useState(0);
+  const userId = localStorage.getItem("user_id");
 
   const navigate = useNavigate();
   const handleBanckToDashbaord = () =>{
     navigate('/dashboard');
   }
- const addCourse = async (courseData) => {
+
+  const handleAddClass = async () => {
     try {
       const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
   
@@ -48,56 +54,83 @@ const classes = () => {
         console.error('No authentication token found');
         return;
       }
-  
-      const response = await fetch('https://dev.quizifai.com:8010/add_courses/', {
+      const response = await fetch('https://dev.quizifai.com:8010/adding_classes/', {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
+          'accept': 'application/json',
           'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(courseData),
+        body: JSON.stringify({
+          class_name: className,
+          course_id: courseId,
+          Specialization_id: specializationId,
+          created_by: userId
+        })
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error(`Error: ${response.statusText}`);
       }
 
-      const result = await response.json();
-      console.log('Success:', result);
-      setIsEditing(false);
+      const data = await response.json();
+      console.log('Class added successfully:', data);
       fetchCourses();
+      setIsNavbarOpen(false);
+      setClassName('');
+      setCourseId('');
+      setSpecializationId('');
+
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error adding class:', error);
     }
   };
-//   const handleCourseChange = (courseId) => {
-//     setSelectedCourseId(courseId);
-//     const selectedCourse = courses.find(course => course.course_id === parseInt(courseId));
-//     setSpecializations(selectedCourse ? selectedCourse.specializations : []);
-//   };
+  const handleUpdateClass = async () => {
 
-  const handleCreateCategory = () => {
+    try {
+      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+  
+      if (!authToken) {
+        console.error('No authentication token found');
+        return;
+      }
+      const response = await fetch('https://dev.quizifai.com:8010/update_classes/', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          class_name: className,
+          course_id: courseId,
+          Specialization_id: specializationId,
+          updated_by: userId
+        })
+      });
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-    const courseData = {
-      course_name: courseName,
-      course_short_name: courseShortName,
-      course_duration: '',
-      course_duration_unit: '',
-      specialization_name: '',
-      specialization_short_name: '',
-      class_name: '',
-      created_by: '',
-    };
-
-    addCourse(courseData);
+      const data = await response.json();
+      console.log('Class updated successfully:', data);
+      fetchCourses();
+      setIsNavbarOpen(false);
+      setClassName('');
+      setCourseId('');
+      setSpecializationId('');
+      // Handle success (e.g., show a success message, reset form, etc.)
+    } catch (error) {
+      console.error('Error updating class:', error);
+      // Handle error (e.g., show an error message)
+    }
   };
   const handleSubmit = () => {
     if (isEditing) {
-      handleUpdateCategory();
+      handleUpdateClass();
     } else {
-      handleCreateCategory();
+      handleAddClass();
     }
   };
   
@@ -137,22 +170,43 @@ const classes = () => {
     setIsNavbarOpen(!isNavbarOpen);
   };
   const handleCourseChange = (e) => {
-    const courseId = e.target.value;
-    const selectedCourse = courses.find(course => course.course_id === parseInt(courseId));
-    console.log('Selected Course:', selectedCourse); // Debugging log
-    if (selectedCourse && selectedCourse.specializations.length > 0) {
-      selectedCourse.specializations.forEach(spec => {
-        console.log('Specialization:', spec.specialization_name); // Log each specialization name
-      });
-    } else {
-      console.log('No specializations available for this course');
-    }
-    setSelectedCourse(selectedCourse);
-    setSpecializations(selectedCourse ? selectedCourse.specializations : []);
-    setSelectedSpecialization(null); // Reset specialization when course changes
+    setCourseId(e.target.value);
+
   };
   const handleSpecializationChange = (e) => {
-    setSelectedSpecialization(e.target.value);
+    setSpecializationId(e.target.value);
+  };
+
+  const handleEdit = (course) => {
+    if (selectedCategoryId === course.course_id) {
+      setIsNavbarOpen(!isNavbarOpen);
+    } else {
+      setCourseId(course.course_id);
+      setCourseName(course.course_name);
+      setCourseShortName(course.course_short_name);
+
+      // If the course has classes, pick the first one to edit (or customize as needed)
+      if (course.classes && course.classes.length > 0) {
+        const classData = course.classes[0]; // Assuming you want the first class
+        setClassName(classData.class_name); // Set the class_name in state
+        setClassId(classData.class_id); // Set the class_id in state
+      } else {
+        setClassName(''); // Reset if no class is found
+        setClassId('');
+      }
+
+      if (course.specializations && course.specializations.length > 0) {
+        const specialization = course.specializations[0];
+        setSpecializationName(specialization.specialization_name);
+        setSpecializationId(specialization.specialization_id);
+      } else {
+        setSpecializationId('');
+      }
+
+      setIsNavbarOpen(true);
+      setIsEditing(true);
+      setSelectedCategoryId(course.course_id);
+    }
   };
   return (
     <>
@@ -175,8 +229,8 @@ const classes = () => {
           <input
             type='text'
             placeholder='Class ID'
-            value={categoryId}
-            onChange={(e) => setCategoryId(e.target.value)}
+            value={classId}
+            onChange={(e) => setClassId(e.target.value)}
             className=' w-[100px] -mt-[10px] text-center rounded-3xl py-[14px] pl-1 text-[#214082] placeholder:text-[#214082] outline-[#214082]'
             style={{ '::placeholder': { color: '#214082' } }}
             readOnly
@@ -184,8 +238,8 @@ const classes = () => {
           <input
             type='text'
             placeholder='Class Name'
-            value={courseName}
-            onChange={(e) => setCourseName(e.target.value)}
+            value={className}
+            onChange={(e) => setClassName(e.target.value)}
             className=' w-[120px] rounded-3xl text-center -mt-[10px]  py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'
           />
      
@@ -193,7 +247,7 @@ const classes = () => {
         
      <select
       className="rounded-3xl text-center -mt-[10px] w-[150px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
-      value={selectedSpecialization}
+      value={specializationId}
       onChange={handleSpecializationChange}
     >
       <option value="">Select a specialization</option>
@@ -210,7 +264,7 @@ const classes = () => {
         
        <select
   className="rounded-3xl text-center -mt-[10px] w-[150px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
-  value={selectedCourseId}
+  value={courseId}
   onChange={handleCourseChange}
 
 >
@@ -288,7 +342,8 @@ onClick={handleSubmit}
                 className='h-[13px] w-[13px] mr-1 cursor-pointer'
                 src={Edit}
                 alt="Edit"
-             
+                onClick={() => handleEdit(course)}
+
               />
                            <button className='flex text-orange-500 w-[30px] h-[30px]' ><RiDeleteBinLine/></button>
 

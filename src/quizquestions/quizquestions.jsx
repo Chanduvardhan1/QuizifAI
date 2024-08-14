@@ -45,16 +45,16 @@ const QuizQuestions = () => {
   const [elapsedTime, setElapsedTime] = useState(quiz_duration * 60); 
   // const isSubmitting = useRef(false);
   const submittedRef = useRef(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false); // Track if the quiz is submitted
   const [shouldSubmitOnLeave, setShouldSubmitOnLeave] = useState(false);
   const [confirmNavigation, setConfirmNavigation] = useState(false);
-  
+  const [isBlocking, setIsBlocking] = useState(true);
+  const isSubmitting = useRef(false); // To track if the quiz is being submitted
+
 
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [validationMessage, setValidationMessage] = useState('');
   const initialRender = useRef(true);
-  const [isBlocking, setIsBlocking] = useState(true);
 
   const markPreviousQuestionsAsSkipped = (targetIndex) => {
     const newSkippedQuestions = [];
@@ -83,7 +83,7 @@ const QuizQuestions = () => {
     }
   };
 
-  const startIndex = Math.floor(currentQuestionIndex / 10) * 10; // Calculate startIndex based on currentQuestionIndex
+  const startIndex = Math.floor(currentQuestionIndex / 50) * 10; // Calculate startIndex based on currentQuestionIndex
 
   useEffect(() => {
     const fetchData = async () => {
@@ -177,10 +177,10 @@ const QuizQuestions = () => {
     }
   }, [showWarning]);
 
-  // useEffect(() => {
-  //   selectedOptionsRef.current = selectedOptions;
-  //   console.log('Updated selectedOptions:', selectedOptions);
-  // }, [selectedOptions]);
+  useEffect(() => {
+    selectedOptionsRef.current = selectedOptions;
+    console.log('Updated selectedOptions:', selectedOptions);
+  }, [selectedOptions]);
 
   const handleOptionSelect = (optionId) => {
     setSelectedOptions((prev) => {
@@ -366,10 +366,7 @@ const QuizQuestions = () => {
     });
   };
   const handleSubmit2 = (isAutoSubmit = false) => {
-    if (submittedRef.current) return; // Avoid multiple submissions
-
     clearInterval(timerRef.current);
-    submittedRef.current = true; // Mark as submitted
 
     const currentSelectedOptions = { ...selectedOptions };
 
@@ -426,12 +423,42 @@ const QuizQuestions = () => {
     })
     .then(data => {
       navigate('/quizresults', { state: { quizId } });
+      submittedRef.current = true;
+
     })
     .catch(error => {
       console.error('There was a problem with your fetch operation:', error);
     });
   };
-
+  // useEffect(() => {
+  //   const handleBeforeUnload = (event) => {
+  //     if (!submittedRef.current) {
+  //       handleSubmit2(true); // Auto-submit when page is refreshed
+  //       event.preventDefault(); // Show browser's confirmation dialog
+  //       event.returnValue = ''; // Required for showing confirmation dialog in some browsers
+  //     }
+  //   };
+  
+  //   window.addEventListener('beforeunload', handleBeforeUnload);
+  
+  //   return () => {
+  //     window.removeEventListener('beforeunload', handleBeforeUnload);
+  //   };
+  // }, []);
+  // useEffect(() => {
+  //   const handleNavigation = (location, action) => {
+  //     if (action === 'POP' || action === 'PUSH') {
+  //       handleSubmit2(true); // Auto-submit on navigation
+  //     }
+  //   };
+  
+  //   const unblock = navigate.block(handleNavigation);
+  
+  //   return () => {
+  //     unblock();
+  //   };
+  // }, []);
+  
   // useEffect(() => {
   //   const handleBeforeUnload = (event) => {
   //     if (!submittedRef.current) {
@@ -455,9 +482,28 @@ const QuizQuestions = () => {
   //     navigate(handleNavigation);
   //   };
   // }, [navigate]);
+  // useEffect(() => {
+  //   if (quizData && quizData.questions && quizData.questions.length > 0) {
+  //     console.log('QuizData available for submission:', quizData); // Log the data
+  //   }
+  // }, [quizData]);
+  
+  // useEffect(() => {
+  //   const handleBeforeUnload = () => {
+  //     if (!submittedRef.current) {
+  //     // Required for Chrome
+  //       handleSubmit2(true); // Auto-submit when page is refreshed
+  //     }
+  //   };
+  
+  //   window.addEventListener('beforeunload', handleBeforeUnload);
+  
+  //   return () => {
+  //     window.removeEventListener('beforeunload', handleBeforeUnload);
+  //   };
+  // }, []);
+  
 
-
- 
   const handleQuestionClick = (index) => {
     markPreviousQuestionsAsSkipped(index);
     setCurrentQuestionIndex(index);
@@ -509,7 +555,7 @@ const QuizQuestions = () => {
       return 0;
     }
   });
-  const endIndex = Math.min(startIndex + 10, filteredQuizData.length);
+  const endIndex = Math.min(startIndex + 50, filteredQuizData.length);
 
 
   const Back = () => {
@@ -672,7 +718,7 @@ const QuizQuestions = () => {
                 </button>
                 </div>
             )}
-             {currentQuestionIndex < filteredQuizData.length - 1 && (
+             {/* {currentQuestionIndex < filteredQuizData.length - 1 && ( */}
             <div className={styles.button2}>
               <button
                 className={styles.button}
@@ -683,14 +729,14 @@ const QuizQuestions = () => {
                 Next
               </button>
             </div>
-          )}
+          {/* )} */}
          
         
         </div>
         <div className={styles.button3}>
               <button
                 className={styles.button}
-                style={{marginTop: '-53px', backgroundColor: 'rgb(11 87 208)', height: '40px', borderRadius: '10px', border: 'none', color: '#FFFFFF',marginRight:'-165px',zIndex:"1" }}
+                style={{marginTop: '-53px', backgroundColor: '#15c51596', height: '40px', borderRadius: '10px', border: 'none', color: '#FFFFFF',marginRight:'-165px',zIndex:"1" }}
                 onClick={handleSubmit}
               >
                 Submit
@@ -712,7 +758,7 @@ const QuizQuestions = () => {
       </div>
       <div className={styles.questionNumbersContainer}>
         {/* Previous Button */}
-        {startIndex >= 10 && (
+        {startIndex >= 50 && (
           <button onClick={handlePrevClick}>&lt;</button>
         )}
 
@@ -736,7 +782,7 @@ const QuizQuestions = () => {
 
 
         {/* Next Button */}
-        {startIndex + 10 < filteredQuizData.length && (
+        {startIndex + 50 < filteredQuizData.length && (
           <button onClick={handleNextClick}>&gt;</button>
         )}
         

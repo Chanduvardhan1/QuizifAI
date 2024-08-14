@@ -36,6 +36,7 @@ const course = () => {
   const [selectedClass, setSelectedClass] = useState('');
   const [selectedSpecialization, setSelectedSpecialization] = useState('');
   const userId = localStorage.getItem("user_id");
+  const [courseId, setCourseId] = useState(0);
 
   const navigate = useNavigate();
   const handleBanckToDashbaord = () =>{
@@ -89,28 +90,59 @@ const course = () => {
   const handleCourseDurationUnitChange = (event) => {
     setCourseDurationUnit(event.target.value);
   };
-
-  const handleCreateCategory = () => {
-
-
+  const updateCourse = async () => {
+     // Replace with the actual token or retrieve it from local storage
+  
     const courseData = {
       course_name: courseName,
       course_short_name: courseShortName,
-      course_duration: '0',
-      course_duration_unit: '',
-      specialization_name: '',
-      specialization_short_name: '',
-      class_name: '',
-      created_by: userId,
+      course_duration: "2",
+      course_duration_unit: "years",
+      course_id: courseId,
+      updated_by: userId
     };
-
-    addCourse(courseData);
+  
+    try {
+      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+  
+      if (!authToken) {
+        console.error('No authentication token found');
+        return;
+      }
+      const response = await fetch('https://dev.quizifai.com:8010/update_courses/', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(courseData)
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const result = await response.json();
+      console.log('Success:', result);
+      fetchCourses();
+        setIsNavbarOpen(false);
+        setCourseName('');
+        setCourseShortName('');
+        setCourseDuration('');
+        setCourseDurationUnit('');
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
+  
+
+  
   const handleSubmit = () => {
     if (isEditing) {
-      addCourse();
+      updateCourse();
     } else {
-      handleCreateCategory();
+      addCourse();
     }
   };
   
@@ -150,6 +182,24 @@ const course = () => {
     setIsNavbarOpen(!isNavbarOpen);
   };
 
+  const handleEdit = (course) => {
+    if (selectedCategoryId === course.course_id) {
+      // Toggle the form visibility if the same category ID is clicked
+      setIsNavbarOpen(!isNavbarOpen);
+
+    } else {
+      // Set state with the course details
+      setCourseId(course.course_id);
+      setCourseName(course.course_name);
+      setCourseShortName(course.course_short_name);
+      setCourseDuration(course.course_duration);
+      setCourseDurationUnit(course.course_duration_unit);
+      setIsNavbarOpen(true);
+      setIsEditing(true);
+      setSelectedCategoryId(course.course_id);
+    }
+  };
+
   return (
     <>
     <div className='flex w-full font-Poppins'>
@@ -171,8 +221,8 @@ const course = () => {
           <input
             type='text'
             placeholder='Course ID'
-            value={categoryId}
-            onChange={(e) => setCategoryId(e.target.value)}
+            value={courseId}
+            onChange={(e) => setCourseId(e.target.value)}
             className=' w-[75px] -mt-[10px] text-center rounded-3xl py-[14px] pl-1 text-[#214082] placeholder:text-[#214082] outline-[#214082]'
             style={{ '::placeholder': { color: '#214082' } }}
             readOnly
@@ -265,7 +315,8 @@ onClick={handleSubmit}
                 className='h-[13px] w-[13px] mr-1 cursor-pointer'
                 src={Edit}
                 alt="Edit"
-             
+                onClick={() => handleEdit(course)}
+
               />
              <button className='flex text-orange-500 w-[30px] h-[30px]' ><RiDeleteBinLine/></button>
 

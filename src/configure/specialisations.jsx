@@ -29,14 +29,15 @@ const specialisations = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
   const [searchInput, setSearchInput] = useState('');
+  const [specializationId, setSpecializationId] = useState('');
 
   const [courses, setCourses] = useState([]);
-  const [selectedCourseId, setSelectedCourseId] = useState('');
   const [selectedSpecialization, setSelectedSpecialization] = useState('');
   const [specializationName, setSpecializationName] = useState('');
   const [specializationShortName, setSpecializationShortName] = useState('');
   const [courseId, setCourseId] = useState(0);
   const userId = localStorage.getItem("user_id");
+  const [updatedBy, setUpdatedBy] = useState('');
 
   const navigate = useNavigate();
   const handleBanckToDashbaord = () =>{
@@ -86,10 +87,47 @@ const specialisations = () => {
       console.error('Error:', error);
     }
   };
-
+  const updateSpecialization = async () => {
+  
+    const specializationData = {
+      specialization_name:specializationName,
+      specialization_short_name: specializationShortName,
+      course_id: courseId,
+      specialization_id: specializationId,
+      updated_by: userId
+    };
+  
+    try {
+      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+  
+      if (!authToken) {
+        console.error('No authentication token found');
+        return;
+      }
+      const response = await fetch('https://dev.quizifai.com:8010/update_specialization/', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(specializationData)
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to update specialization');
+      }
+  
+      const result = await response.json();
+      console.log('Specialization updated successfully:', result);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  
   const handleSubmit = () => {
     if (isEditing) {
-        handleCreateCategory();
+      updateSpecialization();
     } else {
         handleSubmit1();
     
@@ -131,7 +169,36 @@ const specialisations = () => {
   const toggleNavbar = () => {
     setIsNavbarOpen(!isNavbarOpen);
   };
-
+  const handleEdit = (course) => {
+    if (selectedCategoryId === course.course_id) {
+      // Toggle the form visibility if the same course ID is clicked
+      setIsNavbarOpen(!isNavbarOpen);
+    } else {
+      // Set state with the course details to edit
+      setCourseId(course.course_id);
+      setCourseName(course.course_name);
+      setCourseShortName(course.course_short_name);
+      
+      // If the course has specializations, pick the first one to edit (or customize as needed)
+      if (course.specializations && course.specializations.length > 0) {
+        const specialization = course.specializations[0]; // Assuming you want the first specialization
+        setSpecializationName(specialization.specialization_name);
+        setSpecializationShortName(specialization.specialization_short_name);
+        setSpecializationId(specialization.specialization_id);
+      } else {
+        setSpecializationName('');
+        setSpecializationShortName('');
+        setSpecializationId('');
+      }
+  
+      setUpdatedBy(''); // Set the updated_by field appropriately
+  
+      setIsNavbarOpen(true); // Open the form
+      setIsEditing(true); // Mark the form as being in edit mode
+      setSelectedCategoryId(course.course_id); // Update the selected course ID
+    }
+  };
+  
   return (
     <>
     <div className='flex w-full font-Poppins'>
@@ -153,11 +220,10 @@ const specialisations = () => {
           <input
             type='text'
             placeholder='Specialization ID'
-            value={categoryId}
-            onChange={(e) => setCategoryId(e.target.value)}
+            value={specializationId}
+            onChange={(e) => setSpecializationId(e.target.value)}
             className=' w-[100px] -mt-[10px] text-center rounded-3xl py-[14px] pl-1 text-[#214082] placeholder:text-[#214082] outline-[#214082]'
-            style={{ '::placeholder': { color: '#214082' } }}
-            readOnly
+            style={{ '::placeholder': { color: '#214082' } }} 
           />
           <input
             type='text'
@@ -251,7 +317,7 @@ onClick={handleSubmit}
                 className='h-[13px] w-[13px] mr-1 cursor-pointer'
                 src={Edit}
                 alt="Edit"
-             
+                onClick={() => handleEdit(course)}
               />
              <button className='flex text-orange-500 w-[30px] h-[30px]' ><RiDeleteBinLine/></button>
 

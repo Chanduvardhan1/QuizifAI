@@ -35,12 +35,22 @@ const subjects = () => {
   const [specializations, setSpecializations] = useState([]);
   const [selectedSpecializationId, setSelectedSpecializationId] = useState('');
   const [selectedSpecialization, setSelectedSpecialization] = useState(null);
+  const [subjectName, setSubjectName] = useState('');
+  const [classId, setClassId] = useState('');
+  const userId = localStorage.getItem("user_id");
 
   const navigate = useNavigate();
   const handleBanckToDashbaord = () =>{
     navigate('/dashboard');
   }
- const addCourse = async (courseData) => {
+
+  const handleAddSubject = async () => {
+    const courseData = {
+      subject_name: subjectName,
+      class_id: classId,
+      created_by: userId,
+    };
+
     try {
       const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
   
@@ -49,55 +59,44 @@ const subjects = () => {
         return;
       }
   
-      const response = await fetch('https://dev.quizifai.com:8010/add_courses/', {
+      const response = await fetch('https://dev.quizifai.com:8010/adding_subjects/', {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
           'Authorization': `Bearer ${authToken}`,
+          'accept': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(courseData),
+        body: JSON.stringify(courseData)
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const result = await response.json();
-      console.log('Success:', result);
-      setIsEditing(false);
+      const data = await response.json();
+      console.log('Subject added successfully:', data);
       fetchCourses();
+      setIsNavbarOpen(false);
+
+      // Handle success (e.g., show a success message, reset form, etc.)
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error adding subject:', error);
+      // Handle error (e.g., show an error message)
     }
   };
+
 //   const handleCourseChange = (courseId) => {
 //     setSelectedCourseId(courseId);
 //     const selectedCourse = courses.find(course => course.course_id === parseInt(courseId));
 //     setSpecializations(selectedCourse ? selectedCourse.specializations : []);
 //   };
 
-  const handleCreateCategory = () => {
 
-
-    const courseData = {
-      course_name: courseName,
-      course_short_name: courseShortName,
-      course_duration: '',
-      course_duration_unit: '',
-      specialization_name: '',
-      specialization_short_name: '',
-      class_name: '',
-      created_by: '',
-    };
-
-    addCourse(courseData);
-  };
   const handleSubmit = () => {
     if (isEditing) {
       handleUpdateCategory();
     } else {
-      handleCreateCategory();
+      handleAddSubject();
     }
   };
   
@@ -137,19 +136,9 @@ const subjects = () => {
     setIsNavbarOpen(!isNavbarOpen);
   };
   const handleCourseChange = (e) => {
-    const courseId = e.target.value;
-    const selectedCourse = courses.find(course => course.course_id === parseInt(courseId));
-    console.log('Selected Course:', selectedCourse); // Debugging log
-    if (selectedCourse && selectedCourse.specializations.length > 0) {
-      selectedCourse.specializations.forEach(spec => {
-        console.log('Specialization:', spec.specialization_name); // Log each specialization name
-      });
-    } else {
-      console.log('No specializations available for this course');
-    }
-    setSelectedCourse(selectedCourse);
-    setSpecializations(selectedCourse ? selectedCourse.specializations : []);
-    setSelectedSpecialization(null); // Reset specialization when course changes
+    setClassId(e.target.value);
+
+    // Reset specialization when course changes
   };
   const handleSpecializationChange = (e) => {
     setSelectedSpecialization(e.target.value);
@@ -184,8 +173,8 @@ const subjects = () => {
           <input
             type='text'
             placeholder='Subject Name'
-            value={courseName}
-            onChange={(e) => setCourseName(e.target.value)}
+            value={subjectName}
+            onChange={(e) => setSubjectName(e.target.value)}
             className=' w-[120px] rounded-3xl text-center -mt-[10px]  py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'
           />
      
@@ -210,7 +199,7 @@ const subjects = () => {
         
        <select
   className="rounded-3xl text-center -mt-[10px] w-[150px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
-  value={selectedCourseId}
+  value={classId}
   onChange={handleCourseChange}
 
 >

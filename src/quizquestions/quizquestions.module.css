@@ -188,7 +188,7 @@ padding-top: 10px;
 
 .verticalLine {
     width: 1px;
-    height: 375px;
+    height: 500px;
     margin-top: 160px;
     background-color: black; /* Adjust as needed */
     /* margin-right: 20px;  */
@@ -362,7 +362,7 @@ margin-left: -130px;
     display: flex;
     flex-wrap: nowrap;
     margin-bottom: 20px;
-   
+   flex-wrap: wrap;
     /* max-width: 600px; */
   }
   
@@ -393,6 +393,7 @@ margin-left: -130px;
   display: flex;
   flex-wrap: nowrap;
   margin-bottom: 20px;
+  flex-wrap: wrap;
   /* max-width: 600px; */
 }
 
@@ -445,10 +446,10 @@ margin-left: -130px;
 }
 .innerbox{
   display: flex;
-    border: 1px solid;
+    /* border: 1px solid; */
     flex-wrap: wrap;
-    border-color: #214082;;
-    border-radius: 10px;
+    /* border-color: #214082;; */
+    /* border-radius: 10px; */
     padding: 5px;
 }
 .skipped1{

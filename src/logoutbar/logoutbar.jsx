@@ -3,7 +3,7 @@
 import React , { useContext }from "react";
 //import Image from "next/image";
 import { useNavigate } from "react-router-dom";
-import { useState,useEffect } from "react";
+import { useState,useEffect,useRef } from "react";
 import styles from "./dashboard.module.css";
 import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 import user2Icon from "../assets/Images/images/dashboard/user2.png";
@@ -13,6 +13,7 @@ import ranks from "../assets/Images/images/dashboard/ranks.png";
 import infinity from "../assets/Images/images/dashboard/infinity.png"
 import questionmark from "../assets/Images/images/dashboard/questionmark.png";
 import profileimg from "../assets/Images/images/profile/profileImage.png";
+import Camera from "../assets/Images/images/profile/Camera.png";
 import rocket from "../assets/Images/images/dashboard/rocket.png";
 import { AuthContext } from "../Authcontext/AuthContext.jsx"
 
@@ -48,7 +49,6 @@ const LogoutBar = (data) => {
   navigate("/free-profile");
  } 
   
- 
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
   const [userName, setUserName] = useState('');
   // const [occupation, setOccupation] = useState(localStorage.getItem("occupation_name"));
@@ -68,6 +68,8 @@ const LogoutBar = (data) => {
   const [subscriptionEndDate, setSubscriptionEndDate] = useState('');
   const [remainingDays, setRemainingDays] = useState('');
   const [otherOccupation, setOtherOccupation] = useState("");
+  const inputReff = useRef(null);
+  const [image, setImage] = useState("");
   // const { user, logout } = useContext(AuthContext);
   const { isAuthenticated, authToken, logout } = useContext(AuthContext);
 
@@ -207,7 +209,60 @@ const LogoutBar = (data) => {
         // Handle errors appropriately
       });
   };
+
+   useEffect(() =>{
+  const savedImage = localStorage.getItem('savedImage');
+  if(savedImage){
+    setImage(savedImage);
+  }
+},[]);
+
+function handleImageClick() {
+  if (inputReff.current && typeof inputReff.current.click === 'function') {
+    inputReff.current.click(); // Open file dialog
+  } else {
+    console.error('click method is not available on inputReff.current');
+  }
+}
+
+function handleImageChange(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const imageDataUrl = reader.result;
+      localStorage.setItem('savedImage', imageDataUrl);
+      setImage(imageDataUrl);
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
   
+function handleReplaceImage(event) {
+  event.stopPropagation(); // Prevent the click from triggering the parent div's click event
+  handleImageClick(); // Open file dialog
+}
+
+function handleDeleteImage(event) {
+  event.stopPropagation(); // Prevent the click from triggering the parent div's click event
+  localStorage.removeItem('savedImage'); // Remove from local storage
+  setImage(""); // Reset to default image
+}
+
+function handleViewImage(event) {
+  event.stopPropagation(); // Prevent the click from triggering the parent div's click event
+  if (image) {
+    // Create a temporary link element
+    const link = document.createElement('a');
+    link.href = image;
+    link.target = '_blank'; // Open in a new tab
+    link.click(); // Simulate click to open the image
+  } else {
+    console.error('No image available to view');
+  }
+}
+
   return (
     <div className={styles.logout}>
      <div style={{ marginTop: "-20px", display: "flex", alignItems: "center" , marginLeft:"20px",position:"relative",top:"25px"}}> 
@@ -226,30 +281,27 @@ const LogoutBar = (data) => {
 </div>
 
   </div>
+        {/* profile image ------------------------ */}
+        <div className="rounded-full w-[100px] ml-[51px] h-[100px]" style={{ position: "relative" }}>
+      {image ? (
+        <img className="w-[100px] h-[100px] rounded-full border-2 border-white" src={image} alt="Uploaded" />
+      ) : (
+        <img className="w-[100px] h-[100px] rounded-full border-2 border-white" src={profileimg} alt="Default" />
+      )}
+      <input type="file" ref={inputReff} onChange={handleImageChange} style={{ display: "none" }} />
 
-       <div style={{ position: "relative"}}>
-          
-        <img
-          src={profileimg}
-          alt="Background Image"
-          style={{ display: "block", marginLeft: "45px", width: "113px",
-            height:"110px"}}
-        />
-
-{/* <img
-          src={profileimg}
-          alt="Foreground Image"
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            paddingRight:"9px",
-            width: "113px",
-    height:"110px"
-          }}
-        /> */}
+      <div className="bg-[#C3EAF3] rounded-full w-fit h-[24px] px-[2px] py-[1px] relative left-20 -top-7">
+        <div className="rounded-full w-fit h-[28px] px-[2px] py-[2px] flex items-center justify-center group">
+          <img className="h-4 w-4 relative -top-[3px] cursor-pointer" src={Camera} alt="Camera" />
+          <div className="absolute top-full text-[7px] left-0 right-[30px] mt-1 bg-white rounded-sm text-black w-fit h-[37px] cursor-pointer px-1 py-[2px] text-nowrap items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <p onClick={handleReplaceImage}>Replace Image</p><br/>
+            <p className="relative -top-[10px]" onClick={handleViewImage}>View Image</p><br/>
+            <p className="relative -top-[20px]" onClick={handleDeleteImage}>Delete Image</p>
+          </div>
         </div>
+      </div>
+    </div>
+
         <div style={{ textAlign: "center" }}>
           <p style={{ fontSize: "15px", marginBottom: "5px", fontWeight: 600 ,color:"#002366"}}>
             {userName}

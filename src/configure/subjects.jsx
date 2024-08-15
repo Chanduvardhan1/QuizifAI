@@ -25,10 +25,11 @@ const subjects = () => {
 
   const [courseName, setCourseName] = useState('');
   const [courseShortName, setCourseShortName] = useState('');
-  const [parentCategories, setParentCategories] = useState([]);
+  const [CourseId, setCourseId] = useState('');
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
   const [searchInput, setSearchInput] = useState('');
+  const [subjectId, setSubjectId] = useState('');
 
   const [courses, setCourses] = useState([]);
   const [selectedCourseId, setSelectedCourseId] = useState('');
@@ -38,6 +39,10 @@ const subjects = () => {
   const [subjectName, setSubjectName] = useState('');
   const [classId, setClassId] = useState('');
   const userId = localStorage.getItem("user_id");
+  const [specializationName, setSpecializationName] = useState('');
+  const [specializationShortName, setSpecializationShortName] = useState('');
+  const [specializationId, setSpecializationId] = useState('');
+
 
   const navigate = useNavigate();
   const handleBanckToDashbaord = () =>{
@@ -84,7 +89,44 @@ const subjects = () => {
       // Handle error (e.g., show an error message)
     }
   };
+  const handleUpdateSubject = async () => {
+    try {
+      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
 
+      if (!authToken) {
+        console.error('No authentication token found');
+        return;
+      }
+
+      const requestBody = {
+        subject_name: subjectName,
+        class_id: classId,
+        subject_id: subjectId,
+        updated_by: userId
+      };
+
+      const response = await fetch('https://dev.quizifai.com:8010/update_subjects/', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update subject');
+      }
+
+      const data = await response.json();
+      setResponseMessage(data.response_message || 'Subject updated successfully');
+
+    } catch (error) {
+      console.error('Error updating subject:', error);
+      setResponseMessage('An error occurred while updating the subject.');
+    }
+  };
 //   const handleCourseChange = (courseId) => {
 //     setSelectedCourseId(courseId);
 //     const selectedCourse = courses.find(course => course.course_id === parseInt(courseId));
@@ -94,7 +136,7 @@ const subjects = () => {
 
   const handleSubmit = () => {
     if (isEditing) {
-      handleUpdateCategory();
+      handleUpdateSubject();
     } else {
       handleAddSubject();
     }
@@ -143,6 +185,54 @@ const subjects = () => {
   const handleSpecializationChange = (e) => {
     setSelectedSpecialization(e.target.value);
   };
+  const handleEdit = (course) => {
+    if (selectedCategoryId === course.course_id) {
+      setIsNavbarOpen(!isNavbarOpen);
+    } else {
+      setCourseId(course.course_id);
+      setCourseName(course.course_name);
+      setCourseShortName(course.course_short_name);
+  
+      // If the course has classes, pick the first one to edit (or customize as needed)
+      if (course.classes && course.classes.length > 0) {
+        const classData = course.classes[0]; // Assuming you want the first class
+        setClassId(classData.class_id); // Set the class_id in state
+  
+        // Set the subject_name, subject_id, and updated_by values
+        if (course.subjects && course.subjects.length > 0) {
+          const subjectData = course.subjects[0]; // Assuming you want the first subject
+          setSubjectName(subjectData.subject_name); // Set the subject_name in state
+          setSubjectId(subjectData.subject_id); // Set the subject_id in state
+        } else {
+          setSubjectName(''); // Reset if no subject is found
+          setSubjectId('');
+        }
+        if (course.specializations && course.specializations.length > 0) {
+          const specialization = course.specializations[0]; // Assuming you want the first specialization
+          setSelectedSpecialization(specialization.specialization_name);
+          setSpecializationShortName(specialization.specialization_short_name);
+          setSpecializationId(specialization.specialization_id);
+        } else {
+          setSelectedSpecialization('');
+          setSpecializationShortName('');
+          setSpecializationId('');
+        }
+        // Set updated_by as needed (you can customize this)
+  
+      } else {
+        setClassId('');
+        setSubjectName('');
+        setSubjectId('');
+        
+      }
+  
+      setIsNavbarOpen(true);
+      setIsEditing(true);
+      setSelectedCategoryId(course.course_id);
+    }
+  };
+  
+  
   return (
     <>
     <div className='flex w-full font-Poppins'>
@@ -164,8 +254,8 @@ const subjects = () => {
           <input
             type='text'
             placeholder='Subject ID'
-            value={categoryId}
-            onChange={(e) => setCategoryId(e.target.value)}
+            value={subjectId}
+            onChange={(e) => setSubjectId(e.target.value)}
             className=' w-[100px] -mt-[10px] text-center rounded-3xl py-[14px] pl-1 text-[#214082] placeholder:text-[#214082] outline-[#214082]'
             style={{ '::placeholder': { color: '#214082' } }}
             readOnly
@@ -244,20 +334,17 @@ onClick={handleSubmit}
           </tr>
         </thead>
         <tbody  className='bg-white border-gray-500 '>
-          {courses.map((course) => (
+        {courses.map((course) => (
             <tr key={course.course_id}>
-              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>   {course.classes.map((cls) => (
-        <div key={cls.class_id}>
-          {cls.class_id}
-        </div>
-      ))}</td>
+              <td className="px-4 py-2 border">
+                {course.subjects.length > 0 && course.subjects[0].subject_id
+                  ? course.subjects[0].subject_id
+                  : 'N/A'}</td>
               <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
              
-              {course.classes.map((cls) => (
-        <div key={cls.class_id}>
-          {cls.class_name}
-        </div>
-      ))}
+              {course.subjects.length > 0 && course.subjects[0].subject_name
+                  ? course.subjects[0].subject_name
+                  : 'N/A'}
 
               </td>
               <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>  {course.specializations.map((specialization) => (
@@ -277,7 +364,8 @@ onClick={handleSubmit}
                 className='h-[13px] w-[13px] mr-1 cursor-pointer'
                 src={Edit}
                 alt="Edit"
-             
+                onClick={() => handleEdit(course)}
+
               />
              <button className='flex text-orange-500 w-[30px] h-[30px]' ><RiDeleteBinLine/></button>
 

@@ -72,7 +72,15 @@ const Quiz = () => {
 
   const navigate = useNavigate();
   const userRole = localStorage.getItem('user_role');
-
+  
+  const sortAlphabetically = (arr) => {
+    return arr.sort((a, b) => {
+      const valueA = a ? a.toLowerCase() : '';
+      const valueB = b ? b.toLowerCase() : '';
+      return valueA.localeCompare(valueB);
+    });
+  };
+  
   useEffect(() => {
     const fetchDropdownValues = async () => {
       try {

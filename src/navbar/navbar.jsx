@@ -187,7 +187,7 @@ const Navigation = () => {
             className={`${styles.pageIcon} ${activePage === '/contact' ? styles.activeIcon : ''}`} />
           <span className={styles.pageLink}>Contact US</span>
         </NavLink>
-        {/* <NavLink
+        <NavLink
           to="/myhistory"
           className={`${styles.pageItem} ${activePage === '/myhistory' ? styles.bold : ''}`}
           onClick={() => handleNavigation('/myhistory')}
@@ -198,7 +198,7 @@ const Navigation = () => {
         className={`${styles.pageIcon} ${activePage === '/myhistory' ? styles.activeIcon : ''}`}
       />
           <span className={styles.pageLink}>My history</span>
-        </NavLink> */}
+        </NavLink>
         {/* <img className="h-[122px] w-[60px] ml-[35px] mt-[50px]" src={rocket} alt="rocket"/> */}
       </div>
       </div>

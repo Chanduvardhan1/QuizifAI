@@ -1,8 +1,12 @@
 import React from "react";
 import Navigation from "../navbar/navbar";
 import LogoutBar from "../logoutbar/logoutbar";
-import { useEffect,useState } from "react";
+import { useEffect,useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from '../Authcontext/AuthContext';
+import axios from "axios";
 import searchIcon from "../assets/Images/images/dashboard/Search.png";
+import GreaterThan from "../assets/Images/images/dashboard/greaterthan.png";
 import profileimg from "../assets/Images/images/profile/profileImage.png";
 const myhistory = () => {
   const [userName, setUserName] = useState("");
@@ -10,62 +14,83 @@ const myhistory = () => {
   const [globalScore, setGlobalScore] = useState("");
   const [noOfQuizzes, setNoOfQuizzes] = useState("");
   const [noOfMinutes, setNoOfMinutes] = useState("");
+  const [noOfAttempts, setNoOfAttempts] = useState("");
+  const [simpleCount, setSimpleCount] = useState("");
+  const [moderateCount, setModerateCount] = useState("");
+  const [complexCount, setComplexCount] = useState("");
+  const [passCount, setPassCount] = useState("");
+  const [FailCount, setFailCount] = useState("");
+  const [quizDetails, setQuizDetails] = useState([]);
   const [NoOfScore, setNoOfScore] = useState("");
+  const [historyData, setHistoryData] = useState(null);
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
+  const navigate = useNavigate();
+  const { isAuthenticated, authToken } = useContext(AuthContext);
 
-  useEffect(() => {
-    const fetchQuizData = async () => {
-      console.log("User ID:", userId);     
-      try {
-        const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 25;
 
-        if (!authToken) {
-          throw new Error('No authentication token found');
+  const indexOfLastRow = currentPage * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentRows = quizDetails.slice(indexOfFirstRow, indexOfLastRow);
+  
+  const handleNext = () => {
+    if (indexOfLastRow < quizDetails.length) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  useEffect(() =>{
+    if(!isAuthenticated) {
+      navigate('/login');
+    }
+    const fetchQuizData = async () =>{
+      try{
+        const response = await fetch(`https://dev.quizifai.com:8010/history_Page/`,{
+          method: "POST",
+          headers: {
+            "content-Type" : "application/json",
+            "Authorization" : `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({
+            user_id:userId,
+          }),
+        });
+        if(!response.ok){
+          throw new Error("Failed to fetch history quiz data");
         }
-        const response = await fetch(
-          `https://dev.quizifai.com:8010/dashboard`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              'Authorization': `Bearer ${authToken}`,
-            },
-            body: JSON.stringify({
-              user_id: userId,
-            }),
-          }
-        );
+        const result =await response.json();
+        console.log("History data :",result);
+        
+        const data=result.data;
+        setUserName(data.user_name || "");
+      setNoOfQuizzes(data.total_no_of_quizzes);
+      setNoOfAttempts(data.total_no_of_attempts);
+      setGlobalRank(data.global_score_rank);
+      setGlobalScore(data.global_score);
+      setNoOfMinutes(data.total_duration);
+      setSimpleCount(data.simple_count);
+      setModerateCount(data.moderate_count);
+      setComplexCount(data.complex_count);
+      setPassCount(data.pass_count);
+      setFailCount(data.fail_count);
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const data = await response.json();
-        console.log("Data:", data);
+      // Set quiz details if needed
+      setQuizDetails(data.quiz_details);
 
-         // Debugging audit_details
-      console.log("Audit Details:", data.data[0].audit_details);
-
-        const userDetails = data.data[0].audit_details;
-        if (userDetails && userDetails.full_name) {
-        setUserName(userDetails.full_name);
-        setGlobalRank(userDetails.global_score_rank);
-        setGlobalScore(userDetails.global_score);
-        console.log("User Name set to:", userDetails.full_name);
-      } else {
-        console.error("User details not found or full_name is missing");
-      }
-
-      const userMetrics = data.data[0].user_metrics;
-      setNoOfQuizzes(userMetrics.countofquizes);
-      setNoOfMinutes(userMetrics.total_minutes);
-      } catch (error) {
-        console.error("Error fetching quiz data:", error);
+      }catch(error){
+        console.error("Error fetching history quiz data:",error);
+        
       }
     };
-
     fetchQuizData();
-  }, [userId]);
-
+  },[authToken,isAuthenticated, navigate,userId]);
   return (
     <>
     <div className="flex w-full">
@@ -90,7 +115,7 @@ const myhistory = () => {
 
 <div>
 <span>Total no.of  Attempts : </span>
-<span className=" font-normal">10</span>
+<span className=" font-normal">{noOfAttempts}</span>
 </div>
 
 <div className="-mt-4">
@@ -105,7 +130,7 @@ const myhistory = () => {
 
 <div className="-mt-4">
 <span>Total no.of score </span>
-<span className="pl-[30px]">: 10</span>
+<span className="pl-[30px]">: {globalScore}</span>
 </div>
 
       </div>
@@ -125,15 +150,15 @@ const myhistory = () => {
 <div className="flex flex-col gap-5 -mt-[47px] mr-6">
 <div className="flex">
 <span>Complexity </span>
-<span className=" font-normal"><p className="text-normal"><span className="pl-1 font-bold">:</span> Simple <span className="pl-[20px]">-1</span></p>
-<p className="pl-3">Moderate -2</p>
-<p className="pl-3">Complex <span className="pl-[6px]">-2</span></p>
+<span className=" font-normal"><p className="text-normal"><span className="pl-1 font-bold">:</span> Simple <span className="pl-[20px]">-{simpleCount}</span></p>
+<p className="pl-3">Moderate -{moderateCount}</p>
+<p className="pl-3">Complex <span className="pl-[6px]">-{complexCount}</span></p>
 </span>
 </div>
 <div className="flex">
 <span className="pl-5">Pass/Fail : </span>
-<span className=" font-normal pl-1"><p> Pass-1</p>
-<p className="">Fail-2</p>
+<span className=" font-normal pl-1"><p> Pass-{passCount}</p>
+<p className="">Fail-{FailCount}</p>
 
 </span>
 </div>
@@ -163,32 +188,56 @@ const myhistory = () => {
 </div>
       </div>
       <div className="overflow-x-auto">
-    <table className="min-w-full bg-white border border-gray-200 rounded-lg">
-        <thead className="bg-gray-200">
-            <tr>
-                <th className="py-2 px-4 border-b">So.no</th>
-                <th className="py-2 px-4 border-b">Month</th>
-                <th className="py-2 px-4 border-b">Time</th>
-                <th className="py-2 px-4 border-b">Quiz Title</th>
-                <th className="py-2 px-4 border-b">Rank</th>
-                <th className="py-2 px-4 border-b">Pass %</th>
-                <th className="py-2 px-4 border-b">Duration</th>
-                <th className="py-2 px-4 border-b">Pass/Fail</th>
-            </tr>
+      <table className="min-w-full bg-gray-100 border border-gray-200 rounded-lg border-spacing-y-2">
+        <thead className="bg-[#CBF2FB]">
+          <tr className="text-[14px]">
+            <th className="py-2 px-4 border-b">Seq</th>
+            <th className="py-2 px-4 border-b">Date</th>
+            <th className="py-2 px-4 border-b">Time</th>
+            <th className="py-2 px-4 border-b">Quiz Title</th>
+            <th className="py-2 px-4 border-b">Duration</th>
+            <th className="py-2 px-4 border-b">Rank</th>
+            <th className="py-2 px-4 border-b text-nowrap">Pass %</th>
+            <th className="py-2 px-4 border-b">Grade</th>
+            <th className="py-2 px-4 border-b">Pass/Fail</th>
+          </tr>
         </thead>
-        <tbody>
-            <tr className="bg-gray-50 hover:bg-gray-100">
-                <td className="py-2 px-4 border-b text-center">1</td>
-                <td className="py-2 px-4 border-b text-center">Jan</td>
-                <td className="py-2 px-4 border-b text-center">1:00 pm</td>
-                <td className="py-2 px-4 border-b">Manthamatics</td>
-                <td className="py-2 px-4 border-b text-center">1</td>
-                <td className="py-2 px-4 border-b text-center">70</td>
-                <td className="py-2 px-4 border-b text-center">2 min</td>
-                <td className="py-2 px-4 border-b text-center">pass</td>
+        <tbody className="space-y-4">
+          {currentRows.map((quiz, index) => (
+            <tr key={index} className="bg-white hover:bg-green-200 text-[12px]">
+              <td className="py-2 px-4 border-b text-center">{indexOfFirstRow + index + 1}</td>
+              <td className="py-2 px-2 border-b text-cente text-nowrap">{quiz.month}</td>
+              <td className="py-2 px-4 border-b text-center text-nowrap">{quiz.time}</td>
+              <td className="py-2 px-4 border-b text-center">{quiz.quiz_name}</td>
+              <td className="py-2 px-4 border-b text-center">{quiz.attempt_duration_mins} min</td>
+              <td className="py-2 px-4 border-b text-center">{quiz.score_rank}</td>
+              <td className="py-2 px-4 border-b text-center">{quiz.attained_percentage}%</td>
+              <td className="py-2 px-4 border-b text-center">{quiz.quiz_grade}</td>
+              <td className="py-2 px-4 border-b text-center">{quiz.pass_flag}</td>
             </tr>
+          ))}
         </tbody>
-    </table>
+      </table>
+
+      <div className="flex justify-between mt-4">
+      <button
+          className="flex gap-1 items-center"
+          onClick={handlePrevious}
+          disabled={currentPage === 1}
+        >
+          <img className="h-3 w-3 rotate-180" src={GreaterThan} alt="Previous icon"/>
+          <h1 className="-mt-[5px]">Previous</h1>
+        </button>
+
+      <button
+          className="flex gap-1 items-center"
+          onClick={handleNext}
+          disabled={indexOfLastRow >= quizDetails.length}
+        >
+          <h1 className="-mt-[5px]">Next</h1>
+          <img className="h-3 w-3" src={GreaterThan} alt="Next icon"/>
+        </button>
+      </div>
 </div>
     </div>
     <LogoutBar/>

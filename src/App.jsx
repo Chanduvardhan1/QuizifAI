@@ -271,6 +271,7 @@ import Myhistory from './myhistory/myhistory.jsx';
 import Course from './configure/course.jsx';
 import Contactus from './ContactUs1/contactus.jsx';
 import HeaderSection from './HeaderSection/HeaderSection.jsx';
+import UserAndGroups from './configure/userand-groups.jsx';
     function App() {
     
   return (
@@ -359,6 +360,7 @@ import HeaderSection from './HeaderSection/HeaderSection.jsx';
     <Route path="editpdf" element={<PrivateRoute><Editpdf /></PrivateRoute>} />
     <Route path="edittextbook" element={<PrivateRoute><Edittextbook /></PrivateRoute>} />
     <Route path='headersection' element={<HeaderSection/>}/>
+    <Route path='userandgroups' element={<UserAndGroups/>}/>
   </Route>
 </Routes>
 

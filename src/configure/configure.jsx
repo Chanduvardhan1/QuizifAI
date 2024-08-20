@@ -84,9 +84,9 @@ const configure = () => {
 
   const items = [
       { id: 1, title: 'Configuration', content: 'Categories, Courses, Specialisations, Classes, Subjects' },
-      { id: 2, title: 'Organization', content: 'Profile, Manage Subscription, Performance Metrics, Marketing and Sales, Financial Information, Mission and Vision, Goals and Objectives' },
-      { id: 3, title: 'Notification', content: 'Contact Information, Date and Time, Main Content, Additional Information' },
-      { id: 4, title: 'User & Roles', content: 'User Information, Roles and Permissions, Communication, Responsibilities and Expectations' },
+      { id: 2, title: 'User & Roles', content: 'User Groups, User Information, Roles and Permissions, Communication, Responsibilities and Expectations' },
+      { id: 3, title: 'Organization', content: 'Profile, Manage Subscription, Performance Metrics, Marketing and Sales, Financial Information, Mission and Vision, Goals and Objectives' },
+      { id: 4, title: 'Notification', content: 'Contact Information, Date and Time, Main Content, Additional Information' },
       { id: 5, title: 'Developer & Data', content: 'Developer Information, Data Information, Access and Permissions' },
       { id: 6, title: 'Preferences', content: 'User Information, Preference Categories, Default Settings, Subscription Preferences' },
   ];

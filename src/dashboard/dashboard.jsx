@@ -102,6 +102,7 @@ const Dashboard = () => {
       window.removeEventListener("beforeunload", handleWindowClose);
     };
   }, []);
+  
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/login'); // Redirect to login if not authenticated

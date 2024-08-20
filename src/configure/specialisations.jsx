@@ -190,9 +190,7 @@ const specialisations = () => {
         setSpecializationShortName('');
         setSpecializationId('');
       }
-  
-      setUpdatedBy(''); // Set the updated_by field appropriately
-  
+      setUpdatedBy(''); // Set the updated_by field appropriately 
       setIsNavbarOpen(true); // Open the form
       setIsEditing(true); // Mark the form as being in edit mode
       setSelectedCategoryId(course.course_id); // Update the selected course ID
@@ -209,7 +207,7 @@ const specialisations = () => {
           <div className="flex"onClick={toggleNavbar} >
             <img className="w-[20px] h-[20px] ml-2 mt-1" src={Plus} alt="Plus Icon" />
             <a className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-1.5">
-            Specialization
+             Specialization
             </a>
           </div>
         </div>
@@ -237,8 +235,7 @@ const specialisations = () => {
         placeholder='Specialization Short Name'
         value={specializationShortName}
         onChange={(e) => setSpecializationShortName(e.target.value)}
-        className='w-[150px] rounded-3xl text-center -mt-[10px] py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'
-        
+        className='w-[150px] rounded-3xl text-center -mt-[10px] py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'        
       />
        <select
   className="rounded-3xl text-center -mt-[10px] w-[150px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
@@ -253,7 +250,7 @@ const specialisations = () => {
   ))}
 </select>
          
-         <button
+ <button
 onClick={handleSubmit}
   className='bg-[#214082] w-[80px] -mt-[10px] ml-[20px] py-[14px] rounded-3xl text-white flex items-center justify-center'
 >

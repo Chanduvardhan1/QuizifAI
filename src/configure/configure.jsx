@@ -176,7 +176,7 @@ const configure = () => {
             key={item.id}
             className='h-auto pb-[20px] w-[calc((100%-80px)/4)] bg-white rounded-md shadow-xl transition-transform duration-300 transform scale-95 hover:scale-100 flex-none'
         >
-            <h1 className='text-[12px] font-semibold text-[#EF5130] cursor-pointer text-center pt-2'>
+            <h1 className='text-[12px] font-semibold text-[#EF5130] text-center pt-2'>
                 {highlightText(item.title, searchQuery)}
             </h1>
             {item.content.split(', ').map((contentItem, index) => (
@@ -185,8 +185,7 @@ const configure = () => {
                  className={`mt-3 text-[10px] ml-[20px] font-semibold cursor-pointer ${item.title === 'Configuration' && 'text-[#3340AF]'} ${item.title === 'Configuration' ? 'hover:underline hover:underline-offset-2' : 'text-gray-500'}`} 
                  onClick={
                   contentItem === 'Categories' ? handleCategoriesClick : 
-                  contentItem === 'Courses' ? handleCoursesClick : 
-                  
+                  contentItem === 'Courses' ? handleCoursesClick :                 
                   contentItem === 'Specialisations' ? handleSpecialisationsClick :
                   contentItem === 'Classes' ? handleClassesClick :
                   contentItem === 'Subjects' ? handleSubjectsClick :

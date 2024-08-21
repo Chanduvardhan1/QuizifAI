@@ -16,8 +16,7 @@ import profileimg from "../assets/Images/images/profile/profileImage.png";
 import Camera from "../assets/Images/images/profile/Camera.png";
 import rocket from "../assets/Images/images/dashboard/rocket.png";
 import { AuthContext } from "../Authcontext/AuthContext.jsx"
-import ReactCrop, { makeAspectCrop } from "react-image-crop";
-import 'react-image-crop/dist/ReactCrop.css';
+
 
 const currentValue1 = 50; 
   const maxValue1 = 100; 
@@ -35,8 +34,7 @@ const BasicProgressBar = ({ currentValue, maxValue }) => (
     </progress>
   );
 
-const ASPECT_RATIO = 1;
-const MIN_DIMENSION = 150;  
+  
 
 const LogoutBar = (data) => {
    const hasData = data && data.id;
@@ -72,8 +70,6 @@ const LogoutBar = (data) => {
   const [otherOccupation, setOtherOccupation] = useState("");
   const inputReff = useRef(null);
   const [image, setImage] = useState("");
-  const [crop, setCrop] = useState({ aspect: 1 });
-  const [completedCrop, setCompletedCrop] = useState(null);
   // const { user, logout } = useContext(AuthContext);
   const { isAuthenticated, authToken, logout } = useContext(AuthContext);
 
@@ -154,7 +150,6 @@ const LogoutBar = (data) => {
 
     fetchQuizData();
   }, [userId,isAuthenticated,authToken]); 
-  
   useEffect(() => {
     const handleWindowClose = () => {
       fetch("https://quizifai.com:8010/usr_logout/", {
@@ -236,16 +231,14 @@ function handleImageChange(event) {
     const reader = new FileReader();
     reader.onloadend = () => {
       const imageDataUrl = reader.result;
-      // localStorage.setItem('savedImage', imageDataUrl);
+      localStorage.setItem('savedImage', imageDataUrl);
       setImage(imageDataUrl);
     };
     reader.readAsDataURL(file);
   }
 }
 
- const handleCropComplete = (crop) => {
-  setCompletedCrop(crop);
- } 
+  
 function handleReplaceImage(event) {
   event.stopPropagation(); // Prevent the click from triggering the parent div's click event
   handleImageClick(); // Open file dialog
@@ -269,19 +262,7 @@ function handleViewImage(event) {
     console.error('No image available to view');
   }
 }
- const onImageLoad = (e) =>{
-  const {width,height} = e.currentTarget;
-  const crop = makeAspectCrop(
-    {
-      unit : '%',
-      width : 25,
-    },
-    ASPECT_RATIO,
-      width,
-      height
-  );
-  setCrop(crop);
- }
+
   return (
     <div className={styles.logout}>
      <div style={{ marginTop: "-20px", display: "flex", alignItems: "center" , marginLeft:"20px",position:"relative",top:"25px"}}> 
@@ -301,19 +282,11 @@ function handleViewImage(event) {
 
   </div>
         {/* profile image ------------------------ */}
-    <div className="w-[100px] ml-[51px] h-[100px]" style={{ position: "relative" }}>
-      {image && (
-        <ReactCrop
-        crop={crop}
-        circularCrop
-        keepSelection
-        aspect={ASPECT_RATIO}
-        minWidth={MIN_DIMENSION}
-        onChange={newCrop => setCrop(newCrop)}
-        onComplete={handleCropComplete}
-      >
-      <img src={image} alt="image" onLoad={onImageLoad}/>
-      </ReactCrop>
+        <div className="rounded-full w-[100px] ml-[51px] h-[100px]" style={{ position: "relative" }}>
+      {image ? (
+        <img className="w-[100px] h-[100px] rounded-full border-2 border-white" src={image} alt="Uploaded" />
+      ) : (
+        <img className="w-[100px] h-[100px] rounded-full border-2 border-white" src={profileimg} alt="Default" />
       )}
       <input type="file" ref={inputReff} onChange={handleImageChange} style={{ display: "none" }} />
 
@@ -321,9 +294,9 @@ function handleViewImage(event) {
         <div className="rounded-full w-fit h-[28px] px-[2px] py-[2px] flex items-center justify-center group">
           <img className="h-4 w-4 relative -top-[3px] cursor-pointer" src={Camera} alt="Camera" />
           <div className="absolute top-full text-[7px] left-0 right-[30px] mt-1 bg-white rounded-sm text-black w-fit h-[37px] cursor-pointer px-1 py-[2px] text-nowrap items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <p className="" onClick={handleViewImage}>View</p><br/>
-            <p className="relative -top-[10px]" onClick={handleReplaceImage}>Replace</p><br/>
-            <p className="relative -top-[20px]" onClick={handleDeleteImage}>Delete</p>
+            <p onClick={handleReplaceImage}>Replace Image</p><br/>
+            <p className="relative -top-[10px]" onClick={handleViewImage}>View Image</p><br/>
+            <p className="relative -top-[20px]" onClick={handleDeleteImage}>Delete Image</p>
           </div>
         </div>
       </div>
@@ -345,6 +318,7 @@ function handleViewImage(event) {
                  {occupation === "Other" ? otherOccupation : occupation}
 
           </p>
+
           <div className="flex">
           <p
           style={{

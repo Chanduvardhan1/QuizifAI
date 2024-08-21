@@ -197,7 +197,7 @@ const Navigation = () => {
         alt="Settings Icon"
         className={`${styles.pageIcon} ${activePage === '/myhistory' ? styles.activeIcon : ''}`}
       />
-          <span className={styles.pageLink}>My history</span>
+          <span className={styles.pageLink}>My History</span>
         </NavLink>
         {/* <img className="h-[122px] w-[60px] ml-[35px] mt-[50px]" src={rocket} alt="rocket"/> */}
       </div>

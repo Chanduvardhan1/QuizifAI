@@ -38,7 +38,8 @@ const configure = () => {
   const handleSpecialisationsClick = () => handleRestrictedClick('/specialisations');
   const handleClassesClick = () => handleRestrictedClick('/classes');
   const handleSubjectsClick = () => handleRestrictedClick('/Subjects');
-  
+  const handleUsergroupsClick = () => handleRestrictedClick('/userandgroups');
+
   useEffect(() => {
     const fetchQuizData = async () => {
       try {
@@ -189,7 +190,7 @@ const configure = () => {
                   contentItem === 'Specialisations' ? handleSpecialisationsClick :
                   contentItem === 'Classes' ? handleClassesClick :
                   contentItem === 'Subjects' ? handleSubjectsClick :
-
+                  contentItem === 'User Groups' ? handleUsergroupsClick :
                   null
                 }
              >

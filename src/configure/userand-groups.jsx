@@ -436,7 +436,8 @@ const UserAndGroups = () => {
             <th className='px-4 py-2 text-nowrap'>Group Id</th>
             <th className='pl-[10px] ml-[15px] py-2'>Group Name</th>
             <th className='px-4 py-2 text-nowrap'>Description</th>
-            <th className='px-2 py-2 text-wrap'>Add Users</th>
+            <th className='px-2 py-2 text-wrap'>Flag</th>
+            {/* <th className='px-2 py-2 text-wrap'>Users List</th> */}
             <div className='flex -mt-[5px]'>
             <input
                 className='mt-[15px] text-[10px] pl-[30px] pr-[10px] rounded-[20px] h-[28px] mr-[10px] w-fit bg-[#FFFFFF] text-left placeholder-[#214082] border-none focus:border-none outline-none'

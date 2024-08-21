@@ -194,20 +194,12 @@ const myhistory = () => {
       <div className=" flex justify-between py-[20px] my-[10px]">
       <div className="flex flex-col gap-5">
 
-<div className="flex gap-3">
-<div className="w-[80px] ml-[71px] h-[80px] -mt-[60px] relative -left-14 top-4" style={{ position: "relative" }}>
-      {image && (
-        <ReactCrop
-        crop={crop}
-        circularCrop
-        keepSelection
-        aspect={ASPECT_RATIO}
-        minWidth={MIN_DIMENSION}
-        onChange={newCrop => setCrop(newCrop)}
-        onComplete={handleCropComplete}
-      >
-      <img src={image} alt="image" onLoad={onImageLoad}/>
-      </ReactCrop>
+<div className="flex -gap-3">
+<div className="rounded-full w-[100px] ml-[5px] h-[100px] -mt-[38px]" style={{ position: "relative" }}>
+      {image ? (
+        <img className="w-[80px] h-[80px] rounded-full border-2 border-white" src={image} alt="Uploaded" />
+      ) : (
+        <img className="w-[80px] h-[80px] rounded-full border-2 border-white" src={profileimg} alt="Default" />
       )}
       <input type="file" ref={inputReff} onChange={handleImageChange} style={{ display: "none" }} />
 
@@ -215,52 +207,53 @@ const myhistory = () => {
         <div className="rounded-full w-fit h-[28px] px-[2px] py-[2px] flex items-center justify-center group">
           <img className="h-4 w-4 relative -top-[3px] cursor-pointer" src={Camera} alt="Camera" />
           <div className="absolute top-full text-[7px] left-0 right-[30px] mt-1 bg-white rounded-sm text-black w-fit h-[37px] cursor-pointer px-1 py-[2px] text-nowrap items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <p className="" onClick={handleViewImage}>View Photo</p><br/>
-            <p className="relative -top-[10px]" onClick={handleReplaceImage}>Replace Photo </p><br/>
-            <p className="relative -top-[20px]" onClick={handleDeleteImage}>Delete Photo</p>
+            <p onClick={handleReplaceImage}>Replace Image</p><br/>
+            <p className="relative -top-[10px]" onClick={handleViewImage}>View Image</p><br/>
+            <p className="relative -top-[20px]" onClick={handleDeleteImage}>Delete Image</p>
           </div>
         </div>
       </div>
     </div>
-  <div className="mt-2">
-<span className="text-[13px]">Welcome </span>
-<span className="text-[13px]">{userName || ""}</span><br/>
+
+  <div className="-mt-4">
+<span className="text-[15px]">Welcome </span>
+<span className="text-[15px]">{userName || ""}</span><br/>
 <span className="text-[13px]">User id : </span>
 <span className=" font-normal text-[12px]">{userId}</span>
 </div>
 </div>        
 
-<div>
+<div className="-mt-[20px]">
 <span>Total no.of  Attempts : </span>
 <span className=" font-normal">{noOfAttempts}</span>
 </div>
 
 <div className="-mt-4">
 <span>Total no.of Quizzes </span>
-<span className="pl-[14px]">: {noOfQuizzes}</span>
+<span className="pl-[14px] font-normal"><span className="font-bold">:</span> {noOfQuizzes}</span>
 </div>
 
 <div className="-mt-4">
 <span>Total no.of min </span>
-<span className="pl-[41px]">: {noOfMinutes}</span>
+<span className="pl-[41px] font-normal"><span className="font-bold">:</span> {noOfMinutes}</span>
 </div>
 
 <div className="-mt-4">
 <span>Total no.of score </span>
-<span className="pl-[30px]">: {globalScore}</span>
+<span className="pl-[30px] font-normal"><span className="font-bold">:</span> {globalScore}</span>
 </div>
 
       </div>
       <div>
   <div  className="flex flex-col gap-5 relative right-[300px]">
-<div className="mt-20">
+<div className="mt-[65px]">
 <span>Global Rank </span>
-<span className="pl-1">: {globalRank}</span>
+<span className="pl-1 font-normal"><span className="font-bold">:</span> {globalRank}</span>
 </div>
 
 <div className="-mt-4">
 <span>Global score </span>
-<span className="pl-[2px]">: {globalScore}</span>
+<span className="pl-[2px] font-normal"><span className="font-bold">:</span> {globalScore}</span>
 </div>
 </div>
 
@@ -321,16 +314,16 @@ const myhistory = () => {
         </thead>
         <tbody className="space-y-4">
           {currentRows.map((quiz, index) => (
-            <tr key={index} className="bg-white hover:bg-gray-100 active:bg-green-100 text-[12px]">
+            <tr key={index} className="bg-white hover:bg-gray-100  active:bg-green-200 text-[12px]">
               <td className="py-2 px-4 border-b text-center">{indexOfFirstRow + index + 1}</td>
-              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="py-2 px-2 border-b text-cente text-nowrap">{quiz.month}</td>
-              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="py-2 px-4 border-b text-center text-nowrap">{quiz.time}</td>
-              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="py-2 px-4 border-b text-center">{quiz.quiz_name}</td>
-              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="py-2 px-4 border-b text-center">{quiz.attempt_duration_mins} min</td>
-              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="py-2 px-4 border-b text-center">{quiz.score_rank}</td>
-              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="py-2 px-4 border-b text-center">{quiz.attained_percentage}%</td>
-              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="py-2 px-4 border-b text-center">{quiz.quiz_grade}</td>
-              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="py-2 px-4 border-b text-center">{quiz.pass_flag}</td>
+              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="cursor-pointer py-2 px-2 border-b text-cente text-nowrap">{quiz.month}</td>
+              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="cursor-pointer py-2 px-4 border-b text-center text-nowrap">{quiz.time}</td>
+              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="cursor-pointer py-2 px-4 border-b text-start">{quiz.quiz_name}</td>
+              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="cursor-pointer py-2 px-4 border-b text-center">{quiz.attempt_duration_mins} min</td>
+              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="cursor-pointer py-2 px-4 border-b text-center">{quiz.score_rank}</td>
+              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="cursor-pointer py-2 px-4 border-b text-center">{quiz.attained_percentage}%</td>
+              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="cursor-pointer py-2 px-4 border-b text-center">{quiz.quiz_grade}</td>
+              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="cursor-pointer py-2 px-4 border-b text-center">{quiz.pass_flag}</td>
             </tr>
           ))}
         </tbody>
@@ -338,20 +331,20 @@ const myhistory = () => {
 
       <div className="flex justify-between mt-4">
       <button
-          className="flex gap-1 items-center"
+          className="flex gap-1 items-center cursor-pointer"
           onClick={handlePrevious}
           disabled={currentPage === 1}
         >
           <img className="h-3 w-3 rotate-180" src={GreaterThan} alt="Previous icon"/>
-          <h1 className="-mt-[5px]">Previous</h1>
+          <h1 className="text-[#F17530]">Previous</h1>
         </button>
 
       <button
-          className="flex gap-1 items-center"
+          className="flex gap-1 items-center cursor-pointer"
           onClick={handleNext}
           disabled={indexOfLastRow >= quizDetails.length}
         >
-          <h1 className="-mt-[5px]">Next</h1>
+          <h1 className="text-[#F17530]">Next</h1>
           <img className="h-3 w-3" src={GreaterThan} alt="Next icon"/>
         </button>
       </div>

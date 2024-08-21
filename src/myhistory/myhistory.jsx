@@ -1,12 +1,13 @@
 import React from "react";
 import Navigation from "../navbar/navbar";
 import LogoutBar from "../logoutbar/logoutbar";
-import { useEffect,useState, useContext } from "react";
+import { useEffect,useState, useContext ,useRef} from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from '../Authcontext/AuthContext';
-import axios from "axios";
+import Camera from "../assets/Images/images/profile/Camera.png";
 import searchIcon from "../assets/Images/images/dashboard/Search.png";
 import GreaterThan from "../assets/Images/images/dashboard/greaterthan.png";
+import ReactCrop, { makeAspectCrop } from "react-image-crop";
 import profileimg from "../assets/Images/images/profile/profileImage.png";
 const myhistory = () => {
   const [userName, setUserName] = useState("");
@@ -26,6 +27,14 @@ const myhistory = () => {
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
   const navigate = useNavigate();
   const { isAuthenticated, authToken } = useContext(AuthContext);
+  const inputReff = useRef(null);
+  const [image, setImage] = useState("");
+  const [crop, setCrop] = useState({ aspect: 1 });
+  const [completedCrop, setCompletedCrop] = useState(null);
+  
+
+  const ASPECT_RATIO = 1;
+  const MIN_DIMENSION = 150;
 
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 25;
@@ -91,6 +100,88 @@ const myhistory = () => {
     };
     fetchQuizData();
   },[authToken,isAuthenticated, navigate,userId]);
+
+  // Image
+  useEffect(() =>{
+    const savedImage = localStorage.getItem('savedImage');
+    if(savedImage){
+      setImage(savedImage);
+    }
+  },[]);
+  
+  function handleImageClick() {
+    if (inputReff.current && typeof inputReff.current.click === 'function') {
+      inputReff.current.click(); // Open file dialog
+    } else {
+      console.error('click method is not available on inputReff.current');
+    }
+  }
+  
+  function handleImageChange(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const imageDataUrl = reader.result;
+        // localStorage.setItem('savedImage', imageDataUrl);
+        setImage(imageDataUrl);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  
+   const handleCropComplete = (crop) => {
+    setCompletedCrop(crop);
+   } 
+  function handleReplaceImage(event) {
+    event.stopPropagation(); // Prevent the click from triggering the parent div's click event
+    handleImageClick(); // Open file dialog
+  }
+  
+  function handleDeleteImage(event) {
+    event.stopPropagation(); // Prevent the click from triggering the parent div's click event
+    localStorage.removeItem('savedImage'); // Remove from local storage
+    setImage(""); // Reset to default image
+  }
+  
+  function handleViewImage(event) {
+    event.stopPropagation(); // Prevent the click from triggering the parent div's click event
+    if (image) {
+      // Create a temporary link element
+      const link = document.createElement('a');
+      link.href = image;
+      link.target = '_blank'; // Open in a new tab
+      link.click(); // Simulate click to open the image
+    } else {
+      console.error('No image available to view');
+    }
+  }
+   const onImageLoad = (e) =>{
+    const {width,height} = e.currentTarget;
+    const crop = makeAspectCrop(
+      {
+        unit : '%',
+        width : 25,
+      },
+      ASPECT_RATIO,
+        width,
+        height
+    );
+    setCrop(crop);
+   }
+
+   const leaderboard = (
+    quizId,
+    attemptId
+   ) => {
+    localStorage.setItem("quiz_id", quizId);
+    navigate("/leaderboard", {
+      state: {
+        quizId,
+        attemptId 
+      },
+    });
+   };
   return (
     <>
     <div className="flex w-full">
@@ -104,7 +195,33 @@ const myhistory = () => {
       <div className="flex flex-col gap-5">
 
 <div className="flex gap-3">
-  <img className="h-14 w-14" src={profileimg} alt="profile icon"/>
+<div className="w-[80px] ml-[71px] h-[80px] -mt-[60px] relative -left-14 top-4" style={{ position: "relative" }}>
+      {image && (
+        <ReactCrop
+        crop={crop}
+        circularCrop
+        keepSelection
+        aspect={ASPECT_RATIO}
+        minWidth={MIN_DIMENSION}
+        onChange={newCrop => setCrop(newCrop)}
+        onComplete={handleCropComplete}
+      >
+      <img src={image} alt="image" onLoad={onImageLoad}/>
+      </ReactCrop>
+      )}
+      <input type="file" ref={inputReff} onChange={handleImageChange} style={{ display: "none" }} />
+
+      <div className="bg-[#C3EAF3] rounded-full w-fit h-[24px] px-[2px] py-[1px] relative left-16 -top-7">
+        <div className="rounded-full w-fit h-[28px] px-[2px] py-[2px] flex items-center justify-center group">
+          <img className="h-4 w-4 relative -top-[3px] cursor-pointer" src={Camera} alt="Camera" />
+          <div className="absolute top-full text-[7px] left-0 right-[30px] mt-1 bg-white rounded-sm text-black w-fit h-[37px] cursor-pointer px-1 py-[2px] text-nowrap items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <p className="" onClick={handleViewImage}>View Photo</p><br/>
+            <p className="relative -top-[10px]" onClick={handleReplaceImage}>Replace Photo </p><br/>
+            <p className="relative -top-[20px]" onClick={handleDeleteImage}>Delete Photo</p>
+          </div>
+        </div>
+      </div>
+    </div>
   <div className="mt-2">
 <span className="text-[13px]">Welcome </span>
 <span className="text-[13px]">{userName || ""}</span><br/>
@@ -204,16 +321,16 @@ const myhistory = () => {
         </thead>
         <tbody className="space-y-4">
           {currentRows.map((quiz, index) => (
-            <tr key={index} className="bg-white hover:bg-green-200 text-[12px]">
+            <tr key={index} className="bg-white hover:bg-gray-100 active:bg-green-100 text-[12px]">
               <td className="py-2 px-4 border-b text-center">{indexOfFirstRow + index + 1}</td>
-              <td className="py-2 px-2 border-b text-cente text-nowrap">{quiz.month}</td>
-              <td className="py-2 px-4 border-b text-center text-nowrap">{quiz.time}</td>
-              <td className="py-2 px-4 border-b text-center">{quiz.quiz_name}</td>
-              <td className="py-2 px-4 border-b text-center">{quiz.attempt_duration_mins} min</td>
-              <td className="py-2 px-4 border-b text-center">{quiz.score_rank}</td>
-              <td className="py-2 px-4 border-b text-center">{quiz.attained_percentage}%</td>
-              <td className="py-2 px-4 border-b text-center">{quiz.quiz_grade}</td>
-              <td className="py-2 px-4 border-b text-center">{quiz.pass_flag}</td>
+              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="py-2 px-2 border-b text-cente text-nowrap">{quiz.month}</td>
+              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="py-2 px-4 border-b text-center text-nowrap">{quiz.time}</td>
+              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="py-2 px-4 border-b text-center">{quiz.quiz_name}</td>
+              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="py-2 px-4 border-b text-center">{quiz.attempt_duration_mins} min</td>
+              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="py-2 px-4 border-b text-center">{quiz.score_rank}</td>
+              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="py-2 px-4 border-b text-center">{quiz.attained_percentage}%</td>
+              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="py-2 px-4 border-b text-center">{quiz.quiz_grade}</td>
+              <td onClick={() => leaderboard(quiz.quiz_id,quiz.quiz_level_attempt_id)} className="py-2 px-4 border-b text-center">{quiz.pass_flag}</td>
             </tr>
           ))}
         </tbody>

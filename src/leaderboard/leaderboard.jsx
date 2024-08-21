@@ -64,6 +64,8 @@ const leaderboard = () => {
     option3: 'C',
     option4: 'D'
   };
+  const {passpercentage,complexity,quizduration,attemptId} = location.state || {};
+ 
 
  useEffect(() => {
     const userId = localStorage.getItem("user_id");
@@ -146,10 +148,9 @@ const leaderboard = () => {
     fetchLeaderboardData();
   }, [quizId]);
 
-  const userId = localStorage.getItem("user_id");
   // useEffect(() => {
-
-  //   const sendQuizResult = async () => {
+    
+    //   const sendQuizResult = async () => {
   //     try {
   //       const response = await fetch('https://dev.quizifai.com:8010/quiz_result', {
   //         method: 'POST',
@@ -178,12 +179,54 @@ const leaderboard = () => {
   // }, [quizId, attemptNo]);
   // const quizduration = localStorage.getItem("quiz_duration");
   // const complexity = localStorage.getItem("complexity");
-  const {passpercentage,complexity,quizduration,attemptId} = location.state || {};
-  useEffect(() => {
-    const quizId = localStorage.getItem("quiz_id");
-    const attemptNo = localStorage.getItem("quiz_level_attempt_id");
+  // useEffect(() => {
+  //   const userId = localStorage.getItem("user_id");
 
-    const sendQuizResult = async () => {
+  //   const quizId = localStorage.getItem("quiz_id");
+  //   // const attemptNo = localStorage.getItem("quiz_level_attempt_id");
+
+  //   const sendQuizResult = async () => {
+  //     try {
+  //       const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+  //       if (!authToken) {
+  //         console.error('No authentication token found. Please log in again.');
+  //         return;
+  //       }
+  //       const response = await fetch('https://dev.quizifai.com:8010/quiz_result_view', {
+  //         method: 'POST',
+  //         headers: {
+  //           'Accept': 'application/json',
+  //           'Content-Type': 'application/json',
+  //           'Authorization': `Bearer ${authToken}`,
+  //         },
+  //         body: JSON.stringify({
+  //           user_id: userId,
+  //           quiz_id: quizId,
+  //           attempt_id: attemptId
+  //         })
+  //       });
+  //       const result = await response.json();
+  //       const data = result.data[0];
+  //       setQuizData(data);
+  //       console.log('Quiz result submitted:', data);
+  //       setIsQuizSubmitted(true); // Set the submission state to true after success
+  //     } catch (error) {
+  //       console.error('Error submitting quiz result:', error);
+  //       setIsQuizSubmitted(false); // Ensure it's false on error
+  //     }
+  //   };
+
+  //   if (quizId && attemptNo) {
+  //     sendQuizResult(); 
+  //     // Trigger the POST request only if quizId and attemptNo are available
+  //   }
+  // }, []);
+      const userId = localStorage.getItem("user_id");
+
+  useEffect(() => {
+ 
+      const sendQuizResult = async () => {
       try {
         const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
 
@@ -194,7 +237,7 @@ const leaderboard = () => {
         const response = await fetch('https://dev.quizifai.com:8010/quiz_result_view', {
           method: 'POST',
           headers: {
-            'Accept': 'application/json',
+            'accept': 'application/json',
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${authToken}`,
           },
@@ -208,18 +251,15 @@ const leaderboard = () => {
         const data = result.data[0];
         setQuizData(data);
         console.log('Quiz result submitted:', data);
-        setIsQuizSubmitted(true); // Set the submission state to true after success
       } catch (error) {
         console.error('Error submitting quiz result:', error);
-        setIsQuizSubmitted(false); // Ensure it's false on error
       }
     };
 
-    if (quizId && attemptNo) {
+    if (quizId && attemptId) {
       sendQuizResult(); // Trigger the POST request only if quizId and attemptNo are available
     }
-  }, [userId]);
-
+  }, [quizId, attemptId]);
   useEffect(() => {
     const quizId = localStorage.getItem("quiz_id");
 

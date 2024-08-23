@@ -35,7 +35,7 @@ const UserAndGroups = () => {
 
   const navigate = useNavigate();
   const handleBanckToDashbaord = () =>{
-    navigate('/dashboard');
+    navigate('/configure');
   }
   
   // toggle button for parent category 

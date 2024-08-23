@@ -56,11 +56,15 @@ const myhistory = () => {
   };
 
   useEffect(() =>{
-    if(!isAuthenticated) {
-      navigate('/login');
-    }
+   
     const fetchQuizData = async () =>{
       try{
+        const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+        if (!authToken) {
+          console.error('No authentication token found. Please log in again.');
+          return;
+        }
         const response = await fetch(`https://dev.quizifai.com:8010/history_Page/`,{
           method: "POST",
           headers: {

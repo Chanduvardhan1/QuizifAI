@@ -135,10 +135,25 @@ useEffect(() =>{
   const handleToPrint =() =>{
     navigate('/print')
   }
+
+  useEffect(() =>{
+     const savedContent = localStorage.getItem('savedPageContent');
+    if (savedContent && pdfRef1.current) {
+        pdfRef1.current.innerHTML = savedContent;
+      }
+    }, []);
+
+  const handleSave = () =>{
+    const content = pdfRef1.current.innerHTML;
+
+    localStorage.setItem('savedContent', content);
+
+    alert("Content saved successfully!");
+  }
   return (
     <>
     <div className='h-full w-full' ref={pdfRef1}>
-    <h1 className='font-serif font-bold text-center relative top-5 text-[25px] mt-20 focus:outline-none focus:border-none'
+    <h1 className='font-serif font-bold text-center text-[25px] mt-20 focus:outline-none focus:border-none'
     onClick={() => handleFieldClick('hallTicket')}
     contentEditable={editableFields.hallTicket}
     >
@@ -146,7 +161,7 @@ useEffect(() =>{
     <span>SCIENCE</span> <br/>CLASS IX (THEORY)
     <br/>SAMPLE QUESTION PAPER - II <br/>2024</h1>
 
-    <div className='h-[130px] w-[130px]  absolute top-[160px] left-[150px] border-4 border-solid focus:outline-none focus:border-none'>
+    <div className='h-[130px] w-[130px] border-4 border-solid focus:outline-none focus:border-none relative -mt-[140px] ml-32'>
     <div className="w-[100px] ml-[11px] h-[100px] mt-3" style={{ position: "relative" }}>
       {image ? (
         <img className="w-[100px] h-[100px] border-2 border-white" src={image} alt="Uploaded" />
@@ -317,8 +332,13 @@ useEffect(() =>{
 
              <h1 className='text-xs pl-[1000px] pt-10 pb-10 font-semibold'>{FormattedDate}</h1>
              <div className='flex gap-5 mb-5 justify-center'>
-             <button className='bg-[#223F80] rounded-md text-white px-3 py-1 hover:bg-[#EF5130]'>Save</button>
-             <button className='bg-[#223F80] rounded-md text-white px-3 py-1 relative  hover:bg-[#EF5130]' onClick={downloadPDF1}>Download PDF</button>
+             <button 
+          className='bg-[#223F80] rounded-md text-white px-3 py-1 hover:bg-[#EF5130]'
+          onClick={handleSave} // Attach the save function here
+        >
+          Save
+        </button>            
+        <button className='bg-[#223F80] rounded-md text-white px-3 py-1 relative  hover:bg-[#EF5130]' onClick={downloadPDF1}>Download PDF</button>
              <button className='bg-[#223F80] rounded-md text-white px-3  hover:bg-[#EF5130]' onClick={handleToPrint}>Print</button>
              </div>
 

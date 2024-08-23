@@ -402,7 +402,8 @@ if (hasError) {
         ) {
           // const sanitizedOutput = data.output.replace(/\d{6}\s?/, ""); // Removes the OTP (6 digits followed by optional space)
           // setResponseMessage(sanitizedOutput);
-          setResponseMessage(data.response_message)
+          setRespon
+          seMessage(data.response_message)
           // setGreen("Account Has Been Created OTP Successfully Sent Please verify your OTP")
           setShowOtpField1(true);
           setShowVerifyButton1(true); 

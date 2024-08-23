@@ -398,9 +398,32 @@ const createquiz=() =>{
     setSearchQuery(e.target.value);
   };
 
+  // const highlightText = (text, query) => {
+  //   if (!query) return text;
+  //   const parts = text.split(new RegExp(`(${query})`, "gi"));
+  //   return parts.map((part, index) =>
+  //     part.toLowerCase() === query.toLowerCase() ? (
+  //       <span key={index} style={{ backgroundColor: "yellow" }}>
+  //         {part}
+  //       </span>
+  //     ) : (
+  //       part
+  //     )
+  //   );
+  // };
+
+
+  // Custom styles for react-select to match your existing dropdown design
+  
   const highlightText = (text, query) => {
+    if (typeof text !== "string") {
+      return text;
+    }
+  
     if (!query) return text;
+  
     const parts = text.split(new RegExp(`(${query})`, "gi"));
+    
     return parts.map((part, index) =>
       part.toLowerCase() === query.toLowerCase() ? (
         <span key={index} style={{ backgroundColor: "yellow" }}>
@@ -411,8 +434,8 @@ const createquiz=() =>{
       )
     );
   };
-
-  // Custom styles for react-select to match your existing dropdown design
+  
+  
   const customStyles = {
     control: (provided, state) => ({
       ...provided,

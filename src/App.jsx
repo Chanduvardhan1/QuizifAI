@@ -272,6 +272,8 @@ import Course from './configure/course.jsx';
 import Contactus from './ContactUs1/contactus.jsx';
 import HeaderSection from './HeaderSection/HeaderSection.jsx';
 import UserAndGroups from './configure/userand-groups.jsx';
+import PaperTemplates from './questionpapers/papertemplates.jsx';
+
     function App() {
     
   return (
@@ -361,6 +363,7 @@ import UserAndGroups from './configure/userand-groups.jsx';
     <Route path="edittextbook" element={<PrivateRoute><Edittextbook /></PrivateRoute>} />
     <Route path='headersection' element={<HeaderSection/>}/>
     <Route path='userandgroups' element={<UserAndGroups/>}/>
+    <Route path='papertemplates' element={<PaperTemplates/>}/>
   </Route>
 </Routes>
 

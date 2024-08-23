@@ -39,6 +39,8 @@ const configure = () => {
   const handleClassesClick = () => handleRestrictedClick('/classes');
   const handleSubjectsClick = () => handleRestrictedClick('/Subjects');
   const handleUsergroupsClick = () => handleRestrictedClick('/userandgroups');
+  const handleQuizDownloadAndPrintClick = () => handleRestrictedClick('/print');
+  const handleExamClick = () => handleRestrictedClick('/papertemplates');
 
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -88,8 +90,9 @@ const configure = () => {
       { id: 2, title: 'User & Roles', content: 'User Groups, User Information, Roles and Permissions, Communication, Responsibilities and Expectations' },
       { id: 3, title: 'Organization', content: 'Profile, Manage Subscription, Performance Metrics, Marketing and Sales, Financial Information, Mission and Vision, Goals and Objectives' },
       { id: 4, title: 'Notification', content: 'Contact Information, Date and Time, Main Content, Additional Information' },
-      { id: 5, title: 'Developer & Data', content: 'Developer Information, Data Information, Access and Permissions' },
-      { id: 6, title: 'Preferences', content: 'User Information, Preference Categories, Default Settings, Subscription Preferences' },
+      { id: 5, title: 'Quizzes', content: 'Quiz sharing and access control, Exam, Quiz download and print'},
+      { id: 6, title: 'Developer & Data', content: 'Developer Information, Data Information, Access and Permissions' },
+      { id: 7, title: 'Preferences', content: 'User Information, Preference Categories, Default Settings, Subscription Preferences' },
   ];
   
   const filteredItems = items.filter(item => 
@@ -191,6 +194,8 @@ const configure = () => {
                   contentItem === 'Classes' ? handleClassesClick :
                   contentItem === 'Subjects' ? handleSubjectsClick :
                   contentItem === 'User Groups' ? handleUsergroupsClick :
+                  contentItem === 'Quiz download and print' ? handleQuizDownloadAndPrintClick :
+                  contentItem === 'Exam' ? handleExamClick :
                   null
                 }
              >

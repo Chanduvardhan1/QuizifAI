@@ -5,7 +5,7 @@ export default function printquizresults (){
   return (
     <>
     {/* first format */}
-    <h1 className='font-bold text-center text-[30px] text-serif text-blue-900 mt-3 underline underline-offset-2'>Print only Question Paper</h1>
+    <h1 className='font-bold text-center text-[30px] font-Poppins text-blue-900 mt-3 underline underline-offset-2'>QUESTION PAPER TEMPLATES</h1>
      <div className='bg-slate-400 h-full w-full'>
   {/* first-sub1  */}
         <div className='h-[500px] w-[550px] absolute top-10 left-[50px] bg-gray-200 rounded mt-7'>
@@ -96,7 +96,7 @@ export default function printquizresults (){
 {/* second format  */}
         <h1 className='font-bold text-center text-[30px] text-serif text-blue-900 mt-3 underline underline-offset-2 absolute top-[1210px] left-[420px]'>Print Question Paper + Answer Key</h1>
 
-        <div className='bg-slate-400 h-full w-full'>
+    <div className='bg-slate-400 h-full w-full'>
 
   {/* second-sub1  */}
 <div className='h-[500px] w-[550px] absolute top-[1260px] left-[50px] bg-gray-200 rounded mt-7'>

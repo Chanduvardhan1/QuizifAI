@@ -102,6 +102,7 @@ const Dashboard = () => {
       window.removeEventListener("beforeunload", handleWindowClose);
     };
   }, []);
+  
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/login'); // Redirect to login if not authenticated
@@ -429,7 +430,7 @@ const Dashboard = () => {
                 </a>
               </div>
             </div> */}
-               {userRole === "Quiz Master" && (
+         {userRole === "Quiz Master" && (
         <div className="w-[99px] h-[41px] absolute mr-[80px] mb-2 pb-2 -mt-[35px] rounded-[10px] bg-[#fee2e2]">
           <div className="flex">
             <img

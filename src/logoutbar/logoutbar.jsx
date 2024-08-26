@@ -413,7 +413,7 @@ function handleViewImage(event) {
 
           <div className="h-[5px] w-full bg-white mt-[10px]"></div>
         
-          <div className="mt-44 ml-2">
+          <div className="mt-[235px] ml-2">
             <h1 className="text-[13px] text-start text-[#002366] font-semibold">Registered On :<span className="pl-1 font-normal text-[12px]">{registeredOn}</span></h1>
             <h1 className="text-[13px] text-start text-[#002366] font-semibold">Last Login : <span className="font-normal text-[12px]">{lastLogin}</span></h1>
             <h1 className="text-[13px] text-start text-[#002366] font-semibold">Password Changed : <span className="font-normal text-[12px]">{passwordChanged}</span></h1>

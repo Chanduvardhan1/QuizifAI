@@ -286,9 +286,12 @@ const myhistory = () => {
         </div>
        
 <div className="flex gap-[5px] justify-center items-center">
-<input type="search" 
+  <div className="flex">
+   <input type="search" 
        className="p-1 border-2 border-black rounded-lg bg-[url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 24 24%27 stroke=%27currentColor%27%3e%3cpath stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27M21 21l-4.35-4.35M16.5 10.5a6 6 0 11-12 0 6 6 0 0112 0z%27 /%3e%3c/svg%3e')] bg-no-repeat bg-left-3 bg-center" 
        placeholder="search"/>
+        <img className="h-4 w-4 relative top-2 right-7" src={searchIcon} alt="search icon"/>
+  </div>
 
 <span className="text-[#F17530]">Sort by : </span>
 <span>

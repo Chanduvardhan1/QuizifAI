@@ -248,7 +248,7 @@ if (hasError) {
           setTerms(data.response_message);
         }  else if (
           data.response === 'fail' &&
-          data.response_message === 'Please click here to complete your registration and activate your account.'
+          data.response_message ==='Please click here to complete your registration and activate your account.'
         ) {
           setResponseMessage1(data.response_message);
           navigate("/register");
@@ -565,9 +565,8 @@ if (hasError) {
       const data = await response.json();
 
       if (data.response === "success"  && data.response_message ==="Email is Verified you can proceed with registration.") {
-        // setShowSecondButton(true);
+     
         setShowRegistrationSuccess(true);
-        // handleOpenGmail(mobile, emailOrMobile);
       }  else if (
         data.response === "fail" &&
         data.response_message ===
@@ -576,7 +575,16 @@ if (hasError) {
       ) {
      
         setTerms(data.response_message);
-      }else {
+      }else if (
+        data.response === "fail" &&
+        data.response_message ===
+          "Please click here to complete your registration and activate your account."
+        
+      ) {
+     
+        setTerms(data.response_message);
+      }
+      else {
         // console.log("Response other than success:", data.response);
       }
   

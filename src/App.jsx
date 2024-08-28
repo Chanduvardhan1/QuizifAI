@@ -354,8 +354,8 @@ import PaperTemplates from './questionpapers/papertemplates.jsx';
     <Route path="superadmin-profile" element={<PrivateRoute><SuperadminProfile /></PrivateRoute>} />
     <Route path="superadmin" element={<PrivateRoute><Superadmins /></PrivateRoute>} />
     <Route path="superadmin1" element={<PrivateRoute><Superadmin1 /></PrivateRoute>} />
-    <Route path="resetpassword" element={<PrivateRoute><Resetpassword /></PrivateRoute>} />
-    <Route path="resetpasswordmobile" element={<PrivateRoute><Resetpasswordmobile /></PrivateRoute>} />
+    <Route path="resetpassword" element={<Resetpassword />} />
+    <Route path="resetpasswordmobile" element={<Resetpasswordmobile />} />
     <Route path="create-editquiz" element={<PrivateRoute><Createeditquiz /></PrivateRoute>} />
     <Route path="editmanuly" element={<PrivateRoute><Editmanuly /></PrivateRoute>} />
     <Route path="editexcel" element={<PrivateRoute><Editexcel /></PrivateRoute>} />

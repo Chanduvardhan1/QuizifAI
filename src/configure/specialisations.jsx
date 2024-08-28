@@ -45,9 +45,6 @@ const specialisations = () => {
   }
 
   const handleSubmit1 = async () => {
-
-
-
     const data = {
       specialization_name: specializationName,
       specialization_short_name: specializationShortName,

@@ -9,6 +9,7 @@ import Settings from "../assets/Images/images/dashboard/Settings1.png";
 import rocket from "../assets/Images/images/dashboard/rocket.png";
 import infinity from "../assets/Images/images/dashboard/infinity.png";
 import mail from "../assets/Images/images/dashboard/mail.png";
+import history from "../assets/Images/images/dashboard/history.png";
 import { AuthContext } from "../Authcontext/AuthContext.jsx"
 
 
@@ -193,7 +194,7 @@ const Navigation = () => {
           onClick={() => handleNavigation('/myhistory')}
         >
          <img
-        src={mail}
+        src={history}
         alt="Settings Icon"
         className={`${styles.pageIcon} ${activePage === '/myhistory' ? styles.activeIcon : ''}`}
       />

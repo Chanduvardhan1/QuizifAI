@@ -290,7 +290,7 @@ function handleViewImage(event) {
       )}
       <input type="file" ref={inputReff} onChange={handleImageChange} style={{ display: "none" }} />
 
-      <div className="bg-[#C3EAF3] rounded-full w-fit h-[24px] px-[2px] py-[1px] relative left-20 -top-7">
+      <div className="bg-[#C3EAF3] rounded-full w-fit h-[24px] px-[2px] py-[1px] relative left-[75px] -top-9">
         <div className="rounded-full w-fit h-[28px] px-[2px] py-[2px] flex items-center justify-center group">
           <img className="h-4 w-4 relative -top-[3px] cursor-pointer" src={Camera} alt="Camera" />
           <div className="absolute top-full text-[7px] left-0 right-[30px] mt-1 bg-white rounded-sm text-black w-fit h-[37px] cursor-pointer px-1 py-[2px] text-nowrap items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">

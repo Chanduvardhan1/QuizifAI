@@ -16,7 +16,10 @@ const UserAndGroups = () => {
   const [categories, setCategories] = useState([]);
   const [data, setData] = useState([]);
   const [categoryId, setCategoryId] = useState('');
+  const [groupId, setGroupId] = useState('');
   const [categoryName, setCategoryName] = useState('');
+  const [groupName, setGroupName] = useState('');
+  const [groupDescription, setGroupDescription] = useState('');
   const [parentCategoryFlag, setParentCategoryFlag] = useState('N');
   const [parentCategory, setParentCategory] = useState('');
   const [parentCategoryId, setParentCategoryId] = useState('');
@@ -30,8 +33,178 @@ const UserAndGroups = () => {
   const [parentCategories, setParentCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
-  const [filteredData, setFilteredData] = useState([]);
+  // const [filteredData, setFilteredData] = useState([]);
   const [searchInput, setSearchInput] = useState('');
+
+
+    const [groups, setGroups] = useState([]);
+    const [users, setUsers] = useState([]); 
+    const [selectedUserId, setSelectedUserId] = useState(''); 
+    
+    const fetchGroups= async() => {
+      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+    if (!authToken) {
+      console.error('No authentication token found');
+      return;
+     }
+      // Fetch groups data
+      fetch('https://dev.quizifai.com:8010/groups/',{
+        headers: {
+                 'Content-Type': 'application/json',
+                 'Authorization': `Bearer ${authToken}`, // Include the auth token in the Authorization header
+              },
+      })
+      .then(response => response.json())
+      .then(data => setGroups(data.data))
+      .catch(error => console.error(error));
+  
+      // Fetch users data
+      fetch('https://dev.quizifai.com:8010/users/', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`, // Include the auth token in the Authorization header
+       },
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to fetch users');
+          }
+          return response.json();
+        })
+        .then(data => setUsers(data.data))
+        .catch(error => console.error(error));
+      }
+        useEffect(() =>{
+          fetchGroups();
+        },[]);
+        
+    
+
+    const handleCreateGroup = async () => {
+      const groupData = {
+        group_name: groupName, // Use appropriate state or variable
+        group_description: groupDescription, // Ensure this matches the correct state
+        active_flag: activeFlag, // Assuming this is the active status
+        created_by: createdBy, // Replace with the user ID or relevant state
+        user_ids: [selectedUserId], // Replace with the selected user IDs
+      };
+    
+      try {
+        const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+    
+        if (!authToken) {
+          console.error('No authentication token found');
+          return;
+        }
+        
+        const response = await fetch('https://dev.quizifai.com:8010/create_group/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+          },
+          body: JSON.stringify(groupData),
+        });
+    
+        if (response.ok) {
+          const newGroup = { group_id: categoryId, ...groupData };
+          setCategories([...categories, newGroup]);
+          fetchGroups(); // Refresh groups list after creation
+          setGroupId(''); // Reset form fields
+          setGroupName('');
+          setParentCategoryFlag('');
+          setParentCategoryId('');
+          setIsNavbarOpen(false);
+        } else {
+          console.error('Failed to create group');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    const handleUpdateGroup = async () => {
+      const groupData = {
+        group_id: groupId,
+        group_name: groupName,
+        group_description: groupDescription, // Ensure this matches the correct state
+        updated_by: updatedBy, // Replace with the user ID or relevant state
+        user_ids: [selectedUserId], // Replace with the selected user IDs
+      };
+    
+      try {
+        const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+    
+        if (!authToken) {
+          console.error('No authentication token found');
+          return;
+        }
+    
+        const response = await fetch('https://dev.quizifai.com:8010/edit_group/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+          },
+          body: JSON.stringify(groupData),
+        });
+    
+        if (response.ok) {
+          const updatedGroups = categories.map((group, index) =>
+            index === editIndex ? { ...groupData } : group
+          );
+          setCategories(updatedGroups);
+          fetchGroups(); // Refresh groups list after update
+          setGroupId(''); // Reset form fields
+          setGroupName('');
+          setParentCategoryFlag('');
+          setParentCategoryId('');
+          setIsNavbarOpen(false);
+          setIsEditing(false); // Exit edit mode
+          setEditIndex(null);
+        } else {
+          console.error('Failed to update group');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+    const handleSubmit = () => {
+      if (isEditing) {
+        handleUpdateGroup(); // Call update group function
+      } else {
+        handleCreateGroup(); // Call create group function
+      }
+    };
+
+    const handleEdit = (group) => {
+      if (selectedCategoryId === group.group_id) {
+        setIsNavbarOpen(!isNavbarOpen);
+      } else {
+        setCategoryId(group.group_id);
+        setCategoryName(group.group_name);
+        setParentCategoryFlag(group.active_flag);
+        setParentCategoryId(''); // If necessary
+        setIsToggleEnabled(group.active_flag === 'Y');
+        setIsNavbarOpen(true);
+        setIsEditing(true);
+        setSelectedCategoryId(group.group_id);
+      }
+    };
+
+    const filteredGroups = groups.filter(group => group.group_name.includes(searchInput));
+  const filteredUsers = users.filter(user => filteredGroups.some(group => group.user_ids.includes(user.user_id)));
+  
+    const highlightText = (text, highlight) => {
+      if (!highlight) return text;
+      const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
+      return parts.map((part, index) => 
+        part.toLowerCase() === highlight.toLowerCase() ? 
+        <span key={index} className="bg-yellow-300">{part}</span> : 
+        part
+      );
+    };
 
   const navigate = useNavigate();
   const handleBanckToDashbaord = () =>{
@@ -39,33 +212,34 @@ const UserAndGroups = () => {
   }
   
   // toggle button for parent category 
-  const fetchCategories = () => {
-    const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+  // const fetchCategories = () => {
+  //   const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
 
-    if (!authToken) {
-      console.error('No authentication token found');
-      return;
-    }
-    fetch('https://dev.quizifai.com:8010/categories/', {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authToken}`, // Include the auth token in the Authorization header
-      },
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.response === "success") {
-          setData(data.data);
-          setParentCategories(data.data.filter(category => category.parent_category_flag === 'Y'));
-          setFilteredData(data.data); 
-        }
-      })
-      .catch(error => console.error('Error fetching data:', error));
-  };
+  //   if (!authToken) {
+  //     console.error('No authentication token found');
+  //     return;
+  //   }
+  //   fetch('https://dev.quizifai.com:8010/categories/', {
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Authorization': `Bearer ${authToken}`, // Include the auth token in the Authorization header
+  //     },
+  //   })
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       if (data.response === "success") {
+  //         setData(data.data);
+  //         setParentCategories(data.data.filter(category => category.parent_category_flag === 'Y'));
+  //         setFilteredData(data.data); 
+  //       }
+  //     })
+  //     .catch(error => console.error('Error fetching data:', error));
+  // };
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+  // useEffect(() => {
+  //   fetchCategories();
+  // }, []);
+
   const handleToggleChange = (checked) => {
     setParentCategoryFlag(checked ? 'Y' : 'N');
     setIsToggleEnabled(checked);
@@ -96,6 +270,8 @@ const UserAndGroups = () => {
   };
 
   // const handleAddOrUpdateCategory = async () => {
+
+
   //   const categoryData = {
   //     parent_category_flag: parentCategoryFlag,
   //     category_name: categoryName,
@@ -152,6 +328,8 @@ const UserAndGroups = () => {
   //   setParentCategory('');
   //   setIsNavbarOpen(false);
   // };
+  
+  
   const handleCreateCategory = async () => {
     const categoryData = {
       parent_category_flag: parentCategoryFlag,
@@ -179,7 +357,7 @@ const UserAndGroups = () => {
       if (response.ok) {
         const newCategory = { category_id: categoryId, ...categoryData };
         setCategories([...categories, newCategory]);
-        fetchCategories(); // Refresh categories list after creation
+        fetchGroups(); // Refresh categories list after creation
         setCategoryId(''); // Reset form fields
         setCategoryName('');
         setParentCategoryFlag('');
@@ -222,9 +400,9 @@ const UserAndGroups = () => {
           index === editIndex ? { ...categoryData } : category
         );
         setCategories(updatedCategories);
-        fetchCategories(); // Refresh categories list after update
-        setCategoryId(''); // Reset form fields
-        setCategoryName('');
+        fetchGroups(); // Refresh categories list after update
+        setGroupId(''); // Reset form fields
+        setGroupName('');
         setParentCategoryFlag('');
         setParentCategoryId('');
         setIsNavbarOpen(false);
@@ -237,62 +415,62 @@ const UserAndGroups = () => {
       console.error('Error:', error);
     }
   };
-  const handleSubmit = () => {
-    if (isEditing) {
-      handleUpdateCategory();
-    } else {
-      handleCreateCategory();
-    }
-  };
+  // const handleSubmit = () => {
+  //   if (isEditing) {
+  //     handleUpdateCategory();
+  //   } else {
+  //     handleCreateCategory();
+  //   }
+  // };
   
 
-  const handleEdit = (category) => {
-    if (selectedCategoryId === category.category_id) {
-      // Toggle the form visibility if the same category ID is clicked
-      setIsNavbarOpen(!isNavbarOpen);
-    } else {
-      // Open the form with new category details
-      setCategoryId(category.category_id);
-      setCategoryName(category.category_name);
-      setParentCategoryFlag(category.parent_category_flag);
-      setParentCategoryId(category.parent_category_id);
-      setIsToggleEnabled(category.parent_category_flag === 'Y');
-      setIsNavbarOpen(true);
-      setIsEditing(true);
-      setSelectedCategoryId(category.category_id);
-    }
-  };
-  useEffect(() => {
-    const searchInputLower = searchInput.toLowerCase();
+  // const handleEdit = (category) => {
+  //   if (selectedCategoryId === category.category_id) {
+  //     // Toggle the form visibility if the same category ID is clicked
+  //     setIsNavbarOpen(!isNavbarOpen);
+  //   } else {
+  //     // Open the form with new category details
+  //     setCategoryId(category.category_id);
+  //     setCategoryName(category.category_name);
+  //     setParentCategoryFlag(category.parent_category_flag);
+  //     setParentCategoryId(category.parent_category_id);
+  //     setIsToggleEnabled(category.parent_category_flag === 'Y');
+  //     setIsNavbarOpen(true);
+  //     setIsEditing(true);
+  //     setSelectedCategoryId(category.category_id);
+  //   }
+  // };
+  // useEffect(() => {
+  //   const searchInputLower = searchInput.toLowerCase();
 
-    // Filter and sort data
-    const filteredAndSortedData = data
-      .filter(category => 
-        category.category_id.toString().includes(searchInputLower) ||
-        category.category_name.toLowerCase().includes(searchInputLower) ||
-        category.parent_category_flag.toLowerCase().includes(searchInputLower) ||
-        (category.parent_category_name && category.parent_category_name.toLowerCase().includes(searchInputLower))
-      )
-      .sort((a, b) => {
-        const aIncludes = a.category_name.toLowerCase().includes(searchInputLower);
-        const bIncludes = b.category_name.toLowerCase().includes(searchInputLower);
-        return bIncludes - aIncludes; // Ensure matching rows come first
-      });
+  //   // Filter and sort data
+  //   const filteredAndSortedData = data
+  //     .filter(category => 
+  //       category.category_id.toString().includes(searchInputLower) ||
+  //       category.category_name.toLowerCase().includes(searchInputLower) ||
+  //       category.parent_category_flag.toLowerCase().includes(searchInputLower) ||
+  //       (category.parent_category_name && category.parent_category_name.toLowerCase().includes(searchInputLower))
+  //     )
+  //     .sort((a, b) => {
+  //       const aIncludes = a.category_name.toLowerCase().includes(searchInputLower);
+  //       const bIncludes = b.category_name.toLowerCase().includes(searchInputLower);
+  //       return bIncludes - aIncludes; // Ensure matching rows come first
+  //     });
 
-    setFilteredData(filteredAndSortedData);
-  }, [searchInput, data]);
+  //   setFilteredData(filteredAndSortedData);
+  // }, [searchInput, data]);
 
-  const highlightText = (text, highlight) => {
-    if (!highlight) return text;
-    const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
-    return parts.map((part, index) =>
-      part.toLowerCase() === highlight.toLowerCase() ? (
-        <span key={index} style={{ backgroundColor: 'yellow' }}>{part}</span>
-      ) : (
-        part
-      )
-    );
-  };
+  // const highlightText = (text, highlight) => {
+  //   if (!highlight) return text;
+  //   const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
+  //   return parts.map((part, index) =>
+  //     part.toLowerCase() === highlight.toLowerCase() ? (
+  //       <span key={index} style={{ backgroundColor: 'yellow' }}>{part}</span>
+  //     ) : (
+  //       part
+  //     )
+  //   );
+  // };
   return (
     <>
     <div className='flex w-full font-Poppins'>
@@ -314,8 +492,8 @@ const UserAndGroups = () => {
           <input
             type='text'
             placeholder='Group ID'
-            value={categoryId}
-            onChange={(e) => setCategoryId(e.target.value)}
+            value={groupId}
+            onChange={(e) => setGroupId(e.target.value)}
             className=' w-[75px] -mt-[10px] text-center rounded-3xl py-[14px] pl-1 text-[#214082] placeholder:text-[#214082] outline-[#214082]'
             style={{ '::placeholder': { color: '#214082' } }}
             readOnly
@@ -323,17 +501,29 @@ const UserAndGroups = () => {
           <input
             type='text'
             placeholder='Group Name'
-            value={categoryName}
-            onChange={(e) => setCategoryName(e.target.value)}
+            value={groupName}
+            onChange={(e) => setGroupName(e.target.value)}
             className=' w-[95px] rounded-3xl text-center -mt-[10px]  py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'
           />
            <input
             type='text'
             placeholder='Group Description'
-            value={categoryName}
-            onChange={(e) => setCategoryName(e.target.value)}
+            value={groupDescription}
+            onChange={(e) => setGroupDescription(e.target.value)}
             className=' w-[115px] rounded-3xl text-center -mt-[10px]  py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'
           />
+          <select
+      className='w-[115px] rounded-3xl text-center -mt-[10px] py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'
+      value={groupId}
+      onChange={(e) => setSelectedUserId(e.target.value)}
+>
+  <option value="">Select User</option>
+  {users.map((user) => (
+    <option key={user.user_id} value={user.user_id}>
+      {user.user_name}
+    </option>
+  ))}
+</select>
            
            {/* {parentCategoryFlag === 'N' && (
         <select
@@ -355,7 +545,7 @@ const UserAndGroups = () => {
   onClick={handleSubmit}
   className='bg-[#214082] w-[80px] -mt-[10px] ml-[20px] py-[14px] rounded-3xl text-white flex items-center justify-center'
 >
-  {isEditing ? 'Update' : 'Add Users'}
+  {isEditing ? 'Update' : 'Add'}
 </button>
         </div>
       )}
@@ -444,29 +634,32 @@ const UserAndGroups = () => {
           </tr>
         </thead>
         <tbody className='bg-white border-gray-500 '>
-        {filteredData.map(category => (
-          <tr key={category.category_id}>
+        {filteredGroups.map(group => (
+          <tr key={group.group_id}>
             <td className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
-              {highlightText(category.category_id.toString(), searchInput)}
+              {highlightText(group.group_id.toString(), searchInput)}
             </td>
             <td className='px-4 py-2 border text-[#214082] font-medium text-[10px]'>
-              {highlightText(category.category_name, searchInput)}
+              {highlightText(group.group_name, searchInput)}
             </td>
             <td className='px-4 py-2 border text-[#214082] font-medium text-[10px]'>
-              {highlightText(category.category_name, searchInput)}
+              {highlightText(group.group_description, searchInput)}
             </td>
             <td className='px-4 py-2 border text-[#214082] font-medium text-[10px] text-center'>
-              {highlightText(category.parent_category_flag, searchInput)}
+            {highlightText(group.active_flag ? 'Active' : 'Inactive', searchInput)}
             </td>
             <td className='px-4 py-2 border text-[#214082] font-medium text-[10px]'>
-              {highlightText(category.parent_category_name ? category.parent_category_name : '', searchInput)}
+              {filteredUsers
+                .filter(user => group.user_ids.includes(user.user_id))
+                .map(user => user.user_name)
+                .join(', ')}
             </td>
             <td className='h-full border text-[#214082] flex gap-2 pl-[40px] pt-2 text-[12px] cursor-pointer hover:font-medium hover:underline'>         
               <img
                 className='h-[13px] w-[13px] mr-1 cursor-pointer'
                 src={Edit}
                 alt="Edit"
-                onClick={() => handleEdit(category)}
+                onClick={() => handleEdit(group)}
               />
              <button className='flex text-orange-500 w-[30px] h-[30px]' ><RiDeleteBinLine/></button>
 

@@ -44,6 +44,9 @@ const LogoutBar = (data) => {
   // const handleBackToLogin = () => {
   //   navigate("/login");
   // };
+ const navigateToMyHistory = () =>{
+  navigate("/myhistory")
+ }
  const handleBackToglobalLeaderboard =() =>{
   navigate("/globalleaderboard");
  }
@@ -387,7 +390,7 @@ function handleViewImage(event) {
 
           <div className="flex">
             <span className="text-[20px] text-[#E97132] ml-[15px] mt-[5px] font-semibold">{totalQuizzes}</span>
-            <h1 className="text-[12px] mt-[13px] ml-[5px] font-medium">Quizzes</h1>
+            <h1 className="text-[12px] mt-[13px] ml-[5px] font-medium cursor-pointer" onClick={navigateToMyHistory}>Quizzes</h1>
           </div>
           <div className="flex -mt-[15px]">
             <span className="text-[20px] text-[#E97132] ml-[15px] mt-[10px] font-semibold text-nowrap">{totalMinutes}</span>

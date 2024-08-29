@@ -185,7 +185,15 @@ const configure = () => {
             {item.content.split(', ').map((contentItem, index) => (
                  <p
                  key={index} 
-                 className={`mt-3 text-[10px] ml-[20px] font-semibold cursor-pointer ${item.title === 'Configuration' && 'text-[#3340AF]'} ${item.title === 'Configuration' ? 'hover:underline hover:underline-offset-2' : 'text-gray-500'}`} 
+                 className={`mt-3 text-[10px] ml-[20px] font-semibold ${
+                  contentItem === 'Quiz sharing and access control' && item.title === 'Quizzes' 
+                  ? 'text-gray-500' 
+                  : contentItem === 'User Groups' && item.title === 'User & Roles'
+                  ? 'text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer'
+                  : ['Configuration', 'Quizzes'].includes(item.title) 
+                  ? 'text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer' 
+                  : 'text-gray-500'
+              }`}                   
                  onClick={
                   contentItem === 'Categories' ? handleCategoriesClick : 
                   contentItem === 'Courses' ? handleCoursesClick :                 

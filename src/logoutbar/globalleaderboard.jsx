@@ -278,7 +278,7 @@ useEffect(() => {
 
         <tbody className='space-y-4'>
             {currentRows.map((user, index) =>(
-              <tr key={user.user_id} className="bg-white hover:bg-gray-100 active:bg-green-200 text-[12px] text-[#002366] border-black">
+              <tr key={user.user_id} className="bg-white hover:bg-gray-100 active:bg-green-200 text-[12px] text-[#002366] font-medium border-black">
               <th className='py-2 px-2 border-b'>{indexOfFirstRow + index + 1}</th>
               <th className='py-2 px-2 border-b text-start'>{user.full_name}</th>
               <th className='py-2 px-2 border-b'>{user.global_score_rank}</th>

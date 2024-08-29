@@ -44,6 +44,9 @@ const LogoutBar = (data) => {
   // const handleBackToLogin = () => {
   //   navigate("/login");
   // };
+ const handleBackToglobalLeaderboard =() =>{
+  navigate("/globalleaderboard");
+ }
 
  const handleToProfile =() =>{
   navigate("/free-profile");
@@ -375,21 +378,24 @@ function handleViewImage(event) {
               <p className="text-[20px] text-[#5E81F4]  text-start  font-bold">{globalscore}</p>
               <h1 className="relative font-Poppins text-[13px]">Global Score</h1>
               </div>
+              <div className="text-xs text-[#002366] text-start -ml-12 mt-1">
+              <p onClick={handleBackToglobalLeaderboard}>Click <span className="text-[#E97132] underline underline-offset-1 cursor-pointer font-bold">here</span> to Global score leader board</p>
+              </div>
               </div>
             </div>
             <div className="h-[5px] w-full bg-white mt-[10px]"></div>
 
           <div className="flex">
-            <span className="text-[25px] text-[#E97132] ml-[25px] mt-[5px] font-semibold">{totalQuizzes}</span>
-            <h1 className="text-[12px] mt-[20px] ml-[5px] font-medium">Quizzes</h1>
+            <span className="text-[20px] text-[#E97132] ml-[15px] mt-[5px] font-semibold">{totalQuizzes}</span>
+            <h1 className="text-[12px] mt-[13px] ml-[5px] font-medium">Quizzes</h1>
           </div>
           <div className="flex -mt-[15px]">
-            <span className="text-[25px] text-[#E97132] ml-[25px] mt-[10px] font-semibold">{totalMinutes}</span>
-            <h1 className="mt-[23px] ml-[5px] text-[12px] text-nowrap font-normal">Total Minutes</h1>
+            <span className="text-[20px] text-[#E97132] ml-[15px] mt-[10px] font-semibold text-nowrap">{totalMinutes}</span>
+            <h1 className="mt-[20px] ml-[5px] text-[12px] text-nowrap font-normal">Total Minutes</h1>
 
           </div><div className="flex -mt-[15px]">
-            <span className="text-[25px] text-[#E97132] ml-[25px] mt-[10px] font-semibold">{averageScorePercentage}%</span>
-            <h1 className="mt-[23px] ml-[5px] text-[12px] font-normal">Average</h1>
+            <span className="text-[20px] text-[#E97132] ml-[15px] mt-[10px] font-semibold">{averageScorePercentage}%</span>
+            <h1 className="mt-[20px] ml-[5px] text-[12px] font-normal">Average</h1>
           </div>
           
           {/* <div className="h-[5px] w-full bg-white mt-[10px]"></div>
@@ -413,7 +419,7 @@ function handleViewImage(event) {
 
           <div className="h-[5px] w-full bg-white mt-[10px]"></div>
         
-          <div className="mt-[235px] ml-2">
+          <div className="mt-[200px] ml-2">
             <h1 className="text-[13px] text-start text-[#002366] font-semibold">Registered On :<span className="pl-1 font-normal text-[12px]">{registeredOn}</span></h1>
             <h1 className="text-[13px] text-start text-[#002366] font-semibold">Last Login : <span className="font-normal text-[12px]">{lastLogin}</span></h1>
             <h1 className="text-[13px] text-start text-[#002366] font-semibold">Password Changed : <span className="font-normal text-[12px]">{passwordChanged}</span></h1>

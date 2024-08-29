@@ -110,7 +110,7 @@ const Dashboard = () => {
     }
     const fetchQuizData = async () => {
       try {
-        const response = await fetch(`https://dev.quizifai.com:8010/dashboard`, {
+        const response = await fetch('https://dev.quizifai.com:8010/dashboard', {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -562,7 +562,7 @@ const Dashboard = () => {
               .filter(quizItem => {
                 const quizCreateDate = new Date(quizItem.quiz_start_date);
                 const quizEndDate = quizItem.quiz_end_date ? new Date(quizItem.quiz_end_date) : null;
-                return quizItem.active_flag === true &&
+                return quizItem.active_flag === "true" &&
                        quizItem.latest_flag === "Y" &&
                        currentDate >= quizCreateDate &&
                        (quizEndDate === null || currentDate <= quizEndDate);
@@ -1159,7 +1159,7 @@ const Dashboard = () => {
                .filter(quizItem => {
                 const quizCreateDate = new Date(quizItem.quiz_start_date);
                 const quizEndDate = quizItem.quiz_end_date ? new Date(quizItem.quiz_end_date) : null;
-                return quizItem.active_flag === true &&
+                return quizItem.active_flag === "true" &&
                        quizItem.latest_flag === "Y" &&
                        currentDate >= quizCreateDate &&
                        (quizEndDate === null || currentDate <= quizEndDate);

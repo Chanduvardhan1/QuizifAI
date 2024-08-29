@@ -91,6 +91,7 @@ import PrivateRoute from './privateRoute/privateRoute.jsx';
 import Classes from './configure/classes.jsx';
 import Subjects from './configure/subjects.jsx';
 import Myhistory from './myhistory/myhistory.jsx';
+import Globalleaderboard from './logoutbar/globalleaderboard.jsx';
 // import Home from "./pages/Home.jsx";
 // import ContactUs from "./pages/ContactUs.jsx";
 // import NoPage from "./pages/NoPage.jsx";
@@ -364,6 +365,7 @@ import PaperTemplates from './questionpapers/papertemplates.jsx';
     <Route path='headersection' element={<HeaderSection/>}/>
     <Route path='userandgroups' element={<UserAndGroups/>}/>
     <Route path='papertemplates' element={<PaperTemplates/>}/>
+    <Route path='globalleaderboard' element={<Globalleaderboard/>}/>
   </Route>
 </Routes>
 

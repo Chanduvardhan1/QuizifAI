@@ -176,8 +176,7 @@ const configure = () => {
 
         <div className='flex flex-wrap gap-[20px] mt-[20px] ml-[15px] mr-[10px] justify-center'>
          {filteredItems.map(item => (
-        <div
-            key={item.id}
+        <div key={item.id}
             className='h-auto pb-[20px] w-[calc((100%-80px)/4)] bg-white rounded-md shadow-xl transition-transform duration-300 transform scale-95 hover:scale-100 flex-none'
         >
             <h1 className='text-[12px] font-semibold text-[#EF5130] text-center pt-2'>

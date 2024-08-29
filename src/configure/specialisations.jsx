@@ -95,7 +95,7 @@ const specialisations = () => {
     };
   
     try {
-      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+      const authToken = localStorage.getItem('authToken');
   
       if (!authToken) {
         console.error('No authentication token found');
@@ -127,7 +127,6 @@ const specialisations = () => {
       updateSpecialization();
     } else {
         handleSubmit1();
-    
     }
   };
   
@@ -163,9 +162,12 @@ const specialisations = () => {
   useEffect(() => {
     fetchCourses();
   }, []);
+
   const toggleNavbar = () => {
     setIsNavbarOpen(!isNavbarOpen);
   };
+
+
   const handleEdit = (course) => {
     if (selectedCategoryId === course.course_id) {
       // Toggle the form visibility if the same course ID is clicked
@@ -234,11 +236,11 @@ const specialisations = () => {
         onChange={(e) => setSpecializationShortName(e.target.value)}
         className='w-[150px] rounded-3xl text-center -mt-[10px] py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'        
       />
-       <select
+
+<select
   className="rounded-3xl text-center -mt-[10px] w-[150px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
   value={courseId}
-  onChange={(e) => setCourseId(e.target.value)}
->
+  onChange={(e) => setCourseId(e.target.value)}>
   <option value="">Select a course</option>
   {courses.map((course) => (
     <option key={course.course_id} value={course.course_id}>
@@ -247,14 +249,13 @@ const specialisations = () => {
   ))}
 </select>
          
- <button
-onClick={handleSubmit}
+ <button onClick={handleSubmit}
   className='bg-[#214082] w-[80px] -mt-[10px] ml-[20px] py-[14px] rounded-3xl text-white flex items-center justify-center'
 >
   {isEditing ? 'Update' : 'Add'}
-</button>
-        </div>
-      )}
+  </button>
+</div>
+  )}
       
 
       <table className='h-[20px] table-auto mt-[30px] mx-[20px] rounded text-left bg-[#F7E0E3] text-[#2b51a1] text-[13px] font-light'>

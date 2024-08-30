@@ -176,8 +176,7 @@ const configure = () => {
 
         <div className='flex flex-wrap gap-[20px] mt-[20px] ml-[15px] mr-[10px] justify-center'>
          {filteredItems.map(item => (
-        <div
-            key={item.id}
+        <div key={item.id}
             className='h-auto pb-[20px] w-[calc((100%-80px)/4)] bg-white rounded-md shadow-xl transition-transform duration-300 transform scale-95 hover:scale-100 flex-none'
         >
             <h1 className='text-[12px] font-semibold text-[#EF5130] text-center pt-2'>
@@ -186,7 +185,15 @@ const configure = () => {
             {item.content.split(', ').map((contentItem, index) => (
                  <p
                  key={index} 
-                 className={`mt-3 text-[10px] ml-[20px] font-semibold cursor-pointer ${item.title === 'Configuration' && 'text-[#3340AF]'} ${item.title === 'Configuration' ? 'hover:underline hover:underline-offset-2' : 'text-gray-500'}`} 
+                 className={`mt-3 text-[10px] ml-[20px] font-semibold ${
+                  contentItem === 'Quiz sharing and access control' && item.title === 'Quizzes' 
+                  ? 'text-gray-500' 
+                  : contentItem === 'User Groups' && item.title === 'User & Roles'
+                  ? 'text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer'
+                  : ['Configuration', 'Quizzes'].includes(item.title) 
+                  ? 'text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer' 
+                  : 'text-gray-500'
+              }`}                   
                  onClick={
                   contentItem === 'Categories' ? handleCategoriesClick : 
                   contentItem === 'Courses' ? handleCoursesClick :                 

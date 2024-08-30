@@ -16,6 +16,7 @@ import "react-sweet-progress/lib/style.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
 const FreeProfile = () => {
   const getFormattedDate = () => {
     const currentDate = new Date();
@@ -647,18 +648,74 @@ const handleLoginCancelClick1 = () =>{
   setShowNewPasswords(false);
 
 }
+// Image handling and crop logic
+useEffect(() => {
+  const savedImage = localStorage.getItem('savedImage');
+  if (savedImage) {
+    setImage(savedImage);
+  }
+}, []);
+
 function handleImageClick() {
   if (inputReff.current && typeof inputReff.current.click === 'function') {
-      inputReff.current.click(); // Correct method name
+    inputReff.current.click(); // Open file dialog
   } else {
-      console.error('click method is not available on inputReff.current');
+    console.error('click method is not available on inputReff.current');
   }
 }
+
 function handleImageChange(event) {
-const file = event.target.files[0];
-console.log(file);
-setImage(event.target.files[0]);
-};
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const imageDataUrl = reader.result;
+      // localStorage.setItem('savedImage', imageDataUrl);
+      setImage(imageDataUrl);
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+ const handleCropComplete = (crop) => {
+  setCompletedCrop(crop);
+ } 
+function handleReplaceImage(event) {
+  event.stopPropagation(); // Prevent the click from triggering the parent div's click event
+  handleImageClick(); // Open file dialog
+}
+
+function handleDeleteImage(event) {
+  event.stopPropagation(); // Prevent the click from triggering the parent div's click event
+  localStorage.removeItem('savedImage'); // Remove from local storage
+  setImage(""); // Reset to default image
+}
+
+function handleViewImage(event) {
+  event.stopPropagation(); // Prevent the click from triggering the parent div's click event
+  if (image) {
+    // Create a temporary link element
+    const link = document.createElement('a');
+    link.href = image;
+    link.target = '_blank'; // Open in a new tab
+    link.click(); // Simulate click to open the image
+  } else {
+    console.error('No image available to view');
+  }
+}
+ const onImageLoad = (e) =>{
+  const {width,height} = e.currentTarget;
+  const crop = makeAspectCrop(
+    {
+      unit : '%',
+      width : 25,
+    },
+    ASPECT_RATIO,
+      width,
+      height
+  );
+  setCrop(crop);
+ }
   return (
     <div className={styles.container}>
       <Navigation />
@@ -689,19 +746,30 @@ setImage(event.target.files[0]);
             <h1 className=" text-[13px] text-[#EF5130] font-semibold relative top-3 left-2 text-nowrap">
                   Personal Information
                 </h1>
-              <div className="rounded-full w-[100px] ml-[25px] mt-8 h-[100px]" onClick={handleImageClick} style={{ position: "relative"}}>         
-        {image ? (
-        <img className="w-[100px]  h-[100px] rounded-full border-2 border-white" src={URL.createObjectURL(image)} alt="Background Image"/>
-        ): (
-          <img className="w-[100px]  h-[100px] rounded-full border-2 border-white" src={profileimg} alt="Background Image"/>
-        )}
-        <input type="file" ref={inputReff} onChange={handleImageChange} style={{display: "none"}}/>
+      <div className="rounded-full w-[100px] ml-[5px] h-[100px] mt-10" style={{ position: "relative" }}>
+      {image ? (
+        <img className="w-[80px] h-[80px] rounded-full border-2 border-white" src={image} alt="Uploaded" />
+      ) : (
+        <img className="w-[80px] h-[80px] rounded-full border-2 border-white" src={profileimg} alt="Default" />
+      )}
+      <input type="file" ref={inputReff} onChange={handleImageChange} style={{ display: "none" }} />
+
+      {/* <div className="bg-[#C3EAF3] rounded-full w-fit h-[24px] px-[2px] py-[1px] relative left-14 -top-9">
+        <div className="rounded-full w-fit h-[28px] px-[2px] py-[2px] flex items-center justify-center group">
+          <img className="h-4 w-4 relative -top-[3px] cursor-pointer" src={Camera} alt="Camera" />
+          <div className="absolute top-full text-[7px] left-0 right-[30px] mt-1 bg-white rounded-sm text-black w-fit h-[37px] cursor-pointer px-1 py-[2px] text-nowrap items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <p onClick={handleReplaceImage}>Replace Image</p><br/>
+            <p className="relative -top-[10px]" onClick={handleViewImage}>View Image</p><br/>
+            <p className="relative -top-[20px]" onClick={handleDeleteImage}>Delete Image</p>
+          </div>
         </div>
+      </div> */}
+    </div>
             </div>
           </div>  
         </div>
 
-        <div className="-ml-[5px]">
+        <div className="-ml-[55px]">
            {/* first name and occupation  */}
         <div className="flex flex-nowrap mt-[55px] ml-[85px]">
               <div className={styles.inputGroup1}>
@@ -1080,7 +1148,7 @@ setImage(event.target.files[0]);
     <h1 className="ml-[6%] mt-4 text-[13px] text-[#EF5130] font-semibold">Login User Details</h1>
      <div
             className={styles.inputGroup1}
-            style={{ marginLeft: "200px", textWrap: "nowrap",marginTop:"5px" }}
+            style={{ marginLeft: "168px", textWrap: "nowrap",marginTop:"5px" }}
           >
             <label className="text-blue-800 font-semibold">Login Method</label>
             <button
@@ -1103,7 +1171,7 @@ setImage(event.target.files[0]);
       </button>
             <hr className="h-[1px] w-[90px] bg-gray-200"></hr>
           </div>
-    <div className="flex ml-[30%] mt-[20px]">
+    <div className="flex ml-[28%] mt-[20px]">
     {preferredLoginMethod === 'Email' && (
         <div className={styles.inputGroup1} style={{ marginLeft: "-60px" }}>
           <label className="text-blue-800 font-semibold">Email</label>
@@ -1201,7 +1269,7 @@ setImage(event.target.files[0]);
 {/* *************password details ******************************* */}
   <div className="bg-white w-full">
       <h1 className="ml-[6%] mt-4 text-[13px] text-[#EF5130] font-semibold">Update Password</h1>
-      <div className="flex ml-[30%] mt-[20px]">
+      <div className="flex ml-[27%] mt-[20px]">
         <div className="inputGroup1" style={{ marginLeft: "-50px" }}>
           <label className="text-blue-800 text-[13px] font-semibold">Password</label>
           <input

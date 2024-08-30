@@ -337,7 +337,8 @@ padding-top: 10px;
   display: flex;
   flex-direction: column;
   padding: 2px;
-  background-color: #e2e8f0;
+  /* background-color: #e2e8f0; */
+  background-color: #f0eee2;
   clip-path: polygon(0% 0%, 80% 0, 81% 16%, 95% 26%, 81% 34%, 81% 100%, 0 100%);
 }
 .highlightedCard {

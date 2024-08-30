@@ -5,7 +5,8 @@ import Navigation from "../navbar/navbar.jsx";
 import LogoutBar from "../logoutbar/logoutbar.jsx";
 import { Line } from "rc-progress";
 import { useNavigate } from "react-router-dom";
-
+import Delete from "../../src/assets/Images/dashboard/delete.png";
+import disable from "../../src/assets/Images/dashboard/disable.png";
 import Plus from "../../src/assets/Images/dashboard/Plus.png";
 import Start_button from "../../public/images/dashboard/Start-button.png";
 import start from "../../src/assets/Images/dashboard/non-attempted-start.png";
@@ -25,6 +26,7 @@ import "react-sweet-progress/lib/style.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from '../Authcontext/AuthContext'; // Adjust the import path if needed
+import Modal from "react-modal";
 
 const Dashboard = () => {
   const getFormattedDate = () => {
@@ -58,7 +60,106 @@ const Dashboard = () => {
 
   const navigate = useNavigate();
   const { isAuthenticated, authToken } = useContext(AuthContext);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+  const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
+ 
+    const [quizId, setQuizId] = useState(0); // Ensure quizId is properly initialized
+  const [userid, setUserid] = useState(null);
+  const [modalIsOpen1, setModalIsOpen1] = useState(false);
+  const [isChecked1, setIsChecked1] = useState(false);
+  const [isDisableConfirmed, setIsDisableConfirmed] = useState(false);
 
+  const confirmDelete = () => {
+    setIsDeleteConfirmed();
+  };
+
+  const confirmDisable = () => {
+    setIsDisableConfirmed(true);
+  };
+  const handleDisableQuiz = async () => {
+    try {
+      const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
+  
+      if (!authToken) {
+        throw new Error('No authentication token found');
+      }
+  
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`,
+      };
+  
+      const body = JSON.stringify({
+        user_id: userId, // Replace with actual user ID
+        quiz_id: quizId, // Replace with actual quiz ID
+      });
+  
+      const response = await fetch('https://dev.quizifai.com:8010/disable_quiz/', {
+        method: 'POST',
+        headers,
+        body,
+      });
+  
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Disable response:", result);
+        setModalIsOpen1(false);
+      } else {
+        console.error('Failed to disable quiz');
+      }
+    } catch (error) {
+      console.error('Error during disable operation:', error);
+    }
+  };
+  useEffect(() => {
+    if (isDisableConfirmed) {
+      handleDisableQuiz();
+    }
+  }, [isDisableConfirmed]);
+
+  const handleDeleteQuiz = async () => {
+    console.log('Deleting quiz with userId:', userId, 'and quizId:', quizId); 
+    try {
+        const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
+    
+        if (!authToken) {
+            throw new Error('No authentication token found');
+        }
+    
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+        };
+    
+        const body = JSON.stringify({
+            user_id: userid,
+            quiz_id: quizId,
+        });
+    
+        const response = await fetch('https://dev.quizifai.com:8010/delete_quiz/', {
+            method: 'POST',
+            headers,
+            body,
+        });
+    
+        if (response.ok) {
+            const result = await response.json();
+            console.log("Delete response:", result);
+            setModalIsOpen(false);
+            // Optionally, refresh the quiz list or update the UI
+        } else {
+            console.error('Failed to delete quiz');
+        }
+    } catch (error) {
+        console.error('Error during delete operation:', error);
+    }
+};
+useEffect(() => {
+  if (isDeleteConfirmed) {
+    handleDeleteQuiz();
+  }
+}, [isDeleteConfirmed]);   
   // useEffect(() => {
   //   const token = localStorage.getItem('authToken');
   //   console.log("Token from localStorage:", token); // Debugging line
@@ -683,6 +784,54 @@ const Dashboard = () => {
                                 Leaderboard
                               </span>
                               </div>
+                              {userRole === "Quiz Master" && (
+                                  <div className={styles.start}>
+                                  <img
+                                    className={styles.startimage}
+                                    src={disable}
+                                    alt="Play icon"
+                                  />
+                                  <span
+                                    className={styles.starttext}
+                                    onClick={() =>setModalIsOpen1(true) }
+                                  >
+                                    Disable
+       </span>
+      <Modal
+      isOpen={modalIsOpen1}
+      onRequestClose={() => setModalIsOpen1(false)}
+      className="bg-white rounded-lg p-8 mx-auto mt-10 max-w-md border-red-400 border-[1px]"
+      overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+    >
+      <h2 className="text-xl font-semibold mb-4">Are you sure you want to disable this card?</h2>
+      <div className="mb-4">
+        <input
+          type="checkbox"
+          id="confirmCheckbox"
+          className="mr-2"
+          checked={isChecked1}
+          onChange={(e) => setIsChecked1(e.target.checked)}
+        />
+        <label htmlFor="confirmCheckbox">I understand the consequences.</label>
+      </div>
+      <div className="flex justify-end space-x-4">
+        <button
+          className={`bg-red-500 text-white px-4 py-2 rounded ${!isChecked1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+          onClick={confirmDisable}
+          disabled={!isChecked1}
+        >
+          Disable
+        </button>
+        <button
+          className="bg-gray-300 text-black px-4 py-2 rounded"
+          onClick={() => setModalIsOpen1(false)}
+        >
+          Cancel
+        </button>
+      </div>
+    </Modal>
+    </div>
+  )}
                               {/* {userRole === "Quiz Master" && (
                               <div className={styles.edit}>
                                 <img
@@ -731,17 +880,19 @@ const Dashboard = () => {
                             </span>
                           </span>
 
-                          <button
-                            className="cursor-pointer ml-auto relative top-1 right-1 flex gap-[2px] border-2 bg-[#F5F8F9] rounded-xl border-[#472E86] h-[16px] w-[34.5px]"
-                            onClick={() => handleStartQuiz1(quizItem.quiz_id, quizItem.attempts_count, quizItem.retake_flag)}
-                          >
-                            <img
-                              className="h-[5.5px] w-[4.5px] relative top-[3.5px] left-[2px]"
-                              src={PlayButton}
-                              alt="Start button"
-                            />
-                            <h1  className="text-[#472E86] text-[6px] relative top-[2px] pl-[1px] font-bold">Retake</h1>
-                          </button>
+                          {quizItem.attempts_count < quizItem.retake_flag && (
+  <button
+    className="cursor-pointer ml-auto relative -top-[5px] right-1 flex gap-[2px] border-2 bg-[#F5F8F9] rounded-xl border-[#472E86] h-[16px] w-[34.5px]"
+    onClick={() => handleStartQuiz1(quizItem.quiz_id, quizItem.attempts_count, quizItem.retake_flag)}
+  >
+    <img
+      className="h-[5.5px] w-[4.5px] relative top-[3.5px] left-[2px]"
+      src={PlayButton}
+      alt="Start button"
+    />
+    <h1 className="text-[#472E86] text-[6px] relative top-[2px] pl-[1px] font-bold">Retake</h1>
+  </button>
+)}
                       </div>
                       <div className="h-1 -mt-[8px] pl-[10px] text-[7px] text-[#002366] font-semibold relative -top-[6px]">
                             <h3>Quiz ID : {quizItem.quiz_id}</h3>
@@ -980,6 +1131,104 @@ const Dashboard = () => {
                                   Leaderboard
                                 </span>
                               </div>
+                              {userRole === "Quiz Master" && (
+                            <div className={styles.start}>
+                            <img
+                              className={styles.startimage}
+                              src={Delete}
+                              alt="Play icon"
+                            />
+                            <span
+                              className={styles.starttext}
+                              onClick={() => {setModalIsOpen(true)}}
+                            >
+                              Delete
+                            </span>
+        <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        className="bg-white rounded-lg p-8 mx-auto max-w-md border-red-400 border-[1px]"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+    >
+        <h2 className="text-xl font-semibold mb-4">Are you sure you want to delete this card?</h2>
+        <div className="mb-4">
+            <input
+                type="checkbox"
+                id="confirmCheckbox"
+                className="mr-2"
+                checked={isChecked}
+                onChange={(e) => setIsChecked(e.target.checked)}
+            />
+            <label htmlFor="confirmCheckbox">I understand the consequences.</label>
+        </div>
+        <div className="flex justify-end space-x-4">
+            <button
+                className={`bg-red-500 text-white px-4 py-2 rounded ${!isChecked ? 'opacity-50 cursor-not-allowed' : ''}`}
+                onClick={confirmDelete}
+                disabled={!isChecked}
+            >
+                Delete
+            </button>
+            <button
+                className="bg-gray-300 text-black px-4 py-2 rounded"
+                onClick={() => setModalIsOpen(false)}
+            >
+                Cancel
+            </button>
+        </div>
+    </Modal>
+</div>
+     )}
+                                
+
+                                {userRole === "Quiz Master" && (
+                                  <div className={styles.start}>
+                                  <img
+                                    className={styles.startimage}
+                                    src={disable}
+                                    alt="Play icon"
+                                  />
+                                  <span
+                                    className={styles.starttext}
+                                    onClick={() =>setModalIsOpen1(true) }
+                                  >
+                                    Disable
+                                  </span>
+      <Modal
+      isOpen={modalIsOpen1}
+      onRequestClose={() => setModalIsOpen1(false)}
+      className="bg-white rounded-lg p-8 mx-auto mt-10 max-w-md border-red-400 border-[1px]"
+      overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+    >
+      <h2 className="text-xl font-semibold mb-4">Are you sure you want to disable this card?</h2>
+      <div className="mb-4">
+        <input
+          type="checkbox"
+          id="confirmCheckbox"
+          className="mr-2"
+          checked={isChecked1}
+          onChange={(e) => setIsChecked1(e.target.checked)}
+        />
+        <label htmlFor="confirmCheckbox">I understand the consequences.</label>
+      </div>
+      <div className="flex justify-end space-x-4">
+        <button
+          className={`bg-red-500 text-white px-4 py-2 rounded ${!isChecked1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+          onClick={confirmDisable}
+          disabled={!isChecked1}
+        >
+          Disable
+        </button>
+        <button
+          className="bg-gray-300 text-black px-4 py-2 rounded"
+          onClick={() => setModalIsOpen1(false)}
+        >
+          Cancel
+        </button>
+      </div>
+    </Modal>
+                                </div>
+                                )}
                               {/* {userRole === "Quiz Master" && (
                               <div className={styles.edit}>
                                 <img
@@ -1333,17 +1582,19 @@ const Dashboard = () => {
                             </span>
                           </span>
 
-                          <button
-                            className="cursor-pointer ml-auto relative top-1 right-1 flex gap-[2px] border-2 bg-[#F5F8F9] rounded-xl border-[#472E86] h-[16px] w-[34.5px]"
-                            onClick={() => handleStartQuiz1(quizItem.quiz_id, quizItem.attempts_count, quizItem.retake_flag)}
-                          >
-                            <img
-                              className="h-[5.5px] w-[4.5px] relative top-[3.5px] left-[2px]"
-                              src={PlayButton}
-                              alt="Start button"
-                            />
-                            <h1  className="text-[#472E86] text-[6px] relative top-[2px] pl-[1px] font-bold">Retake</h1>
-                          </button>
+                          {quizItem.attempts_count < quizItem.retake_flag && (
+  <button
+    className="cursor-pointer ml-auto relative -top-[5px] right-1 flex gap-[2px] border-2 bg-[#F5F8F9] rounded-xl border-[#472E86] h-[16px] w-[34.5px]"
+    onClick={() => handleStartQuiz1(quizItem.quiz_id, quizItem.attempts_count, quizItem.retake_flag)}
+  >
+    <img
+      className="h-[5.5px] w-[4.5px] relative top-[3.5px] left-[2px]"
+      src={PlayButton}
+      alt="Start button"
+    />
+    <h1 className="text-[#472E86] text-[6px] relative top-[2px] pl-[1px] font-bold">Retake</h1>
+  </button>
+)}
                       </div>
                       <div className="h-1 -mt-[8px] pl-[10px] text-[7px] text-[#002366] font-semibold relative -top-[6px]">
                             <h3>Quiz ID : {quizItem.quiz_id}</h3>

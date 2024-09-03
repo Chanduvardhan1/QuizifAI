@@ -55,7 +55,7 @@ const quizresults = () => {
   const { quizId, attemptNo } = location.state || {};
   const [leaderboardData, setLeaderboardData] = useState([]);
   const navigate = useNavigate();
-  const [isQuizSubmitted, setIsQuizSubmitted] = useState(false); // State to track quiz submission
+  const [isQuizSubmitted, setIsQuizSubmitted] = useState(false);
   const resultRef = useRef();
  
   const optionLabels = {
@@ -194,6 +194,7 @@ const quizresults = () => {
         setQuizData(data);
         console.log('Quiz result submitted:', data);
         setIsQuizSubmitted(true); // Set the submission state to true after success
+        
       } catch (error) {
         console.error('Error submitting quiz result:', error);
         setIsQuizSubmitted(false); // Ensure it's false on error

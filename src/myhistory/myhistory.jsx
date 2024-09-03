@@ -291,7 +291,7 @@ const myhistory = () => {
                 </div>
               </div>
 
-              <div className="flex justify-evenly -mt-5 gap-24">
+              <div className="flex justify-evenly -mt-5 gap-3">
 
                 <div>
                   <div>
@@ -314,14 +314,14 @@ const myhistory = () => {
                   </div>
 
                   <div>
-                    <span>Total no.of score </span>
-                    <span className="pl-[30px] font-normal">
+                    <span>Total Score </span>
+                    <span className="pl-[68px] font-normal">
                       <span className="font-bold">:</span> {globalScore}
                     </span>
                   </div>
                 </div>
 
-                <div className="">
+                <div>
                   <div>
                     <span>Global Rank </span>
                     <span className="pl-1 font-normal">
@@ -330,31 +330,32 @@ const myhistory = () => {
                   </div>
                   <div className="text-nowrap">
                     <span>Global Score </span>
-                    <span className="pl-1 font-normal">
+                    <span className="font-normal">
                       <span className="font-bold">:</span> {globalScore}
                     </span>
                   </div>         
                 </div>
 
-                <div className="">
+                
                   <div className="flex">
                     <span>Complexity </span>
                     <span className=" font-normal">
                       <p className="text-normal text-nowrap flex">
-                        <span className="pl-1 font-bold">:</span><img className="h-3 w-[20px] ml-3 mr-1" src={Easy} alt="easy icon"/> Simple{" "}
+                        <span className="px-1 font-bold">:</span> Simple{" "}
                       
-                        <span className="pl-[20px]">-{simpleCount}</span>
+                        <span className="pl-[25px]">-<span className="border border-black px-1">{simpleCount}</span></span>
                       </p>
-                      <p className="pl-3 text-nowrap flex">
-                        <img className="h-[12px] w-[20px] ml-2 mr-1" src={Moderate} alt="Moderate icon"/>Moderate -{moderateCount}
+                      <p className="pl-[14px] text-nowrap flex mt-2">
+                       Moderate -<span className="border border-black px-1">{moderateCount}</span>
                       </p>
                       
-                      <p className="pl-3 text-nowrap flex">
-                       <img className="h-3 w-[20px] ml-2 mr-1" src={Complex} alt="complex icon"/> Complex{" "}
-                        <span className="pl-[6px]">-{complexCount}</span>
+                      <p className="pl-[14px] text-nowrap flex mt-2">
+                       Complex{" "}
+                      <span className="pl-[8px]">-<span className="border border-black px-1">{complexCount}</span></span>
                       </p>
                     </span>
                   </div>
+
                   <div className="flex">
                     <span className="pl-5">Pass/Fail : </span>
                     <span className=" font-normal pl-1">
@@ -362,7 +363,6 @@ const myhistory = () => {
                       <p className="">Fail-{FailCount}</p>
                     </span>
                   </div>
-                </div>
                 
               </div>
               
@@ -392,9 +392,9 @@ const myhistory = () => {
               <span className="text-[#F17530]">Sort by : </span>
               <span>
                 <select className="py-1 px-2 rounded-md" value={sortOption} onChange={handleSortChange}>
-                  <option value="All Quizzes">All Quizzes</option>
-                  <option value="This Week">Current Week</option>
-                  <option value="This Month">Current Month</option>
+                  <option value="This Day">This Day</option>
+                  <option value="This Week">This Week</option>
+                  <option value="This Month">This Month</option>
                 </select>
               </span>
             </div>

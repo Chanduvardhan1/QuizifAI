@@ -310,7 +310,7 @@ function handleViewImage(event) {
 
         <div style={{ textAlign: "center" }}>
           <p style={{ fontSize: "15px", marginBottom: "5px", fontWeight: 600 ,color:"#002366"}}>
-            {userName}
+            {userName.charAt(0).toUpperCase()+userName.slice(1)}
           </p>
           <p
             style={{
@@ -422,7 +422,7 @@ function handleViewImage(event) {
 
           <div className="h-[5px] w-full bg-white mt-[10px]"></div>
         
-          <div className="mt-[200px] ml-2">
+          <div className="mt-[220px] ml-2">
             <h1 className="text-[13px] text-start text-[#002366] font-semibold">Registered On :<span className="pl-1 font-normal text-[12px]">{registeredOn}</span></h1>
             <h1 className="text-[13px] text-start text-[#002366] font-semibold">Last Login : <span className="font-normal text-[12px]">{lastLogin}</span></h1>
             <h1 className="text-[13px] text-start text-[#002366] font-semibold">Password Changed : <span className="font-normal text-[12px]">{passwordChanged}</span></h1>

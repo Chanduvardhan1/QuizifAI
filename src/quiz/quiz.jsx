@@ -1,5 +1,5 @@
 // quizzes.js
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Select from "react-select";
 import styles from "./quiz.module.css";
 import Navigation from "../navbar/navbar.jsx";
@@ -27,7 +27,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../Authcontext/AuthContext.jsx";
 import Modal from "react-modal";
 
-// Modal.setAppElement('App.jsx');
+// Modal.setAppElement(el);
 const Quiz = () => {
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
   const [username, setUsername] = useState("");
@@ -73,86 +73,108 @@ const Quiz = () => {
   const [weeklyQuizCount, setWeeklyQuizCount] = useState(null);
   const [averageScorePercentage, setAverageScorePercentage] = useState(null);
   const { authToken } = useContext(AuthContext);
-  
+
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalIsOpen1, setModalIsOpen1] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [isChecked1, setIsChecked1] = useState(false);
+  const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
+  const [isDisableConfirmed, setIsDisableConfirmed] = useState(false);
+  // const [cardStatus, setCardStatus] = useState({});
 
-  const handleDelete = () => {
-    setModalIsOpen(true);
-  };
+  const [quizId, setQuizId] = useState(0); // Ensure quizId is properly initialized
+  const [userid, setUserid] = useState(null);
 
-  const confirmDelete = () => {
-    if (isChecked) {
-      setModalIsOpen(false);
-      handleStartQuiz(quizItem.quiz_id); // Your delete logic
-    }
+  const confirmDisable = () => {
+    setIsDisableConfirmed(true);
   };
 
   const navigate = useNavigate();
-  const userRole = localStorage.getItem('user_role');
-  
+  const userRole = localStorage.getItem("user_role");
+
   const sortAlphabetically = (arr) => {
     return arr.sort((a, b) => {
-      const valueA = a ? a.toLowerCase() : '';
-      const valueB = b ? b.toLowerCase() : '';
+      const valueA = a ? a.toLowerCase() : "";
+      const valueB = b ? b.toLowerCase() : "";
       return valueA.localeCompare(valueB);
     });
   };
-  
+
   useEffect(() => {
     const fetchDropdownValues = async () => {
       try {
-        const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
+        const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
 
         if (!authToken) {
-          throw new Error('No authentication token found');
+          throw new Error("No authentication token found");
         }
         const headers = {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authToken}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
         };
 
         // Fetch date range and popularity
-        const dateRangeResponse = await fetch('https://dev.quizifai.com:8010/get_date_rnge/', {
-          headers,
-        });
+        const dateRangeResponse = await fetch(
+          "https://dev.quizifai.com:8010/get_date_rnge/",
+          {
+            headers,
+          }
+        );
         const dateRangeResult = await dateRangeResponse.json();
         console.log("Date Range and Popularity data:", dateRangeResult);
         setDateRanges(sortAlphabetically(dateRangeResult["Date Range"]));
         setPopularity(sortAlphabetically(dateRangeResult["Popularity"]));
 
         // Fetch categories and subcategories
-        const categoriesResponse = await fetch('https://dev.quizifai.com:8010/categories&sub_categories/', {
-          headers,
-        });
+        const categoriesResponse = await fetch(
+          "https://dev.quizifai.com:8010/categories&sub_categories/",
+          {
+            headers,
+          }
+        );
         const categoriesResult = await categoriesResponse.json();
         console.log("Categories and Subcategories data:", categoriesResult);
-        setCategories(sortAlphabetically(categoriesResult.data.map(item => item.category_name)));
+        setCategories(
+          sortAlphabetically(
+            categoriesResult.data.map((item) => item.category_name)
+          )
+        );
         setAllSubCategories(categoriesResult.data);
 
         // Fetch complexities
-        const complexitiesResponse = await fetch('https://dev.quizifai.com:8010/complexities/', {
-          headers,
-        });
+        const complexitiesResponse = await fetch(
+          "https://dev.quizifai.com:8010/complexities/",
+          {
+            headers,
+          }
+        );
         const complexitiesResult = await complexitiesResponse.json();
         console.log("Complexities data:", complexitiesResult);
-        setComplexities(complexitiesResult.data.map(item => item.complexity_name));
+        setComplexities(
+          complexitiesResult.data.map((item) => item.complexity_name)
+        );
 
         // Fetch courses and classes
-        const coursesResponse = await fetch('https://dev.quizifai.com:8010/courses-clsses/', {
-          headers,
-        });
+        const coursesResponse = await fetch(
+          "https://dev.quizifai.com:8010/courses-clsses/",
+          {
+            headers,
+          }
+        );
         const coursesResult = await coursesResponse.json();
         console.log("Courses and Classes data:", coursesResult);
 
-        const uniqueCourseNames = Array.from(new Set(coursesResult.data.map(item => item.course_name)));
+        const uniqueCourseNames = Array.from(
+          new Set(coursesResult.data.map((item) => item.course_name))
+        );
         setCourses(sortAlphabetically(uniqueCourseNames));
 
-        const uniqueClasses = Array.from(new Set(coursesResult.data.map(item => JSON.stringify(item)))).map(item => JSON.parse(item));
+        const uniqueClasses = Array.from(
+          new Set(coursesResult.data.map((item) => JSON.stringify(item)))
+        ).map((item) => JSON.parse(item));
         setAllClasses(uniqueClasses);
-
       } catch (error) {
-        console.error('Error fetching dropdown values:', error);
+        console.error("Error fetching dropdown values:", error);
       }
     };
 
@@ -163,16 +185,19 @@ const Quiz = () => {
     const fetchQuizData = async () => {
       console.log("User ID:", userId);
       try {
-        const response = await fetch(`https://dev.quizifai.com:8010/dashboard`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${authToken}`,
-          },
-          body: JSON.stringify({
-            user_id: userId,
-          }),
-        });
+        const response = await fetch(
+          `https://dev.quizifai.com:8010/dashboard`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+            body: JSON.stringify({
+              user_id: userId,
+            }),
+          }
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch quiz data");
         }
@@ -199,10 +224,10 @@ const Quiz = () => {
         //       if (typeof a === "string" && typeof b === "string") {
         //         return a.toLowerCase().localeCompare(b.toLowerCase());
         //       }
-              // Handle non-string values or cases where a or b is not a string
-          //     return 0; 
-          //   }
-          // );
+        // Handle non-string values or cases where a or b is not a string
+        //     return 0;
+        //   }
+        // );
         // setDataRanges(uniqueValues("date_range"));
         // setPopularity(uniqueValues("quiz_attempts"));
         // setCategories(uniqueValues("category"));
@@ -216,7 +241,9 @@ const Quiz = () => {
         setUsername(userDetails.full_name);
 
         // Fetch created by details
-        const uniqueCreatedBy = sortAlphabetically([...new Set(data.all_quizzes.map(quiz => quiz.created_by))]);
+        const uniqueCreatedBy = sortAlphabetically([
+          ...new Set(data.all_quizzes.map((quiz) => quiz.created_by)),
+        ]);
         setCreatedBy(uniqueCreatedBy);
       } catch (error) {
         console.error("Error fetching quiz data:", error);
@@ -224,24 +251,27 @@ const Quiz = () => {
     };
 
     fetchQuizData();
-  }, [userId,authToken]);
-
+  }, [userId, authToken]);
 
   useEffect(() => {
     if (selectedCategory.length > 0) {
-      const selectedCategories = allSubCategories.filter(item =>
+      const selectedCategories = allSubCategories.filter((item) =>
         selectedCategory.includes(item.category_name)
       );
 
-      const newSubCategories = selectedCategories.flatMap(item =>
-        item.sub_categories.map(sub => sub.sub_category_name)
+      const newSubCategories = selectedCategories.flatMap((item) =>
+        item.sub_categories.map((sub) => sub.sub_category_name)
       );
 
       setFilteredSubCategories(sortAlphabetically(newSubCategories));
     } else {
-      setFilteredSubCategories(sortAlphabetically(allSubCategories.flatMap(item =>
-        item.sub_categories.map(sub => sub.sub_category_name)
-      )));
+      setFilteredSubCategories(
+        sortAlphabetically(
+          allSubCategories.flatMap((item) =>
+            item.sub_categories.map((sub) => sub.sub_category_name)
+          )
+        )
+      );
     }
   }, [selectedCategory, allSubCategories]);
 
@@ -259,19 +289,23 @@ const Quiz = () => {
 
   useEffect(() => {
     if (selectedCourses.length > 0) {
-      const selectedCoursesClasses = allClasses.filter(item =>
+      const selectedCoursesClasses = allClasses.filter((item) =>
         selectedCourses.includes(item.course_name)
       );
 
-      const newClasses = selectedCoursesClasses.flatMap(item =>
-        item.classes.map(cls => cls.class_name)
+      const newClasses = selectedCoursesClasses.flatMap((item) =>
+        item.classes.map((cls) => cls.class_name)
       );
 
       setFilteredClasses(sortAlphabetically(newClasses));
     } else {
-      setFilteredClasses(sortAlphabetically(allClasses.flatMap(item =>
-        item.classes.map(cls => cls.class_name)
-      )));
+      setFilteredClasses(
+        sortAlphabetically(
+          allClasses.flatMap((item) =>
+            item.classes.map((cls) => cls.class_name)
+          )
+        )
+      );
     }
   }, [selectedCourses, allClasses]);
 
@@ -296,9 +330,9 @@ const Quiz = () => {
       return updatedStates;
     });
   };
-const createquiz=() =>{
-  navigate('/create-quiz')
-}
+  const createquiz = () => {
+    navigate("/create-quiz");
+  };
 
   const Edit = (quizId) => {
     // navigate(`/quizaccess/${quizId}`);
@@ -336,17 +370,23 @@ const createquiz=() =>{
         mincompletiontime,
         quizattempts,
         avgscore,
-        max_percentage
+        max_percentage,
       },
     });
   };
 
-  const leaderboard1 = (quizId, attemptId, complexity,quizduration,passpercentage) => {
+  const leaderboard1 = (
+    quizId,
+    attemptId,
+    complexity,
+    quizduration,
+    passpercentage
+  ) => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     // localStorage.setItem("quiz_level_attempt_id", attemptId);
     // localStorage.setItem("complexity", complexity); // Store attempt_id in local storage
     // localStorage.setItem("quiz_duration", quizduration);
-    navigate(`/leaderboard`,{
+    navigate(`/leaderboard`, {
       state: {
         quizId,
         attemptId,
@@ -378,26 +418,53 @@ const createquiz=() =>{
   };
   const handleStartQuiz1 = (quizId, attemptsCount, retakeFlag) => {
     if (attemptsCount >= retakeFlag) {
-      toast.error('You have reached the maximum number of retake attempts for this quiz.');
+      toast.error(
+        "You have reached the maximum number of retake attempts for this quiz."
+      );
     } else {
       localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
       navigate(`/quizaccess`);
-      setMessage(''); // Clear any previous messages
+      setMessage(""); // Clear any previous messages
     }
   };
   const currentDate = new Date();
 
   useEffect(() => {
     const filtered = allquizzes.filter((quizItem) => {
-      const matchesCategory = !selectedCategory.length || selectedCategory.includes(quizItem.category);
-      const matchesSubCategory = !selectedSubCategory.length || selectedSubCategory.includes(quizItem.sub_category);
-      const matchesComplexity = !selectedComplexity.length || selectedComplexity.includes(quizItem.complexity);
-      const matchesCourse = !selectedCourses.length || selectedCourses.includes(quizItem.course_name);
-      const matchesClass = !selectedClasses.length || selectedClasses.includes(quizItem.class_name);
-      const matchesCreatedBy = !selectedCreatedBy.length || selectedCreatedBy.includes(quizItem.created_by);
-      const matchesSearch = searchQuery.length === 0 || quizItem.quiz_name.toLowerCase().includes(searchQuery.toLowerCase()) || quizItem.quiz_description.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesCategory =
+        !selectedCategory.length ||
+        selectedCategory.includes(quizItem.category);
+      const matchesSubCategory =
+        !selectedSubCategory.length ||
+        selectedSubCategory.includes(quizItem.sub_category);
+      const matchesComplexity =
+        !selectedComplexity.length ||
+        selectedComplexity.includes(quizItem.complexity);
+      const matchesCourse =
+        !selectedCourses.length ||
+        selectedCourses.includes(quizItem.course_name);
+      const matchesClass =
+        !selectedClasses.length ||
+        selectedClasses.includes(quizItem.class_name);
+      const matchesCreatedBy =
+        !selectedCreatedBy.length ||
+        selectedCreatedBy.includes(quizItem.created_by);
+      const matchesSearch =
+        searchQuery.length === 0 ||
+        quizItem.quiz_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        quizItem.quiz_description
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase());
 
-      return matchesCategory && matchesSubCategory && matchesComplexity && matchesCourse && matchesCreatedBy && matchesClass && matchesSearch;
+      return (
+        matchesCategory &&
+        matchesSubCategory &&
+        matchesComplexity &&
+        matchesCourse &&
+        matchesCreatedBy &&
+        matchesClass &&
+        matchesSearch
+      );
     });
 
     setFilteredQuizzes(filtered);
@@ -430,18 +497,17 @@ const createquiz=() =>{
   //   );
   // };
 
-
   // Custom styles for react-select to match your existing dropdown design
-  
+
   const highlightText = (text, query) => {
     if (typeof text !== "string") {
       return text;
     }
-  
+
     if (!query) return text;
-  
+
     const parts = text.split(new RegExp(`(${query})`, "gi"));
-    
+
     return parts.map((part, index) =>
       part.toLowerCase() === query.toLowerCase() ? (
         <span key={index} style={{ backgroundColor: "yellow" }}>
@@ -452,8 +518,7 @@ const createquiz=() =>{
       )
     );
   };
-  
-  
+
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -520,7 +585,103 @@ const createquiz=() =>{
       display: "none",
     }),
   };
- const buttonColor = '#fee2e2';
+  
+  const handleDeleteClick = (quiz_id) =>{
+    setQuizId(quiz_id);
+    setModalIsOpen(true);
+  }
+
+  const handleDeleteQuiz = async () => {
+    try {
+      const authToken = localStorage.getItem("authToken");
+
+      if (!authToken) {
+        throw new Error("No authentication token found");
+      }
+
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      };
+
+      if (attempts_count > 0) {
+        alert("Quiz cannot be deleted as it has been attempted by one or more users. It can only be disabled.");
+        setModalIsOpen(false);
+        return;
+      }
+      
+      const body = JSON.stringify({
+        user_id: userId,
+        quiz_id: quizId,  // Corrected to use quizId
+      });
+
+      const response = await fetch("https://dev.quizifai.com:8010/delete_quiz/", {
+        method: "POST",
+        headers,
+        body,
+      });
+
+      if (response.ok) {
+        const result = await deleteResponse.json();
+        console.log("Delete response:", result);
+        setModalIsOpen(false);
+        // Optionally, refresh the quiz list or update the UI
+      } else {
+        console.error("Failed to delete quiz");
+      }
+    } catch (error) {
+      console.error("Error during delete operation:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (isDeleteConfirmed) {
+      handleDeleteQuiz(isDeleteConfirmed);
+    }
+  }, [isDeleteConfirmed]);
+
+  const handleDisableQuiz = async () => {
+    try {
+      const authToken = localStorage.getItem("authToken");
+
+      if (!authToken) {
+        throw new Error("No authentication token found");
+      }
+
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      };
+
+      const body = JSON.stringify({
+        user_id: userId,
+        quiz_id: quizItem.quiz_id,  // Corrected reference
+      });
+
+      const response = await fetch("https://dev.quizifai.com:8010/disable_quiz/", {
+        method: "POST",
+        headers,
+        body,
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Disable response:", result);
+        setModalIsOpen1(false);
+        // Optionally, update the card to show it's disabled
+      } else {
+        console.error("Failed to disable quiz");
+      }
+    } catch (error) {
+      console.error("Error during disable operation:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (isDisableConfirmed) {
+      handleDisableQuiz();
+    }
+  }, [isDisableConfirmed]);
 
   return (
     <div className="flex font-Poppins">
@@ -529,26 +690,29 @@ const createquiz=() =>{
       <div className={styles.mainContent}>
         <div className={styles.header}>
           {/* Header content */}
-          <p className="-mt-[5px]"><span className='text-[20px]'>Welcome</span>  {username}</p>
+          <p className="-mt-[5px]">
+            <span className="text-[20px]">Welcome</span>{" "}
+            {username.charAt(0).toUpperCase() + username.slice(1)}
+          </p>
           <div className={styles.headerRight}>
-          {userRole === "Quiz Master" && (
-        <div className="w-[99px] h-[40px] absolute mr-[300px] mb-2 pb-2 -mt-[25px] rounded-[10px] bg-[#fee2e2]">
-          <div className="flex">
-            <img
-              className="w-[25px] h-[25px] ml-2 mt-2"
-              src={Plus}
-              alt="Plus Icon"
-            />
-            <a
-            onClick={createquiz}
-              // href="./create-quiz"
-              className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
-            >
-              Quiz
-            </a>
-          </div>
-        </div>
-      )}
+            {userRole === "Quiz Master" && (
+              <div className="w-[99px] h-[40px] absolute mr-[300px] mb-2 pb-2 -mt-[25px] rounded-[10px] bg-[#fee2e2]">
+                <div className="flex">
+                  <img
+                    className="w-[25px] h-[25px] ml-2 mt-2"
+                    src={Plus}
+                    alt="Plus Icon"
+                  />
+                  <a
+                    onClick={createquiz}
+                    // href="./create-quiz"
+                    className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
+                  >
+                    Quiz
+                  </a>
+                </div>
+              </div>
+            )}
             <div className={styles.searchIconContainer}>
               <img
                 src={searchIcon}
@@ -570,7 +734,11 @@ const createquiz=() =>{
          text-[#002366] rounded-md"
           style={{ background: "#30CDF040" }}
         >
-          You have successfully completed {weeklyQuizCount}  quizzes this week, achieving an average score of {averageScorePercentage}%
+          <p>
+            {weeklyQuizCount > 0 && averageScorePercentage > 0
+              ? `You have successfully completed ${weeklyQuizCount} Quizzes this week, achieving an average score of ${averageScorePercentage}%`
+              : "You have not attended any quizzes yet, Please attempt the quizzes below."}
+          </p>{" "}
         </div>
 
         <div className={styles.contentWrapper1}>
@@ -582,73 +750,126 @@ const createquiz=() =>{
             <div className={styles.sortBy}>
               <div className="flex flex-wrap gap-1 mb-3 bg-[#f3d0d5] border-none px-2 ml-[25px] -mr-[20px] mx-auto mt-[10px] rounded-md">
                 <div className="flex-1 min-w-[150px]">
-                   <Select
-            isMulti
-            options={dateRanges.map(dtrng => ({ value: dtrng, label: dtrng }))}
-            value={selectedDateRange.map(dtrng => ({ value: dtrng, label: dtrng }))}
-            onChange={selected => setSelectedDateRange(selected.map(item => item.value))}
-            styles={customStyles}
-            placeholder="Date Range"
-          />
+                  <Select
+                    isMulti
+                    options={dateRanges.map((dtrng) => ({
+                      value: dtrng,
+                      label: dtrng,
+                    }))}
+                    value={selectedDateRange.map((dtrng) => ({
+                      value: dtrng,
+                      label: dtrng,
+                    }))}
+                    onChange={(selected) =>
+                      setSelectedDateRange(selected.map((item) => item.value))
+                    }
+                    styles={customStyles}
+                    placeholder="Date Range"
+                  />
                 </div>
                 <div className="flex-1 min-w-[150px]">
-                <Select
-            isMulti
-            options={popularity.map(plr => ({ value: plr, label: plr ? ` ${plr}` : plr }))}
-            value={selectedPopularity.map(plr => ({ value: plr, label: plr ? ` ${plr}` : plr }))}
-            onChange={selected => setSelectedPopularity(selected.map(item => item.value))}
-            styles={customStyles}
-            placeholder="Popularity"
-          />
+                  <Select
+                    isMulti
+                    options={popularity.map((plr) => ({
+                      value: plr,
+                      label: plr ? ` ${plr}` : plr,
+                    }))}
+                    value={selectedPopularity.map((plr) => ({
+                      value: plr,
+                      label: plr ? ` ${plr}` : plr,
+                    }))}
+                    onChange={(selected) =>
+                      setSelectedPopularity(selected.map((item) => item.value))
+                    }
+                    styles={customStyles}
+                    placeholder="Popularity"
+                  />
                 </div>
                 <div className="flex-1 min-w-[150px]">
-                <Select
-            isMulti
-            options={categories.map(cat => ({ value: cat, label: cat }))}
-            value={selectedCategory.map(cat => ({ value: cat, label: cat }))}
-            onChange={selected => setSelectedCategory(selected.map(item => item.value))}
-            styles={customStyles}
-            placeholder="Category"
-          />
+                  <Select
+                    isMulti
+                    options={categories.map((cat) => ({
+                      value: cat,
+                      label: cat,
+                    }))}
+                    value={selectedCategory.map((cat) => ({
+                      value: cat,
+                      label: cat,
+                    }))}
+                    onChange={(selected) =>
+                      setSelectedCategory(selected.map((item) => item.value))
+                    }
+                    styles={customStyles}
+                    placeholder="Category"
+                  />
                 </div>
                 <div className="flex-1 min-w-[150px]">
-                <Select
-            isMulti
-            value={selectedSubCategory.map(subcat => ({ value: subcat, label: subcat }))}
-            onChange={selected => setSelectedSubCategory(selected.map(item => item.value))}
-            styles={customStyles}
-            placeholder="Sub Category"
-          />
+                  <Select
+                    isMulti
+                    value={selectedSubCategory.map((subcat) => ({
+                      value: subcat,
+                      label: subcat,
+                    }))}
+                    onChange={(selected) =>
+                      setSelectedSubCategory(selected.map((item) => item.value))
+                    }
+                    styles={customStyles}
+                    placeholder="Sub Category"
+                  />
                 </div>
               </div>
               <div className="flex flex-wrap gap-1 mb-3 bg-[#f3d0d5] w-full border-none px-2 ml-[25px] -mr-[20px] mx-auto mt-[10px] rounded-md">
                 {/* complexity    */}
                 <Select
-            isMulti
-            options={complexities.map(complex => ({ value: complex, label: complex }))}
-            value={selectedComplexity.map(complex => ({ value: complex, label: complex }))}
-            onChange={selected => setSelectedComplexity(selected.map(item => item.value))}
-            styles={customStyles}
-            placeholder="Complexity"
-          />
+                  isMulti
+                  options={complexities.map((complex) => ({
+                    value: complex,
+                    label: complex,
+                  }))}
+                  value={selectedComplexity.map((complex) => ({
+                    value: complex,
+                    label: complex,
+                  }))}
+                  onChange={(selected) =>
+                    setSelectedComplexity(selected.map((item) => item.value))
+                  }
+                  styles={customStyles}
+                  placeholder="Complexity"
+                />
                 {/* Courses  */}
                 <Select
-            isMulti
-            options={courses.map(course => ({ value: course, label: course }))}
-            value={selectedCourses.map(course => ({ value: course, label: course }))}
-            onChange={selected => setSelectedCourses(selected.map(item => item.value))}
-            styles={customStyles}
-            placeholder="Courses"
-          />
+                  isMulti
+                  options={courses.map((course) => ({
+                    value: course,
+                    label: course,
+                  }))}
+                  value={selectedCourses.map((course) => ({
+                    value: course,
+                    label: course,
+                  }))}
+                  onChange={(selected) =>
+                    setSelectedCourses(selected.map((item) => item.value))
+                  }
+                  styles={customStyles}
+                  placeholder="Courses"
+                />
                 {/* classes    */}
                 <Select
-            isMulti
-            options={filteredClasses.map(cls => ({ value: cls, label: cls }))}
-            value={selectedClasses.map(cls => ({ value: cls, label: cls }))}
-            onChange={selected => setSelectedClasses(selected.map(item => item.value))}
-            styles={customStyles}
-            placeholder="Classes"
-          />
+                  isMulti
+                  options={filteredClasses.map((cls) => ({
+                    value: cls,
+                    label: cls,
+                  }))}
+                  value={selectedClasses.map((cls) => ({
+                    value: cls,
+                    label: cls,
+                  }))}
+                  onChange={(selected) =>
+                    setSelectedClasses(selected.map((item) => item.value))
+                  }
+                  styles={customStyles}
+                  placeholder="Classes"
+                />
                 {/* CreatedBy   */}
                 <Select
                   isMulti
@@ -673,27 +894,35 @@ const createquiz=() =>{
           <div className="mx-auto">
             <div className="flex flex-wrap mx-auto ml-[35px] -mt-[10px]">
               {filteredQuizzes
-               .filter(quizItem => {
-                const quizCreateDate = new Date(quizItem.quiz_start_date);
-                const quizEndDate = quizItem.quiz_end_date ? new Date(quizItem.quiz_end_date) : null;
-                return quizItem.active_flag === "true" &&
-                       currentDate >= quizCreateDate &&
-                       (quizEndDate === null || currentDate <= quizEndDate);
+                .filter((quizItem) => {
+                  const quizCreateDate = new Date(quizItem.quiz_start_date);
+                  const quizEndDate = quizItem.quiz_end_date
+                    ? new Date(quizItem.quiz_end_date)
+                    : null;
+                  return (
+                    quizItem.active_flag === "true" &&
+                    currentDate >= quizCreateDate &&
+                    (quizEndDate === null || currentDate <= quizEndDate)
+                  );
                 })
                 .map((quizItem, index) => (
                   <div key={index}>
                     {quizItem.attempt_flag === "Y" ? (
                       <div
-                          key={index}
-                          className={styles.card}
-                          style={{
+                        key={index}
+                        className={styles.card}
+                        style={{
                           width: "245px",
                           paddingTop: "8px",
                           paddingTop: "20px",
                           marginTop: "20px",
                           marginRight: "10px",
-                          backgroundColor: quizItem.attempts_count < quizItem.retake_flag ? "#fee2e2" : "#55505026",
-                        }}>
+                          backgroundColor:
+                            quizItem.attempts_count < quizItem.retake_flag
+                              ? "#fee2e2"
+                              : "#55505026",
+                        }}
+                      >
                         <span className="relative group">
                           <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate -mt-[13px]">
                             {highlightText(quizItem.quiz_name, searchQuery)}
@@ -723,130 +952,216 @@ const createquiz=() =>{
                                 : "Open Navbar"}
                             </svg>
                             {cardStates[index] && (
-                              <div className={styles.infoIcons1} style={{ marginLeft:"-122px", marginTop: "-28px"}}>
-                              <div className={styles.start}>
-                              <img
-                                className=" w-[10px] h-[10px]"
-                                src={eye}
-                                alt="Play icon"
-                              />
-                              <span
-                                className="text-[8px]   cursor-pointer hover:text-black"
-                                onClick={() =>
-                                  quizresults(
-                                    quizItem.quiz_id,
-                                    quizItem.quiz_level_attempt_id
-                                  )
-                                }
+                              <div
+                                className={styles.infoIcons1}
+                                style={{
+                                  marginLeft: "-125px",
+                                  marginTop: "-28px",
+                                }}
                               >
-                                View
-                              </span>
-                              </div>
-                              {quizItem.attempts_count < quizItem.retake_flag && (
-
-                              <div className={styles.retake}>
-                              <img
-                                className=" h-[10px] w-[10px] "
-                                src={Share_button}
-                                alt="download icon"
-                              />
-                              <span
-                                className="text-[8px] - cursor-pointer hover:text-black"
-                                onClick={() =>
-                                  handleStartQuiz(quizItem.quiz_id)
-                                }
-                              >
-                                Retake
-                              </span>
-                              </div>
-                              )}
-                              {userRole === "Quiz Master" && (
-                                <div className={styles.edit}>
+                                <div className={styles.start}>
                                   <img
-                                    className={styles.editimage}
-                                    src={Edit_button}
-                                    alt="Edit icon"
+                                    className=" w-[10px] h-[10px]"
+                                    src={eye}
+                                    alt="Play icon"
                                   />
                                   <span
-                                    className={styles.edittext}
-                                    onClick={() => Edit(quizItem.quiz_id)}
+                                    className="text-[8px]   cursor-pointer hover:text-black"
+                                    onClick={() =>
+                                      quizresults(
+                                        quizItem.quiz_id,
+                                        quizItem.quiz_level_attempt_id
+                                      )
+                                    }
                                   >
-                                    Edit
+                                    View
                                   </span>
                                 </div>
+                                {quizItem.attempts_count <
+                                  quizItem.retake_flag && (
+                                  <div className={styles.retake}>
+                                    <img
+                                      className=" h-[10px] w-[10px] "
+                                      src={Share_button}
+                                      alt="download icon"
+                                    />
+                                    <span
+                                      className="text-[8px] - cursor-pointer hover:text-black"
+                                      onClick={() =>
+                                        handleStartQuiz(quizItem.quiz_id)
+                                      }
+                                    >
+                                      Retake
+                                    </span>
+                                  </div>
                                 )}
-                              <div className={styles.leaderboard}>
-                              <img
-                                className={styles.leaderboardimage}
-                                style={{ marginTop: "1px" }}
-                                src={leaderboard_button}
-                                alt="Play icon"
-                              />
-                              <span
-                                className={styles.leaderboardtext}
-                                onClick={() =>
-                                  leaderboard1(
-                                    quizItem.quiz_id,
-                                    quizItem.quiz_level_attempt_id,
-                                    quizItem.complexity,
-                                    quizItem.quiz_duration,
-                                    quizItem.pass_percentage,
-                                  )
-                                }
-                              >
-                                Leaderboard
-                              </span>
-                              </div>
-                              {/* <img
+                                {userRole === "Quiz Master" && (
+                                  <div className={styles.edit}>
+                                    <img
+                                      className={styles.editimage}
+                                      src={Edit_button}
+                                      alt="Edit icon"
+                                    />
+                                    <span
+                                      className={styles.edittext}
+                                      onClick={() => Edit(quizItem.quiz_id)}
+                                    >
+                                      Edit
+                                    </span>
+                                  </div>
+                                )}
+                                <div className={styles.leaderboard}>
+                                  <img
+                                    className={styles.leaderboardimage}
+                                    style={{ marginTop: "1px" }}
+                                    src={leaderboard_button}
+                                    alt="Play icon"
+                                  />
+                                  <span
+                                    className={styles.leaderboardtext}
+                                    onClick={() =>
+                                      leaderboard1(
+                                        quizItem.quiz_id,
+                                        quizItem.quiz_level_attempt_id,
+                                        quizItem.complexity,
+                                        quizItem.quiz_duration,
+                                        quizItem.pass_percentage
+                                      )
+                                    }
+                                  >
+                                    Leaderboard
+                                  </span>
+                                </div>
+                                {userRole === "Quiz Master" && (
+                                  <div className={styles.start}>
+                                    <img
+                                      className={styles.startimage}
+                                      src={disable}
+                                      alt="Play icon"
+                                    />
+                                    <span
+                                      className={styles.starttext}
+                                      onClick={() => setModalIsOpen1(true)}
+                                    >
+                                      Disable
+                                    </span>
+                                    <Modal
+                                      isOpen={modalIsOpen1}
+                                      onRequestClose={() =>
+                                        setModalIsOpen1(false)
+                                      }
+                                      className="bg-white rounded-lg p-8 mx-auto mt-10 max-w-md border-red-400 border-[1px]"
+                                      overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+                                    >
+                                      <h2 className="text-xl font-semibold mb-4">
+                                        Are you sure you want to disable this
+                                        card?
+                                      </h2>
+                                      <div className="mb-4">
+                                        <input
+                                          type="checkbox"
+                                          id="confirmCheckbox"
+                                          className="mr-2"
+                                          checked={isChecked1}
+                                          onChange={(e) =>
+                                            setIsChecked1(e.target.checked)
+                                          }
+                                        />
+                                        <label htmlFor="confirmCheckbox">
+                                          I understand the consequences.
+                                        </label>
+                                      </div>
+                                      <div className="flex justify-end space-x-4">
+                                        <button
+                                          className={`bg-red-500 text-white px-4 py-2 rounded ${
+                                            !isChecked1
+                                              ? "opacity-50 cursor-not-allowed"
+                                              : ""
+                                          }`}
+                                          onClick={confirmDisable}
+                                          disabled={!isChecked1}
+                                        >
+                                          Disable
+                                        </button>
+                                        <button
+                                          className="bg-gray-300 text-black px-4 py-2 rounded"
+                                          onClick={() => setModalIsOpen1(false)}
+                                        >
+                                          Cancel
+                                        </button>
+                                      </div>
+                                    </Modal>
+                                  </div>
+                                )}
+                                {/* <img
                             className={styles.shareimage} style={{marginTop:"2px"}}
                             
                             src={download}
                             alt="Play icon"
                           />
                           <span className={styles.sharetext} >Download</span> */}
-                            </div>
+                              </div>
                             )}
                           </div>
                         </div>
 
                         <div className="flex mt-[9px] mb-[19px] relative top-[19px]">
                           <span className="relative group -top-[13px]">
-                          <span class="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] left-[10px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
+                            <span class="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] left-[10px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
                               {highlightText(quizItem.category, searchQuery)}
                             </span>
                             <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block top-[14px] left-[7px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-                               {highlightText(quizItem.category, searchQuery)} 
+                              {highlightText(quizItem.category, searchQuery)}
                             </span>
                           </span>
 
-                          <p className="px-[4px] font-normal relative -top-[13px] pl-2">|</p>
+                          <p className="px-[4px] font-normal relative -top-[13px] pl-2">
+                            |
+                          </p>
 
                           <span className="relative group -top-[13px]">
                             <span className="text-[#002366] w-[100px] cursor-pointer z-0 truncate text-[9px] font-semibold">
-                              {highlightText(quizItem.sub_category, searchQuery)}
+                              {highlightText(
+                                quizItem.sub_category,
+                                searchQuery
+                              )}
                             </span>
                             <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-                              {highlightText(quizItem.sub_category, searchQuery)}
+                              {highlightText(
+                                quizItem.sub_category,
+                                searchQuery
+                              )}
                             </span>
                           </span>
-                          
-               {buttonColor === '#fee2e2' && (
+
+                          {quizItem.attempts_count < quizItem.retake_flag && (
                             <button
-                            className="cursor-pointer ml-auto relative -top-[5px] right-1 flex gap-[2px] border-2 bg-[#F5F8F9] rounded-xl border-[#472E86] h-[16px] w-[34.5px]"
-                            onClick={() => handleStartQuiz1(quizItem.quiz_id, quizItem.attempts_count, quizItem.retake_flag)}
-                          >
-                            <img
-                              className="h-[5.5px] w-[4.5px] relative top-[3.5px] left-[2px]"
-                              src={PlayButton}
-                              alt="Start button"
-                            />
-                            <h1 className="text-[#472E86] text-[6px] relative top-[2px] pl-[1px] font-bold">Retake</h1>
-                          </button>
-                           )} 
+                              className="cursor-pointer ml-auto relative -top-[5px] right-1 flex gap-[2px] border-2 bg-[#F5F8F9] rounded-xl border-[#472E86] h-[16px] w-[34.5px]"
+                              onClick={() =>
+                                handleStartQuiz1(
+                                  quizItem.quiz_id,
+                                  quizItem.attempts_count,
+                                  quizItem.retake_flag
+                                )
+                              }
+                            >
+                              <img
+                                className="h-[5.5px] w-[4.5px] relative top-[3.5px] left-[2px]"
+                                src={PlayButton}
+                                alt="Start button"
+                              />
+                              <h1 className="text-[#472E86] text-[6px] relative top-[2px] pl-[1px] font-bold">
+                                Retake
+                              </h1>
+                            </button>
+                          )}
                         </div>
-                           <div className="h-1 -mt-[8px] pl-[10px] text-[7px] font-normal text-[#002366] relative -top-[6px]">
-                            <h3>Quiz ID : {highlightText(quizItem.quiz_id, searchQuery)}</h3>
-                          </div>
+                        <div className="h-1 -mt-[8px] pl-[10px] text-[7px] font-normal text-[#002366] relative -top-[6px]">
+                          <h3>
+                            Quiz ID :{" "}
+                            {highlightText(quizItem.quiz_id, searchQuery)}
+                          </h3>
+                        </div>
                         {/* <div className="h-[1px] w-full bg-white"></div> */}
                         {/* <div className="h-[3px] w-full bg-white"></div> */}
                         <div className="relative group mt-1">
@@ -928,7 +1243,7 @@ const createquiz=() =>{
                                     title="number of times quiz attempted"
                                     className="text-[8px] -ml-[1px] cursor-pointer"
                                   >
-                                    quiz attempts
+                                    Quiz attempts
                                   </span>
                                 </div>
                               </div>
@@ -948,7 +1263,7 @@ const createquiz=() =>{
                                   className="cursor-pointer text-[6px]"
                                 >
                                   <span className="text-[8px] -ml-[1px]">
-                                    score
+                                    Score
                                   </span>
                                 </div>
                               </span>
@@ -967,7 +1282,7 @@ const createquiz=() =>{
                                   className="cursor-pointer text-[6px]"
                                 >
                                   <span className="text-[8px] -ml-[1px]">
-                                    attemped
+                                    Attemped
                                   </span>
                                 </div>
                               </span>
@@ -986,7 +1301,7 @@ const createquiz=() =>{
                                   className="cursor-pointer text-[6px]"
                                 >
                                   <span className="text-[8px] -ml-[1px]">
-                                    duration
+                                    Duration
                                   </span>
                                 </div>
                               </span>
@@ -1009,20 +1324,20 @@ const createquiz=() =>{
                           <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate -mt-[1px]">
                             {highlightText(quizItem.quiz_name, searchQuery)}
                           </span>
-                          <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+                          <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-20 bg-black text-white px-1 border border-black-300 rounded">
                             {highlightText(quizItem.quiz_name, searchQuery)}
                           </span>
                         </span>
 
                         <div className={styles.iconContainer}>
-                          <div className="z-40 mb-[2px] pl-[17px] font-normal rounded">
+                          <div className="z-30 mb-[2px] pl-[17px] font-normal rounded">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
                               viewBox="0 0 24 24"
                               stroke-width="1.5"
                               stroke="currentColor"
-                              class="w-4 h-4 -ml-[33px] -mt-[11px] relative -right-7 rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
+                              class="w-4 h-4 -ml-[33px] -mt-[11px] relative -right-6 rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
                               onClick={() => toggleNavbar1(index)}
                             >
                               <path
@@ -1036,7 +1351,13 @@ const createquiz=() =>{
                             </svg>
 
                             {cardStatus[index] && (
-                              <div className={styles.infoIcons} style={{marginLeft: "-91px", marginTop: "-18px"}}>
+                              <div
+                                className={styles.infoIcons}
+                                style={{
+                                  marginLeft: "-102px",
+                                  marginTop: "-18px",
+                                }}
+                              >
                                 <div className={styles.start}>
                                   <img
                                     className={styles.startimage}
@@ -1053,19 +1374,19 @@ const createquiz=() =>{
                                   </span>
                                 </div>
                                 {userRole === "Quiz Master" && (
-                                <div className={styles.edit}>
-                                  <img
-                                    className={styles.editimage}
-                                    src={Edit_button}
-                                    alt="Edit icon"
-                                  />
-                                  <span
-                                    className={styles.edittext}
-                                    onClick={() => Edit(quizItem.quiz_id)}
-                                  >
-                                    Edit
-                                  </span>
-                                </div>
+                                  <div className={styles.edit}>
+                                    <img
+                                      className={styles.editimage}
+                                      src={Edit_button}
+                                      alt="Edit icon"
+                                    />
+                                    <span
+                                      className={styles.edittext}
+                                      onClick={() => Edit(quizItem.quiz_id)}
+                                    >
+                                      Edit
+                                    </span>
+                                  </div>
                                 )}
                                 <div className={styles.leaderboard}>
                                   <img
@@ -1089,8 +1410,7 @@ const createquiz=() =>{
                                         quizItem.min_completion_time,
                                         quizItem.quiz_attempts,
                                         quizItem.avg_score,
-                                        quizItem.max_percentage,
-                                        
+                                        quizItem.max_percentage
                                       )
                                     }
                                   >
@@ -1098,84 +1418,125 @@ const createquiz=() =>{
                                   </span>
                                 </div>
 
-                            {userRole === "Quiz Master" && (
-                            <div className={styles.start}>
-                            <img
-                              className={styles.startimage}
-                              src={Delete}
-                              alt="Play icon"
-                            />
-                            <span
-                              className={styles.starttext}
-                              onClick={handleDelete}
-                            >
-                              Delete
-                            </span>
-  <Modal
-  isOpen={modalIsOpen}
-  onRequestClose={() => setModalIsOpen(false)}
-  className="bg-white rounded-lg p-8 mx-auto mt-20 max-w-md"
-  overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
->
-  <h2 className="text-xl font-semibold mb-4">Are you sure you want to delete this card?</h2>
-  <div className="mb-4">
-    <input
-      type="checkbox"
-      id="confirmCheckbox"
-      className="mr-2"
-      checked={isChecked}
-      onChange={(e) => setIsChecked(e.target.checked)}
-    />
-    <label htmlFor="confirmCheckbox">I understand the consequences.</label>
-  </div>
-  <div className="flex justify-end space-x-4">
-    <button
-      className={`bg-red-500 text-white px-4 py-2 rounded ${!isChecked ? 'opacity-50 cursor-not-allowed' : ''}`}
-      onClick={confirmDelete}
-      disabled={!isChecked}
-    >
-      Delete
-    </button>
-    <button
-      className="bg-gray-300 text-black px-4 py-2 rounded"
-      onClick={() => setModalIsOpen(false)}
-    >
-      Cancel
-    </button>
-  </div>
-</Modal>
-</div>
-                            )}
-                                
+                                {userRole === "Quiz Master" && (
+                                  <div className={styles.start}>
+                                    <img
+                                      className={styles.startimage}
+                                      src={Delete}
+                                      alt="Delete icon"
+                                    />
+                                    <span
+                                      className={styles.starttext}
+                                      onClick={() => handleDeleteClick(quizItem.quiz_id)}>
+                                      Delete
+                                    </span>
+                                    <Modal
+                                      isOpen={modalIsOpen}
+                                      onRequestClose={() =>
+                                        setModalIsOpen(false)
+                                      }
+                                      className="bg-white rounded-lg p-8 mx-auto max-w-md border-red-400 border-[1px]"
+                                      overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+                                    >
+                                      <h2 className="text-xl font-semibold mb-4">
+                                        Are you sure you want to delete this
+                                        card?
+                                      </h2>
+                                      <div className="mb-4">
+                                        <input
+                                          type="checkbox"
+                                          id="confirmCheckbox"
+                                          className="mr-2"
+                                          checked={isChecked}
+                                          onChange={(e) => setIsChecked(e.target.checked)}/>
+                                        <label htmlFor="confirmCheckbox">
+                                          I understand the consequences.
+                                        </label>
+                                      </div>
+                                      <div className="flex justify-end space-x-4">
+                                        <button
+                                          className={`bg-red-500 text-white px-4 py-2 rounded ${
+                                            !isChecked
+                                              ? "opacity-50 cursor-not-allowed"
+                                              : ""
+                                          }`}
+                                          onClick={() => setIsDeleteConfirmed(true)}
+                                          disabled={!isChecked}
+                                        >
+                                          Delete
+                                        </button>
+                                        <button
+                                          className="bg-gray-300 text-black px-4 py-2 rounded"
+                                          onClick={() => setModalIsOpen(false)}
+                                        >
+                                          Cancel
+                                        </button>
+                                      </div>
+                                    </Modal>
+                                  </div>
+                                )}
 
                                 {userRole === "Quiz Master" && (
                                   <div className={styles.start}>
-                                  <img
-                                    className={styles.startimage}
-                                    src={disable}
-                                    alt="Play icon"
-                                  />
-                                  <span
-                                    className={styles.starttext}
-                                    onClick={() =>
-                                      handleStartQuiz(quizItem.quiz_id)
-                                    }
-                                  >
-                                    Disable
-                                  </span>
-                                </div>
+                                    <img
+                                      className={styles.startimage}
+                                      src={disable}
+                                      alt="Play icon"
+                                    />
+                                    <span
+                                      className={styles.starttext}
+                                      onClick={() => setModalIsOpen1(true)}
+                                    >
+                                      Disable
+                                    </span>
+                                    <Modal
+                                      isOpen={modalIsOpen1}
+                                      onRequestClose={() =>
+                                        setModalIsOpen1(false)
+                                      }
+                                      className="bg-white rounded-lg p-8 mx-auto mt-10 max-w-md border-red-400 border-[1px]"
+                                      overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+                                    >
+                                      <h2 className="text-xl font-semibold mb-4">
+                                        Are you sure you want to disable this
+                                        card?
+                                      </h2>
+                                      <div className="mb-4">
+                                        <input
+                                          type="checkbox"
+                                          id="confirmCheckbox"
+                                          className="mr-2"
+                                          checked={isChecked1}
+                                          onChange={(e) =>
+                                            setIsChecked1(e.target.checked)
+                                          }
+                                        />
+                                        <label htmlFor="confirmCheckbox">
+                                          I understand the consequences.
+                                        </label>
+                                      </div>
+                                      <div className="flex justify-end space-x-4">
+                                        <button
+                                          className={`bg-red-500 text-white px-4 py-2 rounded ${
+                                            !isChecked1
+                                              ? "opacity-50 cursor-not-allowed"
+                                              : ""
+                                          }`}
+                                          onClick={() => setIsDisableConfirmed(true)}
+                                          disabled={!isChecked1}
+                                        >
+                                          Disable
+                                        </button>
+                                        <button
+                                          className="bg-gray-300 text-black px-4 py-2 rounded"
+                                          onClick={() => setModalIsOpen1(false)}
+                                        >
+                                          Cancel
+                                        </button>
+                                      </div>
+                                    </Modal>
+                                  </div>
                                 )}
-                                
-                                {/* <div className={styles.share}>
-                                  <img
-                                    className={styles.shareimage}
-                                    src={Share_button}
-                                    alt="Share icon"
-                                  />
-                                  <span className={styles.sharetext}>
-                                    Share
-                                  </span>
-                                </div> */}
                               </div>
                             )}
                           </div>
@@ -1187,16 +1548,22 @@ const createquiz=() =>{
                               {highlightText(quizItem.category, searchQuery)}
                             </span>
                             <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block top-[14px] -left-[2px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-                               {highlightText(quizItem.category, searchQuery)} 
+                              {highlightText(quizItem.category, searchQuery)}
                             </span>
                           </span>
                           <p className="px-[4px] font-normal pl-2">|</p>
                           <span class="relative group">
                             <span class="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
-                              {highlightText(quizItem.sub_category, searchQuery)}
+                              {highlightText(
+                                quizItem.sub_category,
+                                searchQuery
+                              )}
                             </span>
                             <span class="absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded text-nowrap">
-                            {highlightText(quizItem.sub_category, searchQuery)}
+                              {highlightText(
+                                quizItem.sub_category,
+                                searchQuery
+                              )}
                             </span>
                           </span>
                           <button
@@ -1211,8 +1578,11 @@ const createquiz=() =>{
                           </button>
                         </div>
                         <div className="h-1 -mt-[3px] pl-[10px] text-[7px] text-[#002366] font-normal relative top-[3px]">
-                            <h3>Quiz ID : {highlightText(quizItem.quiz_id, searchQuery)}</h3>
-                          </div>
+                          <h3>
+                            Quiz ID :{" "}
+                            {highlightText(quizItem.quiz_id, searchQuery)}
+                          </h3>
+                        </div>
                         <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[75px] left-[12px]">
                           <div>
                             Created By :
@@ -1269,7 +1639,7 @@ const createquiz=() =>{
                                   />
                                   <p>{quizItem.quiz_attempts}</p>
                                   <span className="text-[8px] -ml-1">
-                                    attempts
+                                    Attempts
                                   </span>
                                 </div>
                               </div>
@@ -1284,7 +1654,7 @@ const createquiz=() =>{
                                 />
                                 {quizItem.number_of_questions}
                                 <span className="text-[8px] ml-[1px]">
-                                  questions
+                                  Questions
                                 </span>
                               </span>
                               <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded relative -left-[14px] hover:text-black">
@@ -1297,7 +1667,7 @@ const createquiz=() =>{
                                 />
                                 {quizItem.quiz_duration}
                                 <span className="text-[8px] -ml-[0.5px]">
-                                  minutes
+                                  Minutes
                                 </span>
                               </span>
                               <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded relative -left-[10px] hover:text-black">

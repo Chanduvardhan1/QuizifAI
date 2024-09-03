@@ -81,7 +81,7 @@ const Dashboard = () => {
   
   useEffect(() => {
     const handleWindowClose = () => {
-      fetch("https://quizifai.com:8010/usr_logout/", {
+      fetch("https://dev.quizifai.com:8010/usr_logout/", {
         method: "POST",
         headers: {
           Accept: "application/json",

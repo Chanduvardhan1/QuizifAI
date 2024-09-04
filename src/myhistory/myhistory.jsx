@@ -291,7 +291,7 @@ const myhistory = () => {
                 </div>
               </div>
 
-              <div className="flex justify-evenly -mt-5 gap-3">
+              <div className="flex justify-evenly -mt-5 gap-3 border-2 px-2 py-2 bg-[#DCFCE7]">
 
                 <div>
                   <div>
@@ -343,24 +343,24 @@ const myhistory = () => {
                       <p className="text-normal text-nowrap flex">
                         <span className="px-1 font-bold">:</span> Simple{" "}
                       
-                        <span className="pl-[25px]">-<span className="border border-black px-1">{simpleCount}</span></span>
+                        <span className="pl-[25px]">-<span className="border border-black px-1 ml-1 rounded">{simpleCount}</span></span>
                       </p>
                       <p className="pl-[14px] text-nowrap flex mt-2">
-                       Moderate -<span className="border border-black px-1">{moderateCount}</span>
+                       Moderate -<span className="border border-black px-1 ml-1 rounded">{moderateCount}</span>
                       </p>
                       
                       <p className="pl-[14px] text-nowrap flex mt-2">
                        Complex{" "}
-                      <span className="pl-[8px]">-<span className="border border-black px-1">{complexCount}</span></span>
+                      <span className="pl-[8px]">-<span className="border border-black px-1 ml-[5px] rounded">{complexCount}</span></span>
                       </p>
                     </span>
                   </div>
 
                   <div className="flex">
-                    <span className="pl-5">Pass/Fail : </span>
+                    <span className="pl-5 text-nowrap">Pass/Fail : </span>
                     <span className=" font-normal pl-1">
-                      <p> Pass-{passCount}</p>
-                      <p className="">Fail-{FailCount}</p>
+                      <p className="text-nowrap"> Pass-{passCount}</p>
+                      <p className="text-nowrap">Fail-{FailCount}</p>
                     </span>
                   </div>
                 

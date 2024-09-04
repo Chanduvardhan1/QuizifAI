@@ -17,8 +17,6 @@ import Quizview from "./quizview/quizview.jsx";
 // import Contact from "./contact/contact.jsx";
 
 import QuizAccess from "./quizaccess/quizAccess.jsx";
-
-
 import Schedule from "./schedule/schedule.jsx";
 import Useradmin from "./useradmin/useradmin.jsx";
 import Subscription from "./subscription/subscription.jsx";

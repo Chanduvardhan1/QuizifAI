@@ -31,9 +31,11 @@ const myhistory = () => {
   const { isAuthenticated, authToken } = useContext(AuthContext);
   const inputReff = useRef(null);
   const [image, setImage] = useState("");
+  const [date, setDate] = useState('');
+
   const [crop, setCrop] = useState({ aspect: 1 });
   const [completedCrop, setCompletedCrop] = useState(null);
-  const [sortOption, setSortOption] = useState("latest");
+  const [sortOption, setSortOption] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 25;
@@ -51,59 +53,60 @@ const myhistory = () => {
   };
 
   // Get the current date for filtering
-  const today = new Date();
-  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-  const startOfWeek = new Date(today);
-  startOfWeek.setDate(today.getDate() - today.getDay()); // Start of the week
+const today = new Date();
+const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+const startOfWeek = new Date(today);
+startOfWeek.setDate(today.getDate() - today.getDay()); // Start of the week
 
-  // Filter quizzes based on search term
-  const filteredQuizzes = quizDetails.filter((quiz) => {
-    return (
-      quiz.quiz_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      quiz.time.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      quiz.month.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      quiz.attempt_duration_mins.toLowerCase().includes(searchTerm.toLowerCase)
-      // quiz.score_rank.toLowerCase().includes(searchTerm.toLowerCase())||
-      // quiz.attained_percentage.toLowerCase().includes(searchTerm.toLowerCase())||
-      // quiz.quiz_grade.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
+// Filter quizzes based on search term
+const filteredQuizzes = quizDetails.filter((quiz) => {
+  return (
+    quiz.quiz_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    quiz.time.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    quiz.month.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    quiz.attempt_duration_mins
+      .toString()
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
+});
 
-  // Sort and filter quizzes based on selected option
-  const filteredByDate = filteredQuizzes.filter((quiz) => {
-    const quizDate = new Date(quiz.date);
-    if (sortOption === "ThisMonth") {
-      return quizDate >= firstDayOfMonth;
-    } else if (sortOption === "ThisWeek") {
-      return quizDate >= startOfWeek;
-    }
-    return true; // Show all quizzes if "Latest" is selected
-  });
+// Sort and filter quizzes based on selected option
+const filteredByDate = filteredQuizzes.filter((date) => {
+  const quizDate = new Date(date);
+  if (sortOption === "This Month") {
+    return quizDate >= firstDayOfMonth;
+  } else if (sortOption === "This Week") {
+    return quizDate >= startOfWeek;
+  } else if (sortOption === "This Day") {
+    return quizDate.toDateString() === today.toDateString();
+  }
+  return true; // Show all quizzes if "All" is selected
+});
 
-  // Sort quizzes if "Latest" is selected
-  const sortedQuizzes =
-    sortOption === "latest"
-      ? filteredByDate.sort((a, b) => new Date(b.date) - new Date(a.date))
-      : filteredByDate;
+// Sort quizzes if "Latest" is selected
+const sortedQuizzes =
+  sortOption === "All"
+    ? filteredByDate.sort((a, b) => new Date(b.date) - new Date(a.date))
+    : filteredByDate;
 
-  // Pagination logic
-  const indexOfLastRow = currentPage * rowsPerPage;
-  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentRows = sortedQuizzes.slice(indexOfFirstRow, indexOfLastRow);
+// Pagination logic
+const indexOfLastRow = currentPage * rowsPerPage;
+const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+const currentRows = sortedQuizzes.slice(indexOfFirstRow, indexOfLastRow);
 
-  // Handle pagination next/previous
-  const handleNext = () => {
-    if (indexOfLastRow < sortedQuizzes.length) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
+// Handle pagination next/previous
+const handleNext = () => {
+  if (indexOfLastRow < sortedQuizzes.length) {
+    setCurrentPage(currentPage + 1);
+  }
+};
 
-  const handlePrevious = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
+const handlePrevious = () => {
+  if (currentPage > 1) {
+    setCurrentPage(currentPage - 1);
+  }
+};
   // Fetch quiz data and update state
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -146,7 +149,9 @@ const myhistory = () => {
         setFailCount(data.fail_count);
 
         // Set quiz details if needed
+        const quizDate = data.quiz_details;
         setQuizDetails(data.quiz_details);
+        setDate(quizDate.month);
       } catch (error) {
         console.error("Error fetching history quiz data:", error);
       }
@@ -267,17 +272,6 @@ const myhistory = () => {
                     onChange={handleImageChange}
                     style={{ display: "none" }}
                   />
-
-                  {/* <div className="bg-[#C3EAF3] rounded-full w-fit h-[24px] px-[2px] py-[1px] relative left-14 -top-9">
-        <div className="rounded-full w-fit h-[28px] px-[2px] py-[2px] flex items-center justify-center group">
-          <img className="h-4 w-4 relative -top-[3px] cursor-pointer" src={Camera} alt="Camera" />
-          <div className="absolute top-full text-[7px] left-0 right-[30px] mt-1 bg-white rounded-sm text-black w-fit h-[37px] cursor-pointer px-1 py-[2px] text-nowrap items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <p onClick={handleReplaceImage}>Replace Image</p><br/>
-            <p className="relative -top-[10px]" onClick={handleViewImage}>View Image</p><br/>
-            <p className="relative -top-[20px]" onClick={handleDeleteImage}>Delete Image</p>
-          </div>
-        </div>
-      </div> */}
                 </div>
 
                 <div className="-mt-4">
@@ -391,7 +385,9 @@ const myhistory = () => {
 
               <span className="text-[#F17530]">Sort by : </span>
               <span>
-                <select className="py-1 px-2 rounded-md" value={sortOption} onChange={handleSortChange}>
+                <select className="py-1 px-2 rounded-md"
+                 value={sortOption} onChange={handleSortChange}>
+                  <option value="All">All</option>
                   <option value="This Day">This Day</option>
                   <option value="This Week">This Week</option>
                   <option value="This Month">This Month</option>

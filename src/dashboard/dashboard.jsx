@@ -1482,7 +1482,7 @@ const Dashboard = () => {
                   : null;
                 return (
                   quizItem.active_flag === "true" &&
-                  quizItem.latest_flag === "Y" &&
+                  quizItem.popularity_flag === "Y" &&
                   currentDate >= quizCreateDate &&
                   (quizEndDate === null || currentDate <= quizEndDate)
                 );

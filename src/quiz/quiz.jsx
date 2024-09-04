@@ -314,22 +314,23 @@ const Quiz = () => {
   );
   const toggleNavbar = (index) => {
     setCardStates((prevState) => {
-      const updatedStates = [...prevState];
-      updatedStates[index] = !updatedStates[index];
+      const updatedStates = Array(allquizzes.length).fill(false); // Close all navbars
+      updatedStates[index] = !prevState[index]; // Toggle the selected navbar
       return updatedStates;
     });
   };
 
-  const [cardStatus, setCardStatus] = useState(
-    Array(allquizzes.length).fill(false)
-  );
-  const toggleNavbar1 = (index) => {
-    setCardStatus((prevState) => {
-      const updatedStates = [...prevState];
-      updatedStates[index] = !updatedStates[index];
-      return updatedStates;
-    });
-  };
+  // const [cardStatus, setCardStatus] = useState(
+  //   Array(allquizzes.length).fill(false)
+  // );
+  // const toggleNavbar1 = (index) => {
+  //   setCardStatus((prevState) => {
+  //     const updatedStates = [...prevState];
+  //     updatedStates[index] = !updatedStates[index];
+  //     return updatedStates;
+  //   });
+  // };
+
   const createquiz = () => {
     navigate("/create-quiz");
   };
@@ -1338,19 +1339,19 @@ const Quiz = () => {
                               stroke-width="1.5"
                               stroke="currentColor"
                               class="w-4 h-4 -ml-[33px] -mt-[11px] relative -right-6 rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
-                              onClick={() => toggleNavbar1(index)}
+                              onClick={() => toggleNavbar(index)}
                             >
                               <path
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
                                 d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                               />
-                              {cardStatus[index]
+                              {cardStates[index]
                                 ? "Close Navbar"
                                 : "Open Navbar"}
                             </svg>
 
-                            {cardStatus[index] && (
+                            {cardStates[index] && (
                               <div
                                 className={styles.infoIcons}
                                 style={{

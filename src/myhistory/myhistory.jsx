@@ -409,10 +409,10 @@ const handlePrevious = () => {
               <thead className="bg-[#CBF2FB]">
                 <tr className="text-[14px]">
                   <th className="py-2 px-4 border-b">Seq</th>
-                  <th className="py-2 px-4 border-b">Date</th>
+                  <th className="py-2 px-4 border-b text-start">Date</th>
                   <th className="py-2 px-4 border-b">Time</th>
-                  <th className="py-2 px-4 border-b">Quiz Title</th>
-                  <th className="py-2 px-4 border-b">Duration</th>
+                  <th className="py-2 px-4 border-b text-start">Quiz Title</th>
+                  <th className="py-2 px-4 border-b text-start">Duration</th>
                   <th className="py-2 px-4 border-b">Rank</th>
                   <th className="py-2 px-4 border-b text-nowrap">Pass %</th>
                   <th className="py-2 px-4 border-b">Grade</th>
@@ -424,7 +424,7 @@ const handlePrevious = () => {
                   <tr
                     key={index}
                     className="bg-white hover:bg-gray-100 active:bg-green-200 text-[12px]"
-                  >
+                     >
                     <td className="py-2 px-4 border-b text-center">
                       {indexOfFirstRow + index + 1}
                     </td>
@@ -444,6 +444,7 @@ const handlePrevious = () => {
                     >
                       {quiz.time}
                     </td>
+
                     <td
                       onClick={() =>
                         leaderboard(quiz.quiz_id, quiz.quiz_level_attempt_id)
@@ -452,14 +453,16 @@ const handlePrevious = () => {
                     >
                       {quiz.quiz_name}
                     </td>
+
                     <td
                       onClick={() =>
                         leaderboard(quiz.quiz_id, quiz.quiz_level_attempt_id)
                       }
-                      className="cursor-pointer py-2 px-4 border-b text-center text-nowrap"
+                      className="cursor-pointer py-2 px-4 border-b text-left text-nowrap"
                     >
                       {quiz.attempt_duration_mins}
                     </td>
+
                     <td
                       onClick={() =>
                         leaderboard(quiz.quiz_id, quiz.quiz_level_attempt_id)
@@ -468,6 +471,7 @@ const handlePrevious = () => {
                     >
                       {quiz.score_rank}
                     </td>
+
                     <td
                       onClick={() =>
                         leaderboard(quiz.quiz_id, quiz.quiz_level_attempt_id)
@@ -498,7 +502,6 @@ const handlePrevious = () => {
             </table>
             )}
         
-
             <div className="flex justify-between mt-4">
               <button
                 className="flex gap-1 items-center cursor-pointer"

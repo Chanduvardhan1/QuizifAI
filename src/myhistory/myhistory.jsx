@@ -40,6 +40,57 @@ const myhistory = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 25;
 
+    useEffect(() => {
+      const fetchQuizData = async () => {
+        try {
+          const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
+          if (!authToken) {
+            console.error("No authentication token found. Please log in again.");
+            return;
+          }
+          const response = await fetch(
+            `https://dev.quizifai.com:8010/history_Page/`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${authToken}`,
+              },
+              body: JSON.stringify({
+                user_id: userId,
+              }),
+            }
+          );
+          if (!response.ok) {
+            throw new Error("Failed to fetch history quiz data");
+          }
+          const result = await response.json();
+          console.log("History data :", result);
+  
+          const data = result.data;
+          setUserName(data.user_name || "");
+          setNoOfQuizzes(data.total_no_of_quizzes);
+          setNoOfAttempts(data.total_no_of_attempts);
+          setGlobalRank(data.global_score_rank);
+          setGlobalScore(data.global_score);
+          setNoOfMinutes(data.total_duration);
+          setSimpleCount(data.simple_count);
+          setModerateCount(data.moderate_count);
+          setComplexCount(data.complex_count);
+          setPassCount(data.pass_count);
+          setFailCount(data.fail_count);
+  
+          // Set quiz details if needed
+          // const quizDate = data.quiz_details;
+          setQuizDetails(data.quiz_details);
+          // setDate(quizDate.month);
+        } catch (error) {
+          console.error("Error fetching history quiz data:", error);
+        }
+      };
+      fetchQuizData();
+    }, [authToken, isAuthenticated, navigate, userId]);
+
   // Handle sort change
   const handleSortChange = (event) => {
     setSortOption(event.target.value);
@@ -72,8 +123,8 @@ const filteredQuizzes = quizDetails.filter((quiz) => {
 });
 
 // Sort and filter quizzes based on selected option
-const filteredByDate = filteredQuizzes.filter((date) => {
-  const quizDate = new Date(date);
+const filteredByDate = filteredQuizzes.filter((quiz) => {
+  const quizDate = new Date(quiz.month);
   if (sortOption === "This Month") {
     return quizDate >= firstDayOfMonth;
   } else if (sortOption === "This Week") {
@@ -95,6 +146,13 @@ const indexOfLastRow = currentPage * rowsPerPage;
 const indexOfFirstRow = indexOfLastRow - rowsPerPage;
 const currentRows = sortedQuizzes.slice(indexOfFirstRow, indexOfLastRow);
 
+// Show message if no quizzes are found
+const noQuizzesMessage = () => {
+  if (sortOption === "This Day") return "No quizzes attempted on this day.";
+  if (sortOption === "This Week") return "No quizzes attempted this week.";
+  if (sortOption === "This Month") return "No quizzes attempted this month.";
+  return "No quizzes available.";
+};
 // Handle pagination next/previous
 const handleNext = () => {
   if (indexOfLastRow < sortedQuizzes.length) {
@@ -107,57 +165,6 @@ const handlePrevious = () => {
     setCurrentPage(currentPage - 1);
   }
 };
-  // Fetch quiz data and update state
-  useEffect(() => {
-    const fetchQuizData = async () => {
-      try {
-        const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
-        if (!authToken) {
-          console.error("No authentication token found. Please log in again.");
-          return;
-        }
-        const response = await fetch(
-          `https://dev.quizifai.com:8010/history_Page/`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${authToken}`,
-            },
-            body: JSON.stringify({
-              user_id: userId,
-            }),
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch history quiz data");
-        }
-        const result = await response.json();
-        console.log("History data :", result);
-
-        const data = result.data;
-        setUserName(data.user_name || "");
-        setNoOfQuizzes(data.total_no_of_quizzes);
-        setNoOfAttempts(data.total_no_of_attempts);
-        setGlobalRank(data.global_score_rank);
-        setGlobalScore(data.global_score);
-        setNoOfMinutes(data.total_duration);
-        setSimpleCount(data.simple_count);
-        setModerateCount(data.moderate_count);
-        setComplexCount(data.complex_count);
-        setPassCount(data.pass_count);
-        setFailCount(data.fail_count);
-
-        // Set quiz details if needed
-        const quizDate = data.quiz_details;
-        setQuizDetails(data.quiz_details);
-        setDate(quizDate.month);
-      } catch (error) {
-        console.error("Error fetching history quiz data:", error);
-      }
-    };
-    fetchQuizData();
-  }, [authToken, isAuthenticated, navigate, userId]);
 
   // Image handling and crop logic
   useEffect(() => {
@@ -246,7 +253,7 @@ const handlePrevious = () => {
             <h1 className="text-[#F17530]">My History</h1>
           </div>
 
-          <div className=" flex justify-between py-[20px] my-[10px]">
+          <div className="py-[20px] my-[10px]">
             <div className="flex flex-col gap-5">
               <div className="flex -gap-3">
                 <div
@@ -284,10 +291,9 @@ const handlePrevious = () => {
                   <span className=" font-normal text-[12px]">{userId}</span>
                 </div>
               </div>
-
-              <div className="flex justify-evenly -mt-5 gap-3 border-2 px-2 py-2 bg-[#DCFCE7]">
-
-                <div>
+              </div>
+              <div className="flex justify-evenly gap-3 border-2 px-2 py-2 bg-[#DCFCE7] w-full">
+              <div>
                   <div>
                     <span>Total no.of Attempts : </span>
                     <span className=" font-normal">{noOfAttempts}</span>
@@ -315,7 +321,7 @@ const handlePrevious = () => {
                   </div>
                 </div>
 
-                <div>
+                              <div>
                   <div>
                     <span>Global Rank </span>
                     <span className="pl-1 font-normal">
@@ -329,39 +335,39 @@ const handlePrevious = () => {
                     </span>
                   </div>         
                 </div>
-
                 
-                  <div className="flex">
-                    <span>Complexity </span>
-                    <span className=" font-normal">
-                      <p className="text-normal text-nowrap flex">
-                        <span className="px-1 font-bold">:</span> Simple{" "}
+                <div className="flex">
+                    <div className="font-bold">
+                      <span>Complexity</span>
+                      <span className="px-1">:</span>
+                    </div>
+                    <div className="flex-col">
+                    <span>
+                      <p className="text-normal text-nowrap flex font-semibold">
+                        Simple <span className="pl-[23px]">:</span><span className="px-1 font-normal">{simpleCount}</span>
+                      </p>
+                       </span>
+
+                      <p className="text-nowrap flex font-semibold">
+                       Moderate :<span className=" px-1 font-normal">{moderateCount}</span>
+                      </p>
                       
-                        <span className="pl-[25px]">-<span className="border border-black px-1 ml-1 rounded">{simpleCount}</span></span>
+                      <p className="text-nowrap flex font-semibold">
+                       Complex <span className="pl-2">:</span><span className=" px-1 font-normal">{complexCount}</span>
                       </p>
-                      <p className="pl-[14px] text-nowrap flex mt-2">
-                       Moderate -<span className="border border-black px-1 ml-1 rounded">{moderateCount}</span>
-                      </p>
-                      
-                      <p className="pl-[14px] text-nowrap flex mt-2">
-                       Complex{" "}
-                      <span className="pl-[8px]">-<span className="border border-black px-1 ml-[5px] rounded">{complexCount}</span></span>
-                      </p>
-                    </span>
+                    </div>
                   </div>
 
                   <div className="flex">
                     <span className="pl-5 text-nowrap">Pass/Fail : </span>
-                    <span className=" font-normal pl-1">
-                      <p className="text-nowrap"> Pass-{passCount}</p>
-                      <p className="text-nowrap">Fail-{FailCount}</p>
+                    <span className=" font-semibold pl-1">
+                      <p className="text-nowrap"> Pass : <span className="font-normal">{passCount}</span></p>
+                      <p className="text-nowrap pl-[2px]">Fail <span className="pl-[6px]">:</span> <span className="font-normal">{FailCount}</span></p>
                     </span>
                   </div>
-                
               </div>
               
             </div>
-          </div>
           <div className=" flex  justify-between p-[5px] mb-3">
             <div>
               <h1 className="text-[#F17530] pt-3">Quizzes History : </h1>
@@ -396,7 +402,10 @@ const handlePrevious = () => {
             </div>
           </div>
           <div className="overflow-x-auto">
-            <table className="min-w-full bg-gray-100 border border-gray-200 rounded-lg border-spacing-y-2">
+            {sortedQuizzes.length === 0?(
+              <div className="text-center text-red-500 my-4">{noQuizzesMessage()}</div>
+            ):(
+              <table className="min-w-full bg-gray-100 border border-gray-200 rounded-lg border-spacing-y-2">
               <thead className="bg-[#CBF2FB]">
                 <tr className="text-[14px]">
                   <th className="py-2 px-4 border-b">Seq</th>
@@ -487,6 +496,8 @@ const handlePrevious = () => {
                 ))}
               </tbody>
             </table>
+            )}
+        
 
             <div className="flex justify-between mt-4">
               <button

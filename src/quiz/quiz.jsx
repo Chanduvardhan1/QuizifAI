@@ -605,7 +605,7 @@ const Quiz = () => {
         Authorization: `Bearer ${authToken}`,
       };
 
-      if (attempts_count > 0) {
+      if (quiz_attempts > 0) {
         alert("Quiz cannot be deleted as it has been attempted by one or more users. It can only be disabled.");
         setModalIsOpen(false);
         return;
@@ -637,7 +637,7 @@ const Quiz = () => {
 
   useEffect(() => {
     if (isDeleteConfirmed) {
-      handleDeleteQuiz(isDeleteConfirmed);
+      handleDeleteQuiz();
     }
   }, [isDeleteConfirmed]);
 
@@ -680,7 +680,7 @@ const Quiz = () => {
 
   useEffect(() => {
     if (isDisableConfirmed) {
-      handleDisableQuiz();
+      handleDisableQuiz(isDisableConfirmed);
     }
   }, [isDisableConfirmed]);
 

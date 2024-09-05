@@ -280,7 +280,7 @@ useEffect(() => {
          <th className='py-2 px-2 border-b'>Rank</th>
          <th className='py-2 px-2 border-b'>Global Score</th>
          <th className='py-2 px-2 border-b'>Attempted</th>
-         <th className='py-2 px-2 border-b'>QuizifAi Time</th>
+         <th className='py-2 px-2 border-b text-start'>QuizifAi Time</th>
          <th className='py-2 px-2 border-b text-start'>City</th>
         </tr>
         </thead>
@@ -289,11 +289,13 @@ useEffect(() => {
             {currentRows.map((user, index) =>(
               <tr key={user.user_id} className="bg-white hover:bg-gray-100 active:bg-green-200 text-[12px] text-[#002366] font-medium border-black">
               <th className='py-2 px-2 border-b'>{indexOfFirstRow + index + 1}</th>
-              <th className='py-2 px-2 border-b text-start'>{user.full_name}</th>
+              <th className='py-2 px-2 border-b text-start'>
+              {user.full_name.toLowerCase().replace(/^\w/, (c) => c.toUpperCase())}
+              </th>
               <th className='py-2 px-2 border-b'>{user.global_score_rank}</th>
               <th className='py-2 px-2 border-b'>{user.global_score !== null ? user.global_score : '-'}</th>
               <th className='py-2 px-2 border-b'>{user.total_quizzes_attempted}</th>
-              <th className='py-2 px-2 border-b'>{user.total_duration}</th>
+              <th className='py-2 px-2 border-b text-start'>{user.total_duration}</th>
               <th className='py-2 px-2 border-b text-start'>{user.city || '-'}</th>
              </tr>
             ))}

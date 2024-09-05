@@ -685,7 +685,7 @@ const Dashboard = () => {
                   ? new Date(quizItem.quiz_end_date)
                   : null;
                 return (
-                  quizItem.active_flag === "true" &&
+                  quizItem.active_flag === "True" &&
                   quizItem.latest_flag === "Y" &&
                   currentDate >= quizCreateDate &&
                   (quizEndDate === null || currentDate <= quizEndDate)

@@ -23,7 +23,7 @@ const UserAndGroups = () => {
   const [groupName, setGroupName] = useState("");
   const [groupDescription, setGroupDescription] = useState("");
   const [activeFlag, setActiveFlag] = useState("");
-  const [selectedUserIds, setSelectedUserIds] = useState("");
+  const [selectedUserIds, setSelectedUserIds] = useState([]);
   const [selectedUserName, setSelectedUserName] = useState("Select User");
   const [searchInput, setSearchInput] = useState("");
   const userId = localStorage.getItem("user_id");
@@ -51,9 +51,12 @@ const UserAndGroups = () => {
 
       const groupsData = await groupsResponse.json();
       const usersData = await usersResponse.json();
-
+     
+      const filteredUsers = usersData.data.filter(
+        (user) => user.user_name && user.user_name.trim() !== ""
+      );
       setGroups(groupsData.data);
-      setUsers(usersData.data);
+      setUsers(filteredUsers);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -174,48 +177,6 @@ const UserAndGroups = () => {
     setIsEditing(false);
   };
 
-  // const handleSubmit1 = async () =>{
-  //   const groupData ={
-  //     group_name: groupName,
-  //     group_description: groupDescription,
-  //     active_flag: activeFlag,
-  //     created_by: userId,
-  //     user_ids: selectedUserIds
-  //   };
-  //   try{
-  //     const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
-
-  //       if (!authToken) {
-  //         console.error('No authentication token found');
-  //         return;
-  //       }
-  //       const response = await fetch(
-  //         "https://dev.quizifai.com:8010/create_group/",
-  //         {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: `Bearer ${authToken}`,
-  //           },
-  //           body: JSON.stringify(groupData),
-  //         });
-  //         if(response.ok){
-  //           const result = await response.json();
-  //           console.log('Groups added successfully.',result);
-  //           fetchGroups();
-  //           setIsNavbarOpen(false);
-  //           setGroupDescription("");
-  //           setSelectedUserIds([]);
-  //           setGroupName("");
-  //           setActiveFlag([]);
-  //         } else{
-  //           console.error('Failed to add groups',response.status, response.statusText);
-  //         }
-  //        } catch(error){
-  //           console.log('Error', error);
-  //          }
-  //   };
-
   const toggleNavbar = () => {
     setIsNavbarOpen(!isNavbarOpen);
   };
@@ -296,25 +257,21 @@ const UserAndGroups = () => {
                 onChange={(e) => setGroupDescription(e.target.value)}
                 className=" w-[115px] rounded-3xl text-center -mt-[10px]  py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
               />
-              <select
-                className="w-[115px] rounded-3xl text-center -mt-[10px] py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
-                value={selectedUserIds}
-                onChange={(e) => {
-                  const selectedValue = e.target.value;
-                  setSelectedUserIds(selectedValue);
-                  const user = users.find(
-                    (user) => user.user_id === selectedValue
-                  );
-                  setSelectedUserName(user ? user.user_name : "Select User");
-                }}
-              >
-                <option value={selectedUserIds}>{selectedUserName}</option>
-                {users.map((user) => (
-                  <option key={user.user_id} value={user.user_id}>
-                    {user.user_name}
-                  </option>
-                ))}
-              </select>
+
+  <select
+   className="rounded-3xl text-center -mt-[10px] w-[150px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
+  value={selectedUserIds || ""}
+  onChange={(e) => setSelectedUserIds(e.target.value)}
+  
+>
+<option value="" disabled selected hidden>Select User</option>
+  {users.map((user) => (
+    <option key={user.user_id} value={user.user_id}>
+      {user.user_name}
+    </option>
+  ))}
+</select>
+
 
               <button
                 onClick={handleSubmit}

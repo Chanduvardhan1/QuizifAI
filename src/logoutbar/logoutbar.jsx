@@ -488,7 +488,7 @@ function handleViewImage(event) {
               <h1 className="relative font-Poppins text-[13px]">Global Score</h1>
               </div>
               <div className="text-xs text-[#002366] text-start -ml-12 mt-1">
-              <p onClick={handleBackToglobalLeaderboard}>Click <span className="text-[#E97132] underline underline-offset-1 cursor-pointer font-bold">here</span> to Global score leader board</p>
+              <p onClick={handleBackToglobalLeaderboard}>Click <span className="text-[#E97132] underline underline-offset-1 cursor-pointer font-bold">here</span> to view global score leaderboard</p>
               </div>
               </div>
             </div>

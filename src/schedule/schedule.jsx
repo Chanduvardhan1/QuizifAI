@@ -20,14 +20,14 @@ import Pencil from "../../src/assets/Images/Schedule/Pencil.png";
 import ThreeStar from "../../src/assets/Images/Schedule/3-Stars.png";
 import Share from "../../src/assets/Images/Schedule/Share.png";
 
-import Attempt1 from "../../public/images/dashboard/Attempt1.png";
-import NoOfQuestion from "../../public/images/dashboard/NoOfQuestion.png";
-import Clock from "../../public/images/dashboard/Clock.png";
-import Start_button from "../../public/images/dashboard/Start-button.png";
-import Share_button from "../../public/images/dashboard/Share-button.png";
+import Attempt1 from "/images/dashboard/Attempt1.png";
+import NoOfQuestion from "/images/dashboard/NoOfQuestion.png";
+import Clock from "/images/dashboard/Clock.png";
+import Start_button from "/images/dashboard/Start-button.png";
+import Share_button from "/images/dashboard/Share-button.png";
 import Edit_button from "../../src/assets/Images/dashboard/Edit-button.png";
-import leaderboard_button from "../../public/images/dashboard/leaderboard-button.png";
-import Easy from "../../public/images/dashboard/Easy.png";
+import leaderboard_button from "/images/dashboard/leaderboard-button.png";
+import Easy from "/images/dashboard/Easy.png";
 
 function Schedule(){
   // Calender-function
@@ -144,14 +144,14 @@ function Schedule(){
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     stroke="currentColor"
-                    class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                    className="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
                     onClick={toggleNavbar}
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                     />
                     {isNavbarOpen ? "Close Navbar" : "Open Navbar"}
@@ -293,14 +293,14 @@ function Schedule(){
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     stroke="currentColor"
-                    class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                    className="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
                     onClick={toggleNavbar}
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                     />
                     {isNavbarOpen ? "Close Navbar" : "Open Navbar"}
@@ -446,14 +446,14 @@ function Schedule(){
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     stroke="currentColor"
-                    class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                    className="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
                     onClick={toggleNavbar}
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                     />
                     {isNavbarOpen ? "Close Navbar" : "Open Navbar"}
@@ -605,14 +605,14 @@ function Schedule(){
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     stroke="currentColor"
-                    class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                    className="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
                     onClick={toggleNavbar}
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                     />
                     {isNavbarOpen ? "Close Navbar" : "Open Navbar"}
@@ -757,14 +757,14 @@ function Schedule(){
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     stroke="currentColor"
-                    class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                    className="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
                     onClick={toggleNavbar}
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                     />
                     {isNavbarOpen ? "Close Navbar" : "Open Navbar"}
@@ -909,14 +909,14 @@ function Schedule(){
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     stroke="currentColor"
-                    class="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
+                    className="w-4 h-4 -ml-[27px] cursor-pointer rounded-lg hover:bg-slate-200"
                     onClick={toggleNavbar}
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                     />
                     {isNavbarOpen ? "Close Navbar" : "Open Navbar"}

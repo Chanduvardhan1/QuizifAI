@@ -538,5 +538,12 @@ margin-top: -60px;
   padding-left: 36px;
   border-radius: 10px;
 }
+.quizDisabled{
+  pointer-events: none;
+  background-color: grey;
+}
+.deleteIcon{
+display: inline-block;
+}
 
 

@@ -7,21 +7,21 @@ import LogoutBar from "../logoutbar/logoutbar.jsx";
 import searchIcon from "../assets/Images/images/dashboard/Search.png";
 import { useNavigate } from "react-router-dom";
 import Plus from "../../src/assets/Images/dashboard/Plus.png";
-import Start_button from "../../public/images/dashboard/Start-button.png";
+import Start_button from "/images/dashboard/Start-button.png";
 import start from "../../src/assets/Images/dashboard/non-attempted-start.png";
 import Delete from "../../src/assets/Images/dashboard/delete.png";
 import disable from "../../src/assets/Images/dashboard/disable.png";
 import PlayButton from "../../src/assets/Images/dashboard/playButton.png";
-import Share_button from "../../public/images/dashboard/Share-button.png";
-import leaderboard_button from "../../public/images/dashboard/leaderboard-button.png";
+import Share_button from "/images/dashboard/Share-button.png";
+import leaderboard_button from "/images/dashboard/leaderboard-button.png";
 import Edit_button from "../../src/assets/Images/dashboard/Edit-button.png";
 import download from "../../src/assets/Images/dashboard/download.png";
 import high_score from "../../src/assets/Images/dashboard/high-score.png";
 import eye from "../../src/assets/Images/dashboard/eye.png";
-import Attempt1 from "../../public/images/dashboard/Attempt1.png";
-import NoOfQuestion from "../../public/images/dashboard/NoOfQuestion.png";
-import Easy from "../../public/images/dashboard/Easy.png";
-import Clock from "../../public/images/dashboard/Clock.png";
+import Attempt1 from "/images/dashboard/Attempt1.png";
+import NoOfQuestion from "/images/dashboard/NoOfQuestion.png";
+import Easy from "/images/dashboard/Easy.png";
+import Clock from "/images/dashboard/Clock.png";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../Authcontext/AuthContext.jsx";
@@ -30,7 +30,11 @@ import Modal from "react-modal";
 // Modal.setAppElement(el);
 const Quiz = () => {
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
+  const [userRole, setUserRole] = useState(localStorage.getItem("user_role"));
   const [username, setUsername] = useState("");
+  const [deleteModelOpen,setDeleteModelOpen] = useState(false);
+  const [deleteChecked ,setDeleteChecked] = useState(false);
+  const [selectedQuizItem,setSelectedQuizItem] = useState({});
   const currentValue1 = 50;
   const maxValue1 = 100;
   const currentValue2 = 30;
@@ -80,17 +84,20 @@ const Quiz = () => {
   const [isChecked1, setIsChecked1] = useState(false);
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
   const [isDisableConfirmed, setIsDisableConfirmed] = useState(false);
+  const [deleteDisabled,SetDeleteDisabled] = useState(false);
   // const [cardStatus, setCardStatus] = useState({});
 
   const [quizId, setQuizId] = useState(0); // Ensure quizId is properly initialized
-  const [userid, setUserid] = useState(null);
 
-  const confirmDisable = () => {
+  const confirmDisable = (quizItem) => {
+    console.log('confirmDisable');
     setIsDisableConfirmed(true);
+    handleDisableQuiz(quizItem);
   };
+  
 
   const navigate = useNavigate();
-  const userRole = localStorage.getItem("user_role");
+  // const userRole = localStorage.getItem("user_role");
 
   const sortAlphabetically = (arr) => {
     return arr.sort((a, b) => {
@@ -99,6 +106,15 @@ const Quiz = () => {
       return valueA.localeCompare(valueB);
     });
   };
+  const handleOptionsDeleteClick = () => {
+    setDeleteModelOpen(true);
+  }
+  const handleDeleteOnClick = (event,quizItem) => {
+    setQuizId(event);
+    handleDeleteQuiz(quizItem?.quiz_attempts);
+    console.log("quizItem",quizItem);
+
+  }
 
   useEffect(() => {
     const fetchDropdownValues = async () => {
@@ -183,7 +199,6 @@ const Quiz = () => {
 
   useEffect(() => {
     const fetchQuizData = async () => {
-      console.log("User ID:", userId);
       try {
         const response = await fetch(
           `https://dev.quizifai.com:8010/dashboard`,
@@ -307,7 +322,8 @@ const Quiz = () => {
         )
       );
     }
-  }, [selectedCourses, allClasses]);
+  },
+   [selectedCourses, allClasses]);
 
   const [cardStates, setCardStates] = useState(
     Array(allquizzes.length).fill(false)
@@ -340,6 +356,9 @@ const Quiz = () => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     navigate(`/editmanuly`);
   };
+  //  const handleEnableClick = () => {
+
+  // }
 
   const leaderboard = (
     quizId,
@@ -588,11 +607,12 @@ const Quiz = () => {
   };
   
   const handleDeleteClick = (quiz_id) =>{
+    console.log('quiz_id', quiz_id);
     setQuizId(quiz_id);
     setModalIsOpen(true);
   }
 
-  const handleDeleteQuiz = async () => {
+  const handleDeleteQuiz = async (quiz_attempts) => {
     try {
       const authToken = localStorage.getItem("authToken");
 
@@ -623,9 +643,10 @@ const Quiz = () => {
       });
 
       if (response.ok) {
-        const result = await deleteResponse.json();
+        const result = await deleteResponse ?.json();
         console.log("Delete response:", result);
         setModalIsOpen(false);
+        setDeleteModelOpen(false);
         // Optionally, refresh the quiz list or update the UI
       } else {
         console.error("Failed to delete quiz");
@@ -640,8 +661,8 @@ const Quiz = () => {
       handleDeleteQuiz();
     }
   }, [isDeleteConfirmed]);
-
-  const handleDisableQuiz = async () => {
+  const handleDisableQuiz = async (quizItem) => {
+    console.log('quizItem',quizItem);
     try {
       const authToken = localStorage.getItem("authToken");
 
@@ -656,7 +677,7 @@ const Quiz = () => {
 
       const body = JSON.stringify({
         user_id: userId,
-        quiz_id: quizItem.quiz_id,  // Corrected reference
+        quiz_id: quizItem?.quiz_id,  // Corrected reference
       });
 
       const response = await fetch("https://dev.quizifai.com:8010/disable_quiz/", {
@@ -678,11 +699,11 @@ const Quiz = () => {
     }
   };
 
-  useEffect(() => {
-    if (isDisableConfirmed) {
-      handleDisableQuiz(isDisableConfirmed);
-    }
-  }, [isDisableConfirmed]);
+  // useEffect(() => {
+  //   if (isDisableConfirmed) {
+  //     handleDisableQuiz(isDisableConfirmed,selectedQuizItem);
+  //   }
+  // }, [isDisableConfirmed]);
 
   return (
     <div className="flex font-Poppins">
@@ -901,20 +922,21 @@ const Quiz = () => {
                     ? new Date(quizItem.quiz_end_date)
                     : null;
                   return (
-                    quizItem.active_flag === "true" &&
-                    currentDate >= quizCreateDate &&
-                    (quizEndDate === null || currentDate <= quizEndDate)
+                    // quizItem.active_flag === "true" &&
+                    // currentDate >= quizCreateDate &&
+                    // (quizEndDate === null || currentDate <= quizEndDate)
+                    quizItem
                   );
                 })
                 .map((quizItem, index) => (
-                  <div key={index}>
+                  <div className={quizItem.active_flag != "true" ? "quizDisabled" : ""} key={index}>
                     {quizItem.attempt_flag === "Y" ? (
                       <div
                         key={index}
                         className={styles.card}
                         style={{
                           width: "245px",
-                          paddingTop: "8px",
+                          // paddingTop: "8px",
                           paddingTop: "20px",
                           marginTop: "20px",
                           marginRight: "10px",
@@ -938,14 +960,14 @@ const Quiz = () => {
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
                               viewBox="0 0 24 24"
-                              stroke-width="1.5"
+                              strokeWidth="1.5"
                               stroke="currentColor"
-                              class="w-4 h-4 -ml-[25px] relative -top-[9px] right-2 rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
+                              className="w-4 h-4 -ml-[25px] relative -top-[9px] right-2 rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
                               onClick={() => toggleNavbar(index)}
                             >
                               <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                                 d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                               />
                               {cardStates[index]
@@ -1007,7 +1029,7 @@ const Quiz = () => {
                                       className={styles.edittext}
                                       onClick={() => Edit(quizItem.quiz_id)}
                                     >
-                                      Edit
+                                      Edit 
                                     </span>
                                   </div>
                                 )}
@@ -1034,7 +1056,8 @@ const Quiz = () => {
                                   </span>
                                 </div>
                                 {userRole === "Quiz Master" && (
-                                  <div className={styles.start}>
+                                  <div>
+                                    <div className={styles.start}>
                                     <img
                                       className={styles.startimage}
                                       src={disable}
@@ -1044,19 +1067,19 @@ const Quiz = () => {
                                       className={styles.starttext}
                                       onClick={() => setModalIsOpen1(true)}
                                     >
-                                      Disable
+                                      Disable 
                                     </span>
                                     <Modal
                                       isOpen={modalIsOpen1}
                                       onRequestClose={() =>
                                         setModalIsOpen1(false)
                                       }
+                                      ariaHideApp={false}
                                       className="bg-white rounded-lg p-8 mx-auto mt-10 max-w-md border-red-400 border-[1px]"
                                       overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
                                     >
                                       <h2 className="text-xl font-semibold mb-4">
-                                        Are you sure you want to disable this
-                                        card?
+                                        Are you sure you want to disable this card?
                                       </h2>
                                       <div className="mb-4">
                                         <input
@@ -1079,7 +1102,7 @@ const Quiz = () => {
                                               ? "opacity-50 cursor-not-allowed"
                                               : ""
                                           }`}
-                                          onClick={confirmDisable}
+                                          onClick={() =>  confirmDisable(quizItem)}
                                           disabled={!isChecked1}
                                         >
                                           Disable
@@ -1093,6 +1116,71 @@ const Quiz = () => {
                                       </div>
                                     </Modal>
                                   </div>
+                                  <div>
+                                  <img 
+                                    className={styles.startimage}
+                                    style={{display: "inline-block", marginRight: 4}}
+                                    src={Delete}
+                                    alt="Delete icon"
+                                  />
+                                  <span 
+                                    className={styles.starttext}
+                                    style={{display: "inline-block"}}
+                                    onClick={() => handleOptionsDeleteClick()}
+                                    >
+                                    Delete 
+                                  </span>
+                                  {/* <div>
+                                    <button onClick={handleEnableClick}className="display: inline-block">enable</button>
+                                    </div> */}
+                                  
+                                  <Modal
+                                    isOpen={deleteModelOpen}
+                                    onRequestClose={() => setDeleteModelOpen(false)}
+                                    className="bg-white rounded-lg p-8 mx-auto max-w-md border-red-400 border-[1px]"
+                                    overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+                                  >
+                                    <h2 className="text-xl font-semibold mb-4">
+                                      Are you sure you want to delete this card?
+                                    </h2>
+                                    <div className="mb-4">
+                                      <input
+                                        type="checkbox"
+                                        id="confirmCheckbox"
+                                        className="mr-2"
+                                        checked={deleteChecked}
+                                         onChange={(e) =>
+                                          setDeleteChecked(e.target.checked)
+                                         }
+                                      />
+                                      <label htmlFor="confirmCheckbox">
+                                        I understand the consequences.
+                                      </label>
+                                    </div>
+                                    <div className="flex justify-end space-x-4">
+                                      <button 
+                                        className={`bg-red-500 text-white px-4 py-2 rounded ${
+                                          !isChecked
+                                            ? "opacity-50 cursor-not-allowed"
+                                            : ""
+                                        }`}
+                                        onClick={() =>handleDeleteOnClick(quizItem.quiz_id,quizItem )}
+                                        
+                                        // disabled={!deleteDisabled}
+                                      >
+                                        Delete 
+                                      </button>
+                                      <button
+                                        className="bg-gray-300 text-black px-4 py-2 rounded"
+                                        onClick={() => setDeleteModelOpen(false)}
+                                      >
+                                        Cancel
+                                      </button>
+                                    </div>
+                                  </Modal>
+                                  </div>
+                                  </div>
+                                  
                                 )}
                                 {/* <img
                             className={styles.shareimage} style={{marginTop:"2px"}}
@@ -1108,7 +1196,7 @@ const Quiz = () => {
 
                         <div className="flex mt-[9px] mb-[19px] relative top-[19px]">
                           <span className="relative group -top-[13px]">
-                            <span class="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] left-[10px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
+                            <span className="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] left-[10px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
                               {highlightText(quizItem.category, searchQuery)}
                             </span>
                             <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block top-[14px] left-[7px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
@@ -1336,14 +1424,14 @@ const Quiz = () => {
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
                               viewBox="0 0 24 24"
-                              stroke-width="1.5"
+                              strokeWidth="1.5"
                               stroke="currentColor"
-                              class="w-4 h-4 -ml-[33px] -mt-[11px] relative -right-6 rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
+                              className="w-4 h-4 -ml-[33px] -mt-[11px] relative -right-6 rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
                               onClick={() => toggleNavbar(index)}
                             >
                               <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                                 d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                               />
                               {cardStates[index]
@@ -1428,14 +1516,15 @@ const Quiz = () => {
                                     />
                                     <span
                                       className={styles.starttext}
-                                      onClick={() => handleDeleteClick(quizItem.quiz_id)}>
+                                      // onClick={() => handleDeleteClick(quizItem.quiz_id,quizItem)}
+                                      
+                                      onClick={() => handleOptionsDeleteClick()}
+                                      >
                                       Delete
                                     </span>
                                     <Modal
-                                      isOpen={modalIsOpen}
-                                      onRequestClose={() =>
-                                        setModalIsOpen(false)
-                                      }
+                                      isOpen={deleteModelOpen}
+                                      
                                       className="bg-white rounded-lg p-8 mx-auto max-w-md border-red-400 border-[1px]"
                                       overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
                                     >
@@ -1461,17 +1550,17 @@ const Quiz = () => {
                                               ? "opacity-50 cursor-not-allowed"
                                               : ""
                                           }`}
-                                          onClick={() => setIsDeleteConfirmed(true)}
+                                          onClick={() =>handleDeleteOnClick(quizItem.quiz_id,quizItem )}
                                           disabled={!isChecked}
                                         >
-                                          Delete
+                                          Delete 
                                         </button>
                                         <button
-                                          className="bg-gray-300 text-black px-4 py-2 rounded"
-                                          onClick={() => setModalIsOpen(false)}
-                                        >
-                                          Cancel
-                                        </button>
+                                        className="bg-gray-300 text-black px-4 py-2 rounded"
+                                        onClick={() => setDeleteModelOpen(false)}
+                                      >
+                                        Cancel
+                                      </button>
                                       </div>
                                     </Modal>
                                   </div>
@@ -1488,19 +1577,22 @@ const Quiz = () => {
                                       className={styles.starttext}
                                       onClick={() => setModalIsOpen1(true)}
                                     >
-                                      Disable
+                                      Disable 
                                     </span>
-                                    <Modal
+                                    {/* <div>
+                                    <button className="display: inline-block">enable</button>
+                                    </div> */}
+                                     <Modal
                                       isOpen={modalIsOpen1}
                                       onRequestClose={() =>
                                         setModalIsOpen1(false)
                                       }
+                                      ariaHideApp={false}
                                       className="bg-white rounded-lg p-8 mx-auto mt-10 max-w-md border-red-400 border-[1px]"
                                       overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
                                     >
                                       <h2 className="text-xl font-semibold mb-4">
-                                        Are you sure you want to disable this
-                                        card?
+                                        Are you sure you want to disable this card?
                                       </h2>
                                       <div className="mb-4">
                                         <input
@@ -1523,7 +1615,7 @@ const Quiz = () => {
                                               ? "opacity-50 cursor-not-allowed"
                                               : ""
                                           }`}
-                                          onClick={() => setIsDisableConfirmed(true)}
+                                          onClick={() =>  confirmDisable(quizItem)}
                                           disabled={!isChecked1}
                                         >
                                           Disable
@@ -1545,7 +1637,7 @@ const Quiz = () => {
 
                         <div className="flex mt-[9px] relative top-[17px]">
                           <span className="relative group left-[11px]">
-                            <span class="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
+                            <span className="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
                               {highlightText(quizItem.category, searchQuery)}
                             </span>
                             <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block top-[14px] -left-[2px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
@@ -1553,14 +1645,14 @@ const Quiz = () => {
                             </span>
                           </span>
                           <p className="px-[4px] font-normal pl-2">|</p>
-                          <span class="relative group">
-                            <span class="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
+                          <span className="relative group">
+                            <span className="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
                               {highlightText(
                                 quizItem.sub_category,
                                 searchQuery
                               )}
                             </span>
-                            <span class="absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded text-nowrap">
+                            <span className="absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded text-nowrap">
                               {highlightText(
                                 quizItem.sub_category,
                                 searchQuery

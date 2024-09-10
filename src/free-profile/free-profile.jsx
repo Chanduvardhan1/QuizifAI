@@ -306,7 +306,7 @@ const FreeProfile = () => {
       last_name: lastName,
       user_email: email,
       email_otp: emailOtp,
-      user_phone_number: mobileNumber,
+      // user_phone_number: mobileNumber,
       otp: otp,
       user_role: rolename, // Example value, adjust as needed
       user_type: "Public",
@@ -362,6 +362,20 @@ const FreeProfile = () => {
         setIsEmailOtpSent(false);
         setIsMobileOtpSent(false);
         setIsEditing(false);
+        window.location.reload();
+        // const response = await fetch(
+        //   `https://dev.quizifai.com:8010/dashboard`,
+        //   {
+        //     method: "POST",
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //       "Authorization": `Bearer ${authToken}`,
+        //     },
+        //     body: JSON.stringify({
+        //        user_id: userId
+        //     }),
+        //   }
+        // );
       }
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -1213,7 +1227,7 @@ const FreeProfile = () => {
               </>
             ) : (
               <button
-                className="bg-[#3B61C8] hover:transform hover:scale-110 transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] text-white"
+                className="bg-[#3B61C8] hover:transform hover:scale-110 transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] text-white "
                 onClick={handleEditClick}
               >
                 Edit
@@ -1371,8 +1385,8 @@ const FreeProfile = () => {
         </div>
 
         {/* *************password details ******************************* */}
-        <div className="bg-white w-full">
-          <h1 className="ml-[6%] mt-4 text-[13px] text-[#EF5130] font-semibold">
+        <div className="bg-white w-full ">
+          <h1 className="ml-[6%] mt-4 text-[13px] text-[#EF5130] font-semibold colour red">
             Update Password
           </h1>
           <div className="flex ml-[27%] mt-[20px]">

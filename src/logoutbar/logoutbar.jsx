@@ -331,8 +331,7 @@ function handleViewImage(event) {
     style={{ width: "20px",
              height: "20px",
              cursor:"pointer",
-            marginLeft:"155px",
-          cursor:"pointer" }}
+            marginLeft:"155px"}}
   />
   <span style={{ marginRight: "5px",fontSize:"10px",position:"relative",left:"150px",top:"-5px" }}>Logout</span>
 </div>

@@ -218,13 +218,13 @@ function subscription() {
             <td className=" border border-slate-300 bg-gradient-to-t from-[#f0f8f3] to-[#f0f9ff]">
               <img className="w-6 h-6 ml-32 mb-2" src={Cross} />
               <button className="w-[151.73px] h-[41.55px] rounded-[14px] shadow-inner shadow-[#6c6d70] ml-14 mb-4">
-                Upgrade
+                Upgrade 
               </button>
             </td>
             <td className=" border border-slate-300">
               <img className="w-6 h-6 ml-32 mx-4 mt-1 mb-2" src={Tick} />
               <button className="w-[151.73px] h-[41.55px] rounded-[14px] shadow-inner shadow-[#6c6d70] ml-14 mb-4">
-                Upgrade
+                Upgrade 
               </button>
             </td>
           </tr>

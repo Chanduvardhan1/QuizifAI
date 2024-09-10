@@ -8,19 +8,19 @@ import { useNavigate } from "react-router-dom";
 import Delete from "../../src/assets/Images/dashboard/delete.png";
 import disable from "../../src/assets/Images/dashboard/disable.png";
 import Plus from "../../src/assets/Images/dashboard/Plus.png";
-import Start_button from "../../public/images/dashboard/Start-button.png";
+import Start_button from "/images/dashboard/Start-button.png";
 import start from "../../src/assets/Images/dashboard/non-attempted-start.png";
 import PlayButton from "../../src/assets/Images/dashboard/playButton.png";
-import Share_button from "../../public/images/dashboard/Share-button.png";
-import leaderboard_button from "../../public/images/dashboard/leaderboard-button.png";
+import Share_button from "/images/dashboard/Share-button.png";
+import leaderboard_button from "/images/dashboard/leaderboard-button.png";
 import Edit_button from "../../src/assets/Images/dashboard/Edit-button.png";
 import download from "../../src/assets/Images/dashboard/download.png";
 import high_score from "../../src/assets/Images/dashboard/high-score.png";
 import eye from "../../src/assets/Images/dashboard/eye.png";
-import Attempt1 from "../../public/images/dashboard/Attempt1.png";
-import NoOfQuestion from "../../public/images/dashboard/NoOfQuestion.png";
-import Easy from "../../public/images/dashboard/Easy.png";
-import Clock from "../../public/images/dashboard/Clock.png";
+import Attempt1 from "/images/dashboard/Attempt1.png";
+import NoOfQuestion from "/images/dashboard/NoOfQuestion.png";
+import Easy from "/images/dashboard/Easy.png";
+import Clock from "/images/dashboard/Clock.png";
 import arrow from "../../src/assets/Images/dashboard/rightArrow.png";
 import "react-sweet-progress/lib/style.css";
 import { toast, ToastContainer } from "react-toastify";
@@ -464,6 +464,8 @@ const Dashboard = () => {
   const userRole = localStorage.getItem("user_role");
 
   const results = (latestResult || []).map((result, index) => {
+    console.log(' {result?.attempt_date}', result?.attempt_date);
+
     const percentColor = getColorPercentage(result?.quiz_percentage);
     const handleQuizClick = () => {
       leaderboard1(result?.quiz_id, result?.quiz_level_attempt_id);
@@ -613,6 +615,7 @@ const Dashboard = () => {
                   timeData.map((item, index) => {
                     // Create a new Date object from item.cal_date
                     const date = new Date(item.cal_date);
+                    console.log('date',date);
                     // Get the month abbreviation
                     const monthAbbreviation = date.toLocaleString("default", {
                       month: "short",
@@ -723,14 +726,14 @@ const Dashboard = () => {
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
+                            strokeWidth="1.5"
                             stroke="currentColor"
-                            class="w-4 h-4 rotate-90 -ml-[35px] relative -top-[7px] left-2 cursor-pointer rounded-lg hover:bg-slate-200"
+                            className="w-4 h-4 rotate-90 -ml-[35px] relative -top-[7px] left-2 cursor-pointer rounded-lg hover:bg-slate-200"
                             onClick={() => toggleNavbar(index)}
                           >
                             <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
                               d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                             />
                             {cardStates[index] ? "Close Navbar" : "Open Navbar"}
@@ -912,11 +915,11 @@ const Dashboard = () => {
 
                         <p className="px-[2px] font-normal">|</p>
 
-                        <span class="relative group">
-                          <span class="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
+                        <span className="relative group">
+                          <span className="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
                             {quizItem.sub_category}
                           </span>
-                          <span class="absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded text-nowrap">
+                          <span className="absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded text-nowrap">
                             {quizItem.sub_category}
                           </span>
                         </span>
@@ -1103,14 +1106,14 @@ const Dashboard = () => {
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
+                            strokeWidth="1.5"
                             stroke="currentColor"
-                            class="w-4 h-4 -ml-[27px] relative -top-[20px] -left-[5px] rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
+                            className="w-4 h-4 -ml-[27px] relative -top-[20px] -left-[5px] rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
                             onClick={() => toggleNavbar(index)}
                           >
                             <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
                               d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                             />
                             {cardStates[index] ? "Close Navbar" : "Open Navbar"}
@@ -1335,11 +1338,11 @@ const Dashboard = () => {
                           </span>
                         </span>
                         <p className="px-[2px] font-normal">|</p>
-                        <span class="relative group">
-                          <span class="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
+                        <span className="relative group">
+                          <span className="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
                             {quizItem.sub_category}
                           </span>
-                          <span class="absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded text-nowrap">
+                          <span className="absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded text-nowrap">
                             {quizItem.sub_category}
                           </span>
                         </span>
@@ -1497,7 +1500,7 @@ const Dashboard = () => {
                       className={styles.card}
                       style={{
                         width: "245px",
-                        paddingTop: "8px",
+                        // paddingTop: "8px",
                         paddingTop: "20px",
                         marginTop: "10px",
                         marginRight: "10px",
@@ -1521,14 +1524,14 @@ const Dashboard = () => {
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
+                            strokeWidth="1.5"
                             stroke="currentColor"
-                            class="w-4 h-4 -ml-[27px] rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
+                            className="w-4 h-4 -ml-[27px] rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
                             onClick={() => toggleNavbar(index)}
                           >
                             <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
                               d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                             />
                             {cardStates[index] ? "Close Navbar" : "Open Navbar"}
@@ -1876,14 +1879,14 @@ const Dashboard = () => {
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
+                            strokeWidth="1.5"
                             stroke="currentColor"
-                            class="w-4 h-4 -ml-[27px] relative -top-[9px] right-[1px] rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
+                            className="w-4 h-4 -ml-[27px] relative -top-[9px] right-[1px] rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
                             onClick={() => toggleNavbar(index)}
                           >
                             <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
                               d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                             />
                             {cardStates[index]
@@ -2114,11 +2117,11 @@ const Dashboard = () => {
                         </span>
                         <p className="px-[2px] font-normal">|</p>
 
-                        <span class="relative group">
-                          <span class="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
+                        <span className="relative group">
+                          <span className="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
                             {quizItem.sub_category}
                           </span>
-                          <span class="absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded text-nowrap">
+                          <span className="absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded text-nowrap">
                             {quizItem.sub_category}
                           </span>
                         </span>

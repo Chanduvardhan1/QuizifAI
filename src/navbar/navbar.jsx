@@ -234,7 +234,7 @@ const Navigation = () => {
             <div>
               <p className=" text-[#9696BB] text-[13px]">Upgrade to <span className=" text-black font-bold">Pro</span>  for more resources</p>
             </div>
-            <button className=" bg-[#5E81F4] p-[5px] px-[20px] rounded-[10px] text-white text-[13px] mt-2">Upgrade</button>
+            <button className=" bg-[#3B61C8] p-[5px] px-[20px] rounded-[10px] text-white text-[13px] mt-2" >Upgrade </button>
           </div>
 </div>
     </div>

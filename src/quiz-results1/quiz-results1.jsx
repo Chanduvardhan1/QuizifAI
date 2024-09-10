@@ -43,10 +43,10 @@ import LeftBar from "../leftbar/leftbar";
 import { useLocation } from 'react-router-dom';
 import Navigation from "../navbar/navbar.jsx"
 import LogoutBar from "../logoutbar/logoutbar.jsx";
-import Attempt1 from "../../public/images/dashboard/Attempt1.png";
-import NoOfQuestion from "../../public/images/dashboard/NoOfQuestion.png";
-import Clock from "../../public/images/dashboard/Clock.png";
-import Easy from "../../public/images/dashboard/Easy.png";
+import Attempt1 from "/images/dashboard/Attempt1.png";
+import NoOfQuestion from "/images/dashboard/NoOfQuestion.png";
+import Clock from "/images/dashboard/Clock.png";
+import Easy from "/images/dashboard/Easy.png";
 import rankimage from "../../src/assets/Images/images/quizresults/rank.jpg"
 import sucess from "../../src/assets/Images/images/quizresults/success.png"
 import sucess1 from "../../src/assets/Images/images/quizresults/success1.png"

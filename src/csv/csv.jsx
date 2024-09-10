@@ -396,7 +396,7 @@ export default function quiztype() {
     }));
     setQuestions(newQuestions);
   };
-  const handleNext = async () => {
+  const handleNext  = async () => {
     const user_id = localStorage.getItem('user_id');
     try {
       const response = await fetch(
@@ -1326,7 +1326,7 @@ export default function quiztype() {
                 onClick={handleNext1}
                 className="font-Poppins font-medium text-[15px] leading-[22.5px] flex justify-start px-4 py-1 text-white"
               >
-                Next
+                Next 
                 <img
                   className="w-[24px] h-[24px] ml-4"
                   alt="next icon"
@@ -1477,7 +1477,7 @@ export default function quiztype() {
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNext}
                 >
-                  Save
+                  Save 
                 </button>
               </div>
             </div>

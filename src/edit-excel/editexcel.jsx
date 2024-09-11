@@ -1299,7 +1299,7 @@ export default function editexcel() {
                 onClick={handleNext1}
                 className="font-Poppins font-medium text-[15px] leading-[22.5px] flex justify-start px-4 py-1 text-white"
               >
-                Next
+                Next 
                 <img
                   className="w-[24px] h-[24px] ml-4"
                   alt="next icon"

@@ -129,7 +129,7 @@ const filteredByDate = filteredQuizzes.filter((quiz) => {
     return quizDate >= firstDayOfMonth;
   } else if (sortOption === "This Week") {
     return quizDate >= startOfWeek;
-  } else if (sortOption === "This Day") {
+  } else if (sortOption === "Today") {
     return quizDate.toDateString() === today.toDateString();
   }
   return true; // Show all quizzes if "All" is selected
@@ -148,7 +148,7 @@ const currentRows = sortedQuizzes.slice(indexOfFirstRow, indexOfLastRow);
 
 // Show message if no quizzes are found
 const noQuizzesMessage = () => {
-  if (sortOption === "This Day") return "No quizzes attempted on this day.";
+  if (sortOption === "Today") return "No quizzes attempted on today.";
   if (sortOption === "This Week") return "No quizzes attempted this week.";
   if (sortOption === "This Month") return "No quizzes attempted this month.";
   return "No quizzes available.";

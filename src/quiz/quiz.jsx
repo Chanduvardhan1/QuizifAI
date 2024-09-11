@@ -85,6 +85,7 @@ const Quiz = () => {
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
   const [isDisableConfirmed, setIsDisableConfirmed] = useState(false);
   const [deleteDisabled,SetDeleteDisabled] = useState(false);
+  const [enableModel,setEnableModel] = useState(false);
   // const [cardStatus, setCardStatus] = useState({});
 
   const [quizId, setQuizId] = useState(0); // Ensure quizId is properly initialized
@@ -94,7 +95,47 @@ const Quiz = () => {
     setIsDisableConfirmed(true);
     handleDisableQuiz(quizItem);
   };
-  
+  const handleEnableOnClick = () => {
+    setEnableModel(true);
+  }
+  const confirmEnable =  async (quizItem) => {
+    console.log('quizItem',quizItem);
+    try {
+      const authToken = localStorage.getItem("authToken");
+
+      if (!authToken) {
+        throw new Error("No authentication token found");
+      }
+
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      };
+
+      const body = JSON.stringify({
+        user_id: userId,
+        quiz_id: quizItem?.quiz_id,  // Corrected reference
+      });
+
+      const response = await fetch("https://dev.quizifai.com:8010/enable_quiz/", {
+        method: "POST",
+        headers,
+        body,
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Disable response:", result);
+        setModalIsOpen1(false);
+        window.location.reload();
+        // Optionally, update the card to show it's disabled
+      } else {
+        console.error("Failed to disable quiz");
+      }
+    } catch (error) {
+      console.error("Error during disable operation:", error);
+    }
+  };
 
   const navigate = useNavigate();
   // const userRole = localStorage.getItem("user_role");
@@ -643,10 +684,12 @@ const Quiz = () => {
       });
 
       if (response.ok) {
-        const result = await deleteResponse ?.json();
-        console.log("Delete response:", result);
+        
+        // const result = await deleteResponse ?.json();
+        // console.log("Delete response:", result);
         setModalIsOpen(false);
         setDeleteModelOpen(false);
+        window.location.reload();
         // Optionally, refresh the quiz list or update the UI
       } else {
         console.error("Failed to delete quiz");
@@ -690,6 +733,7 @@ const Quiz = () => {
         const result = await response.json();
         console.log("Disable response:", result);
         setModalIsOpen1(false);
+        window.location.reload();
         // Optionally, update the card to show it's disabled
       } else {
         console.error("Failed to disable quiz");
@@ -929,7 +973,7 @@ const Quiz = () => {
                   );
                 })
                 .map((quizItem, index) => (
-                  <div className={quizItem.active_flag != "true" ? "quizDisabled" : ""} key={index}>
+                  <div className={quizItem?.active_flag?.toLowerCase() != "true" ? "quizDisabled" : ""} key={index}>
                     {quizItem.attempt_flag === "Y" ? (
                       <div
                         key={index}
@@ -942,8 +986,8 @@ const Quiz = () => {
                           marginRight: "10px",
                           backgroundColor:
                             quizItem.attempts_count < quizItem.retake_flag
-                              ? "#fee2e2"
-                              : "#55505026",
+                              ? quizItem.active_flag ?.toLowerCase() != "true" ?  'gray' : "#fee2e2" 
+                              : quizItem.active_flag ?.toLowerCase() != "true" ? 'gray' : "#55505026",
                         }}
                       >
                         <span className="relative group">
@@ -1063,12 +1107,22 @@ const Quiz = () => {
                                       src={disable}
                                       alt="Play icon"
                                     />
+                                    {quizItem?.active_flag?.toLowerCase() != "true"  ? 
                                     <span
+                                    className="display-inline"
+                                    onClick={handleEnableOnClick}
+                                    >
+                                      
+                                      enable 
+                                    </span>
+              
+                                      :<span
                                       className={styles.starttext}
                                       onClick={() => setModalIsOpen1(true)}
                                     >
                                       Disable 
-                                    </span>
+                                    </span>}
+                                    
                                     <Modal
                                       isOpen={modalIsOpen1}
                                       onRequestClose={() =>
@@ -1105,13 +1159,60 @@ const Quiz = () => {
                                           onClick={() =>  confirmDisable(quizItem)}
                                           disabled={!isChecked1}
                                         >
-                                          Disable
+                                          Disable 
                                         </button>
                                         <button
                                           className="bg-gray-300 text-black px-4 py-2 rounded"
                                           onClick={() => setModalIsOpen1(false)}
                                         >
                                           Cancel
+                                        </button>
+                                      </div>
+                                    </Modal>
+                                    
+                                    <Modal
+                                      isOpen={enableModel}
+                                      onRequestClose={() =>
+                                        setModalIsOpen1(false)
+                                      }
+                                      ariaHideApp={false}
+                                      className="bg-white rounded-lg p-8 mx-auto mt-10 max-w-md border-red-400 border-[1px]"
+                                      overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+                                    >
+                                      <h2 className="text-xl font-semibold mb-4">
+                                        Are you sure you want to Enable this card?
+                                      </h2>
+                                      <div className="mb-4">
+                                        <input
+                                          type="checkbox"
+                                          id="confirmCheckbox"
+                                          className="mr-2"
+                                          checked={isChecked1}
+                                          onChange={(e) =>
+                                            setIsChecked1(e.target.checked)
+                                          }
+                                        />
+                                        <label htmlFor="confirmCheckbox">
+                                          I understand the consequences.
+                                        </label>
+                                      </div>
+                                      <div className="flex justify-end space-x-4">
+                                        <button
+                                          className={`bg-red-500 text-white px-4 py-2 rounded ${
+                                            !isChecked1
+                                              ? "opacity-50 cursor-not-allowed"
+                                              : ""
+                                          }`}
+                                          onClick={() => confirmEnable(quizItem)}
+                                          disabled={!isChecked1}
+                                        >
+                                          Enable 
+                                        </button>
+                                        <button
+                                          className="bg-gray-300 text-black px-4 py-2 rounded"
+                                          onClick={() => setEnableModel(false)}
+                                        >
+                                          Cancel 
                                         </button>
                                       </div>
                                     </Modal>
@@ -1573,12 +1674,22 @@ const Quiz = () => {
                                       src={disable}
                                       alt="Play icon"
                                     />
-                                    <span
+                                    {quizItem.active_flag ?.toLowerCase() != "true"  ? 
+                                     <span
+                                     className="display-inline"
+                                    
+                                     onClick={handleEnableOnClick}
+                                    >
+                                      enable 
+                                    
+                                     </span>
+                                      : <span
                                       className={styles.starttext}
                                       onClick={() => setModalIsOpen1(true)}
                                     >
                                       Disable 
-                                    </span>
+
+                                    </span>}
                                     {/* <div>
                                     <button className="display: inline-block">enable</button>
                                     </div> */}
@@ -1618,13 +1729,59 @@ const Quiz = () => {
                                           onClick={() =>  confirmDisable(quizItem)}
                                           disabled={!isChecked1}
                                         >
-                                          Disable
+                                          Disable 
                                         </button>
                                         <button
                                           className="bg-gray-300 text-black px-4 py-2 rounded"
                                           onClick={() => setModalIsOpen1(false)}
                                         >
                                           Cancel
+                                        </button>
+                                      </div>
+                                    </Modal>
+                                    <Modal
+                                      isOpen={enableModel}
+                                      onRequestClose={() =>
+                                        setModalIsOpen1(false)
+                                      }
+                                      ariaHideApp={false}
+                                      className="bg-white rounded-lg p-8 mx-auto mt-10 max-w-md border-red-400 border-[1px]"
+                                      overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+                                    >
+                                      <h2 className="text-xl font-semibold mb-4">
+                                        Are you sure you want to Enable this card?
+                                      </h2>
+                                      <div className="mb-4">
+                                        <input
+                                          type="checkbox"
+                                          id="confirmCheckbox"
+                                          className="mr-2"
+                                          checked={isChecked1}
+                                          onChange={(e) =>
+                                            setIsChecked1(e.target.checked)
+                                          }
+                                        />
+                                        <label htmlFor="confirmCheckbox">
+                                          I understand the consequences.
+                                        </label>
+                                      </div>
+                                      <div className="flex justify-end space-x-4">
+                                        <button
+                                          className={`bg-red-500 text-white px-4 py-2 rounded ${
+                                            !isChecked1
+                                              ? "opacity-50 cursor-not-allowed"
+                                              : ""
+                                          }`}
+                                          onClick={() => confirmEnable(quizItem)}
+                                          disabled={!isChecked1}
+                                        >
+                                          Enable 
+                                        </button>
+                                        <button
+                                          className="bg-gray-300 text-black px-4 py-2 rounded"
+                                          onClick={() => setEnableModel(false)}
+                                        >
+                                          Cancel 
                                         </button>
                                       </div>
                                     </Modal>

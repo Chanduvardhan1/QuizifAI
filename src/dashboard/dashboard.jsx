@@ -663,7 +663,7 @@ const Dashboard = () => {
             style={{ marginBottom: "20px" }}
           >
             <p className="text-[#002366] text-[15px] font-medium leading-6 ml-[10px]">
-              Latest Quizzes
+              Latest Quizzes 
             </p>
             <span className="flex">
               <span
@@ -789,7 +789,7 @@ const Dashboard = () => {
                                     className={styles.edittext}
                                     onClick={() => Edit(quizItem.quiz_id)}
                                   >
-                                    Edit
+                                    Edit 
                                   </span>
                                 </div>
                               )}
@@ -826,7 +826,7 @@ const Dashboard = () => {
                                     className={styles.starttext}
                                     onClick={() => handleDisableClick(quizItem.quiz_id)}
                                   >
-                                    Disable
+                                    Disable 
                                   </span>
                                   <Modal
                                     isOpen={modalIsOpen1}
@@ -838,7 +838,7 @@ const Dashboard = () => {
                                   >
                                     <h2 className="text-xl font-semibold mb-4">
                                       Are you sure you want to disable this
-                                      card?
+                                      card? 
                                     </h2>
                                     <div className="mb-4">
                                       <input
@@ -864,7 +864,7 @@ const Dashboard = () => {
                                         onClick={setIsDisableConfirmed}
                                         disabled={!isChecked1}
                                       >
-                                        Disable
+                                        Disable 
                                       </button>
                                       <button
                                         className="bg-gray-300 text-black px-4 py-2 rounded"
@@ -1153,7 +1153,7 @@ const Dashboard = () => {
                                     className={styles.edittext}
                                     onClick={() => Edit(quizItem.quiz_id)}
                                   >
-                                    Edit
+                                    Edit 
                                   </span>
                                 </div>
                               )}

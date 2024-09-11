@@ -237,6 +237,8 @@ const QuizQuestions = () => {
       const nextIndex = currentQuestionIndex + 1;
       setCurrentQuestionIndex(nextIndex);
       lastVisitedQuestionRef.current = nextIndex;
+
+
     }
   };
 
@@ -650,6 +652,9 @@ const QuizQuestions = () => {
     navigate("/quizaccess");
   };
 
+  console.log('currentQuestionIndex', currentQuestionIndex);
+  console.log('quizData)', quizData);
+
   return (
     <div className={styles.container}>
       {/*<Head>
@@ -836,7 +841,7 @@ const QuizQuestions = () => {
   )}
 
   <div>
-    <button
+    {quizData?.questions?.length - 1 !== currentQuestionIndex && <button
       className="text-[13px] cursor-pointer rounded-md font-medium"
       style={{
         backgroundColor: "#8453FC",
@@ -850,8 +855,8 @@ const QuizQuestions = () => {
       onClick={handleNextQuestion}
       disabled={currentQuestionIndex === filteredQuizData.length - 1}
     >
-      Next
-    </button>
+      Next 
+    </button>}
   </div>
 </div>
           <div className={styles.button3}>

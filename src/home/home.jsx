@@ -1,6 +1,6 @@
 import React, { useState} from "react";
 import "./home.css";
-import homeImage from "../../public/images/Homeimage.png"
+import homeImage from "/images/Homeimage.png"
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import HeaderSection from "../HeaderSection/HeaderSection";

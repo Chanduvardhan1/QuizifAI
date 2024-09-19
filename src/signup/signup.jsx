@@ -4,7 +4,7 @@ import styles1 from "./signup.module.css";
 import icon1 from "../assets/Images/images/mdi_gmail.png";
 import icon2 from "../assets/Images/images/clarity_mobile-line.png";
 import icon3 from "../assets/Images/images/logos_google-gmail.png";
-import quizifailogo from "../../public/images/Homeimage.png";
+import quizifailogo from "/images/Homeimage.png";
 import successImage from "../assets/Images/images/signup/successImage.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FaTimes, FaCheck } from "react-icons/fa";

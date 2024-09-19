@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styles from "./email.module.css";
 import styles1 from "./signup.module.css";
-
 import icon1 from "../assets/Images/images/mdi_gmail.png";
 import icon2 from "../assets/Images/images/clarity_mobile-line.png";
 import icon3 from "../assets/Images/images/logos_google-gmail.png";
-import quizifailogo from "../../src/assets/Images/images/home/home.jpg";
+import quizifailogo from "../../public/images/Homeimage.png";
 import successImage from "../assets/Images/images/signup/successImage.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FaTimes, FaCheck } from "react-icons/fa";
@@ -944,8 +943,8 @@ if (hasError) {
             <img
               src={quizifailogo}
               alt="Logo"
-              width={1000}
-              height={1000}
+              // width={1000}
+              // height={1000}
               style={{ marginTop: "20px" }}
             />
           </div>

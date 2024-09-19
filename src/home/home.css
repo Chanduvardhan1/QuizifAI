@@ -313,3 +313,107 @@ left: -100px !important;
   .sendbutton:hover{
          background-color: #7e71ff;
   }
+  .card {
+    /* width: 522px; */
+    /* height: 130px; */
+    /* background-color: #F5F5F5; */
+    font-weight: 600 ;
+    font-size: 10px;
+    /* border-radius: 10px; */
+    /* box-sizing: border-box; */
+    /* margin: auto; */
+    /* width: "522px"; */
+    /* padding-top: "20px"; */
+    /* margin-top: "14px"; */
+    /* margin-right: "10px"; */
+    /* background-color: rgb(239 7 7 / 15%); */
+    /* margin:0auto; */
+    /* height: 203px */
+    
+
+  }
+  .cardText {
+    padding: 13px;
+    margin-top: 14%;
+    
+  }
+  .title {
+    display: block;
+    font-size: 14px;
+    color: #F15A3D;
+    margin-left: -9px;
+    font-size: 17px;
+    padding:2%;
+    margin-left: -18px
+  }
+  .subText {
+    display: block;
+    margin-top: 8px;
+    color: darkblue;
+  
+  }
+  .description{
+    color:  darkblue;
+    font-size: 15px;
+    margin-left: -7px;
+  }
+  .btn {
+    border: 1px solid;
+    padding: 8px;
+    border-radius: 4px;
+    margin-top: 19%;
+    width: 20%;
+    /* background-color: #ffffff; */
+    margin-left: 160px;
+    font-size: 15px;
+    background-color:rgb(0,9,139);
+    color: #FFFFFF ;
+  }
+  .questions{
+    margin-bottom: 1%;
+    margin-top: 3%;
+    border-radius:4px;
+    padding: 30px;
+    background-color: rgb(239 7 7 / 15%);
+  }
+  /* .main {
+    background-color:#f0f8ff ;
+  } */
+   .sample{
+    color:#F15A3D;
+    margin-left: 9px;
+    font-size: 15px;
+   }
+   .next{
+    float: right;
+    color: #00008b;
+   }
+   .previous{
+    float: left;
+    color: #00008b;
+   }
+   .submit{
+    float: right;
+    color: #00008b;
+   }
+   .text{
+    color: #00008b;
+   }
+   .subText {
+    display: inline-block;
+    color: #00008b;
+   }
+   /* .question1{
+    color: #F15A3D;
+   } */
+    .subdiv {
+      display: inline-block;
+      width: 52%;
+    }
+    .subdiv2 {
+      display: inline-block;
+      width: 40%;
+    }
+    .option {
+      margin-bottom: 3px;
+    }

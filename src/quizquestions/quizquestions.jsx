@@ -875,7 +875,7 @@ const QuizQuestions = () => {
               }}
               onClick={handleSubmit}
             >
-              Submit
+              Submit 
             </button>
           </div>
         </div>

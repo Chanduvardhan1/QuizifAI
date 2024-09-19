@@ -571,7 +571,7 @@ if (!quizData1 || !quizData1.questions) {
 
         <div className={styles.boxContainer1}>
           <div className={styles.titles}>
-        <p className={styles.title}>Leaderboard</p>
+        <p className={styles.title}>Leaderboard </p>
 
 
         </div>

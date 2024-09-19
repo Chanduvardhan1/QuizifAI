@@ -5,31 +5,33 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import HeaderSection from "../HeaderSection/HeaderSection";
 import { useSelector, useDispatch } from 'react-redux';
-import { setSubmitted } from "./slice";
-
+import { handleActivesection, handleFirstname, handleLastname, handlePhonenumber, handleQuestion1, handleStarted, handleSubmit, handleUseremail, setSubmitted, } from "./slice";
 
 function Home() {
+  const navigate = useNavigate();
   const dispatch = useDispatch()
   const submitted = useSelector((state) => state.home.submitted);
-
+  const started = useSelector(state => state.home.started);
+  const handleQuestion1 = useSelector(state => state.home.handleQuestion)
+  const firstname =useSelector(state =>state.home.firstname);
   const [firstName, setFirstName] = useState("");
   const [message, setMessage] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [activeSection, setActiveSection] = useState("home");
-  const [started,setStarted] = useState(false);
+  // const [started,setStarted] = useState(false);
   const[index,setIndex] = useState(1);
   const [question1,setQuestion1] = useState();
   const [question2,setQuestion2] = useState(); 
   const [question3,setQuestion3] = useState();
   const [question4,setQuestion4] = useState();
-   const navigate = useNavigate();
   const handleClick3 = () => {
     navigate("/contact");
   };
   const handleOnClickButton = () => {
-    setStarted(true);
+    // setStarted(true);
+    dispatch(handleStarted(true))
   }
   const handleOnClickNext = () => {
     setIndex(index + 1);
@@ -48,9 +50,6 @@ function Home() {
     e.target.value
   console.log('e.target.value', e.target.value);
   console.log('checked',checked)
-    
-
-  }
 
   const handleOnClickQuestion3 = (e) => {
     e.target.value
@@ -74,7 +73,7 @@ function Home() {
       message: message,
     };
 
-    dispatch(setSubmitted(true));
+    dispatchEvent(setSubmitted(true));
     
     const setPhoneNumber = (e) =>{
          const inputValue = e.target.value;
@@ -121,6 +120,13 @@ function Home() {
       // Handle error
     }
   };
+
+const handleOnClickSubmit = ()=>{
+navigate(`/quizresults`);
+console.log("QuizResults")
+  // useDispatch = (handleSubmit(true));
+}
+
   return (
     <div>
     <HeaderSection/>
@@ -142,7 +148,7 @@ function Home() {
                 <li className="description">• Provides targeted quizzes for competitive exam preparation.</li>
 
               </ol>
-              {/* <span>If you want to check out our trial quiz, please take a look at this SAMPLE QUIZ.</span> */}
+              
               <p><span className="description">If you want to check out our trial quiz, please take a look at this</span> 
               <span className="sample">Sample Quiz</span></p>
               <button  onClick={handleOnClickButton}className= "w-[103px] h-9 bg-[rgb(0,9,139)] text-white font-Poppins text-[13px] font-bold rounded-[10px] flex items-center justify-center hover:bg-[#EF512F] transition-transform transform hover:scale-110 ml-167 m 0 auto  mt-20 ">Get Started</button>
@@ -150,7 +156,7 @@ function Home() {
           </div>                       
         </div>
         }
-        {/* <ThumbDownAltIcon /> */}
+        
         {started && <>
         
         {index === 1 &&  <ul className="questions">
@@ -296,7 +302,7 @@ function Home() {
         </>}
         { started && index != 5 &&  <button className="next" onClick={handleOnClickNext}>Next</button>}
         { started && index != 1 && index !== 5  && <button className="previous" onClick={handleOnClickPrevious}>previous</button>}
-        {started && index == 5 && <button className="submit">Submit</button>}
+        {started && index == 5 && <button onClick={handleOnClickSubmit} className="submit">Submit</button>}
         
   </div>
   {activeSection === "home" && (
@@ -318,6 +324,7 @@ function Home() {
   </div>
   </div>
   );
+}
 }
 
 export default Home;

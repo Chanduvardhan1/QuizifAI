@@ -1096,7 +1096,7 @@ const Quiz = () => {
                                       )
                                     }
                                   >
-                                    Leaderboard
+                                    Leaderboard  
                                   </span>
                                 </div>
                                 {userRole === "Quiz Master" && (
@@ -1604,7 +1604,7 @@ const Quiz = () => {
                                       )
                                     }
                                   >
-                                    Leaderboard
+                                    Leaderboard 
                                   </span>
                                 </div>
 

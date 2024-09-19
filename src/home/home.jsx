@@ -4,12 +4,14 @@ import homeImage from "/images/Homeimage.png"
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import HeaderSection from "../HeaderSection/HeaderSection";
-import { checkCustomRoutes } from "next/dist/lib/load-custom-routes";
-//import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-//import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
+import { useSelector, useDispatch } from 'react-redux';
+import { setSubmitted } from "./slice";
+
 
 function Home() {
-  const [submitted, setSubmitted] = useState(false);
+  const dispatch = useDispatch()
+  const submitted = useSelector((state) => state.home.submitted);
+
   const [firstName, setFirstName] = useState("");
   const [message, setMessage] = useState("");
   const [lastName, setLastName] = useState("");
@@ -72,8 +74,8 @@ function Home() {
       message: message,
     };
 
-    setSubmitted(true);
-
+    dispatch(setSubmitted(true));
+    
     const setPhoneNumber = (e) =>{
          const inputValue = e.target.value;
          if (/^[0-9]{10}$/.test(inputValue)){

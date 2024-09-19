@@ -1604,7 +1604,7 @@ const Quiz = () => {
                                       )
                                     }
                                   >
-                                    Leaderboard
+                                    Leaderboard 
                                   </span>
                                 </div>
 

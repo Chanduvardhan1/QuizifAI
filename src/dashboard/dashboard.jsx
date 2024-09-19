@@ -812,7 +812,7 @@ const Dashboard = () => {
                                     )
                                   }
                                 >
-                                  Leaderboard
+                                  Leaderboard  1234
                                 </span>
                               </div>
                               {userRole === "Quiz Master" && (

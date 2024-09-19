@@ -5,8 +5,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import HeaderSection from "../HeaderSection/HeaderSection";
 import { checkCustomRoutes } from "next/dist/lib/load-custom-routes";
-//import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-//import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
+import SampleLeaderBoard from  "../sample/sampleLeaderBoard";
 
 function Home() {
   const [submitted, setSubmitted] = useState(false);
@@ -22,6 +21,7 @@ function Home() {
   const [question2,setQuestion2] = useState(); 
   const [question3,setQuestion3] = useState();
   const [question4,setQuestion4] = useState();
+  const [submit,setSubmit] = useState('false');
    const navigate = useNavigate();
   const handleClick3 = () => {
     navigate("/contact");
@@ -119,6 +119,11 @@ function Home() {
       // Handle error
     }
   };
+  const handleOnClickSubmit = () => {
+    //console.log('dsdddf');
+       setSubmit(true);
+  }
+  // console.log('submit',submit);
   return (
     <div>
     <HeaderSection/>
@@ -294,7 +299,8 @@ function Home() {
         </>}
         { started && index != 5 &&  <button className="next" onClick={handleOnClickNext}>Next</button>}
         { started && index != 1 && index !== 5  && <button className="previous" onClick={handleOnClickPrevious}>previous</button>}
-        {started && index == 5 && <button className="submit">Submit</button>}
+        {started && index == 5  && <button onClick={handleOnClickSubmit} className="submit">Submit </button>}
+        
         
   </div>
   {activeSection === "home" && (
@@ -314,6 +320,7 @@ function Home() {
   )}
 </div>
   </div>
+  {submit && <SampleLeaderBoard />}
   </div>
   );
 }

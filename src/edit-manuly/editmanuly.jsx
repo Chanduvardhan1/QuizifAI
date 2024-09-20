@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Switch from "react-switch";
 import Navigation from "../navbar/navbar";
 import { useNavigate } from "react-router-dom";
@@ -235,7 +235,7 @@ export default function editmanuly() {
   const [selectedQuestions, setSelectedQuestions] = useState([]); // State to store selected questions
   const [isAllSelected, setIsAllSelected] = useState(false);
 
- const [quizcreation , setQuizcreation] = useState('')
+  const [quizcreation, setQuizcreation] = useState('')
 
   useEffect(() => {
     fetchCategories();
@@ -262,28 +262,28 @@ export default function editmanuly() {
   // };
 
   // Handle category selection
-  
+
   const fetchCategories = async () => {
     try {
       const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
-  
+
       if (!authToken) {
         console.error('No authentication token found. Please log in again.');
         return;
       }
-  
+
       const response = await fetch('https://dev.quizifai.com:8010/categories&sub_categories/', {
         headers: {
           'Authorization': `Bearer ${authToken}`, // Include the auth token in the Authorization header
         },
       });
-  
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-  
+
       const data = await response.json();
-  
+
       if (data.response === 'success') {
         setCategories(data.data);
       } else {
@@ -293,8 +293,8 @@ export default function editmanuly() {
       console.error('Error fetching categories:', error);
     }
   };
-  
-  
+
+
   const handleSelectCategory = (event) => {
     const selectedCategory = event.target.value;
     setSelectedCategory(selectedCategory);
@@ -322,7 +322,7 @@ export default function editmanuly() {
         console.error('No authentication token found. Please log in again.');
         return;
       }
-      const response = await fetch('https://dev.quizifai.com:8010/courses-clsses/',{
+      const response = await fetch('https://dev.quizifai.com:8010/courses-clsses/', {
         headers: {
           'Authorization': `Bearer ${authToken}`, // Include the auth token in the Authorization header
         },
@@ -343,7 +343,7 @@ export default function editmanuly() {
   const handleSelectCourse = (event) => {
     const selectedCourse = event.target.value;
     setSelectedCourse(selectedCourse);
-  
+
     if (selectedCourse === "") {
       // Clear the selection
       setClasses([]);
@@ -377,16 +377,16 @@ export default function editmanuly() {
         console.error('No authentication token found. Please log in again.');
         return;
       }
-      const response = await fetch('https://dev.quizifai.com:8010/complexities/',{
+      const response = await fetch('https://dev.quizifai.com:8010/complexities/', {
         headers: {
           'Authorization': `Bearer ${authToken}`, // Include the auth token in the Authorization header
         },
       });
-  
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-  
+
       const data = await response.json();
       if (data.response === 'success') {
         setComplexities(data.data.map(complexity => complexity.complexity_name));
@@ -632,9 +632,9 @@ export default function editmanuly() {
       duration,
       quiztotalmarks,
     ];
-    
+
     const isAnyFieldEmpty = requiredFields.some(field => !field);
-    
+
     if (isAnyFieldEmpty) {
       toast.error("Please fill in all the required fields before proceeding.");
       return; // Prevent further execution
@@ -655,23 +655,23 @@ export default function editmanuly() {
         }
         return false;
       });
-  
+
       if (hasInvalidMultiAnswer) {
         toast.error("For multi-answer questions, there should be more than one correct answer.");
         return;
       }
     }
-  
+
     // const totalWeightage = questions.reduce((total, question) => total + question.question_weightage, 0);
     // if (totalWeightage !== quiztotalmarks) {
     //   toast.error("Total question weightage does not match quiz total marks.");
     //   return;
     // }
-  
+
     try {
       const user_id = localStorage.getItem('user_id');
       const quiz_id = localStorage.getItem('quiz_id');
-  
+
       // Check if user_id is retrieved successfully
       if (!user_id) {
         setErrorMessage("User ID not found. Please log in again.");
@@ -684,7 +684,7 @@ export default function editmanuly() {
         return;
       }
       const questionDuration = calculateQuizDuration();
-      
+
       const response = await fetch(`https://dev.quizifai.com:8010/edit_quiz/`, {
         method: "POST",
         headers: {
@@ -709,7 +709,7 @@ export default function editmanuly() {
           quiz_time_bounded_questions: timings,
           quiz_public_access: publicAccess,
           available_from: availablefrom,
-          quiz_creation_method:quizcreation,
+          quiz_creation_method: quizcreation,
           disabled_on: disabledon,
           quiz_total_marks: quiztotalmarks,
           questions: questions.map((question) => ({
@@ -724,10 +724,10 @@ export default function editmanuly() {
           })),
         }),
       });
-  
+
       const responseData = await response.json();
       console.log(responseData, "data");
-  
+
       if (response.ok) {
         if (responseData.response === "success") {
           setIsModified(false);
@@ -798,7 +798,7 @@ export default function editmanuly() {
   //         setQuizData(data.data);
   //         setTitle(data.data.quiz_title);
   //         setSelectedClass(data.data.class_name);
-          
+
   //         setSelectedCourse(data.data.course_name);
 
   //         setNumQuestions(data.data.num_questions);
@@ -836,7 +836,7 @@ export default function editmanuly() {
   //             { answer_option_text: question.quiz_ans_option_4_text, correct_answer_flag: question.correct_option_text === question.quiz_ans_option_4_text }
   //           ]
   //         }));
-  
+
   //         setQuestions(processedQuestions); 
   //             }
   //     } catch (error) {
@@ -846,7 +846,7 @@ export default function editmanuly() {
 
   //   fetchQuizData();
   // }, []);
- 
+
   const fetchQuizData = async () => {
     const user_id = localStorage.getItem('user_id');
     const quiz_id = localStorage.getItem('quiz_id');
@@ -913,7 +913,7 @@ export default function editmanuly() {
         setQuestions(processedQuestions);
         setInitialQuestions(processedQuestions);
         setNumQuestions(processedQuestions.length); // Set numQuestions to the length of fetched questions
-      updateQuestionWeightage(data.data.quiz_total_marks, processedQuestions.length);
+        updateQuestionWeightage(data.data.quiz_total_marks, processedQuestions.length);
       }
     } catch (error) {
       console.error('Error fetching quiz data', error);
@@ -939,7 +939,7 @@ export default function editmanuly() {
     fetchQuizData();
     setIsModified(false);
   };
- 
+
   const calculateWeightage = (numQuestions, quiztotalmarks) => {
     return numQuestions > 0 ? Math.ceil(quiztotalmarks / numQuestions) : 0;
   };
@@ -988,7 +988,7 @@ export default function editmanuly() {
       setdisabledon('');
     }
   };
-  
+
   const handleDisabledOnChange = (e) => {
     const newDisabledOn = e.target.value;
     if (availablefrom && newDisabledOn < availablefrom) {
@@ -1056,137 +1056,137 @@ export default function editmanuly() {
     return Math.ceil(duration / numQuestions) * 60;
   };
   const Back = () => {
-    
+
     navigate("/dashboard");
-  
-};
+
+  };
 
 
-const updateQuestionWeightage = (totalMarks, numQuestions) => {
-  if (numQuestions > 0) {
-    const weightagePerQuestion = totalMarks / numQuestions;
-    
-    const newQuestions = questions.map(question => ({
-      ...question,
-      question_weightage: weightagePerQuestion,
-    }));
-    setQuestions(newQuestions);
-  }
-};
+  const updateQuestionWeightage = (totalMarks, numQuestions) => {
+    if (numQuestions > 0) {
+      const weightagePerQuestion = totalMarks / numQuestions;
 
-
-// const handleNumQuestionsChange = (e) => {
-//   const value = parseInt(e.target.value, 10);
-//   setNumQuestions(value);
-//   updateQuestionWeightage(quiztotalmarks, value);
-
-//   if (value >= quizData.questions.length) {
-//     // If increasing or equal to the originally fetched number of questions
-//     const newQuestions = quizData.questions.slice(0, quizData.questions.length).map(question => ({
-//       ...question,
-//       options: [
-//         { answer_option_text: question.quiz_ans_option_1_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_1_text },
-//         { answer_option_text: question.quiz_ans_option_2_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_2_text },
-//         { answer_option_text: question.quiz_ans_option_3_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_3_text },
-//         { answer_option_text: question.quiz_ans_option_4_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_4_text }
-//       ],
-//       question_duration: question.question_duration || 0, // Provide default value if missing
-//     }));
-
-//     for (let i = quizData.questions.length; i < value; i++) {
-//       // Add empty question structure for new questions
-//       newQuestions.push({
-//         quiz_question_id: `new_question_${i + 1}`,
-//         quiz_question_text: '',
-//         question_duration: 0, // Default value for new questions
-//         options: [
-//           { answer_option_text: '', correct_answer_flag: false },
-//           { answer_option_text: '', correct_answer_flag: false },
-//           { answer_option_text: '', correct_answer_flag: false },
-//           { answer_option_text: '', correct_answer_flag: false }
-//         ]
-//       });
-//     }
-//     setQuestions(newQuestions);
-//   } else {
-//     // If decreasing, retain the originally fetched questions up to the new value
-//     const updatedQuestions = quizData.questions.slice(0, value).map(question => ({
-//       ...question,
-//       options: [
-//         { answer_option_text: question.quiz_ans_option_1_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_1_text },
-//         { answer_option_text: question.quiz_ans_option_2_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_2_text },
-//         { answer_option_text: question.quiz_ans_option_3_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_3_text },
-//         { answer_option_text: question.quiz_ans_option_4_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_4_text }
-//       ],
-//       question_duration: question.question_duration || 0, // Provide default value if missing
-//     }));
-//     setQuestions(updatedQuestions);
-//   }
-// };
-
-
-// const handleNumQuestionsChange = (e) => {
-//   const value = parseInt(e.target.value, 10);
-//   setNumQuestions(value);
-//   updateQuestionWeightage(quiztotalmarks, value);
-  
-//   if (value > questions.length) {
-//     // If increasing, just update the state without modifying questions
-//     setQuestions([...questions]);
-//   } else {
-//     // If decreasing, slice the existing questions array to the new value
-//     const updatedQuestions = questions.slice(0, value);
-//     setQuestions(updatedQuestions);
-//   }
-// };
-
-const handleNumQuestionsChange = (e) => {
-  const value = parseInt(e.target.value, 10);
-  if (value > questions.length) {
-    setErrorMessage('The number of questions cannot exceed the fetched questions.');
-  } else {
-    setNumQuestions(value);
-    setErrorMessage('');
-  }
-};
-const toggleQuestionSelection = (index) => {
-  setSelectedQuestions(prevSelected => {
-    if (prevSelected.includes(index)) {
-      return prevSelected.filter(i => i !== index);
-    } else {
-      return [...prevSelected, index];
+      const newQuestions = questions.map(question => ({
+        ...question,
+        question_weightage: weightagePerQuestion,
+      }));
+      setQuestions(newQuestions);
     }
-  });
-};
+  };
 
-const handleDeleteSelected = () => {
-  const newQuestions = questions.filter((_, index) => !selectedQuestions.includes(index));
-  setQuestions(newQuestions);
-  // setNumQuestions(newQuestions.length);
-  setSelectedQuestions([]);
-  setIsAllSelected(false);
-};
 
-const handleSelectAll = () => {
-  if (isAllSelected) {
+  // const handleNumQuestionsChange = (e) => {
+  //   const value = parseInt(e.target.value, 10);
+  //   setNumQuestions(value);
+  //   updateQuestionWeightage(quiztotalmarks, value);
+
+  //   if (value >= quizData.questions.length) {
+  //     // If increasing or equal to the originally fetched number of questions
+  //     const newQuestions = quizData.questions.slice(0, quizData.questions.length).map(question => ({
+  //       ...question,
+  //       options: [
+  //         { answer_option_text: question.quiz_ans_option_1_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_1_text },
+  //         { answer_option_text: question.quiz_ans_option_2_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_2_text },
+  //         { answer_option_text: question.quiz_ans_option_3_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_3_text },
+  //         { answer_option_text: question.quiz_ans_option_4_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_4_text }
+  //       ],
+  //       question_duration: question.question_duration || 0, // Provide default value if missing
+  //     }));
+
+  //     for (let i = quizData.questions.length; i < value; i++) {
+  //       // Add empty question structure for new questions
+  //       newQuestions.push({
+  //         quiz_question_id: `new_question_${i + 1}`,
+  //         quiz_question_text: '',
+  //         question_duration: 0, // Default value for new questions
+  //         options: [
+  //           { answer_option_text: '', correct_answer_flag: false },
+  //           { answer_option_text: '', correct_answer_flag: false },
+  //           { answer_option_text: '', correct_answer_flag: false },
+  //           { answer_option_text: '', correct_answer_flag: false }
+  //         ]
+  //       });
+  //     }
+  //     setQuestions(newQuestions);
+  //   } else {
+  //     // If decreasing, retain the originally fetched questions up to the new value
+  //     const updatedQuestions = quizData.questions.slice(0, value).map(question => ({
+  //       ...question,
+  //       options: [
+  //         { answer_option_text: question.quiz_ans_option_1_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_1_text },
+  //         { answer_option_text: question.quiz_ans_option_2_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_2_text },
+  //         { answer_option_text: question.quiz_ans_option_3_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_3_text },
+  //         { answer_option_text: question.quiz_ans_option_4_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_4_text }
+  //       ],
+  //       question_duration: question.question_duration || 0, // Provide default value if missing
+  //     }));
+  //     setQuestions(updatedQuestions);
+  //   }
+  // };
+
+
+  // const handleNumQuestionsChange = (e) => {
+  //   const value = parseInt(e.target.value, 10);
+  //   setNumQuestions(value);
+  //   updateQuestionWeightage(quiztotalmarks, value);
+
+  //   if (value > questions.length) {
+  //     // If increasing, just update the state without modifying questions
+  //     setQuestions([...questions]);
+  //   } else {
+  //     // If decreasing, slice the existing questions array to the new value
+  //     const updatedQuestions = questions.slice(0, value);
+  //     setQuestions(updatedQuestions);
+  //   }
+  // };
+
+  const handleNumQuestionsChange = (e) => {
+    const value = parseInt(e.target.value, 10);
+    if (value > questions.length) {
+      setErrorMessage('The number of questions cannot exceed the fetched questions.');
+    } else {
+      setNumQuestions(value);
+      setErrorMessage('');
+    }
+  };
+  const toggleQuestionSelection = (index) => {
+    setSelectedQuestions(prevSelected => {
+      if (prevSelected.includes(index)) {
+        return prevSelected.filter(i => i !== index);
+      } else {
+        return [...prevSelected, index];
+      }
+    });
+  };
+
+  const handleDeleteSelected = () => {
+    const newQuestions = questions.filter((_, index) => !selectedQuestions.includes(index));
+    setQuestions(newQuestions);
+    // setNumQuestions(newQuestions.length);
     setSelectedQuestions([]);
-  } else {
-    setSelectedQuestions(questions.map((_, index) => index));
-  }
-  setIsAllSelected(!isAllSelected);
-};
-const handleQuizTotalMarksChange = (e) => {
+    setIsAllSelected(false);
+  };
 
-  const value = parseInt(e.target.value, 10);
-  setquiztotalmarks(value);
-  setIsModified(true);
-  updateQuestionWeightage(value, numQuestions);
-};
-// useEffect(() => {
-//   if (numQuestions > 0 && questions.length === 0) {
-//     fetchQuizData();
-//   }
-// }, [numQuestions])
+  const handleSelectAll = () => {
+    if (isAllSelected) {
+      setSelectedQuestions([]);
+    } else {
+      setSelectedQuestions(questions.map((_, index) => index));
+    }
+    setIsAllSelected(!isAllSelected);
+  };
+  const handleQuizTotalMarksChange = (e) => {
+
+    const value = parseInt(e.target.value, 10);
+    setquiztotalmarks(value);
+    setIsModified(true);
+    updateQuestionWeightage(value, numQuestions);
+  };
+  // useEffect(() => {
+  //   if (numQuestions > 0 && questions.length === 0) {
+  //     fetchQuizData();
+  //   }
+  // }, [numQuestions])
   return (
     <>
       <div>
@@ -1267,50 +1267,50 @@ const handleQuizTotalMarksChange = (e) => {
             </a>
           </div> */}
           <Navigation />
-          <ToastContainer/>
+          <ToastContainer />
         </header>
         <div className="absolute top-[30px] left-[1260px] cursor-pointer text-[#eeb600f0] " onClick={Back}><MdOutlineCancel /></div>
 
-          <main className="w-max-auto">
-            <div className="w-[719px] h-[48px] absolute top-[30px] left-[200px] rounded-[10px] bg-[#E0FFE8] z-0">
-              <h className="font-Poppins text-[#214082]  font-semibold text-[25px] leading-[37.5px] flex justify-center items-center mt-1l">
-                Configure and click next to type in your Quiz
-              </h>
+        <main className="w-max-auto">
+          <div className="w-[719px] h-[48px] absolute top-[30px] left-[200px] rounded-[10px] bg-[#E0FFE8] z-0">
+            <h className="font-Poppins text-[#214082]  font-semibold text-[25px] leading-[37.5px] flex justify-center items-center mt-1l">
+              Configure and click next to type in your Quiz
+            </h>
+          </div>
+
+          <div className="flex">
+            {/* <div className="w-[51px] h-[37px] absolute top-[102px] left-[284px]">
+              {/* <img src={QuizTitle} alt="QuizTitle icon" /> */}
+            {/* </div>  */}
+
+            <div className="w-[201px] h-[22px] absolute top-[111px] left-[284px]">
+              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
+                Quiz Title<span className="required ml-[1px] text-red-500">*</span>
+              </h1>
             </div>
 
-            <div className="flex">
-              {/* <div className="w-[51px] h-[37px] absolute top-[102px] left-[284px]">
-              {/* <img src={QuizTitle} alt="QuizTitle icon" /> */}
-              {/* </div>  */}
+            <div className="">
+              <input
+                className="w-[420px] h-[43px] absolute top-[99px] left-[498px] rounded-[10px] border bg-[#F4F4F4] p-3"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              ></input>
+            </div>
 
-              <div className="w-[201px] h-[22px] absolute top-[111px] left-[284px]">
-                <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                  Quiz Title<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-
-              <div className="">
-                <input
-                  className="w-[420px] h-[43px] absolute top-[99px] left-[498px] rounded-[10px] border bg-[#F4F4F4] p-3"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                ></input>
-              </div>
-
-              <div className="w-[210px] h-[23px] absolute top-[110px] left-[941px] mb-10 justify-center items-center grid">
-                <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                  Number of Questions<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-                {/* <h1 className="font-Poppins text-[#214082]  font-semibold text-[15px] ml-5 leading-[22.5px]">
+            <div className="w-[210px] h-[23px] absolute top-[110px] left-[941px] mb-10 justify-center items-center grid">
+              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
+                Number of Questions<span className="required ml-[1px] text-red-500">*</span>
+              </h1>
+              {/* <h1 className="font-Poppins text-[#214082]  font-semibold text-[15px] ml-5 leading-[22.5px]">
                   of
                 </h1>
                 <h1 className="font-Poppins text-[#214082]  font-semibold text-[15px] leading-[22.5px]">
                   Question
                 </h1> */}
-              </div>
+            </div>
 
-              <div className=" rounded-lg absolute top-[99px] left-[1144px]">
-                {/* <input
+            <div className=" rounded-lg absolute top-[99px] left-[1144px]">
+              {/* <input
                   type="number"
                   className="w-[135px] border-solid border-[#B8BBC2] border-[1.8px] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer "
                   placeholder="No of question "
@@ -1334,17 +1334,17 @@ const handleQuizTotalMarksChange = (e) => {
                     );
                   }}
                 /> */}
-                 <input
-        type="number"
-        className="w-[135px] border-solid border-[#B8BBC2] border-[1.8px] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer"
-        placeholder="No of questions"
-        value={numQuestions}
-        onChange={handleNumQuestionsChange}
-        // onChange={(e) => setNumQuestions(e.target.value)}
-        // onChange={handleNumQuestionsChange}
-      />
-              </div>
-              {/* <div className=" rounded-lg absolute top-[99px] left-[1200px]">
+              <input
+                type="number"
+                className="w-[135px] border-solid border-[#B8BBC2] border-[1.8px] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer"
+                placeholder="No of questions"
+                value={numQuestions}
+                onChange={handleNumQuestionsChange}
+              // onChange={(e) => setNumQuestions(e.target.value)}
+              // onChange={handleNumQuestionsChange}
+              />
+            </div>
+            {/* <div className=" rounded-lg absolute top-[99px] left-[1200px]">
               <select className="w-[135px] border-solid border-[#B8BBC2] border-[1.8px] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer" 
               onChange={handleSelect1} value={number}>
                 {options1.map(options1 =>(
@@ -1353,122 +1353,67 @@ const handleQuizTotalMarksChange = (e) => {
                   ))}
               </select>
               </div> */}
-            </div>
+          </div>
 
-            <div className="flex">
-              {/* <div className="w-[43px] h-[43px] absolute top-[166px] left-[283px]">
+          <div className="flex">
+            {/* <div className="w-[43px] h-[43px] absolute top-[166px] left-[283px]">
               <img src={QuizDiscription} alt="QuizDiscription icon" />
             </div> */}
 
-              <div className="w-[201px] h-[22px] absolute top-[174px] left-[284px]">
-                <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                  Quiz Description<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-
-              <div className="">
-                <input
-                  className="w-[780px] h-[45px] absolute top-[163px] left-[498px] rounded-[10px] border bg-[#F4F4F4] p-3"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                ></input>
-              </div>
+            <div className="w-[201px] h-[22px] absolute top-[174px] left-[284px]">
+              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
+                Quiz Description<span className="required ml-[1px] text-red-500">*</span>
+              </h1>
             </div>
 
-            <div className="flex">
-              <div className="w-[201px] h-[27px] absolute top-[248px] left-[284px]">
-                <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                  Quiz Category<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
+            <div className="">
+              <input
+                className="w-[780px] h-[45px] absolute top-[163px] left-[498px] rounded-[10px] border bg-[#F4F4F4] p-3"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              ></input>
+            </div>
+          </div>
 
-              <div className="  absolute top-[240px] left-[498px]">
-                {/* <select
+          <div className="flex">
+            <div className="w-[201px] h-[27px] absolute top-[248px] left-[284px]">
+              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
+                Quiz Category<span className="required ml-[1px] text-red-500">*</span>
+              </h1>
+            </div>
+
+            <div className="  absolute top-[240px] left-[498px]">
+              {/* <select
                   className="w-[260px] h-[41.6px] border-solid border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer text-[12px]"
                   value={quizCategory}
                   onChange={handleSelectCategory}
                 >
                   <option value="" disabled>Select a category</option>
   {/* Populate options with categories sorted alphabetically */}
-  {/* {categoryOptions.sort().map((category, index) => (
+              {/* {categoryOptions.sort().map((category, index) => (
     <option key={index} value={category}>
       {category}
     </option>
   ))}
                 </select>  */}
-                      <select
-        className="w-[260px] h-[41.6px] border-solid border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer text-[12px]"
-        value={selectedCategory}
-        onChange={handleSelectCategory}
-      >
-        <option value="" disabled>Select a category</option>
-        {categories.map(category => (
-          <option key={category.category_id} value={category.category_name}>
-            {category.category_name}
-          </option>
-        ))}
-      </select>
+              <select
+                className="w-[260px] h-[41.6px] border-solid border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer text-[12px]"
+                value={selectedCategory}
+                onChange={handleSelectCategory}
+              >
+                <option value="" disabled>Select a category</option>
+                {categories.map(category => (
+                  <option key={category.category_id} value={category.category_name}>
+                    {category.category_name}
+                  </option>
+                ))}
+              </select>
 
-              </div>
-
-              <div className="w-[164px] h-[30px] absolute top-[458px] left-[820px]">
-                <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                  Multiple Answers<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-
-              {/* <div className="w-[36px] h-5 absolute top-[251px] left-[935px]">
-              <img src={Toggle} />
-            </div> */}
-
-              <div className="w-[36px] h-5 absolute top-[458px] left-[1020px]">
-                <Switch
-                  onChange={toggler1}
-                  checked={multiAnswer}
-                  className="react-switch"
-                />
-              </div>
             </div>
 
-            <div className="flex">
-              <div className="w-[201px] h-[27px] absolute top-[248px] left-[820px]">
-                <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                  Sub Category<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-
-              <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] text-[12px]  leading-[18px] absolute top-[240px] left-[1020px]">
-                {/* <select
-                  className="w-[260px] text-[12px]  border-solid border-[#B8BBC2] px-3 py-3 rounded-md cursor-pointer"
-                  onChange={handleSelectSubCategory}
-                  value={subCategory}
-                >
-                  <option value="" disabled>Select a subcategory</option>
-                  {/* Populate options with subcategories */}
-                  {/* {subCategoryOptions.map((subCategory, index) => (
-                    <option key={index} value={subCategory}>
-                      {subCategory}
-                    </option>
-                  ))}
-                </select>  */}
-                  <select
-        className="w-[260px] text-[12px]  border-solid border-[#B8BBC2] px-3 py-3 rounded-md cursor-pointer"
-        onChange={handleSelectSubCategory}
-        value={selectedSubCategory}
-      >
-        <option value="" disabled>Select a subcategory</option>
-        {subCategories.map((subCategory, index) => (
-          <option key={index} value={subCategory}>
-            {subCategory}
-          </option>
-        ))}
-      </select>
-              </div>
-            </div>
-
-            <div className="w-[164px] h-[30px] absolute top-[314px] left-[284px]">
+            <div className="w-[164px] h-[30px] absolute top-[458px] left-[820px]">
               <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                Course{" "}
+                Multiple Answers<span className="required ml-[1px] text-red-500">*</span>
               </h1>
             </div>
 
@@ -1476,44 +1421,99 @@ const handleQuizTotalMarksChange = (e) => {
               <img src={Toggle} />
             </div> */}
 
-            <div className="w-[260px]  absolute top-[309px] left-[500px]">
+            <div className="w-[36px] h-5 absolute top-[458px] left-[1020px]">
+              <Switch
+                onChange={toggler1}
+                checked={multiAnswer}
+                className="react-switch"
+              />
+            </div>
+          </div>
+
+          <div className="flex">
+            <div className="w-[201px] h-[27px] absolute top-[248px] left-[820px]">
+              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
+                Sub Category<span className="required ml-[1px] text-red-500">*</span>
+              </h1>
+            </div>
+
+            <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] text-[12px]  leading-[18px] absolute top-[240px] left-[1020px]">
               {/* <select
+                  className="w-[260px] text-[12px]  border-solid border-[#B8BBC2] px-3 py-3 rounded-md cursor-pointer"
+                  onChange={handleSelectSubCategory}
+                  value={subCategory}
+                >
+                  <option value="" disabled>Select a subcategory</option>
+                  {/* Populate options with subcategories */}
+              {/* {subCategoryOptions.map((subCategory, index) => (
+                    <option key={index} value={subCategory}>
+                      {subCategory}
+                    </option>
+                  ))}
+                </select>  */}
+              <select
+                className="w-[260px] text-[12px]  border-solid border-[#B8BBC2] px-3 py-3 rounded-md cursor-pointer"
+                onChange={handleSelectSubCategory}
+                value={selectedSubCategory}
+              >
+                <option value="" disabled>Select a subcategory</option>
+                {subCategories.map((subCategory, index) => (
+                  <option key={index} value={subCategory}>
+                    {subCategory}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="w-[164px] h-[30px] absolute top-[314px] left-[284px]">
+            <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
+              Course{" "}
+            </h1>
+          </div>
+
+          {/* <div className="w-[36px] h-5 absolute top-[251px] left-[935px]">
+              <img src={Toggle} />
+            </div> */}
+
+          <div className="w-[260px]  absolute top-[309px] left-[500px]">
+            {/* <select
                 className="w-[260px] h-[41.6px] border-solid p-2  text-[12px] border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer"
                 value={coursename}
                 onChange={handleSelectCourse}
               >
                 <option value="" disabled>Select a course</option>
                 {/* Populate options with courses */}
-                {/* {courseOptions.map((course, index) => (
+            {/* {courseOptions.map((course, index) => (
                   <option key={index} value={course}>
                     {course}
                   </option>
                 ))}
               </select>  */}
-      <select
-        className="w-[260px] h-[41.6px] border-solid  text-[12px] border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer"
-        value={selectedCourse}
-        onChange={handleSelectCourse}
-      >
-        <option value="" disabled>Select a course</option>
-        <option value="">None</option>
-        {courses.map(course => (
-          <option key={course.course_id} value={course.course_name}>
-            {course.course_name}
-          </option>
-        ))}
-      </select>
+            <select
+              className="w-[260px] h-[41.6px] border-solid  text-[12px] border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer"
+              value={selectedCourse}
+              onChange={handleSelectCourse}
+            >
+              <option value="" disabled>Select a course</option>
+              <option value="">None</option>
+              {courses.map(course => (
+                <option key={course.course_id} value={course.course_name}>
+                  {course.course_name}
+                </option>
+              ))}
+            </select>
 
-            </div>
+          </div>
 
-            <div className="w-[109px] h-[27px] absolute top-[320px] left-[820px]">
-              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                Classes
-              </h1>
-            </div>
+          <div className="w-[109px] h-[27px] absolute top-[320px] left-[820px]">
+            <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
+              Classes
+            </h1>
+          </div>
 
-            <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] text-[12px]  leading-[18px] absolute top-[306px] left-[1020px]">
-              {/* <select
+          <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] text-[12px]  leading-[18px] absolute top-[306px] left-[1020px]">
+            {/* <select
                 className="w-[260px] border-solid border-[#B8BBC2] px-3 py-3  text-[12px] rounded-md cursor-pointer"
                 onChange={handleSelectClass}
                 value={classes}
@@ -1525,49 +1525,49 @@ const handleQuizTotalMarksChange = (e) => {
                   </option>
                 ))}
               </select> */}
-         <select
-        className="w-[260px] border-solid border-[#B8BBC2] px-3 py-3 text-[12px] rounded-md cursor-pointer"
-        onChange={handleSelectClass}
-        value={selectedClass}
-      >
-        <option value="" disabled>Select a class</option>
-        {classes.map((className, index) => (
-          <option key={index} value={className}>
-            {className}
-          </option>
-        ))}
-      </select>
+            <select
+              className="w-[260px] border-solid border-[#B8BBC2] px-3 py-3 text-[12px] rounded-md cursor-pointer"
+              onChange={handleSelectClass}
+              value={selectedClass}
+            >
+              <option value="" disabled>Select a class</option>
+              {classes.map((className, index) => (
+                <option key={index} value={className}>
+                  {className}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex">
+            <div className="w-[164px] h-[30px] absolute top-[383px] left-[284px]">
+              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
+                Pass percentage<span className="required ml-[1px] text-red-500">*</span>
+              </h1>
             </div>
 
-            <div className="flex">
-              <div className="w-[164px] h-[30px] absolute top-[383px] left-[284px]">
-                <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                  Pass percentage<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
+            <div className=" rounded-lg w-[129px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[376px] left-[498px]">
+              <select
+                className="w-[264px] p-2 rounded-md cursor-pointer text-[12px]"
+                onChange={handleSelect5}
+                value={percentage}
+              >
+                {options5.map((options5) => (
+                  <option className="border-grey-400 leading-[18px] font-medium rounded">
+                    {options5.label}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-              <div className=" rounded-lg w-[129px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[376px] left-[498px]">
-                <select
-                  className="w-[264px] p-2 rounded-md cursor-pointer text-[12px]"
-                  onChange={handleSelect5}
-                  value={percentage}
-                >
-                  {options5.map((options5) => (
-                    <option className="border-grey-400 leading-[18px] font-medium rounded">
-                      {options5.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            <div className="w-[164px] h-[30px] absolute top-[383px] left-[820px]">
+              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
+                Complexity<span className="required ml-[1px] text-red-500">*</span>
+              </h1>
+            </div>
 
-              <div className="w-[164px] h-[30px] absolute top-[383px] left-[820px]">
-                <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                  Complexity<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-
-              <div className=" rounded-lg w-[129px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[376px] left-[1020px]">
-                {/* <select
+            <div className=" rounded-lg w-[129px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[376px] left-[1020px]">
+              {/* <select
                   className="w-[264px] p-2 rounded-md cursor-pointer text-[12px]"
                   onChange={handleSelect6}
                   value={selectedComplexity}
@@ -1579,178 +1579,178 @@ const handleQuizTotalMarksChange = (e) => {
                     </option>
                   ))}
                 </select> */}
-                    <select
-        className="w-[264px] p-2 rounded-md cursor-pointer text-[12px]"
-        onChange={handleSelectComplexity}
-        value={selectedComplexity}
-      >
-        <option value="" disabled>Complexities</option>
-        {complexities.map((complexity, index) => (
-          <option key={index} value={complexity}>
-            {complexity}
-          </option>
-        ))}
-      </select>
-              </div>
+              <select
+                className="w-[264px] p-2 rounded-md cursor-pointer text-[12px]"
+                onChange={handleSelectComplexity}
+                value={selectedComplexity}
+              >
+                <option value="" disabled>Complexities</option>
+                {complexities.map((complexity, index) => (
+                  <option key={index} value={complexity}>
+                    {complexity}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="flex">
+            <div className="w-[164px] h-[30px] absolute top-[458px] left-[284px]">
+              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
+                Retake Option<span className="required ml-[1px] text-red-500">*</span>
+              </h1>
             </div>
 
-            <div className="flex">
-              <div className="w-[164px] h-[30px] absolute top-[458px] left-[284px]">
-                <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                  Retake Option<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
+            <div className="w-[36px] h-5 absolute top-[458px] left-[505px]">
+              <Switch onChange={toggler2} checked={isRetakeOn} />
+            </div>
+            <div className="">
+              {isRetakeOn ? (
+                <select
+                  className="w-[48px] h-[35px] absolute top-[455px] left-[568px] rounded-[10px] border-[1.8px] bg-[#F4F4F4]"
+                  value={selectedValue}
+                  onChange={handleDropdownChange}
+                >
+                  <option value="" disabled>select</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                </select>
+              ) : (
+                <input
+                  className="w-[48px] h-[35px] absolute top-[455px] p-2 pl-4 left-[568px] rounded-[10px] border-[1.8px] bg-[#F4F4F4]"
+                  value={selectedValue}
+                  readOnly
+                />
+              )}
+            </div>
+          </div>
 
-              <div className="w-[36px] h-5 absolute top-[458px] left-[505px]">
-                <Switch onChange={toggler2} checked={isRetakeOn} />
-              </div>
-              <div className="">
-                {isRetakeOn ? (
-                  <select
-                    className="w-[48px] h-[35px] absolute top-[455px] left-[568px] rounded-[10px] border-[1.8px] bg-[#F4F4F4]"
-                    value={selectedValue}
-                    onChange={handleDropdownChange}
+          <div className="flex">
+            <div className="w-[166px] h-[30px] absolute top-[527px] left-[284px]">
+              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
+                Quiz Duration<span className="required ml-[1px] text-red-500">*</span>
+              </h1>
+
+            </div>
+
+            <div className=" rounded-lg w-[166px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[520px] left-[498px]">
+              <select
+                className="w-[166px] px-3 py-3 rounded-md cursor-pointer text-[12px]"
+                onChange={handleSelect7}
+                value={duration}
+              >
+                {options7.map((option, index) => (
+                  <option
+                    key={index}
+                    className="border-grey-400 leading-[18px] font-medium rounded"
                   >
-                     <option value="" disabled>select</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                  </select>
-                ) : (
-                  <input
-                    className="w-[48px] h-[35px] absolute top-[455px] p-2 pl-4 left-[568px] rounded-[10px] border-[1.8px] bg-[#F4F4F4]"
-                    value={selectedValue}
-                    readOnly
-                  />
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              {/* <input type="text"className="w-[166px] px-3 py-3 rounded-md  text-[12px]" onChange={handleSelect7} value={duration} 
+              placeholder="Duration"/> */}
+              {/* <TiEyeOutline  className=" absolute left-[165px] top-[15px] " /> */}
+              <div className="relative">
+                <button
+                  onClick={() => setIsOpen(true)}
+                  className="absolute left-[10px] top-[15px]"
+                >
+                  <FiAlertCircle />
+                </button>
+                {isOpen && (
+                  <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-white border border-gray-300 p-4 rounded shadow-md w-[350px] ">
+                    <p>The maximum duration time is 180 mints.</p>
+                    <button
+                      onClick={() => setIsOpen(false)}
+                      className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  </div>
                 )}
               </div>
             </div>
+            <div className="w-[238px] h-[30px] absolute top-[527px] left-[820px]">
+              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
+                Time bounded Questions<span className="required ml-[1px] text-red-500">*</span>
+              </h1>
+            </div>
 
-            <div className="flex">
-              <div className="w-[166px] h-[30px] absolute top-[527px] left-[284px]">
-                <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                  Quiz Duration<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-                
-              </div>
-
-              <div className=" rounded-lg w-[166px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[520px] left-[498px]">
-                <select
-                  className="w-[166px] px-3 py-3 rounded-md cursor-pointer text-[12px]"
-                  onChange={handleSelect7}
-                  value={duration}
-                >
-                  {options7.map((option, index) => (
-                    <option
-                      key={index}
-                      className="border-grey-400 leading-[18px] font-medium rounded"
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-                {/* <input type="text"className="w-[166px] px-3 py-3 rounded-md  text-[12px]" onChange={handleSelect7} value={duration} 
-              placeholder="Duration"/> */}
-                {/* <TiEyeOutline  className=" absolute left-[165px] top-[15px] " /> */}
-                <div className="relative">
-                  <button
-                    onClick={() => setIsOpen(true)}
-                    className="absolute left-[10px] top-[15px]"
-                  >
-                    <FiAlertCircle />
-                  </button>
-                  {isOpen && (
-                    <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-white border border-gray-300 p-4 rounded shadow-md w-[350px] ">
-                      <p>The maximum duration time is 180 mints.</p>
-                      <button
-                        onClick={() => setIsOpen(false)}
-                        className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="w-[238px] h-[30px] absolute top-[527px] left-[820px]">
-                <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                  Time bounded Questions<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-
-              <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[520px] left-[1020px]">
+            <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[520px] left-[1020px]">
               <select
-        className="w-[260px] px-3 py-3 rounded-md cursor-pointer text-[12px]"
-        onChange={handleSelect8}
-        value={timings}
-      >
-        {options8.map((options8, index) => (
-          <option key={index}>{options8.label}</option>
-        ))}
-      </select>
-              </div>
+                className="w-[260px] px-3 py-3 rounded-md cursor-pointer text-[12px]"
+                onChange={handleSelect8}
+                value={timings}
+              >
+                {options8.map((options8, index) => (
+                  <option key={index}>{options8.label}</option>
+                ))}
+              </select>
             </div>
+          </div>
 
-            <div className="w-[253px] h-[30px] absolute top-[590px] left-[284px]">
+          <div className="w-[253px] h-[30px] absolute top-[590px] left-[284px]">
+            <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
+              Quiz will be available from<span className="required ml-[1px] text-red-500">*</span>
+            </h1>
+          </div>
+
+          <div className="absolute top-[584px] left-[498px]">
+            <input
+              type="date"
+              className="rounded-lg w-[166px] h-[43px]  border-solid border-[#B8BBC2] border-[1.8px]
+              text-[#9696BB] leading-[22.5px] text-[15px] font-medium bg-[#F4F4F4] px-4"
+              placeholder="YYYY-MM-DD"
+              value={availablefrom}
+              onChange={handleAvailableFromChange}
+            ></input>
+          </div>
+
+          <div className="w-[233px] h-[30px] absolute top-[590px] left-[820px]">
+            <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
+              Quiz must be disable on
+              {/* <span className="required ml-[1px] text-red-500">*</span> */}
+            </h1>
+          </div>
+
+          <div className=" absolute top-[584px] left-[1020px]">
+            <input
+              type="date"
+              className="rounded-lg w-[156px] h-[43px]  border-solid border-[#B8BBC2] border-[1.8px]
+              text-[#9696BB] leading-[22.5px] text-[15px] font-medium bg-[#F4F4F4] px-4"
+              placeholder="YYYY-MM-DD"
+              value={disabledon}
+              onChange={handleDisabledOnChange}
+            ></input>
+          </div>
+
+          <div className="flex">
+            <div className="w-[156px] h-[30px] absolute top-[660px] left-[284px]">
               <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                Quiz will be available from<span className="required ml-[1px] text-red-500">*</span>
+                Public access<span className="required ml-[1px] text-red-500">*</span>
               </h1>
             </div>
 
-            <div className="absolute top-[584px] left-[498px]">
-              <input
-              type="date"
-                className="rounded-lg w-[166px] h-[43px]  border-solid border-[#B8BBC2] border-[1.8px]
-              text-[#9696BB] leading-[22.5px] text-[15px] font-medium bg-[#F4F4F4] px-4"
-                placeholder="YYYY-MM-DD"
-                value={availablefrom}
-                onChange={handleAvailableFromChange}
-              ></input>
+            <div className="w-[36px] h-5 absolute top-[660px] left-[504px]">
+              <Switch onChange={toggler3} checked={publicAccess} />
             </div>
 
-            <div className="w-[233px] h-[30px] absolute top-[590px] left-[820px]">
-              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                Quiz must be disable on
-                {/* <span className="required ml-[1px] text-red-500">*</span> */}
-              </h1>
-            </div>
-
-            <div className=" absolute top-[584px] left-[1020px]">
-              <input
-              type="date"
-                className="rounded-lg w-[156px] h-[43px]  border-solid border-[#B8BBC2] border-[1.8px]
-              text-[#9696BB] leading-[22.5px] text-[15px] font-medium bg-[#F4F4F4] px-4"
-                placeholder="YYYY-MM-DD"
-                value={disabledon}
-                onChange={handleDisabledOnChange}
-              ></input>
-            </div>
-
-            <div className="flex">
-              <div className="w-[156px] h-[30px] absolute top-[660px] left-[284px]">
-                <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                  Public access<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-
-              <div className="w-[36px] h-5 absolute top-[660px] left-[504px]">
-                <Switch onChange={toggler3} checked={publicAccess} />
-              </div>
-
-              {/* <div className="w-[174px] h-[30px] absolute top-[660px] left-[568px]">
+            {/* <div className="w-[174px] h-[30px] absolute top-[660px] left-[568px]">
               <h1 className="font-Poppins text-[#214082]  font-semibold text-[15px] leading-[22.5px]">
                 Time per question{" "}
               </h1>
@@ -1765,25 +1765,25 @@ const handleQuizTotalMarksChange = (e) => {
                   ))}
               </select>
             </div> */}
-              <div className="w-[174px] h-[30px] absolute top-[660px] left-[820px]">
-                <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                  Quiz total marks<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-
-              <div className="absolute top-[653px] left-[1020px]">
-                <input
-                type="number"
-                  className="rounded-lg w-[156px] h-[43px] flex border-solid border-[#B8BBC2] border-[1.8px]
-               text-[12px]  px-3 py-3 cursor-pointer "
-                  placeholder="Total marks"
-                  value={quiztotalmarks}
-                  onChange={handleQuizTotalMarksChange}
-                ></input>
-              </div>
+            <div className="w-[174px] h-[30px] absolute top-[660px] left-[820px]">
+              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
+                Quiz total marks<span className="required ml-[1px] text-red-500">*</span>
+              </h1>
             </div>
 
-            {/* <div className="w-[98px] h-[32px] absolute top-[734px] left-[1182px] rounded-[10px] bg-[#1E4DE9]">
+            <div className="absolute top-[653px] left-[1020px]">
+              <input
+                type="number"
+                className="rounded-lg w-[156px] h-[43px] flex border-solid border-[#B8BBC2] border-[1.8px]
+               text-[12px]  px-3 py-3 cursor-pointer "
+                placeholder="Total marks"
+                value={quiztotalmarks}
+                onChange={handleQuizTotalMarksChange}
+              ></input>
+            </div>
+          </div>
+
+          {/* <div className="w-[98px] h-[32px] absolute top-[734px] left-[1182px] rounded-[10px] bg-[#1E4DE9]">
               <button
                 href="./enter-quiz"
                 onClick={handleNext1}
@@ -1797,22 +1797,22 @@ const handleQuizTotalMarksChange = (e) => {
                 />
               </button>
             </div> */}
-          </main>
-       
-       
-          <main className="w-max-auto relative top-[630px]">
-            <div className="w-[848px] h-[44px] absolute top-[90px] left-[284px]">
-              <h1 className="font-Poppins font-bold text-[30px] leading-[45px] text-orange-400">
-                Create / Edit your Quiz
-              </h1>
-              <h1 className="font-Poppins font-medium text-[12px] leading-[18px] text-[#214082]">
-                Enter all your questions, options, and answers
-              </h1>
-            </div>
+        </main>
 
-            {/* Questions and options */}
-            <div className="absolute top-[210px] left-[284px] ">
-              <div className=" flex  items-center mb-[10px] pr-[40px] ">
+
+        <main className="w-max-auto relative top-[630px]">
+          <div className="w-[848px] h-[44px] absolute top-[90px] left-[284px]">
+            <h1 className="font-Poppins font-bold text-[30px] leading-[45px] text-orange-400">
+              Create / Edit your Quiz
+            </h1>
+            <h1 className="font-Poppins font-medium text-[12px] leading-[18px] text-[#214082]">
+              Enter all your questions, options, and answers
+            </h1>
+          </div>
+
+          {/* Questions and options */}
+          <div className="absolute top-[210px] left-[284px] ">
+            <div className=" flex  items-center mb-[10px] pr-[40px] ">
               {/* <div className="ml-[-20px] mr-[5px]" >
         <input 
           type="checkbox"
@@ -1821,177 +1821,135 @@ const handleQuizTotalMarksChange = (e) => {
         />
         <label className="ml-[5px] font-normal text-[#214082]">Select</label>
       </div> */}
-                <div >
-            {selectedQuestions.length > 0 && (
-        <button
-          onClick={handleDeleteSelected}
-          className="  text-black p-2 text-[14px] rounded-full  flex justify-center items-center gap-[3px]"
-        >
-           <RiDeleteBinLine className=" text-orange-500 w-[20px] h-[20px] ml-[-5px]"  /> <span className=" text-[#214082]">Delete</span>
-        </button>
-      )}
-      </div>
-  
-      </div>
-            {questions.map((question, questionIndex) => (
-  <div key={questionIndex} className="mb-8">
-    
-    {/* Input field for question */}
-    {/* <input
-            type="checkbox"
-            checked={selectedQuestions.includes(questionIndex)}
-            onChange={() => toggleQuestionSelection(questionIndex)}
-          /> */}
-         
-         
-    <div className="flex items-center mb-4">
-    <input
-    className="ml-[-20px] mr-[5px] mt-1 flex justify-center text-center"
-            type="checkbox"
-            checked={selectedQuestions.includes(questionIndex)}
-            onChange={() => toggleQuestionSelection(questionIndex)}
-          />
-      <div className="mr-2 text-xl font-normal text-[#214082]">
-        {questionIndex + 1}.
-      </div>
-      <input
-        type="text"
-        placeholder="Question"
-        className="w-[90%] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] p-[10px] text-[14px] text-[#214082] font-bold"
-        value={question.question_text}
-        onChange={(e) => {
-          const newQuestions = [...questions];
-          newQuestions[questionIndex].question_text = e.target.value;
-          setQuestions(newQuestions);
-          setIsModified(true);
-        }}
-      />
-
-      {/* Input field for question weightage */}
-      <input
-        type="number"
-        placeholder="Marks"
-        className="w-[80px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal "
-        value={question.question_weightage}
-        // onChange={(e) => {
-        //   const value = parseInt(e.target.value,10);
-        //   const updatedQuestions = questions.map((q, index) => {
-        //     if (index === questionIndex) {
-        //       return { ...q, question_weightage: value };
-        //     }
-        //     return q;
-        //   });
-        //   setQuestions(updatedQuestions);
-        //   setIsModified(true);
-        // }}
-        readOnly
-      />
-
-      {/* Input field for question duration */}
-      <input
-        type="text"
-        hidden
-        placeholder="Duration"
-        className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
-        value={question.question_duration}
-        onChange={(e) => {
-          const value = parseInt(e.target.value) * 60;
-          const updatedQuestions = [...questions];
-          updatedQuestions[questionIndex].question_duration = value;
-          setQuestions(updatedQuestions);
-        }}
-      />
-          {/* Delete question button */}
-          {/* <button
-        onClick={() => {
-          const newQuestions = questions.filter((_, index) => index !== questionIndex);
-          setQuestions(newQuestions);
-          setNumQuestions(newQuestions.length);
-          setIsModified(true);
-        }}
-        className="w-[30px] h-[30px] text-orange-500"
-      > */}
-       <RiDeleteBinLine onClick={() => {
-          const newQuestions = questions.filter((_, index) => index !== questionIndex);
-          setQuestions(newQuestions);
-          // setNumQuestions(newQuestions.length);
-          setIsModified(true);
-        }}  
-        className="w-[25px] h-[25px] text-orange-500"
-/>
-   
-    </div>
-   
-    {/* Input fields for options */}
-    {question.options.map((option, optionIndex) => (
-      <div key={optionIndex} className="flex items-center mb-2">
-        {/* Option input field */}
-        <div className="mr-2 font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#B8BBC2] flex justify-center text-center justify-items-center items-center text-[14px]">
-        {String.fromCharCode(97 + optionIndex).toUpperCase()}
-        </div>
-        <input
-          type="text"
-          placeholder="Option Text"
-          className="w-[850px]  rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal text-[12px]"
-          value={option.answer_option_text}
-          onChange={(e) => {
-            const newOptions = [...question.options];
-            newOptions[optionIndex].answer_option_text = e.target.value;
-            const newQuestions = [...questions];
-            newQuestions[questionIndex].options = newOptions;
-            setQuestions(newQuestions);
-            setIsModified(true);
-          }}
-        />
-        {/* Add correct answer flag input */}
-        <button
-          className={`mr-2 ${
-            option.correct_answer_flag ? "bg-green-500" : "bg-gray-300"
-          } rounded-full w-10 h-[20px] transition-colors duration-300 focus:outline-none`}
-          onClick={() => handleToggleButton(questionIndex, optionIndex)}
-        >
-          <span
-            className={`block ${
-              option.correct_answer_flag
-                ? "translate-x-5"
-                : "translate-x-0"
-            } transform -translate-y-1.5 w-[18px] h-[18px] relative top-[6px] bg-white rounded-full shadow-md transition-transform duration-300`}
-          ></span>
-        </button>
-        {/* <button
-          onClick={() => {
-            const newOptions = question.options.filter((_, index) => index !== optionIndex);
-            const newQuestions = [...questions];
-            newQuestions[questionIndex].options = newOptions;
-            setQuestions(newQuestions);
-            setIsModified(true);
-          }}
-          className="ml-2 bg-red-500 text-white p-2 rounded-full"
-        >
-          Delete
-        </button> */}
-      </div>
-    ))}
-  </div>
-))}
-
-<div className=" flex  gap-[20px] items-center pl-[25px] ">
-                <button
-                  className="w-[80px] h-[30px] rounded-[10px] bg-[#1E4DE9] text-white hover:bg-[#EF5130]"
-                  onClick={handleNext}
-                >
-                  Save
-                </button>
-
-                <button
-                  className="w-[80px] h-[30px] rounded-[10px] bg-[#1E4DE9] text-white hover:bg-[#EF5130]"
-                  onClick={handleCancel}
-                >
-                  Cancel
-                </button>
+              <div >
+                {selectedQuestions.length > 0 && (
+                  <button
+                    onClick={handleDeleteSelected}
+                    className="  text-black p-2 text-[14px] rounded-full  flex justify-center items-center gap-[3px]"
+                  >
+                    <RiDeleteBinLine className=" text-orange-500 w-[20px] h-[20px] ml-[-5px]" /> <span className=" text-[#214082]">Delete</span>
+                  </button>
+                )}
               </div>
+
             </div>
-          </main>     
+            {questions.map((question, questionIndex) => (
+              <div key={questionIndex} className="mb-8">
+
+
+                <div className="flex items-center mb-4">
+                  <input
+                    className="ml-[-20px] mr-[5px] mt-1 flex justify-center text-center"
+                    type="checkbox"
+                    checked={selectedQuestions.includes(questionIndex)}
+                    onChange={() => toggleQuestionSelection(questionIndex)}
+                  />
+                  <div className="mr-2 text-xl font-normal text-[#214082]">
+                    {questionIndex + 1}.
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Question"
+                    className="w-[90%] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] p-[10px] text-[14px] text-[#214082] font-bold"
+                    value={question.question_text}
+                    onChange={(e) => {
+                      const newQuestions = [...questions];
+                      newQuestions[questionIndex].question_text = e.target.value;
+                      setQuestions(newQuestions);
+                      setIsModified(true);
+                    }}
+                  />
+
+                  {/* Input field for question weightage */}
+                  <input
+                    type="number"
+                    placeholder="Marks"
+                    className="w-[80px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal "
+                    value={question.question_weightage}
+                    readOnly
+                  />
+
+                  {/* Input field for question duration */}
+                  <input
+                    type="text"
+                    hidden
+                    placeholder="Duration"
+                    className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
+                    value={question.question_duration}
+                    onChange={(e) => {
+                      const value = parseInt(e.target.value) * 60;
+                      const updatedQuestions = [...questions];
+                      updatedQuestions[questionIndex].question_duration = value;
+                      setQuestions(updatedQuestions);
+                    }}
+                  />
+                  <RiDeleteBinLine onClick={() => {
+                    const newQuestions = questions.filter((_, index) => index !== questionIndex);
+                    setQuestions(newQuestions);
+                    // setNumQuestions(newQuestions.length);
+                    setIsModified(true);
+                  }}
+                    className="w-[25px] h-[25px] text-orange-500"
+                  />
+
+                </div>
+
+                {/* Input fields for options */}
+                {question.options.map((option, optionIndex) => (
+                  <div key={optionIndex} className="flex items-center mb-2">
+                    {/* Option input field */}
+                    <div className="mr-2 font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#B8BBC2] flex justify-center text-center justify-items-center items-center text-[14px]">
+                      {String.fromCharCode(97 + optionIndex).toUpperCase()}
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Option Text"
+                      className="w-[850px]  rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal text-[12px]"
+                      value={option.answer_option_text}
+                      onChange={(e) => {
+                        const newOptions = [...question.options];
+                        newOptions[optionIndex].answer_option_text = e.target.value;
+                        const newQuestions = [...questions];
+                        newQuestions[questionIndex].options = newOptions;
+                        setQuestions(newQuestions);
+                        setIsModified(true);
+                      }}
+                    />
+                    {/* Add correct answer flag input */}
+                    <button
+                      className={`mr-2 ${option.correct_answer_flag ? "bg-green-500" : "bg-gray-300"
+                        } rounded-full w-10 h-[20px] transition-colors duration-300 focus:outline-none`}
+                      onClick={() => handleToggleButton(questionIndex, optionIndex)}
+                    >
+                      <span
+                        className={`block ${option.correct_answer_flag
+                          ? "translate-x-5"
+                          : "translate-x-0"
+                          } transform -translate-y-1.5 w-[18px] h-[18px] relative top-[6px] bg-white rounded-full shadow-md transition-transform duration-300`}
+                      ></span>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ))}
+
+            <div className=" flex  gap-[20px] items-center pl-[25px] ">
+              <button
+                className="w-[80px] h-[30px] rounded-[10px] bg-[#1E4DE9] text-white hover:bg-[#EF5130]"
+                onClick={handleNext}
+              >
+                Save
+              </button>
+
+              <button
+                className="w-[80px] h-[30px] rounded-[10px] bg-[#1E4DE9] text-white hover:bg-[#EF5130]"
+                onClick={handleCancel}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </main>
       </div>
     </>
   );

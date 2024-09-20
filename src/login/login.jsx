@@ -1,6 +1,6 @@
 import React, { useState,useContext } from "react";
 import styles from "../signup/email.module.css";
-import quizifailogo from "../../public/images/Homeimage.png";
+import quizifailogo from "../../public/images/oldimage.png";
 import closeIcon from "../assets/Images/images/gmail/closeIcon.png";
 import forgotPasswordIcon from "../assets/Images/images/back1.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";

@@ -33,7 +33,7 @@ function Home() {
   }
   const handleOnClickNext = () => {
     setIndex(index + 1);
-    setIsAttempted(false);
+    setAttempted(false);
   }
   const handleOnClickPrevious = () => {
     setIndex(index - 1);

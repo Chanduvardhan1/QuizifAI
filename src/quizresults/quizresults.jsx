@@ -108,65 +108,10 @@ const quizresults = () => {
   }, [quizId, attemptNo]);
 
 
-  // useEffect(() => {
-  //   const fetchLeaderboardData = async () => {
-  //     try {
-  //       const response = await fetch('https://dev.quizifai.com:8010/leaderboard_result', {
-  //         method: 'POST',
-  //         headers: {
-  //           'Accept': 'application/json',
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: JSON.stringify({
-  //           quiz_id: quizId
-  //         })
-  //       });
-
-  //       const result = await response.json();
-
-  //       if (result.response === 'success') {
-  //         setLeaderboardData(result.data);
-  //       } else {
-  //         console.error('Failed to fetch leaderboard data:', result.message);
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching leaderboard data:', error);
-  //     }
-  //   };
-
-  //   fetchLeaderboardData();
-  // }, [quizId]);
+  
 
   const userId = localStorage.getItem("user_id");
-  // useEffect(() => {
-
-  //   const sendQuizResult = async () => {
-  //     try {
-  //       const response = await fetch('https://dev.quizifai.com:8010/quiz_result', {
-  //         method: 'POST',
-  //         headers: {
-  //           'accept': 'application/json',
-  //           'Content-Type': 'application/json'
-  //         },
-  //         body: JSON.stringify({
-  //           user_id: userId,
-  //           quiz_id: quizId,
-  //           attempt_id: attemptNo
-  //         })
-  //       });
-  //       const result = await response.json();
-  //       const data = result[0]?.data;
-  //       setQuizData(data);
-  //       console.log('Quiz result submitted:', data);
-  //     } catch (error) {
-  //       console.error('Error submitting quiz result:', error);
-  //     }
-  //   };
-
-  //   if (quizId && attemptNo) {
-  //     sendQuizResult(); // Trigger the POST request only if quizId and attemptNo are available
-  //   }
-  // }, [quizId, attemptNo]);
+  
   useEffect(() => {
     const sendQuizResult = async () => {
       try {
@@ -245,65 +190,7 @@ const quizresults = () => {
     }
   }, [quizId, isQuizSubmitted]);
 
-  // const handleDownload = () => {
-  //   const content = `
-  //     Quiz Name: ${quizData.quiz_name}
-  //     Quiz Description: ${quizData.quiz_description}
-  //     Total Questions: ${quizData.total_questions}
-  //     Duration: ${quizData.attempt_duration}
-  //     Total Score: ${quizData.quiz_total_marks}
-  //     Pass Score: ${quizData.attempt_percentage}
-  //     Created By: ${quizData.created_by}
-  //     Created On: ${quizData.created_on}
-  //     Rank: ${quizData.rank}
-  //     Attained Score: ${quizData.attained_score}
-  //     Attempted Questions: ${quizData.attempted_questions}
-  //     Correct Answers: ${quizData.correct_answers}
-  //     Scored Percentage: ${quizData.attained_score_percentage}
-  //     Grade: ${quizData.grade}
-
-  //     Leaderboard:
-  //     ${leaderboardData.map((entry, index) => `
-  //       Rank: ${entry.rank}
-  //       User Name: ${entry.user_name}
-  //       Score: ${entry.attained_percentage}
-  //       Attempts: ${entry.attempts_count}
-  //       Duration: ${entry.attempt_duration_mins}
-  //     `).join('\n')}
-
-  //     Questions:
-  //     ${questions.map((question, index) => `
-  //       ${index + 1}. ${question.question_text}
-  //       Options:
-  //         A. ${question.options.option1}
-  //         B. ${question.options.option2}
-  //         C. ${question.options.option3}
-  //         D. ${question.options.option4}
-  //       Correct Answer: ${question.correct_option}
-  //       Your Answer: ${question.selected_option}
-  //       Result: ${question.selected_option === question.correct_option ? 'Correct' : 'Wrong'}
-  //     `).join('\n')}
-  //   `;
-
-  //   const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-  //   const link = document.createElement('a');
-  //   link.href = URL.createObjectURL(blob);
-  //   link.download = `${quizData.quiz_name}_results.txt`;
-  //   link.click();
-  // };
-  // const handleDownload = () => {
-  //   const input = resultRef.current;
-  //   html2canvas(input)
-  //     .then((canvas) => {
-  //       const imgData = canvas.toDataURL('image/png');
-  //       const pdf = new jsPDF();
-  //       pdf.addImage(imgData, 'PNG', 0, 0);
-  //       pdf.save(`${quizData.quiz_name}_results.pdf`);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error generating PDF:', error);
-  //     });
-  // };
+  
  
   const handleDownload = () => {
     const input = resultRef.current;
@@ -341,7 +228,7 @@ const quizresults = () => {
     }
   const Back = () => {
     
-   /* fetch or store quizId */;
+   
   navigate(`/dashboard`);
 };
 if (!Array.isArray(leaderboardData)) {
@@ -353,12 +240,7 @@ if (!Array.isArray(leaderboardData)) {
   return (
 
     <div className={styles.container} >
-      {/* <Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </Head> */}
+      
       <Navigation/>
       
       <div className={styles.mainContent} ref={resultRef}>
@@ -366,61 +248,18 @@ if (!Array.isArray(leaderboardData)) {
 
         <div className={styles.header}>
         <div className={styles.titleContainer}>
-        {/* <img
-  src={titleIcon} 
-  alt="User Icon"
-  className={styles.icon1}
-/> */}
+     
 <div className={styles.downloads} >
 <div className={styles.download} >
 
           <span className={styles.quizname}>{quizData.quiz_name}</span>
 </div>
-{/* <div className={styles.download} >
-<button className={styles.downbutton} onClick={handleDownload}>Download</button>
-</div> */}
+
 </div>
 
           <p className={styles.quizdescription}>{quizData.quiz_description}</p>
-          {/* <div className={styles.Questionslines }>
-        <div className={styles.Questions}>
-
-        <span className={styles.Question} >Questions :</span>{" "}
-          <span className={styles.username1} >{`${quizData.total_questions}`}</span>
-        </div>
-        <div>
-
-        <span className={styles.Question} >Duration :</span>{" "}
-          <span className={styles.username1} >{`${quizData.attempt_duration}`}</span>
-        </div>
-        <div>
-
-<span className={styles.Question} >Total Marks :</span>{" "}
-  <span className={styles.username1} >{`${quizData.quiz_total_marks}`}</span>
-</div>
-<div>
-
-<span className={styles.Question } >Pass Percentage :</span>{" "}
-  <span className={styles.username1} >{`${quizData.attempt_percentage}`}%</span>
-</div>
-{/* <div>
-
-<span className={styles.Question } >complexity :</span>{" "}
-  <span className={styles.username1} >{leaderboardData.complexity}</span>
-</div> */}
-        {/* </div>  */}
-          {/* <div className={styles.Createdbyupdated}>
-        <div className={styles.Created}>
-
-        <span className={styles.Createdby} >Created By :</span>{" "}
-          <span className={styles.username} >{`${quizData.created_by}`}</span>
-        </div>
-        <div>
-
-        <span className={styles.Createdby} >Created On :</span>{" "}
-          <span className={styles.username} >{`${quizData.created_on}`}</span>
-        </div>
-        </div> */}
+          
+        
          <div className={styles.flexrow}>
           <div className={styles.Createdbyupdated}>
           <div className={styles.Questions}>
@@ -472,24 +311,8 @@ if (!Array.isArray(leaderboardData)) {
         </div>
         </div>
         </div>
-        {/* <div className={styles.infoContainer}>
-        {/* <img
-  src={createdIcon} 
-  alt="Calendar Icon"
-  className={styles.icon2}
-/> */}
-          {/* <span>user name<br></br>date</span> */}
-        {/* </div>  */}
-      </div>
-      {/* <div className={styles.descriptionContainer}>
-      {/* <img
-    src={descriptionIcon} 
-    alt="Description Icon"
-    className={styles.description}
-  /> */}
-      {/* <span className={styles.descriptionText}>{quizData.quiz_description}</span> */}
-      {/* </div>  */}
-     
+          
+      </div>     
       <div className={styles.horizontalLine}></div>
       <div className={styles.wrapper}>
       <div className={styles.sentenceBox}>
@@ -558,41 +381,11 @@ if (!Array.isArray(leaderboardData)) {
      
      
 
-      {/* <div className={styles.sentencesContainer}>
-        {/* <div className={styles.sentence}>
-        <img
-    src={categoryIcon} 
-    alt="Category Icon"
-    className={styles.icon2}
-  />
-          <span>1st attempt, You have 2 more attempts</span>
-        </div> */}
-       
-        
-      {/* </div>  */}
       
-      {/* <div className={styles.sentencesContainer}>
-        <div className={styles.sentence}>
-        <img
-    src={current}
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span>Attempted {quizData.attempted_questions} Questions</span>
-        </div>
-        </div> */}
-        {/* <div className={styles.sentence}>
-        <img
-        src={dateIcon} 
-        alt="Calendar Icon"
-        className={styles.icon2}
-        />
-        <span>{quizData.attained_score} attained score</span>
-        </div> */}
        
        
         </div>
-        {/* <div className={styles.verticalLine}></div> */}
+       
        
 
         <div className={styles.boxContainer1}>
@@ -606,9 +399,7 @@ if (!Array.isArray(leaderboardData)) {
           <div className={styles.lines2}> Top 10 Rankers</div>
           <div className={styles.lines3}></div>
         </div>
-        {/* <div className={styles.fistrank}>
-          <img src={fistrank} alt="" style={{width:"60px",height:"52px"}} />
-        </div> */}
+        
         <div className={styles.ranksiconsContainer}>
         <img
     src={rank1Icon} 
@@ -635,84 +426,37 @@ if (!Array.isArray(leaderboardData)) {
         </div>
          <div className={styles.innerBoxes1}>
         <div className={styles.innerBox1} style={{width:"122px", height:"93px",}}>
-        {/* <img
-    src={greybox1Image} 
-    alt="img 1"
-  /> */}
-            {/* <span className={styles.textOverImage} style={{marginTop:"-40px", marginLeft:"50px"}}>Username<br></br>99.5</span> */}
+        
+        
             
            </div>
           <div className={styles.innerBox2} style={{width:"122px", height:"118px", marginbottom:"23px"}}>
-          {/* <img
-    src={greybox2Image} 
-    alt="img 1"
-  /> */}
-            {/* <span className={styles.textOverImage1}>Username<br></br>100</span> */}
+          
+            
            </div>
           <div className={styles.innerBox3} style={{width:"122px", height:"93px",}}>
-          {/* <img
-    src={greybox3Image} 
-    alt="img 1"
-  /> */}
-            {/* <span className={styles.textOverImage2}>Username<br></br>99</span> */}
+        
+            
           </div>
         </div>    
-        {/* <div className={styles.tables}>
-          <div className={styles.table1}> 
-            <h1 className={styles.heading}>QuI</h1>
-          </div>
-          <div className={styles.table2}>2</div>
-          <div className={styles.table3}>3</div>
-        </div> */}
         
         
-        {/* <div  className={styles.columns1}>
-        {/* <div className={styles.columns}>
-    <span className={styles.column}>Rank</span>
-    <span className={styles.column}>User Name</span>
-    <span className={styles.column}>Score</span>
-    <span className={styles.column}>Attempts</span>
-    <span className={styles.column}>Duration</span>
-  </div> */}
+        
+       
  
-  {/* <div>
-      {leaderboardData.map((entry, index) => (
-        <div key={index} className={styles.values}>
-          <div className={styles.value}>{entry.rank}</div>
-          <div className={styles.value}>{entry.user_name}</div>
-          <div className={styles.value}>{entry.score}</div>
-          <div className={styles.value}>{entry.attempts}</div>
-          <div className={styles.value}>{entry.duration}</div>
-        </div>
-      ))}
-    </div> */}
-    {/* </div>  */}
+  
     <div>
       <div className={styles.innerBoxes}>
         {topThree.map((entry, index) => {
-          // const boxStyles = [
-          //   { width: "122px", height: "93px",  },
-          //   { width: "122px", height: "118px", marginbottom:"23px"},
-          //   { width: "122px", height: "93px", }
-          // ];
           
-          // const textStyles = [
-          //   {},
-          //   {},
-          //   {}
-          // ];
-
-          // const images = [greybox1Image, greybox2Image, greybox3Image];
 
           return (
             <div key={entry.rank}  >
-              {/* <img src={images[index]} alt={`img ${index + 1}`} /> */}
+              
               <span className={styles[`textOverImage${index + 1}`]} >
                 {entry.user_name} <br /> <span style={{color:'#e20000'}}>{entry.attained_percentage}%</span>
               </span>
-              {/* <span className={styles[`textOvernumber${index + 1}`]} >
-                 {entry.attained_percentage}
-              </span> */}
+              
             </div>
           );
         })}
@@ -742,19 +486,7 @@ if (!Array.isArray(leaderboardData)) {
       {questions.map((question, index) => (
         <div className={styles.sentencesContainer1} style={{ marginLeft: "0px", marginTop: "40px", height:"220px" }} key={index}>
           <div className={styles.sentence}>
-            {/* <img
-              src={one1Image} // Replace with dynamic image selection if needed
-              alt="Calendar Icon"
-              className={styles.icon2}
-            /> */}
-             <span style={{ color: "#F4774B" }}>{index + 1}. {question.question_text}</span>
-            {/* <span className={styles.iconContainer}>
-              <img
-                src={question.selected_option === question.correct_option ? rightIcon : wrongIcon}
-                alt="Result Icon"
-                className={styles.righticon}
-              />
-            </span> */}
+            
           </div>
 
           {Object.keys(question.options).map((optionKey, idx) => {
@@ -765,12 +497,7 @@ if (!Array.isArray(leaderboardData)) {
             return (
               <div className={styles.box} key={idx} style={{ backgroundColor: isCorrect ? '#A9FFB7' : isSelected ? '#FFB7B7' : 'white' }}>
                 <div className={styles.iconA}>
-                  {/* <img
-                    src={optionKey === 'optionA' ? iconA : optionKey === 'optionB' ? iconB : optionKey === 'optionC' ? iconC : iconD}
-                    alt={`Icon ${idx + 1}`}
-                    width={15}
-                    height={15}
-                  /> */}
+                  
                   <span className={styles.iconText}>{optionLabels[optionKey]}. {optionText}</span>
                 </div>
               </div>
@@ -779,11 +506,7 @@ if (!Array.isArray(leaderboardData)) {
 
 <span className={styles.newContainer}>
             <span className={styles.iconContainer}>
-              {/* <img
-                src={answerTimerIcon}
-                alt="Answer Timer Icon"
-                className={styles.icon5}
-              /> */}
+              
               <img
                 src={question.selected_option === question.correct_option ? rightIcon1 : wrongIcon1}
                 alt="Answer Icon"
@@ -791,7 +514,7 @@ if (!Array.isArray(leaderboardData)) {
               />
             </span>
             <span className={styles.textContainer}>
-              {/* <p>Answered in 53 Sec</p> */}
+              
               <p>{question.selected_option === question.correct_option ? 'Correct Answer' : 'Wrong Answer'}</p>
             </span>
           </span>

@@ -124,63 +124,16 @@ const topThree = leaderboardData.slice(0, 3);
 
   return (
     <div className={styles.container}>
-      {/*<Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600;700&display=swap"
-          rel="stylesheet"
-        />
-  </Head>*/}
+      
       <Navigation/>
       <div className={styles.mainContent}>
        <div className={styles.mainContent1}>
       
         <div className={styles.titleContainer1}>
-        {/* <img
-  src={titleIcon} 
-  alt="User Icon"
-  className={styles.icon1}
-/> */}
+      
           <span className={styles.quizname}>{quizname}</span>
           <p className={styles.quizdescription}>{quizdescription}</p>
-          {/* <div className={styles.Questionslines }>
-        <div className={styles.Questions}>
-
-        <span className={styles.Question} >Questions : </span>{" "}
-          <span className={styles.username1} >{complexity}</span>
-        </div>
-        <div>
-
-        <span className={styles.Question} >Duration : </span>{" "}
-          <span className={styles.username1} >{quizduration} min</span>
-        </div>
-        <div>
- 
-<span className={styles.Question} >Total Marks : </span>{" "}
-  <span className={styles.username1} >{quizTotalMarks}</span>
-</div>
-<div>
-
-<span className={styles.Question } >Pass Percentage : </span>{" "}
-  <span className={styles.username1} >{passPercentage}%</span>
-</div>
-<div>
-
-<span className={styles.Question } >Complexity : </span>{" "}
-  <span className={styles.username1} >{numberofquestions}</span>
-</div>
-        </div>
-          <div className={styles.Createdbyupdated}>
-        <div className={styles.Created}>
-
-        <span className={styles.Createdby} >Created By : </span>
-          <span className={styles.username} >{createdby}</span>
-        </div>
-        <div>
-
-        <span className={styles.Createdby} >Created On : </span>{" "}
-          <span className={styles.username} >{quizcreatedate}</span>
-        </div>
-        </div> */}
+          
         <div className={styles.flexrow}>
           <div className={styles.Createdbyupdated}>
           <div className={styles.Questions}>
@@ -234,14 +187,7 @@ const topThree = leaderboardData.slice(0, 3);
         </div>
         <div className={styles.horizontalLine}></div>
 
-        {/* <div className={styles.infoContainer}>
-        {/* <img
-  src={createdIcon} 
-  alt="Calendar Icon"
-  className={styles.icon2}
-/> */}
-          {/* <span>user name<br></br>date</span> */}
-        {/* </div>  */}
+        
     <div className={styles.flexcontent} >
       <div className={styles.flexcolumnecontent}>
       <div className={styles.verticaliconsContainer}>
@@ -256,28 +202,18 @@ const topThree = leaderboardData.slice(0, 3);
       </div>
 <div className={styles.alldetails}>
   <img className={styles.Allimg} src={sucess} alt="" />
-  <span  className={styles.Question}>Total Attempts : </span>
+  <span  className={styles.Question}>Total Attempts1231234567 : </span>
   <span className={styles.username1} >{quizattempts}</span>
 
 </div>
-{/* <div className={styles.alldetails}>
-<img className={styles.Allimg}  src={dateIcon1} a alt="" />
-<span  className={styles.Question}>Most Recent Attempt: </span>
-<span className={styles.username1} ></span>
 
-</div> */}
 <div className={styles.alldetails}>
 <img className={styles.Allimg}  src={timeIcon1} alt="" />
 <span  className={styles.Question}>Average Completion Time : </span>
 <span className={styles.username1} >{mincompletiontime} Min</span>
 
 </div>
-{/* <div className={styles.alldetails}>
-<img className={styles.Allimg}  src={fast} alt="" style={{ width:"30px", height:"40px", marginRight:"5px"}} />
-<span  className={styles.Question}>Record Fastest Completion: </span>
-<span className={styles.username1} ></span>
 
-</div> */}
 <div className={styles.alldetails}>
   <img className={styles.Allimg} src={Top1} alt="" style={{ width:"42px", height:"44px",marginRight:"-10px",position:"relative",right:"5px"}}/>
   <span  className={styles.Question}>Top Score : </span>
@@ -290,39 +226,20 @@ const topThree = leaderboardData.slice(0, 3);
 <span className={styles.username1} >{avgscore}</span>
 
 </div>
-{/* <div className={styles.alldetails}>
-<img className={styles.Allimg}  src={current} alt="" />
-<span  className={styles.Question}>Total Questions Attempted: </span>
-<span className={styles.username1} > Minutes</span>
 
-</div> */}
-{/* <div className={styles.alldetails}>
-<img className={styles.Allimg}  src={sucess1} alt="" />
-<span  className={styles.Question}>Success Rate: </span>
-<span className={styles.username1} ></span>
-
-</div> */}
-{/* <div className={styles.alldetails}>
-<img className={styles.Allimg}  src={percentIcon1} alt="" />
-<span  className={styles.Question}>Number of Perfect Scores (100%): </span>
-<span className={styles.username1} ></span>
-
-</div> */}
 
       </div>
         <div className={styles.boxContainer1}>
 
         <div className={styles.titles}>
-        <p className={styles.title}>Leaderboard</p>
+        <p className={styles.title}>Leaderboard </p>
         </div>
         <div className={styles.lines}>
           <div className={styles.lines1}></div>
           <div className={styles.lines2}> Top 10 Rankers</div>
           <div className={styles.lines3}></div>
         </div>
-        {/* <div className={styles.firstRank}>
-        <img src={FirstRank} alt="First Rank" style={{width:"60px",height:"52px"}} />
-        </div> */}
+        
         <div className={styles.ranksiconsContainer}>
           <img src={rank1Icon} alt="Icon 1" className={styles.rankicon2} />
       
@@ -337,26 +254,13 @@ const topThree = leaderboardData.slice(0, 3);
         </div>
         <div className={styles.innerBoxes1}>
         <div className={styles.innerBox1} >
-        {/* <img
-    src={greybox1Image} 
-    alt="img 1"
-  /> */}
-            {/* <span className={styles.textOverImage} style={{marginTop:"-40px", marginLeft:"50px"}}>Username<br></br>99.5</span> */}
+        
+            
             
           </div>
-          <div >
-          {/* <img
-    src={greybox2Image} 
-    alt="img 1"
-  /> */}
-            {/* <span className={styles.textOverImage1}>Username<br></br>100</span> */}
-          </div>
           <div className={styles.innerBox3}>
-          {/* <img
-    src={greybox3Image} 
-    alt="img 1"
-  /> */}
-            {/* <span className={styles.textOverImage2}>Username<br></br>99</span> */}
+          
+            
           </div>
         </div> 
         <div className={styles.innerBoxes}>
@@ -370,10 +274,7 @@ const topThree = leaderboardData.slice(0, 3);
       
               }}
             >
-              {/* <img
-                src={index === 0 ? greybox1Image : index === 1 ? greybox2Image : greybox3Image}
-                alt={`img ${index + 1}`}
-              /> */}
+              
               <span
                 className={styles[`textOverImage${index + 1}`]}
                 style={{ width: "100px" }}
@@ -406,157 +307,9 @@ const topThree = leaderboardData.slice(0, 3);
       ))}
           </div>
           </div>
-          {/* <div>
-  <span className={styles.boticonContainer}>
-  <img
-    src={bot2Icon} 
-    alt="Your Icon"
-    className={styles.boticon}
-  />
-  </span>
-  </div> */}
+          
   </div>
-  {/* <div className={styles.header}>
-        <div className={styles.titleContainer}>
-        <img
-      src={titleIcon} 
-      alt="User Icon"
-      className={styles.icon1}
-    />
-          <span>Title of the Quiz</span>
-        </div>
-        <div className={styles.infoContainer}>
-        <img
-      src={createdIcon} 
-      alt="Calendar Icon"
-      className={styles.icon2}
-    />
-          <span>Quiz created by user name on date</span>
-        </div>
-      </div>
-      <div className={styles.descriptionContainer}>
-      <img
-      src={descriptionIcon} 
-      alt="Description Icon"
-      className={styles.description}
-    />
-      <span className={styles.descriptionText}>Description of the Quiz Description of the Quiz Description of the Quiz  Description of the Quiz <br></br>Description of the Quiz Description of the Quiz Description of the Quiz Description of the Quiz</span>
-      </div>
-     
-      <div className={styles.horizontalLine}></div>
-      <div className={styles.sentencesContainer}>
-        <div className={styles.sentence}>
-        <img
-    src={percentIcon} 
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span>70% is the pass score</span>
-        </div>
-        <div className={styles.sentence}>
-        <img
-    src={createdIcon} 
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span>Complexity: Simple | Medium | Complex</span>
-        </div>
-        <div className={styles.sentence}>
-        <img
-    src={questionsIcon} 
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span>20 questions</span>
-        </div>
-        
-      </div>
-      <div className={styles.horizontalLine}></div>
-      <div className={styles.sentencesContainer}>
-        <div className={styles.sentence}>
-        <img
-    src={saveIcon} 
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-
-          <span>Save this paper: Yes</span>
-        </div>
-        <div className={styles.sentence}>
-        <img
-    src={retakeIcon} 
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span>Retake this paper: 2</span>
-        </div>
-        <div className={styles.sentence}>
-        <img
-    src={optionsIcon} 
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span>Multiple Answers:  Yes</span>
-        </div>
-        
-      </div>
-
-      <div className={styles.horizontalLine}></div>
-      <div className={styles.sentencesContainer}>
-        <div className={styles.sentence}>
-        <img
-    src={categoryIcon} 
-    className={styles.icon2}
-  />
-
-          <span>Sub Category from Quiz Category</span>
-        </div>
-        <div className={styles.sentence}>
-        <img
-    src={timeIcon} 
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span>Total 40 mins of 60 Sec for each questions</span>
-        </div>
-        
-      </div>
-      <div className={styles.horizontalLine}></div>
-      <div className={styles.sentencesContainer}>
-        <div className={styles.sentence}>
-        <img
-    src={dateIcon} 
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span>Quiz will be live from: DD/MM/YYYY to DD/MM/YYYY</span>
-        </div>
-        <div className={styles.sentence}>
-        <img
-    src={botIcon} 
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span>AI support needed: Yes</span>
-        </div>
-        <div className={styles.sentence}>
-        <img
-    src={publicIcon} 
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span>Public access: Yes</span>
-        </div>
-        </div>
-        
-        <div className={styles.buttonContainer}>
-        <button className={styles.imageButton}>
-        <img
-    src={startIcon} 
-    alt="Calendar Icon"
-  />
-        </button>
-      </div> */}
+  
         </div>
         <LogoutBar/>
          

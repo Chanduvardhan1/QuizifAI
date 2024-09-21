@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import homeImage from "/images/oldimage.png";
 import HeaderSection from "../HeaderSection/HeaderSection";
@@ -6,7 +6,7 @@ import SampleLeaderBoard from "../sample/sampleLeaderBoard";
 import { questions } from "./Constants";
 import "./home.css";
 import { useDispatch, useSelector } from "react-redux";
-import { setDynamicStateFlags, setAttempted } from "./slice";
+import { setDynamicStateFlags, setAttempted, getContactUsEmail } from "./slice";
 
 function Home() {
   const dispatch = useDispatch();

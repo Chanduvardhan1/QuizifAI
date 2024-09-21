@@ -9,7 +9,8 @@ const initialState = {
         answeredIndex: null,
         isCorrect: false,
     },
-    index: 1
+    index: 1,
+    contactUSEmail: null,
 }
 
 const homeSlice = createSlice({
@@ -21,12 +22,19 @@ const homeSlice = createSlice({
         },
         setAttempted: (state, action) => {
             state.attempted = action.payload;
+        },
+        saveResContactUsEmail: (state, action) => {
+            state.contactUSEmail = action.payload;
+        },
+        getContactUsEmail: (state, action) => {
         }
     }
 })
 
 export const {
     setDynamicStateFlags,
-    setAttempted
+    setAttempted,
+    saveResContactUsEmail,
+    getContactUsEmail
 } = homeSlice.actions;
 export default homeSlice.reducer;

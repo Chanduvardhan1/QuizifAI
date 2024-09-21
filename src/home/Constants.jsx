@@ -1,8 +1,5 @@
 export const questions = [
     {
-        
-
-        
         question: "Which country hosts the international air exercise ‘Tarang Shakti 2024’?",
         options: [
             { answer_option_text: "UK", correct_answer_flag: false },

@@ -1,42 +1,46 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import homeImage from "../../public/images/oldimage.png";
+import homeImage from "/images/oldimage.png";
 import HeaderSection from "../HeaderSection/HeaderSection";
 import SampleLeaderBoard from "../sample/sampleLeaderBoard";
 import { questions } from "./Constants";
 import "./home.css";
+import { useDispatch, useSelector } from "react-redux";
+import { setDynamicStateFlags, setAttempted } from "./slice";
 
 function Home() {
-  const [submitted, setSubmitted] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [message, setMessage] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [activeSection, setActiveSection] = useState("home");
-  const [started, setStarted] = useState(false);
-  const [index, setIndex] = useState(1);
-  const [submit, setSubmit] = useState('false');
-  const [attempted, setAttempted] = useState({
-    isAttempted: false,
-    answeredIndex: null,
-    isCorrect: false,
-  });
-  const [countTimer, setCountTimer] = useState(null);
-  const[visibleText,setVisibleText] = useState('false');
+  const dispatch = useDispatch();
+  const {
+    firstName,
+    lastName,
+    phoneNumber,
+    userEmail,
+    submitted,
+    started,
+    index,
+    countTimer,
+    visibleText,
+    activeSection,
+    submit,
+    attempted
+  } = useSelector(state => state.home);
   const navigate = useNavigate();
   const handleClick3 = () => {
     navigate("/contact");
   };
   const handleOnClickButton = () => {
-    setStarted(true);
+    dispatch(setDynamicStateFlags({ key: 'started', value: true }));
   }
   const handleOnClickNext = () => {
-    setIndex(index + 1);
-    setAttempted(false);
+    dispatch(setDynamicStateFlags({ key: 'index', value: index + 1 }));
+    dispatch(setAttempted({
+      isAttempted: false,
+      answeredIndex: null,
+      isCorrect: false,
+    }));
   }
   const handleOnClickPrevious = () => {
-    setIndex(index - 1);
+    dispatch(setDynamicStateFlags({ key: 'index', value: index - 1 }));
   }
 
   const padZero = (number) => {
@@ -44,25 +48,24 @@ function Home() {
   }
 
   const timer = () => {
-    let duration = 5*60;
-    setInterval(function() {
+    let duration = 5 * 60;
+    setInterval(function () {
       // Calculate the remaining time
       const minutes = Math.floor(duration / 60);
       const seconds = duration % 60;
-    
+
       // Format the time as MM:SS
       const time = `${padZero(minutes)}:${padZero(seconds)}`;
-    
+
       // Display the time
-      setCountTimer(`Duration ${time}`);
-    
+      dispatch(setDynamicStateFlags({ key: 'countTimer', value: `Duration ${time}` }))
+
       // Decrement the duration
       duration--;
-    
       // Stop the countdown when it reaches 0
       if (duration < 0) {
         clearInterval(this);
-        setCountTimer("Time's up!");
+        dispatch(setDynamicStateFlags({ key: 'countTimer', value: `Time's up!` }))
       }
     }, 1000);
   }
@@ -75,11 +78,11 @@ function Home() {
 
   const handleAnswerClick = (value, question, answeredIndex) => {
     const isCorrect = value === question.answer;
-    setAttempted({
+    dispatch(setAttempted({
       isAttempted: true,
       answeredIndex,
       isCorrect,
-    });
+    }));
   }
 
   // Now you have access to the token
@@ -92,19 +95,19 @@ function Home() {
       message: message,
     };
 
-    setSubmitted(true);
+    dispatch(setDynamicStateFlags({ key: 'submitted', value: true }));
 
     const setPhoneNumber = (e) => {
       const inputValue = e.target.value;
       if (/^[0-9]{10}$/.test(inputValue)) {
-        setPhoneNumber(inputValue);
+        dispatch(setDynamicStateFlags({ key: 'phoneNumber', value: inputValue }));
       }
     }
 
     const setUserEmail = (e) => {
       const inputValue = e.target.value;
       if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputValue)) {
-        setUserEmail(inputValue);
+        dispatch(setDynamicStateFlags({ key: 'userEmail', value: inputValue }));
       };
     };
 
@@ -124,12 +127,11 @@ function Home() {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      setFirstName("");
-      setMessage("");
-      setLastName("");
-      setPhoneNumber("");
-
-      setUserEmail("");
+      dispatch(setDynamicStateFlags({ key: 'firstName', value: '' }));
+      dispatch(setDynamicStateFlags({ key: 'message', value: '' }));
+      dispatch(setDynamicStateFlags({ key: 'lastName', value: '' }));
+      dispatch(setDynamicStateFlags({ key: 'phoneNumber', value: '' }));
+      dispatch(setDynamicStateFlags({ key: 'userEmail', value: '' }));
       const responseData = await response.json();
       console.log(responseData);
       // Handle response data as needed
@@ -140,10 +142,8 @@ function Home() {
     }
   };
   const handleOnClickSubmit = () => {
-    //console.log('dsdddf');
-    setSubmit(true);
+    dispatch(setDynamicStateFlags({ key: 'submit', value: true }));
   }
-  // console.log('submit',submit);
   const q = questions[index - 1];
   return (
     <div>
@@ -152,7 +152,7 @@ function Home() {
         <div className="flex flex-col md:flex-row p-5 main">
           <div className="w-full md:w-1/2 pl-0 md:pl-20 mt-[-8px] justify-center">
             {!started && <h1 className=" font-Poppins font-bold text-[#555555] leading-[50px] text-center md:text-left">
-               <span className="text">Exploring online resources for AI-generated Exams and Quizzes</span> 
+              <span className="text">Exploring online resources for AI-generated Exams and Quizzes</span>
             </h1>}
             {!started && <div className="card">
               <div className="cardText">
@@ -184,9 +184,9 @@ function Home() {
               <div className="timer">{countTimer}</div>
               <li className="w-[100%] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.5px] p-[10px] text-[14px] text-[#21408] font-bold">
                 <div>{`${index}. ${q.question}`}</div>
-                
+
               </li>
-              
+
               <li style={{ marginTop: 15 }}>
                 {q.options.map((option, x) => {
                   return (

@@ -1,11 +1,11 @@
 
 import React, { useEffect, useState,useRef } from 'react';
-import Samplequiz  from "../../src/sample/sampleQuiz.jsx";
+import Samplequiz  from "./sampleQuiz.jsx";
 const SampleLeaderBoard = () => {
-    //console.log('sdfghj');
+    console.log('SampleLeaderBoard');
     return(
         <div>
-            < Samplequiz/>
+            < Samplequiz />
         </div>
     )
   

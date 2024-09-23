@@ -1,49 +1,26 @@
 // import Head from 'next/head';
 // import Image from "next/image";
-import React, { useEffect, useState,useRef } from 'react';
-import styles from './quiz_results.module.css';
-import LeftBar from '../leftbar/leftbar.jsx';
-import createdIcon from "../../src/assets/Images/images/quiz-Access/created.png";
-import descriptionIcon from "../../src/assets/Images/images/quiz-Access/description.png";
-import percentIcon from "../../src/assets/Images/images/quizresults/discount.png"; 
-import timeIcon from "../../src/assets/Images/images/quizresults/stopwatch1.png";
+import React, { useEffect, useRef, useState } from 'react';
+import percentIcon from "../../src/assets/Images/images/quizresults/discount.png";
+import current from "../../src/assets/Images/images/quizresults/faq.png";
 import dateIcon from "../../src/assets/Images/images/quizresults/schedule.png";
-import current from "../../src/assets/Images/images/quizresults/faq.png"
+import timeIcon from "../../src/assets/Images/images/quizresults/stopwatch1.png";
+import styles from './quiz_results.module.css';
 
-import titleIcon from "../../src/assets/Images/images/quiz-Access/title.png";
-import categoryIcon from "../../src/assets/Images/images/quiz-Access/category.png";
-import ranksIcon from "../../src/assets/Images/images/quizresults/ranks.png"; 
+import { MdOutlineCancel } from "react-icons/md";
+import { useLocation, useNavigate } from 'react-router-dom';
+import vector from "../../src/assets/Images/images/quizresults/icon-park_check-correct.png";
 import rank1Icon from "../../src/assets/Images/images/quizresults/rank1.png";
 import rank2Icon from "../../src/assets/Images/images/quizresults/rank2.png";
 import rank3Icon from "../../src/assets/Images/images/quizresults/rank3.png";
-import rankScoreIcon from "../../src/assets/Images/images/quizresults/rankscore.png";
-import greybox1Image from "../../src/assets/Images/images/quizresults/greybox1.png";  
-import greybox2Image from "../../src/assets/Images/images/quizresults/greybox2.png";
-import greybox3Image from "../../src/assets/Images/images/quizresults/greybox3.png"; 
-import rightIcon from "../../src/assets/Images/images/quizresults/right.png"; 
-import one1Image from "../../src/assets/Images/images/quizview/one1.png";
-import iconA from "../../src/assets/Images/images/questions/IconA.png"
-import iconB from "../../src/assets/Images/images/questions/IconB.png";
-import iconC from "../../src/assets/Images/images/questions/IconC.png";
-import iconD from "../../src/assets/Images/images/questions/IconD.png";
-import answerTimerIcon from "../../src/assets/Images/images/quizresults/answerTimer.png"; 
-import rightIcon1 from "../../src/assets/Images/images/quizresults/righticon.png"; 
-import wrongIcon from "../../src/assets/Images/images/quizresults/wrong.png";
+import rightIcon1 from "../../src/assets/Images/images/quizresults/righticon.png";
 import wrongIcon1 from "../../src/assets/Images/images/quizresults/wrongicon.png";
-import two2Icon from "../../src/assets/Images/images/quizview/two2.png";
-import three3Icon from "../../src/assets/Images/images/quizview/three3.png"; 
-import four4Icon from "../../src/assets/Images/images/quizview/four4.png";
-import { useLocation } from 'react-router-dom';
-import { MdOutlineCancel } from "react-icons/md";
-import { useNavigate } from 'react-router-dom';
-import fistrank from '../../src/assets/Images/images/quizresults/FirstRank.png'
-import vector from "../../src/assets/Images/images/quizresults/icon-park_check-correct.png"
-import Navigation from "../navbar/navbar.jsx";
 import LogoutBar from "../logoutbar/logoutbar.jsx";
+import Navigation from "../navbar/navbar.jsx";
 // import rankimage from "../../src/assets/Images/images/quizresults/rankimage.png"
-import rankimage from "../../src/assets/Images/images/quizresults/rank.jpg"
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import rankimage from "../../src/assets/Images/images/quizresults/rank.jpg";
 
 const leaderboard = () => {
   const [quizData, setQuizData] = useState(null);
@@ -147,81 +124,6 @@ const leaderboard = () => {
 
     fetchLeaderboardData();
   }, [quizId]);
-
-  // useEffect(() => {
-    
-    //   const sendQuizResult = async () => {
-  //     try {
-  //       const response = await fetch('https://dev.quizifai.com:8010/quiz_result', {
-  //         method: 'POST',
-  //         headers: {
-  //           'accept': 'application/json',
-  //           'Content-Type': 'application/json'
-  //         },
-  //         body: JSON.stringify({
-  //           user_id: userId,
-  //           quiz_id: quizId,
-  //           attempt_id: attemptNo
-  //         })
-  //       });
-  //       const result = await response.json();
-  //       const data = result[0]?.data;
-  //       setQuizData(data);
-  //       console.log('Quiz result submitted:', data);
-  //     } catch (error) {
-  //       console.error('Error submitting quiz result:', error);
-  //     }
-  //   };
-
-  //   if (quizId && attemptNo) {
-  //     sendQuizResult(); // Trigger the POST request only if quizId and attemptNo are available
-  //   }
-  // }, [quizId, attemptNo]);
-  // const quizduration = localStorage.getItem("quiz_duration");
-  // const complexity = localStorage.getItem("complexity");
-  // useEffect(() => {
-  //   const userId = localStorage.getItem("user_id");
-
-  //   const quizId = localStorage.getItem("quiz_id");
-  //   // const attemptNo = localStorage.getItem("quiz_level_attempt_id");
-
-  //   const sendQuizResult = async () => {
-  //     try {
-  //       const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
-
-  //       if (!authToken) {
-  //         console.error('No authentication token found. Please log in again.');
-  //         return;
-  //       }
-  //       const response = await fetch('https://dev.quizifai.com:8010/quiz_result_view', {
-  //         method: 'POST',
-  //         headers: {
-  //           'Accept': 'application/json',
-  //           'Content-Type': 'application/json',
-  //           'Authorization': `Bearer ${authToken}`,
-  //         },
-  //         body: JSON.stringify({
-  //           user_id: userId,
-  //           quiz_id: quizId,
-  //           attempt_id: attemptId
-  //         })
-  //       });
-  //       const result = await response.json();
-  //       const data = result.data[0];
-  //       setQuizData(data);
-  //       console.log('Quiz result submitted:', data);
-  //       setIsQuizSubmitted(true); // Set the submission state to true after success
-  //     } catch (error) {
-  //       console.error('Error submitting quiz result:', error);
-  //       setIsQuizSubmitted(false); // Ensure it's false on error
-  //     }
-  //   };
-
-  //   if (quizId && attemptNo) {
-  //     sendQuizResult(); 
-  //     // Trigger the POST request only if quizId and attemptNo are available
-  //   }
-  // }, []);
       const userId = localStorage.getItem("user_id");
 
   useEffect(() => {

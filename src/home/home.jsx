@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import homeImage from "/images/oldimage.png";
 import HeaderSection from "../HeaderSection/HeaderSection";
@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setDynamicStateFlags, setAttempted, getContactUsEmail } from "./slice";
 
 function Home() {
+  const [intervalT, setIntervalT] = useState(null);
   const dispatch = useDispatch();
   const {
     firstName,
@@ -49,7 +50,7 @@ function Home() {
 
   const timer = () => {
     let duration = 5 * 60;
-    setInterval(function () {
+    const t = setInterval(function () {
       // Calculate the remaining time
       const minutes = Math.floor(duration / 60);
       const seconds = duration % 60;
@@ -58,16 +59,17 @@ function Home() {
       const time = `${padZero(minutes)}:${padZero(seconds)}`;
 
       // Display the time
-      dispatch(setDynamicStateFlags({ key: 'countTimer', value: `Duration ${time}` }))
+      dispatch(setDynamicStateFlags({ key: 'countTimer', value: `Timer : ${time}` }))
 
       // Decrement the duration
       duration--;
       // Stop the countdown when it reaches 0
       if (duration < 0) {
-        clearInterval(this);
-        dispatch(setDynamicStateFlags({ key: 'countTimer', value: `Time's up!` }))
+        clearInterval(intervalT);
+        dispatch(setDynamicStateFlags({ key: 'countTimer', value: `` }))
       }
     }, 1000);
+    setIntervalT(t);
   }
 
   useEffect(() => {
@@ -143,6 +145,10 @@ function Home() {
   };
   const handleOnClickSubmit = () => {
     dispatch(setDynamicStateFlags({ key: 'submit', value: true }));
+    clearInterval(intervalT);
+    dispatch(setDynamicStateFlags({ key: 'index', value: 1 }));
+    dispatch(setDynamicStateFlags({ key: 'started', value: false }));
+    navigate("/homeleaderboard");
   }
   const q = questions[index - 1];
   return (
@@ -176,11 +182,17 @@ function Home() {
             }
             {/* <ThumbDownAltIcon /> */}
             {started && <>
-              <div> Current Affairs</div>
-              <h2>Test your knowledge </h2>
-              <div>Questions 5</div>
-              <div>Duration: 5 min</div>
-              <div>Complexity : Simple</div>
+              <div className="main"> Current Affairs</div>
+              <h2 className="main1">Challenge yourself with "Quizifai Daily Current Affairs"! Discover and learn about the latest news in a fun way! </h2>
+              <div className="questions">Questions <span className="dot1"></span>: <span className="black">5</span></div>
+              <div className="questions">Duration <span className="dot">:</span> <span className="black1"> 5 min</span></div>
+              <div className="questions1">Complexity :<span className="simple">Simple</span> </div>
+              <div>
+                <div>
+                  <h1 className="ques"> Question <span> 1 0f 5</span></h1>
+                  <h1 className="choose">Choose the correct answer then click the <span class="_sentence1_10cb2_393">"Next"</span> button </h1>
+                </div>
+              </div>
               <div className="timer">{countTimer}</div>
               <li className="w-[100%] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.5px] p-[10px] text-[14px] text-[#21408] font-bold">
                 <div>{`${index}. ${q.question}`}</div>
@@ -201,7 +213,7 @@ function Home() {
                         className={`
                           ${(x === q.answerIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
                           ${(x === attempted.answeredIndex && x !== q.answerIndex) ? 'wrongAnswer' : ''}
-                          w-[90%] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] p-[10px] text-[14px] text-[#214082] font-bold`}
+                          w-[100%] h-[40px] rounded-[5px] border-solid border-[#FFFFC5.] border-[1.8px] p-[10px] text-[12px] text-[#000]`}
                       >
                         {option.answer_option_text}
                       </div>
@@ -213,14 +225,14 @@ function Home() {
             </>}
             {started && index != 5 && <button className="next" onClick={handleOnClickNext}>Next</button>}
             {started && index != 1 && index !== 5 && <button className="previous" onClick={handleOnClickPrevious}>Previous</button>}
-            {started && index == 5 && <button onClick={handleOnClickSubmit} className="submit">Submit </button>}
+            {started && index == 5 && <button onClick={handleOnClickSubmit} className="submi">Submit </button>}
 
 
           </div>
           {activeSection === "home" && (
             <div className="w-full md:w-1/2 pr-0 md:pr-[70px] pt-4 md:pt-20 flex flex-col justify-center items-center md:items-end">
               <div className="relative mt-4 md:mt-[-134px]">
-                <img src={homeImage} alt="home Image" className="w-full" />
+                <img src={homeImage} alt="home Image" className="image" />
                 <div className="flex flex-col items-center mt-4 ml-[120px] lg:ml-[1px]">
                   <Link to={"/signup"} >
                     {/* <button className= "w-[103px] h-9 bg-[rgb(0,9,139)] text-white font-Poppins text-[13px] font-bold rounded-[10px] flex items-center justify-center hover:bg-[#EF512F] transition-transform transform hover:scale-110 ml-167  ">
@@ -234,7 +246,6 @@ function Home() {
           )}
         </div>
       </div>
-      {submit && <SampleLeaderBoard />}
     </div>
   );
 }

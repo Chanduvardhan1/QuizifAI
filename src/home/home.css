@@ -428,7 +428,7 @@ li {
 
 .submit {
   float: right;
-  color: #00008b;
+  color:#008000
 }
 
 .text {
@@ -459,11 +459,91 @@ li {
 }
 div.correctAnswer {
   border-color: rgb(34, 197, 94);
+  background-color: #C9E4CA
 }
 div.wrongAnswer {
   border-color: rgb(249, 115, 22);
+  background-color: #FFF0F0;
 }
 .timer{
   height: 38px;
-  margin-left: 463px;
+  margin-left: 544px;
+  font-family: poppins;
+  font-size: 15px;
+  font-weight: 700;
+  color: #000;
+  margin-top:-28px;
+
 }
+.main{
+
+    font-family: Poppins;
+      font-size: 18px;
+      font-weight: 700;
+      color: #00008b;
+    
+  }
+  .main1{
+    font-family: Poppins;
+      font-size: 15px;
+      font-weight: 700;
+      color:  #000;
+
+  }
+  .questions{
+    font-family: Poppins;
+    font-size: 15px;
+    font-weight: 700;
+  }
+  /* .questions2{
+    font-family: Poppins;
+    font-size: 14px;
+    font-weight: 700;
+    color: #00008b;
+
+  } */
+
+  .questions1{
+    font-family: Poppins;
+    font-size: 15px;
+    font-weight: 700;
+    height: 0px;
+  }
+.image{
+  
+   /* margin-top:54px; */
+  margin-right:-37px; 
+  z-index: 1;
+}
+
+.ques{
+  color: #F15A3D;
+  
+  font-family: Poppins;
+  margin-top:22px;
+  font-size:15px
+}
+.button{
+  color: #F15A3D;
+}
+.choose{
+  font-size:15px;
+  
+}
+.black{
+  color: #000;
+}
+.black1{
+  color: #000;
+}
+.dot{
+  margin-left: 21px;
+}
+.dot1{
+  margin-left: 11px;
+}
+.simple{
+  color: #000;
+  margin-left: 4px;
+}
+

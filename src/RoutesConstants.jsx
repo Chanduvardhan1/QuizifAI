@@ -85,13 +85,15 @@ import PaperTemplates from './questionpapers/papertemplates.jsx';
 import Quizcreated2 from "./quizcreated-textbook/quizcreated2.jsx";
 import Quizresults1 from "./quizview_results/quiz_results.jsx";
 
+import SampleLeaderBoard from "./sample/sampleLeaderBoard.jsx";
+
 export default () => {
     return [
         {
-            path: '/',
             component: Layout
         },
         {
+            path: '/',
             component: Home,
             isIndex: true
         },
@@ -499,6 +501,10 @@ export default () => {
         {
             path:'globalleaderboard',
             component: Globalleaderboard,
+        },
+        {
+            path:'homeleaderboard',
+            component: SampleLeaderBoard,
         }
     
     ]

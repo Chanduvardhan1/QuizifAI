@@ -359,7 +359,7 @@ li {
 
 .cardText {
   padding: 13px;
-  margin-top: 14%;
+  
 
 }
 
@@ -370,7 +370,7 @@ li {
   margin-left: -9px;
   font-size: 17px;
   padding: 2%;
-  margin-left: -18px
+  
 }
 
 .subText {
@@ -430,7 +430,6 @@ li {
   float: right;
   color:#008000
 }
-
 .text {
   color: #00008b;
 }
@@ -467,12 +466,11 @@ div.wrongAnswer {
 }
 .timer{
   height: 38px;
-  margin-left: 544px;
   font-family: poppins;
   font-size: 15px;
   font-weight: 700;
   color: #000;
-  margin-top:-28px;
+  
 
 }
 .main{
@@ -481,6 +479,8 @@ div.wrongAnswer {
       font-size: 18px;
       font-weight: 700;
       color: #00008b;
+      display: inline;
+      margin-left:60px;
     
   }
   .main1{
@@ -488,12 +488,16 @@ div.wrongAnswer {
       font-size: 15px;
       font-weight: 700;
       color:  #000;
+      /* display: inline; */
+      margin-left:60px;
 
   }
   .questions{
     font-family: Poppins;
     font-size: 15px;
     font-weight: 700;
+    display: inline;
+    margin-left: 57px;
   }
   /* .questions2{
     font-family: Poppins;
@@ -508,12 +512,17 @@ div.wrongAnswer {
     font-size: 15px;
     font-weight: 700;
     height: 0px;
+    display: inline;
+    margin-left:56px;
   }
-.image{
+.imageWrapper{
   
    /* margin-top:54px; */
-  margin-right:-37px; 
-  z-index: 1;
+   height: 20px;
+   display: inline-block;
+   margin-right: 3px;
+   font-size: 15px;
+  
 }
 
 .ques{
@@ -535,15 +544,159 @@ div.wrongAnswer {
 }
 .black1{
   color: #000;
+  margin-left: -4px;
 }
 .dot{
-  margin-left: 21px;
+  margin-left: 22px !important;
+  border-color: none ! important;
+  border-radius: none !important;
 }
 .dot1{
   margin-left: 11px;
+  /* border-colour: none ! important; */
+  border-radius: none !important;
 }
 .simple{
   color: #000;
   margin-left: 4px;
+}
+ /* .simple1{
+  margin-left:236px;
+
+} */
+ .try{
+  width: 103px;
+  height: 36px; 
+  background-color: rgb(0, 9, 139);
+  color: white;
+  font-family: 'Poppins', sans-serif; 
+  font-size: 13px;
+  font-weight: bold;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s; 
+  margin-left: 200px;
+ }
+ .try:hover{
+  background-color: #EF512F;
+  transform: scale(1.1);
+ }
+ .current{
+    display: inline;
+  }
+  .main-div{
+    border: 5px  solid #efefef;
+    display: flex;
+
+    }
+    .mainContainer{
+      display: flex;
+      flex-direction: row;
+    }
+
+
+    .parentDiv{
+      width:13%;
+      margin-top: 16px;
+    }
+    /* .subDiv {
+      width: 87%;
+    } */
+
+    .samantha{
+      margin-left:6px;
+      font-size:15px;
+    }
+    .user{
+      height: 24px;
+      margin-left:47px;
+    }
+    .userIcon{
+      display: flex;
+      justify-content: space-evenly;
+    }
+    .clock{
+      display: flex;   
+      font-size:15px;
+     }
+.clockIcon{
+  height: 27px;
+  margin-left:47px;
+  font-size:15px;
+}
+.date{
+  margin-left:10px;
+}
+.questionIcon {
+  height:26px;
+  margin-left:46px;
+  font-size:15px;
+  margin-top: 8px;
+}
+.questionMark{
+  display: flex;
+}
+.timeIcon{
+  display: flex;
+}
+.playIcon{
+  display: flex;
+}
+.attempts{
+  margin-left:6px;
+  font-size:15px;
+  margin-top:16px;
+
+}
+.playIcon{
+  height:24px;
+
+}
+.mainDivHighScore{
+  display: flex;
+}
+.highScore{
+  height: 24px;
+  margin-left:247px;
+
+}
+.minutes{
+  font-size: 15px;
+  margin-top: 19px;
+  margin-left:6px;
+
+}
+.score{
+  font-size: 15px;
+  font-family: poppins;
+}
+.fiveQuestions{
+  font-size: 15px;
+  font-family: poppins;
+  margin-left: 6px;
+  margin-top:11px;
+
+}
+.mainContainer1{
+  display: flex;
+}
+.playSymbol{
+  height: 24px;
+}
+.quickest{
+  margin-left:42px;
+
+}
+.playImage{
+  height: 24px;
+  margin-top:15px;
+  margin-left:47px;
+}
+.wrapper {
+  width: 70%;
+  padding-left: 0;
+  margin-top: -8px;
 }
 

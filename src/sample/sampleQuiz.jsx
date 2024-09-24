@@ -46,13 +46,13 @@ const Samplequiz = () => {
               <div className={styles.Createdbyupdated}>
                 <div className={styles.Questions}>
 
-                  <span className={styles.Question} >Questions :5 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>{" "}
-                  <span className={styles.username1} ></span>
+                  <span className={styles.Question} >Questions :  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>{" "}
+                  <span className={styles.username1} >5</span>
                 </div>
                 <div>
 
-                  <span className={styles.Question} >Total Marks :5&nbsp;&nbsp;:</span>{" "}
-                  <span className={styles.username1} ></span>
+                  <span className={styles.Question} >Total Marks : &nbsp;&nbsp;</span>{" "}
+                  <span className={styles.username1} >5</span>
                 </div>
                 <div className={styles.Created}>
 
@@ -70,8 +70,8 @@ const Samplequiz = () => {
 
                 <div>
 
-                  <span className={styles.Question} >Duration :5</span>{" "}
-                  <span className={styles.username1} > min</span>
+                  <span className={styles.Question} >Duration : </span>{" "}
+                  <span className={styles.username1} > 5 min</span>
                 </div>
 
                 <div>
@@ -87,8 +87,8 @@ const Samplequiz = () => {
 
                 <div>
 
-                  <span className={styles.Question} >Complexity :Simple</span>{" "}
-                  <span className={styles.username1} ></span>
+                  <span className={styles.Question} > Complexity : </span>{" "}
+                  <span className={styles.username1} >Simple</span>
                 </div>
               </div>
             </div>
@@ -261,7 +261,8 @@ const Samplequiz = () => {
               </div>
 
 
-              <button onClick={handleOnClose} className="w-20 h-[30px] rounded-full font-Poppins bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center hover:bg-[#EF512F] transition-transform transform hover:scale-110 ml-461">Close</button>
+              {/* <button onClick={handleOnClose} className="w-20 h-[30px] rounded-full font-Poppins bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center hover:bg-[#EF512F] transition-transform transform hover:scale-110 ml-461">Close</button> */}
+              <button className=" close" onClick={handleOnClose}> Close</button>
             </div>
 
           </div>

@@ -1,0 +1,93 @@
+/* /* .slides-container {
+    position: relative;
+    width: 80%;
+    margin: 40px auto;
+    background-color: 255, 182, 193;
+  }
+  
+  .slide {
+    padding: 93px;
+    border-radius: 30px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+
+  
+  /* .arrows {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .arrows button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+  }
+  
+  .arrows button:hover {
+    color: #666;
+  }  */
+
+
+
+
+
+
+  .slides-container {
+    position: relative;
+    width: 80%;
+    margin: 40px auto;
+  }
+  
+  .slide {
+    padding: 45px;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: poppins;
+    font-size: 15px;
+    background-color:#FFEBD9;
+  }
+  
+  .dots {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin: 4px;
+    cursor: pointer;
+  }
+  
+  .dot.active {
+    background-color: #666;
+  }
+  
+  .arrows {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    top:45%;
+    font-size: 17px;
+  }
+  
+  .arrows button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+  }
+  
+  .arrows button:hover {
+    color: #666;
+  }

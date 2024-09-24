@@ -7,6 +7,14 @@ import { questions } from "./Constants";
 import "./home.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setDynamicStateFlags, setAttempted, getContactUsEmail } from "./slice";
+import Slides from "../slides/slides";
+import current from "../../public/current.png";
+import User from "../../public/user.png";
+import Calender from "../../public/calendar.png";
+import Question from "../../public/question.png";
+import clockIcon from "../../public/clockimage.png";
+import Play from "../../public/play.png";
+import highScore from "../../public/highscore.png";
 
 function Home() {
   const [intervalT, setIntervalT] = useState(null);
@@ -156,81 +164,134 @@ function Home() {
       <HeaderSection />
       <div>
         <div className="flex flex-col md:flex-row p-5 main">
-          <div className="w-full md:w-1/2 pl-0 md:pl-20 mt-[-8px] justify-center">
+          <div className="wrapper">
             {!started && <h1 className=" font-Poppins font-bold text-[#555555] leading-[50px] text-center md:text-left">
               <span className="text">Exploring online resources for AI-generated Exams and Quizzes</span>
             </h1>}
             {!started && <div className="card">
               <div className="cardText">
-                {/* <label className="title"> What Is QuizifAI</label> */}
+
                 {/* <span className="subText">QuizifAI is a SaaS platform powered by AI that transforms textbooks and PDFs into quizzes, making exam and quiz management easier for teachers. Additionally, it provides targeted quizzes for effective competitive exam preparation.</span> */}
-                <ol>
+                {/* <ol>
                   <li className="description">• QuizifAI is a SaaS  platform.</li>
                   <li className="description">• It is powered by AI (Artificial Intelligence).</li>
                   <li className="description"> • Transforms textbooks and PDFs into quizzes.</li>
                   <li className="description">•  Simplifies exam and quiz management.</li>
                   <li className="description">• Provides targeted quizzes for competitive exam preparation.</li>
 
-                </ol>
+                </ol> */}
+                <div>
+                  <Slides />
+
+                </div>
                 {/* <span>If you want to check out our trial quiz, please take a look at this SAMPLE QUIZ.</span> */}
-                <p><span className="description">If you want to check out our trial quiz, please take a look at this</span>
-                  <span className="sample">Sample Quiz</span></p>
-                <button onClick={handleOnClickButton} className="w-[103px] h-9 bg-[rgb(0,9,139)] text-white font-Poppins text-[13px] font-bold rounded-[10px] flex items-center justify-center hover:bg-[#EF512F] transition-transform transform hover:scale-110 ml-167 m 0 auto  mt-20 ">Try Quiz</button>
+                {/* <p><span className="description">If you want to check out our trial quiz, please take a look at this</span> */}
+                {/* <span className="sample">Sample Quiz</span></p> */}
+                {/* <button onClick={handleOnClickButton} className="w-[103px] h-9 bg-[rgb(0,9,139)] text-white font-Poppins text-[13px] font-bold rounded-[10px] flex items-center justify-center hover:bg-[#EF512F] transition-transform transform hover:scale-110 ml-200    ">Try Quiz</button> */}
+                <button className="try" onClick={handleOnClickButton}>Try Quiz</button>
 
               </div>
             </div>
             }
             {/* <ThumbDownAltIcon /> */}
             {started && <>
-              <div className="main"> Current Affairs</div>
-              <h2 className="main1">Challenge yourself with "Quizifai Daily Current Affairs"! Discover and learn about the latest news in a fun way! </h2>
-              <div className="questions">Questions <span className="dot1"></span>: <span className="black">5</span></div>
-              <div className="questions">Duration <span className="dot">:</span> <span className="black1"> 5 min</span></div>
-              <div className="questions1">Complexity :<span className="simple">Simple</span> </div>
-              <div>
-                <div>
-                  <h1 className="ques"> Question <span> 1 0f 5</span></h1>
-                  <h1 className="choose">Choose the correct answer then click the <span class="_sentence1_10cb2_393">"Next"</span> button </h1>
+              <div className="main-div">
+                <div className="image">
+                  <img className="current" src={current} />
+                </div>
+                <div className="mainHeading">
+                  <div className="main"> Current Affairs</div>
+                  <h2 className="main1">Challenge yourself with "Quizifai Daily Current Affairs"! Discover and learn about the latest news in a fun way! </h2>
+                  {/* <div className="questions">Questions <span className="dot1"></span>: <span className="black">5</span></div> */}
+                  {/* <div className="questions">Duration <span className="dot">:</span> <span className="black1"> 5 min</span></div> */}
+                  <div className="questions1">Complexity :<span className="simple">Simple</span> </div>
+                  <div className="userIcon">
+                    <div><img className="imageWrapper" src={User} />
+                    <span>Samantha S</span></div>
+                    <div >
+                      <img className="imageWrapper" src={Calender} />
+                      <span >24-Sep-2024</span>
+                    </div>
+                    <div >
+                      <img className="imageWrapper" src={Question} />
+                      <span > 5 Questions </span>
+                    </div>
+                    
+                  </div>
+                  <div className="userIcon">
+                    <div >
+                      <img className="imageWrapper" src={clockIcon} />
+                      <span >5 Minutes</span>
+                    </div>
+                    <div >
+                      <img className="imageWrapper" src={Play} />
+                      <span >203 attempts</span>
+                    </div>
+                    <div >
+                      <img className="imageWrapper" src={highScore} />
+                      <span >80% High Score</span>
+                    </div>
+                    
+                  </div>
+                  <div>
+                     <div className="quickest">
+                      <img className="imageWrapper" src={Play} />
+                      <span >2:02 mins quickest</span>
+                    </div>
+                  </div>
+
+                 
+
+                </div>
+
+              </div>
+
+
+              <div className="mainContainer">
+                <div className="subDiv">
+                  <li className="w-[100%] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.5px] p-[10px] text-[14px] text-[#21408] font-bold ">
+                    <div>{`${index}. ${q.question}`}</div>
+
+                  </li>
+                  <li style={{ marginTop: 15 }}>
+                    {q.options.map((option, x) => {
+                      return (
+                        <div key={x} className={`flex items-center mb-4`}>
+                          <div className="mr-2 font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#B8BBC2] flex justify-center text-center justify-items-center items-center text-[14px]">
+                            {String.fromCharCode(97 + x).toUpperCase()}
+                          </div>
+                          <div
+                            type="text"
+                            placeholder="Question"
+                            onClick={(e) => handleAnswerClick(option.answer_option_text, q, x)}
+                            className={`
+                                ${(x === q.answerIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
+                                ${(x === attempted.answeredIndex && x !== q.answerIndex) ? 'wrongAnswer' : ''}
+                                w-[100%] h-[40px] rounded-[5px] border-solid border-[#FFFFC5.] border-[1.8px] p-[10px] text-[12px] text-[#000]`}
+                          >
+                            {option.answer_option_text}
+                          </div>
+
+                        </div>
+                      )
+                    })}
+                  </li>
+                </div>
+                <div className="parentDiv">
+                  <div className="timer">{countTimer}</div>
+                  {started && index == 5 && <button onClick={handleOnClickSubmit} className="submit">Submit </button>}
                 </div>
               </div>
-              <div className="timer">{countTimer}</div>
-              <li className="w-[100%] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.5px] p-[10px] text-[14px] text-[#21408] font-bold">
-                <div>{`${index}. ${q.question}`}</div>
 
-              </li>
-
-              <li style={{ marginTop: 15 }}>
-                {q.options.map((option, x) => {
-                  return (
-                    <div key={x} className={`flex items-center mb-4`}>
-                      <div className="mr-2 font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#B8BBC2] flex justify-center text-center justify-items-center items-center text-[14px]">
-                        {String.fromCharCode(97 + x).toUpperCase()}
-                      </div>
-                      <div
-                        type="text"
-                        placeholder="Question"
-                        onClick={(e) => handleAnswerClick(option.answer_option_text, q, x)}
-                        className={`
-                          ${(x === q.answerIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
-                          ${(x === attempted.answeredIndex && x !== q.answerIndex) ? 'wrongAnswer' : ''}
-                          w-[100%] h-[40px] rounded-[5px] border-solid border-[#FFFFC5.] border-[1.8px] p-[10px] text-[12px] text-[#000]`}
-                      >
-                        {option.answer_option_text}
-                      </div>
-
-                    </div>
-                  )
-                })}
-              </li>
             </>}
             {started && index != 5 && <button className="next" onClick={handleOnClickNext}>Next</button>}
             {started && index != 1 && index !== 5 && <button className="previous" onClick={handleOnClickPrevious}>Previous</button>}
-            {started && index == 5 && <button onClick={handleOnClickSubmit} className="submi">Submit </button>}
+
 
 
           </div>
           {activeSection === "home" && (
-            <div className="w-full md:w-1/2 pr-0 md:pr-[70px] pt-4 md:pt-20 flex flex-col justify-center items-center md:items-end">
+            <div className="w-full md:w-1/2 pr-0 md pt-4 md:pt-20 flex flex-col justify-center items-center md:items-end">
               <div className="relative mt-4 md:mt-[-134px]">
                 <img src={homeImage} alt="home Image" className="image" />
                 <div className="flex flex-col items-center mt-4 ml-[120px] lg:ml-[1px]">

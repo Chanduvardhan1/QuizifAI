@@ -358,7 +358,7 @@ li {
 }
 
 .cardText {
-  padding: 13px;
+  /* padding: 13px; */
   
 
 }
@@ -578,8 +578,8 @@ div.wrongAnswer {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s; 
-  margin-left: 200px;
+  transition: transform 0.2s;
+  /* margin-top:40px; */
  }
  .try:hover{
   background-color: #EF512F;
@@ -743,7 +743,7 @@ div.wrongAnswer {
   background-color: #EF512F; /* hover:bg-[#EF512F] */
   transform: scale(1.1); /* hover:scale-110 */
 }
-.text{
+.text1{
   font-size:18px;
   /* margin-left:11px; */
 }

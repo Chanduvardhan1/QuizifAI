@@ -165,9 +165,9 @@ function Home() {
       <div>
         <div className="flex flex-col md:flex-row p-5 main">
           <div className="wrapper">
-            {!started && <h1 className=" font-Poppins font-bold text-[#555555] leading-[50px] text-center md:text-left">
-              <span className="text">Exploring online resources for AI-generated Exams and Quizzes</span>
-            </h1>}
+            {!started && <span className=" font-Poppins font-bold text-[#555555] leading-[50px] text-center md:text-left">
+              <span className="text1">Exploring online resources for AI-generated Exams and Quizzes</span>
+            </span>}
             {!started && <div className="card">
               <div className="cardText">
                 <div>

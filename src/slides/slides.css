@@ -39,7 +39,11 @@
   .slides-container {
     position: relative;
     width: 80%;
-    margin: 40px auto;
+    margin-top:40px;
+     border: 1px solid #00008b;
+     border-radius: 20px;
+     box-shadow: 1px 5px #00008b;
+
   }
   
   .slide {
@@ -49,6 +53,10 @@
     font-family: poppins;
     font-size: 15px;
     background-color:#FFEBD9;
+    height:200px;
+    /* margin-top: 34px; */
+    padding-top: 75px;
+    /* margin-left:20px; */
   }
   
   .dots {
@@ -72,12 +80,12 @@
   
   .arrows {
     position: absolute;
-    top: 50%;
+    top: 45%;
     transform: translateY(-50%);
     width: 100%;
     display: flex;
     justify-content: space-between;
-    top:45%;
+    /* top:45%; */
     font-size: 17px;
   }
   
@@ -91,3 +99,7 @@
   .arrows button:hover {
     color: #666;
   }
+
+
+
+  

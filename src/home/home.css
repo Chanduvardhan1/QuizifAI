@@ -418,8 +418,9 @@ li {
 
 .next {
   float: right;
-  color: #00008b;
+  color: #00008b; 
 }
+
 
 .previous {
   float: left;
@@ -470,7 +471,8 @@ div.wrongAnswer {
   font-size: 15px;
   font-weight: 700;
   color: #000;
-  
+  text-align: right;
+  line-height: 2.5;
 
 }
 .main{
@@ -486,10 +488,10 @@ div.wrongAnswer {
   .main1{
     font-family: Poppins;
       font-size: 15px;
-      font-weight: 700;
       color:  #000;
-      /* display: inline; */
       margin-left:60px;
+      display: block;
+      font-weight: normal;
 
   }
   .questions{
@@ -513,7 +515,7 @@ div.wrongAnswer {
     font-weight: 700;
     height: 0px;
     display: inline;
-    margin-left:56px;
+    margin-left:60px;
   }
 .imageWrapper{
   
@@ -584,11 +586,18 @@ div.wrongAnswer {
   transform: scale(1.1);
  }
  .current{
-    display: inline;
+    border: 1px solid  #00008b;
+    /* #ffEBD9 */
+    border-radius: 20px;
   }
   .main-div{
-    border: 5px  solid #efefef;
+    border: 5px solid #00008b;
+    /* border: 2px solid #ffEBD9; */
+
+    border-radius: 20px;
     display: flex;
+    padding: 10px 0 10px 10px;
+    box-shadow: 0 7px 5px  #00008b;
 
     }
     .mainContainer{
@@ -615,7 +624,17 @@ div.wrongAnswer {
     }
     .userIcon{
       display: flex;
-      justify-content: space-evenly;
+      justify-content: start;
+      margin-left: 36px;
+      margin-bottom: 10px;
+      margin-top:14px;
+    }
+    .userIcon > div {
+      margin-left: 20px;
+    }
+    .userIcon > div span {
+      min-width: 130px;
+      display: inline-block;
     }
     .clock{
       display: flex;   
@@ -698,5 +717,34 @@ div.wrongAnswer {
   width: 70%;
   padding-left: 0;
   margin-top: -8px;
+}
+.text{
+  font-size: 15px;
+  font-family: poppins;
+}
+.quiz{
+  width: 80px; 
+    height: 30px; 
+    border-radius: 9999px; 
+    font-family: 'Poppins', sans-serif; 
+    background-color: #3B61C8; 
+    color: white; 
+    font-size: 13px; 
+    line-height: 1.75; 
+    font-weight: 600; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    transition: transform 0.3s;
+    margin-top:64px;
+    margin-left:208px;
+}
+.quiz:hover{
+  background-color: #EF512F; /* hover:bg-[#EF512F] */
+  transform: scale(1.1); /* hover:scale-110 */
+}
+.text{
+  font-size:18px;
+  /* margin-left:11px; */
 }
 

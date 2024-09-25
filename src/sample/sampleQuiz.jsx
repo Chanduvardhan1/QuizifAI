@@ -19,14 +19,14 @@ const Samplequiz = () => {
   const Back = () => {
   };
 
-  const handleOnClose = ()=> {
+  const handleOnClose = () => {
     navigate("/")
   }
   return (
 
     <div className={styles.container} >
       <div className={styles.mainContent} >
-        <div className={styles.back1} onClick={Back}><MdOutlineCancel /></div>
+        {/* <div className={styles.back1} onClick={Back}><MdOutlineCancel /></div> */}
 
         <div className={styles.header}>
           <div className={styles.titleContainer}>
@@ -168,7 +168,7 @@ const Samplequiz = () => {
 
           </div>
           <div className={styles.boxContainer1}>
-          <div className={styles.titles}>
+            <div className={styles.titles}>
               <p className={styles.title}>Leaderboard </p>
 
 
@@ -247,22 +247,22 @@ const Samplequiz = () => {
                 <span className={styles.column}>Attempts</span>
                 <span className={styles.column}>Duration</span>
               </div>
-
             </div>
           </div>
         </div>
         <div className={styles.horizontalLine} style={{ marginTop: "0px" }}></div>
         <div className={styles.boxContainer}>
           <div className={styles.parentContainer}>
-
             <div className={styles.sentencesContainer1} style={{ marginLeft: "0px", marginTop: "40px", height: "220px" }} >
               <div className={styles.sentence}>
-
               </div>
+              <button
+                onClick={handleOnClose}
+                className="absolute top-4 right-4 w-20 h-[30px] rounded-full font-Poppins bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center hover:bg-[#EF512F] transition-transform transform hover:scale-110"
+              >
+                Close
+              </button>
 
-
-              {/* <button onClick={handleOnClose} className="w-20 h-[30px] rounded-full font-Poppins bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center hover:bg-[#EF512F] transition-transform transform hover:scale-110 ml-461">Close</button> */}
-              <button className=" close" onClick={handleOnClose}> Close</button>
             </div>
 
           </div>

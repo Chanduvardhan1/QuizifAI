@@ -170,30 +170,14 @@ function Home() {
             </h1>}
             {!started && <div className="card">
               <div className="cardText">
-
-                {/* <span className="subText">QuizifAI is a SaaS platform powered by AI that transforms textbooks and PDFs into quizzes, making exam and quiz management easier for teachers. Additionally, it provides targeted quizzes for effective competitive exam preparation.</span> */}
-                {/* <ol>
-                  <li className="description">• QuizifAI is a SaaS  platform.</li>
-                  <li className="description">• It is powered by AI (Artificial Intelligence).</li>
-                  <li className="description"> • Transforms textbooks and PDFs into quizzes.</li>
-                  <li className="description">•  Simplifies exam and quiz management.</li>
-                  <li className="description">• Provides targeted quizzes for competitive exam preparation.</li>
-
-                </ol> */}
                 <div>
                   <Slides />
-
                 </div>
-                {/* <span>If you want to check out our trial quiz, please take a look at this SAMPLE QUIZ.</span> */}
-                {/* <p><span className="description">If you want to check out our trial quiz, please take a look at this</span> */}
-                {/* <span className="sample">Sample Quiz</span></p> */}
-                {/* <button onClick={handleOnClickButton} className="w-[103px] h-9 bg-[rgb(0,9,139)] text-white font-Poppins text-[13px] font-bold rounded-[10px] flex items-center justify-center hover:bg-[#EF512F] transition-transform transform hover:scale-110 ml-200    ">Try Quiz</button> */}
                 <button className="try" onClick={handleOnClickButton}>Try Quiz</button>
 
               </div>
             </div>
             }
-            {/* <ThumbDownAltIcon /> */}
             {started && <>
               <div className="main-div">
                 <div className="image">
@@ -202,52 +186,48 @@ function Home() {
                 <div className="mainHeading">
                   <div className="main"> Current Affairs</div>
                   <h2 className="main1">Challenge yourself with "Quizifai Daily Current Affairs"! Discover and learn about the latest news in a fun way! </h2>
-                  {/* <div className="questions">Questions <span className="dot1"></span>: <span className="black">5</span></div> */}
-                  {/* <div className="questions">Duration <span className="dot">:</span> <span className="black1"> 5 min</span></div> */}
                   <div className="questions1">Complexity :<span className="simple">Simple</span> </div>
                   <div className="userIcon">
                     <div><img className="imageWrapper" src={User} />
-                    <span>Samantha S</span></div>
+                      <span className="text">Samantha S</span></div>
                     <div >
                       <img className="imageWrapper" src={Calender} />
-                      <span >24-Sep-2024</span>
+                      <span className="text">24-Sep-2024</span>
                     </div>
                     <div >
                       <img className="imageWrapper" src={Question} />
-                      <span > 5 Questions </span>
+                      <span className="text" > 5 Questions </span>
                     </div>
-                    
+
                   </div>
                   <div className="userIcon">
                     <div >
                       <img className="imageWrapper" src={clockIcon} />
-                      <span >5 Minutes</span>
+                      <span className="text">5 Minutes</span>
                     </div>
                     <div >
                       <img className="imageWrapper" src={Play} />
-                      <span >203 attempts</span>
+                      <span className="text" >203 attempts</span>
                     </div>
                     <div >
                       <img className="imageWrapper" src={highScore} />
-                      <span >80% High Score</span>
+                      <span className="text" >80% High Score</span>
                     </div>
-                    
-                  </div>
-                  <div>
-                     <div className="quickest">
-                      <img className="imageWrapper" src={Play} />
-                      <span >2:02 mins quickest</span>
-                    </div>
-                  </div>
 
-                 
+                  </div>
+                  <div className="userIcon">
+                    <div className="">
+                      <img className="imageWrapper" src={Play} />
+                      <span className="text" >2:02 mins quickest</span>
+                    </div>
+                  </div>
 
                 </div>
 
               </div>
 
-
-              <div className="mainContainer">
+              <div className="timer">{countTimer}</div>
+              <div className="">
                 <div className="subDiv">
                   <li className="w-[100%] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.5px] p-[10px] text-[14px] text-[#21408] font-bold ">
                     <div>{`${index}. ${q.question}`}</div>
@@ -277,18 +257,12 @@ function Home() {
                     })}
                   </li>
                 </div>
-                <div className="parentDiv">
-                  <div className="timer">{countTimer}</div>
-                  {started && index == 5 && <button onClick={handleOnClickSubmit} className="submit">Submit </button>}
-                </div>
               </div>
 
             </>}
             {started && index != 5 && <button className="next" onClick={handleOnClickNext}>Next</button>}
             {started && index != 1 && index !== 5 && <button className="previous" onClick={handleOnClickPrevious}>Previous</button>}
-
-
-
+            {started && index === 5 && <button onClick={handleOnClickSubmit} className="submit">Submit </button>}
           </div>
           {activeSection === "home" && (
             <div className="w-full md:w-1/2 pr-0 md pt-4 md:pt-20 flex flex-col justify-center items-center md:items-end">

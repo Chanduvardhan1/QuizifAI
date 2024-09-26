@@ -419,12 +419,14 @@ li {
 .next {
   float: right;
   color: #00008b; 
+  font-size:17px;
 }
 
 
 .previous {
   float: left;
   color: #00008b;
+  font-size: 17px;
 }
 
 .submit {
@@ -492,7 +494,7 @@ div.wrongAnswer {
 
     font-family: Poppins;
       font-size: 18px;
-      /* font-weight: 700; */
+      font-weight: 900;
       color: #00008b;
       display: inline;
       margin-left:28px;
@@ -501,7 +503,7 @@ div.wrongAnswer {
   .main1{
     font-family: Poppins;
       font-size: 15px;
-      color:  #000;
+      /* color:  #000; */
       margin-left:26px;
       display: block;
       font-weight: normal;
@@ -594,7 +596,7 @@ div.wrongAnswer {
   justify-content: center;
   transition: transform 0.2s;
   margin-top: 15%;
-    margin-left: 33%;
+    margin-left: 27%;
 
  }
  .try:hover{
@@ -602,7 +604,7 @@ div.wrongAnswer {
     transform: scale(1.1);
  }
  .current{
-    border: 1px solid  #808080 ;
+    border: 1px solid  #00008b ;
     /* #ffEBD9 */
     /* border-radius: 20px; */
     border-radius: 10px;;
@@ -611,13 +613,13 @@ div.wrongAnswer {
   }
 
   .main-div{
-    border: 1px solid  #808080;
+    border: 1px solid  #00008b;
     width:830px;
     height: 210px;
     border-radius: 20px;
     display: flex;
     padding: 10px 0 10px 10px;
-    box-shadow: 0 7px 5px  #808080;
+    box-shadow: 0 7px 5px  #00008b;
 
     }
     .mainContainer{
@@ -737,6 +739,8 @@ div.wrongAnswer {
 .text{
   font-size: 15px;
   font-family: poppins;
+  font-weight: 300;
+  color:#000
 }
 .quiz{
   width: 80px; 
@@ -762,5 +766,7 @@ div.wrongAnswer {
 .text1{
   font-size:18px;
   /* margin-left:11px; */
+  color:  #00008B;
+  margin-left:65px;
 }
 

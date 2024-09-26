@@ -184,7 +184,7 @@ function Home() {
                   <img className="current" src={current} />
                 </div>
                 <div className="mainHeading">
-                  <div className="main"> Current Affairs</div>
+                  <span className="main"> Current Affairs</span>
                   <h2 className="main1">Challenge yourself with "Quizifai Daily Current Affairs"! Discover and learn about the latest news in a fun way! </h2>
                   {/* <div className="questions1">Complexity :<span className="simple">Simple</span> </div> */}
                   <div className="userIcon">
@@ -242,7 +242,7 @@ function Home() {
               <div className="timer">{countTimer}</div>
               <div className="">
                 <div className="subDiv">
-                  <li className="w-[100%] h-[40px] rounded-[5px] border-solid border-[#808080] border-[1.5px] p-[10px] text-[14px] text-[#21408] font-bold ">
+                  <li className="w-[99%] h-[40px] rounded-[5px] border-solid border-[#808080] border-[1.5px] p-[10px] text-[14px] text-[#21408] font-bold ">
                     <div>{`${index}. ${q.question}`}</div>
 
                   </li>
@@ -250,7 +250,7 @@ function Home() {
                     {q.options.map((option, x) => {
                       return (
                         <div key={x} className={`flex items-center mb-4`}>
-                          <div className="mr-2 font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#B8BBC2] flex justify-center text-center justify-items-center items-center text-[14px]">
+                          <div className="mr-2 font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#808080] flex justify-center text-center justify-items-center items-center text-[14px]">
                             {String.fromCharCode(97 + x).toUpperCase()}
                           </div>
                           <div
@@ -260,7 +260,7 @@ function Home() {
                             className={`
                                 ${(x === q.answerIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
                                 ${(x === attempted.answeredIndex && x !== q.answerIndex) ? 'wrongAnswer' : ''}
-                                w-[100%] h-[40px] rounded-[5px] border-solid border-[#808080] border-[1.8px] p-[10px] text-[12px] text-[#000]`}
+                                w-[94%] h-[40px] rounded-[5px] border-solid border-[#808080] border-[1.8px] p-[10px] text-[12px] text-[#000]`}
                           >
                             {option.answer_option_text}
                           </div>

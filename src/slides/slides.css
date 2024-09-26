@@ -38,11 +38,12 @@
 
   .slides-container {
     position: relative;
-    width: 80%;
-    margin-top:40px;
+    width: 60%;
+    margin-top :90px;
      border: 1px solid #808080;
      border-radius: 20px;
      box-shadow: 1px 5px #808080;
+     margin-left:61px;
 
   }
   
@@ -51,10 +52,10 @@
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     font-family: poppins;
-    font-size: 15px;
+    font-size: 18px;
     background-color:#FFEBD9;
-    height:200px;
-    padding-top: 75px;
+    height:170px;
+    padding-top: 50px;
   }
   .button{
     margin-left:98%;

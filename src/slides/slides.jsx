@@ -191,7 +191,7 @@ const Slides = () => {
       </div>
       <div className="arrows">
         {currentSlide === 0 && (
-          <button onClick={handleNextSlide}>
+          <button className='button' onClick={handleNextSlide}>
             <span>&gt;</span>
           </button>
         )}

@@ -429,7 +429,20 @@ li {
 
 .submit {
   float: right;
-  color:#008000
+  color:#008000;
+  width: 80px; /* 20 * 4px */
+    height: 30px;
+    border-radius: 9999px; /* Full rounding for a circle */
+    font-family: 'Poppins', sans-serif; /* Make sure to include the font in your project */
+    background-color:#008000;
+    color: white;
+    font-size: 13px;
+    line-height: 1.75; /* 7/4 = 1.75 */
+    font-weight: 600; /* Semibold */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease; 
 }
 .text {
   color: #00008b;
@@ -479,17 +492,17 @@ div.wrongAnswer {
 
     font-family: Poppins;
       font-size: 18px;
-      font-weight: 700;
+      /* font-weight: 700; */
       color: #00008b;
       display: inline;
-      margin-left:60px;
+      margin-left:28px;
     
   }
   .main1{
     font-family: Poppins;
       font-size: 15px;
       color:  #000;
-      margin-left:60px;
+      margin-left:26px;
       display: block;
       font-weight: normal;
 
@@ -567,37 +580,44 @@ div.wrongAnswer {
 
 } */
  .try{
-  width: 103px;
-  height: 36px; 
-  background-color: rgb(0, 9, 139);
+  width: 80px; /* 20 units in Tailwind is 80px */
+  height: 30px;
+  border-radius: 9999px; /* Full rounding */
+  font-family: 'Poppins', sans-serif;
+  background-color: #3B61C8;
   color: white;
-  font-family: 'Poppins', sans-serif; 
   font-size: 13px;
-  font-weight: bold;
-  border-radius: 10px;
+  line-height: 1.75; /* Adjusts line height to achieve similar appearance */
+  font-weight: 600; /* Semibold */
   display: flex;
   align-items: center;
   justify-content: center;
   transition: transform 0.2s;
-  /* margin-top:40px; */
+  margin-top: 15%;
+    margin-left: 33%;
+
  }
  .try:hover{
   background-color: #EF512F;
-  transform: scale(1.1);
+    transform: scale(1.1);
  }
  .current{
-    border: 1px solid  #00008b;
+    border: 1px solid  #808080 ;
     /* #ffEBD9 */
-    border-radius: 20px;
+    /* border-radius: 20px; */
+    border-radius: 10px;;
+    height:190px;
+    width: 170px;
   }
-  .main-div{
-    border: 5px solid #00008b;
-    /* border: 2px solid #ffEBD9; */
 
+  .main-div{
+    border: 1px solid  #808080;
+    width:830px;
+    height: 210px;
     border-radius: 20px;
     display: flex;
     padding: 10px 0 10px 10px;
-    box-shadow: 0 7px 5px  #00008b;
+    box-shadow: 0 7px 5px  #808080;
 
     }
     .mainContainer{
@@ -610,9 +630,6 @@ div.wrongAnswer {
       width:13%;
       margin-top: 16px;
     }
-    /* .subDiv {
-      width: 87%;
-    } */
 
     .samantha{
       margin-left:6px;
@@ -625,7 +642,6 @@ div.wrongAnswer {
     .userIcon{
       display: flex;
       justify-content: start;
-      margin-left: 36px;
       margin-bottom: 10px;
       margin-top:14px;
     }

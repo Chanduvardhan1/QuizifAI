@@ -40,23 +40,24 @@
     position: relative;
     width: 80%;
     margin-top:40px;
-     border: 1px solid #00008b;
+     border: 1px solid #808080;
      border-radius: 20px;
-     box-shadow: 1px 5px #00008b;
+     box-shadow: 1px 5px #808080;
 
   }
   
   .slide {
-    padding: 45px;
-    border-radius: 30px;
+    padding: 55px;
+    border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     font-family: poppins;
     font-size: 15px;
     background-color:#FFEBD9;
     height:200px;
-    /* margin-top: 34px; */
     padding-top: 75px;
-    /* margin-left:20px; */
+  }
+  .button{
+    margin-left:98%;
   }
   
   .dots {
@@ -94,11 +95,13 @@
     border: none;
     cursor: pointer;
     font-size: 20px;
+    color: black;
   }
   
-  .arrows button:hover {
+
+  /* .arrows button:hover {
     color: #666;
-  }
+  } */
 
 
 

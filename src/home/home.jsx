@@ -186,7 +186,7 @@ function Home() {
                 <div className="mainHeading">
                   <div className="main"> Current Affairs</div>
                   <h2 className="main1">Challenge yourself with "Quizifai Daily Current Affairs"! Discover and learn about the latest news in a fun way! </h2>
-                  <div className="questions1">Complexity :<span className="simple">Simple</span> </div>
+                  {/* <div className="questions1">Complexity :<span className="simple">Simple</span> </div> */}
                   <div className="userIcon">
                     <div><img className="imageWrapper" src={User} />
                       <span className="text">Samantha S</span></div>
@@ -194,16 +194,36 @@ function Home() {
                       <img className="imageWrapper" src={Calender} />
                       <span className="text">24-Sep-2024</span>
                     </div>
-                    <div >
+                    {/* <div >
                       <img className="imageWrapper" src={Question} />
                       <span className="text" > 5 Questions </span>
-                    </div>
+                    </div> */}
 
                   </div>
                   <div className="userIcon">
                     <div >
                       <img className="imageWrapper" src={clockIcon} />
                       <span className="text">5 Minutes</span>
+                    </div>
+
+                    <div >
+                      <img className="imageWrapper" src={Question} />
+                      <span className="text" > 5 Questions </span>
+                    </div>
+                    {/* <div >
+                      <img className="imageWrapper" src={Play} />
+                      <span className="text" >203 attempts</span>
+                    </div> */}
+                    {/* <div >
+                      <img className="imageWrapper" src={highScore} />
+                      <span className="text" >80% High Score</span>
+                    </div> */}
+
+                  </div>
+                  <div className="userIcon">
+                    <div className="">
+                      <img className="imageWrapper" src={Play} />
+                      <span className="text" >2:02 mins quickest</span>
                     </div>
                     <div >
                       <img className="imageWrapper" src={Play} />
@@ -212,13 +232,6 @@ function Home() {
                     <div >
                       <img className="imageWrapper" src={highScore} />
                       <span className="text" >80% High Score</span>
-                    </div>
-
-                  </div>
-                  <div className="userIcon">
-                    <div className="">
-                      <img className="imageWrapper" src={Play} />
-                      <span className="text" >2:02 mins quickest</span>
                     </div>
                   </div>
 
@@ -229,7 +242,7 @@ function Home() {
               <div className="timer">{countTimer}</div>
               <div className="">
                 <div className="subDiv">
-                  <li className="w-[100%] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.5px] p-[10px] text-[14px] text-[#21408] font-bold ">
+                  <li className="w-[100%] h-[40px] rounded-[5px] border-solid border-[#808080] border-[1.5px] p-[10px] text-[14px] text-[#21408] font-bold ">
                     <div>{`${index}. ${q.question}`}</div>
 
                   </li>
@@ -247,7 +260,7 @@ function Home() {
                             className={`
                                 ${(x === q.answerIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
                                 ${(x === attempted.answeredIndex && x !== q.answerIndex) ? 'wrongAnswer' : ''}
-                                w-[100%] h-[40px] rounded-[5px] border-solid border-[#FFFFC5.] border-[1.8px] p-[10px] text-[12px] text-[#000]`}
+                                w-[100%] h-[40px] rounded-[5px] border-solid border-[#808080] border-[1.8px] p-[10px] text-[12px] text-[#000]`}
                           >
                             {option.answer_option_text}
                           </div>
@@ -263,6 +276,7 @@ function Home() {
             {started && index != 5 && <button className="next" onClick={handleOnClickNext}>Next</button>}
             {started && index != 1 && index !== 5 && <button className="previous" onClick={handleOnClickPrevious}>Previous</button>}
             {started && index === 5 && <button onClick={handleOnClickSubmit} className="submit">Submit </button>}
+            {/* <button className="className={`w-20 h-[30px] rounded-full font-Poppins bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center hover:bg-[#EF512F] transition-transform transform hover:scale-110">Submit</button> */}
           </div>
           {activeSection === "home" && (
             <div className="w-full md:w-1/2 pr-0 md pt-4 md:pt-20 flex flex-col justify-center items-center md:items-end">

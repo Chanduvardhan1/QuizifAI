@@ -241,7 +241,7 @@ function Home() {
           {activeSection === "home" && (
             <div className="w-50% md:w-1/2 pr-0 md pt-4 md:pt-20 flex flex-col justify-center items-center md:items-end">
               <div className="relative mt-4 md:mt-[-134px]">
-                {/* <img src={homeImage} alt="home Image" className="image" /> */}
+                <img src={homeImage} alt="home Image" className="image" />
                 <div className="flex flex-col items-center mt-4 ml-[120px] lg:ml-[1px]">
                   <Link to={"/signup"} >
 

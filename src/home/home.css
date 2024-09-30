@@ -751,4 +751,13 @@ div.wrongAnswer {
   color:  #00008B;
   margin-left:65px;
 }
-
+.li{
+  margin-top:45px;
+}
+.heading{
+  font-weight: 600;
+  font-size: 18px;
+}
+.challenge{
+  margin-top:1%;
+}

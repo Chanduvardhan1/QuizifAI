@@ -192,9 +192,9 @@ function Home() {
             {started && <>
               <div className="main-div">
                 <div className="mainHeading">
-                  <span > Quiz Title -NCERT Class 10,Physics Quiz</span>
-                  <h2 >Challenge yourself with "Quizifai Daily Current Affairs"! Discover and learn about the latest news in a fun way! </h2>
-                  <h3>Curriculum .NCERT.8th Class.Moderate</h3>
+                  <span className="heading"> Quiz Title -NCERT Class 10,Physics Quiz</span>
+                  <h2 className="challenge" >Challenge yourself with "Quizifai Daily Current Affairs"! Discover and learn about the latest news in a fun way! </h2>
+                  <h3 className=".challenge">Curriculum .NCERT.8th Class.Moderate</h3>
                 </div>
 
               </div>
@@ -202,7 +202,7 @@ function Home() {
 
               <div className="">
                 <div className="subDiv">
-                  <li className="w-[99%] h-[40px] rounded-[5px] border-solid border-[#808080] border-[1.5px] p-[10px] text-[14px] text-[#21408] font-bold ">
+                  <li className="w-[99%] h-[40px] rounded-[5px] border-solid border-[#808080] border-[1.5px] p-[10px] text-[14px] text-[#21408]  li">
                     <div>{`${index}. ${q.question}`}</div>
 
                   </li>
@@ -220,7 +220,7 @@ function Home() {
                             className={`
                                 ${(x === q.answerIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
                                 ${(x === attempted.answeredIndex && x !== q.answerIndex) ? 'wrongAnswer' : ''}
-                                w-[94%] h-[40px] rounded-[5px] border-solid border-[#808080] border-[1.8px] p-[10px] text-[12px] text-[#000]`}
+                                w-[64%] h-[40px] rounded-[5px] border-solid border-[#808080] border-[1.8px] p-[10px] text-[12px] text-[#000]`}
                           >
                             {option.answer_option_text}
                           </div>

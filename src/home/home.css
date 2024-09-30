@@ -490,6 +490,13 @@ div.wrongAnswer {
   line-height: 2.5;
 
 }
+.q-w {
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
+}
 .main{
 
     font-family: Poppins;

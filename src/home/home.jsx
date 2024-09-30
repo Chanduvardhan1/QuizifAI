@@ -206,11 +206,11 @@ function Home() {
                     <div>{`${index}. ${q.question}`}</div>
 
                   </li>
-                  <li style={{ marginTop: 15 }}>
+                  <li className="q-w">
                     {q.options?.map((option, x) => {
                       return (
                         <div key={x} className={`flex items-center mb-4`}>
-                          <div className="mr-2 font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#808080] flex justify-center text-center justify-items-center items-center text-[10px]">
+                          <div onClick={(e) => handleAnswerClick(option.answer_option_text, q, x)} className="mr-2 font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#808080] flex justify-center text-center justify-items-center items-center text-[10px]">
                             {String.fromCharCode(97 + x).toUpperCase()}
                           </div>
                           <div

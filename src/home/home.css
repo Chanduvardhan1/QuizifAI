@@ -493,9 +493,9 @@ div.wrongAnswer {
 .main{
 
     font-family: Poppins;
-      font-size: 18px;
-      font-weight: 900;
-      color: #00008b;
+      font-size: 15px;
+      /* font-weight: 900; */
+      /* color: #00008b; */
       display: inline;
       margin-left:28px;
     
@@ -596,25 +596,7 @@ div.wrongAnswer {
   background-color: #EF512F;
     transform: scale(1.1);
  }
- .current{
-    border: 1px solid  #00008b ;
-    /* #ffEBD9 */
-    /* border-radius: 20px; */
-    border-radius: 10px;;
-    height:190px;
-    width: 170px;
-  }
-
-  .main-div{
-    border: 1px solid  #00008b;
-    width:651px;
-    /* height: 210px; */
-    border-radius: 20px;
-    display: flex;
-    padding: 10px 0 10px 10px;
-    box-shadow: 0 7px 5px  #00008b;
-
-    }
+ */ 
     .mainContainer{
       display: flex;
       flex-direction: row;

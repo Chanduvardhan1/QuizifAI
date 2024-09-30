@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import quizifailogo from "../assets/Images/images/home/Quizifai3.png";
 import Menu from "../assets/Images/images/home/menu.png";
 import { Link, useLocation} from "react-router-dom";
+import homeIcon from "../../public/images/homeicon.png";
+import signUpIcon from "../../public/images/signupicon.png";
+import logInIcon from "../../public/images/loginicon.png";
 const HeaderSection = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const location = useLocation();
@@ -27,7 +30,8 @@ const HeaderSection = () => {
             <li>
               <Link to="/">
                 <button className={`w-16 h-[30px] text-[#555555] text-[13px] leading-7 font-bold flex items-center justify-center rounded-full hover:bg-[#EF512F] transition-transform transform hover:scale-110 ${currentPath === '/' ? 'font-bold' : ''}`}>
-                  Home
+                  Home 
+                  {/* <img className='h-[17px]' src = {homeIcon}/> */}
                 </button>
               </Link>
             </li>
@@ -42,6 +46,7 @@ const HeaderSection = () => {
               <Link to={"/signup"}>
                 <button className={`w-20 h-[30px] rounded-full font-Poppins bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center hover:bg-[#EF512F] transition-transform transform hover:scale-110 ${currentPath === '/signup' ? 'font-bold' : ''}`}>
                   Sign Up
+                  {/* <img className='h-[17px]' src = {signUpIcon}/> */}
                 </button>
               </Link>
             </li>
@@ -49,6 +54,7 @@ const HeaderSection = () => {
               <Link to="/login">
                 <button className={`w-20 h-[30px] rounded-full font-Poppins bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center hover:bg-[#EF512F] transition-transform transform hover:scale-110 ${currentPath === '/login' ? 'font-bold' : ''}`}>
                   Login
+                  {/* <img  className="h-[17px]"src ={logInIcon}/> */}
                 </button>
               </Link>
             </li>

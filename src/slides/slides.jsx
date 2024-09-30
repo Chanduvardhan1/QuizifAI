@@ -1,214 +1,81 @@
 
-// // // import React, { useState } from 'react';
-// // // import "../slides/slides.css";
-
-// // // const Slides = () => {
-// // //   const [currentSlide, setCurrentSlide] = useState(0);
-// // //   const slides = [
-// // //     {
-// // //       title: 'Intelligent Quiz Generation & Simplified Exam Management',
-// // //       description: 'Transforms textbooks and PDFs into quizzes and simplifies exam and quiz management',
-      
-// // //     },
-// // //     {
-// // //       title: 'Targeted Competitive Exam Prep',
-// // //       description: 'Provides targeted quizzes for competitive exam preparation',
-      
-// // //     },
-// // //   ];
-
-// // //   const handleNextSlide = () => {
-// // //     setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-// // //   };
-
-// // //   const handlePrevSlide = () => {
-// // //     setCurrentSlide((prevSlide) => (prevSlide - 1 + slides.length) % slides.length);
-// // //   };
-
-// // //   return (
-// // //     <div className="slides-container">
-// // //       <div
-// // //         className="slide"
-// // //         style={{ backgroundColor: slides[currentSlide].backgroundColor }}
-// // //       >
-// // //         <h2>{slides[currentSlide].title}</h2>
-// // //         <p>{slides[currentSlide].description}</p>
-// // //       </div>
-// // //       <div className="arrows">
-// // //         <button onClick={handlePrevSlide}>
-// // //           <span>&lt;</span>
-// // //         </button>
-// // //         <button onClick={handleNextSlide}>
-// // //           <span>&gt;</span>
-// // //         </button>
-// // //       </div>
-// // //     </div>
-// // //   );
-// // // };
-
-// // // export default Slides;
-
-
-
-
-
-// // import React, { useState } from 'react';
-// // import "../slides/slides.css";
-
-// // const Slides = () => {
-// //   const [currentSlide, setCurrentSlide] = useState(0);
-// //   const slides = [
-// //     {
-// //       title: 'Intelligent Quiz Generation & Simplified Exam Management',
-// //     },
-// //     {
-// //       title: 'Targeted Competitive Exam Prep',
-// //     },
-// //     {
-// //       title: 'Automated Quiz Creation from Textbooks and PDFs',
-// //     },
-// //     {
-// //       title: 'Efficient Exam and Quiz Management for Teachers',
-// //     },
-// //   ];
-
-// //   const handleNextSlide = () => {
-// //     setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-// //   };
-
-// //   const handlePrevSlide = () => {
-// //     setCurrentSlide((prevSlide) => (prevSlide - 1 + slides.length) % slides.length);
-// //   };
-
-// //   return (
-// //     <div className="slides-container">
-// //       <div className="slide">
-// //         <h2>{slides[currentSlide].title}</h2>
-// //       </div>
-// //       <div className="arrows">
-// //         {currentSlide !== 0 && (
-// //           <button onClick={handlePrevSlide}>
-// //             <span>&lt;</span>
-// //           </button>
-// //         )}
-// //         {currentSlide !== slides.length - 1 && (
-// //           <button onClick={handleNextSlide}>
-// //             <span>&gt;</span>
-// //           </button>
-// //         )}
-// //       </div>
-// //     </div>
-// //   );
-// // };
-
-// // export default Slides;
-
-// import React, { useState } from 'react';
-// import "../slides/slides.css";
-
-// const Slides = () => {
-//   const [currentSlide, setCurrentSlide] = useState(0);
-//   const slides = [
-//     {
-//       title: 'Our QuizifAI enhances organizations by integrating AI-powered Quiz and Exam companions',
-//     },
-//     {
-//       title: 'QuizifAI is an AI-powered SaaS application that generates quizzes from textbooks and PDFs',
-//     },
-//     {
-//       title: 'This platform helps teachers manage exams and quizzes efficiently',
-//     },
-//     {
-//       title: 'It also provides course-specific quizzes to assist with competitive exam preparation',
-//     },
-//   ];
-
-//   const handleNextSlide = () => {
-//     setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-//   };
-
-//   const handlePrevSlide = () => {
-//     setCurrentSlide((prevSlide) => (prevSlide - 1 + slides.length) % slides.length);
-//   };
-
-//   return (
-//     <div className="slides-container">
-//       <div className="slide">
-//         <h2>{slides[currentSlide].title}</h2>
-//       </div>
-//       <div className="arrows">
-//         {currentSlide !== 0 && (
-//           <button onClick={handlePrevSlide}>
-//             <span>&lt;</span>
-//           </button>
-//         )}
-//         {currentSlide !== slides.length - 1 && (
-//           <button onClick={handleNextSlide}>
-//             <span>&gt;</span>
-//           </button>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Slides;
-
-
-
 import React, { useState } from 'react';
-import "../slides/slides.css";
+import './slides.css';
 
 const Slides = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [activeSlide, setActiveSlide] = useState(0);
+
   const slides = [
     {
-      title: 'Our QuizifAI enhances organizations by integrating AI-powered Quiz and Exam companions',
+      title: 'Generate Exams and Quizzes Quickly for your course',
+      description: [
+        'Generate quizzes and exams quickly using QuizifAI.',
+        'QuizifAI understands your courses and generates',
+        'subjective and objective questions instantly.'
+      ]
     },
     {
-      title: 'QuizifAI is an AI-powered SaaS application that generates quizzes from textbooks and PDFs',
+      title: 'Use your Textbooks and Notes to generate Quizzes',
+      description: [
+        'You can use your textbooks and notes in different',
+        'formats to generate quizzes using QuizifAI.'
+      ]
     },
     {
-      title: 'This platform helps teachers manage exams and quizzes efficiently',
+      title: 'Try our Premium Quizzes, Exams',
+      description: [
+        'QuizifAI\'s premium quizzes are carefully crafted for',
+        'specific needs, and reviewed by professionals to make',
+        'it more useful for exam takers.'
+      ]
     },
     {
-      title: 'It also provides course-specific quizzes to assist with competitive exam preparation',
-    },
+      title: 'Excited to try our AI Generated Quiz by QuizifAI?',
+      description: [
+        'Click here to access our AI Generated Quiz.'
+      ]
+    }
   ];
 
+  const handleDotClick = (index) => {
+    setActiveSlide(index);
+  };
+
   const handleNextSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+    setActiveSlide((activeSlide + 1) % slides.length);
   };
 
   const handlePrevSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide - 1 + slides.length) % slides.length);
+    setActiveSlide((activeSlide - 1 + slides.length) % slides.length);
   };
 
   return (
     <div className="slides-container">
-      <div className="slide">
-        <h2>{slides[currentSlide].title}</h2>
+      <div className="slides-wrapper" style={{
+        transform: `translateX(-${activeSlide * 100}%)`
+      }}>
+        {slides.map((slide, index) => (
+          <div
+            key={index}
+            className={`slide ${activeSlide === index ? 'active' : ''}`}
+          >
+            <h2>{slide.title}</h2>
+            <p>
+              {slide.description.map((desc, index) => (
+                <span key={index}>{desc}<br /></span>
+              ))}
+            </p>
+          </div>
+        ))}
       </div>
-      <div className="arrows">
-        {currentSlide === 0 && (
-          <button className='button' onClick={handleNextSlide}>
-            <span>&gt;</span>
-          </button>
-        )}
-        {currentSlide === 1 || currentSlide === 2 ? (
-          <>
-            <button onClick={handlePrevSlide}>
-              <span>&lt;</span>
-            </button>
-            <button onClick={handleNextSlide}>
-              <span>&gt;</span>
-            </button>
-          </>
-        ) : currentSlide === 3 && (
-          <button onClick={handlePrevSlide}>
-            <span>&lt;</span>
-          </button>
-        )}
+      <div className="dots-container">
+        {slides.map((_, index) => (
+          <div
+            key={index}
+            className={`dot ${activeSlide === index ? 'active' : ''}`}
+            onClick={() => handleDotClick(index)}
+          />
+        ))}
       </div>
     </div>
   );

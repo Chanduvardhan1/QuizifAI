@@ -12,8 +12,9 @@ import current from "../../public/current.png";
 import User from "../../public/user.png";
 import Calender from "../../public/calendar.png";
 import Question from "../../public/question.png";
-import clockIcon from "../../public/clockimage.png";
-import Play from "../../public/play.png";
+import clockIcon from "../../public/timeicon.png";
+import Play from"../../public/play.png";
+import timmer from"../../public/timmerimg.png";;
 import highScore from "../../public/highscore.png";
 
 function Home() {
@@ -194,11 +195,6 @@ function Home() {
                       <img className="imageWrapper" src={Calender} />
                       <span className="text">24-Sep-2024</span>
                     </div>
-                    {/* <div >
-                      <img className="imageWrapper" src={Question} />
-                      <span className="text" > 5 Questions </span>
-                    </div> */}
-
                   </div>
                   <div className="userIcon">
                     <div >
@@ -210,19 +206,10 @@ function Home() {
                       <img className="imageWrapper" src={Question} />
                       <span className="text" > 5 Questions </span>
                     </div>
-                    {/* <div >
-                      <img className="imageWrapper" src={Play} />
-                      <span className="text" >203 attempts</span>
-                    </div> */}
-                    {/* <div >
-                      <img className="imageWrapper" src={highScore} />
-                      <span className="text" >80% High Score</span>
-                    </div> */}
-
                   </div>
                   <div className="userIcon">
                     <div className="">
-                      <img className="imageWrapper" src={Play} />
+                      <img className="imageWrapper" src={timmer} />
                       <span className="text" >2:02 mins quickest</span>
                     </div>
                     <div >
@@ -240,6 +227,7 @@ function Home() {
               </div>
 
               <div className="timer">{countTimer}</div>
+              {/* <img src={clockIcon}/> */}
               <div className="">
                 <div className="subDiv">
                   <li className="w-[99%] h-[40px] rounded-[5px] border-solid border-[#808080] border-[1.5px] p-[10px] text-[14px] text-[#21408] font-bold ">
@@ -250,7 +238,7 @@ function Home() {
                     {q.options.map((option, x) => {
                       return (
                         <div key={x} className={`flex items-center mb-4`}>
-                          <div className="mr-2 font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#808080] flex justify-center text-center justify-items-center items-center text-[14px]">
+                          <div className="mr-2 font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#808080] flex justify-center text-center justify-items-center items-center text-[10px]">
                             {String.fromCharCode(97 + x).toUpperCase()}
                           </div>
                           <div
@@ -279,7 +267,7 @@ function Home() {
             {/* <button className="className={`w-20 h-[30px] rounded-full font-Poppins bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center hover:bg-[#EF512F] transition-transform transform hover:scale-110">Submit</button> */}
           </div>
           {activeSection === "home" && (
-            <div className="w-full md:w-1/2 pr-0 md pt-4 md:pt-20 flex flex-col justify-center items-center md:items-end">
+            <div className="w-50% md:w-1/2 pr-0 md pt-4 md:pt-20 flex flex-col justify-center items-center md:items-end">
               <div className="relative mt-4 md:mt-[-134px]">
                 <img src={homeImage} alt="home Image" className="image" />
                 <div className="flex flex-col items-center mt-4 ml-[120px] lg:ml-[1px]">

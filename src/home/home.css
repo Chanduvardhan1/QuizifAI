@@ -432,15 +432,15 @@ li {
 .submit {
   float: right;
   color:#008000;
-  width: 80px; /* 20 * 4px */
+  width: 80px; max-width: inherit;
     height: 30px;
-    border-radius: 9999px; /* Full rounding for a circle */
-    font-family: 'Poppins', sans-serif; /* Make sure to include the font in your project */
+    border-radius: 9999px; 
+    font-family: 'Poppins', sans-serif; 
     background-color:#008000 ;
     color: white;
     font-size: 13px;
-    line-height: 1.75; /* 7/4 = 1.75 */
-    font-weight: 600; /* Semibold */
+    line-height: 1.75; 
+    font-weight: 600; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -503,7 +503,6 @@ div.wrongAnswer {
   .main1{
     font-family: Poppins;
       font-size: 15px;
-      /* color:  #000; */
       margin-left:26px;
       display: block;
       font-weight: normal;
@@ -533,8 +532,6 @@ div.wrongAnswer {
     margin-left:60px;
   }
 .imageWrapper{
-  
-   /* margin-top:54px; */
    height: 20px;
    display: inline-block;
    margin-right: 3px;
@@ -570,27 +567,23 @@ div.wrongAnswer {
 }
 .dot1{
   margin-left: 11px;
-  /* border-colour: none ! important; */
   border-radius: none !important;
 }
 .simple{
   color: #000;
   margin-left: 4px;
 }
- /* .simple1{
-  margin-left:236px;
-
-} */
+ 
  .try{
-  width: 80px; /* 20 units in Tailwind is 80px */
+  width: 80px; 
   height: 30px;
-  border-radius: 9999px; /* Full rounding */
+  border-radius: 9999px; 
   font-family: 'Poppins', sans-serif;
   background-color: #3B61C8;
   color: white;
   font-size: 13px;
-  line-height: 1.75; /* Adjusts line height to achieve similar appearance */
-  font-weight: 600; /* Semibold */
+  line-height: 1.75; 
+  font-weight: 600; 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -614,8 +607,8 @@ div.wrongAnswer {
 
   .main-div{
     border: 1px solid  #00008b;
-    width:830px;
-    height: 210px;
+    width:651px;
+    /* height: 210px; */
     border-radius: 20px;
     display: flex;
     padding: 10px 0 10px 10px;
@@ -732,7 +725,7 @@ div.wrongAnswer {
   margin-left:47px;
 }
 .wrapper {
-  width: 70%;
+  width: 50%;
   padding-left: 0;
   margin-top: -8px;
 }
@@ -764,7 +757,7 @@ div.wrongAnswer {
   transform: scale(1.1); /* hover:scale-110 */
 }
 .text1{
-  font-size:18px;
+  font-size:15px;
   /* margin-left:11px; */
   color:  #00008B;
   margin-left:65px;

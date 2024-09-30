@@ -68,3 +68,7 @@
 .nav-buttons button:last-child {
   right: 0;
 }
+.c-p {
+  cursor: pointer;
+  text-decoration: underline;
+}

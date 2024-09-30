@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import './slides.css';
 
-const Slides = () => {
+const Slides = (props) => {
   const [activeSlide, setActiveSlide] = useState(0);
 
   const slides = [
@@ -32,7 +32,7 @@ const Slides = () => {
     {
       title: 'Excited to try our AI Generated Quiz by QuizifAI?',
       description: [
-        'Click here to access our AI Generated Quiz.'
+        ' to access our AI Generated Quiz.'
       ]
     }
   ];
@@ -61,9 +61,12 @@ const Slides = () => {
           >
             <h2>{slide.title}</h2>
             <p>
-              {slide.description.map((desc, index) => (
-                <span key={index}>{desc}<br /></span>
-              ))}
+              {slide.description.map((desc, z) => {
+                if(index === 3) {
+                  return <span key={z}><a onClick={props.onClick} className='c-p'>Click here </a> {desc}<br /></span>
+                }
+                return <span key={z}>{desc}<br /></span>;
+              })}
             </p>
           </div>
         ))}

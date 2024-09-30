@@ -420,13 +420,40 @@ li {
   float: right;
   color: #00008b; 
   font-size:17px;
+  background-color: #fff;
+  border: 1px solid #2196F3; /* blue border color */
+  border-radius: 2px;
+  padding: 1px 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+  .next:hover {
+    background-color: #E5E5EA;
 }
 
 
 .previous {
   float: left;
   color: #00008b;
-  font-size: 17px;
+  font-size:17px;
+  background-color: #fff;
+  border: 1px solid #2196F3; /* blue border color */
+  border-radius: 2px;
+  padding: 1px 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.previous:hover {
+  background-color: #E5E5EA;
+}
+.previous-icon{
+  height: 15px;
+  width: 15px;
+  margin-left: 3px;
+  margin-right: 8px
 }
 
 .submit {

@@ -7,7 +7,7 @@ import SampleLeaderBoard from "../sample/sampleLeaderBoard";
 import { questions } from "./Constants";
 import "./home.css";
 import { useDispatch, useSelector } from "react-redux";
-import { setDynamicStateFlags, setAttempted, getContactUsEmail } from "./slice";
+import { setDynamicStateFlags, setAttempted, getContactUsEmail ,saveUserAttemptedQuestions} from "./slice";
 import Slides from "../slides/slides";
 import current from "../../public/current.png";
 import User from "../../public/user.png";
@@ -231,8 +231,8 @@ function Home() {
               </div>
 
             </>}
-            {started && index != 5 && <button className="next" onClick={handleOnClickNext}>Next <img className="h-[17px]" src={nextbutton} /> </button>}
-            {started && index != 1 && index !== 5 && <button className="previous" onClick={handleOnClickPrevious}>Prev <img className="h-[15px]" src={previousicon} /></button>}
+            {started && index != 5 && <button className="next" onClick={handleOnClickNext}>Next <img className="h-[17px] ml-3" src={nextbutton} /> </button>}
+            {started && index != 1 && index !== 5 && <button className="previous" onClick={handleOnClickPrevious} > <img className="previous-icon" src={previousicon} /> Prev </button>}
             {started && index === 5 && <button onClick={handleOnClickSubmit} className="submit">Submit </button>}
 
           </div>

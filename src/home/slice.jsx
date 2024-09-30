@@ -27,6 +27,9 @@ const homeSlice = createSlice({
             state.contactUSEmail = action.payload;
         },
         getContactUsEmail: (state, action) => {
+        },
+        saveUserAttemptedQuestions:(state, action) => {
+            state.userDetails = action.payload;
         }
     }
 })
@@ -35,6 +38,7 @@ export const {
     setDynamicStateFlags,
     setAttempted,
     saveResContactUsEmail,
-    getContactUsEmail
+    getContactUsEmail,
+    saveUserAttemptedQuestions,
 } = homeSlice.actions;
 export default homeSlice.reducer;

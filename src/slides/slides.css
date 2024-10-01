@@ -84,10 +84,11 @@
   cursor: pointer;
   text-decoration: underline;
 }
-.arrow.left {
-  left: 10px; /* Adjust position as needed */
+ .arrow.left {
+  left: 10px; 
 }
 
 .arrow.right {
-  right: 10px; /* Adjust position as needed */
-}
+  right: 10px; 
+} 
+

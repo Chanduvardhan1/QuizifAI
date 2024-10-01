@@ -464,7 +464,7 @@ li {
 
 .submit {
   /* float: right; */
-  color:#008000;
+  /* color:#008000;
   width: 80px; max-width: inherit;
     height: 30px;
     border-radius: 9999px; 
@@ -479,7 +479,20 @@ li {
     justify-content: center;
     transition: transform 0.2s ease; 
     margin-left: 71%;
-    margin-top: 8px;
+    margin-top: 8px; */
+    transform: translateX(-5px);
+    color: green;
+    font-size: 17px;
+    background-color: #fff;
+    border: 1px solid #2196F3;
+    border-radius: 2px;
+    padding: 1px 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: 13%;
+    margin-left: 69%;
+    margin-top: 2%;
 }
 .text {
   color: #00008b;

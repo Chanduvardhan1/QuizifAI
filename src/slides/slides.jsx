@@ -21,7 +21,7 @@ const Slides = (props) => {
         'formats to generate quizzes using QuizifAI.'
       ]
     },
-    
+
     {
       title: 'Try our Premium Quizzes, Exams',
       description: [
@@ -63,7 +63,7 @@ const Slides = (props) => {
             <h2>{slide.title}</h2>
             <p>
               {slide.description.map((desc, z) => {
-                if(index === 3) {
+                if (index === 3) {
                   return <span key={z}><a onClick={props.onClick} className='c-p'>Click here </a> {desc}<br /></span>
                 }
                 return <span key={z}>{desc}<br /></span>;
@@ -80,10 +80,13 @@ const Slides = (props) => {
             onClick={() => handleDotClick(index)}
           />
         ))}
-        <button className="arrow left" onClick={handlePrevSlide}>&lt;</button>
-        <button className="arrow right" onClick={handleNextSlide}>&gt;</button>
       </div>
+      <div>
+          <button className="arrow left" onClick={handlePrevSlide}>&lt;</button>
+          <button className="arrow right" onClick={handleNextSlide}>&gt;</button>
+        </div>
     </div>
+    
   );
 };
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import homeImage from "/images/oldimage.png";
-// import homeImage from "../images/newHome.png";
 import HeaderSection from "../HeaderSection/HeaderSection";
 import SampleLeaderBoard from "../sample/sampleLeaderBoard";
 import { questions } from "./Constants";
@@ -200,7 +199,7 @@ function Home() {
 
               <div className="">
                 <div className="subDiv">
-                  <li className="w-[99%] h-[40px] rounded-[5px] border-solid border-[#808080] border-[1.5px] p-[10px] text-[14px] text-[#21408]  li">
+                  <li className="w-[83%] h-[40px] rounded-[5px] border-solid border-[#808080] border-[1.5px] p-[10px] text-[12px] text-[#21408]  li">
                     <div>{`${index}. ${q.question}`}</div>
 
                   </li>
@@ -218,7 +217,7 @@ function Home() {
                             className={`
                                 ${(x === q.answerIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
                                 ${(x === attempted.answeredIndex && x !== q.answerIndex) ? 'wrongAnswer' : ''}
-                                w-[64%] h-[40px] rounded-[5px] border-solid border-[#808080] border-[1.8px] p-[10px] text-[12px] text-[#000]`}
+                                w-[50%] h-[40px] rounded-[5px] border-solid border-[#808080] border-[1.8px] p-[10px] text-[12px] text-[#000]`}
                           >
                             {option.answer_option_text}
                           </div>

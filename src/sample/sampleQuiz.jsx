@@ -26,7 +26,6 @@ const Samplequiz = () => {
 
     <div className={styles.container} >
       <div className={styles.mainContent} >
-        {/* <div className={styles.back1} onClick={Back}><MdOutlineCancel /></div> */}
 
         <div className={styles.header}>
           <div className={styles.titleContainer}>
@@ -56,13 +55,13 @@ const Samplequiz = () => {
                 </div>
                 <div className={styles.Created}>
 
-                  {/* <span className={styles.Createdby} >Created By&nbsp;&nbsp;&nbsp;&nbsp;:</span>{" "} */}
+               
                   <span className={styles.username} ></span>
                 </div>
 
                 <div>
 
-                  {/* <span className={styles.Createdby} >Created On&nbsp;&nbsp;&nbsp;&nbsp;:</span>{" "} */}
+                 
                   <span className={styles.username} ></span>
                 </div>
               </div>
@@ -76,7 +75,7 @@ const Samplequiz = () => {
 
                 <div>
 
-                  {/* <span className={styles.Question} >Pass Percentage :</span>{" "} */}
+                  
                   <span className={styles.username1} ></span>
                 </div>
 
@@ -227,17 +226,6 @@ const Samplequiz = () => {
             <div>
               <div className={styles.innerBoxes}>
 
-
-
-                {/* return (
-                <div  >
-
-                  <span className={styles[`textOverImage`]} >
-                    <br /> <span style={{ color: '#e20000' }}>%</span>
-                  </span>
-
-                </div>
-                ); */}
 
               </div>
               <div className={styles.columns}>

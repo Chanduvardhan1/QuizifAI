@@ -11,6 +11,10 @@ const initialState = {
     },
     index: 1,
     contactUSEmail: null,
+
+    user:[],
+    //   answeredQuestions:index,
+    //  correctAnswer:index,
 }
 
 const homeSlice = createSlice({
@@ -29,7 +33,7 @@ const homeSlice = createSlice({
         getContactUsEmail: (state, action) => {
         },
         saveUserAttemptedQuestions:(state, action) => {
-            state.userDetails = action.payload;
+            state.answeredQuestions = action.payload;
         }
     }
 })

@@ -200,25 +200,25 @@ export const questions = [
         answerIndex: 3
     },
     {
-        question: "Which country is known for its famed 'The Great Wall of China'?",
+        question: "What is the primary language spoken in Brazil?",
         options: [
-            { answer_option_text: "China", correct_answer_flag: false },
-            { answer_option_text: "Japan", correct_answer_flag: false },
-            { answer_option_text: "India", correct_answer_flag: false },
-            { answer_option_text: "Germany", correct_answer_flag: false }
+            { answer_option_text: " Spanish", correct_answer_flag: false },
+            { answer_option_text: "French", correct_answer_flag: false },
+            { answer_option_text: "Portuguese", correct_answer_flag: false },
+            { answer_option_text: "English ", correct_answer_flag: false }
         ],
-        answer: "China",
-        answerIndex: 0
+        answer: "Portuguese",
+        answerIndex: 2
     },
     {
-        question: "What is the capital city of South Korea?",
+        question: "What is the largest planet in our solar system?",
         options: [
-            { answer_option_text: "Seoul", correct_answer_flag: false },
-            { answer_option_text: "Tokyo", correct_answer_flag: false },
-            { answer_option_text: "Beijing", correct_answer_flag: false },
-            { answer_option_text: "Jakarta", correct_answer_flag: false }
+            { answer_option_text: "Earth", correct_answer_flag: false },
+            { answer_option_text: "Mars", correct_answer_flag: false },
+            { answer_option_text: "Jupiter", correct_answer_flag: false },
+            { answer_option_text: "Saturn", correct_answer_flag: false }
         ],
-        answer: "Seoul",
-        answerIndex: 0
+        answer: "Jupiter",
+        answerIndex: 2
     }
 ]

@@ -21,6 +21,7 @@ const Slides = (props) => {
         'formats to generate quizzes using QuizifAI.'
       ]
     },
+    
     {
       title: 'Try our Premium Quizzes, Exams',
       description: [
@@ -79,6 +80,8 @@ const Slides = (props) => {
             onClick={() => handleDotClick(index)}
           />
         ))}
+        <button className="arrow left" onClick={handlePrevSlide}>&lt;</button>
+        <button className="arrow right" onClick={handleNextSlide}>&gt;</button>
       </div>
     </div>
   );

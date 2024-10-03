@@ -85,9 +85,9 @@
   cursor: pointer;
   text-decoration: underline;
 }
- /* .arrow.left {
-  left: 10px; 
-} */
+ .arrow.left {
+  margin-left:49px; 
+}
 
 /* .arrow.right {
   right: 10px; 
@@ -97,4 +97,7 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
+  top:35%;
+  position: absolute;
+  font-size: 23px;
 }

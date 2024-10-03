@@ -18,6 +18,7 @@ import timmer from "../../public/timmerimg.png";;
 import highScore from "../../public/highscore.png";
 import previousicon from "../../public/images/previousicon.png";
 import nextbutton from "../../public/images/nextbutton.png";
+
 import { getRandomElements } from "../utils";
 
 let randomQuestions;
@@ -189,17 +190,17 @@ function Home() {
             {started && <>
               <div className="main-div">
                 <div className="mainHeading">
-                  <span className="heading"> Quiz Title -NCERT Class 10,Physics Quiz</span>
-                  <h2 className="challenge" >Challenge yourself with "Quizifai Daily Current Affairs"! Discover and learn about the latest news in a fun way! </h2>
-                  <span className="challenge">Curriculum .NCERT.8th Class.Moderate</span>
+                  <span className="heading"> Current Affairs</span>
+                  <h2 className="challenge" >Stay updated! Challenge yourself with our quiz on recent events and global happenings. How well do you know the news? </h2>
+                  <span className="challenge">Curriculum . General . Simple</span>
                 </div>
 
               </div>
 
 
-              <div className="">
+              <div className="mainDiv">
                 <div className="subDiv">
-                  <li className="w-[83%] h-[40px] rounded-[5px] border-solid border-[#808080] border-[1.5px] p-[10px] text-[12px] text-[#21408] text-blue-600 li">
+                  <li className="w-[84%] h-[40px] rounded-[5px] border-solid border-[#808080] border-[1.5px] p-[10px] text-[12px] text-[#214082]  text-blue-600 li">
 
                     <div>{`${index}. ${q.question}`}</div>
 
@@ -208,7 +209,7 @@ function Home() {
                     {q.options?.map((option, x) => {
                       return (
                         <div key={x} className={`flex items-center mb-4`}>
-                          <div onClick={(e) => handleAnswerClick(option.answer_option_text, q, x)} className="mr-2 font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#808080] flex justify-center text-center justify-items-center items-center text-[10px]">
+                          <div onClick={(e) => handleAnswerClick(option.answer_option_text, q, x)} className="mr-2 font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#808080]   flex justify-center text-center justify-items-center items-center text-[10px]">
                             {String.fromCharCode(97 + x).toUpperCase()}
                           </div>
                           <div
@@ -231,7 +232,7 @@ function Home() {
               </div>
 
             </>}
-            {started && index != 5 && <button className="next" onClick={handleOnClickNext}>Next <img className="h-[17px] ml-3" src={nextbutton} /> </button>}
+            {started && index != 5 && <button className="next" onClick={handleOnClickNext}>Next <img className="h-[17px] ml-3 " src={nextbutton} /> </button>}
             {started && index != 1 && index !== 5 && <button className="previous" onClick={handleOnClickPrevious} > <img className="previous-icon" src={previousicon} /> Prev </button>}
             {started && index === 5 && <button onClick={handleOnClickSubmit} className="submit">Submit </button>}
 

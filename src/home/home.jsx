@@ -16,7 +16,7 @@ import clockIcon from "../../public/timeicon.png";
 import Play from "../../public/play.png";
 import timmer from "../../public/timmerimg.png";;
 import highScore from "../../public/highscore.png";
-import previousicon from "../../public/images/previous-track.png";
+import previousicon from "../../public/backSide.png";
 import nextbutton from "../../public/images/nimage.png";
 import { getRandomElements } from "../utils";
 let randomQuestions;
@@ -212,7 +212,7 @@ function Home() {
 
               <div className="mainDiv">
                 <div className="subDiv">
-                  <li className="w-[84%] rounded-[5px] border-solid border-[#808080] border-[1.5px] p-[10px] text-[12px] text-[#214082] font-bold li">
+                  <li className="  bg-[#DEEFF5] w-[84%] rounded-[5px] border-solid border-[#ADD8E6] border-[1.5px] p-[10px] text-[12px] text-[#214082] font-bold li">
 
                     <div>{`${index}. ${q.question}`}</div>
 
@@ -221,7 +221,7 @@ function Home() {
                     {q.options?.map((option, x) => {
                       return (
                         <div key={x} className={`flex items-center mb-4`}>
-                          <div onClick={(e) => handleAnswerClick(option.answer_option_text, q, x)} className="mr-2 font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#808080]   flex justify-center text-center justify-items-center items-center text-[10px]">
+                          <div onClick={(e) => handleAnswerClick(option.answer_option_text, q, x)} className="mr-2 font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#D3D3D3]   flex justify-center text-center justify-items-center items-center text-[10px]">
                             {String.fromCharCode(97 + x).toUpperCase()}
                           </div>
                           <div
@@ -231,7 +231,7 @@ function Home() {
                             className={`
                                 ${(x === q.answerIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
                                 ${(x === attempted.answeredIndex && x !== q.answerIndex) ? 'wrongAnswer' : ''}
-                                w-[50%]  rounded-[5px] border-solid border-[#808080] border-[1.8px] p-[5px] text-[11px] text-[#000]`}
+                                w-[50%] bg-[#E8E9E8]  rounded-[5px] border-solid border-[#D3D3D3] border-[1.8px] p-[5px] text-[11px] text-[#000]`}
                           >
                             {option.answer_option_text}
                           </div>

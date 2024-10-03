@@ -420,10 +420,10 @@ li {
   /* float: right; */
   transform: translateX(-5px);
   color: #00008b; 
-  font-size:17px;
-  background-color: #ADD8E6;
+  font-size:14px;
+  background-color: #DEEFF5;
   border: 1px solid #2196F3; /* blue border color */
-  border-radius: 2px;
+  border-radius: 5px;
   padding: 1px 11px;
   cursor: pointer;
   display: flex;
@@ -431,6 +431,7 @@ li {
   width: 13%;
   margin-left: 72%;
   margin-top: 2%;
+  border-color:  #00008b;
 }
 
   .next:hover {
@@ -441,16 +442,16 @@ li {
 .previous {
   float: left;
   color: #00008b;
-  font-size:17px;
-  background-color: #fff;
+  font-size:14px;
+  background-color: #ADD8E6;
   border: 1px solid #2196F3; /* blue border color */
-  border-radius: 2px;
+  border-radius: 5px;
   padding: 1px 7px;
   cursor: pointer;
   display: flex;
   align-items: center;
   margin-top:-27px;
-  width: 80px;
+  width: 13%;
   margin-left:41px;
 }
 .previous:hover {
@@ -805,3 +806,8 @@ div.wrongAnswer {
   font-weight:500;
    font-size: poppins;
 }
+
+
+/* .questions{
+  background-color: #BAEBD2;
+} */

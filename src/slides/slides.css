@@ -23,21 +23,23 @@
 
 .slide h2 {
   font-size: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  margin-left:20%;
 }
 
 .slide p {
   font-size: 13px;
   line-height: 1.5;
   font-weight: 300;
-  color: #00008B
+  color: #00008B;
+  margin-left:20%;
 }
 
 .dots-container {
   display: flex;
   justify-content: center;
   margin-top: 20px;
-  margin-right: 41%;
+  margin-right: 3%;
   color: #00008B
 
 }
@@ -72,23 +74,27 @@
   font-size: 24px;
   cursor: pointer;
 }
-
-.nav-buttons button:first-child {
+/* .nav-buttons button:first-child {
   left: 0;
-}
+} */
 
-.nav-buttons button:last-child {
+/* .nav-buttons button:last-child {
   right: 0;
-}
+} */
 .c-p {
   cursor: pointer;
   text-decoration: underline;
 }
- .arrow.left {
+ /* .arrow.left {
   left: 10px; 
-}
+} */
 
-.arrow.right {
+/* .arrow.right {
   right: 10px; 
-} 
+}  */
 
+.arrow-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}

@@ -31,7 +31,7 @@ const HeaderSection = () => {
                 <Link to="/">
                   <button className={`w-16 h-[30px] text-[#555555] text-[13px] leading-7 font-bold flex items-center justify-center rounded-full hover:bg-[#EF512F] transition-transform transform hover:scale-110 ${currentPath === '/' ? 'font-bold' : ''}`}>
                     Home
-                    <img className='h-[17px]' src={homeIcon} />
+                    {/* <img className='h-[17px]' src={homeIcon} /> */}
                   </button>
                 </Link>
               </li>
@@ -51,7 +51,7 @@ const HeaderSection = () => {
 
                   <button className={`w-20 h-[30px] rounded-full font-Poppins bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center gap-1 hover:bg-[#EF512F] transition-transform transform hover:scale-110 ${currentPath === '/signup' ? 'font-bold' : ''}`}>
                     Sign Up
-                    <img className='h-[17px]' src={signUpIcon} alt="Sign Up Icon" />
+                    {/* <img className='h-[17px]' src={signUpIcon} alt="Sign Up Icon" /> */}
                   </button>
 
                 </Link>
@@ -63,10 +63,10 @@ const HeaderSection = () => {
                     <img className="h-[17px]" src={logInIcon} />
                   </button> */}
 
-<button className={`w-20 h-[30px] rounded-full font-Poppins bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center gap-1 hover:bg-[#EF512F] transition-transform transform hover:scale-110 ${currentPath === '/login' ? 'font-bold' : ''}`}>
-  Login
-  <img className="h-[17px]" src={logInIcon} alt="Login Icon" />
-</button>
+                  <button className={`w-20 h-[30px] rounded-full font-Poppins bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center gap-1 hover:bg-[#EF512F] transition-transform transform hover:scale-110 ${currentPath === '/login' ? 'font-bold' : ''}`}>
+                    Login
+                    {/* <img className="h-[17px]" src={logInIcon} alt="Login Icon" /> */}
+                  </button>
 
 
                 </Link>

@@ -81,7 +81,7 @@ const Slides = (props) => {
           />
         ))}
       </div>
-      <div>
+      <div className=' arrow-container' >
           <button className="arrow left" onClick={handlePrevSlide}>&lt;</button>
           <button className="arrow right" onClick={handleNextSlide}>&gt;</button>
         </div>

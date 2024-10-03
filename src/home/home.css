@@ -801,9 +801,7 @@ div.wrongAnswer {
   margin-top:1%;
   font-size: 12px;
   margin-left:7%;
-  /* color: #214082; */
-  /* color: #00008B; */
-   /* color:#002244; */
-   color: #004687;
+  color: #214082;
+  font-weight:500;
    font-size: poppins;
 }

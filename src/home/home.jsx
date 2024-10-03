@@ -18,9 +18,7 @@ import timmer from "../../public/timmerimg.png";;
 import highScore from "../../public/highscore.png";
 import previousicon from "../../public/images/previous-track.png";
 import nextbutton from "../../public/images/nimage.png";
-
 import { getRandomElements } from "../utils";
-
 let randomQuestions;
 
 function Home() {

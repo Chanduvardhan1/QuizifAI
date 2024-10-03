@@ -11,10 +11,11 @@ const initialState = {
     },
     index: 1,
     contactUSEmail: null,
-
-    user:[],
-      answeredQuestions:0,
-      correctAnswer:0,
+    leaderBoard: {
+        attemptedQuestions: 0,
+        correctAnswers: 0,
+        attemptedQList: []
+    }
 }
 
 const homeSlice = createSlice({
@@ -33,7 +34,8 @@ const homeSlice = createSlice({
         getContactUsEmail: (state, action) => {
         },
         saveUserAttemptedQuestions:(state, action) => {
-            state.answeredQuestions = action.payload;
+            console.log('action', action);
+            state.leaderBoard = action.payload;
         }
     }
 })

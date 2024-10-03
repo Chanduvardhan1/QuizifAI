@@ -36,7 +36,8 @@ function Home() {
     visibleText,
     activeSection,
     submit,
-    attempted
+    attempted,
+    leaderBoard
   } = useSelector(state => state.home);
   const navigate = useNavigate();
   const handleClick3 = () => {
@@ -47,6 +48,19 @@ function Home() {
   }
   const handleOnClickNext = () => {
     dispatch(setDynamicStateFlags({ key: 'index', value: index + 1 }));
+    
+    const obj = {...leaderBoard}
+    const list = [...leaderBoard.attemptedQList]
+    if(attempted.isCorrect) {
+      obj.correctAnswers = leaderBoard.correctAnswers+1;
+    }
+    if(!obj.attemptedQList.includes(index)) {
+      obj.attemptedQuestions = leaderBoard.attemptedQuestions+1;
+      list.push(index);
+    }
+    obj.attemptedQList = list;
+    dispatch(saveUserAttemptedQuestions(obj))
+
     dispatch(setAttempted({
       isAttempted: false,
       answeredIndex: null,
@@ -85,11 +99,11 @@ function Home() {
     setIntervalT(t);
   }
 
-  useEffect(() => {
-    if (started) {
-      timer();
-    }
-  }, [started]);
+  // useEffect(() => {
+  //   if (started) {
+  //     timer();
+  //   }
+  // }, [started]);
 
   const handleAnswerClick = (value, question, answeredIndex) => {
     const isCorrect = value === question.answer;

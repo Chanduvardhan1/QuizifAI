@@ -101,4 +101,5 @@
   top:35%;
   position: absolute;
   font-size: 23px;
+  z-index: -1;
 }

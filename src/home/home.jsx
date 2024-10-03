@@ -6,7 +6,7 @@ import SampleLeaderBoard from "../sample/sampleLeaderBoard";
 import { questions } from "./Constants";
 import "./home.css";
 import { useDispatch, useSelector } from "react-redux";
-import { setDynamicStateFlags, setAttempted, getContactUsEmail ,saveUserAttemptedQuestions} from "./slice";
+import { setDynamicStateFlags, setAttempted, getContactUsEmail, saveUserAttemptedQuestions } from "./slice";
 import Slides from "../slides/slides";
 import current from "../../public/current.png";
 import User from "../../public/user.png";
@@ -48,14 +48,14 @@ function Home() {
   }
   const handleOnClickNext = () => {
     dispatch(setDynamicStateFlags({ key: 'index', value: index + 1 }));
-    
-    const obj = {...leaderBoard}
+
+    const obj = { ...leaderBoard }
     const list = [...leaderBoard.attemptedQList]
-    if(attempted.isCorrect) {
-      obj.correctAnswers = leaderBoard.correctAnswers+1;
+    if (attempted.isCorrect) {
+      obj.correctAnswers = leaderBoard.correctAnswers + 1;
     }
-    if(!obj.attemptedQList.includes(index)) {
-      obj.attemptedQuestions = leaderBoard.attemptedQuestions+1;
+    if (!obj.attemptedQList.includes(index)) {
+      obj.attemptedQuestions = leaderBoard.attemptedQuestions + 1;
       list.push(index);
     }
     obj.attemptedQList = list;
@@ -188,7 +188,7 @@ function Home() {
       <div>
         <div className="flex flex-col md:flex-row p-5 main">
           <div className="wrapper">
-            {!started && <span className =" font-Poppins font-bold text-[#555555] leading-[50px] text-center md:text-left">
+            {!started && <span className=" font-Poppins font-bold text-[#555555] leading-[50px] text-center md:text-left">
               <span className="text1"> Exploring online resources for AI-generated Exams and Quizzes</span>
             </span>}
             {!started && <div className="card">
@@ -221,7 +221,11 @@ function Home() {
                     {q.options?.map((option, x) => {
                       return (
                         <div key={x} className={`flex items-center mb-4`}>
-                          <div onClick={(e) => handleAnswerClick(option.answer_option_text, q, x)} className="mr-2 font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#D3D3D3]   flex justify-center text-center justify-items-center items-center text-[10px]">
+                          <div onClick={(e) => handleAnswerClick(option.answer_option_text, q, x)} 
+                            className={`
+                              ${(x === q.answerIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
+                              ${(x === attempted.answeredIndex && x !== q.answerIndex) ? 'wrongAnswer' : ''}
+                              mr-2 font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#D3D3D3]   flex justify-center text-center justify-items-center items-center text-[10px]`}>
                             {String.fromCharCode(97 + x).toUpperCase()}
                           </div>
                           <div

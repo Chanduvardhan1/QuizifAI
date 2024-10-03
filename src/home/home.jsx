@@ -17,7 +17,8 @@ import Play from "../../public/play.png";
 import timmer from "../../public/timmerimg.png";;
 import highScore from "../../public/highscore.png";
 import previousicon from "../../public/images/previousicon.png";
-import nextbutton from "../../public/images/nextbutton.png";
+// import nextbutton from "../../public/images/nextbutton.png";
+import nextbutton from "../../public/images/next.png";
 
 import { getRandomElements } from "../utils";
 

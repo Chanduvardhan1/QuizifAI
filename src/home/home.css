@@ -421,7 +421,7 @@ li {
   transform: translateX(-5px);
   color: #00008b; 
   font-size:14px;
-  background-color: #DEEFF5;
+  background-color: #ADD8E6;
   border: 1px solid #2196F3; /* blue border color */
   border-radius: 5px;
   padding: 1px 11px;
@@ -443,28 +443,29 @@ li {
   color: #00008b;
   font-size:14px;
   background-color: #ADD8E6;
-  border: 1px solid #2196F3; /* blue border color */
+  border: 1px solid #2196F3;
   border-radius: 5px;
-  padding: 1px 7px;
+  padding: 1px 11px;
   cursor: pointer;
   display: flex;
   align-items: center;
   margin-top:-27px;
   width: 13%;
   margin-left:41px;
+  border-color: #00008b;
 }
 .previous:hover {
   background-color: #E5E5EA;
 }
 .previous-icon{
-  height: 20px;
-  width: 15px;
+  height: 17px;
+  width: 17px;
   margin-left: 3px;
   margin-right: 8px
 }
 
 .submit {
-    transform: translateX(-5px);
+    /* transform: translateX(-5px);
     color: green;
     font-size: 17px;
     background-color: #fff;
@@ -476,7 +477,24 @@ li {
     align-items: center;
     width: 13%;
     margin-left: 72%;
-    margin-top: 2%;
+    margin-top: 2%; */
+    transform: translateX(-5px);
+  color: #00008b; 
+  font-size:14px;
+  background-color: #ADD8E6;
+  border: 1px solid #2196F3; /* blue border color */
+  border-radius: 5px;
+  padding: 1px 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 13%;
+  margin-left: 72%;
+  margin-top: 2%;
+  border-color:  #00008b;
+
+
+
 }
 .text {
   color: #00008b;

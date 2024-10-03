@@ -18,7 +18,8 @@
 .slide {
   width: 100%;
   flex-shrink: 0;
-  color: #00008B
+  color: #00008B;
+  margin-top:23px;
 }
 
 .slide h2 {
@@ -41,7 +42,7 @@
   justify-content: center;
   margin-top: 20px;
   margin-right: 3%;
-  color: #00008B
+  color: #00008B;
 
 }
 .dots-container:hover{
@@ -60,7 +61,7 @@
 }
 
 .dot.active {
-  background-color: blue !important;
+  background-color: #00008B;
 }
 
 .nav-buttons {
@@ -75,31 +76,27 @@
   font-size: 24px;
   cursor: pointer;
 }
-/* .nav-buttons button:first-child {
-  left: 0;
-} */
 
-/* .nav-buttons button:last-child {
-  right: 0;
-} */
 .c-p {
   cursor: pointer;
   text-decoration: underline;
+  color: #FF3C00;
 }
- .arrow.left {
-  margin-left:49px; 
+ .arrow {
+  position: absolute;
+  top: 57px;
 }
 
-/* .arrow.right {
-  right: 10px; 
-}  */
+.arrow.right {
+  right: 0;
+}
+
+
 
 .arrow-container {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  top:35%;
-  position: absolute;
   font-size: 23px;
-  z-index: -1;
 }
+

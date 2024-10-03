@@ -225,7 +225,7 @@ function Home() {
                             className={`
                               ${(x === q.answerIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
                               ${(x === attempted.answeredIndex && x !== q.answerIndex) ? 'wrongAnswer' : ''}
-                              mr-2 font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#D3D3D3]  bg-[#E8E9E8]  flex justify-center text-center justify-items-center items-center text-[10px]`}>
+                              mr-2 font-normal w-[40px] rounded-[5px] h-[37px] p-[8px] border-[1px] border-solid border-[#D3D3D3]  bg-[#E8E9E8]  flex justify-center text-center justify-items-center items-center text-[10px]`}>
                             {String.fromCharCode(97 + x).toUpperCase()}
                           </div>
                           <div

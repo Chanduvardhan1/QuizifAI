@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import Store from './Store.jsx';
 
     function App() {
-      console.log('env', process.env.NODE_ENV);
+      
       return (
         <>
           <Provider store={Store}>

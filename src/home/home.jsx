@@ -17,7 +17,7 @@ import Play from "../../public/play.png";
 import timmer from "../../public/timmerimg.png";;
 import highScore from "../../public/highscore.png";
 import previousicon from "../../public/images/previous-track.png";
-import nextbutton from "../../public/images/next.png";
+import nextbutton from "../../public/images/nimage.png";
 
 import { getRandomElements } from "../utils";
 
@@ -200,7 +200,7 @@ function Home() {
 
               <div className="mainDiv">
                 <div className="subDiv">
-                  <li className="w-[84%] h-[40px] rounded-[5px] border-solid border-[#808080] border-[1.5px] p-[10px] text-[12px] text-[#214082] font-bold li">
+                  <li className="w-[84%] rounded-[5px] border-solid border-[#808080] border-[1.5px] p-[10px] text-[12px] text-[#214082] font-bold li">
 
                     <div>{`${index}. ${q.question}`}</div>
 
@@ -219,7 +219,7 @@ function Home() {
                             className={`
                                 ${(x === q.answerIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
                                 ${(x === attempted.answeredIndex && x !== q.answerIndex) ? 'wrongAnswer' : ''}
-                                w-[50%] h-[34px] rounded-[5px] border-solid border-[#808080] border-[1.8px] p-[5px] text-[11px] text-[#000]`}
+                                w-[50%]  rounded-[5px] border-solid border-[#808080] border-[1.8px] p-[5px] text-[11px] text-[#000]`}
                           >
                             {option.answer_option_text}
                           </div>

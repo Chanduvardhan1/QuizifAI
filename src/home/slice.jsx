@@ -13,8 +13,8 @@ const initialState = {
     contactUSEmail: null,
 
     user:[],
-    //   answeredQuestions:index,
-    //  correctAnswer:index,
+      answeredQuestions:0,
+      correctAnswer:0,
 }
 
 const homeSlice = createSlice({

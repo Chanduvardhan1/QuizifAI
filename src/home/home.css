@@ -445,13 +445,13 @@ li {
   background-color: #fff;
   border: 1px solid #2196F3; /* blue border color */
   border-radius: 2px;
-  padding: 1px 11px;
+  padding: 1px 7px;
   cursor: pointer;
   display: flex;
   align-items: center;
   margin-top:-27px;
   width: 80px;
-  margin-left:39px;
+  margin-left:41px;
 }
 .previous:hover {
   background-color: #E5E5EA;

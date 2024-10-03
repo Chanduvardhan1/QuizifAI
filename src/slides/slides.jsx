@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import './slides.css';
 
 const Slides = (props) => {
-  const [activeSlide, setActiveSlide] = useState(0);
+  const [activeSlide, setActiveSlide] = useState(3);
 
   const slides = [
     {

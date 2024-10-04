@@ -1,270 +1,142 @@
 import { React } from 'react';
 import { MdOutlineCancel } from "react-icons/md";
 import percentIcon from "../../src/assets/Images/images/quizresults/discount.png";
-import current from "../../src/assets/Images/images/quizresults/faq.png";
-import vector from "../../src/assets/Images/images/quizresults/icon-park_check-correct.png";
 import rankimage from "../../src/assets/Images/images/quizresults/rank.jpg";
 import rank1Icon from "../../src/assets/Images/images/quizresults/rank1.png";
 import rank2Icon from "../../src/assets/Images/images/quizresults/rank2.png";
 import rank3Icon from "../../src/assets/Images/images/quizresults/rank3.png";
 import rightIcon1 from "../../src/assets/Images/images/quizresults/righticon.png";
-import dateIcon from "../../src/assets/Images/images/quizresults/schedule.png";
 import timeIcon from "../../src/assets/Images/images/quizresults/stopwatch1.png";
-import styles from "./sampleQuiz.module.css";
+import "./sampleQuiz.css";
 import { useNavigate } from 'react-router-dom';
+import quizifailogo from "../assets/Images/images/home/Quizifai3.png";
+import homeImage from "/images/oldimage.png";
+import dateIcon from "../../src/assets/Images/images/quizresults/schedule.png";
+import vector from "../../src/assets/Images/images/quizresults/icon-park_check-correct.png"
+import current from "../../src/assets/Images/images/quizresults/faq.png"
+import { useSelector ,useDispatch} from "react-redux";
+import SampleAnswerBoard from '../sampleQizAnswers/sampleAnswerBoard';
+import showUserAnswers, { setDynamicStateFlags } from "../../src/home/slice.jsx";
 
+const showAnswers = true
 const Samplequiz = () => {
+  const {
+    leaderBoard,
+    randomQuestions,
+    started
+  } = useSelector(state => state.home);
   const navigate = useNavigate();
 
-  const Back = () => {
-  };
-
   const handleOnClose = () => {
-    navigate("/")
+     navigate("/")
+   }
+
+
+  const handleOnAnswer = () => {
+   }
+  const today = new Date();
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const day = today.getDate().toString().padStart(2, '0');
+  const month = months[today.getMonth()];
+  const year = today.getFullYear();
+  const dateString = `${day}-${month}-${year}`;
+  let resStr = ``;
+  let Grade = `A`
+  const percentage = (leaderBoard.correctAnswers / leaderBoard.attemptedQuestions) * 100;
+  let rank = 1;
+  let passed = false;
+  if (percentage < 41) {
+    Grade = `D`;
+    rank = 4;
+    passed = false;
+  } else if (percentage < 61) {
+    Grade = `C`;
+    rank = 3;
+    passed = true;
+  } else if (percentage < 81) {
+    Grade = `B`;
+    rank = 2;
+    passed = true;
   }
+
+
   return (
 
-    <div className={styles.container} >
-      <div className={styles.mainContent} >
+    <div >
+      <div className='flex float-right gap-4px'>
+        <button className={`w-16 h-[30px] text-[#555555] text-[13px] leading-7 font-bold flex items-center justify-center rounded-full hover:bg-[#EF512F] transition-transform transform hover:scale-110 $`}>
+          Home
+        </button>
 
-        <div className={styles.header}>
-          <div className={styles.titleContainer}>
+        <button className={`w-20 h-[30px] rounded-full font-Poppins bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center gap-1 hover:bg-[#EF512F] transition-transform transform hover:scale-110 $`}>
+          Sign Up
+          {/* <img className='h-[17px]' src={signUpIcon} alt="Sign Up Icon" /> */}
+        </button>
+        <button className={`w-20 h-[30px] rounded-full font-Poppins bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center gap-1 hover:bg-[#EF512F] transition-transform transform hover:scale-110 $`}>
+          Login
+          {/* <img className="h-[17px]" src={logInIcon} alt="Login Icon" /> */}
+        </button>
+      </div>
 
-            <div className={styles.downloads} >
-              <div className={styles.download} >
+      <div className='flexContainer'>
+       
+        <div className='subDiv1'>
+          <span>Your Attempt Details</span>
+          <div className='subDiv'>
+            <h1 className='rank'> {rank} </h1>
+            <img className='h-[108.62px] w[130.01px]'
+              src={rankimage}
+              alt="Icon 1"
 
-                <span className={styles.quizname}>Current Affairs</span>
-              </div>
-
-            </div>
-
-            <p className={styles.quizdescription}>Challenge yourself with "Quizifai Daily Current Affairs"! Discover and learn about the latest news in a fun way!</p>
-
-
-            <div className={styles.flexrow}>
-              <div className={styles.Createdbyupdated}>
-                <div className={styles.Questions}>
-
-                  <span className={styles.Question} >Questions :  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>{" "}
-                  <span className={styles.username1} >5</span>
-                </div>
-                <div>
-
-                  <span className={styles.Question} >Total Marks : &nbsp;&nbsp;</span>{" "}
-                  <span className={styles.username1} >5</span>
-                </div>
-                <div className={styles.Created}>
-
-               
-                  <span className={styles.username} ></span>
-                </div>
-
-                <div>
-
-                 
-                  <span className={styles.username} ></span>
-                </div>
-              </div>
-              <div className={styles.Questionslines}>
-
-                <div>
-
-                  <span className={styles.Question} >Duration : </span>{" "}
-                  <span className={styles.username1} > 5 min</span>
-                </div>
-
-                <div>
-
-                  
-                  <span className={styles.username1} ></span>
-                </div>
-
-              </div>
-              <div className={styles.Questionslines}>
-
-
-
-                <div>
-
-                  <span className={styles.Question} > Complexity : </span>{" "}
-                  <span className={styles.username1} >Simple</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <div className={styles.horizontalLine}></div>
-        <div className={styles.wrapper}>
-          <div className={styles.sentenceBox}>
-            <div className={styles.verticaliconsContainer}>
-              <h1 className={styles.verticalicon2} >1</h1>
-              <img
-                src={rankimage}
-                alt="Icon 1"
-                className={styles.verticalicon1}
-              />
-              <h1 className={styles.rank1}>Your Rank </h1>
-            </div>
-            <div className={styles.sentencesContainer}>
-              <div className={styles.sentence}>
-                <img
+            />
+            <span> Your Rank </span>
+            <div className=''>
+              <div >
+                <img className='h-[30px] w[30.px] block inline mt-23px'
                   src={dateIcon}
                   alt="Calendar Icon"
-                  className={styles.icon2}
                 />
-                <span>Taken on  </span>
+               <span className='mt-10px'> {dateString}</span>
               </div>
-            </div>
-            <div className={styles.sentencesContainer}>
-              <div className={styles.sentence}>
-                <img
+              <div>
+                <img className='h-[30px] w[30.px] block inline'
                   src={timeIcon}
                   alt="Calendar Icon"
-                  className={styles.icon2}
                 />
-                <span>Spent </span>
+                <span className='minutes'>15 Minutes</span>
               </div>
+              <div>
+                <img className='h-[30px] w[30.px] block inline'
+                  src={vector}
+                  alt="Calendar Icon"
 
-
-            </div>
-            <div className={styles.sentencesContainer}>
-              <div className={styles.sentence}>
-                <img
+                />
+                <span className='correctAnswers'>{leaderBoard.correctAnswers} correct answer</span>
+              </div>
+              <div className='mt-8%'>
+                <img className='h-[30px] w[30.px] block inline'
                   src={current}
                   alt="Calendar Icon"
-                  className={styles.icon2}
+
                 />
-                <span>Attempted Questions</span>
+                <span className='questions '>Attempted {leaderBoard.attemptedQuestions} questions</span>
               </div>
-            </div>
-
-            <div className={styles.sentence1}>
-              <img
-                src={vector}
-                alt="Calendar Icon"
-                className={styles.icon2}
-              />
-              <span> correct answer</span>
-            </div>
-            <div className={styles.sentencesContainer}>
-              <div className={styles.sentence}>
-                <img
-                  src={percentIcon}
-                  alt="Calendar Icon"
-                  className={styles.icon2}
-                />
-                <span className={styles.sentence3}>You have scored%,   Grade,<span className={styles.pass}>Fail</span> </span>
-              </div>
-
-
-            </div>
-
-
-
-
-
-
-          </div>
-          <div className={styles.boxContainer1}>
-            <div className={styles.titles}>
-              <p className={styles.title}>Leaderboard </p>
-
-
-            </div>
-            <div className={styles.lines}>
-              <div className={styles.lines1}></div>
-              <div className={styles.lines2}> Top 10 Rankers</div>
-              <div className={styles.lines3}></div>
-            </div>
-
-            <div className={styles.ranksiconsContainer}>
-              <img
-                src={rank1Icon}
-                alt="Icon 1"
-                className={styles.rankicon2}
-              />
-
-              <img
-                src={rank2Icon}
-                alt=""
-                className={styles.rankicon1}
-              />
-              <img
-                src={rank3Icon}
-                alt="Rank 3 Icon"
-                className={styles.rankicon3}
-              />
-            </div>
-            <div className={styles.ranksiconsContainer1}>
-              <p className={styles.second}>1<span className={styles.st1}>st</span></p>
-              <p className={styles.fist}>2<span className={styles.st2}>nd</span></p>
-
-              <p className={styles.thired}>3<span className={styles.st3}>rd</span></p>
-            </div>
-            <div className={styles.innerBoxes1}>
-              <div className={styles.innerBox1} style={{ width: "122px", height: "93px", }}>
-
-
-
-              </div>
-              <div className={styles.innerBox2} style={{ width: "122px", height: "118px", marginbottom: "23px" }}>
-
-
-              </div>
-              <div className={styles.innerBox3} style={{ width: "122px", height: "93px", }}>
-
-
-              </div>
-            </div>
-
-
-
-
-
-
-            <div>
-              <div className={styles.innerBoxes}>
-
-
-              </div>
-              <div className={styles.columns}>
-                <span className={styles.column}>Rank</span>
-                <span className={`${styles.column} ${styles.userName}`}>User Name</span>
-                <span className={styles.column}>Percentage</span>
-                <span className={styles.column}>Attempts</span>
-                <span className={styles.column}>Duration</span>
+              <div>
+              
+                <div className='percentage'>You have scored {percentage}%</div>
+                <div>{Grade} ,{passed} Grade</div>
               </div>
             </div>
           </div>
         </div>
-        <div className={styles.horizontalLine} style={{ marginTop: "0px" }}></div>
-        <div className={styles.boxContainer}>
-          <div className={styles.parentContainer}>
-            <div className={styles.sentencesContainer1} style={{ marginLeft: "0px", marginTop: "40px", height: "220px" }} >
-              <div className={styles.sentence}>
-              </div>
-              <button
-                onClick={handleOnClose}
-                className="absolute top-4 right-4 w-20 h-[30px] rounded-full font-Poppins bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center hover:bg-[#EF512F] transition-transform transform hover:scale-110"
-              >
-                Close
-              </button>
-
-            </div>
-
-          </div>
-        </div>
-
+        <img src={homeImage} alt="home Image" className="float-right" />
       </div>
+      <div className='button'>
+          <button  onClick={handleOnAnswer}className='answer'>Answer</button>
+        <button onClick={handleOnClose} className='close'> Close</button>
+      </div>
+      {showAnswers && <SampleAnswerBoard q={randomQuestions} />}
     </div>
-
-
-
-
-
-
-
 
   )
 }

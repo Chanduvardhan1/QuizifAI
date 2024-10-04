@@ -15,6 +15,8 @@ const initialState = {
         attemptedQuestions: 0,
         correctAnswers: 0,
         attemptedQList: []
+    },
+    sampleQuiz:{
     }
 }
 
@@ -34,9 +36,12 @@ const homeSlice = createSlice({
         getContactUsEmail: (state, action) => {
         },
         saveUserAttemptedQuestions:(state, action) => {
-            console.log('action', action);
             state.leaderBoard = action.payload;
-        }
+        },
+         showUserAnswers:(state, action) => {
+             state.sampleQuiz[action.payload.key] = action.payload.value
+         }
+
     }
 })
 
@@ -46,5 +51,6 @@ export const {
     saveResContactUsEmail,
     getContactUsEmail,
     saveUserAttemptedQuestions,
+    showUserAnswers
 } = homeSlice.actions;
 export default homeSlice.reducer;

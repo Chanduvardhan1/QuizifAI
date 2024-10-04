@@ -48,7 +48,15 @@ function Home() {
   }
   const handleOnClickNext = () => {
     dispatch(setDynamicStateFlags({ key: 'index', value: index + 1 }));
+    handleAttemptedQuestions();
+    dispatch(setAttempted({
+      isAttempted: false,
+      answeredIndex: null,
+      isCorrect: false,
+    }));
+  }
 
+  const handleAttemptedQuestions = () => {
     const obj = { ...leaderBoard }
     const list = [...leaderBoard.attemptedQList]
     if (attempted.isCorrect) {
@@ -60,12 +68,6 @@ function Home() {
     }
     obj.attemptedQList = list;
     dispatch(saveUserAttemptedQuestions(obj))
-
-    dispatch(setAttempted({
-      isAttempted: false,
-      answeredIndex: null,
-      isCorrect: false,
-    }));
   }
   const handleOnClickPrevious = () => {
     dispatch(setDynamicStateFlags({ key: 'index', value: index - 1 }));
@@ -171,6 +173,7 @@ function Home() {
     }
   };
   const handleOnClickSubmit = () => {
+    handleAttemptedQuestions();
     dispatch(setDynamicStateFlags({ key: 'submit', value: true }));
     clearInterval(intervalT);
     dispatch(setDynamicStateFlags({ key: 'index', value: 1 }));
@@ -181,7 +184,9 @@ function Home() {
     randomQuestions = getRandomElements(questions, 5)
   }, [])
   const q = randomQuestions && randomQuestions[index - 1] || {};
-
+  useEffect(() => {
+    dispatch(setDynamicStateFlags({key: 'randomQuestions', value: randomQuestions}))
+  }, [])
   return (
     <div>
       <HeaderSection />
@@ -225,7 +230,7 @@ function Home() {
                             className={`
                               ${(x === q.answerIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
                               ${(x === attempted.answeredIndex && x !== q.answerIndex) ? 'wrongAnswer' : ''}
-                              mr-2 font-normal w-[40px] rounded-[5px] h-[37px] p-[8px] border-[1px] border-solid border-[#D3D3D3]  bg-[#E8E9E8]  flex justify-center text-center justify-items-center items-center text-[10px]`}>
+                              mr-2 font-normal w-[40px]    rounded-[5px] h-[37px] p-[8px] border-[1px] border-solid border-[#D3D3D3]  bg-[#E8E9E8]  flex justify-center text-center justify-items-center items-center text-[10px]  font-sans                        `}>
                             {String.fromCharCode(97 + x).toUpperCase()}
                           </div>
                           <div
@@ -235,7 +240,7 @@ function Home() {
                             className={`
                                 ${(x === q.answerIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
                                 ${(x === attempted.answeredIndex && x !== q.answerIndex) ? 'wrongAnswer' : ''}
-                                w-[50%] bg-[#E8E9E8]  h-[37px] rounded-[5px] border-solid border-[#D3D3D3] border-[1.8px] p-[5px] text-[11px] text-[#000]`}
+                                w-[60%] bg-[#E8E9E8]  h-[37px] rounded-[5px] border-solid border-[#D3D3D3] border-[1.8px] p-[5px] text-[11px] text-[#000] font-sans`}
                           >
                             {option.answer_option_text}
                           </div>

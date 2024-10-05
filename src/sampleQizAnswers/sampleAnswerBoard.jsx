@@ -1,12 +1,12 @@
-
 import React from 'react';
+import './sampleAnswerBoard.css'
 
 function sampleAnswerBoard(props) {
     return (
         <div className='ml-[19%] mt-[4%]'>
             {props.q?.map((question, x) => {
                 return (
-                    <div  key={x} >
+                    <div className='answerQ' key={x} >
                         <h3>{` ${x + 1}: ${question.question}`}</h3>
 
                         {question.options.map((option, y) => {

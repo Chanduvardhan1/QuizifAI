@@ -526,10 +526,6 @@ li {
 .option {
   margin-bottom: 3px;
 }
-div.correctAnswer {
-  border-color: rgb(34, 197, 94);
-  background-color: #C9E4CA
-}
 div.wrongAnswer {
   border-color: rgb(249, 115, 22);
   background-color: #FFF0F0;

@@ -7,7 +7,7 @@ function sampleAnswerBoard(props) {
             {props.q?.map((question, x) => {
                 return (
                     <div className='answerQ' key={x} >
-                        <h3>{` ${x + 1}: ${question.question}`}</h3>
+                        <h3>{` ${x + 1}. ${question.question}`}</h3>
 
                         {question.options.map((option, y) => {
                             return (

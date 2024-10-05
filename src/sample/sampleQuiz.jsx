@@ -122,7 +122,7 @@ const Samplequiz = () => {
             <div className='content-result-right'>
               <div className='content-result-right-box'>
                 <div className='w-[200px] rounded-md  transform -translate-y-1/2 content-result-right-box-round'> {percentage}%</div>
-                <div className='w-[200px] rounded-md content-result-right-box-round grade'>{Grade} ,{passed} Grade</div>
+                <div className='w-[200px] rounded-md content-result-right-box-round grade'>{Grade} {passed} Grade</div>
               </div>
             </div>
           </div>

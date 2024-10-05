@@ -60,6 +60,10 @@
  .textWrapper{
     margin-left: 2%;
  }
+ .icon{
+    height: 30px; /* Adjust as needed */
+    width: 30px; 
+ }
 
  
 

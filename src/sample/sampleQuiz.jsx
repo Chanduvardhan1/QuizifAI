@@ -14,7 +14,7 @@ import homeImage from "/images/oldimage.png";
 import dateIcon from "../../src/assets/Images/images/quizresults/schedule.png";
 import vector from "../../src/assets/Images/images/quizresults/icon-park_check-correct.png"
 import current from "../../src/assets/Images/images/quizresults/faq.png"
-import { useSelector ,useDispatch} from "react-redux";
+import { useSelector } from "react-redux";
 import SampleAnswerBoard from '../sampleQizAnswers/sampleAnswerBoard';
 import showUserAnswers, { setDynamicStateFlags } from "../../src/home/slice.jsx";
 
@@ -28,13 +28,14 @@ const Samplequiz = () => {
   const navigate = useNavigate();
 
   const handleOnClose = () => {
-     navigate("/")
-   }
+    navigate("/")
+  }
 
 
   const handleOnAnswer = () => {
-    setShowAnswers(true);   }
-   const [showAnswers,setShowAnswers]= useState(false);
+    setShowAnswers(true);
+  }
+  const [showAnswers, setShowAnswers] = useState(false);
   const today = new Date();
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const day = today.getDate().toString().padStart(2, '0');
@@ -80,7 +81,7 @@ const Samplequiz = () => {
       </div>
 
       <div className='flexContainer'>
-       
+
         <div className='subDiv1'>
           <span>Your Attempt Details</span>
           <div className='subDiv'>
@@ -92,40 +93,41 @@ const Samplequiz = () => {
             />
             <span> Your Rank </span>
             <div className=''>
-              <div  className='ml-13px'>
+              <div className='mr-[3%] mt-[1%]'>
                 <img className='h-[30px] w[30.px] block inline mt-23px '
                   src={dateIcon}
                   alt="Calendar Icon"
                 />
-               <span className='ml-24px'> {dateString}</span>
+                <span className='ml-[9px]'> {dateString}</span>
               </div>
-              <div>
+              <div className='mr-[5%] mt-[1%]'>
                 <img className='h-[30px] w[30.px] block inline  '
                   src={timeIcon}
                   alt="Calendar Icon"
                 />
-                <span className='minutes'>15 Minutes</span>
+                <span className='ml-[9px]'>15 Minutes</span>
               </div>
-              <div>
+              <div className='mt-[1%]'>
                 <img className='h-[30px] w[30.px] block inline  '
                   src={vector}
                   alt="Calendar Icon"
 
                 />
-                <span className='correctAnswers'>{leaderBoard.correctAnswers} correct answer</span>
+                <span className='ml-[9px]'>{leaderBoard.correctAnswers} correct answer</span>
               </div>
-              <div className='mt-8%'>
+              <div className='ml-[6%] mt-[1%]'>
                 <img className='h-[30px] w[30.px] block inline '
                   src={current}
                   alt="Calendar Icon"
 
                 />
-                <span className='questions '>Attempted {leaderBoard.attemptedQuestions} questions</span>
+                <span className='ml-[9px] '>Attempted {leaderBoard.attemptedQuestions} questions</span>
               </div>
               <div>
-              
-                <div className='ml-[74%] border border-blue-500 rounded-md'>You have scored {percentage}%</div>
-                <div className='ml-[74%] border border-blue-500 rounded-md'>{Grade} ,{passed} Grade</div>
+
+                {/* <div className='ml-[74%] border border-blue-500 rounded-md transform -translate-y-10'>You have scored {percentage}%</div> */}
+                <div className='  top-0  mt-[22%] ml-[43%] border border-blue-500 rounded-md  transform -translate-y-1/2'> {percentage}%</div>
+                <div className=' top-[55%] ml-[43%] border border-blue-500 rounded-md '>{Grade} ,{passed} Grade</div>
               </div>
             </div>
           </div>
@@ -133,7 +135,7 @@ const Samplequiz = () => {
         <img src={homeImage} alt="home Image" className="float-right" />
       </div>
       <div className='button'>
-          <button  onClick={handleOnAnswer}className='answer'>Answer</button>
+        <button onClick={handleOnAnswer} className='answer'>Answer</button>
         <button onClick={handleOnClose} className='close'> Close</button>
       </div>
       {showAnswers && <SampleAnswerBoard q={randomQuestions} />}

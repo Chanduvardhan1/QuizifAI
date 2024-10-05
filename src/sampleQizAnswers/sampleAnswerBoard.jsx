@@ -11,7 +11,7 @@ function sampleAnswerBoard(props) {
 
                         {question.options.map((option, y) => {
                             return (
-                                <div key={y} className={`flex items-center mb-4 ${y === question.answerIndex ? 'correctAnswer' : ''}`}>
+                                <div key={y} className={`flex items-center mb-4 ${y === question.answerIndex ? 'correctAnswerQ' : ''}`}>
                                     <div
                                         className={`mr-2 font-normal w-[40px] rounded-[5px] h-[37px] p-[8px] border-[1px] border-solid border-[#D3D3D3]  bg-[#E8E9E8]  flex justify-center text-center justify-items-center items-center text-[10px]`}>
                                         {String.fromCharCode(97 + y).toUpperCase()}

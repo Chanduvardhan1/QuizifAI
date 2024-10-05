@@ -18,7 +18,7 @@ li {
   justify-content: space-between;
   align-items: flex-start;
   padding: 20px;
-  font-family: poppins;
+  font-family: Segoe_UI_Historic;
 
 }
 
@@ -57,7 +57,7 @@ li {
 }
 
 .navigation ul li {
-  font-family: Poppins;
+  font-family: Segoe_UI_Historic;
   font-size: 13px;
   font-weight: 600;
   line-height: 30px;
@@ -76,7 +76,7 @@ li {
   height: 30px;
   border-radius: 20px;
   background: #3B61C8;
-  font-family: Poppins;
+  font-family: Segoe_UI_Historic;
   font-size: 13px;
   font-weight: 600;
   line-height: 30px;
@@ -92,7 +92,7 @@ li {
   width: 80px;
   height: 30px;
   border-radius: 20px;
-  font-family: Poppins;
+  font-family: Segoe_UI_Historic;
   font-size: 13px;
   font-weight: 600;
   line-height: 30px;
@@ -115,7 +115,7 @@ li {
   width: 80px;
   height: 30px;
   border-radius: 20px;
-  font-family: Poppins;
+  font-family: Segoe_UI_Historic;
   font-size: 13px;
   font-weight: 600;
   line-height: 30px;
@@ -170,7 +170,7 @@ li {
 }
 
 .line1 {
-  font-family: Poppins;
+  font-family: Segoe_UI_Historic;
   font-size: 18px;
   font-weight: 700;
   line-height: 50px;
@@ -181,7 +181,7 @@ li {
 }
 
 .line2 {
-  font-family: Poppins;
+  font-family: Segoe_UI_Historic;
   font-size: 18px;
   font-weight: 700;
   line-height: 50px;
@@ -196,7 +196,7 @@ li {
 }
 
 .line3 {
-  font-family: Poppins;
+  font-family: Segoe_UI_Historic;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0em;
@@ -218,7 +218,7 @@ li {
 }
 
 .backgroundButton {
-  font-family: Poppins;
+  font-family: Segoe_UI_Historic;
   font-size: 13px;
   font-weight: 700;
   /* line-height: 40px; */
@@ -259,7 +259,7 @@ li {
 }
 
 .text-content .line3 {
-  font-family: Poppins;
+  font-family: Segoe_UI_Historic;
   font-size: 20px;
   font-weight: 700;
   line-height: 100px;
@@ -429,14 +429,33 @@ li {
   display: flex;
   align-items: center;
   width: 13%;
-  margin-left: 72%;
+  margin-left: 88%;
   margin-top: 2%;
   border-color:  #00008b;
+  font-weight: 500;
 }
 
   .next:hover {
     background-color: #E5E5EA;
 }
+
+/* .previous {
+  float: left;
+  color: #00008b;
+  font-size:14px;
+  background-color: #ADD8E6;
+  border: 1px solid #2196F3;
+  border-radius: 5px;
+  padding: 1px 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 13%;
+  margin-left:72%;
+  border-color: #00008b;
+} */
+
+
 
 .previous {
   float: left;
@@ -449,10 +468,11 @@ li {
   cursor: pointer;
   display: flex;
   align-items: center;
-  margin-top:-27px;
   width: 13%;
-  margin-left:41px;
+  margin-left:72%;
   border-color: #00008b;
+  position: relative;
+  top: -25px;
 }
 .previous:hover {
   background-color: #E5E5EA;
@@ -489,7 +509,7 @@ li {
   display: flex;
   align-items: center;
   width: 13%;
-  margin-left: 72%;
+  margin-left: 89%;
   margin-top: 2%;
   border-color:  #00008b;
 
@@ -536,7 +556,7 @@ div.wrongAnswer {
 }
 .timer{
   height: 38px;
-  font-family: poppins;
+  font-family: Segoe_UI_Historic;
   font-size: 15px;
   font-weight: 700;
   color: #000;
@@ -553,16 +573,15 @@ div.wrongAnswer {
 }
 .main{
 
-    font-family: Poppins;
+    font-family: Segoe_UI_Historic;;
       font-size: 15px;
-      /* font-weight: 900; */
-      /* color: #00008b; */
       display: inline;
       margin-left:28px;
+      font-weight: 500;
     
   }
   .main1{
-    font-family: Poppins;
+    font-family: Segoe_UI_Historic;
       font-size: 15px;
       margin-left:26px;
       display: block;
@@ -585,7 +604,7 @@ div.wrongAnswer {
   } */
 
   .questions1{
-    font-family: Poppins;
+    font-family: Segoe_UI_Historic;
     font-size: 15px;
     font-weight: 700;
     height: 0px;
@@ -603,7 +622,7 @@ div.wrongAnswer {
 .ques{
   color: #F15A3D;
   
-  font-family: Poppins;
+  font-family: Segoe_UI_Historic;
   margin-top:22px;
   font-size:15px
 }
@@ -639,7 +658,7 @@ div.wrongAnswer {
   width: 80px; 
   height: 30px;
   border-radius: 9999px; 
-  font-family: 'Poppins', sans-serif;
+ font-family: Segoe_UI_Historic;
   background-color: #3B61C8;
   color: white;
   font-size: 13px;
@@ -743,11 +762,11 @@ div.wrongAnswer {
 } */
 .score{
   font-size: 15px;
-  font-family: poppins;
+ font-family: Segoe_UI_Historic;
 }
 .fiveQuestions{
   font-size: 15px;
-  font-family: poppins;
+  font-family: Segoe_UI_Historic;
   margin-left: 6px;
   margin-top:11px;
 
@@ -774,7 +793,7 @@ div.wrongAnswer {
 }
 .text{
   font-size: 15px;
-  font-family: poppins;
+ font-family: Segoe_UI_Historic;
   font-weight: 300;
   color:#000
 }
@@ -782,7 +801,7 @@ div.wrongAnswer {
   width: 80px; 
     height: 30px; 
     border-radius: 9999px; 
-    font-family: 'Poppins', sans-serif; 
+   font-family: Segoe_UI_Historic;
     background-color: #3B61C8; 
     color: white; 
     font-size: 13px; 
@@ -800,31 +819,57 @@ div.wrongAnswer {
   transform: scale(1.1); /* hover:scale-110 */
 }
 .text1{
-  font-size:14px;
-  /* margin-left:11px; */
-  color:  #00008B ;
-  margin-left:26%;
+  font-size:17px;
+  color:  #00008b;
+  margin-left:20%;
+  /* font-family: sans-serif; */
+  font-family: Segoe_UI_Historic;
+  font-weight: 600;
 }
+
+
+
+
+
+
+
+
+
+
 .li{
   margin-top:45px;
 }
 .heading{
   /* font-weight: 600; */
-  font-size: 14px;
+  /* font-size: 14px;
   color: #00008B;
   margin-left:7%;
-  font-weight: 500;
+  font-weight: 500; */
+  font-size:17px;
+  color:  #00008B;
+  margin-left:20%;
+  font-family: Segoe_UI_Historic;
+  font-weight: 600;
+  margin-left:7%;
 }
 .challenge{
   margin-top:1%;
-  font-size: 12px;
+  font-size: 15px;
   margin-left:7%;
   color: #214082;
   font-weight:500;
-   font-size: poppins;
+   font-family: Segoe_UI_Historic;
 }
 
 
 /* .questions{
   background-color: #BAEBD2;
 } */
+
+
+.questions-style{
+  font-family: Segoe_UI_Historic;
+  font-weight: 500;
+  color: #00008b;
+  font-size: 14px;
+}

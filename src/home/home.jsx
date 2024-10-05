@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import homeImage from "/images/oldimage.png";
+// import homeImage from "../../public/coverpage.png";
+// import homeImage from "../../public/ai.png";
+
 import HeaderSection from "../HeaderSection/HeaderSection";
 import SampleLeaderBoard from "../sample/sampleLeaderBoard";
 import { questions } from "./Constants";
@@ -193,8 +196,8 @@ function Home() {
       <div>
         <div className="flex flex-col md:flex-row p-5 main">
           <div className="wrapper">
-            {!started && <span className=" font-Poppins font-bold text-[#555555] leading-[50px] text-center md:text-left">
-              <span className="text1"> Exploring online resources for AI-generated Exams and Quizzes</span>
+            {!started && <span className=" font-['Segoe_UI_Historic'] font-bold text-[#555555] leading-[50px] text-center md:text-left">
+              <span className="text1"> Discovering Online References for AI-Generated Exams and Quizzes</span>
             </span>}
             {!started && <div className="card">
               <div className="cardText">
@@ -217,7 +220,7 @@ function Home() {
 
               <div className="mainDiv">
                 <div className="subDiv">
-                  <li className="  bg-[#DEEFF5] w-[84%] rounded-[5px] border-solid border-[#ADD8E6] border-[1.5px] p-[10px] text-[12px] text-[#214082] font-bold li">
+                  <li className=" font-[14px] font-medium bg-[#DEEFF5] w-[100%] rounded-[5px] border-solid border-[#ADD8E6] border-[1.5px] p-[10px] text-[15px] text-[#214082]   li questions ">
 
                     <div>{`${index}. ${q.question}`}</div>
 
@@ -230,7 +233,7 @@ function Home() {
                             className={`
                               ${(x === q.answerIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
                               ${(x === attempted.answeredIndex && x !== q.answerIndex) ? 'wrongAnswer' : ''}
-                              mr-2 font-normal w-[40px]    rounded-[5px] h-[37px] p-[8px] border-[1px] border-solid border-[#D3D3D3]  bg-[#E8E9E8]  flex justify-center text-center justify-items-center items-center text-[10px]  font-sans                        `}>
+                              mr-2 font-normal w-[40px]    rounded-[5px] h-[37px] p-[8px] border-[1px] border-solid border-[#D3D3D3]  bg-[#E8E9E8]  flex justify-center text-center justify-items-center items-center text-[14px]  font-sans                        `}>
                             {String.fromCharCode(97 + x).toUpperCase()}
                           </div>
                           <div
@@ -240,7 +243,7 @@ function Home() {
                             className={`
                                 ${(x === q.answerIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
                                 ${(x === attempted.answeredIndex && x !== q.answerIndex) ? 'wrongAnswer' : ''}
-                                w-[52%] bg-[#E8E9E8]  h-[37px] rounded-[5px] border-solid border-[#D3D3D3] border-[1.8px] p-[5px] text-[11px] text-[#000] font-sans`}
+                                w-[100%] bg-[#E8E9E8]  h-[37px] rounded-[5px] border-solid border-[#D3D3D3] border-[1.8px] p-[5px] text-[14px] text-[#000] font-sans`}
                           >
                             {option.answer_option_text}
                           </div>

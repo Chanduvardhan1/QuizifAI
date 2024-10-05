@@ -23,25 +23,28 @@
 }
 
 .slide h2 {
-  font-size: 15px;
+  font-size: 17px;
   margin-bottom: 15px;
-  margin-left:20%;
+  margin-left:12%;
+  font-family:Segoe_UI_Historic;
+  font-weight: 600;
 }
 
 .slide p {
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.5;
   font-weight: 300;
-  color: #214082;
-  margin-left:20%;
+  color: #00008b;
+  margin-left:12%;
   font-weight: 500;
+  font-family :Segoe_UI_Historic;
 }
 
 .dots-container {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
-  margin-right: 3%;
+  margin-top: 34px;
+  margin-right: 0%;
   color: #00008B;
 
 }
@@ -84,7 +87,7 @@
 }
  .arrow {
   position: absolute;
-  top: 57px;
+  top: 73px;
 }
 
 .arrow.right {
@@ -97,6 +100,6 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  font-size: 23px;
+  font-size: 15px;
 }
 

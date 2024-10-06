@@ -17,6 +17,7 @@
     margin-left: 20%;
     margin-top: 2%;
     border-color:  #00008b;
+    font-family: Segoe_UI_Historic;
 }
 .close{
     transform: translateX(-5px);
@@ -33,6 +34,7 @@
     margin-left: 5%;
     margin-top: 2%;
     border-color:  #00008b;
+    font-family: Segoe_UI_Historic;
 
 }
 .button{
@@ -59,6 +61,7 @@
         &-attempt {
             label {
                 color: #00008b;
+                font-family: Segoe_UI_Historic;
             }
             .line {
                 display: inline-block;
@@ -85,10 +88,12 @@
             font-size: 40px;
             color: #00008b;
             font-weight: 700;
+            font-family: Segoe_UI_Historic;
         }
         span {
             color: #00008b;
             font-weight: 500;
+            font-family: Segoe_UI_Historic;
         }
     }
     .content-result {
@@ -125,6 +130,7 @@
                     color: #690603;
                     border: 1px solid #690603;
                     background-color: rgb(84, 18, 10, 0.5);
+                    font-family: Segoe_UI_Historic;
                 }
             }
         }

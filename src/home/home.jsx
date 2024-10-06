@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import homeImage from "/images/oldimage.png";
-// import homeImage from "../../public/coverpage.png";
-// import homeImage from "../../public/ai.png";
-
 import HeaderSection from "../HeaderSection/HeaderSection";
 import SampleLeaderBoard from "../sample/sampleLeaderBoard";
 import { questions } from "./Constants";
@@ -115,9 +112,11 @@ function Home() {
     dispatch(setAttempted({
       isAttempted: true,
       answeredIndex,
-      isCorrect,
+      isCorrect
     }));
   }
+
+
 
   // Now you have access to the token
   const submitContactForm = async () => {
@@ -188,7 +187,7 @@ function Home() {
   }, [])
   const q = randomQuestions && randomQuestions[index - 1] || {};
   useEffect(() => {
-    dispatch(setDynamicStateFlags({key: 'randomQuestions', value: randomQuestions}))
+    dispatch(setDynamicStateFlags({ key: 'randomQuestions', value: randomQuestions }))
   }, [])
   return (
     <div>
@@ -231,8 +230,8 @@ function Home() {
                         <div key={x} className={`flex items-center mb-4`}>
                           <div onClick={(e) => handleAnswerClick(option.answer_option_text, q, x)} 
                             className={`
-                              ${(x === q.answerIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
-                              ${(x === attempted.answeredIndex && x !== q.answerIndex) ? 'wrongAnswer' : ''}
+                                ${(x === q.answerIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
+                                 ${(x === attempted.answeredIndex && x !== q.answerIndex) ? 'wrongAnswer' : ''}
                               mr-2 font-normal w-[40px]    rounded-[5px] h-[37px] p-[8px] border-[1px] border-solid border-[#D3D3D3]  bg-[#E8E9E8]  flex justify-center text-center justify-items-center items-center text-[14px]  font-sans                        `}>
                             {String.fromCharCode(97 + x).toUpperCase()}
                           </div>
@@ -241,9 +240,9 @@ function Home() {
                             placeholder="Question"
                             onClick={(e) => handleAnswerClick(option.answer_option_text, q, x)}
                             className={`
-                                ${(x === q.answerIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
-                                ${(x === attempted.answeredIndex && x !== q.answerIndex) ? 'wrongAnswer' : ''}
-                                w-[100%] bg-[#E8E9E8]  h-[37px] rounded-[5px] border-solid border-[#D3D3D3] border-[1.8px] p-[5px] text-[14px] text-[#000] font-sans`}
+                                  ${(x === q.answerIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
+                                  ${(x === attempted.answeredIndex && x !== q.answerIndex) ? 'wrongAnswer' : ''}
+                                 w-[100%] bg-[#E8E9E8]  h-[37px] rounded-[5px] border-solid border-[#D3D3D3] border-[1.8px] p-[5px] text-[14px] text-[#000] font-sans`}
                           >
                             {option.answer_option_text}
                           </div>
@@ -254,12 +253,10 @@ function Home() {
                   </li>
                 </div>
               </div>
-
             </>}
             {started && index != 5 && <button className="next" onClick={handleOnClickNext}>Next <img className="h-[17px] ml-3 " src={nextbutton} /> </button>}
             {started && index != 1 && index !== 5 && <button className="previous" onClick={handleOnClickPrevious} > <img className="previous-icon" src={previousicon} /> Prev </button>}
             {started && index === 5 && <button onClick={handleOnClickSubmit} className="submit">Submit </button>}
-
           </div>
           {activeSection === "home" && (
             <div className="w-50% md:w-1/2 pr-0 md pt-4 md:pt-20 flex flex-col justify-center items-center md:items-end">
@@ -278,5 +275,4 @@ function Home() {
     </div>
   );
 }
-
 export default Home;

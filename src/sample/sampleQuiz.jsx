@@ -93,14 +93,14 @@ const Samplequiz = () => {
                   src={dateIcon}
                   alt="Calendar Icon"
                 />
-                <span className='ml-[9px]'> {dateString}</span>
+                <span className='ml-[9px] font-[historic]' > {dateString}</span>
               </div>
               <div className='mr-[5%] mt-[1%] content-result-left-box'>
                 <img className='h-[30px] w[30.px] block inline  '
                   src={timeIcon}
                   alt="Calendar Icon"
                 />
-                <span className='ml-[9px]'>15 Minutes</span>
+                <span className='ml-[9px] font-[historic]'>15 Minutes</span>
               </div>
               <div className='mt-[1%] content-result-left-box'>
                 <img className='h-[30px] w[30.px] block inline  '
@@ -108,7 +108,7 @@ const Samplequiz = () => {
                   alt="Calendar Icon"
 
                 />
-                <span className='ml-[9px]'>{leaderBoard.correctAnswers} correct answer</span>
+                <span className='ml-[9px] font-[historic]'>{leaderBoard.correctAnswers} correct answer</span>
               </div>
               <div className='ml-[6%] mt-[1%] content-result-left-box'>
                 <img className='h-[30px] w[30.px] block inline '
@@ -116,7 +116,7 @@ const Samplequiz = () => {
                   alt="Calendar Icon"
 
                 />
-                <span className='ml-[9px]'>Attempted {leaderBoard.attemptedQuestions} questions</span>
+                <span className='ml-[9px] font-[historic]'>Attempted {leaderBoard.attemptedQuestions} questions</span>
               </div>
             </div>
             <div className='content-result-right'>

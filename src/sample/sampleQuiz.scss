@@ -13,7 +13,7 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    width: 5%;
+    width: 7%;
     margin-left: 20%;
     margin-top: 2%;
     border-color:  #00008b;
@@ -21,24 +21,27 @@
 }
 .close{
     transform: translateX(-5px);
-    color: #00008b; 
+    color: #FF0500; 
     font-size:14px;
-    background-color: #ADD8E6;
+    background-color: #FFCCCB;
     border: 1px solid #2196F3; 
     border-radius: 5px;
     padding: 1px 11px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    width: 5%;
-    margin-left: 5%;
+    width: 7%;
+    margin-left: 1%;
     margin-top: 2%;
-    border-color:  #00008b;
+    border-color:  #FF6865;
     font-family: Segoe_UI_Historic;
 
 }
 .button{
     display: flex;
+    margin-top: -4%;
+    margin-left: 4%;
+
 }
 .class{
     position: absolute;
@@ -85,7 +88,7 @@
             top: 40%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 40px;
+            font-size: 50px;
             color: #00008b;
             font-weight: 700;
             font-family: Segoe_UI_Historic;
@@ -94,6 +97,7 @@
             color: #00008b;
             font-weight: 500;
             font-family: Segoe_UI_Historic;
+            font-size: 17px;
         }
     }
     .content-result {
@@ -105,7 +109,7 @@
                 width: 210px;
                 margin: 0 auto;
                 clear: both;
-                height: 10vh;
+                 height: 5vh;
                 img {
                     float: left;
                 }
@@ -118,19 +122,23 @@
         &-right {
             width: 50%;
             &-box {
-                width: 210px;
+                width: 120px;
                 margin: 0 auto;
                 &-round {
-                    border: 1px solid #279a04;
-                    background-color: rgb(32, 243, 138, 0.5);
+                    border: 1px solid #D3D3D3;
+                    background-color: #E8E9E8;
                     color: #279a04;
                     font-weight: 500;
+                    margin-top: -3%;
+                    width: 120px;
                 }
                 .grade {
-                    color: #690603;
-                    border: 1px solid #690603;
-                    background-color: rgb(84, 18, 10, 0.5);
+                    color: #3b8132;
+                    border: 1px solid #D3D3D3;
+                    background-color: #E8E9E8;
                     font-family: Segoe_UI_Historic;
+                    width: 120px;
+                  
                 }
             }
         }

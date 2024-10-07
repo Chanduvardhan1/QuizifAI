@@ -2,7 +2,7 @@ import react from 'react';
 
 const pageHeader = () => {
     return (
-        <div className='flex float-right gap-4px'>
+        <div className='flex float-right gap-4px mr-[6%]'>
             <button className={`w-16 h-[30px] font-[historic] text-[#555555] text-[13px] leading-7 font-bold flex items-center justify-center rounded-full hover:bg-[#EF512F] transition-transform transform hover:scale-110 mt-[9%] mr-[5%] $`}>
                 Home
             </button>

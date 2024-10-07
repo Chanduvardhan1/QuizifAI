@@ -121,7 +121,7 @@ const Samplequiz = () => {
             </div>
             <div className='content-result-right'>
               <div className='content-result-right-box'>
-                <div className='w-[200px] rounded-md  transform -translate-y-1/2 content-result-right-box-round'> {percentage}%</div>
+                <div className='w-[200px] rounded-md  transform -translate-y-1/2 content-result-right-box-round '> {percentage}%</div>
                 <div className='w-[200px] rounded-md content-result-right-box-round grade'>{Grade} {passed} Grade</div>
               </div>
             </div>
@@ -130,7 +130,7 @@ const Samplequiz = () => {
         <img src={homeImage} alt="home Image" className="float-right" />
       </div>
       <div className='button'>
-        <button onClick={handleOnAnswer} className='answer'>Answer</button>
+        <button onClick={handleOnAnswer} className='answer'>Answers</button>
         <button onClick={handleOnClose} className='close'> Close</button>
       </div>
       {showAnswers && <SampleAnswerBoard q={randomQuestions} />}

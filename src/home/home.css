@@ -792,6 +792,7 @@ div.wrongAnswer {
   width: 50%;
   padding-left: 0;
   margin-top: -8px;
+  min-height: 385px;
 }
 .text{
   font-size: 15px;

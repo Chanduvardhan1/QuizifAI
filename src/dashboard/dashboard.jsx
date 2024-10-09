@@ -1,4 +1,4 @@
-// Dashboard.js
+
 import React, { useState, useEffect, useContext } from "react";
 import styles from "./dashboard.module.css";
 import Navigation from "../navbar/navbar.jsx";
@@ -25,8 +25,17 @@ import arrow from "../../src/assets/Images/dashboard/rightArrow.png";
 import "react-sweet-progress/lib/style.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { AuthContext } from "../Authcontext/AuthContext"; // Adjust the import path if needed
+import { AuthContext } from "../Authcontext/AuthContext";
 import Modal from "react-modal";
+import noOfAttampt from "../../public/noofattampt.png";
+import NoOfQuestion1 from "../../public/noofquestions.png";
+import clock1 from "../../public/clock1.png";
+import Calender from "../../public/calender1.png";
+import created from "../../public/createdby.png";
+import print from "../../public/print.png";
+import leaderboard2 from "../../public/leaderboaed1.png";
+// import view1 from "../../public/view1.png";
+import newView from "../../public/newview.png";
 
 const Dashboard = () => {
   const getFormattedDate = () => {
@@ -39,6 +48,12 @@ const Dashboard = () => {
     };
     return currentDate.toLocaleDateString("en-IN", options);
   };
+  const today = new Date();
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const day = today.getDate().toString().padStart(2, '0');
+  const month = months[today.getMonth()];
+  const year = today.getFullYear();
+  const dateString = `${day}-${month}-${year}`;
 
   const currentValue1 = 50;
   const maxValue1 = 100;
@@ -63,7 +78,7 @@ const Dashboard = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
 
-  const [quizId, setQuizId] = useState(0); // Ensure quizId is properly initialized
+  const [quizId, setQuizId] = useState(0);
   const [userid, setUserid] = useState(null);
   const [modalIsOpen1, setModalIsOpen1] = useState(false);
   const [isChecked1, setIsChecked1] = useState(false);
@@ -117,7 +132,7 @@ const Dashboard = () => {
     }
   }, [isDisableConfirmed]);
 
-  const handleDeleteClick = (quiz_id) =>{
+  const handleDeleteClick = (quiz_id) => {
     setQuizId(quiz_id);
     setModalIsOpen(true);
   }
@@ -165,16 +180,6 @@ const Dashboard = () => {
       handleDeleteQuiz();
     }
   }, [isDeleteConfirmed]);
-  // useEffect(() => {
-  //   const token = localStorage.getItem('authToken');
-  //   console.log("Token from localStorage:", token); // Debugging line
-  //   if (token) {
-  //     setIsAuthenticated(true);
-  //   } else {
-  //     console.log("No token found, user is not authenticated."); // Debugging line
-  //   }
-  // }, []);
-
   useEffect(() => {
     // Example: Checking authentication state on component mount
     console.log("User is authenticated:", isAuthenticated);
@@ -267,10 +272,6 @@ const Dashboard = () => {
       setMessage(""); // Clear any previous messages
     }
   };
-  // const leaderboard = (quizId) => {
-  //   localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
-  //   navigate('/quiz-results1', { state: { quizId } })
-  // };
   const leaderboard = (
     quizId,
     quizTotalMarks,
@@ -308,10 +309,7 @@ const Dashboard = () => {
     });
   };
 
-  // const leaderboard1 = (quizId, quizTotalMarks, passPercentage) => {
-  //   localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
-  //   navigate('/leaderboard', { state: { quizId, quizTotalMarks, passPercentage } });
-  // };
+
   const leaderboard1 = (
     quizId,
     attemptId,
@@ -320,9 +318,6 @@ const Dashboard = () => {
     passpercentage
   ) => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
-    // localStorage.setItem("quiz_level_attempt_id", attemptId);
-    // localStorage.setItem("complexity", complexity); // Store attempt_id in local storage
-    // localStorage.setItem("quiz_duration", quizduration);
     navigate(`/leaderboard`, {
       state: {
         quizId,
@@ -330,15 +325,6 @@ const Dashboard = () => {
         complexity,
         quizduration,
         passpercentage,
-        // quizdescription,
-        // createdby,
-        // numberofquestions,
-        // quizduration,
-        // complexity,
-        // mincompletiontime,
-        // quizattempts,
-        // avgscore,
-        // max_percentage,quizcreatedate
       },
     });
   };
@@ -356,21 +342,6 @@ const Dashboard = () => {
   const createQuiz = () => {
     navigate(`/create-quiz`);
   };
-
-  // const quizresults = () => {
-  //   if (quizItem && quizItem.quiz_title && quizItem.quiz_id) {
-  //     navigate(`/quizquestions/${quizItem.quiz_id}`, {
-  //       state: {
-  //         quiz_id: quizItem.quiz_id,
-  //         quiz_title: quizItem.quiz_title,
-  //         quiz_description: quizItem.quiz_description,
-  //         quiz_duration: quizItem.quiz_duration
-  //       }
-  //     });
-  //   }
-  // };
-
-  // toggle for latest quiz cards
   const [cardStates, setCardStates] = useState(
     Array(allquizzes.length).fill(false)
   );
@@ -381,39 +352,6 @@ const Dashboard = () => {
       return updatedStates;
     });
   };
-
-  // const [cardStatus, setCardStatus] = useState(
-  //   Array(allquizzes.length).fill(false)
-  // );
-  // const toggleNavbar1 = (index) => {
-  //   setCardStatus((prevState) => {
-  //     const updatedStates = [...prevState];
-  //     updatedStates[index] = !updatedStates[index];
-  //     return updatedStates;
-  //   });
-  // };
-  // toggle for popular quiz cards
-  // const [cardStats, setCardStats] = useState(
-  //   Array(allquizzes.length).fill(false)
-  // );
-  // const toggleNavbar3 = (index) => {
-  //   setCardStats((prevState) => {
-  //     const updatedStates = [...prevState];
-  //     updatedStates[index] = !updatedStates[index];
-  //     return updatedStates;
-  //   });
-  // };
-
-  // const [cardStatuss, setCardStatuss] = useState(
-  //   Array(allquizzes.length).fill(false)
-  // );
-  // const toggleNavbar4 = (index) => {
-  //   setCardStatuss((prevState) => {
-  //     const updatedStates = [...prevState];
-  //     updatedStates[index] = !updatedStates[index];
-  //     return updatedStates;
-  //   });
-  // };
   const handleDelete = (index) => {
     setAllquizzes((prevAllquizzes) =>
       prevAllquizzes.filter((_, i) => i !== index)
@@ -533,22 +471,6 @@ const Dashboard = () => {
           </p>
 
           <div className={styles.headerRight}>
-            {/* <div>{getFormattedDate()}</div> */}
-            {/* <div className="w-[99px] h-[41px] absolute mr-[160px] -mt-2 rounded-[10px] bg-[rgb(254,202,249)]">
-              <div className="flex">
-                <img
-                  className="w-[25px] h-[25px] ml-2 mt-2"
-                  src={Admin_User}
-                  alt="Plus Icon"
-                />
-                <a
-                  href="./quizadmin"
-                  className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
-                >
-                  User
-                </a>
-              </div>
-            </div> */}
             {userRole === "Quiz Master" && (
               <div className="w-[99px] h-[41px] absolute mr-[80px] mb-2 pb-2 -mt-[35px] rounded-[10px] bg-[#fee2e2]">
                 <div className="flex">
@@ -566,13 +488,6 @@ const Dashboard = () => {
                 </div>
               </div>
             )}
-            {/* <div className={styles.searchIconContainer}>
-              <img
-                src={searchIcon}
-                alt="Search Icon"
-                className={styles.searchIcon}
-              />
-            </div> */}
           </div>
         </div>
         <div className={styles.completionInfo}>
@@ -608,14 +523,13 @@ const Dashboard = () => {
             >
               Time Spent (Last 7 Days)
               <span className={styles.moreButton}>
-                {/* <img src={arrow3} alt="More" width={11} height={5} /> */}
               </span>
               <div className={styles.progressBar}>
                 {Array.isArray(timeData) && timeData.length > 0 ? (
                   timeData.map((item, index) => {
                     // Create a new Date object from item.cal_date
                     const date = new Date(item.cal_date);
-                    console.log('date',date);
+                    console.log('date', date);
                     // Get the month abbreviation
                     const monthAbbreviation = date.toLocaleString("default", {
                       month: "short",
@@ -663,7 +577,7 @@ const Dashboard = () => {
             style={{ marginBottom: "20px" }}
           >
             <p className="text-[#002366] text-[15px] font-medium leading-6 ml-[10px]">
-              Latest Quizzes 
+              Latest Quizzes
             </p>
             <span className="flex">
               <span
@@ -762,22 +676,22 @@ const Dashboard = () => {
                               </div>
                               {quizItem.attempts_count <
                                 quizItem.retake_flag && (
-                                <div className={styles.retake}>
-                                  <img
-                                    className=" h-[10px] w-[10px] "
-                                    src={Share_button}
-                                    alt="download icon"
-                                  />
-                                  <span
-                                    className="text-[8px] - cursor-pointer hover:text-black"
-                                    onClick={() =>
-                                      handleStartQuiz(quizItem.quiz_id)
-                                    }
-                                  >
-                                    Retake
-                                  </span>
-                                </div>
-                              )}
+                                  <div className={styles.retake}>
+                                    <img
+                                      className=" h-[10px] w-[10px] "
+                                      src={Share_button}
+                                      alt="download icon"
+                                    />
+                                    <span
+                                      className="text-[8px] - cursor-pointer hover:text-black"
+                                      onClick={() =>
+                                        handleStartQuiz(quizItem.quiz_id)
+                                      }
+                                    >
+                                      Retake
+                                    </span>
+                                  </div>
+                                )}
                               {userRole === "Quiz Master" && (
                                 <div className={styles.edit}>
                                   <img
@@ -789,7 +703,7 @@ const Dashboard = () => {
                                     className={styles.edittext}
                                     onClick={() => Edit(quizItem.quiz_id)}
                                   >
-                                    Edit 
+                                    Edit
                                   </span>
                                 </div>
                               )}
@@ -826,7 +740,7 @@ const Dashboard = () => {
                                     className={styles.starttext}
                                     onClick={() => handleDisableClick(quizItem.quiz_id)}
                                   >
-                                    Disable 
+                                    Disable
                                   </span>
                                   <Modal
                                     isOpen={modalIsOpen1}
@@ -838,7 +752,7 @@ const Dashboard = () => {
                                   >
                                     <h2 className="text-xl font-semibold mb-4">
                                       Are you sure you want to disable this
-                                      card? 
+                                      card?
                                     </h2>
                                     <div className="mb-4">
                                       <input
@@ -856,15 +770,14 @@ const Dashboard = () => {
                                     </div>
                                     <div className="flex justify-end space-x-4">
                                       <button
-                                        className={`bg-red-500 text-white px-4 py-2 rounded ${
-                                          !isChecked1
-                                            ? "opacity-50 cursor-not-allowed"
-                                            : ""
-                                        }`}
+                                        className={`bg-red-500 text-white px-4 py-2 rounded ${!isChecked1
+                                          ? "opacity-50 cursor-not-allowed"
+                                          : ""
+                                          }`}
                                         onClick={setIsDisableConfirmed}
                                         disabled={!isChecked1}
                                       >
-                                        Disable 
+                                        Disable
                                       </button>
                                       <button
                                         className="bg-gray-300 text-black px-4 py-2 rounded"
@@ -876,28 +789,6 @@ const Dashboard = () => {
                                   </Modal>
                                 </div>
                               )}
-                              {/* {userRole === "Quiz Master" && (
-                              <div className={styles.edit}>
-                                <img
-                                  className={styles.editimage}
-                                  src={Edit_button}
-                                  alt="Edit icon"
-                                />
-                                <span
-                                  className={styles.edittext}
-                                  onClick={() => handleDelete(index)}
-                                >
-                                  Delete
-                                </span>
-                              </div>
-                              )} */}
-                              {/* <img
-                            className={styles.shareimage} style={{marginTop:"2px"}}
-                            
-                            src={download}
-                            alt="Play icon"
-                          />
-                          <span className={styles.sharetext} >Download</span> */}
                             </div>
                           )}
                         </div>
@@ -949,8 +840,6 @@ const Dashboard = () => {
                       <div className="h-1 -mt-[8px] pl-[10px] text-[7px] text-[#002366] font-semibold relative -top-[6px]">
                         <h3>Quiz ID : {quizItem.quiz_id}</h3>
                       </div>
-                      {/* <div className="h-[1px] w-full bg-white"></div> */}
-                      {/* <div className="h-[3px] w-full bg-white"></div> */}
                       <div className="relative group mt-1">
                         <span className="text-wrap mt-[6px] text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate line-clamp-4">
                           {quizItem.quiz_description}
@@ -988,7 +877,6 @@ const Dashboard = () => {
                                 {quizItem.created_by}
                               </span>
                             </div>
-                            {/* <div>Created On</div> */}
                           </div>
 
                           <div
@@ -1153,7 +1041,7 @@ const Dashboard = () => {
                                     className={styles.edittext}
                                     onClick={() => Edit(quizItem.quiz_id)}
                                   >
-                                    Edit 
+                                    Edit
                                   </span>
                                 </div>
                               )}
@@ -1225,12 +1113,11 @@ const Dashboard = () => {
                                     </div>
                                     <div className="flex justify-end space-x-4">
                                       <button
-                                        className={`bg-red-500 text-white px-4 py-2 rounded ${
-                                          !isChecked
-                                            ? "opacity-50 cursor-not-allowed"
-                                            : ""
-                                        }`}
-                                        onClick={() =>setIsDeleteConfirmed(true)}
+                                        className={`bg-red-500 text-white px-4 py-2 rounded ${!isChecked
+                                          ? "opacity-50 cursor-not-allowed"
+                                          : ""
+                                          }`}
+                                        onClick={() => setIsDeleteConfirmed(true)}
                                         disabled={!isChecked}
                                       >
                                         Delete
@@ -1284,11 +1171,10 @@ const Dashboard = () => {
                                     </div>
                                     <div className="flex justify-end space-x-4">
                                       <button
-                                        className={`bg-red-500 text-white px-4 py-2 rounded ${
-                                          !isChecked1
-                                            ? "opacity-50 cursor-not-allowed"
-                                            : ""
-                                        }`}
+                                        className={`bg-red-500 text-white px-4 py-2 rounded ${!isChecked1
+                                          ? "opacity-50 cursor-not-allowed"
+                                          : ""
+                                          }`}
                                         onClick={() => setIsDisableConfirmed}
                                         disabled={!isChecked1}
                                       >
@@ -1304,25 +1190,6 @@ const Dashboard = () => {
                                   </Modal>
                                 </div>
                               )}
-                              {/* {userRole === "Quiz Master" && (
-                              <div className={styles.edit}>
-                                <img
-                                  className={styles.editimage}
-                                  src={Edit_button}
-                                  alt="Edit icon"
-                                />
-                                <span
-                                  className={styles.edittext}
-                                  onClick={() => handleDelete(index)}
-                                >
-                                  Delete
-                                </span>
-                              </div>
-                              )} */}
-                              {/* <div className={styles.share}>
-                      <img className={styles.shareimage} src={Share_button} alt="Share icon" />
-                      <span className={styles.sharetext}>Share</span>
-                    </div> */}
                             </div>
                           )}
                         </div>
@@ -1495,138 +1362,139 @@ const Dashboard = () => {
               .map((quizItem, index) => (
                 <div key={index} className="">
                   {quizItem.attempt_flag === "Y" ? (
-                    <div
-                      key={index}
-                      className={styles.card}
-                      style={{
-                        width: "245px",
-                        // paddingTop: "8px",
-                        paddingTop: "20px",
-                        marginTop: "10px",
-                        marginRight: "10px",
-                        backgroundColor:
-                          quizItem.attempts_count < quizItem.retake_flag
-                            ? "#fee2e2"
-                            : "#55505026",
-                      }}
-                    >
-                      <span className="relative group">
-                        <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate -mt-[13px]">
-                          {quizItem.quiz_name}
+                    <>
+                      <div
+                        key={index}
+                        className={styles.card}
+                        style={{
+                          width: "245px",
+                          // paddingTop: "8px",
+                          paddingTop: "20px",
+                          marginTop: "10px",
+                          marginRight: "10px",
+                          backgroundColor:
+                            quizItem.attempts_count < quizItem.retake_flag
+                              ? "#fee2e2"
+                              : "#55505026",
+                        }}
+                      >
+                        <span className="relative group">
+                          <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate -mt-[13px]">
+                            {quizItem.quiz_name}
+                          </span>
+                          <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+                            {quizItem.quiz_name}
+                          </span>
                         </span>
-                        <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-                          {quizItem.quiz_name}
-                        </span>
-                      </span>
-                      <div className={styles.iconContainer}>
-                        <div className="z-40 mb-[2px]  font-normal rounded -mt-[12px] relative -top-[8px] right-[2px]">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className="w-4 h-4 -ml-[27px] rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
-                            onClick={() => toggleNavbar(index)}
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                            />
-                            {cardStates[index] ? "Close Navbar" : "Open Navbar"}
-                          </svg>
-
-                          {cardStates[index] && (
-                            <div
-                              className={styles.infoIcons}
-                              style={{
-                                marginTop: "-23px",
-                                marginLeft: "-118px",
-                              }}
+                        <div className={styles.iconContainer}>
+                          <div className="z-40 mb-[2px]  font-normal rounded -mt-[12px] relative -top-[8px] right-[2px]">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth="1.5"
+                              stroke="currentColor"
+                              className="w-4 h-4 -ml-[27px] rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
+                              onClick={() => toggleNavbar(index)}
                             >
-                              <div className={styles.start}>
-                                <img className="" src={eye} alt="Play icon" />
-                                <span
-                                  className="text-[8px]  cursor-pointer hover:text-black"
-                                  onClick={() =>
-                                    quizresults(
-                                      quizItem.quiz_id,
-                                      quizItem.quiz_level_attempt_id
-                                    )
-                                  }
-                                >
-                                  View
-                                </span>
-                              </div>
-                              {quizItem.attempts_count <
-                                quizItem.retake_flag && (
-                                <div className={styles.retake}>
-                                  <img
-                                    className=" h-[10px] w-[10px] "
-                                    src={Share_button}
-                                    alt="download icon"
-                                  />
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                              />
+                              {cardStates[index] ? "Close Navbar" : "Open Navbar"}
+                            </svg>
+
+                            {cardStates[index] && (
+                              <div
+                                className={styles.infoIcons}
+                                style={{
+                                  marginTop: "-23px",
+                                  marginLeft: "-118px",
+                                }}
+                              >
+                                <div className={styles.start}>
+                                  <img className="" src={eye} alt="Play icon" />
                                   <span
                                     className="text-[8px]  cursor-pointer hover:text-black"
                                     onClick={() =>
-                                      handleStartQuiz(quizItem.quiz_id)
+                                      quizresults(
+                                        quizItem.quiz_id,
+                                        quizItem.quiz_level_attempt_id
+                                      )
                                     }
                                   >
-                                    Retake
+                                    View
                                   </span>
                                 </div>
-                              )}
-                              {userRole === "Quiz Master" && (
-                                <div className={styles.edit}>
+                                {quizItem.attempts_count <
+                                  quizItem.retake_flag && (
+                                    <div className={styles.retake}>
+                                      <img
+                                        className=" h-[10px] w-[10px] "
+                                        src={Share_button}
+                                        alt="download icon"
+                                      />
+                                      <span
+                                        className="text-[8px]  cursor-pointer hover:text-black"
+                                        onClick={() =>
+                                          handleStartQuiz(quizItem.quiz_id)
+                                        }
+                                      >
+                                        Retake
+                                      </span>
+                                    </div>
+                                  )}
+                                {userRole === "Quiz Master" && (
+                                  <div className={styles.edit}>
+                                    <img
+                                      className={styles.editimage}
+                                      src={Edit_button}
+                                      alt="Edit icon"
+                                    />
+                                    <span
+                                      className={styles.edittext}
+                                      onClick={() => Edit(quizItem.quiz_id)}
+                                    >
+                                      Edit
+                                    </span>
+                                  </div>
+                                )}
+                                <div className={styles.leaderboard}>
                                   <img
-                                    className={styles.editimage}
-                                    src={Edit_button}
-                                    alt="Edit icon"
+                                    className={styles.leaderboardimage}
+                                    style={{ marginTop: "1px" }}
+                                    src={leaderboard_button}
+                                    alt="Play icon"
                                   />
                                   <span
-                                    className={styles.edittext}
-                                    onClick={() => Edit(quizItem.quiz_id)}
+                                    className={styles.leaderboardtext}
+                                    onClick={() =>
+                                      leaderboard1(
+                                        quizItem.quiz_id,
+                                        quizItem.quiz_level_attempt_id,
+                                        quizItem.complexity,
+                                        quizItem.quiz_duration,
+                                        quizItem.pass_percentage
+                                      )
+                                    }
                                   >
-                                    Edit
+                                    Leaderboard
                                   </span>
                                 </div>
-                              )}
-                              <div className={styles.leaderboard}>
-                                <img
-                                  className={styles.leaderboardimage}
-                                  style={{ marginTop: "1px" }}
-                                  src={leaderboard_button}
-                                  alt="Play icon"
-                                />
-                                <span
-                                  className={styles.leaderboardtext}
-                                  onClick={() =>
-                                    leaderboard1(
-                                      quizItem.quiz_id,
-                                      quizItem.quiz_level_attempt_id,
-                                      quizItem.complexity,
-                                      quizItem.quiz_duration,
-                                      quizItem.pass_percentage
-                                    )
-                                  }
-                                >
-                                  Leaderboard
-                                </span>
-                              </div>
 
-                              {userRole === "Quiz Master" && (
-                              <div className={styles.edit}>
-                                <img
-                                  className={styles.editimage}
-                                  src={disable}
-                                  alt="Disable icon"
-                                />
-                                <span
-                                    className={styles.starttext}
-                                    onClick={() => handleDisableClick(quizItem.quiz_id)}>
-                                    Disable
-                                  </span>
+                                {userRole === "Quiz Master" && (
+                                  <div className={styles.edit}>
+                                    <img
+                                      className={styles.editimage}
+                                      src={disable}
+                                      alt="Disable icon"
+                                    />
+                                    <span
+                                      className={styles.starttext}
+                                      onClick={() => handleDisableClick(quizItem.quiz_id)}>
+                                      Disable
+                                    </span>
                                     <Modal
                                       isOpen={modalIsOpen1}
                                       onRequestClose={() =>
@@ -1645,18 +1513,17 @@ const Dashboard = () => {
                                           id="confirmCheckbox"
                                           className="mr-2"
                                           checked={isChecked1}
-                                          onChange={(e) => setIsChecked1(e.target.checked)}/>
+                                          onChange={(e) => setIsChecked1(e.target.checked)} />
                                         <label htmlFor="confirmCheckbox">
                                           I understand the consequences.
                                         </label>
                                       </div>
                                       <div className="flex justify-end space-x-4">
                                         <button
-                                          className={`bg-red-500 text-white px-4 py-2 rounded ${
-                                            !isChecked
-                                              ? "opacity-50 cursor-not-allowed"
-                                              : ""
-                                          }`}
+                                          className={`bg-red-500 text-white px-4 py-2 rounded ${!isChecked
+                                            ? "opacity-50 cursor-not-allowed"
+                                            : ""
+                                            }`}
                                           onClick={() => setIsDisableConfirmed}
                                           disabled={!isChecked1}
                                         >
@@ -1670,189 +1537,231 @@ const Dashboard = () => {
                                         </button>
                                       </div>
                                     </Modal>
+                                  </div>
+                                )}
                               </div>
-                              )} 
-                            </div>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex mt-[9px] mb-[18px] relative top-[6px]">
+                          <span className="relative group">
+                            <span className="text-[#002366] ml-[10px] mt-4 w-[50px] cursor-pointer z-0 truncate text-[9px] font-semibold">
+                              {quizItem.category}
+                            </span>
+                            <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+                              {quizItem.category}
+                            </span>
+                          </span>
+
+                          <p className="px-[2px] font-normal">|</p>
+
+                          <span className="relative group">
+                            <span className="text-[#002366] w-[80px] cursor-pointer z-0 truncate text-[9px] font-semibold">
+                              {quizItem.sub_category}
+                            </span>
+                            <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[13px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+                              {quizItem.sub_category}
+                            </span>
+                          </span>
+
+                          {quizItem.attempts_count < quizItem.retake_flag && (
+                            <button
+                              className="cursor-pointer ml-auto relative right-1 flex gap-[2px] border-2 bg-[#F5F8F9] rounded-xl border-[#472E86] h-[16px] w-[34.5px]"
+                              onClick={() =>
+                                handleStartQuiz1(
+                                  quizItem.quiz_id,
+                                  quizItem.attempts_count,
+                                  quizItem.retake_flag
+                                )
+                              }
+                            >
+                              <img
+                                className="h-[5.5px] w-[4.5px] relative top-[3.5px] left-[2px]"
+                                src={PlayButton}
+                                alt="Start button"
+                              />
+                              <h1 className="text-[#472E86] text-[6px] relative top-[2px] pl-[1px] font-bold">
+                                Retake
+                              </h1>
+                            </button>
                           )}
                         </div>
-                      </div>
-
-                      <div className="flex mt-[9px] mb-[18px] relative top-[6px]">
-                        <span className="relative group">
-                          <span className="text-[#002366] ml-[10px] mt-4 w-[50px] cursor-pointer z-0 truncate text-[9px] font-semibold">
-                            {quizItem.category}
+                        <div className="h-1 -mt-[8px] pl-[10px] text-[7px] text-[#002366] font-semibold relative -top-[6px]">
+                          <h3>Quiz ID : {quizItem.quiz_id}</h3>
+                        </div>
+                        <div className="relative group mt-1">
+                          <span className="text-wrap mt-[6px] text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate line-clamp-4">
+                            {quizItem.quiz_description}
                           </span>
-                          <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-2 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-                            {quizItem.category}
+                          <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-0 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
+                            {quizItem.quiz_description}
                           </span>
-                        </span>
+                        </div>
+                        <div className="h-[2px] w-full bg-white"></div>
 
-                        <p className="px-[2px] font-normal">|</p>
+                        <div
+                          style={{ backgroundColor: "#F9F9F9", padding: "1px 0" }}
+                        >
+                          <div className="h-[85px] rounded w-full bg-[#F5F5F5]">
+                            <div className="text-[7px] font-normal pl-[10px] relative top-[73px]">
+                              <span>{quizItem.pass_flag ? "Pass" : "Fail"}</span>
+                              <span className="px-[4px]">|</span>
+                              <span>
+                                {quizItem.speed_rank}
+                                <sup>th</sup>Fastest
+                              </span>
+                              <span className="px-[3px]">|</span>
+                              <span>
+                                {quizItem.score_rank} <sup>th</sup>Highest
+                              </span>
+                              <span className="px-[3px]">|</span>
+                              <span>{quizItem.attained_percentage}% Score</span>
+                              <span className="px-[3px]">|</span>
+                              <span>{quizItem.quiz_grade} Grade</span>
+                            </div>
+                            <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[50px] left-[10px]">
+                              <div>
+                                Created By :
+                                <span className="pl-[2px]">
+                                  {quizItem.created_by}
+                                </span>
+                              </div>
+                            </div>
 
-                        <span className="relative group">
-                          <span className="text-[#002366] w-[80px] cursor-pointer z-0 truncate text-[9px] font-semibold">
-                            {quizItem.sub_category}
-                          </span>
-                          <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[13px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-                            {quizItem.sub_category}
-                          </span>
-                        </span>
+                            <div
+                              className={styles.additionalInfo}
+                              style={{ marginTop: "25px" }}
+                            >
+                              <div
+                                className={styles.infoIcon}
+                                style={{ marginTop: "37px" }}
+                              ></div>
+                              <div className="z-0">
+                                <div className="text-[7px] flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
+                                  <img
+                                    className={styles.attemptsimage}
+                                    src={Attempt1}
+                                    alt="Attempts Icon"
+                                    width={10}
+                                    height={10}
+                                  />
+                                  <p>{quizItem.quiz_attempts} </p>
+                                  <span
+                                    title="number of times quiz attempted"
+                                    className="text-[8px] -ml-[1px] cursor-pointer"
+                                  >
+                                    Quiz attempts
+                                  </span>
+                                </div>
+                              </div>
 
-                        {quizItem.attempts_count < quizItem.retake_flag && (
-                          <button
-                            className="cursor-pointer ml-auto relative right-1 flex gap-[2px] border-2 bg-[#F5F8F9] rounded-xl border-[#472E86] h-[16px] w-[34.5px]"
-                            onClick={() =>
-                              handleStartQuiz1(
-                                quizItem.quiz_id,
-                                quizItem.attempts_count,
-                                quizItem.retake_flag
-                              )
-                            }
-                          >
-                            <img
-                              className="h-[5.5px] w-[4.5px] relative top-[3.5px] left-[2px]"
-                              src={PlayButton}
-                              alt="Start button"
-                            />
-                            <h1 className="text-[#472E86] text-[6px] relative top-[2px] pl-[1px] font-bold">
-                              Retake
-                            </h1>
-                          </button>
-                        )}
-                      </div>
-                      <div className="h-1 -mt-[8px] pl-[10px] text-[7px] text-[#002366] font-semibold relative -top-[6px]">
-                        <h3>Quiz ID : {quizItem.quiz_id}</h3>
-                      </div>
-                      {/* <div className="h-[1px] w-full bg-white"></div> */}
-                      {/* <div className="h-[3px] w-full bg-white"></div> */}
-                      <div className="relative group mt-1">
-                        <span className="text-wrap mt-[6px] text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate line-clamp-4">
-                          {quizItem.quiz_description}
-                        </span>
-                        <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-0 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
-                          {quizItem.quiz_description}
-                        </span>
-                      </div>
-                      <div className="h-[2px] w-full bg-white"></div>
-
-                      <div
-                        style={{ backgroundColor: "#F9F9F9", padding: "1px 0" }}
-                      >
-                        <div className="h-[85px] rounded w-full bg-[#F5F5F5]">
-                          <div className="text-[7px] font-normal pl-[10px] relative top-[73px]">
-                            <span>{quizItem.pass_flag ? "Pass" : "Fail"}</span>
-                            <span className="px-[4px]">|</span>
-                            <span>
-                              {quizItem.speed_rank}
-                              <sup>th</sup>Fastest
-                            </span>
-                            <span className="px-[3px]">|</span>
-                            <span>
-                              {quizItem.score_rank} <sup>th</sup>Highest
-                            </span>
-                            <span className="px-[3px]">|</span>
-                            <span>{quizItem.attained_percentage}% Score</span>
-                            <span className="px-[3px]">|</span>
-                            <span>{quizItem.quiz_grade} Grade</span>
-                          </div>
-                          <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[50px] left-[10px]">
-                            <div>
-                              Created By :
-                              <span className="pl-[2px]">
-                                {quizItem.created_by}
+                              <span className="text-[8px] flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
+                                <img
+                                  className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
+                                  src={high_score}
+                                  alt="Number of question Icon"
+                                  width={15}
+                                  height={10}
+                                />{" "}
+                                {quizItem.attained_score}/
+                                {quizItem.quiz_total_marks}
+                                <div
+                                  title="attained score/total score"
+                                  className="cursor-pointer text-[6px]"
+                                >
+                                  <span className="text-[8px] -ml-[1px]">
+                                    Score
+                                  </span>
+                                </div>
+                              </span>
+                              <span className="text-[7px] flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                                <img
+                                  className="pb-[1px] mr-[1px] relative left-[3px] "
+                                  src={NoOfQuestion}
+                                  alt="Time Icon"
+                                  width={14}
+                                  height={14}
+                                />{" "}
+                                {quizItem.attempted_questions}/
+                                {quizItem.number_of_questions}
+                                <div
+                                  title="attempted qustions/total questions"
+                                  className="cursor-pointer text-[6px]"
+                                >
+                                  <span className="text-[8px] -ml-[1px]">
+                                    Attemped
+                                  </span>
+                                </div>
+                              </span>
+                              <span className="text-[7px] flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                                <img
+                                  className="pb-[1px] mr-[1px] relative left-[3px] "
+                                  src={Clock}
+                                  alt="Time Icon"
+                                  width={14}
+                                  height={14}
+                                />{" "}
+                                {quizItem.attempt_duration_mins}/
+                                {quizItem.quiz_duration}
+                                <div
+                                  title="time taken for attempted/total duration of quiz "
+                                  className="cursor-pointer text-[6px]"
+                                >
+                                  <span className="text-[8px] -ml-[1px]">
+                                    Duration
+                                  </span>
+                                </div>
                               </span>
                             </div>
-                            {/* <div>Created On</div> */}
-                          </div>
-
-                          <div
-                            className={styles.additionalInfo}
-                            style={{ marginTop: "25px" }}
-                          >
-                            <div
-                              className={styles.infoIcon}
-                              style={{ marginTop: "37px" }}
-                            ></div>
-                            <div className="z-0">
-                              <div className="text-[7px] flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[10px] -top-[90px] hover:text-black ">
-                                <img
-                                  className={styles.attemptsimage}
-                                  src={Attempt1}
-                                  alt="Attempts Icon"
-                                  width={10}
-                                  height={10}
-                                />
-                                <p>{quizItem.quiz_attempts} </p>
-                                <span
-                                  title="number of times quiz attempted"
-                                  className="text-[8px] -ml-[1px] cursor-pointer"
-                                >
-                                  Quiz attempts
-                                </span>
-                              </div>
-                            </div>
-
-                            <span className="text-[8px] flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                              <img
-                                className="pb-[1px] pt-[2px] -mt-1  relative bottom-[2px]"
-                                src={high_score}
-                                alt="Number of question Icon"
-                                width={15}
-                                height={10}
-                              />{" "}
-                              {quizItem.attained_score}/
-                              {quizItem.quiz_total_marks}
-                              <div
-                                title="attained score/total score"
-                                className="cursor-pointer text-[6px]"
-                              >
-                                <span className="text-[8px] -ml-[1px]">
-                                  Score
-                                </span>
-                              </div>
-                            </span>
-                            <span className="text-[7px] flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                              <img
-                                className="pb-[1px] mr-[1px] relative left-[3px] "
-                                src={NoOfQuestion}
-                                alt="Time Icon"
-                                width={14}
-                                height={14}
-                              />{" "}
-                              {quizItem.attempted_questions}/
-                              {quizItem.number_of_questions}
-                              <div
-                                title="attempted qustions/total questions"
-                                className="cursor-pointer text-[6px]"
-                              >
-                                <span className="text-[8px] -ml-[1px]">
-                                  Attemped
-                                </span>
-                              </div>
-                            </span>
-                            <span className="text-[7px] flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                              <img
-                                className="pb-[1px] mr-[1px] relative left-[3px] "
-                                src={Clock}
-                                alt="Time Icon"
-                                width={14}
-                                height={14}
-                              />{" "}
-                              {quizItem.attempt_duration_mins}/
-                              {quizItem.quiz_duration}
-                              <div
-                                title="time taken for attempted/total duration of quiz "
-                                className="cursor-pointer text-[6px]"
-                              >
-                                <span className="text-[8px] -ml-[1px]">
-                                  Duration
-                                </span>
-                              </div>
-                            </span>
                           </div>
                         </div>
                       </div>
-                    </div>
+
+                      <div className={styles.sampleCard}>
+                        <div className={styles.sampleBoxImage}>
+                        </div>
+                        <div className={styles.sampleBoxDetails}>
+                          <div className={styles.sampleBoxQuizDetails}>
+                            <div className={styles.sampleBoxQuizDetailsBoxes}>
+                              {/* <label>{quizItem.quiz_name}</label> */}
+                              <div className="ml-[5px] h-[25px]">
+                                <img className={styles.icon6} src={created} />
+                                <label className={styles.text}>Samantha</label>
+                              </div>
+
+                              <div className="ml-[5px]  h-[25px]">
+                                <img className={styles.icon4} src={NoOfQuestion1} />
+                                <label className={styles.text}> 20 Questions</label>
+                              </div>
+
+                              <div className="ml-[5px] h-[25px] " >
+                                <img className={styles.icon4} src={noOfAttampt} />
+                                <label className={styles.text}>200 Attempts</label>
+                              </div>
+                            </div>
+                            <div className={styles.sampleBoxQuizDetailsBoxes}>
+                              <div className="">
+                                <img className={styles.icon5} src={Calender} />
+                                <label className={styles.text} >{dateString}</label>
+                              </div>
+                              <div>
+                                <img className={styles.icon1} src={clock1} />
+                                <label className={styles.text}>15 Minutes</label>
+                              </div>
+                            </div>
+                          </div>
+                          <div className={styles.sampleBoxDetailsFooterIcons}>
+                            <img className={styles.icon3} title="View" src={newView} />
+                            <img className={styles.icon1} title="Leaderboard" src={leaderboard2} />
+                            <img className={styles.icon2} title="Print" src={print} />
+                          </div>
+                        </div>
+                      </div>
+                      <div className={styles.line}>
+                        
+                      </div>
+                    </>
                   ) : (
                     <div
                       className={styles.card}
@@ -1999,12 +1908,11 @@ const Dashboard = () => {
                                     </div>
                                     <div className="flex justify-end space-x-4">
                                       <button
-                                        className={`bg-red-500 text-white px-4 py-2 rounded ${
-                                          !isChecked
-                                            ? "opacity-50 cursor-not-allowed"
-                                            : ""
-                                        }`}
-                                        onClick={() =>setIsDeleteConfirmed(true)}
+                                        className={`bg-red-500 text-white px-4 py-2 rounded ${!isChecked
+                                          ? "opacity-50 cursor-not-allowed"
+                                          : ""
+                                          }`}
+                                        onClick={() => setIsDeleteConfirmed(true)}
                                         disabled={!isChecked}
                                       >
                                         Delete
@@ -2058,11 +1966,10 @@ const Dashboard = () => {
                                     </div>
                                     <div className="flex justify-end space-x-4">
                                       <button
-                                        className={`bg-red-500 text-white px-4 py-2 rounded ${
-                                          !isChecked1
-                                            ? "opacity-50 cursor-not-allowed"
-                                            : ""
-                                        }`}
+                                        className={`bg-red-500 text-white px-4 py-2 rounded ${!isChecked1
+                                          ? "opacity-50 cursor-not-allowed"
+                                          : ""
+                                          }`}
                                         onClick={() => setIsDisableConfirmed}
                                         disabled={!isChecked1}
                                       >
@@ -2078,29 +1985,6 @@ const Dashboard = () => {
                                   </Modal>
                                 </div>
                               )}
-                              {/* {userRole === "Quiz Master" && (
-                              <div className={styles.edit}>
-                                <img
-                                  className={styles.editimage}
-                                  src={Edit_button}
-                                  alt="Edit icon"
-                                />
-                                <span
-                                  className={styles.edittext}
-                                  onClick={() => handleDelete(index)}
-                                >
-                                  Delete
-                                </span>
-                              </div>
-                              )} */}
-                              {/* <div className={styles.share}>
-                                <img
-                                  className={styles.shareimage}
-                                  src={Share_button}
-                                  alt="Share icon"
-                                />
-                                <span className={styles.sharetext}>Share</span>
-                              </div> */}
                             </div>
                           )}
                         </div>

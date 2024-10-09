@@ -1274,7 +1274,7 @@ export default function editmanuly() {
         <main className="w-max-auto">
           <div className="w-[719px] h-[48px] absolute top-[30px] left-[200px] rounded-[10px] bg-[#E0FFE8] z-0">
             <h className="font-Poppins text-[#214082]  font-semibold text-[25px] leading-[37.5px] flex justify-center items-center mt-1l">
-              Configure and click next to type in your Quiz
+              Configure and click next to type in your Quiz 
             </h>
           </div>
 

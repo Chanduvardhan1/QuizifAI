@@ -36,6 +36,7 @@ import Refresh from "../assets/Images/quiz-type/Refresh.png";
 import RefreshOptions from "../assets/Images/quiz-type/Refresh-options.png";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "../quiz-type/quiz-type.css";
 // const options1 =[
 //   {label: "Numbers"},
 //   {label: "10-30"},
@@ -45,6 +46,9 @@ import "react-toastify/dist/ReactToastify.css";
 //   {label: "100-150"},
 
 // ]
+
+
+
 const options1 = [{ label: "Numbers" }];
 
 for (let i = 1; i <= 300; i++) {
@@ -159,6 +163,26 @@ const options9 = [
 ];
 
 export default function quiztype() {
+
+
+  const [isOpen1, setIsOpen1] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handlePlusClick = () => {
+    setIsOpen1(true);
+  };
+  const handleSave = () => {
+    console.log("Image uploaded:", selectedImage);
+    setIsOpen(false);
+    toast.success("Image uploaded successfully!");
+  };
+  const handleCancel = () => {
+    setIsOpen1(false);
+  };
+
+  const handleImageChange = (event) => {
+    setSelectedImage(event.target.files[0]);
+  };
   const [title, setTitle] = useState("");
   const [number, setNumber] = useState("");
   const [description, setDescription] = useState("");
@@ -220,7 +244,7 @@ export default function quiztype() {
   const [selectedClass, setSelectedClass] = useState('');
   const [classes, setClasses] = useState([]);
 
- 
+
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -233,12 +257,12 @@ export default function quiztype() {
         console.error('No authentication token found. Please log in again.');
         return;
       }
-      const response = await fetch('https://dev.quizifai.com:8010/categories&sub_categories/',{
+      const response = await fetch('https://dev.quizifai.com:8010/categories&sub_categories/', {
         headers: {
           'Authorization': `Bearer ${authToken}`, // Include the auth token in the Authorization header
         },
       });
-  
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -259,7 +283,7 @@ export default function quiztype() {
       }
     }
   }, [categories]);
-  
+
   useEffect(() => {
     if (subCategories.length > 0) {
       const generalSubCategory = subCategories.find(subCategory => subCategory === 'General');
@@ -307,13 +331,13 @@ export default function quiztype() {
         console.error('No authentication token found. Please log in again.');
         return;
       }
-      const response = await fetch('https://dev.quizifai.com:8010/courses-clsses/',{
+      const response = await fetch('https://dev.quizifai.com:8010/courses-clsses/', {
 
         headers: {
           'Authorization': `Bearer ${authToken}`, // Include the auth token in the Authorization header
         },
       });
-  
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -369,16 +393,16 @@ export default function quiztype() {
     try {
       const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
 
-  if (!authToken) {
-    console.error('No authentication token found');
-    return;
-  }
-      const response = await fetch('https://dev.quizifai.com:8010/complexities/',{
+      if (!authToken) {
+        console.error('No authentication token found');
+        return;
+      }
+      const response = await fetch('https://dev.quizifai.com:8010/complexities/', {
         headers: {
           'Authorization': `Bearer ${authToken}`, // Include the auth token in the Authorization header
         },
       });
-  
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -618,7 +642,7 @@ export default function quiztype() {
   };
   const handleNext = async () => {
     try {
-         const user_id = localStorage.getItem('user_id');
+      const user_id = localStorage.getItem('user_id');
 
       // Check if user_id is retrieved successfully
       if (!user_id) {
@@ -631,7 +655,7 @@ export default function quiztype() {
         throw new Error('No authentication token found');
       }
       const questionDuration = calculateQuizDuration();
-      
+
       const response = await fetch(`https://dev.quizifai.com:8010/crt_quiz_mnlly`, {
         method: "POST",
         headers: {
@@ -656,7 +680,7 @@ export default function quiztype() {
           available_from: availablefrom,
           disabled_on: disabledon,
           quiz_total_marks: quiztotalmarks,
-          user_id:user_id,
+          user_id: user_id,
           questions: questions.map((question) => ({
             question_text: question.question_text,
             question_weightage: calculateWeightage(numQuestions, quiztotalmarks),
@@ -671,15 +695,15 @@ export default function quiztype() {
       });
       const responseData = await response.json();
       console.log(responseData, "data");
-  
+
       if (response.ok && responseData.response === "success") {
         // Assuming router and state setter are defined properly
-     
+
         navigate("/quizcreated", { state: { quizData: responseData } });
       } else {
         if (responseData.detail) {
           const errorDetails = responseData.detail;
-  
+
           // Check for specific error types and locations
           if (errorDetails.some(error => error.type === "missing" && error.loc[2] === "num_questions")) {
             toast.error("Please provide the number of questions for the quiz.");
@@ -697,7 +721,7 @@ export default function quiztype() {
           toast.error("An error occurred while creating the quiz.");
         }
       }
-       
+
     } catch (error) {
       console.error("Type-Quiz failed:", error);
       setErrorMessage("An error occurred while choosing the type of the quiz");
@@ -710,7 +734,7 @@ export default function quiztype() {
       setdisabledon('');
     }
   };
-  
+
   const handleDisabledOnChange = (e) => {
     const newDisabledOn = e.target.value;
     if (availablefrom && newDisabledOn < availablefrom) {
@@ -819,10 +843,10 @@ export default function quiztype() {
     return Math.ceil(duration / numQuestions) * 60;
   };
   const Back = () => {
-    
+
     navigate("/create-quiz");
-  
-};
+
+  };
   return (
     <>
       <div>
@@ -903,14 +927,14 @@ export default function quiztype() {
             </a>
           </div> */}
           <Navigation />
-          <ToastContainer/>
+          <ToastContainer />
         </header>
         <div className="absolute top-[30px] left-[1260px] cursor-pointer text-[#eeb600f0] " onClick={Back}><MdOutlineCancel /></div>
         {!showRegistrationSuccess && (
           <main className="w-max-auto">
             <div className="w-[79%] p-[5px] absolute top-[30px] left-[200px] rounded-[10px] bg-[#fee2e2] z-0">
               <h className="font-Poppins font-semibold text-[20px] leading-[37.5px] text-[#214082] flex justify-center items-center mt-1l">
-              Finalize the configuration and click 'Next' to proceed with adding your quiz questions.
+                Finalize the configuration and click 'Next' to proceed with adding your quiz questions.
               </h>
             </div>
             <div className="flex">
@@ -948,7 +972,7 @@ export default function quiztype() {
                 <input
                   type="number"
                   className="w-[135px] h-[35px] border-solid border-[#B8BBC2] border-[1.8px] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer"
-                  placeholder="No of question "
+                  placeholder="No of question"
                   value={numQuestions}
                   onChange={(e) => {
                     const value = parseInt(e.target.value);
@@ -966,7 +990,7 @@ export default function quiztype() {
                     );
                   }}
                 />
-              </div>
+                 </div>
               {/* <div className=" rounded-lg absolute top-[99px] left-[1200px]">
               <select className="w-[135px] border-solid border-[#B8BBC2] border-[1.8px] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer" 
               onChange={handleSelect1} value={number}>
@@ -1013,24 +1037,24 @@ export default function quiztype() {
                 >
                   <option value="" disabled>Select a category</option>
   {/* Populate options with categories sorted alphabetically */}
-  {/* {categoryOptions.sort().map((category, index) => (
+                {/* {categoryOptions.sort().map((category, index) => (
     <option key={index} value={category}>
       {category}
     </option>
   ))}
                 </select>  */}
-                      <select
-        className="w-[260px] h-[35px] border-solid border-[1px] border-[#B8BBC2] p-2 rounded-md cursor-pointer text-[12px]"
-        value={selectedCategory}
-        onChange={handleSelectCategory}
-      >
-        <option value="" disabled>Select a category</option>
-        {sortedCategories.map((category) => (
-    <option key={category.category_id} value={category.category_name}>
-      {category.category_name}
-    </option>
-  ))}
-      </select>
+                <select
+                  className="w-[260px] h-[35px] border-solid border-[1px] border-[#B8BBC2] p-2 rounded-md cursor-pointer text-[12px]"
+                  value={selectedCategory}
+                  onChange={handleSelectCategory}
+                >
+                  <option value="" disabled>Select a category</option>
+                  {sortedCategories.map((category) => (
+                    <option key={category.category_id} value={category.category_name}>
+                      {category.category_name}
+                    </option>
+                  ))}
+                </select>
 
               </div>
 
@@ -1068,24 +1092,24 @@ export default function quiztype() {
                 >
                   <option value="" disabled>Select a subcategory</option>
                   {/* Populate options with subcategories */}
-                  {/* {subCategoryOptions.map((subCategory, index) => (
+                {/* {subCategoryOptions.map((subCategory, index) => (
                     <option key={index} value={subCategory}>
                       {subCategory}
                     </option>
                   ))}
                 </select>  */}
-                  <select
-        className="w-[260px] h-[35px] text-[12px]  border-solid border-[#B8BBC2] px-3 rounded-md cursor-pointer"
-        onChange={handleSelectSubCategory}
-        value={selectedSubCategory}
-      >
-        <option value="" disabled>Select a subcategory</option>
-        {subCategories.map((subCategory, index) => (
-          <option key={index} value={subCategory}>
-            {subCategory}
-          </option>
-        ))}
-      </select>
+                <select
+                  className="w-[260px] h-[35px] text-[12px]  border-solid border-[#B8BBC2] px-3 rounded-md cursor-pointer"
+                  onChange={handleSelectSubCategory}
+                  value={selectedSubCategory}
+                >
+                  <option value="" disabled>Select a subcategory</option>
+                  {subCategories.map((subCategory, index) => (
+                    <option key={index} value={subCategory}>
+                      {subCategory}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
@@ -1107,24 +1131,24 @@ export default function quiztype() {
               >
                 <option value="" disabled>Select a course</option>
                 {/* Populate options with courses */}
-                {/* {courseOptions.map((course, index) => (
+              {/* {courseOptions.map((course, index) => (
                   <option key={index} value={course}>
                     {course}
                   </option>
                 ))}
               </select>  */}
-      <select
-        className="w-[260px] h-[35px] border-solid  text-[12px] border-[1px] border-[#B8BBC2] p-2 rounded-md cursor-pointer"
-        value={selectedCourse}
-        onChange={handleSelectCourse}
-      >
-        <option value="" disabled>Select a course</option>
-        {courses.map(course => (
-          <option key={course.course_id} value={course.course_name}>
-            {course.course_name}
-          </option>
-        ))}
-      </select>
+              <select
+                className="w-[260px] h-[35px] border-solid  text-[12px] border-[1px] border-[#B8BBC2] p-2 rounded-md cursor-pointer"
+                value={selectedCourse}
+                onChange={handleSelectCourse}
+              >
+                <option value="" disabled>Select a course</option>
+                {courses.map(course => (
+                  <option key={course.course_id} value={course.course_name}>
+                    {course.course_name}
+                  </option>
+                ))}
+              </select>
 
             </div>
 
@@ -1147,19 +1171,19 @@ export default function quiztype() {
                   </option>
                 ))}
               </select> */}
-         <select
-        className="w-[260px] h-[35px] border-solid border-[#B8BBC2] px-3  text-[12px] rounded-md cursor-pointer"
-        onChange={handleSelectClass}
-        value={selectedClass}
-        disabled={classes.length === 0}
-      >
-        <option value="" disabled>Select a class</option>
-        {classes.map((className, index) => (
-          <option key={index} value={className}>
-            {className}
-          </option>
-        ))}
-      </select>
+              <select
+                className="w-[260px] h-[35px] border-solid border-[#B8BBC2] px-3  text-[12px] rounded-md cursor-pointer"
+                onChange={handleSelectClass}
+                value={selectedClass}
+                disabled={classes.length === 0}
+              >
+                <option value="" disabled>Select a class</option>
+                {classes.map((className, index) => (
+                  <option key={index} value={className}>
+                    {className}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="flex">
@@ -1202,18 +1226,18 @@ export default function quiztype() {
                     </option>
                   ))}
                 </select> */}
-                    <select
-        className="w-[264px] h-[35px] p-2 rounded-md cursor-pointer text-[12px]"
-        onChange={handleSelectComplexity}
-        value={selectedComplexity}
-      >
-        <option value="" disabled>Complexities</option>
-        {complexities.map((complexity, index) => (
-          <option key={index} value={complexity}>
-            {complexity}
-          </option>
-        ))}
-      </select>
+                <select
+                  className="w-[264px] h-[35px] p-2 rounded-md cursor-pointer text-[12px]"
+                  onChange={handleSelectComplexity}
+                  value={selectedComplexity}
+                >
+                  <option value="" disabled>Complexities</option>
+                  {complexities.map((complexity, index) => (
+                    <option key={index} value={complexity}>
+                      {complexity}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
@@ -1234,7 +1258,7 @@ export default function quiztype() {
                     value={selectedValue}
                     onChange={handleDropdownChange}
                   >
-                     <option value="" disabled>select</option>
+                    <option value="" disabled>select</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -1254,7 +1278,7 @@ export default function quiztype() {
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                   Quiz Duration<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
-                
+
               </div>
 
               <div className=" rounded-lg w-[166px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[520px] left-[498px]">
@@ -1315,15 +1339,15 @@ export default function quiztype() {
               </div>
 
               <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[520px] left-[1020px]">
-              <select
-        className="w-[260px] h-[35px] px-3 rounded-md cursor-pointer text-[12px]"
-        onChange={handleSelect8}
-        value={timings}
-      >
-        {options8.map((options8, index) => (
-          <option key={index}>{options8.label}</option>
-        ))}
-      </select>
+                <select
+                  className="w-[260px] h-[35px] px-3 rounded-md cursor-pointer text-[12px]"
+                  onChange={handleSelect8}
+                  value={timings}
+                >
+                  {options8.map((options8, index) => (
+                    <option key={index}>{options8.label}</option>
+                  ))}
+                </select>
               </div>
             </div>
 
@@ -1335,7 +1359,7 @@ export default function quiztype() {
 
             <div className="absolute top-[584px] left-[498px]">
               <input
-              type="date"
+                type="date"
                 className="rounded-lg w-[166px] h-[35px]  border-solid border-[#B8BBC2] border-[1.8px]
               text-[#9696BB] leading-[22.5px] text-[15px] font-medium  px-4"
                 placeholder="YYYY-MM-DD"
@@ -1352,7 +1376,7 @@ export default function quiztype() {
 
             <div className=" absolute top-[584px] left-[1020px]">
               <input
-              type="date"
+                type="date"
                 className="rounded-lg w-[156px] h-[35px]  border-solid border-[#B8BBC2] border-[1.8px]
               text-[#9696BB] leading-[22.5px] text-[15px] font-medium  px-4"
                 placeholder="YYYY-MM-DD"
@@ -1389,10 +1413,52 @@ export default function quiztype() {
             </div> */}
               <div className="w-[174px] h-[30px] absolute top-[660px] left-[820px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Quiz total marks<span className="required ml-[1px] text-red-500">*</span>
+                  Quiz total marks <span className="required ml-[1px] text-red-500">*</span>
                 </h1>
-              </div>
+                <div className="ml-[-219%] mt-[27%]">
+                  <div
+                    style={{
+                      width: "50px",
+                      height: "48px",
+                      border: "1px solid black",
+                      margin_top: "27%",                      
+                      
 
+                    }}
+                   >
+                    <div
+                      style={{
+                        fontSize: "24px",
+                        cursor: "pointer",
+                        textAlign:"center"
+                      }}
+                      onClick={handlePlusClick}
+                    >
+                      +
+                    </div>
+                   </div>
+
+                   {isOpen1 && (
+                    <div
+                      style={{
+                        width:"270px",
+                        transform: "translate(-28%, -50%)",
+                        backgroundColor: "white",
+                        padding: "20px",
+                        border: "1px solid black",
+                        zIndex: 1,
+                      }}
+                    >
+                      <h2>Upload Image</h2>
+                      <input className="mt-[17px]" type="file" onChange={handleImageChange} />
+                      <button className="mt-[8%]" onClick={handleSave}>Save</button>
+                      <button className =" cancel" onClick={handleCancel}>Cancel</button>
+                    </div>
+                   )}
+                </div>
+
+              </div>
+              
               <div className="absolute top-[653px] left-[1020px]">
                 <input
                   className="rounded-lg w-[156px] h-[35px] flex border-solid border-[#B8BBC2] border-[1.8px]
@@ -1411,9 +1477,10 @@ export default function quiztype() {
                 className="font-Poppins font-medium text-[15px] leading-[22.5px] flex justify-start px-4 py-1 text-white"
               >
                 Next
+
                 <img
                   className="w-[24px] h-[24px] ml-4"
-                  alt="next icon"
+                  alt="<next> icon"
                   src={Next}
                 />
               </button>
@@ -1433,43 +1500,43 @@ export default function quiztype() {
 
             {/* Questions and options */}
             <div className="absolute top-[210px] left-[298px] w-[1212px] h-[450px] ">
-            {questions.map((question, questionIndex) => (
-  <div key={questionIndex} className="mb-8 ">
-    {/* Input field for question */}
-    <div className="flex items-center mb-4">
-      <div className="mr-2 text-xl font-bold text-[#214082]">
-        {questionIndex + 1}.
-      </div>
-      <input
-        type="text"
-        placeholder={`Question`}
-        className="w-[70%] h-[40px] text-[#214082] font-bold rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] p-[10px] text-[14px]"
-        value={question.question_text}
-        onChange={(e) => {
-          const newQuestions = [...questions];
-          newQuestions[questionIndex].question_text = e.target.value;
-          setQuestions(newQuestions);
-        }}
-      />
- 
-    {/* Input field for question weightage */}
-    <input
-        type="number"
-        placeholder="Marks"
-        className="w-[85px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
-        value={calculateWeightage(numQuestions, quiztotalmarks)}
-        onChange={(e) => {
-          const value = parseInt(e.target.value);
-          // Update the question_weightage in all questions
-          const updatedQuestions = questions.map(question => ({
-            ...question,
-            question_weightage: value
-          }));
-          setQuestions(updatedQuestions);
-        }}
-      />
-    {/* Input field for question duration */}
-    {/* <input
+              {questions.map((question, questionIndex) => (
+                <div key={questionIndex} className="mb-8 ">
+                  {/* Input field for question */}
+                  <div className="flex items-center mb-4">
+                    <div className="mr-2 text-xl font-bold text-[#214082]">
+                      {questionIndex + 1}.
+                    </div>
+                    <input
+                      type="text"
+                      placeholder={`Question`}
+                      className="w-[70%] h-[40px] text-[#214082] font-bold rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] p-[10px] text-[14px]"
+                      value={question.question_text}
+                      onChange={(e) => {
+                        const newQuestions = [...questions];
+                        newQuestions[questionIndex].question_text = e.target.value;
+                        setQuestions(newQuestions);
+                      }}
+                    />
+
+                    {/* Input field for question weightage */}
+                    <input
+                      type="number"
+                      placeholder="Marks"
+                      className="w-[85px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
+                      value={calculateWeightage(numQuestions, quiztotalmarks)}
+                      onChange={(e) => {
+                        const value = parseInt(e.target.value);
+                        // Update the question_weightage in all questions
+                        const updatedQuestions = questions.map(question => ({
+                          ...question,
+                          question_weightage: value
+                        }));
+                        setQuestions(updatedQuestions);
+                      }}
+                    />
+                    {/* Input field for question duration */}
+                    {/* <input
       type="number"
       placeholder="Duration"
       className="w-[130px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
@@ -1480,91 +1547,89 @@ export default function quiztype() {
         setQuestions(newQuestions);
       }}
     /> */}
-      {timings === "No" ? (
-        <input
-      
-          type="number"
-          placeholder="Duration"
-          className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal hidden"
-          value={duration}
-          onChange={(e) => setDuration(parseInt(e.target.value))}
-          disabled
-        />
-      ) : timings === "All questions in same time" ? (
-        // Calculate and prepopulate quiz duration
-        <input
-          type="number"
-          placeholder="Duration"
-          className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
-          value={calculateQuizDuration()}
-          onChange={() => {}}
-          disabled
-        />
-      ) : (
-        // Each question has different time
-        <select
-        className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[2px] font-normal"
-        value={questionDuration}
-        onChange={(e) => {
-          const newQuestionDuration = parseInt(e.target.value);
-          setQuestionDuration(newQuestionDuration); // Update questionDuration state
-          // Update the corresponding question's duration in the questions array
-          const updatedQuestions = questions.map((question, index) => {
-            if (index === questionIndex) {
-              return { ...question, question_duration: newQuestionDuration };
-            }
-            return question;
-          });
-          setQuestions(updatedQuestions);
-        }}
-      >
-        {[...Array(60)].map((_, index) => ( // Create options for 10 to 600 seconds
-          <option key={index} value={(index + 1) * 5}>{(index + 1) * 5} seconds</option>
-        ))}
-      </select>
-        
-      )}
-       </div>
-    {/* Input fields for options */}
-    {question.options.map((option, optionIndex) => (
-      <div key={optionIndex} className="flex items-center mb-2 ">
-        <div className="mr-2 text-[14px] font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#B8BBC2] flex justify-center text-center  justify-items-center items-center">
-        {String.fromCharCode(97 + optionIndex).toUpperCase()}
-        </div>
-        <input
-          type="text"
-          placeholder={`Option Text`}
-          className="w-[70%]  rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal text-[12px]"
-          value={option.answer_option_text}
-          onChange={(e) => {
-            const newOptions = [...questions[questionIndex].options];
-            newOptions[optionIndex].answer_option_text = e.target.value;
-            const newQuestions = [...questions];
-            newQuestions[questionIndex].options = newOptions;
-            setQuestions(newQuestions);
-          }}
-        />
-        {/* Add correct answer flag input */}
-        <button
-          className={`mr-2 ${
-            option.correct_answer_flag ? "bg-green-500" : "bg-gray-300"
-          } rounded-full w-10 h-[20px] transition-colors duration-300 focus:outline-none`}
-          onClick={() =>
-            handleToggleButton(questionIndex, optionIndex)
-          }
-        >
-          <span
-            className={`block ${
-              option.correct_answer_flag ? "translate-x-5" : "translate-x-0"
-            } transform -translate-y-1.5 w-[18px] h-[18px] relative top-[6px] bg-white rounded-full shadow-md transition-transform duration-300`}
-          ></span>
-        </button>
-      </div>
-    ))}
-  </div>
-))}
+                    {timings === "No" ? (
+                      <input
 
-<div className=" flex justify-between items-center pr-[330px] ">
+                        type="number"
+                        placeholder="Duration"
+                        className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal hidden"
+                        value={duration}
+                        onChange={(e) => setDuration(parseInt(e.target.value))}
+                        disabled
+                      />
+                    ) : timings === "All questions in same time" ? (
+                      // Calculate and prepopulate quiz duration
+                      <input
+                        type="number"
+                        placeholder="Duration"
+                        className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
+                        value={calculateQuizDuration()}
+                        onChange={() => { }}
+                        disabled
+                      />
+                    ) : (
+                      // Each question has different time
+                      <select
+                        className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[2px] font-normal"
+                        value={questionDuration}
+                        onChange={(e) => {
+                          const newQuestionDuration = parseInt(e.target.value);
+                          setQuestionDuration(newQuestionDuration); // Update questionDuration state
+                          // Update the corresponding question's duration in the questions array
+                          const updatedQuestions = questions.map((question, index) => {
+                            if (index === questionIndex) {
+                              return { ...question, question_duration: newQuestionDuration };
+                            }
+                            return question;
+                          });
+                          setQuestions(updatedQuestions);
+                        }}
+                      >
+                        {[...Array(60)].map((_, index) => ( // Create options for 10 to 600 seconds
+                          <option key={index} value={(index + 1) * 5}>{(index + 1) * 5} seconds</option>
+                        ))}
+                      </select>
+
+                    )}
+                  </div>
+                  {/* Input fields for options */}
+                  {question.options.map((option, optionIndex) => (
+                    <div key={optionIndex} className="flex items-center mb-2 ">
+                      <div className="mr-2 text-[14px] font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#B8BBC2] flex justify-center text-center  justify-items-center items-center">
+                        {String.fromCharCode(97 + optionIndex).toUpperCase()}
+                      </div>
+                      <input
+                        type="text"
+                        placeholder={`Option Text`}
+                        className="w-[70%]  rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal text-[12px]"
+                        value={option.answer_option_text}
+                        onChange={(e) => {
+                          const newOptions = [...questions[questionIndex].options];
+                          newOptions[optionIndex].answer_option_text = e.target.value;
+                          const newQuestions = [...questions];
+                          newQuestions[questionIndex].options = newOptions;
+                          setQuestions(newQuestions);
+                        }}
+                      />
+                      {/* Add correct answer flag input */}
+                      <button
+                        className={`mr-2 ${option.correct_answer_flag ? "bg-green-500" : "bg-gray-300"
+                          } rounded-full w-10 h-[20px] transition-colors duration-300 focus:outline-none`}
+                        onClick={() =>
+                          handleToggleButton(questionIndex, optionIndex)
+                        }
+                      >
+                        <span
+                          className={`block ${option.correct_answer_flag ? "translate-x-5" : "translate-x-0"
+                            } transform -translate-y-1.5 w-[18px] h-[18px] relative top-[6px] bg-white rounded-full shadow-md transition-transform duration-300`}
+                        ></span>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ))}
+
+              <div className=" flex justify-between items-center pr-[330px] ">
                 <button
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNext2}

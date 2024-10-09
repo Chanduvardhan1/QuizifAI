@@ -360,7 +360,7 @@ function handleViewImage(event) {
               onClick={handleImageClick}
             />
             <div className="absolute bottom-full left-0 bg-white text-black rounded-sm text-xs w-max h-max px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <p className="cursor-pointer text-[10px]" onClick={() => setModalVisible(true)}>Replace Image</p>
+              <p className="cursor-pointer text-[10px]" onClick={() => setModalVisible(true)}>Replace Image </p>
               <p className="text-[10px] cursor-pointer" onClick={() => window.open(image, '_blank')}>View Image</p>
               <p className="text-[10px] cursor-pointer" onClick={handleDeleteImage}>Delete Image</p>
             </div>
@@ -386,7 +386,7 @@ function handleViewImage(event) {
               className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
               onClick={() => fileInputRef.current.click()}
             >
-              Upload Image
+              Upload Image 
             </button>
             <input
               type="file"

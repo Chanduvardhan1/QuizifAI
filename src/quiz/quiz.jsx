@@ -1041,7 +1041,7 @@ const Quiz = () => {
                                       )
                                     }
                                   >
-                                    View
+                                    View 
                                   </span>
                                 </div>
                                 {quizItem.attempts_count <
@@ -1843,8 +1843,8 @@ const Quiz = () => {
                           {/* <div>Created On</div> */}
                         </div>
                         {/* <div style={{ backgroundColor: "#EFEFEF", padding: "2px 0" }}>
-              <div className="h-[10px] w-full bg-[#D9D9D9]"></div>
-            </div> */}
+                   <div className="h-[10px] w-full bg-[#D9D9D9]"></div>
+                   </div> */}
 
                         <div className="relative group mt-1 ">
                           <span className="mt-[6px] text-wrap text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate line-clamp-4">

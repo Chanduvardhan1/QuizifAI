@@ -76,8 +76,8 @@ const Signup = () => {
   const [showSecondButton, setShowSecondButton] = useState(false);
   const [countdown, setCountdown] = useState(5); // Initial countdown value
   const [terms, setTerms] = useState("");
-  const [showVerifyButton, setShowVerifyButton] = useState(false); 
-  const [showVerifyButton1, setShowVerifyButton1] = useState(false); 
+  const [showVerifyButton, setShowVerifyButton] = useState(false);
+  const [showVerifyButton1, setShowVerifyButton1] = useState(false);
   const [responseMessage1, setResponseMessage1] = useState("");
 
   const navigate = useNavigate();
@@ -102,7 +102,7 @@ const Signup = () => {
       state: { mobile, emailOrMobile },
     });
   }
-  
+
   useEffect(() => {
     let timer;
     if (resendTime > 0) {
@@ -165,7 +165,7 @@ const Signup = () => {
   };
   const handleSignUp1 = () => {
     let hasError = false;
-   
+
     setResponseMessage("");
     setResponseMessage1("");
     setTerms("");
@@ -178,20 +178,20 @@ const Signup = () => {
     } else {
       setResponseMessage1("");
     }
-  
-  if (!hasError) {
-    if (!termsChecked) {
+
+    if (!hasError) {
+      if (!termsChecked) {
         setTerms("Please agree to the terms and conditions");
         hasError = true;
-    } else {
+      } else {
         setTerms("");
+      }
     }
-}
 
-if (hasError) {
-    return;
-}
-// localStorage.setItem('emailOrMobile', emailOrMobile);
+    if (hasError) {
+      return;
+    }
+    // localStorage.setItem('emailOrMobile', emailOrMobile);
     setResendAvailable(false); // Disable resend button after sending OTP
     setResendTime(10 * 60);
     const userData = {
@@ -217,7 +217,7 @@ if (hasError) {
       .then((data) => {
         // console.log('Sign-up successful:', data);
 
-        if (loginMethod === 'email' && data.response === 'success' &&  data.response_message === 'Please verify your email to proceed' ) {
+        if (loginMethod === 'email' && data.response === 'success' && data.response_message === 'Please verify your email to proceed') {
           setResponseMessage(data.response_message);
           setShowOtpField(true);
           setShowVerifyButton(true);
@@ -228,32 +228,32 @@ if (hasError) {
           setResponseMessage(data.response_message);
           setShowOtpField(true);
           setShowVerifyButton(true);
-        }  else if (
+        } else if (
           data.response === 'success' &&
           data.response_message === 'Account created successfully. Please check your email to verify your account.'
         ) {
           setResponseMessage(data.response_message);
           setShowOtpField(true);
           setShowVerifyButton(true);
-        } 
+        }
         else if (
           data.response === 'fail' &&
           data.response_message === 'Email is already registered. Please log in or use a different email.'
         ) {
           setResponseMessage("Email is already registered. Please login or use a different email.");
-        }  else if (
+        } else if (
           data.response === 'fail' &&
           data.response_message === 'Please provide a valid email address to proceed with your account.'
         ) {
           setTerms(data.response_message);
-        }  else if (
+        } else if (
           data.response === 'fail' &&
-          data.response_message ==='Please verify otp to complete your registration and activate your account.'
+          data.response_message === 'Please verify otp to complete your registration and activate your account.'
         ) {
           setResponseMessage(data.response_message);
           setShowOtpField(true);
           setShowVerifyButton(true);
-        } 
+        }
         else if (
           data.response === 'fail' &&
           data.response_message === 'Error while creating an account'
@@ -278,23 +278,23 @@ if (hasError) {
         }
       });
   };
- 
+
   const sendOTP = () => {
     setShowOtpField(true);
   };
   const handleInputChange = (field, value) => {
     if (field === 'emailOrMobile') {
-        setemailOrMobile(value.trim().toLowerCase());  // Trim spaces and convert to lowercase
+      setemailOrMobile(value.trim().toLowerCase());  // Trim spaces and convert to lowercase
     } else if (field === 'name') {
-        if (validateName(value.trim())) {
-            setResponseMessage1("");
-        }
-        setName(value);
+      if (validateName(value.trim())) {
+        setResponseMessage1("");
+      }
+      setName(value);
     } else if (field === 'termsChecked') {
-        setTermsChecked(value);
-        setTerms("");
+      setTermsChecked(value);
+      setTerms("");
     }
-};
+  };
 
   //   let valid = true;
   //   const newErrors = {};
@@ -335,7 +335,7 @@ if (hasError) {
   //   return valid;
   // };
   const handleSignUp2 = () => {
-  
+
     let hasError = false;
     setResponseMessage("");
     setResponseMessage1("");
@@ -349,27 +349,27 @@ if (hasError) {
     } else {
       setResponseMessage1("");
     }
-  
-  if (!hasError) {
-    if (!termsChecked) {
+
+    if (!hasError) {
+      if (!termsChecked) {
         setTerms("Please agree to the terms and conditions");
         hasError = true;
-    } else {
+      } else {
         setTerms("");
+      }
     }
-}
 
-if (hasError) {
-    return;
-}
-// localStorage.setItem('mobile', mobile);
+    if (hasError) {
+      return;
+    }
+    // localStorage.setItem('mobile', mobile);
     setResendAvailable1(false); // Disable resend button after sending OTP
     setResendTime1(10 * 60);
     const userData = {
       signup_option: loginMethod,
       user_name: name1,
       email_or_mobile: mobile,
-      
+
     };
 
     fetch("https://dev.quizifai.com:8010/signup", {
@@ -397,7 +397,7 @@ if (hasError) {
         ) {
           setResponseMessage("Mobile Number is registered. Please verify your OTP");
           setShowOtpField1(true);
-          setShowVerifyButton1(true); 
+          setShowVerifyButton1(true);
         } else if (
           data.response === "success"
         ) {
@@ -407,7 +407,7 @@ if (hasError) {
           seMessage(data.response_message)
           // setGreen("Account Has Been Created OTP Successfully Sent Please verify your OTP")
           setShowOtpField1(true);
-          setShowVerifyButton1(true); 
+          setShowVerifyButton1(true);
         } else if (
           data.response === "fail" &&
           data.response_message === "Mobile number is invalid to proceed with your account."
@@ -417,7 +417,7 @@ if (hasError) {
           data.response === "fail" &&
           data.response_message ===
           "Mobile is already registered. Please log in or use a different mobile number."
-          
+
         ) {
           setResponseMessage("Mobile is already registered. Please login or use a different mobile number.");
           // navigate("/Register");
@@ -434,13 +434,13 @@ if (hasError) {
         else if (
           data.response === "fail" &&
           data.data ===
-            "Mobile Number is Invalid."
-          
+          "Mobile Number is Invalid."
+
         ) {
-       
+
           setTerms(data.data);
         }
-         else {
+        else {
           setTerms(data.data);
         }
       })
@@ -467,10 +467,10 @@ if (hasError) {
       }
       setName1(value);
     } else if (field === 'termsChecked') {
-        setTermsChecked(value);
-        setTerms("");
+      setTermsChecked(value);
+      setTerms("");
     }
-};
+  };
   const handleVerification = async () => {
     setResponseMessage("");
     setResponseMessage1("");
@@ -514,15 +514,15 @@ if (hasError) {
       } else if (
         data.response === "fail" &&
         data.response_message ===
-          "Invalid or incorrect OTP."
-        
+        "Invalid or incorrect OTP."
+
       ) {
-     
+
         setTerms(data.response_message);
-      }else {
+      } else {
         // console.log("Response other than success:", data.response);
       }
-  
+
     } catch (error) {
       // console.error("Error:", error);
       // Optionally show an error message to the user
@@ -530,7 +530,7 @@ if (hasError) {
     }
   };
   const handleVerification1 = async () => {
-    setResponseMessage(""); 
+    setResponseMessage("");
     setResponseMessage1("");
     setTerms("");
     if (!termsChecked) {
@@ -565,30 +565,30 @@ if (hasError) {
       }
       const data = await response.json();
 
-      if (data.response === "success"  && data.response_message ==="Email is Verified, you can proceed with registration.") {
-     
+      if (data.response === "success" && data.response_message === "Email is Verified, you can proceed with registration.") {
+
         setShowRegistrationSuccess(true);
-      }  else if (
+      } else if (
         data.response === "fail" &&
         data.response_message ===
-          "Invalid or incorrect OTP."
-        
+        "Invalid or incorrect OTP."
+
       ) {
-     
+
         setTerms(data.response_message);
-      }else if (
+      } else if (
         data.response === "fail" &&
         data.response_message ===
-          "Please click here to complete your registration and activate your account."
-        
+        "Please click here to complete your registration and activate your account."
+
       ) {
-     
+
         setTerms(data.response_message);
       }
       else {
         // console.log("Response other than success:", data.response);
       }
-  
+
     } catch (error) {
       // console.error("Error:", error);
       // Optionally show an error message to the user
@@ -758,7 +758,7 @@ if (hasError) {
 
     setMobileValid(isValidMobile);
   };
- 
+
   //   first_name: "",
   //   middle_name: "",
   //   last_name: "",
@@ -936,8 +936,8 @@ if (hasError) {
 
   return (
     <div>
-      <HeaderSection/>
-    <div className="container" style={{display:"flex"}}>
+      <HeaderSection />
+      <div className="container" style={{ display: "flex" }}>
 
         <div className={styles.leftSection}>
           <div className={styles1.logo2}>
@@ -960,7 +960,7 @@ if (hasError) {
                 Account has been successfully verified
                 <br />
                 you will be automatically redirecting to register page in{" "}
-                {countdown} <span style={{ color: "blue",fontWeight:"700" }}>seconds...</span>
+                {countdown} <span style={{ color: "blue", fontWeight: "700" }}>seconds...</span>
               </p>
               <p className={styles.redirectLink}>
                 Click{" "}
@@ -975,135 +975,96 @@ if (hasError) {
               </p>
             </div>
           )}
-        {/* Sign up form */}
-        {!showRegisterForm && !showRegistrationSuccess && (
-          <>
-            <div className={styles.Signup}>
-              <div className={styles.SignupHeader}>
-                <h1 className={styles.SignupTitle}>Sign Up</h1>
-                {/* <p className={styles.SignupDescription}>
+          {/* Sign up form */}
+          {!showRegisterForm && !showRegistrationSuccess && (
+            <>
+              <div className={styles.Signup}>
+                <div className={styles.SignupHeader}>
+                  <h1 className={styles.SignupTitle}>Sign Up</h1>
+                  {/* <p className={styles.SignupDescription}>
                   Enter your details to register
                 </p> */}
-              </div>          
-            </div>
-          
-            <div className={styles.totalBox}>
-              <div className={styles.formContainer}>
-                <div className={styles.toggleOptions}>
-                  <div
-                    className={`${styles.toggleLabel} ${
-                      loginMethod === "email" ? styles.selected : ""
-                    }`}
-                    onClick={() => handleLoginMethodChange("email")}
-                  >
-                    Email
-                  </div>
-                  <div
-                    className={`${styles.toggleLabel} ${
-                      loginMethod === "mobile" ? styles.selected : ""
-                    }`}
-                    onClick={() => handleLoginMethodChange("mobile")}
-                  >
-                    Mobile
-                  </div>
-                  <div
-                    className={styles.selectedLine}
-                    style={{ left: loginMethod === "mobile" ? "50%" : "0" }}
-                  />
                 </div>
-                {/*  email content */}
-                {loginMethod === "email" && (
-                  <div className={styles.emailContent}>
-                    <div className={styles.inputContainer}>
-                      <div className={styles.inputWrapper}>
-                        <div
-                          className={styles.inputWithIcon}
-                          style={{ marginTop: "20px", marginRight: "90px" }}
-                        >
-                          <TextField
-                            id="name"
-                            label="Name"
-                            required
-                            variant="outlined"
-                            error={submitted && responseMessage1}
-                            value={name}
-                            onChange={(e) => handleInputChange('name', e.target.value)}
-                            className={styles.inputField}
-                            style={{ width: "325px", height: "50px" }}
-                            InputLabelProps={{
-                              style: { fontFamily: "poppins" },
-                            }}
-                            InputProps={{
-                              style: {
-                                backgroundImage: `url('/images/contact/first.png')`,
-                                backgroundSize: "25px 25px",
-                                backgroundPosition: "290px center",
-                                backgroundRepeat: "no-repeat",
-                                width: "325px",
-                                height: "50px",
-                                // backgroundColor: "#F0EFFF",
-                                border: "none",
-                                fontFamily: "poppins",
-                                paddingLeft: "0px",
-                                borderRadius: "10px",
-                              },
-                              autoComplete: "off",
-                            }}
-                          />
-                        </div>
-                        {errors.name && (
-                          <p className={styles.errormessage}>{errors.name}</p>
-                        )}
-                      </div>
-                      <div className={styles.inputWrapper}>
-                        <div
-                          className={styles.inputWithIcon}
-                          style={{ marginTop: "0px", marginRight: "90px" }}
-                        >
-                          <TextField
-                            id="email"
-                            required
-                            label="Email"
-                            error={submitted && responseMessage1}
-                            value={emailOrMobile}
-                            onChange={(e) => handleInputChange('emailOrMobile', e.target.value)}
-                            variant="outlined"
-                            className={styles.inputField}
-                            style={{ width: "325px", height: "50px" }}
-                            InputLabelProps={{
-                              style: { fontFamily: "poppins" },
-                            }}
-                            InputProps={{
-                              style: {
-                                backgroundImage: `url('/images/email/mail.png')`,
-                                backgroundSize: "19px 16px",
-                                backgroundPosition: "296px center",
-                                backgroundRepeat: "no-repeat",
-                                width: "325px",
-                                height: "50px",
-                                // backgroundColor: "#F0EFFF",
-                                border: "none",
-                                fontFamily: "poppins",
-                                paddingLeft: "0px",
-                                borderRadius: "10px",
-                              },
-                              autoComplete: "off",
-                            }}
-                          />
-                        </div>
-                        {errors.emailOrMobile && (
-                          <p className={styles.errormessage}>
-                            {errors.emailOrMobile}
-                          </p>
-                        )}
-                      </div>
-                      {showOtpField && (
-                        <div className={styles.verification}>
-                          <div className={styles.verificationcode}>
+              </div>
+
+              <div className={styles.totalBox}>
+                <div className={styles.formContainer}>
+                  <div className={styles.toggleOptions}>
+                    <div
+                      className={`${styles.toggleLabel} ${loginMethod === "email" ? styles.selected : ""
+                        }`}
+                      onClick={() => handleLoginMethodChange("email")}
+                    >
+                      Email
+                    </div>
+                    <div
+                      className={`${styles.toggleLabel} ${loginMethod === "mobile" ? styles.selected : ""
+                        }`}
+                      onClick={() => handleLoginMethodChange("mobile")}
+                    >
+                      Mobile
+                    </div>
+                    <div
+                      className={styles.selectedLine}
+                      style={{ left: loginMethod === "mobile" ? "50%" : "0" }}
+                    />
+                  </div>
+                  {/*  email content */}
+                  {loginMethod === "email" && (
+                    <div className={styles.emailContent}>
+                      <div className={styles.inputContainer}>
+                        <div className={styles.inputWrapper}>
+                          <div
+                            className={styles.inputWithIcon}
+                            style={{ marginTop: "20px", marginRight: "90px" }}
+                          >
                             <TextField
-                              label="Verification Code"
-                              value={otp}
-                              onChange={(e) => setOtp(e.target.value)}
+                              id="name"
+                              label="Name"
+                              required
+                              variant="outlined"
+                              error={submitted && responseMessage1}
+                              value={name}
+                              onChange={(e) => handleInputChange('name', e.target.value)}
+                              className={styles.inputField}
+                              style={{ width: "325px", height: "50px" }}
+                              InputLabelProps={{
+                                style: { fontFamily: "poppins" },
+                              }}
+                              InputProps={{
+                                style: {
+                                  backgroundImage: `url('/images/contact/first.png')`,
+                                  backgroundSize: "25px 25px",
+                                  backgroundPosition: "290px center",
+                                  backgroundRepeat: "no-repeat",
+                                  width: "325px",
+                                  height: "50px",
+                                  // backgroundColor: "#F0EFFF",
+                                  border: "none",
+                                  fontFamily: "poppins",
+                                  paddingLeft: "0px",
+                                  borderRadius: "10px",
+                                },
+                                autoComplete: "off",
+                              }}
+                            />
+                          </div>
+                          {errors.name && (
+                            <p className={styles.errormessage}>{errors.name}</p>
+                          )}
+                        </div>
+                        <div className={styles.inputWrapper}>
+                          <div
+                            className={styles.inputWithIcon}
+                            style={{ marginTop: "0px", marginRight: "90px" }}
+                          >
+                            <TextField
+                              id="email"
+                              required
+                              label="Email"
+                              error={submitted && responseMessage1}
+                              value={emailOrMobile}
+                              onChange={(e) => handleInputChange('emailOrMobile', e.target.value)}
                               variant="outlined"
                               className={styles.inputField}
                               style={{ width: "325px", height: "50px" }}
@@ -1112,7 +1073,7 @@ if (hasError) {
                               }}
                               InputProps={{
                                 style: {
-                                  // backgroundImage: `url('/images/email/mail.png')`,
+                                  backgroundImage: `url('/images/email/mail.png')`,
                                   backgroundSize: "19px 16px",
                                   backgroundPosition: "296px center",
                                   backgroundRepeat: "no-repeat",
@@ -1128,72 +1089,109 @@ if (hasError) {
                               }}
                             />
                           </div>
+                          {errors.emailOrMobile && (
+                            <p className={styles.errormessage}>
+                              {errors.emailOrMobile}
+                            </p>
+                          )}
                         </div>
-                      )}
-                
-                      <div className={styles1.checkbox1}> 
-                  <input
-                    type="checkbox"
-                    id="termsCheckbox"
-                    className={styles.checkboxInput1}
-                    style={{
-                      width: "15px",
-                      height: "15px",
-                    }}
-                    checked={termsChecked}
-                    onChange={(e) => handleInputChange('termsChecked', e.target.checked)}
-                  />
-                  <span className={styles.span1}>
-                    {" "}
-                    I agree with the{" "}
-                    <a className={styles.terms} href="/termsandconditions">
-                      terms and conditions
-                    </a>
-                  </span>
+                        {showOtpField && (
+                          <div className={styles.verification}>
+                            <div className={styles.verificationcode}>
+                              <TextField
+                                label="Verification Code"
+                                value={otp}
+                                onChange={(e) => setOtp(e.target.value)}
+                                variant="outlined"
+                                className={styles.inputField}
+                                style={{ width: "325px", height: "50px" }}
+                                InputLabelProps={{
+                                  style: { fontFamily: "poppins" },
+                                }}
+                                InputProps={{
+                                  style: {
+                                    // backgroundImage: `url('/images/email/mail.png')`,
+                                    backgroundSize: "19px 16px",
+                                    backgroundPosition: "296px center",
+                                    backgroundRepeat: "no-repeat",
+                                    width: "325px",
+                                    height: "50px",
+                                    // backgroundColor: "#F0EFFF",
+                                    border: "none",
+                                    fontFamily: "poppins",
+                                    paddingLeft: "0px",
+                                    borderRadius: "10px",
+                                  },
+                                  autoComplete: "off",
+                                }}
+                              />
+                            </div>
+                          </div>
+                        )}
 
-                
-                </div>
-                      {!showOtpField ? (
-                        <div className={styles.sendOTP}>
-                          <button
-                            onClick={handleSignUp1}
-                            className={styles.sendOTP1}
-                          >
-                            Send OTP
-                          </button>
-                        </div>
-                      ) : (
-                        <div className={styles.sendOTP}>
-                          <span className={styles.resendAvailable}>
+                        <div className={styles1.checkbox1}>
+                          <input
+                            type="checkbox"
+                            id="termsCheckbox"
+                            className={styles.checkboxInput1}
+                            style={{
+                              width: "15px",
+                              height: "15px",
+                            }}
+                            checked={termsChecked}
+                            onChange={(e) => handleInputChange('termsChecked', e.target.checked)}
+                          />
+                          <span className={styles.span1}>
                             {" "}
-                            {resendAvailable
-                              ? ""
-                              : ` (${formatTime(resendTime)})`}
+                            I agree with the{" "}
+                            <a className={styles.terms} href="/termsandconditions">
+                              terms and conditions
+                            </a>
                           </span>
-                          <button
-                            onClick={handleSignUp1}
-                            disabled={!resendAvailable}
-                            className={
-                              resendAvailable
-                                ? styles.sendOTP1
-                                : styles.disabledButton
-                            }
-                          >
-                            {resendAvailable ? "Resend OTP" : `Resend OTP `}
-                          </button>
-                        </div>
-                      )}
-                    
-                                      
-                    </div>
-                  </div>
-                )}
 
-                {/* Mobile content */}
-                {loginMethod === "mobile" && (
-                  <div className={styles.inputmobile}>
-                    <div className={styles1.Mobilecontent}>
-                      {/* <p
+
+                        </div>
+                        {!showOtpField ? (
+                          <div className={styles.sendOTP}>
+                            <button
+                              onClick={handleSignUp1}
+                              className={styles.sendOTP1}
+                            >
+                              Send OTP
+                            </button>
+                          </div>
+                        ) : (
+                          <div className={styles.sendOTP}>
+                            <span className={styles.resendAvailable}>
+                              {" "}
+                              {resendAvailable
+                                ? ""
+                                : ` (${formatTime(resendTime)})`}
+                            </span>
+                            <button
+                              onClick={handleSignUp1}
+                              disabled={!resendAvailable}
+                              className={
+                                resendAvailable
+                                  ? styles.sendOTP1
+                                  : styles.disabledButton
+                              }
+                            >
+                              {resendAvailable ? "Resend OTP" : `Resend OTP `}
+                            </button>
+                          </div>
+                        )}
+
+
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Mobile content */}
+                  {loginMethod === "mobile" && (
+                    <div className={styles.inputmobile}>
+                      <div className={styles1.Mobilecontent}>
+                        {/* <p
                       style={{
                         fontSize: "16px",
                         fontWeight: "bold",
@@ -1202,105 +1200,18 @@ if (hasError) {
                       }}
                     ></p> */}
 
-                      <div className={styles.inputWrapper}>
-                        <div
-                          className={styles.inputWithIcon}
-                          style={{ marginTop: "20px", marginRight: "90px" }}
-                        >
-                          <TextField
-                            id="name"
-                            required
-                            label="Name"
-                            type="text"
-                            variant="outlined"
-                            error={submitted1 && responseMessage1}
-                            className={styles.inputField}
-                            style={{ width: "325px", height: "50px" }}
-                            InputLabelProps={{
-                              style: { fontFamily: "poppins" },
-                            }}
-                            InputProps={{
-                              style: {
-                                backgroundImage: `url('/images/contact/first.png')`,
-                                backgroundSize: "25px 25px",
-                                backgroundPosition: "290px center",
-                                backgroundRepeat: "no-repeat",
-                                width: "325px",
-                                height: "50px",
-                                // backgroundColor: "#F0EFFF",
-                                border: "none",
-                                fontFamily: "poppins",
-                                paddingLeft: "0px",
-                                borderRadius: "10px",
-                              },
-                              autoComplete: "off",
-                            }}
-                            name="name"
-                            value={name1}
-                            onChange={(e) => handleInputChange1('name1', e.target.value)}
-                          />
-                        </div>
-                        {errors.name1 && (
-                          <p className={styles.errormessage}>{errors.name1}</p>
-                        )}
-                      </div>
-
-                      <div className={styles.inputWrapper}>
-                        <div
-                          className={styles.inputWithIcon}
-                          style={{
-                            position: "relative",
-                          }}
-                        >
-                          <TextField
-                            id="number"
-                            label="Mobile Number"
-                            type="tel"
-                            required
-                            error={submitted1 && responseMessage1}
-                            value={mobile}
-                            onChange={(e) => handleMobileChange1(e.target.value)} 
-                            variant="outlined"
-                            className={styles.inputField}
-                            style={{
-                              width: "325px",
-                              height: "50px",
-                            }}
-                            InputLabelProps={{
-                              style: { fontFamily: "poppins" },
-                            }}
-                            InputProps={{
-                              style: {
-                                backgroundImage: `url('/images/mobile/mob.png')`,
-                                backgroundSize: "10px 19px",
-                                backgroundPosition: "295px center",
-                                backgroundRepeat: "no-repeat",
-                                width: "100%",
-                                height: "100%",
-                                // backgroundColor: "#F0EFFF",
-                                border: "none",
-                                fontFamily: "poppins",
-                                paddingLeft: "0px",
-                                borderRadius: "10px",
-                              },
-                              autoComplete: "off",
-                            }}
-                          />
-                        </div>
-                        {errors.mobile && (
-                          <p className={styles.errormessage}>
-                            {errors.mobile}
-                          </p>
-                        )}
-                      </div>
-                      {showOtpField1 && (
-                        <div className={styles.verification}>
-                          <div className={styles.verificationcode}>
+                        <div className={styles.inputWrapper}>
+                          <div
+                            className={styles.inputWithIcon}
+                            style={{ marginTop: "20px", marginRight: "90px" }}
+                          >
                             <TextField
-                              label="Verification Code"
-                              value={otp}
-                              onChange={(e) => setOtp(e.target.value)}
+                              id="name"
+                              required
+                              label="Name"
+                              type="text"
                               variant="outlined"
+                              error={submitted1 && responseMessage1}
                               className={styles.inputField}
                               style={{ width: "325px", height: "50px" }}
                               InputLabelProps={{
@@ -1308,9 +1219,9 @@ if (hasError) {
                               }}
                               InputProps={{
                                 style: {
-                                  // backgroundImage: `url('/images/email/mail.png')`,
-                                  backgroundSize: "19px 16px",
-                                  backgroundPosition: "296px center",
+                                  backgroundImage: `url('/images/contact/first.png')`,
+                                  backgroundSize: "25px 25px",
+                                  backgroundPosition: "290px center",
                                   backgroundRepeat: "no-repeat",
                                   width: "325px",
                                   height: "50px",
@@ -1322,66 +1233,153 @@ if (hasError) {
                                 },
                                 autoComplete: "off",
                               }}
+                              name="name"
+                              value={name1}
+                              onChange={(e) => handleInputChange1('name1', e.target.value)}
                             />
                           </div>
+                          {errors.name1 && (
+                            <p className={styles.errormessage}>{errors.name1}</p>
+                          )}
                         </div>
-                      )}
-                
-                    <div className={styles1.checkbox1}> 
-                  <input
-                    type="checkbox"
-                    id="termsCheckbox"
-                    className={styles.checkboxInput1}
-                    style={{
-                      width: "15px",
-                      height: "15px",
-                    }}
-                    checked={termsChecked}
-                    onChange={(e) => handleInputChange1('termsChecked', e.target.checked)}
-                  />
-                  <span className={styles.span1}>
-                    {" "}
-                    I agree with the{" "}
-                    <a className={styles.terms} href="/termsandconditions">
-                      terms and conditions
-                    </a>
-                  </span>
 
-                
-                </div>
-                      {!showOtpField1 ? (
-                        <div className={styles.sendOTP}>
-                          <button
-                            onClick={handleSignUp2}
-                            className={styles.sendOTP1}
+                        <div className={styles.inputWrapper}>
+                          <div
+                            className={styles.inputWithIcon}
+                            style={{
+                              position: "relative",
+                            }}
                           >
-                            Send OTP
-                          </button>
+                            <TextField
+                              id="number"
+                              label="Mobile Number"
+                              type="tel"
+                              required
+                              error={submitted1 && responseMessage1}
+                              value={mobile}
+                              onChange={(e) => handleMobileChange1(e.target.value)}
+                              variant="outlined"
+                              className={styles.inputField}
+                              style={{
+                                width: "325px",
+                                height: "50px",
+                              }}
+                              InputLabelProps={{
+                                style: { fontFamily: "poppins" },
+                              }}
+                              InputProps={{
+                                style: {
+                                  backgroundImage: `url('/images/mobile/mob.png')`,
+                                  backgroundSize: "10px 19px",
+                                  backgroundPosition: "295px center",
+                                  backgroundRepeat: "no-repeat",
+                                  width: "100%",
+                                  height: "100%",
+                                  // backgroundColor: "#F0EFFF",
+                                  border: "none",
+                                  fontFamily: "poppins",
+                                  paddingLeft: "0px",
+                                  borderRadius: "10px",
+                                },
+                                autoComplete: "off",
+                              }}
+                            />
+                          </div>
+                          {errors.mobile && (
+                            <p className={styles.errormessage}>
+                              {errors.mobile}
+                            </p>
+                          )}
                         </div>
-                      ) : (
-                        <div className={styles.sendOTP}>
-                          <span className={styles.resendAvailable}>
+                        {showOtpField1 && (
+                          <div className={styles.verification}>
+                            <div className={styles.verificationcode}>
+                              <TextField
+                                label="Verification Code"
+                                value={otp}
+                                onChange={(e) => setOtp(e.target.value)}
+                                variant="outlined"
+                                className={styles.inputField}
+                                style={{ width: "325px", height: "50px" }}
+                                InputLabelProps={{
+                                  style: { fontFamily: "poppins" },
+                                }}
+                                InputProps={{
+                                  style: {
+                                    // backgroundImage: `url('/images/email/mail.png')`,
+                                    backgroundSize: "19px 16px",
+                                    backgroundPosition: "296px center",
+                                    backgroundRepeat: "no-repeat",
+                                    width: "325px",
+                                    height: "50px",
+                                    // backgroundColor: "#F0EFFF",
+                                    border: "none",
+                                    fontFamily: "poppins",
+                                    paddingLeft: "0px",
+                                    borderRadius: "10px",
+                                  },
+                                  autoComplete: "off",
+                                }}
+                              />
+                            </div>
+                          </div>
+                        )}
+
+                        <div className={styles1.checkbox1}>
+                          <input
+                            type="checkbox"
+                            id="termsCheckbox"
+                            className={styles.checkboxInput1}
+                            style={{
+                              width: "15px",
+                              height: "15px",
+                            }}
+                            checked={termsChecked}
+                            onChange={(e) => handleInputChange1('termsChecked', e.target.checked)}
+                          />
+                          <span className={styles.span1}>
                             {" "}
-                            {resendAvailable1
-                              ? ""
-                              : ` (${formatTime(resendTime1)})`}
+                            I agree with the{" "}
+                            <a className={styles.terms} href="/termsandconditions">
+                              terms and conditions
+                            </a>
                           </span>
-                          <button
-                            onClick={handleSignUp2}
-                            disabled={!resendAvailable1}
-                            className={
-                              resendAvailable1
-                                ? styles.sendOTP1
-                                : styles.disabledButton
-                            }
-                          >
-                            {resendAvailable1 ? "Resend OTP" : `Resend OTP `}
-                          </button>
+
+
                         </div>
-                      )}
-                   
-                   
-                      {/* {showOtpField && (
+                        {!showOtpField1 ? (
+                          <div className={styles.sendOTP}>
+                            <button
+                              onClick={handleSignUp2}
+                              className={styles.sendOTP1}
+                            >
+                              Send OTP
+                            </button>
+                          </div>
+                        ) : (
+                          <div className={styles.sendOTP}>
+                            <span className={styles.resendAvailable}>
+                              {" "}
+                              {resendAvailable1
+                                ? ""
+                                : ` (${formatTime(resendTime1)})`}
+                            </span>
+                            <button
+                              onClick={handleSignUp2}
+                              disabled={!resendAvailable1}
+                              className={
+                                resendAvailable1
+                                  ? styles.sendOTP1
+                                  : styles.disabledButton
+                              }
+                            >
+                              {resendAvailable1 ? "Resend OTP" : `Resend OTP `}
+                            </button>
+                          </div>
+                        )}
+
+
+                        {/* {showOtpField && (
       <div className={styles.sendOTP}>
         <button
           onClick={handleVerification}
@@ -1401,7 +1399,7 @@ if (hasError) {
       </div>
     )} */}
 
-                      {/* {showOtpField && (
+                        {/* {showOtpField && (
                       <div className={styles.inputWrapper}>
                         <div
                           className={styles.inputWithIcon}
@@ -1618,16 +1616,16 @@ if (hasError) {
                         </div>
                       </div>
                     )} */}
+                      </div>
                     </div>
-                  </div>
-                )}
- 
-              
-                {/* {errorMessage && (
+                  )}
+
+
+                  {/* {errorMessage && (
                         <p className={styles.errormessage}>{errorMessage}</p>
                       )} */}
-                {/* Gmail content */}
-                {/* {loginMethod === "gmail" && (
+                  {/* Gmail content */}
+                  {/* {loginMethod === "gmail" && (
               <div className={styles.gmailPopup}>
               <img
 src={closeIcon} 
@@ -1680,7 +1678,7 @@ alt="Google Logo"
               </div>
             )} */}
 
-                {/* <div
+                  {/* <div
               className={`${styles.captcha} ${
                 !isContentSelected || loginMethod === "gmail"
                   ? styles.withMarginTop
@@ -1710,7 +1708,7 @@ alt="Google Logo"
                   Captcha
                 </span>
               </div> */}
-                {/* <div style={{ display: "flex", flexDirection: "column" }}>
+                  {/* <div style={{ display: "flex", flexDirection: "column" }}>
                 <div style={{ cursor: "pointer" }}>
                   <FaSyncAlt size={12} />
                 </div>
@@ -1728,8 +1726,8 @@ alt="Google Logo"
                   )}
                 </div>
               </div> */}
-                {/* </div>  */}
-                {/* 
+                  {/* </div>  */}
+                  {/* 
             <div
               className={styles.captchaText}
               style={{
@@ -1783,8 +1781,8 @@ alt="Google Logo"
               Don't have an account yet?{" "}
               <span className={styles.diffColor}>Sign up</span>{" "}
             </p> */}
-              
-               {/* <div className={styles1.checkbox1}> 
+
+                  {/* <div className={styles1.checkbox1}> 
                   <input
                     type="checkbox"
                     id="termsCheckbox"
@@ -1811,52 +1809,51 @@ alt="Google Logo"
               >
                 I agree with the terms and conditions
               </label> */}
-                {/* </div>  */}
-                <p
-                  className={`${styles.signUpText1} ${
-                    !isContentSelected || loginMethod === "gmail"
-                      ? styles.withMarginTop
-                      : ""
-                  }`}
-                >
-                  Already having an account?{" "}
-                  <span
-                    className={styles.diffColor}
-                    onClick={handleBackToDashboard}
-                  > 
-                   login
-                  </span>
-                </p> 
-             
-                          {/* {green && (
+                  {/* </div>  */}
+                  <p
+                    className={`${styles.signUpText1} ${!isContentSelected || loginMethod === "gmail"
+                        ? styles.withMarginTop
+                        : ""
+                      }`}
+                  >
+                    Already having an account?{" "}
+                    <span
+                      className={styles.diffColor}
+                      onClick={handleBackToDashboard}
+                    >
+                      login
+                    </span>
+                  </p>
+
+                  {/* {green && (
                   <p className={styles1.responseMessage1} style={{ color: 'red' }}>{green}</p>
                 )} */}
-                              {/* {responseMessage1 && (
+                  {/* {responseMessage1 && (
                   <p className={styles1.responseMessage1} style={{ color: 'red' }}>{responseMessage1}</p>
                 )} */}
-                              {/* {responseMessage && (
+                  {/* {responseMessage && (
                   <p className={styles1.responseMessage1} style={{ color: 'red' }} >{responseMessage}</p>
                 )} */}
-                {loginMethod === "email" && showVerifyButton && (
-                  // <button
-                  //   onClick={handleSignUp1}
-                  //   // onSubmit={handleVerification}
-                  //   className={styles1.loginButton}
-                  // >
-                  //   Sign Up
-                  // </button>
-                  <div className={styles.veriflybutton}>
-                    <button
-                      onClick={handleVerification1}
-                      className={styles.verifly}
+                  {loginMethod === "email" && showVerifyButton && (
+                    // <button
+                    //   onClick={handleSignUp1}
+                    //   // onSubmit={handleVerification}
+                    //   className={styles1.loginButton}
+                    // >
+                    //   Sign Up
+                    // </button>
+                    <div className={styles.veriflybutton}>
+                      <button
+                        onClick={handleVerification1}
+                        className={styles.verifly}
                       // style={{ display: showSecondButton ? 'none' : 'inline-block' }}
-                    >
-                      Verify
-                    </button>
-                  </div>
-                )}
+                      >
+                        Verify
+                      </button>
+                    </div>
+                  )}
 
-                {/* <button
+                  {/* <button
               onClick={handleSignUp1}
 
               // onSubmit={handleVerification}
@@ -1865,46 +1862,46 @@ alt="Google Logo"
               Sign Up
             </button> */}
 
-                {loginMethod === "mobile" && showVerifyButton1 && (
-                  // <button
-                  //   onClick={handleSignUp2}
-                  //   className={styles1.loginButton}
-                  // >
-                  //   Sign Up
-                  // </button>
-                  <div className={styles.veriflybutton}>
-                    <button
-                      onClick={handleVerification}
-                      className={styles.verifly}
+                  {loginMethod === "mobile" && showVerifyButton1 && (
+                    // <button
+                    //   onClick={handleSignUp2}
+                    //   className={styles1.loginButton}
+                    // >
+                    //   Sign Up
+                    // </button>
+                    <div className={styles.veriflybutton}>
+                      <button
+                        onClick={handleVerification}
+                        className={styles.verifly}
                       // style={{ display: showSecondButton ? 'none' : 'inline-block' }}
-                    >
-                      Verify
-                    </button>
-                  </div>
-                )}
-                   {responseMessage1 && (
-                  <p className={styles1.responseMessage1} style={{ color: 'red' }}>{responseMessage1}</p>
-                )}
-                        {responseMessage && (
-                  <p className={styles1.responseMessage1} style={{ color: '#19ae0c' }}>{responseMessage}</p>
-                )}
-{submitted && !!errors && <div style={{ color: 'red' }}>{errors}</div>}
-                {terms && (
-                  <p className={styles1.responseMessage}>{terms}</p>
-                )}
-                {/* {loginMethod === "mobile" && !showOtpField && (
+                      >
+                        Verify
+                      </button>
+                    </div>
+                  )}
+                  {responseMessage1 && (
+                    <p className={styles1.responseMessage1} style={{ color: 'red' }}>{responseMessage1}</p>
+                  )}
+                  {responseMessage && (
+                    <p className={styles1.responseMessage1} style={{ color: '#19ae0c' }}>{responseMessage}</p>
+                  )}
+                  {submitted && !!errors && <div style={{ color: 'red' }}>{errors}</div>}
+                  {terms && (
+                    <p className={styles1.responseMessage}>{terms}</p>
+                  )}
+                  {/* {loginMethod === "mobile" && !showOtpField && (
                   <button className={styles1.button} onClick={handleSignUp2}>
                     Send OTP
                   </button>
                 )} */}
+                </div>
               </div>
-            </div>
-            {/* <button onClick={handleVerification}>Verify</button> */}
-          </>
-        )}
+              {/* <button onClick={handleVerification}>Verify</button> */}
+            </>
+          )}
+        </div>
       </div>
     </div>
-  </div>
-);
-};   
+  );
+};
 export default Signup;

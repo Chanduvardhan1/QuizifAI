@@ -27,6 +27,7 @@ import Toggle from "../assets/Images/quiz-type/Toggle.png";
 import Next from "../assets/Images/quiz-type/Next.png";
 import Plus from "../assets/Images/quiz-type/Plus.png";
 import CSV from "../assets/Images/quiz-type/CSV.png";
+import CoverPage from "../coverPage/coverPage";
 
 const options1 = [{ label: "Numbers" }];
 
@@ -1470,16 +1471,18 @@ export default function quiztype() {
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNext2}
                 >
-                  Back
+                  Back 
                 </button>
 
                 <button
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNext}
-                >
+                 >
                   Save 
                 </button>
+                <CoverPage/>
               </div>
+             
             </div>
 
             {/* Submit button */}

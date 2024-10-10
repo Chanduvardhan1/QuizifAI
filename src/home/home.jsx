@@ -228,7 +228,7 @@ function Home() {
                     {q.options?.map((option, x) => {
                       return (
                         <div key={x} className={`flex items-center mb-4`}>
-                          <div onClick={(e) => handleAnswerClick(option.answer_option_text, q, x)} 
+                          <div onClick={(e) => handleAnswerClick(option.answer_option_text, q, x)}
                             className={`
                                 ${(x === attempted.answeredIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
                                  
@@ -255,7 +255,12 @@ function Home() {
               </div>
             </>}
             {started && index != 5 && <button className="next" onClick={handleOnClickNext}>Next <img className="h-[17px] ml-3 " src={nextbutton} /> </button>}
-            {started && index != 1 && <button className="previous" onClick={handleOnClickPrevious} > <img className="previous-icon" src={previousicon} /> Prev </button>}
+            {/* {started && index != 1 && <button className="previous" onClick={handleOnClickPrevious} > <img className="previous-icon" src={previousicon} /> Prev </button>} */}
+            {started && index > 1 && index < 5 && (
+              <button className="previous" onClick={handleOnClickPrevious}>
+                <img className="previous-icon" src={previousicon} /> Prev
+              </button>
+            )}
             {started && index === 5 && <button onClick={handleOnClickSubmit} className="submit">Submit </button>}
           </div>
           {activeSection === "home" && (

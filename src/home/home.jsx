@@ -219,7 +219,7 @@ function Home() {
 
               <div className="mainDiv">
                 <div className="subDiv">
-                  <li className=" font-[14px] font-medium bg-[#DEEFF5] w-[100%] rounded-[5px] border-solid border-[#ADD8E6] border-[1.5px] p-[10px] text-[15px] text-[#214082]   li questions ">
+                  <li className=" font-[14px] font-medium bg-[#DEEFF5] cursor-pointer w-[100%] rounded-[5px] border-solid border-[#ADD8E6] border-[1.5px] p-[10px] text-[15px] text-[#214082]   li questions ">
 
                     <div>{`${index}. ${q.question}`}</div>
 
@@ -232,7 +232,7 @@ function Home() {
                             className={`
                                 ${(x === attempted.answeredIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
                                  
-                              mr-2 font-normal w-[40px]    rounded-[5px] h-[37px] p-[8px] border-[1px] border-solid border-[#D3D3D3]  bg-[#E8E9E8]  flex justify-center text-center justify-items-center items-center text-[14px]  font-sans                        `}>
+                              mr-2 font-normal w-[40px] rounded-[5px] h-[37px] p-[8px] border-[1px] border-solid border-[#D3D3D3]  bg-[#E8E9E8]  flex justify-center text-center justify-items-center items-center text-[14px]  font-sans  cursor-pointer`}>
                             {String.fromCharCode(97 + x).toUpperCase()}
                           </div>
                           <div
@@ -242,7 +242,7 @@ function Home() {
                             className={`
                                   ${(x === attempted.answeredIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
                                   
-                                 w-[100%] bg-[#E8E9E8]  h-[37px] rounded-[5px] border-solid border-[#D3D3D3] border-[1.8px] p-[5px] text-[14px] text-[#000] font-sans`}
+                                 w-[100%] bg-[#E8E9E8] cursor-pointer  h-[37px] rounded-[5px] border-solid border-[#D3D3D3] border-[1.8px] p-[5px] text-[14px] text-[#000] font-sans`}
                           >
                             {option.answer_option_text}
                           </div>

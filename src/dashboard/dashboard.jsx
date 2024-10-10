@@ -1735,7 +1735,7 @@ const Dashboard = () => {
                                 <label className={styles.text}> 20 Questions</label>
                               </div>
 
-                              <div className="ml-[5px] h-[25px] " >
+                              <div className="ml-[5px] h-[25px]" >
                                 <img className={styles.icon4} src={noOfAttampt} />
                                 <label className={styles.text}>200 Attempts</label>
                               </div>

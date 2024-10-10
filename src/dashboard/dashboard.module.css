@@ -760,11 +760,13 @@ background-color: #214082;
   /* border: 1px solid  #4CC9F0; */
   border: thin solid #4CC9F0;
   height: 153px;
-  width:430px;
+  /* width:430px; */
+  width: 400px;
 }
 .sampleBoxImage{
   border: 1px solid  #4CC9F0;
-  width: 175px;
+  /* width: 175px; */
+  width: 130px;
   margin-top: 3%;
   margin-bottom: 3%;
   border-radius: 8px;
@@ -784,9 +786,11 @@ background-color: #214082;
 }
 .sampleBoxDetailsFooterIcons {
   display: flex;
-  gap: 10px;
+  gap: 5px;
   justify-content: end;
   margin-right: 25px;
+  position: relative;
+  bottom: -10px;
 }
 .sampleBoxQuizDetailsBoxes {
   display: inline-block;
@@ -797,17 +801,20 @@ background-color: #214082;
 .sampleBoxQuizDetailsBoxes:last-child {
   margin-left: 20px;
   vertical-align: text-bottom;
+  margin-bottom: -10px;
 }
 .sampleBoxQuizDetailsBoxes:first-child div {
   position: relative;
   bottom: -25px;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 .sampleBoxQuizDetailsBoxes:first-child div:last-child {
   margin-bottom: 0;
 }
 .sampleBoxQuizDetailsBoxes:last-child div {
-  line-height: 3.2;
+  /* line-height: 3.2; */
+  line-height: 2;
+  margin-bottom: 0px;
 }
 .sampleBoxQuizDetailsBoxes div img{
   display: inline-block;
@@ -839,6 +846,7 @@ background-color: #214082;
   .text {
     margin-left: 5px;
     display: inline;
+    color: #214082;
   }
 .icon2{
   height: 20px;

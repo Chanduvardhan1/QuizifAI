@@ -1722,9 +1722,10 @@ const Dashboard = () => {
                         <div className={styles.sampleBoxImage}>
                         </div>
                         <div className={styles.sampleBoxDetails}>
+                           <label className={styles.title}>{quizItem.quiz_name}</label>
+                           <label className={styles.description}>{quizItem.quiz_description}</label>
                           <div className={styles.sampleBoxQuizDetails}>
                             <div className={styles.sampleBoxQuizDetailsBoxes}>
-                              {/* <label>{quizItem.quiz_name}</label> */}
                               <div className="ml-[5px] h-[25px]">
                                 <img className={styles.icon6} src={created} />
                                 <label className={styles.text}>Samantha</label>

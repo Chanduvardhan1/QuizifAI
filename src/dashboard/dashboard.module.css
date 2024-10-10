@@ -759,7 +759,7 @@ background-color: #214082;
   box-sizing: border-box;
   /* border: 1px solid  #4CC9F0; */
   border: thin solid #4CC9F0;
-  height: 153px;
+  height: 219px;
   /* width:430px; */
   width: 400px;
 }
@@ -781,7 +781,7 @@ background-color: #214082;
   width: 242px;
 }
 .sampleBoxQuizDetails {
-  margin-top: 15px;
+  /* margin-top: 15px; */
   padding: 0 10px;
 }
 .sampleBoxDetailsFooterIcons {
@@ -882,6 +882,13 @@ background-color: #214082;
   padding: 4px;
   border-radius: 4px;
 }
-
+.title{
+  font-size: 11px;
+}
+.description{
+    margin-left: 0%;
+    font-size: 9px;
+    display: block
+}
 
 

@@ -759,7 +759,7 @@ background-color: #214082;
   box-sizing: border-box;
   /* border: 1px solid  #4CC9F0; */
   border: thin solid #4CC9F0;
-  height: 219px;
+  height: 168px;
   /* width:430px; */
   width: 385px;
 }
@@ -883,12 +883,13 @@ background-color: #214082;
   border-radius: 4px;
 }
 .title{
-  font-size: 9px;
+  font-size: 13px;
   /* font-family: Segoe_UI_Historic; */
   text-decoration: none;
+  margin-left: 17px;
 }
 .description{
-    margin-left: 0%;
+    margin-left: 13px;
     font-size: 9px;
     display: block;
     /* font-family: Segoe_UI_Historic; */

@@ -1723,7 +1723,8 @@ const Dashboard = () => {
                         </div>
                         <div className={styles.sampleBoxDetails}>
                            <label className={styles.title}>{quizItem.quiz_name}</label>
-                           <label className={styles.description}>{quizItem.quiz_description}</label>
+                           {/* <label className={styles.description}>{quizItem.quiz_description}</label> */}
+                           <label className={styles.description}>Curriculum .General.Simple</label>
                           <div className={styles.sampleBoxQuizDetails}>
                             <div className={styles.sampleBoxQuizDetailsBoxes}>
                               <div className="ml-[5px] h-[25px]">

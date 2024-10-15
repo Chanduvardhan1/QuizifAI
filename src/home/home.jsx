@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import homeImage from "/images/oldimage.png";
+// import homeImage from "/images/oldimage.png";
+import homeImage from "../../public/homepicture.png";
 import HeaderSection from "../HeaderSection/HeaderSection";
 import SampleLeaderBoard from "../sample/sampleLeaderBoard";
 import { questions } from "./Constants";
@@ -193,6 +194,9 @@ function Home() {
     <div>
       <HeaderSection />
       <div>
+        <div>
+          sai123
+        </div>
         <div className="flex flex-col md:flex-row p-5 main">
           <div className="wrapper">
             {!started && <span className=" font-['Segoe_UI_Historic'] font-bold text-[#555555] leading-[50px] text-center md:text-left">
@@ -266,7 +270,8 @@ function Home() {
           {activeSection === "home" && (
             <div className="w-50% md:w-1/2 pr-0 md pt-4 md:pt-20 flex flex-col justify-center items-center md:items-end">
               <div className="relative mt-4 md:mt-[-134px]">
-                <img src={homeImage} alt="home Image" className="image" />
+                {/* <img src={homeImage} alt="home Image" className="image" /> */}
+                <img src={homeImage} alt="home Image" className="w-[100%] ml-[-11%] h-[120%] mb-[7%]"  width={500} height={500}/>
                 <div className="flex flex-col items-center mt-4 ml-[120px] lg:ml-[1px]">
                   <Link to={"/signup"} >
 

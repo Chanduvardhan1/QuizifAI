@@ -18,7 +18,7 @@ li {
   justify-content: space-between;
   align-items: flex-start;
   padding: 20px;
-  font-family: Segoe_UI_Historic;
+  font-family:lato;
 
 }
 
@@ -57,7 +57,7 @@ li {
 }
 
 .navigation ul li {
-  font-family: Segoe_UI_Historic;
+  font-family:lato;
   font-size: 13px;
   font-weight: 600;
   line-height: 30px;
@@ -76,7 +76,7 @@ li {
   height: 30px;
   border-radius: 20px;
   background: #3B61C8;
-  font-family: Segoe_UI_Historic;
+  font-family:lato;
   font-size: 13px;
   font-weight: 600;
   line-height: 30px;
@@ -92,7 +92,7 @@ li {
   width: 80px;
   height: 30px;
   border-radius: 20px;
-  font-family: Segoe_UI_Historic;
+  font-family:lato;
   font-size: 13px;
   font-weight: 600;
   line-height: 30px;
@@ -115,7 +115,7 @@ li {
   width: 80px;
   height: 30px;
   border-radius: 20px;
-  font-family: Segoe_UI_Historic;
+  font-family:lato;
   font-size: 13px;
   font-weight: 600;
   line-height: 30px;
@@ -170,7 +170,7 @@ li {
 }
 
 .line1 {
-  font-family: Segoe_UI_Historic;
+  font-family:lato;
   font-size: 18px;
   font-weight: 700;
   line-height: 50px;
@@ -181,7 +181,7 @@ li {
 }
 
 .line2 {
-  font-family: Segoe_UI_Historic;
+  font-family:lato;
   font-size: 18px;
   font-weight: 700;
   line-height: 50px;
@@ -196,7 +196,7 @@ li {
 }
 
 .line3 {
-  font-family: Segoe_UI_Historic;
+  font-family:lato;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0em;
@@ -218,7 +218,7 @@ li {
 }
 
 .backgroundButton {
-  font-family: Segoe_UI_Historic;
+  font-family:lato;
   font-size: 13px;
   font-weight: 700;
   /* line-height: 40px; */
@@ -259,7 +259,7 @@ li {
 }
 
 .text-content .line3 {
-  font-family: Segoe_UI_Historic;
+  font-family:lato;
   font-size: 20px;
   font-weight: 700;
   line-height: 100px;
@@ -796,7 +796,7 @@ div.wrongAnswer {
 }
 .text{
   font-size: 15px;
- font-family: Segoe_UI_Historic;
+  font-family:lato;
   font-weight: 300;
   color:#000
 }
@@ -804,7 +804,7 @@ div.wrongAnswer {
   width: 80px; 
     height: 30px; 
     border-radius: 9999px; 
-   font-family: Segoe_UI_Historic;
+    font-family:lato;
     background-color: #3B61C8; 
     color: white; 
     font-size: 13px; 
@@ -824,10 +824,12 @@ div.wrongAnswer {
 .text1{
   font-size:17px;
   color:  #00008b;
-  margin-left:20%;
+  /* margin-left:20%; */
   /* font-family: sans-serif; */
-  font-family: Segoe_UI_Historic;
+  font-family:lato;
   font-weight: 600;
+  margin-left:7%;
+  
 }
 
 
@@ -851,7 +853,7 @@ div.wrongAnswer {
   font-size:17px;
   color:  #00008B;
   margin-left:20%;
-  font-family: Segoe_UI_Historic;
+  font-family:lato;
   font-weight: 600;
   margin-left:7%;
 }
@@ -861,7 +863,7 @@ div.wrongAnswer {
   margin-left:7%;
   color: #214082;
   font-weight:500;
-   font-family: Segoe_UI_Historic;
+  font-family:lato;
 }
 
 
@@ -871,7 +873,7 @@ div.wrongAnswer {
 
 
 .questions-style{
-  font-family: Segoe_UI_Historic;
+  font-family:lato;
   font-weight: 500;
   color: #00008b;
   font-size: 14px;

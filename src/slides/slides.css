@@ -26,8 +26,8 @@
   font-size: 17px;
   margin-bottom: 15px;
   margin-left:12%;
-  font-family:Segoe_UI_Historic;
-  font-weight: 600;
+  font-family:lato;
+    font-weight: 600;
 }
 
 .slide p {
@@ -37,7 +37,7 @@
   color: #00008b;
   margin-left:12%;
   font-weight: 500;
-  font-family :Segoe_UI_Historic;
+  font-family:lato
 }
 
 .dots-container {

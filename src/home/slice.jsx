@@ -40,7 +40,22 @@ const homeSlice = createSlice({
         },
          showUserAnswers:(state, action) => {
              state.sampleQuiz[action.payload.key] = action.payload.value
-         }
+         },
+         getUploadImage:(state,action) => {
+            state.getUploadImage = action?.payload?.value
+         },
+         saveUploadImageResponse:(state,action) =>{
+             state.uploadImageRes = action?.payload?.value
+         },
+         setSelectedImage:(state,action) =>{
+            console.log('action?.payload?.value',action);
+            state[action.payload.key] = action?.payload?.value
+         },
+         setOpen:(state,action) =>{
+         state[action.payload.key] = action?.payload?.value
+         },
+        
+
 
     }
 })
@@ -51,6 +66,10 @@ export const {
     saveResContactUsEmail,
     getContactUsEmail,
     saveUserAttemptedQuestions,
-    showUserAnswers
+    showUserAnswers,
+    getUploadImage,
+    saveUploadImageResponse,
+    setSelectedImage,
+    setOpen
 } = homeSlice.actions;
 export default homeSlice.reducer;

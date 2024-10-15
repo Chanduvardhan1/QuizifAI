@@ -476,11 +476,6 @@ export default function quiztype() {
       setErrorMessage("An error occurred while choosing the type of the quiz");
     }
   };
-  // const handleQuestionChange = (index, value) => {
-  //   const updatedQuestions = [...questions];
-  //   updatedQuestions[index] = value;
-  //   setQuestions(updatedQuestions);
-  // };
   const toggler1 = (checked) => {
     setMultiAnswer(checked);
   };
@@ -837,10 +832,6 @@ export default function quiztype() {
 
             <div className=" absolute top-[100px]">
               <div className="flex">
-                {/* <div className="w-[51px] h-[37px] absolute top-[102px] left-[284px]">
-              {/* <img src={QuizTitle} alt="QuizTitle icon" /> */}
-                {/* </div>  */}
-
                 <div className="w-[201px] h-[22px] absolute top-[111px] left-[284px]">
                   <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                     Quiz Title<span className="required ml-[1px] text-red-500">*</span>
@@ -859,12 +850,7 @@ export default function quiztype() {
                   <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                     Number of Questions<span className="required ml-[1px] text-red-500">*</span>
                   </h1>
-                  {/* <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] ml-5 leading-[22.5px]">
-                  of
-                </h1>
-                <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] leading-[22.5px]">
-                  Question
-                </h1> */}
+                 
                 </div>
 
                 <div className=" rounded-lg absolute top-[99px] left-[1144px]">
@@ -945,9 +931,7 @@ export default function quiztype() {
                   </h1>
                 </div>
 
-                {/* <div className="w-[36px] h-5 absolute top-[251px] left-[935px]">
-              <img src={Toggle} />
-            </div> */}
+                
 
                 <div className="w-[36px] h-5 absolute top-[458px] left-[1020px]">
                   <Switch
@@ -990,9 +974,7 @@ export default function quiztype() {
                 </h1>
               </div>
 
-              {/* <div className="w-[36px] h-5 absolute top-[251px] left-[935px]">
-              <img src={Toggle} />
-            </div> */}
+              
 
               <div className="w-[260px]  absolute top-[309px] left-[500px]">
                 <select
@@ -1133,9 +1115,7 @@ export default function quiztype() {
                       </option>
                     ))}
                   </select>
-                  {/* <input type="text"className="w-[166px] px-3 py-3 rounded-md  text-[12px]" onChange={handleSelect7} value={duration} 
-              placeholder="Duration"/> */}
-                  {/* <TiEyeOutline  className=" absolute left-[165px] top-[15px] " /> */}
+                 
                   <div className="relative">
                     <button
                       onClick={() => setIsOpen(true)}
@@ -1478,7 +1458,7 @@ export default function quiztype() {
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNext}
                  >
-                  Save 
+                  Save
                 </button>
                 <CoverPage/>
               </div>

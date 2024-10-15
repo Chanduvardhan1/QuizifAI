@@ -1592,7 +1592,7 @@ if (!authToken) {
           <main className="w-max-auto">
             <div className="w-[848px] h-[44px] absolute top-[90px] left-[298px]">
               <h1 className="font-Poppins font-bold text-[30px] leading-[45px] text-orange-400">
-                Create / Edit your Quiz
+                Create / Edit your Quiz 
               </h1>
               <h1 className="font-Poppins font-medium text-[12px] leading-[18px] text-[#214082]">
                 Enter all your questions, options, and answers
@@ -1757,7 +1757,7 @@ if (!authToken) {
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNext4}
                 >
-                  Save
+                  Save 
                 </button>
               </div>
             </div>

@@ -1250,7 +1250,7 @@ export default function editpdf() {
           <main className="w-max-auto">
             <div className="w-[848px] h-[44px] absolute top-[90px] left-[298px]">
               <h1 className="font-Poppins font-bold text-[30px] leading-[45px] text-orange-400">
-                Create / Edit your Quiz
+                Create / Edit your Quiz 
               </h1>
               <h1 className="font-Poppins font-medium text-[12px] leading-[18px]">
                 Enter all your questions, options, and answers

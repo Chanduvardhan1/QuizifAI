@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import api from '../Api/api';
 import { contactUSEmail } from '../Api/constants';
-import { saveResContactUsEmail, getContactUsEmail } from './slice';
+import { saveResContactUsEmail, getContactUsEmail } from './slice'
 
 function* fetchContactUsEmail() {
     try {

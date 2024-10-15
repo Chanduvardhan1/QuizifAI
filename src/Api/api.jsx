@@ -1,12 +1,13 @@
 import { baseURl } from "./constants";
 
 const getHeaders = () => {
+    const authToken = localStorage.getItem('authToken');
     return {
         'Content-Type': 'application/json',
         Accept: 'application/json',
+        'Authorization': authToken
     };
 };
-
 export default () => {
     return {
         get: async (endpoint, params = {}) => {
@@ -21,13 +22,49 @@ export default () => {
             return response.json();
         },
 
-        post: async (endpoint, data = {}) => {
-            const response = await fetch(`${baseURl}${endpoint}`, {
+        post: async (endpoint, data = {}, queryParams = {}) => {
+            let url = `${baseURl}${endpoint}`;
+        
+            // Append query parameters to URL
+            if (Object.keys(queryParams).length > 0) {
+                const queryString = Object.keys(queryParams).map((key) => {
+                    return `${encodeURIComponent(key)}=${encodeURIComponent(queryParams[key])}`;
+                }).join('&');
+        
+                url += `?${queryString}`;
+            }
+        
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: getHeaders(),
                 body: JSON.stringify(data),
             });
+        
+            return response.json();
+        },
 
+        uploadFile: async (endpoint, files, queryParams = {}) => {
+            let url = `${baseURl}${endpoint}`;
+        
+            // Append query parameters to URL
+            if (Object.keys(queryParams).length > 0) {
+                const queryString = Object.keys(queryParams).map((key) => {
+                    return `${encodeURIComponent(key)}=${encodeURIComponent(queryParams[key])}`;
+                }).join('&');
+        
+                url += `?${queryString}`;
+            }
+        
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    ...getHeaders(),
+                    'Content-Type': 'application/octet-stream',
+                    "Accept": "multipart/form-data"
+                },
+                body: files,
+            });
+        
             return response.json();
         },
 

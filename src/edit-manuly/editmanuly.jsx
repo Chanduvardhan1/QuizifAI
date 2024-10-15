@@ -1803,7 +1803,7 @@ export default function editmanuly() {
         <main className="w-max-auto relative top-[630px]">
           <div className="w-[848px] h-[44px] absolute top-[90px] left-[284px]">
             <h1 className="font-Poppins font-bold text-[30px] leading-[45px] text-orange-400">
-              Create / Edit your Quiz
+              Create / Edit your Quiz 
             </h1>
             <h1 className="font-Poppins font-medium text-[12px] leading-[18px] text-[#214082]">
               Enter all your questions, options, and answers
@@ -1938,7 +1938,7 @@ export default function editmanuly() {
                 className="w-[80px] h-[30px] rounded-[10px] bg-[#1E4DE9] text-white hover:bg-[#EF5130]"
                 onClick={handleNext}
               >
-                Save
+                Save 
               </button>
 
               <button

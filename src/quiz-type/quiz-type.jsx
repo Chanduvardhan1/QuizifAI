@@ -3,9 +3,7 @@ import React, { useState, useEffect } from "react";
 import Switch from "react-switch";
 import Navigation from "../navbar/navbar";
 import { useNavigate } from "react-router-dom";
-// import { useHistory } from 'react-router-dom';
-
-// Navbar-icons
+import { setSelectedImage,setOpen } from "../home/slice";
 import QuizifAilogo from "../assets/Images/images/home/Quizifai3.png";
 import Dashboard from "../assets/Images/quiz-type/Dashboard.png";
 import Quiz from "../assets/Images/quiz-type/Quiz.png";
@@ -15,13 +13,11 @@ import Notification from "../assets/Images/quiz-type/Notification.png";
 import QuizAdmin from "../assets/Images/quiz-type/Quiz-admin.png";
 import Profile from "../assets/Images/quiz-type/Profile.png";
 import eye from "../assets/Images/dashboard/infoIcon.png";
-// Main-Section-icons
 import QuizTitle from "../assets/Images/quiz-type/Quiz-Title.png";
 import QuizDiscription from "../assets/Images/quiz-type/Quiz-discription.png";
 import Next from "../assets/Images/quiz-type/Next.png";
 import { FiAlertCircle } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
-
 import CreateOrEdit from "../assets/Images/quiz-type/Create-Edit.png";
 import Line from "../assets/Images/quiz-type/Line.png";
 import Time from "../assets/Images/quiz-type/Time.png";
@@ -37,20 +33,13 @@ import RefreshOptions from "../assets/Images/quiz-type/Refresh-options.png";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../quiz-type/quiz-type.css";
-// const options1 =[
-//   {label: "Numbers"},
-//   {label: "10-30"},
-//   {label: "30-50"},
-//   {label: "50-70"},
-//   {label: "70-100"},
-//   {label: "100-150"},
-
-// ]
-
+import { useDispatch, useSelector } from "react-redux";
+import { setDynamicStateFlags,getUploadImage,} from "../home/slice"; 
+import { uploadImage } from '../Api/constants';
+import api from '../Api/api';
 
 
 const options1 = [{ label: "Numbers" }];
-
 for (let i = 1; i <= 300; i++) {
   options1.push({ label: i.toString() });
 }
@@ -164,24 +153,29 @@ const options9 = [
 
 export default function quiztype() {
 
+  const imageOpen = useSelector(state=>state.home.plus);
 
-  const [isOpen1, setIsOpen1] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+
+  // const [selectedImage, setSelectedImage] = useState(null);
 
   const handlePlusClick = () => {
-    setIsOpen1(true);
+    dispatch(setOpen({key:'plus', value:true}));
   };
   const handleSave = () => {
-    console.log("Image uploaded:", selectedImage);
+    // console.log("Image uploaded:", selectedImage);
     setIsOpen(false);
     toast.success("Image uploaded successfully!");
   };
   const handleCancel = () => {
-    setIsOpen1(false);
+    dispatch(setOpen({key:'plus', value:false}));
   };
 
-  const handleImageChange = (event) => {
-    setSelectedImage(event.target.files[0]);
+  const handleImageChange = (e) => {
+    // dispatch(setSelectedImage({ key: 'image', value: JSON.stringify(e?.target?.value) }));
+    // console.log('e?.target?.value',e?.target?.value);
+    setFiles(e?.target?.files[0])
+    
+    // console.log('event',e);
   };
   const [title, setTitle] = useState("");
   const [number, setNumber] = useState("");
@@ -198,7 +192,7 @@ export default function quiztype() {
   const [availablefrom, setavailablefrom] = useState("");
   const [disabledon, setdisabledon] = useState("");
 
-  const [publicAccess, setPublicAccess] = useState(true);
+  const [publicAccess, setPublicAccess] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isRetakeOn, setIsRetakeOn] = useState(false);
@@ -243,6 +237,8 @@ export default function quiztype() {
   const [selectedCourse, setSelectedCourse] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
   const [classes, setClasses] = useState([]);
+  const [files,setFiles] = useState ("");
+  const dispatch =useDispatch();
 
 
   useEffect(() => {
@@ -419,163 +415,6 @@ export default function quiztype() {
   const handleSelectComplexity = (event) => {
     setSelectedComplexity(event.target.value);
   };
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
-
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await fetch("https://dev.quizifai.com:8010/complexities/", {
-  //       method: "GET",
-  //       headers: {
-  //         accept: "application/json",
-  //       },
-  //     });
-  //     const responseData = await response.json();
-  //     if (responseData.response === "success") {
-  //       setComplexities(responseData.data);
-  //     } else {
-  //       console.error("Response was not successful:", responseData);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   // Fetch categories
-  //   fetch("https://dev.quizifai.com:8010/categories/", {
-  //     method: "GET",
-  //     headers: {
-  //       Accept: "application/json",
-  //     },
-  //   })
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error("Failed to fetch categories");
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       // Check if data is an array
-  //       if (Array.isArray(data.data)) {
-  //         setCategoryOptions(data.data);
-  //       } else {
-  //         throw new Error("Invalid data format for categories");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching categories:", error);
-  //       // Handle error, e.g., setCategoryOptions([]) to clear any existing data
-  //       setCategoryOptions([]);
-  //     });
-  // }, []);
-
-  // useEffect(() => {
-  //   if (quizCategory !== "") {
-  //     // Fetch subcategories based on selected category
-  //     fetch("https://dev.quizifai.com:8010/get_categories/", {
-  //       method: "POST",
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ category_name: quizCategory }),
-  //     })
-  //       .then((response) => {
-  //         if (!response.ok) {
-  //           throw new Error("Failed to fetch subcategories");
-  //         }
-  //         return response.json();
-  //       })
-  //       .then((data) => {
-  //         if (data.response === "success" && Array.isArray(data.data)) {
-  //           setSubCategoryOptions(data.data);
-  //         } else {
-  //           throw new Error("Invalid data format for subcategories");
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching subcategories:", error);
-  //         // Handle error
-  //       });
-  //   }
-  // }, [quizCategory]);
-
-  // const handleSelectCategory = (e) => {
-  //   const selectedCategory = e.target.value;
-  //   setQuizCategory(selectedCategory);
-  //   // Reset subcategory when category changes
-  //   setSubCategory("");
-  // };
-
-  // const handleSelectSubCategory = (e) => {
-  //   setSubCategory(e.target.value);
-  // };
-
-  // useEffect(() => {
-  //   // Fetch courses
-  //   fetch("https://dev.quizifai.com:8010/courses/")
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error("Failed to fetch courses");
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       if (data.response === "success") {
-  //         setCourseOptions(data.data);
-  //       } else {
-  //         throw new Error("Failed to fetch courses");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching courses:", error);
-  //     });
-  // }, []);
-
-  // useEffect(() => {
-  //   // Fetch classes based on selected course name
-  //   if (coursename !== "") {
-  //     fetch("https://dev.quizifai.com:8010/get_class_name/", {
-  //       method: "POST",
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ course_name: coursename }),
-  //     })
-  //       .then((response) => {
-  //         if (!response.ok) {
-  //           throw new Error("Failed to fetch classes: " + response.statusText);
-  //         }
-  //         return response.json();
-  //       })
-  //       .then((data) => {
-  //         if (data.response === "success" && Array.isArray(data.data)) {
-  //           setClassOptions(data.data);
-  //         } else {
-  //           throw new Error(
-  //             "Invalid data format for classes: " + JSON.stringify(data)
-  //           );
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching classes:", error);
-  //       });
-  //   }
-  // }, [coursename]);
-  // const handleSelectCourse = (e) => {
-  //   const selectedCourse = e.target.value;
-  //   setcoursename(selectedCourse);
-  //   // Reset classes when course changes
-  //   setClasses("");
-  // };
-
-  // const handleSelectClass = (e) => {
-  //   setClasses(e.target.value);
-  // }; // Dependency on coursename ensures this effect runs whenever coursename changes
-
   const navigate = useNavigate();
   const handleNext1 = () => {
     setShowRegistrationSuccess(true);
@@ -583,35 +422,6 @@ export default function quiztype() {
   const handleNext2 = () => {
     setShowRegistrationSuccess(false);
   };
-  // const handleCheckboxChange = (questionIndex, optionIndex) => {
-  //   const newOptions = [...questions[questionIndex].options].map(
-  //     (option, index) => ({
-  //       ...option,
-  //       correct_answer_flag: index === optionIndex ? true : false, // Set only the clicked option to true, rest to false
-  //     })
-  //   );
-  //   const newQuestions = [...questions];
-  //   newQuestions[questionIndex].options = newOptions;
-  //   setQuestions(newQuestions);
-  // };
-  // const handleToggleButton = (questionIndex, optionIndex) => {
-  //   const newOptions = [...questions[questionIndex].options].map(
-  //     (option, index) => ({
-  //       ...option,
-  //       correct_answer_flag: multiAnswer
-  //         ? index === optionIndex
-  //           ? !option.correct_answer_flag
-  //           : option.correct_answer_flag
-  //         : index === optionIndex
-  //         ? true
-  //         : false,
-  //       // If multiAnswer is true, toggle the clicked option, else set only the clicked option to true, rest to false
-  //     })
-  //   );
-  //   const newQuestions = [...questions];
-  //   newQuestions[questionIndex].options = newOptions;
-  //   setQuestions(newQuestions);
-  // };
   const handleToggleButton = (questionIndex, optionIndex) => {
     const newOptions = questions[questionIndex].options.map(
       (option, index) => ({
@@ -640,93 +450,116 @@ export default function quiztype() {
     }));
     setQuestions(newQuestions);
   };
+
   const handleNext = async () => {
+    // const id = responseData.data.quid_id;
+    dispatch(getUploadImage(2345678));
+    // console.log('quid_id', quid_id);
+    console.log('123', 123);
+    
     try {
-      const user_id = localStorage.getItem('user_id');
-
-      // Check if user_id is retrieved successfully
-      if (!user_id) {
-        setErrorMessage("User ID not found. Please log in again.");
-        return;
-      }
-      const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
-
-      if (!authToken) {
-        throw new Error('No authentication token found');
-      }
-      const questionDuration = calculateQuizDuration();
-
-      const response = await fetch(`https://dev.quizifai.com:8010/crt_quiz_mnlly`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': `Bearer ${authToken}`,
-        },
-        body: JSON.stringify({
-          quiz_title: title,
-          num_questions: numQuestions,
-          quiz_description: description,
-          quiz_category_name: selectedCategory,
-          multi_answer: multiAnswer,
-          quiz_sub_category_name: selectedSubCategory,
-          class_name: selectedClass,
-          pass_percentage: percentage,
-          quiz_complexity_name: selectedComplexity,
-          retake_flag: selectedValue,
-          quiz_duration: duration,
-          course_name: selectedCourse,
-          quiz_time_bounded_questions: timings,
-          quiz_public_access: publicAccess,
-          available_from: availablefrom,
-          disabled_on: disabledon,
-          quiz_total_marks: quiztotalmarks,
-          user_id: user_id,
-          questions: questions.map((question) => ({
-            question_text: question.question_text,
-            question_weightage: calculateWeightage(numQuestions, quiztotalmarks),
-            multi_answer_flag: multiAnswer,
-            question_duration: questionDuration,
-            options: question.options.map((option) => ({
-              answer_option_text: option.answer_option_text,
-              correct_answer_flag: option.correct_answer_flag,
-            })),
-          })),
-        }),
-      });
-      const responseData = await response.json();
-      console.log(responseData, "data");
-
-      if (response.ok && responseData.response === "success") {
-        // Assuming router and state setter are defined properly
-
-        navigate("/quizcreated", { state: { quizData: responseData } });
-      } else {
-        if (responseData.detail) {
-          const errorDetails = responseData.detail;
-
-          // Check for specific error types and locations
-          if (errorDetails.some(error => error.type === "missing" && error.loc[2] === "num_questions")) {
-            toast.error("Please provide the number of questions for the quiz.");
-          } else if (errorDetails.some(error => error.type === "missing" && error.loc.includes("correct_answer_flag"))) {
-            toast.error("Please provide the correct answer flag for all options.");
-          } else if (errorDetails.some(error => error.type === "float_parsing" && error.loc[1] === "pass_percentage")) {
-            toast.error("Pass percentage must be a valid number.");
-          } else {
-            toast.error("An error occurred while creating the quiz.");
-          }
-        } else if (responseData.response === "fail" && responseData.response_message.includes("Missing or empty question_text")) {
-          toast.error(responseData.response_message);
-        } else {
-          toast.error(responseData.response_message);
-          toast.error("An error occurred while creating the quiz.");
-        }
-      }
-
+      console.log('files', files);
+      const response = await api().uploadFile(uploadImage, files, { quiz_id: 12345 });
+      console.log('response', response);
+      // You can now access the response data here
     } catch (error) {
-      console.error("Type-Quiz failed:", error);
-      setErrorMessage("An error occurred while choosing the type of the quiz");
+      // Handle any errors that occur during the API call
+      console.error('Error uploading file:', error);
     }
-  };
+  }
+  // const handleNext = async () => {
+  //   try {
+  //     const user_id = localStorage.getItem('user_id');
+
+  //     // Check if user_id is retrieved successfully
+  //     if (!user_id) {
+  //       setErrorMessage("User ID not found. Please log in again.");
+  //       return;
+  //     }
+  //     const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
+
+  //     if (!authToken) {
+  //       throw new Error('No authentication token found');
+  //     }
+
+  //     //   const id = responseData.data.quid_id;
+  //     //  dispatch(getUploadImage({quid_id}));
+  //     //  console.log('quid_id',quid_id);
+
+
+  //     const questionDuration = calculateQuizDuration();
+  //     const response = await fetch(`https://dev.quizifai.com:8010/crt_quiz_mnlly`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         'Authorization': `Bearer ${authToken}`,
+  //       },
+  //       body: JSON.stringify({
+  //         quiz_title: title,
+  //         num_questions: numQuestions,
+  //         quiz_description: description,
+  //         quiz_category_name: selectedCategory,
+  //         multi_answer: multiAnswer,
+  //         quiz_sub_category_name: selectedSubCategory,
+  //         class_name: selectedClass,
+  //         pass_percentage: percentage,
+  //         quiz_complexity_name: selectedComplexity,
+  //         retake_flag: selectedValue,
+  //         quiz_duration: duration,
+  //         course_name: selectedCourse,
+  //         quiz_time_bounded_questions: timings,
+  //         quiz_public_access: publicAccess,
+  //         available_from: availablefrom,
+  //         disabled_on: disabledon,
+  //         quiz_total_marks: quiztotalmarks,
+  //         user_id: user_id,
+  //         questions: questions.map((question) => ({
+  //           question_text: question.question_text,
+  //           question_weightage: calculateWeightage(numQuestions, quiztotalmarks),
+  //           multi_answer_flag: multiAnswer,
+  //           question_duration: questionDuration,
+  //           options: question.options.map((option) => ({
+  //             answer_option_text: option.answer_option_text,
+  //             correct_answer_flag: option.correct_answer_flag,
+  //           })),
+  //         })),
+  //       }),
+  //     });
+  //     const responseData = await response.json();
+  //     console.log(responseData, "data");
+
+  //     if (response.ok && responseData.response === "success") {
+  //      const id = responseData.data.quid_id;
+  //      dispatch(getUploadImage({id}))
+  //       // Assuming router and state setter are defined properly
+  //       navigate("/quizcreated", { state: { quizData: responseData } });
+  //     } else {
+  //       if (responseData.detail) {
+  //         const errorDetails = responseData.detail;
+
+  //         // Check for specific error types and locations
+  //         if (errorDetails.some(error => error.type === "missing" && error.loc[2] === "num_questions")) {
+  //           toast.error("Please provide the number of questions for the quiz.");
+  //         } else if (errorDetails.some(error => error.type === "missing" && error.loc.includes("correct_answer_flag"))) {
+  //           toast.error("Please provide the correct answer flag for all options.");
+  //         } else if (errorDetails.some(error => error.type === "float_parsing" && error.loc[1] === "pass_percentage")) {
+  //           toast.error("Pass percentage must be a valid number.");
+  //         } else {
+  //           toast.error("An error occurred while creating the quiz.");
+  //         }
+  //       } else if (responseData.response === "fail" && responseData.response_message.includes("Missing or empty question_text")) {
+  //         toast.error(responseData.response_message);
+  //       } else {
+  //         toast.error(responseData.response_message);
+  //         toast.error("An error occurred while creating the quiz.");
+  //       }
+  //     }
+
+  //   } catch (error) {
+  //     console.error("Type-Quiz failed:", error);
+  //     setErrorMessage("An error occurred while choosing the type of the quiz");
+  //   }
+  // };
   const handleAvailableFromChange = (e) => {
     setavailablefrom(e.target.value);
     // Clear the disabledOn date if it's before the new availableFrom date
@@ -770,7 +603,7 @@ export default function quiztype() {
     }
   };
   // const handleInputChange = (e) => {
-  //   if (isRetakeOn) {
+    //   if (isRetakeOn) {
   //     setRetake(e.target.value);
   //   }
   // };
@@ -779,35 +612,15 @@ export default function quiztype() {
     setSelectedValue(e.target.value);
   };
 
-  const toggler3 = (checked) => {
-    setPublicAccess(checked);
+  const toggler3 = (e) => {
+    // console.log('e.target.value', e.target.value);
+    setPublicAccess(e.target.value);
+    // console.log('publicAccess',publicAccess);
   };
 
   function handleSelect1(event) {
     setNumber(event.target.value);
   }
-
-  // function handleSelect2(e) {
-  //   const selectedCategory = e.target.value;
-  //   setQuizCategory(selectedCategory);
-
-  //   // Find the selected category object
-  //   const selectedCategoryObj = options2.find(
-  //     (option) => option.label === selectedCategory
-  //   );
-
-  //   if (selectedCategoryObj && selectedCategoryObj.subCategories) {
-  //     // If the selected category has sub-categories, update the sub-category state
-  //     setSubCategory(selectedCategoryObj.subCategories[0]); // Set the first sub-category as default
-  //   } else {
-  //     // If the selected category does not have sub-categories, reset the sub-category state
-  //     setSubCategory("");
-  //   }
-  // }
-
-  // function handleSelect3(e) {
-  //   setSubCategory(e.target.value);
-  // }
 
   function handleSelect4(event) {
     setClasses(event.target.value);
@@ -850,82 +663,10 @@ export default function quiztype() {
   return (
     <>
       <div>
-        {/* Navigation-Section */}
+        
         <header className="w-[219px] h-[1000px] absolute top-[-19px] left-[-9px] rounded-tl-[20px] rounded-bl-[20px] bg-[#F5F5FB] z-10 shadow-lg shadow-gray-400/60">
-          {/* <div className="h-[300px] w-[270px] absolute top-[20px] -left-[20px]">
-            <img src={QuizifAilogo} alt="QuizifAi Logo Icon" />
-          </div> */}
+          
 
-          {/* Navigation-icons */}
-          {/* <div className="flex w-[15px] h-[15px] absolute top-[231px] left-[51px]">
-            <img src={Dashboard} alt="Dashborad img" />
-            <a
-              className="ml-5 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              Dashboard
-            </a>
-          </div>
-
-          <div className="flex w-[16px] h-[15px] absolute top-[285px] left-[51px]">
-            <img src={Quiz} alt="Quiz's img" />
-            <a
-              className="ml-5 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              Quiz
-            </a>
-          </div>
-
-          <div className="flex w-[13.87px] h-[15.41px] absolute top-[338px] left-[51px]">
-            <img src={History} alt="History img" />
-            <a
-              className="ml-5 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              History
-            </a>
-          </div>
-
-          <div className="flex w-[17px] h-4 absolute top-[394px] left-[51px]">
-            <img src={Schedule} alt="Schedule img" />
-            <a
-              className="ml-4 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              Schedule
-            </a>
-          </div>
-
-          <div className="flex w-4 h-[15px] absolute top-[453px] left-[51px]">
-            <img src={Notification} alt="Notification img" />
-            <a
-              className="ml-4 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              Notification
-            </a>
-          </div>
-
-          <div className="flex w-[25.46px] h-[27.87px] absolute top-[508px] left-[51px]">
-            <img className="-ml-2.5" src={QuizAdmin} alt="QuizAdmin img" />
-            <a
-              className="ml-4 text-Poppins font-medium text-[15px] leading-[15px] text-nowrap text-[#30304F]"
-              for=""
-            >
-              Quiz Admin
-            </a>
-          </div>
-
-          <div className="flex w-[17px] h-[17px] absolute top-[581px] left-[51px]">
-            <img src={Profile} alt="Profile img" />
-            <a
-              className="ml-4 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              Profile
-            </a>
-          </div> */}
           <Navigation />
           <ToastContainer />
         </header>
@@ -938,9 +679,7 @@ export default function quiztype() {
               </h>
             </div>
             <div className="flex">
-              {/* <div className="w-[51px] h-[37px] absolute top-[102px] left-[284px]">
-              {/* <img src={QuizTitle} alt="QuizTitle icon" /> */}
-              {/* </div>  */}
+              
 
               <div className="w-[201px] h-[22px] absolute top-[111px] left-[284px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
@@ -960,12 +699,7 @@ export default function quiztype() {
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                   Number of Questions<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
-                {/* <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] ml-5 leading-[22.5px]">
-                  of
-                </h1>
-                <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] leading-[22.5px]">
-                  Question
-                </h1> */}
+                
               </div>
 
               <div className=" rounded-lg absolute top-[99px] left-[1144px]">
@@ -991,22 +725,11 @@ export default function quiztype() {
                   }}
                 />
                  </div>
-              {/* <div className=" rounded-lg absolute top-[99px] left-[1200px]">
-              <select className="w-[135px] border-solid border-[#B8BBC2] border-[1.8px] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer" 
-              onChange={handleSelect1} value={number}>
-                {options1.map(options1 =>(
-                <option className="border-grey-400 leading-[18px] text-[12px] font-medium"
-                 >{options1.label}</option>
-                  ))}
-              </select>
-              </div> */}
+             
             </div>
 
             <div className="flex">
-              {/* <div className="w-[43px] h-[43px] absolute top-[166px] left-[283px]">
-              <img src={QuizDiscription} alt="QuizDiscription icon" />
-            </div> */}
-
+             
               <div className="w-[201px] h-[22px] absolute top-[174px] left-[284px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                   Quiz Description<span className="required ml-[1px] text-red-500">*</span>
@@ -1030,19 +753,7 @@ export default function quiztype() {
               </div>
 
               <div className="  absolute top-[240px] left-[498px]">
-                {/* <select
-                  className="w-[260px] h-[41.6px] border-solid border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer text-[12px]"
-                  value={quizCategory}
-                  onChange={handleSelectCategory}
-                >
-                  <option value="" disabled>Select a category</option>
-  {/* Populate options with categories sorted alphabetically */}
-                {/* {categoryOptions.sort().map((category, index) => (
-    <option key={index} value={category}>
-      {category}
-    </option>
-  ))}
-                </select>  */}
+                
                 <select
                   className="w-[260px] h-[35px] border-solid border-[1px] border-[#B8BBC2] p-2 rounded-md cursor-pointer text-[12px]"
                   value={selectedCategory}
@@ -1064,9 +775,7 @@ export default function quiztype() {
                 </h1>
               </div>
 
-              {/* <div className="w-[36px] h-5 absolute top-[251px] left-[935px]">
-              <img src={Toggle} />
-            </div> */}
+              
 
               <div className="w-[36px] h-5 absolute top-[458px] left-[1020px]">
                 <Switch
@@ -1085,19 +794,7 @@ export default function quiztype() {
               </div>
 
               <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] text-[12px]  leading-[18px] absolute top-[240px] left-[1020px]">
-                {/* <select
-                  className="w-[260px] text-[12px]  border-solid border-[#B8BBC2] px-3 py-3 rounded-md cursor-pointer"
-                  onChange={handleSelectSubCategory}
-                  value={subCategory}
-                >
-                  <option value="" disabled>Select a subcategory</option>
-                  {/* Populate options with subcategories */}
-                {/* {subCategoryOptions.map((subCategory, index) => (
-                    <option key={index} value={subCategory}>
-                      {subCategory}
-                    </option>
-                  ))}
-                </select>  */}
+                
                 <select
                   className="w-[260px] h-[35px] text-[12px]  border-solid border-[#B8BBC2] px-3 rounded-md cursor-pointer"
                   onChange={handleSelectSubCategory}
@@ -1119,24 +816,10 @@ export default function quiztype() {
               </h1>
             </div>
 
-            {/* <div className="w-[36px] h-5 absolute top-[251px] left-[935px]">
-              <img src={Toggle} />
-            </div> */}
+            
 
             <div className="w-[260px]  absolute top-[309px] left-[500px]">
-              {/* <select
-                className="w-[260px] h-[41.6px] border-solid p-2  text-[12px] border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer"
-                value={coursename}
-                onChange={handleSelectCourse}
-              >
-                <option value="" disabled>Select a course</option>
-                {/* Populate options with courses */}
-              {/* {courseOptions.map((course, index) => (
-                  <option key={index} value={course}>
-                    {course}
-                  </option>
-                ))}
-              </select>  */}
+              
               <select
                 className="w-[260px] h-[35px] border-solid  text-[12px] border-[1px] border-[#B8BBC2] p-2 rounded-md cursor-pointer"
                 value={selectedCourse}
@@ -1159,18 +842,7 @@ export default function quiztype() {
             </div>
 
             <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] text-[12px]  leading-[18px] absolute top-[306px] left-[1020px]">
-              {/* <select
-                className="w-[260px] border-solid border-[#B8BBC2] px-3 py-3  text-[12px] rounded-md cursor-pointer"
-                onChange={handleSelectClass}
-                value={classes}
-              >
-                <option value="" disabled>Select a class</option>
-                {classOptions.map((classOption, index) => (
-                  <option key={index} value={classOption}>
-                    {classOption}
-                  </option>
-                ))}
-              </select> */}
+              
               <select
                 className="w-[260px] h-[35px] border-solid border-[#B8BBC2] px-3  text-[12px] rounded-md cursor-pointer"
                 onChange={handleSelectClass}
@@ -1214,18 +886,7 @@ export default function quiztype() {
               </div>
 
               <div className=" rounded-lg w-[129px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[376px] left-[1020px]">
-                {/* <select
-                  className="w-[264px] p-2 rounded-md cursor-pointer text-[12px]"
-                  onChange={handleSelect6}
-                  value={selectedComplexity}
-                >
-                    <option value="" disabled>Complexities</option>
-                  {complexities.map((complexity, index) => (
-                    <option key={index} value={complexity}>
-                      {complexity}
-                    </option>
-                  ))}
-                </select> */}
+                
                 <select
                   className="w-[264px] h-[35px] p-2 rounded-md cursor-pointer text-[12px]"
                   onChange={handleSelectComplexity}
@@ -1296,9 +957,7 @@ export default function quiztype() {
                     </option>
                   ))}
                 </select>
-                {/* <input type="text"className="w-[166px] px-3 py-3 rounded-md  text-[12px]" onChange={handleSelect7} value={duration} 
-              placeholder="Duration"/> */}
-                {/* <TiEyeOutline  className=" absolute left-[165px] top-[15px] " /> */}
+               
                 <div className="relative">
                   <button
                     onClick={() => setIsOpen(true)}
@@ -1388,29 +1047,24 @@ export default function quiztype() {
             <div className="flex">
               <div className="w-[156px] h-[30px] absolute top-[660px] left-[284px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Public access<span className="required ml-[1px] text-red-500">*</span>
+                  Public access <span className="required ml-[1px] text-red-500">*</span>
                 </h1>
               </div>
+              
 
               <div className="w-[36px] h-5 absolute top-[660px] left-[504px]">
-                <Switch onChange={toggler3} checked={publicAccess} />
+                {/* <Switch onChange={toggler3} checked={publicAccess} /> */}
+                <select
+                    className="w-[158px] h-[35px] rounded-[10px] border-[1.8px] bg-[#F4F4F4]"
+                    value={publicAccess}
+                    onChange={toggler3}
+                  >
+                    <option value="Public">Public</option>
+                    <option value="Subscribed">Subscribed</option>
+                    <option value="Organization">Organization</option>
+                  </select>
               </div>
 
-              {/* <div className="w-[174px] h-[30px] absolute top-[660px] left-[568px]">
-              <h1 className="font-Poppins text-[#214082] font-semibold text-[15px] leading-[22.5px]">
-                Time per question{" "}
-              </h1>
-            </div>
-
-            <div className=" rounded-lg w-[110px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[653px] left-[754px]">
-            <select className="w-[110px] px-3 py-3 rounded-md cursor-pointer text-[12px]" onChange={handleSelect9} value={minutes}>
-                {options9.map(options9 =>(
-                <option className="border-grey-400 leading-[18px] font-medium rounded"
-                 >{options9.label}</option>
-                 
-                  ))}
-              </select>
-            </div> */}
               <div className="w-[174px] h-[30px] absolute top-[660px] left-[820px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                   Quiz total marks <span className="required ml-[1px] text-red-500">*</span>
@@ -1438,7 +1092,7 @@ export default function quiztype() {
                     </div>
                    </div>
 
-                   {isOpen1 && (
+                   {imageOpen && (
                     <div
                       style={{
                         width:"270px",
@@ -1491,18 +1145,18 @@ export default function quiztype() {
           <main className="w-max-auto">
             <div className="w-[848px] h-[44px] absolute top-[90px] left-[298px]">
               <h1 className="font-Poppins font-bold text-[30px] leading-[45px] text-orange-400">
-                Create / Edit your Quiz
+                Create / Edit your Quiz 
               </h1>
               <h1 className="font-Poppins font-medium text-[12px] text-[#214082] leading-[18px]">
                 Enter all your questions, options, and answers
               </h1>
             </div>
 
-            {/* Questions and options */}
+           
             <div className="absolute top-[210px] left-[298px] w-[1212px] h-[450px] ">
               {questions.map((question, questionIndex) => (
                 <div key={questionIndex} className="mb-8 ">
-                  {/* Input field for question */}
+                  
                   <div className="flex items-center mb-4">
                     <div className="mr-2 text-xl font-bold text-[#214082]">
                       {questionIndex + 1}.
@@ -1519,7 +1173,7 @@ export default function quiztype() {
                       }}
                     />
 
-                    {/* Input field for question weightage */}
+                   
                     <input
                       type="number"
                       placeholder="Marks"
@@ -1535,18 +1189,7 @@ export default function quiztype() {
                         setQuestions(updatedQuestions);
                       }}
                     />
-                    {/* Input field for question duration */}
-                    {/* <input
-      type="number"
-      placeholder="Duration"
-      className="w-[130px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
-      value={question.question_duration}
-      onChange={(e) => {
-        const newQuestions = [...questions];
-        newQuestions[questionIndex].question_duration = parseInt(e.target.value);
-        setQuestions(newQuestions);
-      }}
-    /> */}
+                    
                     {timings === "No" ? (
                       <input
 
@@ -1641,7 +1284,7 @@ export default function quiztype() {
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNext}
                 >
-                  Save
+                  Save 
                 </button>
               </div>
             </div>

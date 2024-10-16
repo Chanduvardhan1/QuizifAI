@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Switch from "react-switch";
 import Navigation from "../navbar/navbar";
 import { useNavigate } from "react-router-dom";
-import { setSelectedImage,setOpen } from "../home/slice";
+import { setSelectedImage, setOpen } from "../home/slice";
 import QuizifAilogo from "../assets/Images/images/home/Quizifai3.png";
 import Dashboard from "../assets/Images/quiz-type/Dashboard.png";
 import Quiz from "../assets/Images/quiz-type/Quiz.png";
@@ -34,7 +34,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../quiz-type/quiz-type.css";
 import { useDispatch, useSelector } from "react-redux";
-import { setDynamicStateFlags,getUploadImage,} from "../home/slice"; 
+import { setDynamicStateFlags, getUploadImage, } from "../home/slice";
 import { uploadImage } from '../Api/constants';
 import api from '../Api/api';
 
@@ -153,13 +153,13 @@ const options9 = [
 
 export default function quiztype() {
 
-  const imageOpen = useSelector(state=>state.home.plus);
+  const imageOpen = useSelector(state => state.home.plus);
 
 
   // const [selectedImage, setSelectedImage] = useState(null);
 
   const handlePlusClick = () => {
-    dispatch(setOpen({key:'plus', value:true}));
+    dispatch(setOpen({ key: 'plus', value: true }));
   };
   const handleSave = () => {
     // console.log("Image uploaded:", selectedImage);
@@ -167,14 +167,14 @@ export default function quiztype() {
     toast.success("Image uploaded successfully!");
   };
   const handleCancel = () => {
-    dispatch(setOpen({key:'plus', value:false}));
+    dispatch(setOpen({ key: 'plus', value: false }));
   };
 
   const handleImageChange = (e) => {
     // dispatch(setSelectedImage({ key: 'image', value: JSON.stringify(e?.target?.value) }));
     // console.log('e?.target?.value',e?.target?.value);
     setFiles(e?.target?.files[0])
-    
+
     // console.log('event',e);
   };
   const [title, setTitle] = useState("");
@@ -192,7 +192,7 @@ export default function quiztype() {
   const [availablefrom, setavailablefrom] = useState("");
   const [disabledon, setdisabledon] = useState("");
 
-  const [publicAccess, setPublicAccess] = useState("");
+  const [publicAccess, setPublicAccess] = useState("Public");
   const [errorMessage, setErrorMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isRetakeOn, setIsRetakeOn] = useState(false);
@@ -237,8 +237,8 @@ export default function quiztype() {
   const [selectedCourse, setSelectedCourse] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
   const [classes, setClasses] = useState([]);
-  const [files,setFiles] = useState ("");
-  const dispatch =useDispatch();
+  const [files, setFiles] = useState("");
+  const dispatch = useDispatch();
 
 
   useEffect(() => {
@@ -416,7 +416,7 @@ export default function quiztype() {
     setSelectedComplexity(event.target.value);
   };
   const navigate = useNavigate();
-  const handleNext1 = () => {
+  const handleNext1 = async () => {
     setShowRegistrationSuccess(true);
   };
   const handleNext2 = () => {
@@ -451,115 +451,125 @@ export default function quiztype() {
     setQuestions(newQuestions);
   };
 
-  const handleNext = async () => {
-    // const id = responseData.data.quid_id;
-    dispatch(getUploadImage(2345678));
-    // console.log('quid_id', quid_id);
-    console.log('123', 123);
-    
-    try {
-      console.log('files', files);
-      const response = await api().uploadFile(uploadImage, files, { quiz_id: 12345 });
-      console.log('response', response);
-      // You can now access the response data here
-    } catch (error) {
-      // Handle any errors that occur during the API call
-      console.error('Error uploading file:', error);
-    }
-  }
   // const handleNext = async () => {
+  //   // const id = responseData.data.quid_id;
+  //   dispatch(getUploadImage(2345678));
+  //   // console.log('quid_id', quid_id);
+  //   console.log('123', 123);
   //   try {
-  //     const user_id = localStorage.getItem('user_id');
-
-  //     // Check if user_id is retrieved successfully
-  //     if (!user_id) {
-  //       setErrorMessage("User ID not found. Please log in again.");
-  //       return;
-  //     }
-  //     const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
-
-  //     if (!authToken) {
-  //       throw new Error('No authentication token found');
-  //     }
-
-  //     //   const id = responseData.data.quid_id;
-  //     //  dispatch(getUploadImage({quid_id}));
-  //     //  console.log('quid_id',quid_id);
-
-
-  //     const questionDuration = calculateQuizDuration();
-  //     const response = await fetch(`https://dev.quizifai.com:8010/crt_quiz_mnlly`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         'Authorization': `Bearer ${authToken}`,
-  //       },
-  //       body: JSON.stringify({
-  //         quiz_title: title,
-  //         num_questions: numQuestions,
-  //         quiz_description: description,
-  //         quiz_category_name: selectedCategory,
-  //         multi_answer: multiAnswer,
-  //         quiz_sub_category_name: selectedSubCategory,
-  //         class_name: selectedClass,
-  //         pass_percentage: percentage,
-  //         quiz_complexity_name: selectedComplexity,
-  //         retake_flag: selectedValue,
-  //         quiz_duration: duration,
-  //         course_name: selectedCourse,
-  //         quiz_time_bounded_questions: timings,
-  //         quiz_public_access: publicAccess,
-  //         available_from: availablefrom,
-  //         disabled_on: disabledon,
-  //         quiz_total_marks: quiztotalmarks,
-  //         user_id: user_id,
-  //         questions: questions.map((question) => ({
-  //           question_text: question.question_text,
-  //           question_weightage: calculateWeightage(numQuestions, quiztotalmarks),
-  //           multi_answer_flag: multiAnswer,
-  //           question_duration: questionDuration,
-  //           options: question.options.map((option) => ({
-  //             answer_option_text: option.answer_option_text,
-  //             correct_answer_flag: option.correct_answer_flag,
-  //           })),
-  //         })),
-  //       }),
-  //     });
-  //     const responseData = await response.json();
-  //     console.log(responseData, "data");
-
-  //     if (response.ok && responseData.response === "success") {
-  //      const id = responseData.data.quid_id;
-  //      dispatch(getUploadImage({id}))
-  //       // Assuming router and state setter are defined properly
-  //       navigate("/quizcreated", { state: { quizData: responseData } });
-  //     } else {
-  //       if (responseData.detail) {
-  //         const errorDetails = responseData.detail;
-
-  //         // Check for specific error types and locations
-  //         if (errorDetails.some(error => error.type === "missing" && error.loc[2] === "num_questions")) {
-  //           toast.error("Please provide the number of questions for the quiz.");
-  //         } else if (errorDetails.some(error => error.type === "missing" && error.loc.includes("correct_answer_flag"))) {
-  //           toast.error("Please provide the correct answer flag for all options.");
-  //         } else if (errorDetails.some(error => error.type === "float_parsing" && error.loc[1] === "pass_percentage")) {
-  //           toast.error("Pass percentage must be a valid number.");
-  //         } else {
-  //           toast.error("An error occurred while creating the quiz.");
-  //         }
-  //       } else if (responseData.response === "fail" && responseData.response_message.includes("Missing or empty question_text")) {
-  //         toast.error(responseData.response_message);
-  //       } else {
-  //         toast.error(responseData.response_message);
-  //         toast.error("An error occurred while creating the quiz.");
-  //       }
-  //     }
-
+  //     const response = await api().uploadFile(uploadImage, files, null, { quiz_id: 377 });
+  //     console.log('response', response);
+  //     // You can now access the response data here
   //   } catch (error) {
-  //     console.error("Type-Quiz failed:", error);
-  //     setErrorMessage("An error occurred while choosing the type of the quiz");
+  //     // Handle any errors that occur during the API call
+  //     console.error('Error uploading file:', error);
   //   }
-  // };
+  // }
+  const handleNext = async () => {
+    try {
+      const user_id = localStorage.getItem('user_id');
+
+      // Check if user_id is retrieved successfully
+      if (!user_id) {
+        setErrorMessage("User ID not found. Please log in again.");
+        return;
+      }
+      const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
+
+      if (!authToken) {
+        throw new Error('No authentication token found');
+      }
+
+      //   const id = responseData.data.quid_id;
+      //  dispatch(getUploadImage({quid_id}));
+      //  console.log('quid_id',quid_id);
+
+
+      const questionDuration = calculateQuizDuration();
+      console.log('publicAccess',publicAccess);
+      const response = await fetch(`https://dev.quizifai.com:8010/crt_quiz_mnlly`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${authToken}`,
+        },
+        
+        body: JSON.stringify({
+          quiz_title: title,
+          num_questions: numQuestions,
+          quiz_description: description,
+          quiz_category_name: selectedCategory,
+          multi_answer: multiAnswer,
+          quiz_sub_category_name: selectedSubCategory,
+          class_name: selectedClass,
+          pass_percentage: percentage,
+          quiz_complexity_name: selectedComplexity,
+          retake_flag: selectedValue,
+          quiz_duration: duration,
+          course_name: selectedCourse,
+          quiz_time_bounded_questions: timings,
+          quiz_public_access: publicAccess,
+          available_from: availablefrom,
+          disabled_on: disabledon,
+          quiz_total_marks: quiztotalmarks,
+          user_id: user_id,
+          questions: questions.map((question) => ({
+            question_text: question.question_text,
+            question_weightage: calculateWeightage(numQuestions, quiztotalmarks),
+            multi_answer_flag: multiAnswer,
+            question_duration: questionDuration,
+            options: question.options.map((option) => ({
+              answer_option_text: option.answer_option_text,
+              correct_answer_flag: option.correct_answer_flag,
+            })),
+          })),
+        }),
+      });
+      
+      const responseData = await response.json();
+      console.log(responseData, "data");
+
+      if (response.ok && responseData.response === "success") {
+console.log('response',responseData);
+        const id = responseData.data.quiz_id;
+        console.log('id',id);
+        try {
+          const response = await api().uploadFile(uploadImage, files, null, { quiz_id: id });
+          console.log('response', response);
+          // You can now access the response data here
+        } catch (error) {
+          // Handle any errors that occur during the API call
+          console.error('Error uploading file:', error);
+        }
+        // Assuming router and state setter are defined properly
+        navigate("/quizcreated", { state: { quizData: responseData } });
+      } else {
+        if (responseData.detail) {
+          const errorDetails = responseData.detail;
+
+          // Check for specific error types and locations
+          if (errorDetails.some(error => error.type === "missing" && error.loc[2] === "num_questions")) {
+            toast.error("Please provide the number of questions for the quiz.");
+          } else if (errorDetails.some(error => error.type === "missing" && error.loc.includes("correct_answer_flag"))) {
+            toast.error("Please provide the correct answer flag for all options.");
+          } else if (errorDetails.some(error => error.type === "float_parsing" && error.loc[1] === "pass_percentage")) {
+            toast.error("Pass percentage must be a valid number.");
+          } else {
+            toast.error("An error occurred while creating the quiz.");
+          }
+        } else if (responseData.response === "fail" && responseData.response_message.includes("Missing or empty question_text")) {
+          toast.error(responseData.response_message);
+        } else {
+          toast.error(responseData.response_message);
+          toast.error("An error occurred while creating the quiz.");
+        }
+      }
+
+    } catch (error) {
+      console.error("Type-Quiz failed:", error);
+      setErrorMessage("An error occurred while choosing the type of the quiz");
+    }
+  };
   const handleAvailableFromChange = (e) => {
     setavailablefrom(e.target.value);
     // Clear the disabledOn date if it's before the new availableFrom date
@@ -603,7 +613,7 @@ export default function quiztype() {
     }
   };
   // const handleInputChange = (e) => {
-    //   if (isRetakeOn) {
+  //   if (isRetakeOn) {
   //     setRetake(e.target.value);
   //   }
   // };
@@ -615,7 +625,7 @@ export default function quiztype() {
   const toggler3 = (e) => {
     // console.log('e.target.value', e.target.value);
     setPublicAccess(e.target.value);
-    // console.log('publicAccess',publicAccess);
+    console.log('publicAccess11',e.target.value);
   };
 
   function handleSelect1(event) {
@@ -663,9 +673,9 @@ export default function quiztype() {
   return (
     <>
       <div>
-        
+
         <header className="w-[219px] h-[1000px] absolute top-[-19px] left-[-9px] rounded-tl-[20px] rounded-bl-[20px] bg-[#F5F5FB] z-10 shadow-lg shadow-gray-400/60">
-          
+
 
           <Navigation />
           <ToastContainer />
@@ -679,7 +689,7 @@ export default function quiztype() {
               </h>
             </div>
             <div className="flex">
-              
+
 
               <div className="w-[201px] h-[22px] absolute top-[111px] left-[284px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
@@ -699,7 +709,7 @@ export default function quiztype() {
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                   Number of Questions<span className="required ml-[1px] text-red-500">*</span>
                 </h1>
-                
+
               </div>
 
               <div className=" rounded-lg absolute top-[99px] left-[1144px]">
@@ -724,12 +734,12 @@ export default function quiztype() {
                     );
                   }}
                 />
-                 </div>
-             
+              </div>
+
             </div>
 
             <div className="flex">
-             
+
               <div className="w-[201px] h-[22px] absolute top-[174px] left-[284px]">
                 <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
                   Quiz Description<span className="required ml-[1px] text-red-500">*</span>
@@ -753,7 +763,7 @@ export default function quiztype() {
               </div>
 
               <div className="  absolute top-[240px] left-[498px]">
-                
+
                 <select
                   className="w-[260px] h-[35px] border-solid border-[1px] border-[#B8BBC2] p-2 rounded-md cursor-pointer text-[12px]"
                   value={selectedCategory}
@@ -775,7 +785,7 @@ export default function quiztype() {
                 </h1>
               </div>
 
-              
+
 
               <div className="w-[36px] h-5 absolute top-[458px] left-[1020px]">
                 <Switch
@@ -794,7 +804,7 @@ export default function quiztype() {
               </div>
 
               <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] text-[12px]  leading-[18px] absolute top-[240px] left-[1020px]">
-                
+
                 <select
                   className="w-[260px] h-[35px] text-[12px]  border-solid border-[#B8BBC2] px-3 rounded-md cursor-pointer"
                   onChange={handleSelectSubCategory}
@@ -816,10 +826,10 @@ export default function quiztype() {
               </h1>
             </div>
 
-            
+
 
             <div className="w-[260px]  absolute top-[309px] left-[500px]">
-              
+
               <select
                 className="w-[260px] h-[35px] border-solid  text-[12px] border-[1px] border-[#B8BBC2] p-2 rounded-md cursor-pointer"
                 value={selectedCourse}
@@ -842,7 +852,7 @@ export default function quiztype() {
             </div>
 
             <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] text-[12px]  leading-[18px] absolute top-[306px] left-[1020px]">
-              
+
               <select
                 className="w-[260px] h-[35px] border-solid border-[#B8BBC2] px-3  text-[12px] rounded-md cursor-pointer"
                 onChange={handleSelectClass}
@@ -886,7 +896,7 @@ export default function quiztype() {
               </div>
 
               <div className=" rounded-lg w-[129px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[376px] left-[1020px]">
-                
+
                 <select
                   className="w-[264px] h-[35px] p-2 rounded-md cursor-pointer text-[12px]"
                   onChange={handleSelectComplexity}
@@ -957,7 +967,7 @@ export default function quiztype() {
                     </option>
                   ))}
                 </select>
-               
+
                 <div className="relative">
                   <button
                     onClick={() => setIsOpen(true)}
@@ -1050,19 +1060,19 @@ export default function quiztype() {
                   Public access <span className="required ml-[1px] text-red-500">*</span>
                 </h1>
               </div>
-              
+
 
               <div className="w-[36px] h-5 absolute top-[660px] left-[504px]">
                 {/* <Switch onChange={toggler3} checked={publicAccess} /> */}
                 <select
-                    className="w-[158px] h-[35px] rounded-[10px] border-[1.8px] bg-[#F4F4F4]"
-                    value={publicAccess}
-                    onChange={toggler3}
-                  >
-                    <option value="Public">Public</option>
-                    <option value="Subscribed">Subscribed</option>
-                    <option value="Organization">Organization</option>
-                  </select>
+                  className="w-[158px] h-[35px] rounded-[10px] border-[1.8px] bg-[#F4F4F4]"
+                  value={publicAccess}
+                  onChange={toggler3}
+                >
+                  <option value="Public">Public</option>
+                  <option value="Subscribed">Subscribed</option>
+                  <option value="Organization">Organization</option>
+                </select>
               </div>
 
               <div className="w-[174px] h-[30px] absolute top-[660px] left-[820px]">
@@ -1075,27 +1085,27 @@ export default function quiztype() {
                       width: "50px",
                       height: "48px",
                       border: "1px solid black",
-                      margin_top: "27%",                      
-                      
+                      margin_top: "27%",
+
 
                     }}
-                   >
+                  >
                     <div
                       style={{
                         fontSize: "24px",
                         cursor: "pointer",
-                        textAlign:"center"
+                        textAlign: "center"
                       }}
                       onClick={handlePlusClick}
                     >
                       +
                     </div>
-                   </div>
+                  </div>
 
-                   {imageOpen && (
+                  {imageOpen && (
                     <div
                       style={{
-                        width:"270px",
+                        width: "270px",
                         transform: "translate(-28%, -50%)",
                         backgroundColor: "white",
                         padding: "20px",
@@ -1106,13 +1116,13 @@ export default function quiztype() {
                       <h2>Upload Image</h2>
                       <input className="mt-[17px]" type="file" onChange={handleImageChange} />
                       <button className="mt-[8%]" onClick={handleSave}>Save</button>
-                      <button className =" cancel" onClick={handleCancel}>Cancel</button>
+                      <button className=" cancel" onClick={handleCancel}>Cancel</button>
                     </div>
-                   )}
+                  )}
                 </div>
 
               </div>
-              
+
               <div className="absolute top-[653px] left-[1020px]">
                 <input
                   className="rounded-lg w-[156px] h-[35px] flex border-solid border-[#B8BBC2] border-[1.8px]
@@ -1145,18 +1155,18 @@ export default function quiztype() {
           <main className="w-max-auto">
             <div className="w-[848px] h-[44px] absolute top-[90px] left-[298px]">
               <h1 className="font-Poppins font-bold text-[30px] leading-[45px] text-orange-400">
-                Create / Edit your Quiz 
+                Create / Edit your Quiz
               </h1>
               <h1 className="font-Poppins font-medium text-[12px] text-[#214082] leading-[18px]">
                 Enter all your questions, options, and answers
               </h1>
             </div>
 
-           
+
             <div className="absolute top-[210px] left-[298px] w-[1212px] h-[450px] ">
               {questions.map((question, questionIndex) => (
                 <div key={questionIndex} className="mb-8 ">
-                  
+
                   <div className="flex items-center mb-4">
                     <div className="mr-2 text-xl font-bold text-[#214082]">
                       {questionIndex + 1}.
@@ -1173,7 +1183,7 @@ export default function quiztype() {
                       }}
                     />
 
-                   
+
                     <input
                       type="number"
                       placeholder="Marks"
@@ -1189,7 +1199,7 @@ export default function quiztype() {
                         setQuestions(updatedQuestions);
                       }}
                     />
-                    
+
                     {timings === "No" ? (
                       <input
 
@@ -1284,7 +1294,7 @@ export default function quiztype() {
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNext}
                 >
-                  Save 
+                  Save
                 </button>
               </div>
             </div>

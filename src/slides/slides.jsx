@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import './slides.css';
+// import slidesImg from "../../public/slidesImg.png";
 
 const Slides = (props) => {
   const [activeSlide, setActiveSlide] = useState(0);
@@ -55,6 +56,7 @@ const Slides = (props) => {
       <div className="slides-wrapper" style={{
         transform: `translateX(-${activeSlide * 100}%)`
       }}>
+         {/* <img src={slidesImg} alt="Slides" /> */}
         {slides.map((slide, index) => (
           <div
             key={index}

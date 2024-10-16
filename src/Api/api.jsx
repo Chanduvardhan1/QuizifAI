@@ -3,12 +3,13 @@ import { baseURl } from "./constants";
 const getHeaders = () => {
     const authToken = localStorage.getItem('authToken');
     return {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'Authorization': authToken
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${authToken}`
     };
 };
+
 export default () => {
+    const headers = getHeaders();
     return {
         get: async (endpoint, params = {}) => {
             const url = new URL(`${baseURl}${endpoint}`);
@@ -16,7 +17,7 @@ export default () => {
 
             const response = await fetch(url, {
                 method: 'GET',
-                headers: getHeaders(),
+                headers,
             });
 
             return response.json();
@@ -36,14 +37,15 @@ export default () => {
         
             const response = await fetch(url, {
                 method: 'POST',
-                headers: getHeaders(),
+                headers,
                 body: JSON.stringify(data),
             });
         
             return response.json();
         },
 
-        uploadFile: async (endpoint, files, queryParams = {}) => {
+        uploadFile: async (endpoint, file1, file2, queryParams = {}) => {
+            console.log('file1', file1);
             let url = `${baseURl}${endpoint}`;
         
             // Append query parameters to URL
@@ -54,15 +56,17 @@ export default () => {
         
                 url += `?${queryString}`;
             }
-        
+
+            const formData = new FormData();
+            formData.append('file1', file1);
+            formData.append('file2', file2);
             const response = await fetch(url, {
                 method: 'POST',
-                headers: {
-                    ...getHeaders(),
-                    'Content-Type': 'application/octet-stream',
-                    "Accept": "multipart/form-data"
+                headers,
+                body: {
+                    mode: "formdata",
+                    formdata: formData,
                 },
-                body: files,
             });
         
             return response.json();
@@ -71,7 +75,7 @@ export default () => {
         put: async (endpoint, data = {}) => {
             const response = await fetch(`${baseURl}${endpoint}`, {
                 method: 'PUT',
-                headers: getHeaders(),
+                headers,
                 body: JSON.stringify(data),
             });
 
@@ -84,7 +88,7 @@ export default () => {
 
             const response = await fetch(url, {
                 method: 'DELETE',
-                headers: getHeaders(),
+                headers,
             });
 
             return response.json();

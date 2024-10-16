@@ -20,6 +20,7 @@ import highScore from "../../public/highscore.png";
 import previousicon from "../../public/backSide.png";
 import nextbutton from "../../public/images/nimage.png";
 import { getRandomElements } from "../utils";
+// import slidesImg from "../../public/slidesImg.png";
 let randomQuestions;
 
 function Home() {
@@ -194,9 +195,6 @@ function Home() {
     <div>
       <HeaderSection />
       <div>
-        <div>
-          sai123
-        </div>
         <div className="flex flex-col md:flex-row p-5 main">
           <div className="wrapper">
             {!started && <span className=" font-['Segoe_UI_Historic'] font-bold text-[#555555] leading-[50px] text-center md:text-left">

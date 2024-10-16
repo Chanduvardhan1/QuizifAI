@@ -5,7 +5,8 @@ import icon1 from "../assets/Images/images/mdi_gmail.png";
 import icon2 from "../assets/Images/images/clarity_mobile-line.png";
 import icon3 from "../assets/Images/images/logos_google-gmail.png";
 // import quizifailogo from "/images/Homeimage.png";
-import quizifailogo from "/images/oldimage.png";
+// import quizifailogo from "/images/oldimage.png";
+import homeImage from "../../public/homepicture.png";
 import successImage from "../assets/Images/images/signup/successImage.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FaTimes, FaCheck } from "react-icons/fa";
@@ -942,7 +943,7 @@ const Signup = () => {
         <div className={styles.leftSection}>
           <div className={styles1.logo2}>
             <img
-              src={quizifailogo}
+              src={homeImage}
               alt="Logo"
               // width={1000}
               // height={1000}

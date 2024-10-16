@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import './slides.css';
-// import slidesImg from "../../public/slidesImg.png";
+import slidesImg from "../../public/slidesimg1.png";
 
 const Slides = (props) => {
   const [activeSlide, setActiveSlide] = useState(0);
@@ -52,43 +52,45 @@ const Slides = (props) => {
   };
 
   return (
-    <div className="slides-container">
-      <div className="slides-wrapper" style={{
-        transform: `translateX(-${activeSlide * 100}%)`
-      }}>
-         {/* <img src={slidesImg} alt="Slides" /> */}
-        {slides.map((slide, index) => (
-          <div
-            key={index}
-            className={`slide ${activeSlide === index ? 'active' : ''}`}
-          >
-            <h2>{slide.title}</h2>
-            <p>
-              {slide.description.map((desc, z) => {
-                if (index === 3) {
-                  return <span key={z}><a onClick={props.onClick} className='c-p'>Click here </a> {desc}<br /></span>
-                }
-                return <span key={z}>{desc}<br /></span>;
-              })}
-            </p>
-          </div>
-        ))}
-      </div>
-      <div className="dots-container">
-        {slides.map((_, index) => (
-          <div
-            key={index}
-            className={`dot ${activeSlide === index ? 'active' : ''}`}
-            onClick={() => handleDotClick(index)}
-          />
-        ))}
-      </div>
-      {/* <div className=' arrow-container' >
+    <div>
+      <img className="slideImage" src={slidesImg} alt="Slides" />
+      <div className="slides-container">
+        <div className="slides-wrapper" style={{
+          transform: `translateX(-${activeSlide * 100}%)`
+        }}>
+          {slides.map((slide, index) => (
+            <div
+              key={index}
+              className={`slide ${activeSlide === index ? 'active' : ''}`}
+            >
+              <h2>{slide.title}</h2>
+              <p>
+                {slide.description.map((desc, z) => {
+                  if (index === 3) {
+                    return <span key={z}><a onClick={props.onClick} className='c-p'>Click here </a> {desc}<br /></span>
+                  }
+                  return <span key={z}>{desc}<br /></span>;
+                })}
+              </p>
+            </div>
+          ))}
+        </div>
+        <div className="dots-container">
+          {slides.map((_, index) => (
+            <div
+              key={index}
+              className={`dot ${activeSlide === index ? 'active' : ''}`}
+              onClick={() => handleDotClick(index)}
+            />
+          ))}
+        </div>
+        {/* <div className=' arrow-container' >
           <button className="arrow left" onClick={handlePrevSlide}>&lt;</button>
           <button className="arrow right" onClick={handleNextSlide}>&gt;</button>
         </div> */}
+      </div>
     </div>
-    
+
   );
 };
 

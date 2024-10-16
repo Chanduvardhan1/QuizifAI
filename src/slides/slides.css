@@ -1,12 +1,15 @@
 
 .slides-container {
   position: relative;
-  width: 80%;
+  width: 70%;
   margin: 40px auto;
   overflow: hidden;
   color: #00008B;
-  top:45%
-
+  top:45%;
+  margin-right: 0;
+  margin-left: 0;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .slides-wrapper {
@@ -20,6 +23,7 @@
   flex-shrink: 0;
   color: #00008B;
   margin-top:23px;
+  
 }
 
 .slide h2 {
@@ -101,5 +105,9 @@
   justify-content: space-between;
   width: 100%;
   font-size: 15px;
+}
+.slideImage {
+  display: inline-block;
+  vertical-align: middle;
 }
 

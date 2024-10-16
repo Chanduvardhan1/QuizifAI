@@ -1,7 +1,8 @@
 import React, { useState,useContext } from "react";
 import styles from "../signup/email.module.css";
 // import quizifailogo from "/images/Homeimage.png";
-import quizifailogo from "/images/oldimage.png";
+// import quizifailogo from "/images/oldimage.png";
+import homeImage from "../../public/homepicture.png";
 import closeIcon from "../assets/Images/images/gmail/closeIcon.png";
 import forgotPasswordIcon from "../assets/Images/images/back1.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -271,7 +272,7 @@ const LoginPage = () => {
       <div className="flex font-Poppins" style={{display:"flex",maxWidth:"1280px", margin: "0 auto",alignItems: "flex-start"}}>
         <div className={styles.leftSection}>
           <div className={styles.logo1}>
-            <img src={quizifailogo} alt="Logo"
+            <img src={homeImage} alt="Logo"
                style={{marginTop:"20px"}}
             />
           </div>

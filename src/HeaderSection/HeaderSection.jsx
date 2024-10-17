@@ -29,7 +29,7 @@ const HeaderSection = () => {
             <ul className="hidden lg:flex gap-4">
               <li>
                 <Link to="/">
-                  <button className={`w-16 h-[30px] text-[#555555]  font-[historic] text-[13px] leading-7 font-bold flex items-center justify-center rounded-full hover:bg-[#EF512F] transition-transform transform hover:scale-110 ${currentPath === '/' ? 'font-bold' : ''}`}>
+                  <button className={`w-16 h-[30px] text-[#555555]  font-[lato] text-[13px] leading-7 font-bold flex items-center justify-center rounded-full hover:bg-[#EF512F] transition-transform transform hover:scale-110 ${currentPath === '/' ? 'font-bold' : ''}`}>
                     Home
                     {/* <img className='h-[17px]' src={homeIcon} /> */}
                   </button>
@@ -49,7 +49,7 @@ const HeaderSection = () => {
                   <img className='h-[17px]' src = {signUpIcon}/>
                 </button> */}
 
-                  <button className={`w-20 h-[30px] rounded-full font-Poppins font-[historic]  bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center gap-1 hover:bg-[#EF512F] transition-transform transform hover:scale-110 ${currentPath === '/signup' ? 'font-bold' : ''}`}>
+                  <button className={`w-20 h-[30px] rounded-full font-Poppins font-[lato]  bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center gap-1 hover:bg-[#EF512F] transition-transform transform hover:scale-110 ${currentPath === '/signup' ? 'font-bold' : ''}`}>
                     Sign Up
                     {/* <img className='h-[17px]' src={signUpIcon} alt="Sign Up Icon" /> */}
                   </button>
@@ -63,7 +63,7 @@ const HeaderSection = () => {
                     <img className="h-[17px]" src={logInIcon} />
                   </button> */}
 
-                  <button className={`w-20 h-[30px] rounded-full font-[historic] bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center gap-1 hover:bg-[#EF512F] transition-transform transform hover:scale-110 ${currentPath === '/login' ? 'font-bold' : ''}`}>
+                  <button className={`w-20 h-[30px] rounded-full font-[lato] bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center gap-1 hover:bg-[#EF512F] transition-transform transform hover:scale-110 ${currentPath === '/login' ? 'font-bold' : ''}`}>
                     Login
                     {/* <img className="h-[17px]" src={logInIcon} alt="Login Icon" /> */}
                   </button>

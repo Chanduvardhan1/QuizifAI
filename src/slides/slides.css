@@ -15,16 +15,20 @@
 .slides-wrapper {
   display: flex;
   transition: transform 0.5s ease;
-  color: #00008B
+  color: #00008B;
+  margin-top: 13%;
+  margin-left:-9%
 }
 
 .slide {
   width: 100%;
   flex-shrink: 0;
   color: #00008B;
-  margin-top:23px;
-  
+  /* margin-left: -8%; */
+    margin-top: 24px;
 }
+  
+
 
 .slide h2 {
   font-size: 17px;
@@ -46,10 +50,11 @@
 
 .dots-container {
   display: flex;
-  justify-content: center;
-  margin-top: 34px;
+  /* justify-content: center; */
+  margin-top: 24px;
   margin-right: 0%;
   color: #00008B;
+  margin-left: 13%;
 
 }
 .dots-container:hover{
@@ -109,5 +114,9 @@
 .slideImage {
   display: inline-block;
   vertical-align: middle;
+  height: 150px;
+  width: 150px;
+  margin-left: 3%;
+  margin-top: -3%;
 }
 

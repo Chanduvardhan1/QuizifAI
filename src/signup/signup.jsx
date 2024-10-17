@@ -942,7 +942,7 @@ const Signup = () => {
 
         <div className={styles.leftSection}>
           <div className={styles1.logo2}>
-            <img
+            <img className="h-[400px] w-[500px]"
               src={homeImage}
               alt="Logo"
               // width={1000}

@@ -272,7 +272,7 @@ const LoginPage = () => {
       <div className="flex font-Poppins" style={{display:"flex",maxWidth:"1280px", margin: "0 auto",alignItems: "flex-start"}}>
         <div className={styles.leftSection}>
           <div className={styles.logo1}>
-            <img src={homeImage} alt="Logo"
+            <img className="h-[400px] w-[500px]"src={homeImage} alt="Logo"
                style={{marginTop:"20px"}}
             />
           </div>

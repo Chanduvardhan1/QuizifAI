@@ -17,7 +17,7 @@
     margin-left: 20%;
     margin-top: 2%;
     border-color:  #00008b;
-    font-family: Segoe_UI_Historic;
+    font-family: lato;
 }
 .close{
     transform: translateX(-5px);
@@ -34,15 +34,61 @@
     margin-left: 1%;
     margin-top: 2%;
     border-color:  #FF6865;
-    font-family: Segoe_UI_Historic;
+    font-family: lato;
 
 }
 .button{
     display: flex;
-    margin-top: -4%;
-    margin-left: 4%;
+    // margin-top: -4%;
+    margin-left: 15%;
 
 }
+.answer {
+    color: #00008b; 
+    font-size: 14px;
+    background-color: #ADD8E6;
+    border: 1px solid #2196F3; 
+    border-radius: 5px;
+    padding: 1px 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: auto; /* Adjust width to fit content */
+    margin-left: 20%;
+    margin-top: 2%;
+    border-color:  #00008b;
+    font-family: lato;
+}
+
+.close {
+    color: #FF0500; 
+    font-size: 14px;
+    background-color: #FFCCCB;
+    border: 1px solid #2196F3; 
+    border-radius: 5px;
+    padding: 1px 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: auto; /* Adjust width to fit content */
+    margin-left: 1%;
+    margin-top: 2%;
+    border-color:  #FF6865;
+    font-family: lato;
+}
+
+.icon {
+    margin-right: 5px;
+    height:20px;
+    width:20px /* Space between icon and text */
+}
+.close-container{
+ margin-left: 33px;
+}
+
+
+
+
 .class{
     position: absolute;
     top:13%;
@@ -60,11 +106,15 @@
 .contentWrapper{
     width:57%;
     text-align: center;
+    margin-top: 5%;
     .content-details {
+        margin-top: -9%;
         &-attempt {
             label {
-                color: #00008b;
-                font-family: Segoe_UI_Historic;
+                color: #d98b19;
+                font-family: lato;
+                font-size: 18px;
+                font-weight: 600;
             }
             .line {
                 display: inline-block;
@@ -91,12 +141,13 @@
             font-size: 50px;
             color: #00008b;
             font-weight: 700;
-            font-family: Segoe_UI_Historic;
+            font-family: lato;
+            margin-left: 1%;
         }
         span {
             color: #00008b;
             font-weight: 500;
-            font-family: Segoe_UI_Historic;
+            font-family: lato;
             font-size: 17px;
         }
     }
@@ -136,7 +187,7 @@
                     color: #3b8132;
                     border: 1px solid #D3D3D3;
                     background-color: #E8E9E8;
-                    font-family: Segoe_UI_Historic;
+                    font-family: lato;
                     width: 120px;
                   
                 }
@@ -147,10 +198,7 @@
  .textWrapper{
     margin-left: 2%;
  }
- .icon{
-    height: 30px; /* Adjust as needed */
-    width: 30px; 
- }
+ 
 
  
 

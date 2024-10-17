@@ -45,7 +45,8 @@
   color: #00008b;
   margin-left:12%;
   font-weight: 500;
-  font-family:lato
+  font-family:lato;
+  /* margin-left:-4%; */
 }
 
 .dots-container {
@@ -114,9 +115,9 @@
 .slideImage {
   display: inline-block;
   vertical-align: middle;
-  height: 150px;
-  width: 150px;
+  height: 200px;
+  width: 160px;
   margin-left: 3%;
-  margin-top: -3%;
+  margin-top: 5%;
 }
 

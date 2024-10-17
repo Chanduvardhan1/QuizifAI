@@ -11,13 +11,13 @@ function sampleAnswerBoard(props) {
 
                         {question.options.map((option, y) => {
                             return (
-                                <div key={y} className={`flex items-center mb-4  ml-[-14%] ${y === question.answerIndex ? 'correctAnswerQ' : ''}`}>
+                                <div key={y} className={`flex items-center mb-4 font-[lato]  ml-[-14%] ${y === question.answerIndex ? 'correctAnswerQ' : ''}`}>
                                     <div
-                                        className={`mr-2 font-normal font-[historic] w-[40px] rounded-[5px] h-[37px] p-[8 border-[#777777] border-[1px] border-solid border-[#D3D3D3]    flex justify-center text-center justify-items-center items-center text-[14px]`}>
+                                        className={`mr-2 font-normal font-[lato] w-[40px] rounded-[5px] h-[37px] p-[8 border-[#777777] border-[1px] border-solid border-[#D3D3D3]    flex justify-center text-center justify-items-center items-center text-[14px]`}>
                                         {String.fromCharCode(97 + y).toUpperCase()}
                                     </div>
                                     <div
-                                        className={`w-[40%]  h-[37px] rounded-[5px] border-solid border-[#D3D3D3] border-[#777777] border-[1.8px] p-[5px] text-[14px] text-[#000]  ${y === question.answerIndex ? 'correct-answer-option' : ''}`}>
+                                        className={`w-[40%] font-[lato] h-[37px] rounded-[5px] border-solid border-[#D3D3D3] border-[#777777] border-[1.8px] p-[5px] text-[14px] text-[#000]  ${y === question.answerIndex ? 'correct-answer-option' : ''}`}>
                                         {option.answer_option_text}
                                     </div>
                                 </div>

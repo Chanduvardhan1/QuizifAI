@@ -433,6 +433,7 @@ li {
   margin-top: 2%;
   border-color:  #00008b;
   font-weight: 500;
+  font-family: lato;
 }
 
   .next:hover {
@@ -473,6 +474,7 @@ li {
   border-color: #00008b;
   position: relative;
   top: -25px;
+  font-family: lato;
 }
 .previous:hover {
   background-color: #E5E5EA;
@@ -509,9 +511,10 @@ li {
   display: flex;
   align-items: center;
   width: 13%;
-  margin-left: 89%;
+  margin-left: 86%;
   margin-top: 2%;
   border-color:  #00008b;
+  font-family: lato;
 
 
 

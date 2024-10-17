@@ -155,9 +155,6 @@ export default function quiztype() {
 
   const imageOpen = useSelector(state => state.home.plus);
 
-
-  // const [selectedImage, setSelectedImage] = useState(null);
-
   const handlePlusClick = () => {
     dispatch(setOpen({ key: 'plus', value: true }));
   };

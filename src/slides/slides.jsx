@@ -1,7 +1,8 @@
 
 import React, { useState } from 'react';
 import './slides.css';
-import slidesImg from "../../public/slidesimg1.png";
+// import slidesImg from "../../public/slidesimg1.png";
+import slidesnewimage from "../../public/slidesnewimage.png";
 
 const Slides = (props) => {
   const [activeSlide, setActiveSlide] = useState(0);
@@ -53,7 +54,7 @@ const Slides = (props) => {
 
   return (
     <div>
-      <img className="slideImage" src={slidesImg} alt="Slides" />
+      <img className="slideImage" src={slidesnewimage } alt="Slides" />
       <div className="slides-container">
         <div className="slides-wrapper" style={{
           transform: `translateX(-${activeSlide * 100}%)`

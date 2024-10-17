@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 // import quizifailogo from "../assets/Images/images/home/Quizifai3.png";
-import newlogo from "../../public/newlogo.png";
+// import newlogo from "../../public/newlogo.png";
+// import chartbots2 from "../../public/chatbots2.png";.
+import homepagelogo from "../../public/homepagelogo.png"
 import Menu from "../assets/Images/images/home/menu.png";
 import { Link, useLocation } from "react-router-dom";
 import homeIcon from "../../public/images/homeicon.png";
@@ -22,7 +24,7 @@ const HeaderSection = () => {
         <div className='container flex mx-auto'>
           <div>
             <Link to={"/"}>
-              <img className='w-[160px] h-[60px] lg:h-[60px] lg:w-[160px]' src={newlogo} alt="Logo" />
+              <img className='w-[160px] h-[60px] lg:h-[60px] lg:w-[160px] ml-[-33%]' src={homepagelogo} alt="Logo" />
             </Link>
           </div>
 

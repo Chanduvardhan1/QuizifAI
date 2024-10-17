@@ -10,18 +10,9 @@ import "./home.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setDynamicStateFlags, setAttempted, getContactUsEmail, saveUserAttemptedQuestions } from "./slice";
 import Slides from "../slides/slides";
-import current from "../../public/current.png";
-import User from "../../public/user.png";
-import Calender from "../../public/calendar.png";
-import Question from "../../public/question.png";
-import clockIcon from "../../public/timeicon.png";
-import Play from "../../public/play.png";
-import timmer from "../../public/timmerimg.png";;
-import highScore from "../../public/highscore.png";
 import previousicon from "../../public/backSide.png";
 import nextbutton from "../../public/images/nimage.png";
 import { getRandomElements } from "../utils";
-// import slidesImg from "../../public/slidesImg.png";
 let randomQuestions;
 
 function Home() {
@@ -222,7 +213,7 @@ function Home() {
 
               <div className="mainDiv">
                 <div className="subDiv">
-                  <li className=" font-[14px] font-medium bg-[#DEEFF5] cursor-pointer w-[100%] rounded-[5px] border-solid border-[#ADD8E6] border-[1.5px] p-[10px] text-[15px] text-[#214082]   li questions ">
+                  <li className=" font-[14px] font-[lato]  font-medium bg-[#DEEFF5] cursor-pointer w-[100%] rounded-[5px] border-solid border-[#ADD8E6] border-[1.5px] p-[10px] text-[15px] text-[#00008B]   li questions ">
 
                     <div>{`${index}. ${q.question}`}</div>
 
@@ -235,7 +226,7 @@ function Home() {
                             className={`
                                 ${(x === attempted.answeredIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
                                  
-                              mr-2 font-normal w-[40px] rounded-[5px] h-[37px] p-[8px] border-[1px] border-solid border-[#D3D3D3]  bg-[#E8E9E8]  flex justify-center text-center justify-items-center items-center text-[14px]  font-sans  cursor-pointer`}>
+                              mr-2 font-normal w-[40px] rounded-[5px] h-[37px] p-[8px] border-[1px] border-solid border-[#D3D3D3]  bg-[#E8E9E8]  flex justify-center text-center justify-items-center items-center text-[14px] font-[lato] cursor-pointer`}>
                             {String.fromCharCode(97 + x).toUpperCase()}
                           </div>
                           <div
@@ -245,7 +236,7 @@ function Home() {
                             className={`
                                   ${(x === attempted.answeredIndex && attempted.isAttempted) ? 'correctAnswer' : ''}
                                   
-                                 w-[100%] bg-[#E8E9E8] cursor-pointer  h-[37px] rounded-[5px] border-solid border-[#D3D3D3] border-[1.8px] p-[5px] text-[14px] text-[#000] font-sans`}
+                                 w-[100%] bg-[#E8E9E8] cursor-pointer  h-[37px] rounded-[5px] border-solid border-[#D3D3D3] border-[1.8px] p-[5px] text-[14px] text-[#000] font-[lato]`}
                           >
                             {option.answer_option_text}
                           </div>
@@ -272,7 +263,7 @@ function Home() {
                 {/* <img src={homeImage} alt="home Image" className="image" /> */}
                 {/* <img src={chatbots} alt="home Image" className="w-[100%] ml-[-11%] h-[120%] mb-[7%] width={500} height={500}"/> */}
                 {/* <img src={chatbots} alt="home Image" className="h-[500px] w-[650px]"/> */}
-                <img src={chartbots1} alt="home Image" className="h-[400px] w-full max-w-[641px] ml-[0%] mt-[8%]"/>
+                <img src={chartbots1} alt="home Image" className="h-[400px] w-[92%] max-w-[641px] ml-[8%] mt-[8%]"/>
                 <div className="flex flex-col items-center mt-4 ml-[120px] lg:ml-[1px]">
                   <Link to={"/signup"} >
 

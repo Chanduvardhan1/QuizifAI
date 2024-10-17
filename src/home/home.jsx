@@ -271,7 +271,7 @@ function Home() {
                 {/* <img src={homeImage} alt="home Image" className="image" /> */}
                 {/* <img src={chatbots} alt="home Image" className="w-[100%] ml-[-11%] h-[120%] mb-[7%] width={500} height={500}"/> */}
                 {/* <img src={chatbots} alt="home Image" className="h-[500px] w-[650px]"/> */}
-                <img src={chatbots} alt="home Image" className="h-[400px] w-[650px] mt-[7%]"  width={500} height={500}/>
+                <img src={chatbots} alt="home Image" className="h-[400px] w-[650px] mt-[7%] ml-[14%]"  width={500} height={500}/>
                 <div className="flex flex-col items-center mt-4 ml-[120px] lg:ml-[1px]">
                   <Link to={"/signup"} >
 

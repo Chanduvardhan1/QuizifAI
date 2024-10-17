@@ -743,82 +743,7 @@ export default function quiztype() {
   return (
     <>
       <div>
-        {/* Navigation-Section */}
         <header className="w-[219px] h-[1000px] absolute top-[-19px] left-[-9px] rounded-tl-[20px] rounded-bl-[20px] bg-[#F5F5FB] z-10 shadow-lg shadow-gray-400/60">
-          {/* <div className="h-[300px] w-[270px] absolute top-[20px] -left-[20px]">
-            <img src={QuizifAilogo} alt="QuizifAi Logo Icon" />
-          </div> */}
-
-          {/* Navigation-icons */}
-          {/* <div className="flex w-[15px] h-[15px] absolute top-[231px] left-[51px]">
-            <img src={Dashboard} alt="Dashborad img" />
-            <a
-              className="ml-5 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              Dashboard
-            </a>
-          </div>
-
-          <div className="flex w-[16px] h-[15px] absolute top-[285px] left-[51px]">
-            <img src={Quiz} alt="Quiz's img" />
-            <a
-              className="ml-5 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              Quiz
-            </a>
-          </div>
-
-          <div className="flex w-[13.87px] h-[15.41px] absolute top-[338px] left-[51px]">
-            <img src={History} alt="History img" />
-            <a
-              className="ml-5 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              History
-            </a>
-          </div>
-
-          <div className="flex w-[17px] h-4 absolute top-[394px] left-[51px]">
-            <img src={Schedule} alt="Schedule img" />
-            <a
-              className="ml-4 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              Schedule
-            </a>
-          </div>
-
-          <div className="flex w-4 h-[15px] absolute top-[453px] left-[51px]">
-            <img src={Notification} alt="Notification img" />
-            <a
-              className="ml-4 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              Notification
-            </a>
-          </div>
-
-          <div className="flex w-[25.46px] h-[27.87px] absolute top-[508px] left-[51px]">
-            <img className="-ml-2.5" src={QuizAdmin} alt="QuizAdmin img" />
-            <a
-              className="ml-4 text-Poppins font-medium text-[15px] leading-[15px] text-nowrap text-[#30304F]"
-              for=""
-            >
-              Quiz Admin
-            </a>
-          </div>
-
-          <div className="flex w-[17px] h-[17px] absolute top-[581px] left-[51px]">
-            <img src={Profile} alt="Profile img" />
-            <a
-              className="ml-4 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              Profile
-            </a>
-          </div> */}
           <Navigation />
         </header>
         <div className="absolute top-[30px] left-[1260px] cursor-pointer text-[#eeb600f0] " onClick={Back}><MdOutlineCancel /></div>
@@ -881,9 +806,6 @@ export default function quiztype() {
               </div>
 
               <div className="flex">
-                {/* <div className="w-[43px] h-[43px] absolute top-[166px] left-[283px]">
-              <img src={QuizDiscription} alt="QuizDiscription icon" />
-            </div> */}
 
                 <div className="w-[201px] h-[22px] absolute top-[174px] left-[284px]">
                   <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
@@ -1263,43 +1185,10 @@ export default function quiztype() {
                 className="hidden"
               />
 
-              {/* <div className="w-[137.09px] h-[9.05px] absolute top-[740.11px] -mt-[680px]">
-                <Line
-                  percent={uploadProgress}
-                  strokeWidth={5}
-                  strokeColor="#FCE7E7"
-                />
-              </div>
-              <h1 className="font-Poppins font-normal text-[10px] leading-[15px] text-[#555555] mt-7 ml-5">{`Uploading ${uploadProgress}%`}</h1> */}
-
               {errorMessage && (
                 <div className="error-message w-[500px] relative right-[535px] top-[-40px] flex justify-center text-red-500">{errorMessage}</div>
               )}
-              {/* <label htmlFor="detailsFileInput" className="font-Poppins font-medium text-[15px] leading-[22.5px] flex justify-start px-4 py-2 text-white cursor-pointer">
-        Upload 
-        <img className="w-[24px] h-[24px] ml-4 -rotate-90" src={Next} alt="Next"/>
-        <img className="w-[26px] h-[26px] ml-1" src={CSV} alt="CSV"/>
-      </label>
-      <input id="detailsFileInput" type="file" accept=".csv" onChange={(event) => handleFileInputChangecsv(event, 'details')} className="hidden" />
-
-      <label htmlFor="questionsFileInput" className="font-Poppins font-medium text-[15px] leading-[22.5px] flex justify-start px-4 py-2 text-white cursor-pointer">
-        Upload
-        <img className="w-[24px] h-[24px] ml-4 -rotate-90" src={Next} alt="Next"/>
-        <img className="w-[26px] h-[26px] ml-1" src={CSV} alt="CSV"/>
-      </label>
-      <input id="questionsFileInput" type="file" accept=".csv" onChange={(event) => handleFileInputChangecsv(event, 'questions')} className="hidden" />
-
-      <div className="w-[137.09px] h-[9.05px] absolute top-[740.11px] -mt-[636px]">
-        <Line percent={detailsUploadProgress} strokeWidth={5} strokeColor="#FCE7E7" />
-      </div>
-       <div className="w-[137.09px] h-[9.05px] absolute top-[760px] -mt-[636px]">
-         <Line percent={questionsUploadProgress} strokeWidth={5} strokeColor="#FCE7E7" />
-      </div>
-
-      <h1 className="font-Poppins font-normal text-[10px] leading-[15px] text-[#555555] mt-7 ml-5">{`Uploading Details ${detailsUploadProgress}%`}</h1>
-      <h1 className="font-Poppins font-normal text-[10px] leading-[15px] text-[#555555] mt-7 ml-5">{`Uploading Questions & Options ${questionsUploadProgress}%`}</h1>
-
-      {errorMessage && <div className="error-message">{errorMessage}</div>} */}
+             
             </div>
             <div className="w-[98px] h-[32px] absolute top-[840px] left-[1182px] rounded-[10px] bg-[#1E4DE9]">
               <button
@@ -1383,24 +1272,7 @@ export default function quiztype() {
                         setQuestions(updatedQuestions);
                       }}
                     />
-                    {/* <input
-  type="number"
-  placeholder="Duration"
-  className="w-[130px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
-  value={question.question_duration}
-  onChange={(e) => {
-    const value = parseInt(e.target.value); // Parse input value to integer
-    if (!isNaN(value)) { // Check if value is a valid number
-      const updatedQuestions = questions.map((q, index) => {
-        if (index === questionIndex) {
-          return { ...q, question_duration: value };
-        }
-        return q;
-      });
-      setQuestions(updatedQuestions);
-    }
-  }}
-/> */}
+     
                   </div>
                   {/* Input fields for options */}
                   {question.options.map((option, optionIndex) => (
@@ -1458,7 +1330,7 @@ export default function quiztype() {
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNext}
                  >
-                  Save
+                  Save 
                 </button>
                 <CoverPage/>
               </div>

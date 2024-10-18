@@ -527,7 +527,7 @@ export default function quiztype() {
       console.log(responseData, "data");
 
       if (response.ok && responseData.response === "success") {
-console.log('response',responseData);
+      console.log('response',responseData);
         const id = responseData.data.quiz_id;
         console.log('id',id);
         try {

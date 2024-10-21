@@ -833,6 +833,20 @@ background-color: #214082;
     border-color: #4CC9F0;
     
   }
+  .pinkLine{
+    width: 100%;
+    height: 5px; 
+    background-color: pink; 
+    margin-top: 3px; 
+    margin-left:1px;
+    border-width: 1px; 
+    border-style: solid; 
+    border-color: #FFC0CB
+  }
+  .attemptedCard{
+    border: thin solid #FFC0CB;
+
+  }
   .container {
     align-items: center;
   }

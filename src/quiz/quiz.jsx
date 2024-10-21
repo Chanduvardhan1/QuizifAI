@@ -26,15 +26,17 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../Authcontext/AuthContext.jsx";
 import Modal from "react-modal";
+import AttemptedCard from "../../src/commonCard/attemptedCard.jsx"
+import NonttemptedCard from "../../src/commonCard/nonAttemtedCard.jsx";
 
 // Modal.setAppElement(el);
 const Quiz = () => {
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
   const [userRole, setUserRole] = useState(localStorage.getItem("user_role"));
   const [username, setUsername] = useState("");
-  const [deleteModelOpen,setDeleteModelOpen] = useState(false);
-  const [deleteChecked ,setDeleteChecked] = useState(false);
-  const [selectedQuizItem,setSelectedQuizItem] = useState({});
+  const [deleteModelOpen, setDeleteModelOpen] = useState(false);
+  const [deleteChecked, setDeleteChecked] = useState(false);
+  const [selectedQuizItem, setSelectedQuizItem] = useState({});
   const currentValue1 = 50;
   const maxValue1 = 100;
   const currentValue2 = 30;
@@ -84,8 +86,8 @@ const Quiz = () => {
   const [isChecked1, setIsChecked1] = useState(false);
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
   const [isDisableConfirmed, setIsDisableConfirmed] = useState(false);
-  const [deleteDisabled,SetDeleteDisabled] = useState(false);
-  const [enableModel,setEnableModel] = useState(false);
+  const [deleteDisabled, SetDeleteDisabled] = useState(false);
+  const [enableModel, setEnableModel] = useState(false);
   // const [cardStatus, setCardStatus] = useState({});
 
   const [quizId, setQuizId] = useState(0); // Ensure quizId is properly initialized
@@ -98,8 +100,8 @@ const Quiz = () => {
   const handleEnableOnClick = () => {
     setEnableModel(true);
   }
-  const confirmEnable =  async (quizItem) => {
-    console.log('quizItem',quizItem);
+  const confirmEnable = async (quizItem) => {
+    console.log('quizItem', quizItem);
     try {
       const authToken = localStorage.getItem("authToken");
 
@@ -150,10 +152,10 @@ const Quiz = () => {
   const handleOptionsDeleteClick = () => {
     setDeleteModelOpen(true);
   }
-  const handleDeleteOnClick = (event,quizItem) => {
+  const handleDeleteOnClick = (event, quizItem) => {
     setQuizId(event);
     handleDeleteQuiz(quizItem?.quiz_attempts);
-    console.log("quizItem",quizItem);
+    console.log("quizItem", quizItem);
 
   }
 
@@ -364,7 +366,7 @@ const Quiz = () => {
       );
     }
   },
-   [selectedCourses, allClasses]);
+    [selectedCourses, allClasses]);
 
   const [cardStates, setCardStates] = useState(
     Array(allquizzes.length).fill(false)
@@ -646,8 +648,8 @@ const Quiz = () => {
       display: "none",
     }),
   };
-  
-  const handleDeleteClick = (quiz_id) =>{
+
+  const handleDeleteClick = (quiz_id) => {
     console.log('quiz_id', quiz_id);
     setQuizId(quiz_id);
     setModalIsOpen(true);
@@ -671,7 +673,7 @@ const Quiz = () => {
         setModalIsOpen(false);
         return;
       }
-      
+
       const body = JSON.stringify({
         user_id: userId,
         quiz_id: quizId,  // Corrected to use quizId
@@ -684,7 +686,7 @@ const Quiz = () => {
       });
 
       if (response.ok) {
-        
+
         // const result = await deleteResponse ?.json();
         // console.log("Delete response:", result);
         setModalIsOpen(false);
@@ -705,7 +707,7 @@ const Quiz = () => {
     }
   }, [isDeleteConfirmed]);
   const handleDisableQuiz = async (quizItem) => {
-    console.log('quizItem',quizItem);
+    console.log('quizItem', quizItem);
     try {
       const authToken = localStorage.getItem("authToken");
 
@@ -975,965 +977,969 @@ const Quiz = () => {
                 .map((quizItem, index) => (
                   <div className={quizItem?.active_flag?.toLowerCase() != "true" ? "quizDisabled" : ""} key={index}>
                     {quizItem.attempt_flag === "Y" ? (
-                      <div
-                        key={index}
-                        className={styles.card}
-                        style={{
-                          width: "245px",
-                          // paddingTop: "8px",
-                          paddingTop: "20px",
-                          marginTop: "20px",
-                          marginRight: "10px",
-                          backgroundColor:
-                            quizItem.attempts_count < quizItem.retake_flag
-                              ? quizItem.active_flag ?.toLowerCase() != "true" ?  'gray' : "#fee2e2" 
-                              : quizItem.active_flag ?.toLowerCase() != "true" ? 'gray' : "#55505026",
-                        }}
-                      >
-                        <span className="relative group">
-                          <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate -mt-[13px]">
-                            {highlightText(quizItem.quiz_name, searchQuery)}
-                          </span>
-                          <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[2px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
-                            {highlightText(quizItem.quiz_name, searchQuery)}
-                          </span>
-                        </span>
-                        <div className={styles.iconContainer}>
-                          <div className="z-20 mb-[2px] pl-[45px] font-normal rounded -mt-[13px]">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth="1.5"
-                              stroke="currentColor"
-                              className="w-4 h-4 -ml-[25px] relative -top-[9px] right-2 rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
-                              onClick={() => toggleNavbar(index)}
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                              />
-                              {cardStates[index]
-                                ? "Close Navbar"
-                                : "Open Navbar"}
-                            </svg>
-                            {cardStates[index] && (
-                              <div
-                                className={styles.infoIcons1}
-                                style={{
-                                  marginLeft: "-125px",
-                                  marginTop: "-28px",
-                                }}
-                              >
-                                <div className={styles.start}>
-                                  <img
-                                    className=" w-[10px] h-[10px]"
-                                    src={eye}
-                                    alt="Play icon"
-                                  />
-                                  <span
-                                    className="text-[8px]   cursor-pointer hover:text-black"
-                                    onClick={() =>
-                                      quizresults(
-                                        quizItem.quiz_id,
-                                        quizItem.quiz_level_attempt_id
-                                      )
-                                    }
-                                  >
-                                    View 
-                                  </span>
-                                </div>
-                                {quizItem.attempts_count <
-                                  quizItem.retake_flag && (
-                                  <div className={styles.retake}>
-                                    <img
-                                      className=" h-[10px] w-[10px] "
-                                      src={Share_button}
-                                      alt="download icon"
-                                    />
-                                    <span
-                                      className="text-[8px] - cursor-pointer hover:text-black"
-                                      onClick={() =>
-                                        handleStartQuiz(quizItem.quiz_id)
-                                      }
-                                    >
-                                      Retake
-                                    </span>
-                                  </div>
-                                )}
-                                {userRole === "Quiz Master" && (
-                                  <div className={styles.edit}>
-                                    <img
-                                      className={styles.editimage}
-                                      src={Edit_button}
-                                      alt="Edit icon"
-                                    />
-                                    <span
-                                      className={styles.edittext}
-                                      onClick={() => Edit(quizItem.quiz_id)}
-                                    >
-                                      Edit 
-                                    </span>
-                                  </div>
-                                )}
-                                <div className={styles.leaderboard}>
-                                  <img
-                                    className={styles.leaderboardimage}
-                                    style={{ marginTop: "1px" }}
-                                    src={leaderboard_button}
-                                    alt="Play icon"
-                                  />
-                                  <span
-                                    className={styles.leaderboardtext}
-                                    onClick={() =>
-                                      leaderboard1(
-                                        quizItem.quiz_id,
-                                        quizItem.quiz_level_attempt_id,
-                                        quizItem.complexity,
-                                        quizItem.quiz_duration,
-                                        quizItem.pass_percentage
-                                      )
-                                    }
-                                  >
-                                    Leaderboard 
-                                  </span>
-                                </div>
-                                {userRole === "Quiz Master" && (
-                                  <div>
-                                    <div className={styles.start}>
-                                    <img
-                                      className={styles.startimage}
-                                      src={disable}
-                                      alt="Play icon"
-                                    />
-                                    {quizItem?.active_flag?.toLowerCase() != "true"  ? 
-                                    <span
-                                    className="display-inline"
-                                    onClick={handleEnableOnClick}
-                                    >
-                                      
-                                      enable 
-                                    </span>
-              
-                                      :<span
-                                      className={styles.starttext}
-                                      onClick={() => setModalIsOpen1(true)}
-                                    >
-                                      Disable 
-                                    </span>}
-                                    
-                                    <Modal
-                                      isOpen={modalIsOpen1}
-                                      onRequestClose={() =>
-                                        setModalIsOpen1(false)
-                                      }
-                                      ariaHideApp={false}
-                                      className="bg-white rounded-lg p-8 mx-auto mt-10 max-w-md border-red-400 border-[1px]"
-                                      overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-                                    >
-                                      <h2 className="text-xl font-semibold mb-4">
-                                        Are you sure you want to disable this card?
-                                      </h2>
-                                      <div className="mb-4">
-                                        <input
-                                          type="checkbox"
-                                          id="confirmCheckbox"
-                                          className="mr-2"
-                                          checked={isChecked1}
-                                          onChange={(e) =>
-                                            setIsChecked1(e.target.checked)
-                                          }
-                                        />
-                                        <label htmlFor="confirmCheckbox">
-                                          I understand the consequences.
-                                        </label>
-                                      </div>
-                                      <div className="flex justify-end space-x-4">
-                                        <button
-                                          className={`bg-red-500 text-white px-4 py-2 rounded ${
-                                            !isChecked1
-                                              ? "opacity-50 cursor-not-allowed"
-                                              : ""
-                                          }`}
-                                          onClick={() =>  confirmDisable(quizItem)}
-                                          disabled={!isChecked1}
-                                        >
-                                          Disable 
-                                        </button>
-                                        <button
-                                          className="bg-gray-300 text-black px-4 py-2 rounded"
-                                          onClick={() => setModalIsOpen1(false)}
-                                        >
-                                          Cancel
-                                        </button>
-                                      </div>
-                                    </Modal>
-                                    
-                                    <Modal
-                                      isOpen={enableModel}
-                                      onRequestClose={() =>
-                                        setModalIsOpen1(false)
-                                      }
-                                      ariaHideApp={false}
-                                      className="bg-white rounded-lg p-8 mx-auto mt-10 max-w-md border-red-400 border-[1px]"
-                                      overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-                                    >
-                                      <h2 className="text-xl font-semibold mb-4">
-                                        Are you sure you want to Enable this card?
-                                      </h2>
-                                      <div className="mb-4">
-                                        <input
-                                          type="checkbox"
-                                          id="confirmCheckbox"
-                                          className="mr-2"
-                                          checked={isChecked1}
-                                          onChange={(e) =>
-                                            setIsChecked1(e.target.checked)
-                                          }
-                                        />
-                                        <label htmlFor="confirmCheckbox">
-                                          I understand the consequences.
-                                        </label>
-                                      </div>
-                                      <div className="flex justify-end space-x-4">
-                                        <button
-                                          className={`bg-red-500 text-white px-4 py-2 rounded ${
-                                            !isChecked1
-                                              ? "opacity-50 cursor-not-allowed"
-                                              : ""
-                                          }`}
-                                          onClick={() => confirmEnable(quizItem)}
-                                          disabled={!isChecked1}
-                                        >
-                                          Enable 
-                                        </button>
-                                        <button
-                                          className="bg-gray-300 text-black px-4 py-2 rounded"
-                                          onClick={() => setEnableModel(false)}
-                                        >
-                                          Cancel 
-                                        </button>
-                                      </div>
-                                    </Modal>
-                                  </div>
-                                  <div>
-                                  <img 
-                                    className={styles.startimage}
-                                    style={{display: "inline-block", marginRight: 4}}
-                                    src={Delete}
-                                    alt="Delete icon"
-                                  />
-                                  <span 
-                                    className={styles.starttext}
-                                    style={{display: "inline-block"}}
-                                    onClick={() => handleOptionsDeleteClick()}
-                                    >
-                                    Delete 
-                                  </span>
-                                  {/* <div>
-                                    <button onClick={handleEnableClick}className="display: inline-block">enable</button>
-                                    </div> */}
-                                  
-                                  <Modal
-                                    isOpen={deleteModelOpen}
-                                    onRequestClose={() => setDeleteModelOpen(false)}
-                                    className="bg-white rounded-lg p-8 mx-auto max-w-md border-red-400 border-[1px]"
-                                    overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-                                  >
-                                    <h2 className="text-xl font-semibold mb-4">
-                                      Are you sure you want to delete this card?
-                                    </h2>
-                                    <div className="mb-4">
-                                      <input
-                                        type="checkbox"
-                                        id="confirmCheckbox"
-                                        className="mr-2"
-                                        checked={deleteChecked}
-                                         onChange={(e) =>
-                                          setDeleteChecked(e.target.checked)
-                                         }
-                                      />
-                                      <label htmlFor="confirmCheckbox">
-                                        I understand the consequences.
-                                      </label>
-                                    </div>
-                                    <div className="flex justify-end space-x-4">
-                                      <button 
-                                        className={`bg-red-500 text-white px-4 py-2 rounded ${
-                                          !isChecked
-                                            ? "opacity-50 cursor-not-allowed"
-                                            : ""
-                                        }`}
-                                        onClick={() =>handleDeleteOnClick(quizItem.quiz_id,quizItem )}
-                                        
-                                        // disabled={!deleteDisabled}
-                                      >
-                                        Delete 
-                                      </button>
-                                      <button
-                                        className="bg-gray-300 text-black px-4 py-2 rounded"
-                                        onClick={() => setDeleteModelOpen(false)}
-                                      >
-                                        Cancel
-                                      </button>
-                                    </div>
-                                  </Modal>
-                                  </div>
-                                  </div>
-                                  
-                                )}
-                                {/* <img
-                            className={styles.shareimage} style={{marginTop:"2px"}}
-                            
-                            src={download}
-                            alt="Play icon"
-                          />
-                          <span className={styles.sharetext} >Download</span> */}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        <div className="flex mt-[9px] mb-[19px] relative top-[19px]">
-                          <span className="relative group -top-[13px]">
-                            <span className="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] left-[10px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
-                              {highlightText(quizItem.category, searchQuery)}
-                            </span>
-                            <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block top-[14px] left-[7px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-                              {highlightText(quizItem.category, searchQuery)}
-                            </span>
-                          </span>
-
-                          <p className="px-[4px] font-normal relative -top-[13px] pl-2">
-                            |
-                          </p>
-
-                          <span className="relative group -top-[13px]">
-                            <span className="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-semibold inline-block w-[90px] overflow-hidden whitespace-nowrap">
-                              {highlightText(
-                                quizItem.sub_category,
-                                searchQuery
-                              )}
-                            </span>
-                            <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-                              {highlightText(
-                                quizItem.sub_category,
-                                searchQuery
-                              )}
-                            </span>
-                          </span>
-
-                          {quizItem.attempts_count < quizItem.retake_flag && (
-                            <button
-                              className="cursor-pointer ml-auto relative -top-[5px] right-1 flex gap-[2px] border-2 bg-[#F5F8F9] rounded-xl border-[#472E86] h-[16px] w-[34.5px]"
-                              onClick={() =>
-                                handleStartQuiz1(
-                                  quizItem.quiz_id,
-                                  quizItem.attempts_count,
-                                  quizItem.retake_flag
-                                )
-                              }
-                            >
-                              <img
-                                className="h-[5.5px] w-[4.5px] relative top-[3.5px] left-[2px]"
-                                src={PlayButton}
-                                alt="Start button"
-                              />
-                              <h1 className="text-[#472E86] text-[6px] relative top-[2px] pl-[1px] font-bold">
-                                Retake
-                              </h1>
-                            </button>
-                          )}
-                        </div>
-                        <div className="h-1 -mt-[8px] pl-[10px] text-[7px] font-normal text-[#002366] relative -top-[6px]">
-                          <h3>
-                            Quiz ID :{" "}
-                            {highlightText(quizItem.quiz_id, searchQuery)}
-                          </h3>
-                        </div>
-                        {/* <div className="h-[1px] w-full bg-white"></div> */}
-                        {/* <div className="h-[3px] w-full bg-white"></div> */}
-                        <div className="relative group mt-1">
-                          <span className="text-wrap mt-[6px] text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate line-clamp-4">
-                            {highlightText(
-                              quizItem.quiz_description,
-                              searchQuery
-                            )}
-                          </span>
-                          <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-0 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
-                            {highlightText(
-                              quizItem.quiz_description,
-                              searchQuery
-                            )}
-                          </span>
-                        </div>
-                        <div className="h-[2px] w-full bg-white"></div>
-
-                        <div
-                          style={{
-                            backgroundColor: "#F9F9F9",
-                            padding: "1px 0",
-                          }}
-                        >
-                          <div className="h-[85px] rounded w-full bg-[#F5F5F5]">
-                            <div className="text-[7px] font-normal pl-[10px] relative top-[73px]">
-                              <span>
-                                {quizItem.pass_flag ? "Pass" : "Fail"}
-                              </span>
-                              <span className="px-[4px]">|</span>
-                              <span>
-                                {quizItem.speed_rank}
-                                <sup>th</sup>Fastest
-                              </span>
-                              <span className="px-[3px]">|</span>
-                              <span>
-                                {quizItem.score_rank} <sup>th</sup>Highest
-                              </span>
-                              <span className="px-[3px]">|</span>
-                              <span>{quizItem.attained_percentage}% Score</span>
-                              <span className="px-[3px]">|</span>
-                              <span>{quizItem.quiz_grade} Grade</span>
-                            </div>
-                            <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[50px] left-[10px]">
-                              <div>
-                                Created By :
-                                <span className="pl-[2px]">
-                                  {highlightText(
-                                    quizItem.created_by,
-                                    searchQuery
-                                  )}
-                                </span>
-                              </div>
-                              {/* <div>Created On</div> */}
-                            </div>
-
-                            <div
-                              className={styles.additionalInfo}
-                              style={{ marginTop: "25px" }}
-                            >
-                              <div
-                                className={styles.infoIcon}
-                                style={{
-                                  marginTop: "20px",
-                                  marginRight: "20px",
-                                }}
-                              ></div>
-                              <div className="z-0">
-                                <div className="text-[7px] flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[8px] -top-[90px] hover:text-black ">
-                                  <img
-                                    className={styles.attemptsimage}
-                                    src={Attempt1}
-                                    alt="Attempts Icon"
-                                    width={10}
-                                    height={10}
-                                  />
-                                  <p>{quizItem.quiz_attempts} </p>
-                                  <span
-                                    title="number of times quiz attempted"
-                                    className="text-[8px] -ml-[1px] cursor-pointer"
-                                  >
-                                    Quiz attempts
-                                  </span>
-                                </div>
-                              </div>
-
-                              <span className="text-[8px] flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
-                                <img
-                                  className="pb-[1px] pt-[4px] -mt-1  relative bottom-[2px]"
-                                  src={high_score}
-                                  alt="Number of question Icon"
-                                  width={15}
-                                  height={15}
-                                />{" "}
-                                {quizItem.attained_score}/
-                                {quizItem.quiz_total_marks}
-                                <div
-                                  title="attained score/total score"
-                                  className="cursor-pointer text-[6px]"
-                                >
-                                  <span className="text-[8px] -ml-[1px]">
-                                    Score
-                                  </span>
-                                </div>
-                              </span>
-                              <span className="text-[7px] flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                                <img
-                                  className="pb-[1px] mr-[1px] relative left-[3px] "
-                                  src={NoOfQuestion}
-                                  alt="Time Icon"
-                                  width={14}
-                                  height={14}
-                                />{" "}
-                                {quizItem.attempted_questions}/
-                                {quizItem.number_of_questions}
-                                <div
-                                  title="attempted qustions/total questions"
-                                  className="cursor-pointer text-[6px]"
-                                >
-                                  <span className="text-[8px] -ml-[1px]">
-                                    Attemped
-                                  </span>
-                                </div>
-                              </span>
-                              <span className="text-[7px] flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
-                                <img
-                                  className="pb-[1px] mr-[1px] relative left-[3px] "
-                                  src={Clock}
-                                  alt="Time Icon"
-                                  width={14}
-                                  height={14}
-                                />{" "}
-                                {quizItem.attempt_duration_mins}/
-                                {quizItem.quiz_duration}
-                                <div
-                                  title="time taken for attempted/total duration of quiz "
-                                  className="cursor-pointer text-[6px]"
-                                >
-                                  <span className="text-[8px] -ml-[1px]">
-                                    Duration
-                                  </span>
-                                </div>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
+                      <div className="attemptedCard">
+                        <AttemptedCard quizItem={quizItem} />
                       </div>
+                      // <div
+                      //   key={index}
+                      //   className={styles.card}
+                      //   style={{
+                      //     width: "245px",
+                      //     // paddingTop: "8px",
+                      //     paddingTop: "20px",
+                      //     marginTop: "20px",
+                      //     marginRight: "10px",
+                      //     backgroundColor:
+                      //       quizItem.attempts_count < quizItem.retake_flag
+                      //         ? quizItem.active_flag ?.toLowerCase() != "true" ?  'gray' : "#fee2e2" 
+                      //         : quizItem.active_flag ?.toLowerCase() != "true" ? 'gray' : "#55505026",
+                      //   }}
+                      //  >
+                      //   <span className="relative group">
+                      //     <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate -mt-[13px]">
+                      //       {highlightText(quizItem.quiz_name, searchQuery)}
+                      //     </span>
+                      //     <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[2px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+                      //       {highlightText(quizItem.quiz_name, searchQuery)}
+                      //     </span>
+                      //   </span>
+                      //   <div className={styles.iconContainer}>
+                      //     <div className="z-20 mb-[2px] pl-[45px] font-normal rounded -mt-[13px]">
+                      //       <svg
+                      //         xmlns="http://www.w3.org/2000/svg"
+                      //         fill="none"
+                      //         viewBox="0 0 24 24"
+                      //         strokeWidth="1.5"
+                      //         stroke="currentColor"
+                      //         className="w-4 h-4 -ml-[25px] relative -top-[9px] right-2 rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
+                      //         onClick={() => toggleNavbar(index)}
+                      //       >
+                      //         <path
+                      //           strokeLinecap="round"
+                      //           strokeLinejoin="round"
+                      //           d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                      //         />
+                      //         {cardStates[index]
+                      //           ? "Close Navbar"
+                      //           : "Open Navbar"}
+                      //       </svg>
+                      //       {cardStates[index] && (
+                      //         <div
+                      //           className={styles.infoIcons1}
+                      //           style={{
+                      //             marginLeft: "-125px",
+                      //             marginTop: "-28px",
+                      //           }}
+                      //         >
+                      //           <div className={styles.start}>
+                      //             <img
+                      //               className=" w-[10px] h-[10px]"
+                      //               src={eye}
+                      //               alt="Play icon"
+                      //             />
+                      //             <span
+                      //               className="text-[8px]   cursor-pointer hover:text-black"
+                      //               onClick={() =>
+                      //                 quizresults(
+                      //                   quizItem.quiz_id,
+                      //                   quizItem.quiz_level_attempt_id
+                      //                 )
+                      //               }
+                      //             >
+                      //               View 
+                      //             </span>
+                      //           </div>
+                      //           {quizItem.attempts_count <
+                      //             quizItem.retake_flag && (
+                      //             <div className={styles.retake}>
+                      //               <img
+                      //                 className=" h-[10px] w-[10px] "
+                      //                 src={Share_button}
+                      //                 alt="download icon"
+                      //               />
+                      //               <span
+                      //                 className="text-[8px] - cursor-pointer hover:text-black"
+                      //                 onClick={() =>
+                      //                   handleStartQuiz(quizItem.quiz_id)
+                      //                 }
+                      //               >
+                      //                 Retake
+                      //               </span>
+                      //             </div>
+                      //           )}
+                      //           {userRole === "Quiz Master" && (
+                      //             <div className={styles.edit}>
+                      //               <img
+                      //                 className={styles.editimage}
+                      //                 src={Edit_button}
+                      //                 alt="Edit icon"
+                      //               />
+                      //               <span
+                      //                 className={styles.edittext}
+                      //                 onClick={() => Edit(quizItem.quiz_id)}
+                      //               >
+                      //                 Edit 
+                      //               </span>
+                      //             </div>
+                      //           )}
+                      //           <div className={styles.leaderboard}>
+                      //             <img
+                      //               className={styles.leaderboardimage}
+                      //               style={{ marginTop: "1px" }}
+                      //               src={leaderboard_button}
+                      //               alt="Play icon"
+                      //             />
+                      //             <span
+                      //               className={styles.leaderboardtext}
+                      //               onClick={() =>
+                      //                 leaderboard1(
+                      //                   quizItem.quiz_id,
+                      //                   quizItem.quiz_level_attempt_id,
+                      //                   quizItem.complexity,
+                      //                   quizItem.quiz_duration,
+                      //                   quizItem.pass_percentage
+                      //                 )
+                      //               }
+                      //             >
+                      //               Leaderboard 
+                      //             </span>
+                      //           </div>
+                      //           {userRole === "Quiz Master" && (
+                      //             <div>
+                      //               <div className={styles.start}>
+                      //               <img
+                      //                 className={styles.startimage}
+                      //                 src={disable}
+                      //                 alt="Play icon"
+                      //               />
+                      //               {quizItem?.active_flag?.toLowerCase() != "true"  ? 
+                      //               <span
+                      //               className="display-inline"
+                      //               onClick={handleEnableOnClick}
+                      //               >
+
+                      //                 enable 
+                      //               </span>
+
+                      //                 :<span
+                      //                 className={styles.starttext}
+                      //                 onClick={() => setModalIsOpen1(true)}
+                      //               >
+                      //                 Disable 
+                      //               </span>}
+
+                      //               <Modal
+                      //                 isOpen={modalIsOpen1}
+                      //                 onRequestClose={() =>
+                      //                   setModalIsOpen1(false)
+                      //                 }
+                      //                 ariaHideApp={false}
+                      //                 className="bg-white rounded-lg p-8 mx-auto mt-10 max-w-md border-red-400 border-[1px]"
+                      //                 overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+                      //               >
+                      //                 <h2 className="text-xl font-semibold mb-4">
+                      //                   Are you sure you want to disable this card?
+                      //                 </h2>
+                      //                 <div className="mb-4">
+                      //                   <input
+                      //                     type="checkbox"
+                      //                     id="confirmCheckbox"
+                      //                     className="mr-2"
+                      //                     checked={isChecked1}
+                      //                     onChange={(e) =>
+                      //                       setIsChecked1(e.target.checked)
+                      //                     }
+                      //                   />
+                      //                   <label htmlFor="confirmCheckbox">
+                      //                     I understand the consequences.
+                      //                   </label>
+                      //                 </div>
+                      //                 <div className="flex justify-end space-x-4">
+                      //                   <button
+                      //                     className={`bg-red-500 text-white px-4 py-2 rounded ${
+                      //                       !isChecked1
+                      //                         ? "opacity-50 cursor-not-allowed"
+                      //                         : ""
+                      //                     }`}
+                      //                     onClick={() =>  confirmDisable(quizItem)}
+                      //                     disabled={!isChecked1}
+                      //                   >
+                      //                     Disable 
+                      //                   </button>
+                      //                   <button
+                      //                     className="bg-gray-300 text-black px-4 py-2 rounded"
+                      //                     onClick={() => setModalIsOpen1(false)}
+                      //                   >
+                      //                     Cancel
+                      //                   </button>
+                      //                 </div>
+                      //               </Modal>
+
+                      //               <Modal
+                      //                 isOpen={enableModel}
+                      //                 onRequestClose={() =>
+                      //                   setModalIsOpen1(false)
+                      //                 }
+                      //                 ariaHideApp={false}
+                      //                 className="bg-white rounded-lg p-8 mx-auto mt-10 max-w-md border-red-400 border-[1px]"
+                      //                 overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+                      //               >
+                      //                 <h2 className="text-xl font-semibold mb-4">
+                      //                   Are you sure you want to Enable this card?
+                      //                 </h2>
+                      //                 <div className="mb-4">
+                      //                   <input
+                      //                     type="checkbox"
+                      //                     id="confirmCheckbox"
+                      //                     className="mr-2"
+                      //                     checked={isChecked1}
+                      //                     onChange={(e) =>
+                      //                       setIsChecked1(e.target.checked)
+                      //                     }
+                      //                   />
+                      //                   <label htmlFor="confirmCheckbox">
+                      //                     I understand the consequences.
+                      //                   </label>
+                      //                 </div>
+                      //                 <div className="flex justify-end space-x-4">
+                      //                   <button
+                      //                     className={`bg-red-500 text-white px-4 py-2 rounded ${
+                      //                       !isChecked1
+                      //                         ? "opacity-50 cursor-not-allowed"
+                      //                         : ""
+                      //                     }`}
+                      //                     onClick={() => confirmEnable(quizItem)}
+                      //                     disabled={!isChecked1}
+                      //                   >
+                      //                     Enable 
+                      //                   </button>
+                      //                   <button
+                      //                     className="bg-gray-300 text-black px-4 py-2 rounded"
+                      //                     onClick={() => setEnableModel(false)}
+                      //                   >
+                      //                     Cancel 
+                      //                   </button>
+                      //                 </div>
+                      //               </Modal>
+                      //             </div>
+                      //             <div>
+                      //             <img 
+                      //               className={styles.startimage}
+                      //               style={{display: "inline-block", marginRight: 4}}
+                      //               src={Delete}
+                      //               alt="Delete icon"
+                      //             />
+                      //             <span 
+                      //               className={styles.starttext}
+                      //               style={{display: "inline-block"}}
+                      //               onClick={() => handleOptionsDeleteClick()}
+                      //               >
+                      //               Delete 
+                      //             </span>
+                      //             {/* <div>
+                      //               <button onClick={handleEnableClick}className="display: inline-block">enable</button>
+                      //               </div> */}
+
+                      //             <Modal
+                      //               isOpen={deleteModelOpen}
+                      //               onRequestClose={() => setDeleteModelOpen(false)}
+                      //               className="bg-white rounded-lg p-8 mx-auto max-w-md border-red-400 border-[1px]"
+                      //               overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+                      //             >
+                      //               <h2 className="text-xl font-semibold mb-4">
+                      //                 Are you sure you want to delete this card?
+                      //               </h2>
+                      //               <div className="mb-4">
+                      //                 <input
+                      //                   type="checkbox"
+                      //                   id="confirmCheckbox"
+                      //                   className="mr-2"
+                      //                   checked={deleteChecked}
+                      //                    onChange={(e) =>
+                      //                     setDeleteChecked(e.target.checked)
+                      //                    }
+                      //                 />
+                      //                 <label htmlFor="confirmCheckbox">
+                      //                   I understand the consequences.
+                      //                 </label>
+                      //               </div>
+                      //               <div className="flex justify-end space-x-4">
+                      //                 <button 
+                      //                   className={`bg-red-500 text-white px-4 py-2 rounded ${
+                      //                     !isChecked
+                      //                       ? "opacity-50 cursor-not-allowed"
+                      //                       : ""
+                      //                   }`}
+                      //                   onClick={() =>handleDeleteOnClick(quizItem.quiz_id,quizItem )}
+
+                      //                   // disabled={!deleteDisabled}
+                      //                 >
+                      //                   Delete 
+                      //                 </button>
+                      //                 <button
+                      //                   className="bg-gray-300 text-black px-4 py-2 rounded"
+                      //                   onClick={() => setDeleteModelOpen(false)}
+                      //                 >
+                      //                   Cancel
+                      //                 </button>
+                      //               </div>
+                      //             </Modal>
+                      //             </div>
+                      //             </div>
+
+                      //           )}
+                      //           {/* <img
+                      //       className={styles.shareimage} style={{marginTop:"2px"}}
+
+                      //       src={download}
+                      //       alt="Play icon"
+                      //     />
+                      //     <span className={styles.sharetext} >Download</span> */}
+                      //         </div>
+                      //       )}
+                      //     </div>
+                      //   </div>
+
+                      //   <div className="flex mt-[9px] mb-[19px] relative top-[19px]">
+                      //     <span className="relative group -top-[13px]">
+                      //       <span className="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] left-[10px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
+                      //         {highlightText(quizItem.category, searchQuery)}
+                      //       </span>
+                      //       <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block top-[14px] left-[7px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+                      //         {highlightText(quizItem.category, searchQuery)}
+                      //       </span>
+                      //     </span>
+
+                      //     <p className="px-[4px] font-normal relative -top-[13px] pl-2">
+                      //       |
+                      //     </p>
+
+                      //     <span className="relative group -top-[13px]">
+                      //       <span className="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-semibold inline-block w-[90px] overflow-hidden whitespace-nowrap">
+                      //         {highlightText(
+                      //           quizItem.sub_category,
+                      //           searchQuery
+                      //         )}
+                      //       </span>
+                      //       <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+                      //         {highlightText(
+                      //           quizItem.sub_category,
+                      //           searchQuery
+                      //         )}
+                      //       </span>
+                      //     </span>
+
+                      //     {quizItem.attempts_count < quizItem.retake_flag && (
+                      //       <button
+                      //         className="cursor-pointer ml-auto relative -top-[5px] right-1 flex gap-[2px] border-2 bg-[#F5F8F9] rounded-xl border-[#472E86] h-[16px] w-[34.5px]"
+                      //         onClick={() =>
+                      //           handleStartQuiz1(
+                      //             quizItem.quiz_id,
+                      //             quizItem.attempts_count,
+                      //             quizItem.retake_flag
+                      //           )
+                      //         }
+                      //       >
+                      //         <img
+                      //           className="h-[5.5px] w-[4.5px] relative top-[3.5px] left-[2px]"
+                      //           src={PlayButton}
+                      //           alt="Start button"
+                      //         />
+                      //         <h1 className="text-[#472E86] text-[6px] relative top-[2px] pl-[1px] font-bold">
+                      //           Retake
+                      //         </h1>
+                      //       </button>
+                      //     )}
+                      //   </div>
+                      //   <div className="h-1 -mt-[8px] pl-[10px] text-[7px] font-normal text-[#002366] relative -top-[6px]">
+                      //     <h3>
+                      //       Quiz ID :{" "}
+                      //       {highlightText(quizItem.quiz_id, searchQuery)}
+                      //     </h3>
+                      //   </div>
+                      //   {/* <div className="h-[1px] w-full bg-white"></div> */}
+                      //   {/* <div className="h-[3px] w-full bg-white"></div> */}
+                      //   <div className="relative group mt-1">
+                      //     <span className="text-wrap mt-[6px] text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate line-clamp-4">
+                      //       {highlightText(
+                      //         quizItem.quiz_description,
+                      //         searchQuery
+                      //       )}
+                      //     </span>
+                      //     <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-0 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
+                      //       {highlightText(
+                      //         quizItem.quiz_description,
+                      //         searchQuery
+                      //       )}
+                      //     </span>
+                      //   </div>
+                      //   <div className="h-[2px] w-full bg-white"></div>
+
+                      //   <div
+                      //     style={{
+                      //       backgroundColor: "#F9F9F9",
+                      //       padding: "1px 0",
+                      //     }}
+                      //   >
+                      //     <div className="h-[85px] rounded w-full bg-[#F5F5F5]">
+                      //       <div className="text-[7px] font-normal pl-[10px] relative top-[73px]">
+                      //         <span>
+                      //           {quizItem.pass_flag ? "Pass" : "Fail"}
+                      //         </span>
+                      //         <span className="px-[4px]">|</span>
+                      //         <span>
+                      //           {quizItem.speed_rank}
+                      //           <sup>th</sup>Fastest
+                      //         </span>
+                      //         <span className="px-[3px]">|</span>
+                      //         <span>
+                      //           {quizItem.score_rank} <sup>th</sup>Highest
+                      //         </span>
+                      //         <span className="px-[3px]">|</span>
+                      //         <span>{quizItem.attained_percentage}% Score</span>
+                      //         <span className="px-[3px]">|</span>
+                      //         <span>{quizItem.quiz_grade} Grade</span>
+                      //       </div>
+                      //       <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[50px] left-[10px]">
+                      //         <div>
+                      //           Created By :
+                      //           <span className="pl-[2px]">
+                      //             {highlightText(
+                      //               quizItem.created_by,
+                      //               searchQuery
+                      //             )}
+                      //           </span>
+                      //         </div>
+                      //         {/* <div>Created On</div> */}
+                      //       </div>
+
+                      //       <div
+                      //         className={styles.additionalInfo}
+                      //         style={{ marginTop: "25px" }}
+                      //       >
+                      //         <div
+                      //           className={styles.infoIcon}
+                      //           style={{
+                      //             marginTop: "20px",
+                      //             marginRight: "20px",
+                      //           }}
+                      //         ></div>
+                      //         <div className="z-0">
+                      //           <div className="text-[7px] flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366]  relative -left-[8px] -top-[90px] hover:text-black ">
+                      //             <img
+                      //               className={styles.attemptsimage}
+                      //               src={Attempt1}
+                      //               alt="Attempts Icon"
+                      //               width={10}
+                      //               height={10}
+                      //             />
+                      //             <p>{quizItem.quiz_attempts} </p>
+                      //             <span
+                      //               title="number of times quiz attempted"
+                      //               className="text-[8px] -ml-[1px] cursor-pointer"
+                      //             >
+                      //               Quiz attempts
+                      //             </span>
+                      //           </div>
+                      //         </div>
+
+                      //         <span className="text-[8px] flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[12px] hover:text-black">
+                      //           <img
+                      //             className="pb-[1px] pt-[4px] -mt-1  relative bottom-[2px]"
+                      //             src={high_score}
+                      //             alt="Number of question Icon"
+                      //             width={15}
+                      //             height={15}
+                      //           />{" "}
+                      //           {quizItem.attained_score}/
+                      //           {quizItem.quiz_total_marks}
+                      //           <div
+                      //             title="attained score/total score"
+                      //             className="cursor-pointer text-[6px]"
+                      //           >
+                      //             <span className="text-[8px] -ml-[1px]">
+                      //               Score
+                      //             </span>
+                      //           </div>
+                      //         </span>
+                      //         <span className="text-[7px] flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                      //           <img
+                      //             className="pb-[1px] mr-[1px] relative left-[3px] "
+                      //             src={NoOfQuestion}
+                      //             alt="Time Icon"
+                      //             width={14}
+                      //             height={14}
+                      //           />{" "}
+                      //           {quizItem.attempted_questions}/
+                      //           {quizItem.number_of_questions}
+                      //           <div
+                      //             title="attempted qustions/total questions"
+                      //             className="cursor-pointer text-[6px]"
+                      //           >
+                      //             <span className="text-[8px] -ml-[1px]">
+                      //               Attemped
+                      //             </span>
+                      //           </div>
+                      //         </span>
+                      //         <span className="text-[7px] flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded  relative -left-[14px] hover:text-black ">
+                      //           <img
+                      //             className="pb-[1px] mr-[1px] relative left-[3px] "
+                      //             src={Clock}
+                      //             alt="Time Icon"
+                      //             width={14}
+                      //             height={14}
+                      //           />{" "}
+                      //           {quizItem.attempt_duration_mins}/
+                      //           {quizItem.quiz_duration}
+                      //           <div
+                      //             title="time taken for attempted/total duration of quiz "
+                      //             className="cursor-pointer text-[6px]"
+                      //           >
+                      //             <span className="text-[8px] -ml-[1px]">
+                      //               Duration
+                      //             </span>
+                      //           </div>
+                      //         </span>
+                      //       </div>
+                      //     </div>
+                      //   </div>
+                      // </div>
                     ) : (
-                      <div
-                        className={styles.card}
-                        style={{
-                          width: "245px",
-                          paddingTop: "8px",
-                          marginRight: "10px",
-                          marginTop: "20px",
-                          backgroundColor: "#CBF2FB",
-                        }}
-                      >
-                        <span className="relative group">
-                          <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate -mt-[1px]">
-                            {highlightText(quizItem.quiz_name, searchQuery)}
-                          </span>
-                          <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-20 bg-black text-white px-1 border border-black-300 rounded">
-                            {highlightText(quizItem.quiz_name, searchQuery)}
-                          </span>
-                        </span>
 
-                        <div className={styles.iconContainer}>
-                          <div className="z-30 mb-[2px] pl-[17px] font-normal rounded">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth="1.5"
-                              stroke="currentColor"
-                              className="w-4 h-4 -ml-[33px] -mt-[11px] relative -right-6 rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
-                              onClick={() => toggleNavbar(index)}
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                              />
-                              {cardStates[index]
-                                ? "Close Navbar"
-                                : "Open Navbar"}
-                            </svg>
+                      <>
+                        <NonttemptedCard quizItem={quizItem} />
+                      </>
+                      // <div
+                      //   className={styles.card}
+                      //   style={{
+                      //     width: "245px",
+                      //     paddingTop: "8px",
+                      //     marginRight: "10px",
+                      //     marginTop: "20px",
+                      //     backgroundColor: "#CBF2FB",
+                      //   }}
+                      //  >
+                      //   <span className="relative group">
+                      //     <span className="text-[10px] text-[#002366] absolute ml-[10px] w-[195px] cursor-pointer z-0 truncate -mt-[1px]">
+                      //       {highlightText(quizItem.quiz_name, searchQuery)}
+                      //     </span>
+                      //     <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-4 w-auto z-20 bg-black text-white px-1 border border-black-300 rounded">
+                      //       {highlightText(quizItem.quiz_name, searchQuery)}
+                      //     </span>
+                      //   </span>
 
-                            {cardStates[index] && (
-                              <div
-                                className={styles.infoIcons}
-                                style={{
-                                  marginLeft: "-102px",
-                                  marginTop: "-18px",
-                                }}
-                              >
-                                <div className={styles.start}>
-                                  <img
-                                    className={styles.startimage}
-                                    src={Start_button}
-                                    alt="Play icon"
-                                  />
-                                  <span
-                                    className={styles.starttext}
-                                    onClick={() =>
-                                      handleStartQuiz(quizItem.quiz_id)
-                                    }
-                                  >
-                                    Start
-                                  </span>
-                                </div>
-                                {userRole === "Quiz Master" && (
-                                  <div className={styles.edit}>
-                                    <img
-                                      className={styles.editimage}
-                                      src={Edit_button}
-                                      alt="Edit icon"
-                                    />
-                                    <span
-                                      className={styles.edittext}
-                                      onClick={() => Edit(quizItem.quiz_id)}
-                                    >
-                                      Edit
-                                    </span>
-                                  </div>
-                                )}
-                                <div className={styles.leaderboard}>
-                                  <img
-                                    className={styles.leaderboardimage}
-                                    src={leaderboard_button}
-                                    alt="Leaderboard icon"
-                                  />
-                                  <span
-                                    className={styles.leaderboardtext}
-                                    onClick={() =>
-                                      leaderboard(
-                                        quizItem.quiz_id,
-                                        quizItem.quiz_total_marks,
-                                        quizItem.pass_percentage,
-                                        quizItem.quiz_name,
-                                        quizItem.quiz_description,
-                                        quizItem.created_by,
-                                        quizItem.complexity,
-                                        quizItem.quiz_duration,
-                                        quizItem.number_of_questions,
-                                        quizItem.min_completion_time,
-                                        quizItem.quiz_attempts,
-                                        quizItem.avg_score,
-                                        quizItem.max_percentage
-                                      )
-                                    }
-                                  >
-                                    Leaderboard 
-                                  </span>
-                                </div>
+                      //   <div className={styles.iconContainer}>
+                      //     <div className="z-30 mb-[2px] pl-[17px] font-normal rounded">
+                      //       <svg
+                      //         xmlns="http://www.w3.org/2000/svg"
+                      //         fill="none"
+                      //         viewBox="0 0 24 24"
+                      //         strokeWidth="1.5"
+                      //         stroke="currentColor"
+                      //         className="w-4 h-4 -ml-[33px] -mt-[11px] relative -right-6 rotate-90 cursor-pointer rounded-lg hover:bg-slate-200"
+                      //         onClick={() => toggleNavbar(index)}
+                      //       >
+                      //         <path
+                      //           strokeLinecap="round"
+                      //           strokeLinejoin="round"
+                      //           d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                      //         />
+                      //         {cardStates[index]
+                      //           ? "Close Navbar"
+                      //           : "Open Navbar"}
+                      //       </svg>
 
-                                {userRole === "Quiz Master" && (
-                                  <div className={styles.start}>
-                                    <img
-                                      className={styles.startimage}
-                                      src={Delete}
-                                      alt="Delete icon"
-                                    />
-                                    <span
-                                      className={styles.starttext}
-                                      // onClick={() => handleDeleteClick(quizItem.quiz_id,quizItem)}
-                                      
-                                      onClick={() => handleOptionsDeleteClick()}
-                                      >
-                                      Delete
-                                    </span>
-                                    <Modal
-                                      isOpen={deleteModelOpen}
-                                      
-                                      className="bg-white rounded-lg p-8 mx-auto max-w-md border-red-400 border-[1px]"
-                                      overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-                                    >
-                                      <h2 className="text-xl font-semibold mb-4">
-                                        Are you sure you want to delete this
-                                        card?
-                                      </h2>
-                                      <div className="mb-4">
-                                        <input
-                                          type="checkbox"
-                                          id="confirmCheckbox"
-                                          className="mr-2"
-                                          checked={isChecked}
-                                          onChange={(e) => setIsChecked(e.target.checked)}/>
-                                        <label htmlFor="confirmCheckbox">
-                                          I understand the consequences.
-                                        </label>
-                                      </div>
-                                      <div className="flex justify-end space-x-4">
-                                        <button
-                                          className={`bg-red-500 text-white px-4 py-2 rounded ${
-                                            !isChecked
-                                              ? "opacity-50 cursor-not-allowed"
-                                              : ""
-                                          }`}
-                                          onClick={() =>handleDeleteOnClick(quizItem.quiz_id,quizItem )}
-                                          disabled={!isChecked}
-                                        >
-                                          Delete 
-                                        </button>
-                                        <button
-                                        className="bg-gray-300 text-black px-4 py-2 rounded"
-                                        onClick={() => setDeleteModelOpen(false)}
-                                      >
-                                        Cancel
-                                      </button>
-                                      </div>
-                                    </Modal>
-                                  </div>
-                                )}
+                      //       {cardStates[index] && (
+                      //         <div
+                      //           className={styles.infoIcons}
+                      //           style={{
+                      //             marginLeft: "-102px",
+                      //             marginTop: "-18px",
+                      //           }}
+                      //         >
+                      //           <div className={styles.start}>
+                      //             <img
+                      //               className={styles.startimage}
+                      //               src={Start_button}
+                      //               alt="Play icon"
+                      //             />
+                      //             <span
+                      //               className={styles.starttext}
+                      //               onClick={() =>
+                      //                 handleStartQuiz(quizItem.quiz_id)
+                      //               }
+                      //             >
+                      //               Start
+                      //             </span>
+                      //           </div>
+                      //           {userRole === "Quiz Master" && (
+                      //             <div className={styles.edit}>
+                      //               <img
+                      //                 className={styles.editimage}
+                      //                 src={Edit_button}
+                      //                 alt="Edit icon"
+                      //               />
+                      //               <span
+                      //                 className={styles.edittext}
+                      //                 onClick={() => Edit(quizItem.quiz_id)}
+                      //               >
+                      //                 Edit
+                      //               </span>
+                      //             </div>
+                      //           )}
+                      //           <div className={styles.leaderboard}>
+                      //             <img
+                      //               className={styles.leaderboardimage}
+                      //               src={leaderboard_button}
+                      //               alt="Leaderboard icon"
+                      //             />
+                      //             <span
+                      //               className={styles.leaderboardtext}
+                      //               onClick={() =>
+                      //                 leaderboard(
+                      //                   quizItem.quiz_id,
+                      //                   quizItem.quiz_total_marks,
+                      //                   quizItem.pass_percentage,
+                      //                   quizItem.quiz_name,
+                      //                   quizItem.quiz_description,
+                      //                   quizItem.created_by,
+                      //                   quizItem.complexity,
+                      //                   quizItem.quiz_duration,
+                      //                   quizItem.number_of_questions,
+                      //                   quizItem.min_completion_time,
+                      //                   quizItem.quiz_attempts,
+                      //                   quizItem.avg_score,
+                      //                   quizItem.max_percentage
+                      //                 )
+                      //               }
+                      //             >
+                      //               Leaderboard
+                      //             </span>
+                      //           </div>
 
-                                {userRole === "Quiz Master" && (
-                                  <div className={styles.start}>
-                                    <img
-                                      className={styles.startimage}
-                                      src={disable}
-                                      alt="Play icon"
-                                    />
-                                    {quizItem.active_flag ?.toLowerCase() != "true"  ? 
-                                     <span
-                                     className="display-inline"
-                                    
-                                     onClick={handleEnableOnClick}
-                                    >
-                                      enable 
-                                    
-                                     </span>
-                                      : <span
-                                      className={styles.starttext}
-                                      onClick={() => setModalIsOpen1(true)}
-                                    >
-                                      Disable 
+                      //           {userRole === "Quiz Master" && (
+                      //             <div className={styles.start}>
+                      //               <img
+                      //                 className={styles.startimage}
+                      //                 src={Delete}
+                      //                 alt="Delete icon"
+                      //               />
+                      //               <span
+                      //                 className={styles.starttext}
+                      //                 // onClick={() => handleDeleteClick(quizItem.quiz_id,quizItem)}
 
-                                    </span>}
-                                    {/* <div>
-                                    <button className="display: inline-block">enable</button>
-                                    </div> */}
-                                     <Modal
-                                      isOpen={modalIsOpen1}
-                                      onRequestClose={() =>
-                                        setModalIsOpen1(false)
-                                      }
-                                      ariaHideApp={false}
-                                      className="bg-white rounded-lg p-8 mx-auto mt-10 max-w-md border-red-400 border-[1px]"
-                                      overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-                                    >
-                                      <h2 className="text-xl font-semibold mb-4">
-                                        Are you sure you want to disable this card?
-                                      </h2>
-                                      <div className="mb-4">
-                                        <input
-                                          type="checkbox"
-                                          id="confirmCheckbox"
-                                          className="mr-2"
-                                          checked={isChecked1}
-                                          onChange={(e) =>
-                                            setIsChecked1(e.target.checked)
-                                          }
-                                        />
-                                        <label htmlFor="confirmCheckbox">
-                                          I understand the consequences.
-                                        </label>
-                                      </div>
-                                      <div className="flex justify-end space-x-4">
-                                        <button
-                                          className={`bg-red-500 text-white px-4 py-2 rounded ${
-                                            !isChecked1
-                                              ? "opacity-50 cursor-not-allowed"
-                                              : ""
-                                          }`}
-                                          onClick={() =>  confirmDisable(quizItem)}
-                                          disabled={!isChecked1}
-                                        >
-                                          Disable 
-                                        </button>
-                                        <button
-                                          className="bg-gray-300 text-black px-4 py-2 rounded"
-                                          onClick={() => setModalIsOpen1(false)}
-                                        >
-                                          Cancel
-                                        </button>
-                                      </div>
-                                    </Modal>
-                                    <Modal
-                                      isOpen={enableModel}
-                                      onRequestClose={() =>
-                                        setModalIsOpen1(false)
-                                      }
-                                      ariaHideApp={false}
-                                      className="bg-white rounded-lg p-8 mx-auto mt-10 max-w-md border-red-400 border-[1px]"
-                                      overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-                                    >
-                                      <h2 className="text-xl font-semibold mb-4">
-                                        Are you sure you want to Enable this card?
-                                      </h2>
-                                      <div className="mb-4">
-                                        <input
-                                          type="checkbox"
-                                          id="confirmCheckbox"
-                                          className="mr-2"
-                                          checked={isChecked1}
-                                          onChange={(e) =>
-                                            setIsChecked1(e.target.checked)
-                                          }
-                                        />
-                                        <label htmlFor="confirmCheckbox">
-                                          I understand the consequences.
-                                        </label>
-                                      </div>
-                                      <div className="flex justify-end space-x-4">
-                                        <button
-                                          className={`bg-red-500 text-white px-4 py-2 rounded ${
-                                            !isChecked1
-                                              ? "opacity-50 cursor-not-allowed"
-                                              : ""
-                                          }`}
-                                          onClick={() => confirmEnable(quizItem)}
-                                          disabled={!isChecked1}
-                                        >
-                                          Enable 
-                                        </button>
-                                        <button
-                                          className="bg-gray-300 text-black px-4 py-2 rounded"
-                                          onClick={() => setEnableModel(false)}
-                                        >
-                                          Cancel 
-                                        </button>
-                                      </div>
-                                    </Modal>
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                          </div>
-                        </div>
+                      //                 onClick={() => handleOptionsDeleteClick()}
+                      //               >
+                      //                 Delete
+                      //               </span>
+                      //               <Modal
+                      //                 isOpen={deleteModelOpen}
 
-                        <div className="flex mt-[9px] relative top-[17px]">
-                          <span className="relative group left-[11px]">
-                            <span className="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
-                              {highlightText(quizItem.category, searchQuery)}
-                            </span>
-                            <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block top-[14px] -left-[2px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
-                              {highlightText(quizItem.category, searchQuery)}
-                            </span>
-                          </span>
-                          <p className="px-[4px] font-normal pl-2">|</p>
-                          <span className="relative group">
-                            <span className="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
-                              {highlightText(
-                                quizItem.sub_category,
-                                searchQuery
-                              )}
-                            </span>
-                            <span className="absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded text-nowrap">
-                              {highlightText(
-                                quizItem.sub_category,
-                                searchQuery
-                              )}
-                            </span>
-                          </span>
-                          <button
-                            className="cursor-pointer ml-auto relative -top-[1px] right-1"
-                            onClick={() => handleStartQuiz(quizItem.quiz_id)}
-                          >
-                            <img
-                              className="h-8 w-[34px]"
-                              src={start}
-                              alt="Start button"
-                            />
-                          </button>
-                        </div>
-                        <div className="h-1 -mt-[3px] pl-[10px] text-[7px] text-[#002366] font-normal relative top-[3px]">
-                          <h3>
-                            Quiz ID :{" "}
-                            {highlightText(quizItem.quiz_id, searchQuery)}
-                          </h3>
-                        </div>
-                        <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[75px] left-[12px]">
-                          <div>
-                            Created By :
-                            <span className="pl-[2px]">
-                              {highlightText(quizItem.created_by, searchQuery)}
-                            </span>
-                          </div>
-                          {/* <div>Created On</div> */}
-                        </div>
-                        {/* <div style={{ backgroundColor: "#EFEFEF", padding: "2px 0" }}>
-                   <div className="h-[10px] w-full bg-[#D9D9D9]"></div>
-                   </div> */}
+                      //                 className="bg-white rounded-lg p-8 mx-auto max-w-md border-red-400 border-[1px]"
+                      //                 overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+                      //               >
+                      //                 <h2 className="text-xl font-semibold mb-4">
+                      //                   Are you sure you want to delete this
+                      //                   card?
+                      //                 </h2>
+                      //                 <div className="mb-4">
+                      //                   <input
+                      //                     type="checkbox"
+                      //                     id="confirmCheckbox"
+                      //                     className="mr-2"
+                      //                     checked={isChecked}
+                      //                     onChange={(e) => setIsChecked(e.target.checked)} />
+                      //                   <label htmlFor="confirmCheckbox">
+                      //                     I understand the consequences.
+                      //                   </label>
+                      //                 </div>
+                      //                 <div className="flex justify-end space-x-4">
+                      //                   <button
+                      //                     className={`bg-red-500 text-white px-4 py-2 rounded ${!isChecked
+                      //                         ? "opacity-50 cursor-not-allowed"
+                      //                         : ""
+                      //                       }`}
+                      //                     onClick={() => handleDeleteOnClick(quizItem.quiz_id, quizItem)}
+                      //                     disabled={!isChecked}
+                      //                   >
+                      //                     Delete
+                      //                   </button>
+                      //                   <button
+                      //                     className="bg-gray-300 text-black px-4 py-2 rounded"
+                      //                     onClick={() => setDeleteModelOpen(false)}
+                      //                   >
+                      //                     Cancel
+                      //                   </button>
+                      //                 </div>
+                      //               </Modal>
+                      //             </div>
+                      //           )}
 
-                        <div className="relative group mt-1 ">
-                          <span className="mt-[6px] text-wrap text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate line-clamp-4">
-                            {highlightText(
-                              quizItem.quiz_description,
-                              searchQuery
-                            )}
-                          </span>
-                          <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-0 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
-                            {highlightText(
-                              quizItem.quiz_description,
-                              searchQuery
-                            )}
-                          </span>
-                        </div>
+                      //           {userRole === "Quiz Master" && (
+                      //             <div className={styles.start}>
+                      //               <img
+                      //                 className={styles.startimage}
+                      //                 src={disable}
+                      //                 alt="Play icon"
+                      //               />
+                      //               {quizItem.active_flag?.toLowerCase() != "true" ?
+                      //                 <span
+                      //                   className="display-inline"
 
-                        <div className="h-[2px] w-full bg-white"></div>
+                      //                   onClick={handleEnableOnClick}
+                      //                 >
+                      //                   enable
 
-                        <div
-                          style={{
-                            backgroundColor: "#F9F9F9",
-                            padding: "1px 0",
-                          }}
-                        >
-                          <div className="h-[85px] rounded w-full bg-[#F5F5F5]">
-                            <div
-                              className={styles.additionalInfo}
-                              style={{ position: "relative", top: "55px" }}
-                            >
-                              <div
-                                className={styles.infoIcon}
-                                style={{ marginTop: "25px" }}
-                              ></div>
-                              <div className="z-0">
-                                <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366] relative -left-[10px] -top-[90px] hover:text-black">
-                                  <img
-                                    className="h-[15px] w-[13px] pl-[3px] pb-1"
-                                    src={Attempt1}
-                                    alt="Attempts Icon"
-                                    width={10}
-                                    height={10}
-                                  />
-                                  <p>{quizItem.quiz_attempts}</p>
-                                  <span className="text-[8px] -ml-1">
-                                    Attempts
-                                  </span>
-                                </div>
-                              </div>
+                      //                 </span>
+                      //                 : <span
+                      //                   className={styles.starttext}
+                      //                   onClick={() => setModalIsOpen1(true)}
+                      //                 >
+                      //                   Disable
 
-                              <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded relative -left-[12px] hover:text-black">
-                                <img
-                                  className="pb-[1px] pt-[2px] -mt-1 relative bottom-[2px]"
-                                  src={NoOfQuestion}
-                                  alt="Number of question Icon"
-                                  width={15}
-                                  height={10}
-                                />
-                                {quizItem.number_of_questions}
-                                <span className="text-[8px] ml-[1px]">
-                                  Questions
-                                </span>
-                              </span>
-                              <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded relative -left-[14px] hover:text-black">
-                                <img
-                                  className="pb-[1px] mr-[1px] relative left-[3px]"
-                                  src={Clock}
-                                  alt="Time Icon"
-                                  width={14}
-                                  height={14}
-                                />
-                                {quizItem.quiz_duration}
-                                <span className="text-[8px] -ml-[0.5px]">
-                                  Minutes
-                                </span>
-                              </span>
-                              <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded relative -left-[10px] hover:text-black">
-                                <img
-                                  className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
-                                  src={Easy}
-                                  alt="Challenge Icon"
-                                  width={15}
-                                  height={9}
-                                />
-                                {quizItem.complexity}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      //                 </span>}
+                      //               {/* <div>
+                      //               <button className="display: inline-block">enable</button>
+                      //               </div> */}
+                      //               <Modal
+                      //                 isOpen={modalIsOpen1}
+                      //                 onRequestClose={() =>
+                      //                   setModalIsOpen1(false)
+                      //                 }
+                      //                 ariaHideApp={false}
+                      //                 className="bg-white rounded-lg p-8 mx-auto mt-10 max-w-md border-red-400 border-[1px]"
+                      //                 overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+                      //               >
+                      //                 <h2 className="text-xl font-semibold mb-4">
+                      //                   Are you sure you want to disable this card?
+                      //                 </h2>
+                      //                 <div className="mb-4">
+                      //                   <input
+                      //                     type="checkbox"
+                      //                     id="confirmCheckbox"
+                      //                     className="mr-2"
+                      //                     checked={isChecked1}
+                      //                     onChange={(e) =>
+                      //                       setIsChecked1(e.target.checked)
+                      //                     }
+                      //                   />
+                      //                   <label htmlFor="confirmCheckbox">
+                      //                     I understand the consequences.
+                      //                   </label>
+                      //                 </div>
+                      //                 <div className="flex justify-end space-x-4">
+                      //                   <button
+                      //                     className={`bg-red-500 text-white px-4 py-2 rounded ${!isChecked1
+                      //                         ? "opacity-50 cursor-not-allowed"
+                      //                         : ""
+                      //                       }`}
+                      //                     onClick={() => confirmDisable(quizItem)}
+                      //                     disabled={!isChecked1}
+                      //                   >
+                      //                     Disable
+                      //                   </button>
+                      //                   <button
+                      //                     className="bg-gray-300 text-black px-4 py-2 rounded"
+                      //                     onClick={() => setModalIsOpen1(false)}
+                      //                   >
+                      //                     Cancel
+                      //                   </button>
+                      //                 </div>
+                      //               </Modal>
+                      //               <Modal
+                      //                 isOpen={enableModel}
+                      //                 onRequestClose={() =>
+                      //                   setModalIsOpen1(false)
+                      //                 }
+                      //                 ariaHideApp={false}
+                      //                 className="bg-white rounded-lg p-8 mx-auto mt-10 max-w-md border-red-400 border-[1px]"
+                      //                 overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+                      //               >
+                      //                 <h2 className="text-xl font-semibold mb-4">
+                      //                   Are you sure you want to Enable this card?
+                      //                 </h2>
+                      //                 <div className="mb-4">
+                      //                   <input
+                      //                     type="checkbox"
+                      //                     id="confirmCheckbox"
+                      //                     className="mr-2"
+                      //                     checked={isChecked1}
+                      //                     onChange={(e) =>
+                      //                       setIsChecked1(e.target.checked)
+                      //                     }
+                      //                   />
+                      //                   <label htmlFor="confirmCheckbox">
+                      //                     I understand the consequences.
+                      //                   </label>
+                      //                 </div>
+                      //                 <div className="flex justify-end space-x-4">
+                      //                   <button
+                      //                     className={`bg-red-500 text-white px-4 py-2 rounded ${!isChecked1
+                      //                         ? "opacity-50 cursor-not-allowed"
+                      //                         : ""
+                      //                       }`}
+                      //                     onClick={() => confirmEnable(quizItem)}
+                      //                     disabled={!isChecked1}
+                      //                   >
+                      //                     Enable
+                      //                   </button>
+                      //                   <button
+                      //                     className="bg-gray-300 text-black px-4 py-2 rounded"
+                      //                     onClick={() => setEnableModel(false)}
+                      //                   >
+                      //                     Cancel
+                      //                   </button>
+                      //                 </div>
+                      //               </Modal>
+                      //             </div>
+                      //           )}
+                      //         </div>
+                      //       )}
+                      //     </div>
+                      //   </div>
+
+                      //   <div className="flex mt-[9px] relative top-[17px]">
+                      //     <span className="relative group left-[11px]">
+                      //       <span className="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
+                      //         {highlightText(quizItem.category, searchQuery)}
+                      //       </span>
+                      //       <span className="text-nowrap cursor-pointer absolute hidden group-hover:inline-block top-[14px] -left-[2px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded">
+                      //         {highlightText(quizItem.category, searchQuery)}
+                      //       </span>
+                      //     </span>
+                      //     <p className="px-[4px] font-normal pl-2">|</p>
+                      //     <span className="relative group">
+                      //       <span className="text-[#002366] cursor-pointer z-0 truncate text-[9px] relative top-[1px] font-semibold inline-block w-[80px] overflow-hidden whitespace-nowrap">
+                      //         {highlightText(
+                      //           quizItem.sub_category,
+                      //           searchQuery
+                      //         )}
+                      //       </span>
+                      //       <span className="absolute hidden group-hover:inline-block left-0 top-[14px] w-auto z-30 bg-black text-white px-1 py-0.5 border border-black-300 rounded text-nowrap">
+                      //         {highlightText(
+                      //           quizItem.sub_category,
+                      //           searchQuery
+                      //         )}
+                      //       </span>
+                      //     </span>
+                      //     <button
+                      //       className="cursor-pointer ml-auto relative -top-[1px] right-1"
+                      //       onClick={() => handleStartQuiz(quizItem.quiz_id)}
+                      //     >
+                      //       <img
+                      //         className="h-8 w-[34px]"
+                      //         src={start}
+                      //         alt="Start button"
+                      //       />
+                      //     </button>
+                      //   </div>
+                      //   <div className="h-1 -mt-[3px] pl-[10px] text-[7px] text-[#002366] font-normal relative top-[3px]">
+                      //     <h3>
+                      //       Quiz ID :{" "}
+                      //       {highlightText(quizItem.quiz_id, searchQuery)}
+                      //     </h3>
+                      //   </div>
+                      //   <div className="text-[#002366] flex font-semibold text-[6px] gap-[60px] relative top-[75px] left-[12px]">
+                      //     <div>
+                      //       Created By :
+                      //       <span className="pl-[2px]">
+                      //         {highlightText(quizItem.created_by, searchQuery)}
+                      //       </span>
+                      //     </div>
+                      //     {/* <div>Created On</div> */}
+                      //   </div>
+                      //   {/* <div style={{ backgroundColor: "#EFEFEF", padding: "2px 0" }}>
+                      //  <div className="h-[10px] w-full bg-[#D9D9D9]"></div>
+                      //  </div> */}
+
+                      //   <div className="relative group mt-1 ">
+                      //     <span className="mt-[6px] text-wrap text-[8px] font-normal absolute ml-[10px] w-[140px] cursor-pointer z-0 truncate line-clamp-4">
+                      //       {highlightText(
+                      //         quizItem.quiz_description,
+                      //         searchQuery
+                      //       )}
+                      //     </span>
+                      //     <span className="cursor-pointer hidden group-hover:inline-block absolute left-2 top-0 w-auto max-w-[280px] z-30 bg-black text-white py-1 px-1 border border-black-300 rounded leading-tight">
+                      //       {highlightText(
+                      //         quizItem.quiz_description,
+                      //         searchQuery
+                      //       )}
+                      //     </span>
+                      //   </div>
+
+                      //   <div className="h-[2px] w-full bg-white"></div>
+
+                      //   <div
+                      //     style={{
+                      //       backgroundColor: "#F9F9F9",
+                      //       padding: "1px 0",
+                      //     }}
+                      //   >
+                      //     <div className="h-[85px] rounded w-full bg-[#F5F5F5]">
+                      //       <div
+                      //         className={styles.additionalInfo}
+                      //         style={{ position: "relative", top: "55px" }}
+                      //       >
+                      //         <div
+                      //           className={styles.infoIcon}
+                      //           style={{ marginTop: "25px" }}
+                      //         ></div>
+                      //         <div className="z-0">
+                      //           <div className="flex gap-[5px] h-[18px] w-[105px] pt-[4px] rounded text-[#002366] relative -left-[10px] -top-[90px] hover:text-black">
+                      //             <img
+                      //               className="h-[15px] w-[13px] pl-[3px] pb-1"
+                      //               src={Attempt1}
+                      //               alt="Attempts Icon"
+                      //               width={10}
+                      //               height={10}
+                      //             />
+                      //             <p>{quizItem.quiz_attempts}</p>
+                      //             <span className="text-[8px] -ml-1">
+                      //               Attempts
+                      //             </span>
+                      //           </div>
+                      //         </div>
+
+                      //         <span className="flex pl-[2px] pt-[1.5px] -mt-[89.5px] gap-[3px] text-[#002366] h-[18px] w-[106px] rounded relative -left-[12px] hover:text-black">
+                      //           <img
+                      //             className="pb-[1px] pt-[2px] -mt-1 relative bottom-[2px]"
+                      //             src={NoOfQuestion}
+                      //             alt="Number of question Icon"
+                      //             width={15}
+                      //             height={10}
+                      //           />
+                      //           {quizItem.number_of_questions}
+                      //           <span className="text-[8px] ml-[1px]">
+                      //             Questions
+                      //           </span>
+                      //         </span>
+                      //         <span className="flex pl-[2px] pt-[2px] pb-[2px] -mt-[0.5px] gap-[5px] text-[#002366] h-[18px] w-[106px] rounded relative -left-[14px] hover:text-black">
+                      //           <img
+                      //             className="pb-[1px] mr-[1px] relative left-[3px]"
+                      //             src={Clock}
+                      //             alt="Time Icon"
+                      //             width={14}
+                      //             height={14}
+                      //           />
+                      //           {quizItem.quiz_duration}
+                      //           <span className="text-[8px] -ml-[0.5px]">
+                      //             Minutes
+                      //           </span>
+                      //         </span>
+                      //         <span className="flex text-[9px] pt-1 -mt-[4px] gap-[3px] h-[18px] text-[#002366] w-[106px] rounded relative -left-[10px] hover:text-black">
+                      //           <img
+                      //             className="ml-[1px] pl-[2px] pt-[1px] pb-[2px] pr-[2px]"
+                      //             src={Easy}
+                      //             alt="Challenge Icon"
+                      //             width={15}
+                      //             height={9}
+                      //           />
+                      //           {quizItem.complexity}
+                      //         </span>
+                      //       </div>
+                      //     </div>
+                      //   </div>
+                      // </div>
                     )}
                   </div>
                 ))}

@@ -1,4 +1,4 @@
-import React, { useState,useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import styles from "./dashboard.module.css";
 import quizifailogo from "../assets/Images/images/home/Quizifai3.png";
@@ -45,7 +45,7 @@ const Navigation = () => {
       console.log("User ID:", userId);
 
       try {
-       
+
         const response = await fetch(
           `https://dev.quizifai.com:8010/dashboard`,
           {
@@ -55,7 +55,7 @@ const Navigation = () => {
               "Authorization": `Bearer ${authToken}`,
             },
             body: JSON.stringify({
-               user_id: userId
+              user_id: userId
             }),
           }
         );
@@ -112,7 +112,7 @@ const Navigation = () => {
     };
 
     fetchQuizData();
-  }, [userId,authToken, isAuthenticated, navigate]); 
+  }, [userId, authToken, isAuthenticated, navigate]);
 
   useEffect(() => {
     console.log("Registered On:", registeredOn);
@@ -130,115 +130,118 @@ const Navigation = () => {
   const handleBackToDashboard = () => {
     navigate('/dashboard');
   };
-  
+
   return (
-    <div  className={styles.navigation}>
-    <div className={styles.navbar}>
-      <img
-        src={quizifailogo}
-        alt="Logo"
-        width={180}
-        height={160}
-        className="cursor-pointer"
-        onClick={handleBackToDashboard}
-      />
-      <div className={styles.pageList}>
-        <NavLink
-          to="/dashboard"
-          className={`${styles.pageItem} ${activePage === '/dashboard' ? styles.bold : ''}`}
-          onClick={() => handleNavigation('/dashboard')}
-        >
-          <img src={dashboardIcon} alt="Dashboard Icon" 
-            className={`${styles.pageIcon} ${activePage === '/dashboard' ? styles.activeIcon : ''}`}/>
-          <span className={styles.pageLink}>Dashboard</span>
-        </NavLink>
-        <NavLink
-          to="/quiz"
-          className={`${styles.pageItem} ${activePage === '/quiz' ? styles.bold : ''}`}
-          onClick={() => handleNavigation('/quiz')}
-        >
-          <img src={quizIcon} alt="Quiz Icon" 
-            className={`${styles.pageIcon} ${activePage === '/quiz' ? styles.activeIcon : ''}`} />
-          <span className={styles.pageLink}>Quizzes</span>
-        </NavLink>
-        <NavLink
-          to="/free-profile"
-          className={`${styles.pageItem} ${activePage === '/free-profile' ? styles.bold : ''}`}
-          onClick={() => handleNavigation('/free-profile')}
-        >
-          <img src={profileIcon} alt="Profile Icon" 
-            className={`${styles.pageIcon} ${activePage === '/free-profile' ? styles.activeIcon : ''}`} />
-          <span className={styles.pageLink}>Profile</span>
-        </NavLink>
-        <NavLink
-          to="/configure"
-          className={`${styles.pageItem} ${activePage === '/configure' ? styles.bold : ''}`}
-          onClick={() => handleNavigation('/configure')}
-        >
-          <img src={Settings} alt="Settings Icon" 
-            className={`${styles.pageIcon} ${activePage === '/configure' ? styles.activeIcon : ''}`} />
-          <span className={styles.pageLink}>Settings</span>
-        </NavLink>
-        <NavLink
-          to="/contact"
-          className={`${styles.pageItem} ${activePage === '/contact' ? styles.bold : ''}`}
-          onClick={() => handleNavigation('/contact')}
-        >
-          <img src={mail} alt="Settings Icon" 
-            className={`${styles.pageIcon} ${activePage === '/contact' ? styles.activeIcon : ''}`} />
-          <span className={styles.pageLink}>Contact US</span>
-        </NavLink>
-        <NavLink
-          to="/myhistory"
-          className={`${styles.pageItem} ${activePage === '/myhistory' ? styles.bold : ''}`}
-          onClick={() => handleNavigation('/myhistory')}
-        >
-         <img
-        src={history}
-        alt="Settings Icon"
-        className={`${styles.pageIcon} ${activePage === '/myhistory' ? styles.activeIcon : ''}`}
-      />
-          <span className={styles.pageLink}>My History</span>
-        </NavLink>
-        {/* <img className="h-[122px] w-[60px] ml-[35px] mt-[50px]" src={rocket} alt="rocket"/> */}
-      </div>
+    <div className={styles.navigation}>
+      <div className={styles.navbar}>
+        <img
+          src={quizifailogo}
+          alt="Logo"
+          width={180}
+          height={160}
+          className="cursor-pointer"
+          onClick={handleBackToDashboard}
+        />
+        <div className={styles.pageList}>
+          <NavLink
+            to="/dashboard"
+            className={`${styles.pageItem} ${activePage === '/dashboard' ? styles.bold : ''}`}
+            onClick={() => handleNavigation('/dashboard')}
+          >
+            <img src={dashboardIcon} alt="Dashboard Icon"
+              className={`${styles.pageIcon} ${activePage === '/dashboard' ? styles.activeIcon : ''}`} />
+            <span className={styles.pageLink}>Dashboard</span>
+          </NavLink>
+          <NavLink
+            to="/quiz"
+            className={`${styles.pageItem} ${activePage === '/quiz' ? styles.bold : ''}`}
+            onClick={() => handleNavigation('/quiz')}
+          >
+            <img src={quizIcon} alt="Quiz Icon"
+              className={`${styles.pageIcon} ${activePage === '/quiz' ? styles.activeIcon : ''}`} />
+            <span className={styles.pageLink}>Quizzes</span>
+          </NavLink>
+          <NavLink
+            to="/free-profile"
+            className={`${styles.pageItem} ${activePage === '/free-profile' ? styles.bold : ''}`}
+            onClick={() => handleNavigation('/free-profile')}
+          >
+            <img src={profileIcon} alt="Profile Icon"
+              className={`${styles.pageIcon} ${activePage === '/free-profile' ? styles.activeIcon : ''}`} />
+            <span className={styles.pageLink}>Profile</span>
+          </NavLink>
+          <NavLink
+            to="/configure"
+            className={`${styles.pageItem} ${activePage === '/configure' ? styles.bold : ''}`}
+            onClick={() => handleNavigation('/configure')}
+          >
+            <img src={Settings} alt="Settings Icon"
+              className={`${styles.pageIcon} ${activePage === '/configure' ? styles.activeIcon : ''}`} />
+            <span className={styles.pageLink}>Settings</span>
+          </NavLink>
+          <NavLink
+            to="/contact"
+            className={`${styles.pageItem} ${activePage === '/contact' ? styles.bold : ''}`}
+            onClick={() => handleNavigation('/contact')}
+          >
+            <img src={mail} alt="Settings Icon"
+              className={`${styles.pageIcon} ${activePage === '/contact' ? styles.activeIcon : ''}`} />
+            <span className={styles.pageLink}>Contact US</span>
+          </NavLink>
+          <NavLink
+            to="/myhistory"
+            className={`${styles.pageItem} ${activePage === '/myhistory' ? styles.bold : ''}`}
+            onClick={() => handleNavigation('/myhistory')}
+          >
+            <img
+              src={history}
+              alt="Settings Icon"
+              className={`${styles.pageIcon} ${activePage === '/myhistory' ? styles.activeIcon : ''}`}
+            />
+            <span className={styles.pageLink}>My History</span>
+          </NavLink>
+          {/* <img className="h-[122px] w-[60px] ml-[35px] mt-[50px]" src={rocket} alt="rocket"/> */}
+        </div>
       </div>
       <div>
-      <div className="h-[5px] w-full bg-white mt-[10px]"></div>
+        <div className="h-[5px] w-full bg-white mt-[10px]"></div>
 
-<div className="p-[10px] ml-2 font-bold">
-  <h1 className="text-[14px] text-[#002366]">Subscription</h1>
-  <h1 className="font-semibold mt-[10px] text-[13px] text-[#002366]">Type : <span className=" text-black text-[12px] font-normal">Public</span> </h1>
-  <h1 className="mt-[3px] px-[1px] font-semibold text-[13px] text-[#002366]">Date :
-  <span className=" text-black text-[12px] font-normal">{subscriptionStartDate}</span> 
-    </h1>
-    <div className="flex">
-    <h1 className="mt-[3px] px-[1px] font-semibold text-[13px] text-[#002366]">Days :</h1>
-  <span className="text-black text-[12px] font-normal">
-  {remainingDays > 0 ?(
-    <p className="text-[13px] text-red-500 ml-[20px] mt-[3px]">{remainingDays}</p> 
-  ):(                       
-  <h1 className="mt-[2px] text-[12px] font-normal pl-[2px] pt-[2px]">Unlimited</h1>
-  )}
-  </span>
-    </div>
- 
-
-
-</div>
-<div className=" flex items-center justify-center z-50 ">
-              <img src={rocket} alt="" className=" w-[49px] h-[112px] z-50"/>
-            </div>
-          <div className=" flex flex-col justify-center items-center p-[10px] bg-white rounded-[25px] w-[90%] ml-[10px] pt-[80px] relative top-[-75px]">
-         
-            <div>
-              <p className=" text-[#9696BB] text-[13px]">Upgrade to <span className=" text-black font-bold">Pro</span>  for more resources</p>
-            </div>
-            <button className=" bg-[#3B61C8] p-[5px] px-[20px] rounded-[10px] text-white text-[13px] mt-2" >Upgrade </button>
+        <div className="p-[10px] ml-2 font-bold">
+          <h1 className="text-[14px] text-[#002366]">Subscription</h1>
+          <h1 className="font-semibold mt-[10px] text-[13px] text-[#002366]">Type : <span className=" text-black text-[12px] font-normal">Public</span> </h1>
+          <h1 className="mt-[3px] px-[1px] font-semibold text-[13px] text-[#002366]">Date :
+            <span className=" text-black text-[12px] font-normal">{subscriptionStartDate}</span>
+          </h1>
+          <div className="flex">
+            <h1 className="mt-[3px] px-[1px] font-semibold text-[13px] text-[#002366]">Days :</h1>
+            <span className="text-black text-[12px] font-normal">
+              {remainingDays > 0 ? (
+                <p className="text-[13px] text-red-500 ml-[20px] mt-[3px]">{remainingDays}</p>
+              ) : (
+                <h1 className="mt-[2px] text-[12px] font-normal pl-[2px] pt-[2px]">Unlimited</h1>
+              )}
+            </span>
           </div>
-</div>
+
+
+
+        </div>
+        <div className=" flex items-center justify-center z-50 ">
+          <img src={rocket} alt="" className=" w-[49px] h-[112px] z-50" />
+        </div>
+        <div className=" flex flex-col justify-center items-center p-[10px] bg-white rounded-[25px] w-[90%] ml-[10px] pt-[80px] relative top-[-75px]">
+
+          <div>
+            <p className=" text-[#9696BB] text-[13px]">Upgrade to <span className=" text-black font-bold">Pro</span>  for more resources</p>
+          </div>
+          <button className=" bg-[#3B61C8] p-[5px] px-[20px] rounded-[10px] text-white text-[13px] mt-2" >Upgrade </button>
+        </div>
+      </div>
     </div>
   );
 };
 
 export default Navigation;
+
+
+

@@ -541,6 +541,7 @@ margin-top: -60px;
 .quizDisabled{
   pointer-events: none;
   background-color: grey;
+  margin-right: 1%;
 }
 .deleteIcon{
 display: inline-block;

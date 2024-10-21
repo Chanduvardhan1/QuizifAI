@@ -138,8 +138,8 @@ const topThree = leaderboardData.slice(0, 3);
           <div className={styles.Createdbyupdated}>
           <div className={styles.Questions}>
 
-<span className={styles.Question} >Questions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>{" "}
-  <span className={styles.username1} >{quizduration}</span>
+        <span className={styles.Question} >Questions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>{" "}
+        <span className={styles.username1} >{quizduration}</span>
 </div>
 <div>
 

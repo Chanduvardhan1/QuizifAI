@@ -808,7 +808,7 @@ margin-bottom: 25px;
 .sampleCard {
   font-weight: 600;
   font-size: 10px;
-  margin-top: 62px;
+  margin-top: 20px;
   box-sizing: border-box;
   /* border: 1px solid  #4CC9F0; */
   border: thin solid #4CC9F0;
@@ -847,7 +847,7 @@ margin-bottom: 25px;
   display: flex;
   gap: 5px;
   justify-content: end;
-  margin-right: 25px;
+  margin-right: 8px;
   position: relative;
   bottom: -10px;
 }
@@ -905,19 +905,31 @@ margin-bottom: 25px;
   height: 5px;
   background-color: pink;
   margin-top: 3px;
-  margin-left: 1px;
+  margin-left: 12px;
   border-width: 1px;
   border-style: solid;
-  border-color: #FFC0CB
+  border-color:#FFC0CB;
 }
 
 .attemptedCard {
   border: thin solid #FFC0CB;
+  margin-left: 4%;
+  font-weight: 600;
+  font-size: 10px;
+  margin-top: 62px;
+  box-sizing: border-box;
+  /* border: 1px solid  #4CC9F0; */
+  /* border: thin solid #4CC9F0; */
+  height: 168px;
+  /* width:430px; */
+  width: 366px;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
 
 }
 
 .container {
-  align-items: center;
+  align-items: start;
 }
 
 .clock {

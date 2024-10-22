@@ -1,9 +1,9 @@
 // LogoutBar.js
 
-import React , { useContext }from "react";
+import React, { useContext } from "react";
 //import Image from "next/image";
 import { useNavigate } from "react-router-dom";
-import { useState,useEffect,useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./dashboard.module.css";
 import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 import user2Icon from "../assets/Images/images/dashboard/user2.png";
@@ -20,43 +20,43 @@ import ReactCrop from "react-image-crop";
 import 'react-image-crop/dist/ReactCrop.css';
 
 
-const currentValue1 = 50; 
-  const maxValue1 = 100; 
-  const currentValue2 = 30; 
-  const maxValue2 = 80; 
+const currentValue1 = 50;
+const maxValue1 = 100;
+const currentValue2 = 30;
+const maxValue2 = 80;
 
 
 const BasicProgressBar = ({ currentValue, maxValue }) => (
-    <progress
-      value={currentValue}
-      max={maxValue}
-      style={{ width: "100px" }} 
-    >
-      {currentValue}%
-    </progress>
-  );
+  <progress
+    value={currentValue}
+    max={maxValue}
+    style={{ width: "100px" }}
+  >
+    {currentValue}%
+  </progress>
+);
 
-  
+
 
 const LogoutBar = (data) => {
-   const hasData = data && data.id;
+  const hasData = data && data.id;
   const navigate = useNavigate();
 
 
   // const handleBackToLogin = () => {
   //   navigate("/login");
   // };
- const navigateToMyHistory = () =>{
-  navigate("/myhistory")
- }
- const handleBackToglobalLeaderboard =() =>{
-  navigate("/globalleaderboard");
- }
+  const navigateToMyHistory = () => {
+    navigate("/myhistory")
+  }
+  const handleBackToglobalLeaderboard = () => {
+    navigate("/globalleaderboard");
+  }
 
- const handleToProfile =() =>{
-  navigate("/free-profile");
- } 
-  
+  const handleToProfile = () => {
+    navigate("/free-profile");
+  }
+
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
   const [userName, setUserName] = useState('');
   // const [occupation, setOccupation] = useState(localStorage.getItem("occupation_name"));
@@ -81,12 +81,12 @@ const LogoutBar = (data) => {
   const imageRef = useRef(null);
   const [completedCrop, setCompletedCrop] = useState(null);
   const [image, setImage] = useState(profileimg || '');
-  const [crop, setCrop] = useState({unit: '%', width:30, aspect: 1});
-   const[modalVisible, setModalVisible] = useState(false);
+  const [crop, setCrop] = useState({ unit: '%', width: 30, aspect: 1 });
+  const [modalVisible, setModalVisible] = useState(false);
   const [src, setSrc] = useState(null);
   const [croppedImage, setCroppedImage] = useState(null);
   const { isAuthenticated, authToken, logout } = useContext(AuthContext);
-  // const [subscriptionStartDate, setSubscriptionStartDate] = useState("");
+
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -97,7 +97,7 @@ const LogoutBar = (data) => {
       console.log("User ID:", userId);
 
       try {
-       
+
         const response = await fetch(
           `https://dev.quizifai.com:8010/dashboard`,
           {
@@ -107,7 +107,7 @@ const LogoutBar = (data) => {
               "Authorization": `Bearer ${authToken}`,
             },
             body: JSON.stringify({
-               user_id: userId
+              user_id: userId
             }),
           }
         );
@@ -164,7 +164,7 @@ const LogoutBar = (data) => {
     };
 
     fetchQuizData();
-  }, [userId,isAuthenticated,authToken]); 
+  }, [userId, isAuthenticated, authToken]);
 
   useEffect(() => {
     const handleWindowClose = () => {
@@ -193,7 +193,7 @@ const LogoutBar = (data) => {
   const handleBackToLogin = () => {
     // Retrieve the authentication token from AuthContext or localStorage
     const authToken = localStorage.getItem('authToken') || null;
-  
+
     fetch('https://dev.quizifai.com:8010/usr_logout/', {
       method: 'POST',
       headers: {
@@ -226,273 +226,275 @@ const LogoutBar = (data) => {
       });
   };
 
-   useEffect(() =>{
-  const savedImage = localStorage.getItem('savedImage');
-  if(savedImage){
-    setImage(savedImage);
+  useEffect(() => {
+    const savedImage = localStorage.getItem('savedImage');
+    if (savedImage) {
+      setImage(savedImage);
+    }
+  }, []);
+
+  const handleImageClick = () => {
+    if (inputRef.current) {
+      inputRef.current.click();
+    }
+  };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSrc(reader.result);
+        setModalVisible(true);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const onImageLoaded = (image) => {
+    imageRef.current = image;
+    return false; // Prevent auto cropping
+  };
+
+  const handleCropComplete = (crop) => {
+    if (src && crop.width && crop.height) {
+      const image = document.createElement('img');
+      image.src = src;
+      image.onload = () => {
+        const canvas = document.createElement('canvas');
+        const scaleX = image.naturalWidth / image.width;
+        const scaleY = image.naturalHeight / image.height;
+        canvas.width = crop.width;
+        canvas.height = crop.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(
+          image,
+          crop.x * scaleX,
+          crop.y * scaleY,
+          crop.width * scaleX,
+          crop.height * scaleY,
+          0,
+          0,
+          crop.width,
+          crop.height
+        );
+        setCroppedImage(canvas.toDataURL());
+      };
+    }
+  };
+
+  const handleSubmit = () => {
+    if (croppedImage) {
+      setImage(croppedImage);
+      localStorage.setItem('savedImage', croppedImage);
+      setModalVisible(false);
+    }
+  };
+
+  const handleDeleteImage = () => {
+    localStorage.removeItem('savedImage');
+    setImage('');
+  };
+
+
+  function handleReplaceImage(event) {
+    event.stopPropagation(); // Prevent the click from triggering the parent div's click event
+    handleImageClick(); // Open file dialog
   }
-},[]);
 
-const handleImageClick = () => {
-  if (inputRef.current) {
-    inputRef.current.click();
-  }
-};
+  // function handleDeleteImage(event) {
+  //   event.stopPropagation();
+  //   localStorage.removeItem('savedImage'); 
+  //   setImage(""); 
+  // }
 
-const handleImageChange = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setSrc(reader.result);
-      setModalVisible(true);
-    };
-    reader.readAsDataURL(file);
-  }
-};
-
-const onImageLoaded = (image) => {
-  imageRef.current = image;
-  return false; // Prevent auto cropping
-};
-
-const handleCropComplete = (crop) => {
-  if (src && crop.width && crop.height) {
-    const image = document.createElement('img');
-    image.src = src;
-    image.onload = () => {
-      const canvas = document.createElement('canvas');
-      const scaleX = image.naturalWidth / image.width;
-      const scaleY = image.naturalHeight / image.height;
-      canvas.width = crop.width;
-      canvas.height = crop.height;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(
-        image,
-        crop.x * scaleX,
-        crop.y * scaleY,
-        crop.width * scaleX,
-        crop.height * scaleY,
-        0,
-        0,
-        crop.width,
-        crop.height
-      );
-      setCroppedImage(canvas.toDataURL());
-    };
-  }
-};
-
-const handleSubmit = () => {
-  if (croppedImage) {
-    setImage(croppedImage);
-    localStorage.setItem('savedImage', croppedImage);
-    setModalVisible(false);
-  }
-};
-
-const handleDeleteImage = () => {
-  localStorage.removeItem('savedImage');
-  setImage('');
-};
-
-
-function handleReplaceImage(event) {
-  event.stopPropagation(); // Prevent the click from triggering the parent div's click event
-  handleImageClick(); // Open file dialog
-}
-
-// function handleDeleteImage(event) {
-//   event.stopPropagation();
-//   localStorage.removeItem('savedImage'); 
-//   setImage(""); 
-// }
-
-function handleViewImage(event) {
-  event.stopPropagation(); // Prevent the click from triggering the parent div's click event
-  if (image) {
-    // Create a temporary link element
-    const link = document.createElement('a');
-    link.href = image;
-    link.target = '_blank'; // Open in a new tab
-    link.click(); // Simulate click to open the image
-  } else {
-    console.error('No image available to view');
-  }
-};
+  function handleViewImage(event) {
+    event.stopPropagation(); // Prevent the click from triggering the parent div's click event
+    if (image) {
+      // Create a temporary link element
+      const link = document.createElement('a');
+      link.href = image;
+      link.target = '_blank'; // Open in a new tab
+      link.click(); // Simulate click to open the image
+    } else {
+      console.error('No image available to view');
+    }
+  };
 
   return (
     <div className={styles.logout}>
-     <div style={{ marginTop: "-20px", display: "flex", alignItems: "center" , marginLeft:"20px",position:"relative",top:"25px"}}> 
-       <div>
-       <img
-    src={LogoutIcon}
-    onClick={handleBackToLogin}
-    alt="Logout Icon"
-    style={{ width: "20px",
-             height: "20px",
-             cursor:"pointer",
-            marginLeft:"155px"}}
-  />
-  <span style={{ marginRight: "5px",fontSize:"10px",position:"relative",left:"150px",top:"-5px" }}>Logout</span>
-</div>
+      <div style={{ marginTop: "-20px", display: "flex", alignItems: "center", marginLeft: "20px", position: "relative", top: "25px" }}>
+        <div>
+          <img
+            src={LogoutIcon}
+            onClick={handleBackToLogin}
+            alt="Logout Icon"
+            style={{
+              width: "20px",
+              height: "20px",
+              cursor: "pointer",
+              marginLeft: "155px"
+            }}
+          />
+          <span style={{ marginRight: "5px", fontSize: "10px", position: "relative", left: "150px", top: "-5px" }}>Logout</span>
+        </div>
 
-  </div>
-        {/* profile image ------------------------ */}
-        <div className="relative">
-      <div className="rounded-full w-[100px] h-[100px]">
-        <img
-          className="w-[100px] h-[100px] rounded-full border-2 border-white ml-12"
-          src={image || 'default-image.png'}
-          alt="Uploaded"
-        />
-        <input
-          type="file"
-          ref={inputRef}
-          onChange={handleImageChange}
-          className="hidden"
-        />
-        <div className="absolute right-[74px] bottom-[15px] bg-[#C3EAF3] rounded-full w-fit h-[24px] px-[4px] mt-1 py-[1px] pt-1">
-          <div className="relative flex items-center justify-center group">
-            <img
-              className="h-4 w-4 cursor-pointer"
-              src={Camera}
-              alt="Camera"
-              onClick={handleImageClick}
-            />
-            <div className="absolute bottom-full left-0 bg-white text-black rounded-sm text-xs w-max h-max px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <p className="cursor-pointer text-[10px]" onClick={() => setModalVisible(true)}>Replace Image </p>
-              <p className="text-[10px] cursor-pointer" onClick={() => window.open(image, '_blank')}>View Image</p>
-              <p className="text-[10px] cursor-pointer" onClick={handleDeleteImage}>Delete Image</p>
+      </div>
+      {/* profile image ------------------------ */}
+      <div className="relative">
+        <div className="rounded-full w-[100px] h-[100px]">
+          <img
+            className="w-[100px] h-[100px] rounded-full border-2 border-white ml-12"
+            src={image || 'default-image.png'}
+            alt="Uploaded"
+          />
+          <input
+            type="file"
+            ref={inputRef}
+            onChange={handleImageChange}
+            className="hidden"
+          />
+          <div className="absolute right-[74px] bottom-[15px] bg-[#C3EAF3] rounded-full w-fit h-[24px] px-[4px] mt-1 py-[1px] pt-1">
+            <div className="relative flex items-center justify-center group">
+              <img
+                className="h-4 w-4 cursor-pointer"
+                src={Camera}
+                alt="Camera"
+                onClick={handleImageClick}
+              />
+              <div className="absolute bottom-full left-0 bg-white text-black rounded-sm text-xs w-max h-max px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <p className="cursor-pointer text-[10px]" onClick={() => setModalVisible(true)}>Replace Image </p>
+                <p className="text-[10px] cursor-pointer" onClick={() => window.open(image, '_blank')}>View Image</p>
+                <p className="text-[10px] cursor-pointer" onClick={handleDeleteImage}>Delete Image</p>
+              </div>
             </div>
           </div>
         </div>
+
+        {modalVisible && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-4 rounded-lg w-[90%] max-w-lg relative">
+              {src && (
+                <div className="mb-4">
+                  <ReactCrop crop={crop} onChange={c => setCrop(c)}>
+                    <img
+                      src={src}
+                      alt="Selected"
+                      className=" max-h-[300px] object-contain border border-gray-300 rounded"
+                    />
+                  </ReactCrop>
+                </div>
+              )}
+              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
+                onClick={() => fileInputRef.current.click()}
+              >
+                Upload Image
+              </button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleImageChange}
+                className="hidden"
+              />
+              <div className="mt-4 flex justify-end space-x-2">
+                <button
+                  className="bg-blue-500 text-white px-4 py-2 rounded"
+                  onClick={handleSubmit}
+                >
+                  Submit
+                </button>
+                <button
+                  className="bg-gray-300 text-black px-4 py-2 rounded"
+                  onClick={() => setModalVisible(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
-      {modalVisible && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-4 rounded-lg w-[90%] max-w-lg relative">
-            {src && (
-              <div className="mb-4">
-                <ReactCrop  crop={crop} onChange={c => setCrop(c)}>
-                <img 
-                  src={src}
-                  alt="Selected"
-                  className=" max-h-[300px] object-contain border border-gray-300 rounded"
-                />
-                </ReactCrop>
-              </div>
-            )}
-            <button
-              className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
-              onClick={() => fileInputRef.current.click()}
-            >
-              Upload Image 
-            </button>
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleImageChange}
-              className="hidden"
-            />
-            <div className="mt-4 flex justify-end space-x-2">
-              <button
-                className="bg-blue-500 text-white px-4 py-2 rounded"
-                onClick={handleSubmit}
-              >
-                Submit
-              </button>
-              <button
-                className="bg-gray-300 text-black px-4 py-2 rounded"
-                onClick={() => setModalVisible(false)}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+      <div style={{ textAlign: "center" }}>
+        <p style={{ fontSize: "15px", marginBottom: "5px", fontWeight: 600, color: "#002366" }}>
+          {userName.charAt(0).toUpperCase() + userName.slice(1)}
+        </p>
+        <p
+          style={{
+            fontSize: "12px",
+            margin: "0",
+            fontWeight: 500,
+            color: "#EF5130",
+            marginTop: "-5px",
+          }}
+        >
+          {occupation === "Other" ? otherOccupation : occupation}
 
-        <div style={{ textAlign: "center" }}>
-          <p style={{ fontSize: "15px", marginBottom: "5px", fontWeight: 600 ,color:"#002366"}}>
-            {userName.charAt(0).toUpperCase()+userName.slice(1)}
-          </p>
+        </p>
+
+        <div className="flex">
           <p
             style={{
               fontSize: "12px",
               margin: "0",
               fontWeight: 500,
-              color:"#EF5130",
-              marginTop:"-5px",
-            }}
-          >
-                 {occupation === "Other" ? otherOccupation : occupation}
-
-          </p>
-
-          <div className="flex">
-          <p
-          style={{
-            fontSize: "12px",
-            margin: "0",
-            fontWeight: 500,
-            color: "#5E81F4",
-            marginLeft: "75px",
-          }}>
+              color: "#5E81F4",
+              marginLeft: "75px",
+            }}>
             User ID : {userId}
           </p>
           <div className="relative group inline-block">
-          <img 
-          src={questionmark}
-          alt="question mark icon"
-          style={{
-            height: "15px",
-            width: "15px",
-            cursor:"pointer",
-            marginLeft:"5px",
-          }}
-          />
-         <span className="hidden group-hover:inline-block h-[70px] absolute -left-[150px] -top-[15px] -translate-x-1/2 bottom-full mb-1 w-[300px] px-2 py-1 bg-black text-white text-xs rounded">
-          This is your unique identification number. It will help our support team to identify your account when you need assistance through QuizifAI's support channels.</span>
+            <img
+              src={questionmark}
+              alt="question mark icon"
+              style={{
+                height: "15px",
+                width: "15px",
+                cursor: "pointer",
+                marginLeft: "5px",
+              }}
+            />
+            <span className="hidden group-hover:inline-block h-[70px] absolute -left-[150px] -top-[15px] -translate-x-1/2 bottom-full mb-1 w-[300px] px-2 py-1 bg-black text-white text-xs rounded">
+              This is your unique identification number. It will help our support team to identify your account when you need assistance through QuizifAI's support channels.</span>
           </div>
-          </div>
-         
+        </div>
 
-          <div className="text-[13px] ml-[30px] text-[#002366] mx-5">
-          <p>{city}</p><br/>
+
+        <div className="text-[13px] ml-[30px] text-[#002366] mx-5">
+          <p>{city}</p><br />
           <div className="flex -mt-[20px] pl-2">
-          <p className="pl-4">{district} ,</p>
-          <p className="pl-1">{country}</p>
+            <p className="pl-4">{district} ,</p>
+            <p className="pl-1">{country}</p>
           </div>
-          </div>
-         
-         <div className="h-[15px] w-[15px] rotate-[90deg] cursor-pointer ml-[195px]">
-          <img className="-mt-1" onClick={handleToProfile} src={expand}/>
-         </div>
+        </div>
 
-         
-          <div className="h-[5px] w-full bg-white mt-2"></div>
+        <div className="h-[15px] w-[15px] rotate-[90deg] cursor-pointer ml-[195px]">
+          <img className="-mt-1" onClick={handleToProfile} src={expand} />
+        </div>
 
-          <div style={{ marginTop: "0px" }}>
-            
-            <div className="flex justify-center">
-              <img className="h-[60px] w-[60px]  mt-1" src={ranks}/>
-              <div className=" flex flex-col">
+
+        <div className="h-[5px] w-full bg-white mt-2"></div>
+
+        <div style={{ marginTop: "0px" }}>
+
+          <div className="flex justify-center">
+            <img className="h-[60px] w-[60px]  mt-1" src={ranks} />
+            <div className=" flex flex-col">
               <div className=" flex items-center gap-[5px]">
-              <p className="text-[25px] text-[#5E81F4]  text-start mt-1 font-bold">{globalRank}</p>
-              <h1 className="relative font-Poppins text-[13px]">Global rank</h1>
+                <p className="text-[25px] text-[#5E81F4]  text-start mt-1 font-bold">{globalRank}</p>
+                <h1 className="relative font-Poppins text-[13px]">Global rank</h1>
               </div>
               <div className="flex items-center gap-[5px]">
-              <p className="text-[20px] text-[#5E81F4]  text-start  font-bold">{globalscore}</p>
-              <h1 className="relative font-Poppins text-[13px]">Global Score</h1>
+                <p className="text-[20px] text-[#5E81F4]  text-start  font-bold">{globalscore}</p>
+                <h1 className="relative font-Poppins text-[13px]">Global Score</h1>
               </div>
               <div className="text-xs text-[#002366] text-start -ml-12 mt-1">
-              <p onClick={handleBackToglobalLeaderboard}>Click <span className="text-[#E97132] underline underline-offset-1 cursor-pointer font-bold">here</span> to view global score leaderboard</p>
-              </div>
+                <p onClick={handleBackToglobalLeaderboard}>Click <span className="text-[#E97132] underline underline-offset-1 cursor-pointer font-bold">here</span> to view global score leaderboard</p>
               </div>
             </div>
-            <div className="h-[5px] w-full bg-white mt-[10px]"></div>
+          </div>
+          <div className="h-[5px] w-full bg-white mt-[10px]"></div>
 
           <div className="flex">
             <span className="text-[20px] text-[#E97132] ml-[15px] mt-[5px] font-semibold">{totalQuizzes}</span>
@@ -506,17 +508,35 @@ function handleViewImage(event) {
             <span className="text-[20px] text-[#E97132] ml-[15px] mt-[10px] font-semibold">{averageScorePercentage}%</span>
             <h1 className="mt-[20px] ml-[5px] text-[12px] font-normal">Average</h1>
           </div>
-        
-          <div className="h-[5px] w-full bg-white mt-[10px]"></div>       
+
+          <div className="h-[5px] w-full bg-white mt-[10px]"></div>
+
+          <div className="p-[10px] ml-2 font-bold">
+            <h1 className="text-[14px] text-[#002366]">Subscription</h1>
+            <h1 className="font-semibold mt-[10px] text-[13px] text-[#002366]">Type : <span className=" text-black text-[12px] font-normal">Public</span> </h1>
+            <h1 className="mt-[3px] px-[1px] font-semibold text-[13px] text-[#002366]">Date :
+              <span className=" text-black text-[12px] font-normal">{subscriptionStartDate}</span>
+            </h1>
+            <div className="flex">
+              <h1 className="mt-[3px] px-[1px] font-semibold text-[13px] text-[#002366] ml-[32%]">Days :</h1>
+              <span className="text-black text-[12px] font-normal">
+                {remainingDays > 0 ? (
+                  <p className="text-[13px] text-red-500 ml-[20px] mt-[3px]">{remainingDays}</p>
+                ) : (
+                  <h1 className="mt-[2px] text-[12px] font-normal pl-[2px] pt-[2px]">Unlimited</h1>
+                )}
+              </span>
+            </div>
+          </div>
           <div className="mt-[220px] ml-2">
             <h1 className="text-[13px] text-start text-[#002366] font-semibold">Registered On :<span className="pl-1 font-normal text-[12px]">{registeredOn}</span></h1>
             <h1 className="text-[13px] text-start text-[#002366] font-semibold">Last Login : <span className="font-normal text-[12px]">{lastLogin}</span></h1>
             <h1 className="text-[13px] text-start text-[#002366] font-semibold">Password Changed : <span className="font-normal text-[12px]">{passwordChanged}</span></h1>
-          </div>               
-            
           </div>
+
         </div>
       </div>
+    </div>
   );
 };
 

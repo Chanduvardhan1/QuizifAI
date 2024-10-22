@@ -26,7 +26,7 @@ function AttemptedCard(props) {
 
     return (
         <div className='mr-4'>
-            <div className={styles.sampleCard}>
+            <div className={styles.attemptedCard}>
                 <div className={styles.sampleBoxImage}>
                 </div>
                 <div className={styles.sampleBoxDetails}>

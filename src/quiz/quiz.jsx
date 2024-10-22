@@ -41,7 +41,6 @@ const Quiz = () => {
   const maxValue1 = 100;
   const currentValue2 = 30;
   const maxValue2 = 80;
-
   const [allquizzes, setAllquizzes] = useState([]);
   const [filteredQuizzes, setFilteredQuizzes] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -978,7 +977,14 @@ const Quiz = () => {
                   <div className={quizItem?.active_flag?.toLowerCase() != "true" ? "quizDisabled" : ""} key={index}>
                     {quizItem.attempt_flag === "Y" ? (
                       <div className="attemptedCard">
-                        <AttemptedCard quizItem={quizItem} />
+                        <AttemptedCard quizItem={quizItem} handleView={() =>
+                                      leaderboard1(
+                                        quizItem.quiz_id,
+                                        quizItem.quiz_level_attempt_id,
+                                        quizItem.complexity,
+                                        quizItem.quiz_duration,
+                                        quizItem.pass_percentage
+                                      )} />
                       </div>
                       // <div
                       //   key={index}
@@ -1507,7 +1513,9 @@ const Quiz = () => {
                     ) : (
 
                       <>
-                        <NonttemptedCard quizItem={quizItem} />
+                        <NonttemptedCard quizItem={quizItem}handleStartQuiz={()=>{
+                          handleStartQuiz(quizItem.quiz_id)
+                        }} />
                       </>
                       // <div
                       //   className={styles.card}

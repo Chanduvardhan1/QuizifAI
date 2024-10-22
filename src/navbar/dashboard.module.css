@@ -29,8 +29,8 @@
 }
 
 .navigation {
-  width: 218px;
-  background-color: #F5F5FB;
+  width: 200px;
+  /* background-color: #F5F5FB; */
   font-weight: 500;
   display: flex;
   flex-direction: column;
@@ -61,6 +61,10 @@
   text-decoration: none; /* Remove default underline */
   color: #00236F;
 }
+.pageItem:hover .pageIcon {
+  transform: scale(1.1); /* Slightly enlarge on hover */
+  filter: brightness(1.2); /* Increase brightness on hover */
+}
 
 .pageItem.active {
   color: orange;
@@ -87,9 +91,12 @@ border: none;
 }
 
 .pageIcon {
-  width: 15px; 
-  height: 15px; 
-  margin-right: 20px; 
+  /* width: 18px; 
+  height: 18px; 
+  margin-right: 20px;  */
+  width: 24px; /* Increase the size */
+  height: 24px; /* Maintain aspect ratio */
+  transition: transform 0.2s, filter 0.2s; 
   
 }
 .activeIcon {
@@ -105,10 +112,11 @@ border: none;
 }
 
 .pageLink{
-  margin-right: 10px;
+  /* margin-right: 10px;
   cursor: pointer;
-  /* color: #53699C; */
-  transition: color 0.3s ease;
+  transition: color 0.3s ease; */
+  font-size: 16px; /* Adjust font size for better readability */
+  margin-left: 8px;
 }
 .pageLink:active{
   color:#EF5130;

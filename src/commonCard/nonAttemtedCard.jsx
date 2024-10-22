@@ -13,13 +13,11 @@ import { useNavigate } from 'react-router-dom';
 function nonAttemptedCard(props) {
 
   const [view, setView] = useState(false);
-  const { quizItem, handleView, handleLeaderBoard } = props;
+  const { quizItem, handleView, handleStartQuiz } = props;
   console.log('quizIIII', quizItem);
   const navigate = useNavigate();
 
   const viewOnClick = () => {
-    handleView && handleView();
-    // setView(true);
     navigate('/quiz-results1');
 
   }
@@ -31,7 +29,9 @@ function nonAttemptedCard(props) {
   return (
     <div className='mr-4'>
       <div className={styles.sampleCard}>
-        <div className={styles.sampleBoxImage}>
+        <div onClick={() =>
+          handleStartQuiz(quizItem.quiz_id)
+        } className={styles.sampleBoxImage}>
         </div>
         <div className={styles.sampleBoxDetails}>
           <label className={styles.title}>{quizItem?.quiz_name}</label>
@@ -46,11 +46,13 @@ function nonAttemptedCard(props) {
               <div className="ml-[5px]  h-[25px]">
                 <img className={styles.questions} src={NoOfQuestion1} />
                 <label className={styles.text}>{quizItem?.number_of_questions}</label>
+                <label className='ml-2'> Questions</label>
               </div>
 
               <div className="ml-[5px] h-[25px]" >
                 <img className={styles.questions} src={noOfAttampt} />
                 <label className={styles.text}>{quizItem?.quiz_attempts}</label>
+                <label className='ml-2'> Attempts</label>
               </div>
             </div>
             <div className={styles.sampleBoxQuizDetailsBoxes}>
@@ -61,6 +63,7 @@ function nonAttemptedCard(props) {
               <div>
                 <img className={styles.clock} src={clock1} />
                 <label className={styles.text}>{quizItem?.quiz_duration}</label>
+                <label className='ml-2'>Minutes</label>
               </div>
             </div>
           </div>
@@ -75,7 +78,7 @@ function nonAttemptedCard(props) {
       {view && <Results />}
 
     </div>
-    
+
   )
 }
 

@@ -86,6 +86,7 @@ const LogoutBar = (data) => {
   const [src, setSrc] = useState(null);
   const [croppedImage, setCroppedImage] = useState(null);
   const { isAuthenticated, authToken, logout } = useContext(AuthContext);
+  // const [subscriptionStartDate, setSubscriptionStartDate] = useState("");
 
   useEffect(() => {
     if (!isAuthenticated) {

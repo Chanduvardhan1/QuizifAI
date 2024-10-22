@@ -580,7 +580,7 @@ const Dashboard = () => {
             style={{ marginBottom: "20px" }}
           >
             <p className="text-[#002366] text-[15px] font-medium leading-6 ml-[10px]">
-              Latest Quizzes
+              Latest Quizzes 
             </p>
             <span className="flex">
               <span
@@ -611,12 +611,19 @@ const Dashboard = () => {
                   (quizEndDate === null || currentDate <= quizEndDate)
                 );
               })
-              .slice(0, 3)
+              .slice(0, 4)
               .map((quizItem, index) => (
                 <div key={index}>
                   {quizItem.attempt_flag === "Y" ? (
                     <div className='mr-4'>
-                      <AtemptedCard quizItem={quizItem} />
+                      <AtemptedCard quizItem={quizItem} handleView={() =>
+                                      leaderboard1(
+                                        quizItem.quiz_id,
+                                        quizItem.quiz_level_attempt_id,
+                                        quizItem.complexity,
+                                        quizItem.quiz_duration,
+                                        quizItem.pass_percentage
+                                      )} />
                     </div>
                     //  <div
                     //     key={index}
@@ -975,7 +982,9 @@ const Dashboard = () => {
                     //   </div>
                   ) : (
                     <div className='mr-4'>
-                      <NonAtemptedCard quizItem={quizItem} />
+                      <NonAtemptedCard quizItem={quizItem} handleStartQuiz={()=>{
+                        handleStartQuiz(quizItem.quiz_id)
+                      }} />
                     </div>
                     // <div 
                     //   key={index}

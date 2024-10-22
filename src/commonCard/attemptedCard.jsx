@@ -18,11 +18,11 @@ function AttemptedCard(props) {
 
 
 
-    // const viewOnClick = () => {
-    //     handleView && handleView();
-    //     setView(true);
+    const viewOnClick = () => {
+        handleView && handleView();
+        setView(true);
 
-    // }
+    }
 
     return (
         <div className='mr-4'>
@@ -61,8 +61,8 @@ function AttemptedCard(props) {
                         </div>
                     </div>
                     <div className={styles.sampleBoxDetailsFooterIcons}>
-                        {<img className={styles.view} title="View" src={newView}  />}
-                        <img className={styles.clock} title="Leaderboard" src={leaderboard2} />
+                        <img className={styles.view} title="View" src={newView} onClick={viewOnClick}/>
+                        <img className={styles.clock} title="Leaderboard" src={leaderboard2} onClick={viewOnClick} />
                         <img className={styles.print} title="Print" src={print}/>
                     </div>
                 </div>

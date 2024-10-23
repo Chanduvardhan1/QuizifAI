@@ -513,19 +513,19 @@ const LogoutBar = (data) => {
 
           <div className="h-[5px] w-full bg-white mt-[10px]"></div>
 
-          <div className="p-[10px] ml-2 font-bold">
-            <h1 className="text-[14px] text-[#002366]">Subscription</h1>
-            <h1 className="font-semibold mt-[10px] text-[13px] text-[#002366]">Type : <span className=" text-black text-[12px] font-normal">Public</span> </h1>
-            <h1 className="mt-[3px] px-[1px] font-semibold text-[13px] text-[#002366]">Date :
-              <span className=" text-black text-[12px] font-normal">{subscriptionStartDate}</span>
+          <div className="p-[10px] ml-2 font-bold ">
+            <h1 className="text-[14px] text-[#002366] mr-[31%]">Subscription</h1>
+            <h1 className="font-semibold mt-[10px] text-[13px] text-[#002366] mr-[39%]">Type : <span className=" text-black text-[12px] font-normal">Public</span> </h1>
+            <h1 className="mt-[3px] px-[1px] font-semibold text-[13px] text-[#002366] ml-[-67%]">Date :
+              <span className=" text-black text-[12px] font-normal ">{subscriptionStartDate}</span>
             </h1>
-            <div className="flex">
-              <h1 className="mt-[3px] px-[1px] font-semibold text-[13px] text-[#002366] ml-[32%]">Days :</h1>
+            <div className="flex mr-[88%]">
+              <h1 className="mt-[3px] px-[1px] font-semibold text-[13px] text-[#002366] ml-[32%]  ">Days :</h1>
               <span className="text-black text-[12px] font-normal">
                 {remainingDays > 0 ? (
                   <p className="text-[13px] text-red-500 ml-[20px] mt-[3px]">{remainingDays}</p>
                 ) : (
-                  <h1 className="mt-[2px] text-[12px] font-normal pl-[2px] pt-[2px]">Unlimited</h1>
+                  <h1 className="mt-[2px] text-[12px] font-normal pl-[2px] pt-[2px] ">Unlimited</h1>
                 )}
               </span>
             </div>

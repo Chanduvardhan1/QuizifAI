@@ -38,6 +38,7 @@ import leaderboard2 from "../../public/leaderboaed1.png";
 import newView from "../../public/newview.png";
 import NonAtemptedCard from "../../src/commonCard/nonAttemtedCard.jsx";
 import AtemptedCard from "../../src/commonCard/attemptedCard.jsx"
+import WeeklyProgess from "../../src/weeklyProgress/weeklyProgress.jsx";
 
 const Dashboard = () => {
   const getFormattedDate = () => {
@@ -517,7 +518,13 @@ const Dashboard = () => {
                 <div className={styles.resultInfo}>{results}</div>
               )}
             </div>
+
           </div>
+          <div className="mt-[3%] mt-[3%]">
+            {/* <h1 className={styles.weeklyProgess} >Weekly Progess</h1> */}
+            <WeeklyProgess/>
+            
+            </div>
 
           <div className={styles.resultWrapper}>
             <div
@@ -611,7 +618,7 @@ const Dashboard = () => {
                   (quizEndDate === null || currentDate <= quizEndDate)
                 );
               })
-              .slice(0,3)
+              .slice(0, 3)
               .map((quizItem, index) => (
                 <div key={index}>
                   {quizItem.attempt_flag === "Y" ? (

@@ -204,13 +204,10 @@
   margin: 20px;
   border-radius: 20px;
   padding-left: 10px;
-
-
-
+  margin-left: -1%;
   padding-right: 10px;
   border-radius: 20px;
   box-shadow: 0px 4px 4px 0px #00000040;
-
   font-family: Poppins;
   font-size: 15px;
   font-weight: 500;
@@ -238,13 +235,13 @@
   box-shadow: 0px 4px 4px 0px #00000040;
   padding-left: 10px;
   padding-right: 10px;
-
   font-family: Poppins;
   font-size: 15px;
   font-weight: 500;
   line-height: 23px;
   letter-spacing: 0em;
   text-align: left;
+  margin-left: 16%
 
 }
 
@@ -1046,3 +1043,22 @@ margin-bottom: 25px;
   list-style: none;
   padding: 0;
 }
+.weeklyProgess{
+   font-weight: 500; 
+   font-size: 15px;
+  box-sizing: border-box;
+  border: thin solid #E0E0E0;
+  height: 200px;
+  width: 155px;
+  margin-top: 59%;
+   border-top-right-radius: 20px;  
+   border-top-left-radius: 20px; 
+   border-bottom-left-radius: 20px; 
+   border-bottom-right-radius: 20px; 
+   margin-top: 23%;
+   color: rgb(0, 35, 102);
+   background-color: #EEEEEE;
+   text-align: center;
+}
+
+

@@ -805,29 +805,42 @@ margin-bottom: 25px;
   background-color: #214082;
 }
 
+/* .sampleCard {
+  font-weight: 600;
+  font-size: 10px;
+  margin-top: 20px;
+  box-sizing: border-box;
+  border: thin solid #4CC9F0;
+  height: 168px;
+  width: 366px;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+} */
 .sampleCard {
   font-weight: 600;
   font-size: 10px;
   margin-top: 20px;
   box-sizing: border-box;
-  /* border: 1px solid  #4CC9F0; */
   border: thin solid #4CC9F0;
-  height: 168px;
-  /* width:430px; */
-  width: 366px;
+  /* height: 168px; */
+  height: 150px;
+  /* width: 366px; */
+  width: 338px;
   border-top-right-radius: 20px;
   border-top-left-radius: 20px;
+  transition: box-shadow 0.3s ease-in-out; /* Add transition effect */
 }
-
 .sampleBoxImage {
   border: 1px solid #4CC9F0;
   /* width: 175px; */
-  width: 111px;
+  /* width: 111px; */
+  width:93px;
   margin-top: 4%;
   margin-bottom: 3%;
   border-radius: 8px;
   margin-left: 11px;
-  height: 140px;
+  /* height: 140px; */
+  height:124px;
   display: inline-block;
   vertical-align: middle;
 }
@@ -836,6 +849,9 @@ margin-bottom: 25px;
   display: inline-block;
   vertical-align: middle;
   width: 242px;
+  margin-top: -53%;
+    margin-left: 30%;
+
 }
 
 .sampleBoxQuizDetails {
@@ -847,9 +863,9 @@ margin-bottom: 25px;
   display: flex;
   gap: 5px;
   justify-content: end;
-  margin-right: 8px;
+  margin-right: 29px;
   position: relative;
-  bottom: -10px;
+  bottom: 0px;
 }
 
 .sampleBoxQuizDetailsBoxes {
@@ -861,7 +877,7 @@ margin-bottom: 25px;
 .sampleBoxQuizDetailsBoxes:last-child {
   margin-left: 20px;
   vertical-align: text-bottom;
-  margin-bottom: -10px;
+  margin-bottom: 2px;
 }
 
 .sampleBoxQuizDetailsBoxes:first-child div {
@@ -926,6 +942,18 @@ margin-bottom: 25px;
   border-top-right-radius: 20px;
   border-top-left-radius: 20px;
 
+}
+.attemptedSampleBoxImage{
+  border: 1px solid #FFC0CB;
+  /* width: 175px; */
+  width: 111px;
+  margin-top: 4%;
+  margin-bottom: 3%;
+  border-radius: 8px;
+  margin-left: 11px;
+  height: 140px;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .container {
@@ -998,4 +1026,23 @@ margin-bottom: 25px;
   /* font-family: Segoe_UI_Historic; */
   font-weight: 500;
   /* color: #214082; */
+}
+
+.dotMenu {
+  position: relative;
+  cursor: pointer;
+  margin-left: 94%;
+}
+.menuOptions {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 10px;
+  z-index: 1;
+  top: 0;
+  right: 0;
+}
+.menuOptions ul {
+  list-style: none;
+  padding: 0;
 }

@@ -8,7 +8,7 @@ import styles from "./dashboard.module.css";
 import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 import user2Icon from "../assets/Images/images/dashboard/user2.png";
 import userIcon from "../assets/Images/images/dashboard/user.png";
-import expand from "../assets/Images/images/dashboard/expand.png";
+ import expand from "../assets/Images/images/dashboard/expand.png";
 import ranks from "../assets/Images/images/dashboard/ranks.png";
 import infinity from "../assets/Images/images/dashboard/infinity.png"
 import questionmark from "../assets/Images/images/dashboard/questionmark.png";
@@ -333,10 +333,10 @@ const LogoutBar = (data) => {
               width: "20px",
               height: "20px",
               cursor: "pointer",
-              marginLeft: "155px"
+              marginLeft: "120px"
             }}
           />
-          <span style={{ marginRight: "5px", fontSize: "10px", position: "relative", left: "150px", top: "-5px" }}>Logout</span>
+          {/* <span style={{ marginRight: "5px", fontSize: "10px", position: "relative", left: "126px", top: "-5px" }}>Logout</span> */}
         </div>
 
       </div>
@@ -467,11 +467,13 @@ const LogoutBar = (data) => {
             <p className="pl-4">{district} ,</p>
             <p className="pl-1">{country}</p>
           </div>
+          <img className="-mt-1 h-[15px] w-[15px] ml-[100%]" onClick={handleToProfile} src={expand} />
+          
         </div>
 
-        <div className="h-[15px] w-[15px] rotate-[90deg] cursor-pointer ml-[195px]">
+        {/* <div className="h-[15px] w-[15px] rotate-[90deg] cursor-pointer ml-[195px]">
           <img className="-mt-1" onClick={handleToProfile} src={expand} />
-        </div>
+        </div> */}
 
 
         <div className="h-[5px] w-full bg-white mt-2"></div>
@@ -494,7 +496,7 @@ const LogoutBar = (data) => {
               </div>
             </div>
           </div>
-          <div className="h-[5px] w-full bg-white mt-[10px]"></div>
+          {/* <div className="h-[5px] w-full bg-white mt-[10px]"></div> */}
 
           <div className="flex">
             <span className="text-[20px] text-[#E97132] ml-[15px] mt-[5px] font-semibold">{totalQuizzes}</span>

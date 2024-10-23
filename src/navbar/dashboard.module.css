@@ -24,16 +24,18 @@
   gap: 30px;
   padding-left: 10px;
   width: 165px;
+  margin-top: 35%;
 }
 
 .navigation {
-  width: 200px;
-  /* background-color: #F5F5FB; */
+  /* width: 140px; */
+  width:110px;
+ background-color: #F5F5FB; 
   font-weight: 500;
   display: flex;
   flex-direction: column;
   position: relative;
-  /* margin-top: -5%; */
+
 }
 
 .dashboardLogo{
@@ -95,11 +97,12 @@ border: none;
   transition: transform 0.2s, filter 0.2s; 
   font-weight: 500;
   margin-left: 18%;
+  color: #EF5130
   
 }
 
 .activeIcon {
-  /* filter: brightness(0) saturate(100%) invert(36%) sepia(92%) saturate(1751%) hue-rotate(326deg) brightness(98%) contrast(101%); */
+   filter: brightness(0) saturate(100%) invert(36%) sepia(92%) saturate(1751%) hue-rotate(326deg) brightness(98%) contrast(101%); 
 }
 
 .bold {
@@ -474,4 +477,17 @@ bottom: 0;
 left: 0; 
 width: 100%; 
 background-color: #214082; 
+}
+
+
+.pageIconContainer {
+  display: flex;
+  align-items: center;
+}
+
+.verticalLine {
+  height: 20px; 
+  width: 2px; 
+  background-color: cornflowerblue;
+  margin-left: -36px;
 }

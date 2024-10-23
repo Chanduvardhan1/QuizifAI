@@ -611,11 +611,11 @@ const Dashboard = () => {
                   (quizEndDate === null || currentDate <= quizEndDate)
                 );
               })
-              .slice(0, 4)
+              .slice(0,3)
               .map((quizItem, index) => (
                 <div key={index}>
                   {quizItem.attempt_flag === "Y" ? (
-                    <div className='mr-4'>
+                    <div className=''>
                       <AtemptedCard quizItem={quizItem} handleView={() =>
                         leaderboard1(
                           quizItem.quiz_id,

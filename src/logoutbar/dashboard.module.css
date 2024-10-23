@@ -68,14 +68,15 @@
 }
 
 .logoutIcon{
-    margin-left: 140px;
+    margin-left: 135px;
 
 }
 
   .logout {
-    width: 218px;
+    /* width: 180px; */
+    width: 160px;
     background-color: #F5F5FB;
-    margin-right: 0px;
+    /* margin-right: 0px; */
 
   }
 

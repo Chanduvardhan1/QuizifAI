@@ -27,7 +27,7 @@ function nonAttemptedCard(props) {
   }
 
   return (
-    <div className='mr-4'>
+    <div className=''>
       <div className={styles.sampleCard}>
         <div onClick={() =>
           handleStartQuiz(quizItem.quiz_id)
@@ -35,6 +35,9 @@ function nonAttemptedCard(props) {
         </div>
         <div className={styles.sampleBoxDetails}>
           <label className={styles.title}>{quizItem?.quiz_name}</label>
+          {/* <div>
+            123
+          </div> */}
           <label className={styles.description}>Curriculum .General.Simple</label>
           <div className={styles.sampleBoxQuizDetails} >
             <div className={styles.sampleBoxQuizDetailsBoxes}>

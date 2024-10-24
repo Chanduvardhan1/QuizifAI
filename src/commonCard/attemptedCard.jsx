@@ -25,7 +25,7 @@ function AttemptedCard(props) {
     }
 
     return (
-        <div className=''>
+        <div className='mr-4'>
             <div className={styles.attemptedCard}>
                 <div className={styles.attemptedSampleBoxImage}>
                 </div>

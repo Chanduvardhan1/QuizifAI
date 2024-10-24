@@ -1512,11 +1512,11 @@ const Quiz = () => {
                       // </div>
                     ) : (
 
-                      <>
+                      <div className="mr-2">
                         <NonttemptedCard quizItem={quizItem}handleStartQuiz={()=>{
                           handleStartQuiz(quizItem.quiz_id)
                         }} />
-                      </>
+                      </div>
                       // <div
                       //   className={styles.card}
                       //   style={{

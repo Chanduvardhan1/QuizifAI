@@ -841,6 +841,18 @@ margin-bottom: 25px;
   display: inline-block;
   vertical-align: middle;
 }
+.retakeColor {
+  border: 1px solid #FFC0CB;
+  width:93px;
+  margin-top: 4%;
+  margin-bottom: 3%;
+  border-radius: 8px;
+  margin-left: 11px;
+  /* height: 140px; */
+  height:124px;
+  display: inline-block;
+  vertical-align: middle;
+}
 
 .sampleBoxDetails {
   display: inline-block;
@@ -929,13 +941,13 @@ margin-bottom: 25px;
   margin-left: 4%;
   font-weight: 600;
   font-size: 10px;
-  margin-top: 62px;
+  margin-top: 20px;
   box-sizing: border-box;
   /* border: 1px solid  #4CC9F0; */
   /* border: thin solid #4CC9F0; */
-  height: 168px;
+  height: 150px;
   /* width:430px; */
-  width: 366px;
+  width: 338px;
   border-top-right-radius: 20px;
   border-top-left-radius: 20px;
 
@@ -1060,5 +1072,56 @@ margin-bottom: 25px;
    background-color: #EEEEEE;
    text-align: center;
 }
+
+
+.profile{
+  border: 1px solid #4CC9F0;
+  width:93px;
+  margin-top: 4%;
+  margin-bottom: 3%;
+  border-radius: 8px;
+  margin-left: 11px;
+  height:124px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.globalScore{
+  border: 1px solid #4CC9F0;
+  width:93px;
+  margin-top: 4%;
+  margin-bottom: 3%;
+  border-radius: 8px;
+  margin-left: 11px;
+  height:124px;
+  display: inline-block;
+  vertical-align: middle;
+
+}
+.quizses{
+  border: 1px solid #4CC9F0;
+  width:93px;
+  margin-top: 4%;
+  margin-bottom: 3%;
+  border-radius: 8px;
+  margin-left: 43px;
+  height:124px;
+  display: inline-block;
+  vertical-align: middle;
+
+}
+.subscription{
+  border: 1px solid #4CC9F0;
+  width:93px;
+  margin-top: 4%;
+  margin-bottom: 3%;
+  border-radius: 8px;
+  margin-left: 11px;
+  height:124px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+
+
 
 

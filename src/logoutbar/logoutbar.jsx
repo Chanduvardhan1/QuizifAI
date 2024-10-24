@@ -1,7 +1,4 @@
-// LogoutBar.js
-
 import React, { useContext } from "react";
-//import Image from "next/image";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import styles from "./dashboard.module.css";
@@ -35,17 +32,9 @@ const BasicProgressBar = ({ currentValue, maxValue }) => (
     {currentValue}%
   </progress>
 );
-
-
-
 const LogoutBar = (data) => {
   const hasData = data && data.id;
   const navigate = useNavigate();
-
-
-  // const handleBackToLogin = () => {
-  //   navigate("/login");
-  // };
   const navigateToMyHistory = () => {
     navigate("/myhistory")
   }
@@ -302,12 +291,6 @@ const LogoutBar = (data) => {
     handleImageClick(); // Open file dialog
   }
 
-  // function handleDeleteImage(event) {
-  //   event.stopPropagation();
-  //   localStorage.removeItem('savedImage'); 
-  //   setImage(""); 
-  // }
-
   function handleViewImage(event) {
     event.stopPropagation(); // Prevent the click from triggering the parent div's click event
     if (image) {
@@ -336,7 +319,6 @@ const LogoutBar = (data) => {
               marginLeft: "120px"
             }}
           />
-          {/* <span style={{ marginRight: "5px", fontSize: "10px", position: "relative", left: "126px", top: "-5px" }}>Logout</span> */}
         </div>
 
       </div>
@@ -470,12 +452,6 @@ const LogoutBar = (data) => {
           <img className="-mt-1 h-[15px] w-[15px] ml-[100%]" onClick={handleToProfile} src={expand} />
           
         </div>
-
-        {/* <div className="h-[15px] w-[15px] rotate-[90deg] cursor-pointer ml-[195px]">
-          <img className="-mt-1" onClick={handleToProfile} src={expand} />
-        </div> */}
-
-
         <div className="h-[5px] w-full bg-white mt-2"></div>
 
         <div style={{ marginTop: "0px" }}>
@@ -530,11 +506,11 @@ const LogoutBar = (data) => {
               </span>
             </div>
           </div>
-          <div className="mt-[220px] ml-2">
+          {/* <div className="mt-[220px] ml-2">
             <h1 className="text-[13px] text-start text-[#002366] font-semibold">Registered On :<span className="pl-1 font-normal text-[12px]">{registeredOn}</span></h1>
             <h1 className="text-[13px] text-start text-[#002366] font-semibold">Last Login : <span className="font-normal text-[12px]">{lastLogin}</span></h1>
             <h1 className="text-[13px] text-start text-[#002366] font-semibold">Password Changed : <span className="font-normal text-[12px]">{passwordChanged}</span></h1>
-          </div>
+          </div> */}
 
         </div>
       </div>
@@ -543,3 +519,8 @@ const LogoutBar = (data) => {
 };
 
 export default LogoutBar;
+
+
+
+
+

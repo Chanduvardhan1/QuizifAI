@@ -32,6 +32,7 @@ function nonAttemptedCard(props) {
         <div onClick={() =>
           handleStartQuiz(quizItem.quiz_id)
         } className={styles.sampleBoxImage}>
+          <img className='h-[124px] w-[120px]' src={quizItem?.photo1}/> 
         </div>
         <div className={styles.sampleBoxDetails}>
           <label className={styles.title}>{quizItem?.quiz_name}</label>

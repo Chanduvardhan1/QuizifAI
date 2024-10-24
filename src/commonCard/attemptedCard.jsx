@@ -28,9 +28,11 @@ function AttemptedCard(props) {
         <div className='mr-4'>
             <div className={styles.attemptedCard}>
                 <div className={styles.attemptedSampleBoxImage}>
+                <img className='h-[124px] w-[120px]' src={quizItem?.photo1}/>     
+                
                 </div>
                 <div className={styles.sampleBoxDetails}>
-                    <label className={styles.title}>{quizItem?.quiz_name}</label>
+                <label className={styles.title}>{quizItem?.quiz_name}</label>
                     <label className={styles.description}>Curriculum .General.Simple</label>
                     <div className={styles.sampleBoxQuizDetails} >
                         <div className={styles.sampleBoxQuizDetailsBoxes}>

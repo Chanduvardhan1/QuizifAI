@@ -39,7 +39,7 @@ import newView from "../../public/newview.png";
 import NonAtemptedCard from "../../src/commonCard/nonAttemtedCard.jsx";
 import AtemptedCard from "../../src/commonCard/attemptedCard.jsx";
 import WeeklyProgess from "../../src/weeklyProgress/weeklyProgress.jsx";
-import profileimg from "../assets/Images/images/profile/profileImage.png";
+import DashBoardNavBar from "../../src/dashboardNavBar/dashboardNavBar.jsx";
 
 const Dashboard = () => {
   const getFormattedDate = () => {
@@ -503,7 +503,8 @@ const Dashboard = () => {
           </p>{" "}
         </div>
         <div className="flex mx-auto">
-          <div className="mt-[3%] mt-[3%]">
+          <DashBoardNavBar/>
+          <div className="">
             <WeeklyProgess />
           </div>
         </div>
@@ -915,9 +916,11 @@ const Dashboard = () => {
                     //   </div>
                   ) : (
                     <div className='mr-4'>
+
                       <NonAtemptedCard quizItem={quizItem} handleStartQuiz={() => {
                         handleStartQuiz(quizItem.quiz_id)
-                      }} />
+                      }}
+                       />
                     </div>
                     // <div 
                     //   key={index}
@@ -1967,7 +1970,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <LogoutBar />
+      {/* <LogoutBar /> */}
     </div>
   );
 };

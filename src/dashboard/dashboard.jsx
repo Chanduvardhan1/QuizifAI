@@ -503,7 +503,7 @@ const Dashboard = () => {
           </p>{" "}
         </div>
         <div className="flex mx-auto">
-          <DashBoardNavBar/>
+          <DashBoardNavBar />
           <div className="">
             <WeeklyProgess />
           </div>
@@ -557,7 +557,12 @@ const Dashboard = () => {
                           quizItem.complexity,
                           quizItem.quiz_duration,
                           quizItem.pass_percentage
-                        )} />
+                        )}
+                        handleStartQuiz={() => {
+                          handleStartQuiz(quizItem.quiz_id)
+                        }}
+
+                      />
                     </div>
                     //  <div
                     //     key={index}
@@ -920,7 +925,7 @@ const Dashboard = () => {
                       <NonAtemptedCard quizItem={quizItem} handleStartQuiz={() => {
                         handleStartQuiz(quizItem.quiz_id)
                       }}
-                       />
+                      />
                     </div>
                     // <div 
                     //   key={index}
@@ -1279,7 +1284,7 @@ const Dashboard = () => {
           <div
             className="flex justify-between mx-[30px]"
             style={{ marginTop: "10px", marginBottom: "20px" }}
-            >
+          >
             <p className="text-[#002366] text-[15px] font-medium leading-6">
               Most Popular Quizzes
             </p>
@@ -1296,9 +1301,9 @@ const Dashboard = () => {
                 src={arrow}
               />
             </span>
-           </div>
+          </div>
 
-           <div className="flex flex-wrap mx-auto ml-[15px] -mt-[20px]">
+          <div className="flex flex-wrap mx-auto ml-[15px] -mt-[20px]">
             {allquizzes
               .filter((quizItem) => {
                 const quizCreateDate = new Date(quizItem.quiz_start_date);
@@ -1313,11 +1318,11 @@ const Dashboard = () => {
                 );
               })
               .sort((a, b) => b.quiz_attempts - a.quiz_attempts)
-              .slice(0,3)
+              .slice(0, 3)
               .map((quizItem, index) => (
-                <div  key={index} >
+                <div key={index} >
                   {quizItem.attempt_flag === "Y" ? (
-                     <div >
+                    <div className="mr-4" >
                       <AtemptedCard quizItem={quizItem} handleView={() =>
                         leaderboard1(
                           quizItem.quiz_id,
@@ -1325,7 +1330,8 @@ const Dashboard = () => {
                           quizItem.complexity,
                           quizItem.quiz_duration,
                           quizItem.pass_percentage
-                        )} />
+                        )}
+                      />
                     </div>
                     // <div className='mr-4'>
                     //   <div onClick={() =>
@@ -1611,14 +1617,14 @@ const Dashboard = () => {
 
                   ) : (
                     <>
-                     <div >
-                      <NonAtemptedCard quizItem={quizItem} handleStartQuiz={() => {
-                        handleStartQuiz(quizItem.quiz_id)
-                      }} />
-                    </div>
+                      <div className="mr-4" >
+                        <NonAtemptedCard quizItem={quizItem} handleStartQuiz={() => {
+                          handleStartQuiz(quizItem.quiz_id)
+                        }} />
+                      </div>
 
                     </>
-                    
+
                     // <div
                     //   className={styles.retakeColor}
                     //  >

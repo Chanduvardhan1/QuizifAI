@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 function AttemptedCard(props) {
 
     const [view, setView] = useState(false);
-    const { quizItem, handleView, handleLeaderBoard } = props;
+    const { quizItem, handleView,handleStartQuiz} = props;
     console.log('quizIIII', quizItem);
 
 
@@ -26,13 +26,15 @@ function AttemptedCard(props) {
 
     return (
         <div className='mr-4'>
-            <div className={styles.attemptedCard}>
+            <div onClick={() =>
+          handleStartQuiz(quizItem.quiz_id)
+        }  className={styles.attemptedCard}>
                 <div className={styles.attemptedSampleBoxImage}>
-                <img className='h-[124px] w-[120px]' src={quizItem?.photo1}/>     
-                
+                    <img className='h-[135px] w-[120px]' src={quizItem?.photo1} />
+
                 </div>
-                <div className={styles.sampleBoxDetails}>
-                <label className={styles.title}>{quizItem?.quiz_name}</label>
+                <div className={styles.attemptedSampleBoxDetails}>
+                    <label className={styles.title}>{quizItem?.quiz_name}</label>
                     <label className={styles.description}>Curriculum .General.Simple</label>
                     <div className={styles.sampleBoxQuizDetails} >
                         <div className={styles.sampleBoxQuizDetailsBoxes}>
@@ -63,16 +65,16 @@ function AttemptedCard(props) {
                         </div>
                     </div>
                     <div className={styles.sampleBoxDetailsFooterIcons}>
-                        <img className={styles.view} title="View" src={newView} onClick={viewOnClick}/>
+                        <img className={styles.view} title="View" src={newView} onClick={viewOnClick} />
                         <img className={styles.clock} title="Leaderboard" src={leaderboard2} onClick={viewOnClick} />
-                        <img className={styles.print} title="Print" src={print}/>
+                        <img className={styles.print} title="Print" src={print} />
                     </div>
                 </div>
             </div>
             <div className={styles.pinkLine}></div>
 
             {view && <Results />}
-            
+
         </div>
     )
 }

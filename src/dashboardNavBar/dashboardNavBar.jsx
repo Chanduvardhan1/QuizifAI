@@ -233,9 +233,53 @@ export default function dashboardNavBar() {
             remainingDays: "30"
         }
     });
+    const initialRank = 1;
+    const initialScore = 1543;
+    const [rank, setRank] = useState(initialRank);
+    const [score, setScore] = useState(initialScore);
+    const [rankChange, setRankChange] = useState(null); // "increase", "decrease", or null
+    const [previousRank, setPreviousRank] = useState(initialRank);
+  
+    useEffect(() => {
+      // Detect if rank has increased or decreased
+      if (rank > previousRank) {
+        setRankChange('increase');
+      } else if (rank < previousRank) {
+        setRankChange('decrease');
+      } else {
+        setRankChange(null);
+      }
+      setPreviousRank(rank);
+    }, [rank]);
+  
+    // Determine triangle color based on rank and rankChange
+    const getTriangleColors = () => {
+      if (rankChange === 'increase') {
+        return {
+          upColor: 'bg-green-500',
+          downColor: 'bg-red-200',
+        };
+      } else if (rankChange === 'decrease') {
+        return {
+          upColor: 'bg-green-200',
+          downColor: 'bg-red-500',
+        };
+      } else {
+        // Default colors based on rank threshold
+        return rank <= 10
+          ? { upColor: 'bg-green-500', downColor: 'bg-red-200' }
+          : { upColor: 'bg-green-200', downColor: 'bg-red-500' };
+      }
+    };
+  
+    const { upColor, downColor } = getTriangleColors();
+  
+    // Mock function to change rank (for testing)
+    const handleRankChange = (newRank) => {
+      setRank(newRank);
+    };
 
-const rank = 11;
-const score = 1564;
+// const score = 1564;
     return (
         <div className="container mx-auto p-4">
             <div className="grid grid-cols-5 gap-4 mb-4">
@@ -271,55 +315,69 @@ const score = 1564;
                         <p className="text-2xl font-bold text-orange-500">{userData.averageScore}%</p>
                     </div>
                 </div>
-                <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2 ">
+                <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2 py-[20px] ">
            <ProgressIndicator />
            
         </div>
         <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2">
-      <div className="flex flex-col items-center mt-6">
-        {/* Icons above the rank number */}
-        <div className="flex justify-center items-center">
-          <div className="flex flex-col gap-1 mt-2 mr-3">
-            {/* Show green triangle if rank is 10 or above, red if below 10 */}
-            {rank <= 10 ? (
-              <div className="w-4 h-4 bg-green-500 clip-triangle-up"></div>
-            ) : (
-              <div className="w-4 h-4 bg-red-500 clip-triangle-down"></div>
-            )}
-          </div>
-
-          {/* Rank Number */}
-          <div className="text-6xl font-bold text-orange-500">
-            {rank}
-          </div>
+        <div className="flex flex-col items-center mt-6">
+      {/* Icons above the rank number */}
+      <div className="flex justify-center items-center">
+        <div className="flex flex-col gap-1 mt-2 mr-3">
+          {/* Triangles for rank indication */}
+          <div className={`w-4 h-4 ${upColor} clip-triangle-up`}></div>
+          <div className={`w-4 h-4 ${downColor} clip-triangle-down`}></div>
         </div>
 
-        {/* Score */}
-        <div className="text-lg text-orange-500 ml-[30%]">
-          {score}
-        </div>
-
-        {/* Global Score Label */}
-        <div className="text-lg font-semibold text-gray-600">
-          Global Score
+        {/* Rank Number */}
+        <div className="text-6xl font-bold text-orange-500">
+          {rank}
         </div>
       </div>
+
+      {/* Score */}
+      <div className="text-lg text-orange-500 ml-[30%]">
+        {score}
+      </div>
+
+      {/* Global Score Label */}
+      <div className="text-lg font-semibold text-gray-600">
+        Global Score
+      </div>
+
+      {/* Buttons to simulate rank change for testing */}
+      {/* <div className="flex gap-2 mt-4">
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+          onClick={() => handleRankChange(rank + 1)}
+        >
+          Increase Rank
+        </button>
+        <button
+          className="px-4 py-2 bg-red-500 text-white rounded"
+          onClick={() => handleRankChange(rank - 1)}
+        >
+          Decrease Rank
+        </button>
+      </div> */}
+    </div>
+
     </div>
 
                 <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2 ">
-                    <h3 className="text-lg font-bold mb-4 text-[#214082]">Subscription</h3>
+                    <h3 className="text-sm font-bold mb-4 text-[#214082]"> <span className=' text-gray-500'>Public</span>/<span>Subcribed</span>/<span className=' text-gray-500'>Organization</span></h3>
                     <div className="space-y-2">
                         <div className="flex justify-between">
-                            <p className="text-sm text-gray-600 ">Type:</p>
-                            <p className="font-medium">{userData.subscription.type}</p>
+                            <p className="text-sm text-gray-600 ">Type :</p>
+                            <p className="font-medium"> {userData.subscription.type}</p>
                         </div>
                         <div className="flex justify-between">
-                            <p className="text-sm text-gray-600 ">Date:</p>
+                            <p className="text-sm text-gray-600 ">Date : </p>
                             {/* <p className="font-medium">{userData.subscription.startDate}</p> */}
                         </div>
                         <div className="flex justify-between">
-                            <p className="text-sm text-gray-600 mr-31%">Days Remaining:</p>
-                            <p className="font-medium">{userData.subscription.remainingDays}</p>
+                            <p className="text-sm text-gray-600 mr-31%">Days Remaining : </p>
+                            <p className="font-medium ml-1"> {userData.subscription.remainingDays}</p>
                         </div>
                     </div>
                 </div>

@@ -211,8 +211,10 @@
 import { useEffect, useState } from 'react';
 // import { ArrowUp } from "lucide-react"
 import profileimg from "../assets/Images/images/profile/profileImage.png";
+import physics from "../../src/assets/Images/quiz-type/physics.img.png"
 
-export default function Dashboard() {
+import ProgressIndicator from '../weeklyProgress/weeklyProgress';
+export default function dashboardNavBar() {
     const [userData, setUserData] = useState({
         name: "Samantha S",
         occupation: "Professional",
@@ -232,10 +234,12 @@ export default function Dashboard() {
         }
     });
 
+const rank = 11;
+const score = 1564;
     return (
         <div className="container mx-auto p-4">
-            <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="flex flex-col items-center relative ml-[-82%] mr-4 border border-[#dddddd] rounded-sm p-2 h-64 w-40">
+            <div className="grid grid-cols-5 gap-4 mb-4">
+                <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-md p-2 ">
                     <div className="relative">
                         <img
                             className="h-40 w-40 object-cover"
@@ -253,7 +257,7 @@ export default function Dashboard() {
                     </div>
                 </div>
 
-                <div className="flex flex-col items-center relative ml-[-111%] mr-4 border border-[#dddddd] rounded-sm p-2 h-64 w-40 ">
+                <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2">
                     <div className="text-center">
                         <h3 className="text-[16px] font-[500] text-[#214082] mb-2">Quizzes</h3>
                         <p className="text-2xl font-bold text-orange-500">{userData.totalQuizzes}</p>
@@ -267,37 +271,50 @@ export default function Dashboard() {
                         <p className="text-2xl font-bold text-orange-500">{userData.averageScore}%</p>
                     </div>
                 </div>
-            </div>
+                <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2 ">
+           <ProgressIndicator />
+           
+        </div>
+        <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2">
+      <div className="flex flex-col items-center mt-6">
+        {/* Icons above the rank number */}
+        <div className="flex justify-center items-center">
+          <div className="flex flex-col gap-1 mt-2 mr-3">
+            {/* Show green triangle if rank is 10 or above, red if below 10 */}
+            {rank <= 10 ? (
+              <div className="w-4 h-4 bg-green-500 clip-triangle-up"></div>
+            ) : (
+              <div className="w-4 h-4 bg-red-500 clip-triangle-down"></div>
+            )}
+          </div>
 
-            <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white rounded-lg shadow-md p-4 w-full max-w-sm ml-[181%] -mt-[127%] h-[261px]">
-                    <div className="mb-2 ml[-61%]">
-                        <p className="text-sm text-muted-foreground text-16px font-weight-500 text-[#214082]">Global Rank</p>
-                        <span className="text-5xl font-bold text-[#FF6701] ml-[13%]">1</span>
-                    </div>
-                    <div className="space-y-2">
-                        <div>
+          {/* Rank Number */}
+          <div className="text-6xl font-bold text-orange-500">
+            {rank}
+          </div>
+        </div>
 
-                            <p className="text-xl font-semibold">{userData.globalRank}</p>
-                        </div>
-                        <div>
-                            <p className="text-sm text-muted-foreground font-weight-500 text-[#214082] text-16px ml-[19% ">Global Score</p>
-                            <p className="text-xl font-semibold text-[#FF6701] font-weight-500 ">{userData.globalScore}</p>
+        {/* Score */}
+        <div className="text-lg text-orange-500 ml-[30%]">
+          {score}
+        </div>
 
+        {/* Global Score Label */}
+        <div className="text-lg font-semibold text-gray-600">
+          Global Score
+        </div>
+      </div>
+    </div>
 
-                        </div>
-                    </div>
-                </div>
-
-                <div className="bg-white rounded-lg shadow p-4 ml-[185%]  w-[70%] mt-[-124%] h-[261px]">
-                    <h3 className="text-lg font-bold mb-4 text-[#214082]">Subscription Details</h3>
+                <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2 ">
+                    <h3 className="text-lg font-bold mb-4 text-[#214082]">Subscription</h3>
                     <div className="space-y-2">
                         <div className="flex justify-between">
-                            <p className="text-sm text-gray-600 text-[#214082]">Type:</p>
+                            <p className="text-sm text-gray-600 ">Type:</p>
                             <p className="font-medium">{userData.subscription.type}</p>
                         </div>
                         <div className="flex justify-between">
-                            <p className="text-sm text-gray-600 text-[#214082]">Date:</p>
+                            <p className="text-sm text-gray-600 ">Date:</p>
                             {/* <p className="font-medium">{userData.subscription.startDate}</p> */}
                         </div>
                         <div className="flex justify-between">
@@ -307,6 +324,8 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
+
+          
         </div>
     );
 }

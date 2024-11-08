@@ -213,7 +213,7 @@ function Home() {
 
               <div className="mainDiv">
                 <div className="subDiv">
-                  <li className=" font-[14px] font-[lato]  font-medium bg-[#DEEFF5] cursor-pointer w-[100%] rounded-[5px] border-solid border-[#ADD8E6] border-[1.5px] p-[10px] text-[15px] text-[#00008B]   li questions ">
+                  <li className=" font-[14px] font-[lato]   bg-[#DEEFF5] cursor-pointer w-[100%] rounded-[5px] border-solid border-[#ADD8E6] border-[1.5px] p-[10px] text-[15px] text-[#00008B]   li questions ">
 
                     <div>{`${index}. ${q.question}`}</div>
 

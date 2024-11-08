@@ -1,64 +1,95 @@
 
 import React from 'react';
 
-export default function ProgressIndicator({
-    progress = 82,
+export default function SegmentedProgressIndicator({
+    progress =62,
     tasksCompleted = 4,
     totalTasks = 5,
 }) {
-    const radius = 35;
-    const circumference = 2 * Math.PI * radius;
-    const strokeDashoffset = circumference - (progress / 100) * circumference;
-    const progressPointX = 50 + radius * Math.cos((progress / 100) * 2 * Math.PI - Math.PI / 2);
-    const progressPointY = 50 + radius * Math.sin((progress / 100) * 2 * Math.PI - Math.PI / 2);
+    const radius = 30; // Radius of the circle
+    const strokeWidth = 12; // Stroke width, making it smaller
+    const circumference = 2 * Math.PI * radius; // Circumference of the circle
+    const segments = 30; // Total number of segments
+    const segmentLength = circumference / segments; // Length of each segment
+
+    const filledSegments = Math.round((progress / 100) * segments); // Number of segments to fill
+
+    const segmentsArray = Array.from({ length: segments }, (_, index) => {
+        // Assigning colors for segments
+        if (index < filledSegments) {
+            return "filled"; // Color this segment as filled (progress)
+        } else if (index < filledSegments + Math.floor(segments / 3)) {
+            return "inProgress"; // Color this segment as in-progress
+        } else {
+            return "empty"; // Color this segment as empty
+        }
+    });
 
     return (
-        <div className="ml-[-156%] w-48 h-[262px] mt-[9px] relative flex flex-col items-center justify-center bg-white rounded-lg shadow-md">
-            {/* <span className="text-sm text-Prussian Blue font-500">Weekly Progress</span> */}
-            <span className="text-sm text-[#214082] font-semibold">
+        <div className="relative flex flex-col items-center justify-center bg-white rounded-sm ">
+            <span className="text-sm text-[#214082] font-semibold mb-2">
                 Weekly Progress
             </span>
-            <svg className="w-40 h-40" viewBox="0 0 100 100">
-                <circle
-                    className="text-gray-200"
-                    strokeWidth="3"
-                    stroke="currentColor"
-                    fill="transparent"
-                    r={radius}
-                    cx="50"
-                    cy="50"
-                />
-                <circle
-                    className="text-primary"
-                    strokeWidth="2"
-                    strokeDasharray={circumference}
-                    strokeDashoffset={strokeDashoffset}
-                    strokeLinecap="round"
-                    stroke="#90EE90"
-                    fill="transparent"
-                    r={radius}
-                    cx="50"
-                    cy="50"
-                    style={{
-                        transformOrigin: '50% 50%',
-                        transform: 'rotate(-90deg)',
-                        transition: 'stroke-dashoffset 0.5s ease-in-out',
-                    }}
-                />
-                <circle
-                    cx={progressPointX}
-                    cy={progressPointY}
-                    r="5"
-                    fill="#90EE90"
-                />
-                <text x="50" y="55" fontSize="20" fontWeight="bold" textAnchor="middle">
+            
+<div class="flex items-center">
+  <div class="bg-green-600 text-white py-2 px-4 rounded-l-lg">Step 1</div>
+  <div class="bg-green-500 text-white py-2 px-4 -ml-2">Step 2</div>
+  <div class="bg-green-400 text-white py-2 px-4 rounded-r-lg -ml-2">Step 3</div>
+</div>
+            <svg className="w-32 h-32" viewBox="0 0 100 100">
+                {/* Loop through each segment and render them */}
+                {segmentsArray.map((segment, index) => {
+                    const angleStart = (index / segments) * 360 - 90; // Starting angle for the segment
+                    const angleEnd = ((index + 1) / segments) * 360 - 90; // Ending angle for the segment
+
+                    return (
+                        <circle
+                            key={index}
+                            strokeWidth={strokeWidth}
+                            strokeLinecap="line" // Use "line" to create sharp ends for the stroke
+                            fill="transparent"
+                            r={radius}
+                            cx="50"
+                            cy="50"
+                            stroke={
+                                segment === "filled"
+                                    ? "#90EE90" // Green for filled segments (Completed)
+                                    : segment === "inProgress"
+                                    ? "#FFEB3B" // Yellow for in-progress segments
+                                    : "#ddd" // Gray for empty segments
+                            }
+                            strokeDasharray={`${segmentLength} ${circumference}`} // Length and gap of each segment
+                            strokeDashoffset={-segmentLength * index} // Offset to create the circular segments
+                            style={{
+                                transformOrigin: "50% 50%",
+                                transform: `rotate(${angleStart}deg)`,
+                                transition: "stroke-dashoffset 0.5s ease-in-out",
+                            }}
+                        />
+                    );
+                })}
+
+                {/* Progress text */}
+                <text 
+                    x="50"
+                    y="50" // Centering the text vertically
+                    fontSize="14" // Font size for the text
+                    fontWeight="bold"
+                    textAnchor="middle"
+                    fill="#214082"
+                >
                     {progress}%
                 </text>
             </svg>
-            <span className="text-sm text-[#FF6701] font-500">{tasksCompleted}/{totalTasks} Quizzes Done</span>
+            <span className="text-sm text-[#FF6701] font-medium mt-2">
+                {tasksCompleted}/{totalTasks} Quizzes Done
+            </span>
         </div>
     );
 }
+
+
+
 
 
 

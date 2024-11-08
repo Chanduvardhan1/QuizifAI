@@ -19,7 +19,8 @@ import Schedule from "../assets/Images/quiz-type/Schedule.png";
 import Notification from "../assets/Images/quiz-type/Notification.png";
 import QuizAdmin from "../assets/Images/quiz-type/Quiz-admin.png";
 import Profile from "../assets/Images/quiz-type/Profile.png";
-import physics from "../../src/assets/Images/quiz-type/physics.img.png"
+import physics from "../../src/assets/Images/quiz-type/quizcover.jpg"
+import back from "../../src/assets/Images/quiz-type/Q back image.webp"
 // Main-Section-icons
 import QuizTitle from "../assets/Images/quiz-type/Quiz-Title.png";
 import Dropdown from "../assets/Images/quiz-type/Dropdown.png";
@@ -1249,12 +1250,16 @@ const handleNext = async (file) => {
         className="w-32 h-44 rounded-md mr-4"
       /> */}
           <div className="relative mr-2">
-        <img
-          src={isFlipped && backImage ? URL.createObjectURL(backImage) : (frontImage ? URL.createObjectURL(frontImage) : physics)}
-          alt="Quiz Cover"
-          className="w-32 h-44 rounded-md mr-4 cursor-pointer "
-          onClick={handleFlip}
-        />
+          <img
+  src={
+    isFlipped 
+      ? (backImage ? URL.createObjectURL(backImage) : back)
+      : (frontImage ? URL.createObjectURL(frontImage) : physics)
+  }
+  alt="Quiz Cover"
+  className="w-32 h-44 rounded-md mr-4 cursor-pointer"
+  onClick={handleFlip}
+/>
         
         {/* File inputs for front and back images */}
         {!frontImage && (
@@ -1278,7 +1283,7 @@ const handleNext = async (file) => {
         
         {/* Flip icon to toggle between front and back after both images are uploaded */}
         {frontImage && backImage && (
-          <button onClick={handleFlip} className="absolute top-2 right-2 text-white bg-black bg-opacity-75 rounded-full p-1">
+          <button onClick={handleFlip} className="absolute top-2 right-2 text-white hidden bg-black bg-opacity-75 rounded-full p-1">
             <FaSyncAlt size={18} />
           </button>
         )}
@@ -1856,7 +1861,7 @@ const handleNext = async (file) => {
      
 
   {/*  Public access */}
-  <div className="flex items-center mt-4">
+  <div className="flex items-center ">
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[93px]">
         Public access <span className="text-red-500">*</span>
         </label>
@@ -1868,7 +1873,7 @@ const handleNext = async (file) => {
         
       </div>
   {/* Multiple Answers */}
-  <div className="flex items-center mt-4">
+  <div className="flex items-center">
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[93px]">
         Multiple Answers <span className="text-red-500">*</span>
         </label>

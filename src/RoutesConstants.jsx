@@ -86,7 +86,7 @@ import Quizcreated2 from "./quizcreated-textbook/quizcreated2.jsx";
 import Quizresults1 from "./quizview_results/quiz_results.jsx";
 
 import SampleLeaderBoard from "./sample/sampleLeaderBoard.jsx";
-
+import DashboardNavBar from "./dashboardNavBar/dashboardNavBar.jsx";
 export default () => {
     return [
         {
@@ -96,6 +96,10 @@ export default () => {
             path: '/',
             component: Home,
             isIndex: true
+        },
+        {
+            path:'dashboardNavBar',
+            component:DashboardNavBar,
         },
         {
             path: '/contact',

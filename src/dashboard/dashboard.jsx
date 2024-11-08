@@ -504,9 +504,9 @@ const Dashboard = () => {
         </div>
         <div className="flex mx-auto">
           <DashBoardNavBar />
-          <div className="">
+          {/* <div className="">
             <WeeklyProgess />
-          </div>
+          </div> */}
         </div>
         <div className="mx-auto">
           <div

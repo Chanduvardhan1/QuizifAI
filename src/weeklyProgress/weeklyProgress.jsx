@@ -31,10 +31,10 @@ export default function SegmentedProgressIndicator({
                 Weekly Progress
             </span>
             
-<div class="flex items-center">
-  <div class="bg-green-600 text-white py-2 px-2 rounded-l-lg">Step 1</div>
-  <div class="bg-green-500 text-white py-2 px-2 -ml-2">Step 2</div>
-  <div class="bg-green-400 text-white py-2 px-2 rounded-r-lg -ml-2">Step 3</div>
+<div class="flex items-center gap-1">
+  <div class="bg-green-600 text-white py-2 px-2 rounded-lg">Step 1</div>
+  <div class="bg-green-500 text-white py-2 px-2 rounded-lg">Step 2</div>
+  <div class="bg-[#6fb044] text-white py-2 px-2 rounded-lg">Step 3</div>
 </div>
             <svg className="w-32 h-32" viewBox="0 0 100 100">
                 {/* Loop through each segment and render them */}
@@ -56,7 +56,7 @@ export default function SegmentedProgressIndicator({
                                     ? "#16a34a" // Green for filled segments (Completed)
                                     : segment === "inProgress"
                                     ? "##22c55e" // Yellow for in-progress segments
-                                    : "#4ade80" // Gray for empty segments
+                                    : "#6fb044" // Gray for empty segments
                             }
                             strokeDasharray={`${segmentLength} ${circumference}`} // Length and gap of each segment
                             strokeDashoffset={-segmentLength * index} // Offset to create the circular segments

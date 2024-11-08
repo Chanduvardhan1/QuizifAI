@@ -11,6 +11,9 @@ import profileimg from "../assets/Images/images/profile/profileImage.png";
 import Easy from "../assets/Images/history/Easy.png"; 
 import Moderate from "../assets/Images/history/Moderate.png"; 
 import Complex from "../assets/Images/history/Complex.png"; 
+import DashBoardNavBar from "../../src/dashboardNavBar/dashboardNavBar.jsx";
+
+
 const myhistory = () => {
   const [userName, setUserName] = useState("");
   const [globalRank, setGlobalRank] = useState("");
@@ -252,7 +255,9 @@ const handlePrevious = () => {
           <div className="flex justify-center p-[5px] text-[24px]">
             <h1 className="text-[#F17530]">My History</h1>
           </div>
-
+<div className="flex">
+<DashBoardNavBar/>
+</div>
           <div className="py-[20px] my-[10px]">
             <div className="flex flex-col gap-5">
               <div className="flex -gap-3">
@@ -530,7 +535,7 @@ const handlePrevious = () => {
             </div>
           </div>
         </div>
-        <LogoutBar />
+        {/* <LogoutBar /> */}
       </div>
     </>
   );

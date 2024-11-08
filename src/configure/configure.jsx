@@ -5,6 +5,7 @@ import LogoutBar from "../logoutbar/logoutbar.jsx";
 import { useState } from "react";
 import searchIcon from "../assets/Images/images/dashboard/Search.png";
 import cancel from "../assets/Images/images/dashboard/cancel.png";
+import DashBoardNavBar from "../../src/dashboardNavBar/dashboardNavBar.jsx";
 
 const configure = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -225,7 +226,9 @@ const configure = () => {
             {/* <img onClick={handleBanckToDashbaord} className='h-4 w-4 cursor-pointer mt-[1px]' title='close settings' src={cancel}/>  */}
           </div>
         </div>
-
+<div className="flex">
+<DashBoardNavBar/>
+</div>
         <div className="flex flex-wrap gap-[20px] mt-[20px] ml-[15px] mr-[10px] justify-center">
           {filteredItems.map((item) => (
             <div
@@ -276,7 +279,7 @@ const configure = () => {
           ))}
         </div>
       </div>
-      <LogoutBar />
+      {/* <LogoutBar /> */}
     </div>
   );
 };

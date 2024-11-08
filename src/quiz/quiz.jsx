@@ -28,6 +28,7 @@ import { AuthContext } from "../Authcontext/AuthContext.jsx";
 import Modal from "react-modal";
 import AttemptedCard from "../../src/commonCard/attemptedCard.jsx"
 import NonttemptedCard from "../../src/commonCard/nonAttemtedCard.jsx";
+import DashBoardNavBar from "../../src/dashboardNavBar/dashboardNavBar.jsx";
 
 // Modal.setAppElement(el);
 const Quiz = () => {
@@ -957,7 +958,9 @@ const Quiz = () => {
               </div>
             </div>
           </div>
-
+<div className="flex mx-auto">
+  <DashBoardNavBar/>
+</div>
           <div className="mx-auto">
             <div className="flex flex-wrap mx-auto ml-[35px] -mt-[10px]">
               {filteredQuizzes
@@ -1955,7 +1958,7 @@ const Quiz = () => {
           </div>
         </div>
       </div>
-      <LogoutBar />
+      {/* <LogoutBar /> */}
     </div>
   );
 };

@@ -9,6 +9,8 @@
 //         occupation: "Professional",
 //         userId: "809",
 //         city: "New York",
+
+
 //         district: "Manhattan",
 //         country: "USA",
 //         globalRank: "156",
@@ -207,13 +209,19 @@
 
 
 
+import React, { useContext } from "react";
 
 import { useEffect, useState } from 'react';
 // import { ArrowUp } from "lucide-react"
 import profileimg from "../assets/Images/images/profile/profileImage.png";
 import physics from "../../src/assets/Images/quiz-type/physics.img.png"
-
+import { AuthContext } from "../Authcontext/AuthContext.jsx";
+import camera1 from "../../src/assets/Images/quiz-type/camera (2).png"
 import ProgressIndicator from '../weeklyProgress/weeklyProgress';
+import x from "../../src/assets/Images/quiz-type/cross-button.png"
+import defaultPhoto from '../../src/assets/Images/quiz-type/pic.jpg'
+import { useNavigate } from "react-router-dom";
+
 export default function dashboardNavBar() {
     const [userData, setUserData] = useState({
         name: "Samantha S",
@@ -233,13 +241,34 @@ export default function dashboardNavBar() {
             remainingDays: "30"
         }
     });
+    const { isAuthenticated, authToken, logout } = useContext(AuthContext);
+    const navigate = useNavigate();
+
     const initialRank = 1;
     const initialScore = 1543;
     const [rank, setRank] = useState(initialRank);
     const [score, setScore] = useState(initialScore);
     const [rankChange, setRankChange] = useState(null); // "increase", "decrease", or null
     const [previousRank, setPreviousRank] = useState(initialRank);
-  
+    const [userId, setUserId] = useState(localStorage.getItem("user_id"));
+    const [city, setCity] = useState("");
+    const [occupation, setOccupation] = useState("");
+    const [country, setCountry] = useState("");
+    const [district, setDistrict] = useState("")
+    const [globalRank, setGlobalRank] = useState("");
+    const [globalscore, setGlobalscore] = useState("");
+    const [totalQuizzes, setTotalQuizzes] = useState("");
+    const [totalMinutes, setTotalMinutes] = useState("");
+    const [userName, setUserName] = useState('');
+    const [averageScorePercentage, setAverageScorePercentage] = useState("");
+    const [remainingDays, setRemainingDays] = useState('');
+    const [otherOccupation, setOtherOccupation] = useState("");
+    const [registeredOn, setRegisteredOn] = useState("");
+    const [photo, setPhoto] = useState(''); // State to store the image URL
+    const [loading, setLoading] = useState(true); // State to manage loading status
+    const [error, setError] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
+
     useEffect(() => {
       // Detect if rank has increased or decreased
       if (rank > previousRank) {
@@ -278,26 +307,278 @@ export default function dashboardNavBar() {
     const handleRankChange = (newRank) => {
       setRank(newRank);
     };
+    useEffect(() => {
+        if (!isAuthenticated) {
+          navigate('/login'); // Redirect to login if not authenticated
+          return;
+        }
+        const fetchQuizData = async () => {
+          console.log("User ID:", userId);
+    
+          try {
+    
+            const response = await fetch(
+              `https://dev.quizifai.com:8010/dashboard`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${authToken}`,
+                },
+                body: JSON.stringify({
+                  user_id: userId
+                }),
+              }
+            );
+    
+            if (!response.ok) {
+              throw new Error("Failed to fetch data");
+            }
+            const data = await response.json();
+            console.log("Data:", data);
+    
+            const auditDetails = data.data[0].audit_details;
+            if (auditDetails) {
+              // setCity(auditDetails.location_name || "");
+              setCountry(auditDetails.country_name || "");
+              setGlobalRank(auditDetails.global_score_rank || "");
+              setGlobalscore(auditDetails.global_score || "");
+              setRegisteredOn(auditDetails.created_date || "");
+              setLastLogin(auditDetails.last_login_timestamp || "");
+              setPasswordChanged(auditDetails.user_password_change_date || "");
+    
+            //   const userDetails = auditDetails;
+            //   setUserName(userDetails.full_name);
 
+              const userDetails = data.audit_details;
+              setUserName(userDetails.full_name);
+
+              const UserProfileDetails = data.data[0].user_profile_details;
+              setDistrict(UserProfileDetails.district_name);
+              setOccupation(UserProfileDetails.occupation_name);
+              setCity(UserProfileDetails.location_name);
+              setOtherOccupation(UserProfileDetails.other_occupation_name);
+    
+              const subscriptionDetails = auditDetails.subscription_details && auditDetails.subscription_details[0];
+              if (subscriptionDetails) {
+                setSubscriptionStartDate(subscriptionDetails.start_date || "");
+                setSubscriptionEndDate(subscriptionDetails.end_date || "");
+                setRemainingDays(subscriptionDetails.remaining_days || "");
+              } else {
+                console.error("No subscription details found.");
+              }
+            } else {
+              console.error("No user details found.");
+            }
+    
+            const usermetrics = data.data[0].user_metrics;
+            if (usermetrics) {
+              setTotalQuizzes(usermetrics.countofquizes || 0);
+              setTotalMinutes(usermetrics.total_minutes || 0);
+              setAverageScorePercentage(usermetrics.average_total_percentage || 0);
+              // setGlobalRank(usermetrics.global_score_rank || "");
+            } else {
+              console.error("No user metrics found.");
+            }
+          } catch (error) {
+            console.error("Error fetching quiz data:", error);
+          }
+        };
+    
+        fetchQuizData();
+      }, [userId, isAuthenticated, authToken]);
+      const fetchProfileImage = async () => {
+        try {
+          const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
+                if (!authToken) {
+                  console.error("No authentication token found. Please log in again.");
+                  return;
+                }
+          const response = await fetch(`https://dev.quizifai.com:8010/view-profile_image?user_id=${userId}`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              'accept': 'application/json',
+            },
+          });
+      
+          if (response.ok) {
+            const data = await response.json();
+            if (data.response === 'success') {
+              setPhoto(data.data); // Set the image URL from the response
+            } else {
+              setPhoto(defaultPhoto);
+            }
+          } else {
+            setPhoto(defaultPhoto);
+            // setError('Failed to fetch image');
+          }
+        } catch (error) {
+          setPhoto(defaultPhoto);
+          // setError('Error fetching image: ' + error.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+      const uploadImage = async (file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+      
+        try {
+          const response = await fetch(`https://dev.quizifai.com:8010/upload-image?user_id=${userId}`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+            body: formData,
+          });
+      
+          if (response.ok) {
+            // After successfully uploading, fetch the updated image
+            fetchProfileImage();
+            navigate(0)
+          } else {
+            setError('Failed to upload image');
+          }
+        } catch (error) {
+          setError('Error uploading image: ' + error.message);
+        }
+      };
+      
+      const handleIconClick = () => {
+        document.getElementById('fileInput').click();
+      };
+      
+      // Handle file selection
+      const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          uploadImage(file);
+        }
+      };
+      
+      useEffect(() => {
+        fetchProfileImage();
+      }, []);
+      
+    //   useEffect(() => {
+    //     fetchUserProfile();
+    //   }, []);
+      
+      const deleteImage = async () => {
+        try {
+          const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
+                if (!authToken) {
+                  console.error("No authentication token found. Please log in again.");
+                  return;
+                }
+          const response = await fetch(`https://dev.quizifai.com:8010/remove-image?user_id=${userId}`, {
+            method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              'accept': 'application/json',
+            },
+          });
+      
+          if (response.ok) {
+            // Clear the photo state after successful deletion
+            setPhoto('');
+            setError(null); // Reset any errors
+            navigate(0)
+          } else {
+            setError('Failed to delete image');
+          }
+        } catch (error) {
+          setError('Error deleting image: ' + error.message);
+        }
+      };
+      const openModal = () => {
+        setIsModalOpen(true);
+      };
+      const closeModal = () => {
+        setIsModalOpen(false);
+      };
 // const score = 1564;
     return (
         <div className="container mx-auto p-4">
             <div className="grid grid-cols-5 gap-4 mb-4">
                 <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-md p-2 ">
                     <div className="relative">
-                        <img
-                            className="h-40 w-40 object-cover"
-                            src={profileimg}
-                            alt="Profile"
-                            style={{ height: '100px', width: '100px' }}
-                        />
+                    {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : (
+        <div className="relative w-full h-full">
+        <img
+          src={photo}
+          alt="Profile"
+          onClick={openModal}
+          className="w-[100px] h-[100px] rounded-[50px]"
+        />
+        <div 
+          className="absolute bottom-0 right-0 bg-gray-300 p-2 rounded-full cursor-pointer"
+          onClick={openModal}
+        >
+         <img src={camera1} alt="" className="w-[20px] h-[20px]"/>
+        </div>
+      </div>
+      )}
+
+      {/* Hidden file input for selecting image */}
+      <input
+        type="file"
+        id="fileInput"
+        accept="image/*"
+        style={{ display: 'none' }}
+        onChange={handleFileChange}
+      />
                     </div>
+                    {isModalOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          onClick={closeModal}
+        >
+         <div class="flex items-center justify-center min-h-screen ">
+  <div class="bg-gray-800 text-white rounded-lg p-6 shadow-lg max-w-xs">
+    <div class="relative">
+      <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-gray-200">
+        <img src={photo} alt="Profile" class="w-full h-full object-cover"/>
+      </div>
+      
+      <div class="absolute top-[-15px] right-[-15px] flex space-x-2">
+        <button class="bg-gray-600 p-2 rounded-full text-white hover:bg-gray-500">
+        
+          <img src={x} alt="" class="h-5 w-5" />
+        </button>
+      </div>
+    </div>
+    
+    <h2 class="text-center text-xl  mt-4">Profile photo</h2>
+    
+    <div class="mt-4 flex justify-between">
+      <button class="bg-gray-700 px-4 py-2 rounded text-sm text-white hover:bg-gray-600"  onClick={handleIconClick}>Add photo</button>
+      {/* <button class="bg-gray-700 px-4 py-2 rounded text-sm text-white hover:bg-gray-600">Add photo</button> */}
+      {/* <button class="bg-gray-700 px-4 py-2 rounded text-sm text-white hover:bg-gray-600">Frames</button> */}
+      <button class="bg-red-600 px-4 py-2 rounded text-sm text-white hover:bg-red-500" onClick={deleteImage}>Delete</button>
+    </div>
+  </div>
+</div>
+
+        </div>
+      )}
                     <div className="mt-2 text-center">
                         <h2 className="text-[16px] font-semibold text-[#214082] font-family-[lato]">
-                            {userData.name}
+                        {userData.name}
+
                         </h2>
                         <p className="text-[14px] text-[#214082] font-400 font-family-[lato]">{userData.occupation}</p>
-                        <p className="text-sm text-[#FF6701]">User ID: {userData.userId}</p>
+                        <p className="text-sm text-[#FF6701]">User ID: {userId}</p>
+                        <p className="text-sm text-[#002366]">{city}</p>
+
+
+                        <p className="text-sm text-[#002366]">{district}</p>
+                        <p className="text-sm text-[#002366]">{country}</p>
                     </div>
                 </div>
 
@@ -364,7 +645,9 @@ export default function dashboardNavBar() {
 
     </div>
 
-                <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2 ">
+                <div className="flex flex-col items-center justify-start relative mr-4 border shadow-lg rounded-sm p-2 py-[20px]">
+                <h3 className="text-sm font-bold mb-5 text-[#214082]">Subscription</h3>
+
                     <h3 className="text-sm font-bold mb-4 text-[#214082]"> <span className=' text-gray-500'>Public</span>/<span>Subcribed</span>/<span className=' text-gray-500'>Organization</span></h3>
                     <div className="space-y-2">
                         <div className="flex justify-between">

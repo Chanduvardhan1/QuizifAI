@@ -15,6 +15,7 @@ import profileimg from "../assets/Images/images/profile/profileImage.png";
 import "react-sweet-progress/lib/style.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import DashBoardNavBar from "../../src/dashboardNavBar/dashboardNavBar.jsx";
 
 const FreeProfile = () => {
   const getFormattedDate = () => {
@@ -783,7 +784,9 @@ const FreeProfile = () => {
             </div>
           </div>
         </div>
-
+<div className="flex relative top-[70px]">
+  <DashBoardNavBar/>
+</div>
         {/* Main content  */}
         <div className="relative top-[70px] bg-white flex-col">
           <div className="flex">
@@ -1525,7 +1528,7 @@ const FreeProfile = () => {
           )}
         </div>
       </div>
-      <LogoutBar />
+      {/* <LogoutBar /> */}
     </div>
   );
 };

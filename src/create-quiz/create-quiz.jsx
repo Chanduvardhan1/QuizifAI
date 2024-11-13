@@ -41,7 +41,7 @@ export default function createquiz() {
     <>
       <div>
         {/* Navigation-Section */}
-        <header className="w-[219px] h-[1000px] absolute top-[-19px] left-[-9px] rounded-tl-[20px] rounded-bl-[20px] bg-[#F5F5FB] z-10 shadow-lg shadow-gray-400/60">
+        <header className=" absolute  rounded-tl-[20px] rounded-bl-[20px] bg-[#F5F5FB] z-10 shadow-lg shadow-gray-400/60">
           {/* <div className="h-[300px] w-[270px] absolute top-[20px] -left-[20px]">
             <img src={QuizifAilogo} alt="QuizifAi Logo Icon" />
           </div> */}

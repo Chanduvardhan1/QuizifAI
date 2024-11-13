@@ -23,7 +23,7 @@
   /* justify-content: space-between; */
   gap: 30px;
   padding-left: 10px;
-  width: 165px;
+  /* width: 165px; */
   margin-top: 35%;
 }
 
@@ -46,9 +46,10 @@
 
 
 .pageItem {
-  /* display: flex; */
+  display: flex;
   align-items: center;
   font-family: "poppins";
+  flex-direction: column;
   /* margin-top: 30px; */
   font-size: 15px;
   font-weight: 700;
@@ -96,7 +97,7 @@ border: none;
   height: 24px; /* Maintain aspect ratio */
   transition: transform 0.2s, filter 0.2s; 
   font-weight: 500;
-  margin-left: 18%;
+  /* margin-left: 18%; */
   color: #EF5130
   
 }
@@ -118,21 +119,21 @@ border: none;
   cursor: pointer;
   transition: color 0.3s ease; */
   font-size: 12px; /* Adjust font size for better readability */
-  margin-left: 10px;
+  /* margin-left: 10px; */
 }
 .profileText{
   font-size: 12px;
-  margin-left: 13%;
+  /* margin-left: 13%; */
 
 }
 .settingText{
   font-size: 12px;
-  margin-left:10%
+  /* margin-left:10% */
 
 }
 .quizText{
   font-size: 12px;
-  margin-left:10%
+  /* margin-left:10% */
 
 }
 /* .pageLink:active{

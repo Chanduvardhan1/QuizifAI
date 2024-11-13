@@ -218,7 +218,7 @@ const [pdfurl, setpdfurl] = useState('')
   // const complexities1 = Array.from({ length: 10 }, (_, i) => i + 1);
 
   const [next, setNext] = useState(false);
-
+const [ isEditing ,setisEditing] = useState(false);
   const [frontImage, setFrontImage] = useState(null);
   const [backImage, setBackImage] = useState(null);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -232,7 +232,9 @@ const [pdfurl, setpdfurl] = useState('')
   const handleNextpage1 = () => {
     setStep(3);
   };
- 
+ const handeledit =()=> {
+  setisEditing(true);
+ }
   useEffect(() => {
     if (frontImage && backImage) {
       handleUpload();
@@ -1237,11 +1239,11 @@ const handleTabClick = (tab) => {
   return (
     <>
     <div className="flex flex-row w-full bg-[#f5f5f5] ">
-      <div className="w-[16%]">
+      <div className="]">
       <Navigation />
 
       </div>
-<div className="w-[84%]  px-5 pt-1">
+<div className="w-full  px-5 pt-1">
 <div className="flex justify-end py-2 cursor-pointer text-[#eeb600f0]" onClick={Back}><MdOutlineCancel /></div>
 
 <div className="flex w-full bg-[#eedbe5] px-2 pt-2 font-semibold rounded-t-lg">
@@ -1457,14 +1459,16 @@ const handleTabClick = (tab) => {
                 type="text"
                 required
                 value={instructions}
-                onChange={(e) => setinstructions(e.target.value)}
+                onChange={(e) => setininstructions(e.target.value)}
+                disabled={!isEditing}
+
               />
             </div>
             <hr className="h-[1px] w-full" />
 
           </div>
              <div className="  m-2">
-              <img src={editicon} className=" w-[18px] h-[18px] "/>
+              <img src={editicon} onClick={handeledit} className=" w-[18px] h-[18px] cursor-pointer "/>
             {/* <button
               // onClick={handleNextpage}
               className="px-2 py-[4px] bg-[#3b61c8] text-white font-semibold rounded-xl hover:bg-blue-700"

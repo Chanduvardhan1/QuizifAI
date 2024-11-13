@@ -34,6 +34,12 @@ import Calender from "../../public/calender1.png";
 import created from "../../public/createdby.png";
 import print from "../../public/print.png";
 import leaderboard2 from "../../public/leaderboaed1.png";
+import physics from "../../src/assets/Images/quiz-type/quizcover.jpg"
+import username1 from "../../src/assets/Images/quiz-type/username.png"
+import calander from "../../src/assets/Images/quiz-type/calander.png"
+import timer from "../../src/assets/Images/quiz-type/Timer.png"
+import comment from "../../src/assets/Images/quiz-type/comment.png"
+
 // import view1 from "../../public/view1.png";
 import newView from "../../public/newview.png";
 import NonAtemptedCard from "../../src/commonCard/nonAttemtedCard.jsx";
@@ -530,6 +536,87 @@ const Dashboard = () => {
               />
             </span>
           </div>
+          <div className="flex flex-row w-full max-w-[400px] h-[170px] border-[#1E90FF] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-4 bg-white mb-4">
+  {/* Image Section */}
+  <div       className="w-[93px] h-[127px]  rounded-md  mr-2"
+  >
+    <img
+      src={physics}
+      alt="Quiz Cover"
+      className="w-[93px] h-[127px] rounded-md mr-2"
+    />
+  </div>
+
+  <div className="flex flex-col w-full">
+    {/* Title and Version */}
+    <div className="relative group flex items-center justify-center gap-[3px]">
+      {/* Truncated text container */}
+      <h2 className="text-[15px] font-semibold text-gray-800 w-[170px] sm:w-[215px] truncate">
+        Physics,Physics,Physics,Physics
+      </h2>
+
+      {/* Full text that will appear above on hover */}
+      <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+        Physics,Physics,Physics,Physics
+      </span>
+    </div>
+
+    {/* Meta Information */}
+    <div className="text-[#00008b] text-[12px] flex flex-wrap justify-center mt-1">
+      <span>General</span>
+      <span className="mx-1">.</span>
+      <span>General</span>
+      <span className="mx-1">.</span>
+      <span>General</span>
+      <span className="mx-1">.</span>
+      <span>Simple</span>
+    </div>
+
+    {/* Icons Row */}
+    <div className="flex-col items-center text-[12px] space-y-2 mt-2 text-[#00008b]">
+      {/* Author and Date */}
+      <div className="flex items-center justify-between text-xs sm:text-sm">
+        <div className="flex items-center">
+          <img src={username1} className="w-[20px] h-[20px] mr-1" />
+          <span className="ml-1 text-[12px]  ">Samantha S</span>
+        </div>
+        <div className="flex items-center">
+          <img src={calander} className="w-[20px] h-[20px] mr-1" />
+          <span className="ml-1 text-[12px] ">12-11-2024</span>
+        </div>
+      </div>
+
+      {/* Quiz Info */}
+      <div className="flex items-center justify-between pr-1 text-xs sm:text-sm">
+        <div className="flex items-center">
+          <img src={comment} className="w-[20px]   h-[20px] mr-1" />
+          <span className="ml-1 text-[12px] ">10 Questions</span>
+        </div>
+        <div className="flex items-center">
+          <img src={timer} className="w-[20px] h-[20px] mr-1" />
+          <span className="ml-1 text-[12px] ">15 Minutes</span>
+        </div>
+      </div>
+
+      {/* Attempt Info */}
+      <div className="flex items-center space-x-4 text-xs sm:text-sm">
+        <div className="flex items-center">
+          <img src={comment} className="w-[18px] h-[18px] mr-1" />
+          <span className="ml-1 text-[12px]">1 Attempt</span>
+        </div>
+      </div>
+      <div className="flex items-end justify-end ">
+        <div className="flex items-end">
+          <img src={username1} className="w-[18px] h-[18px] mr-1" />
+          <img src={calander} className="w-[18px] h-[18px] mr-1" />
+          <img src={comment} className="w-[18px] h-[18px] mr-1" />
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
           <div className="flex flex-wrap mx-auto ml-[15px] -mt-[20px]">
             {allquizzes

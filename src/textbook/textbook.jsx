@@ -28,6 +28,12 @@ import Next from "../assets/Images/quiz-type/Next.png";
 import Plus from "../assets/Images/quiz-type/Plus.png";
 import Book from "../assets/Images/quiz-type/Book.png";
 import Navigation from "../navbar/navbar";
+import physics from "../../src/assets/Images/quiz-type/quizcover.jpg"
+import back from "../../src/assets/Images/quiz-type/Q back image.webp"
+import username from "../../src/assets/Images/quiz-type/username.png"
+import calander from "../../src/assets/Images/quiz-type/calander.png"
+import timer from "../../src/assets/Images/quiz-type/Timer.png"
+import comment from "../../src/assets/Images/quiz-type/comment.png"
 
 const options1 = [{ label: "Numbers" }];
 
@@ -220,6 +226,75 @@ export default function quiztype() {
   const [documentType, setDocumentType] = useState("");
 
   const [selectedQuestions, setSelectedQuestions] = useState([]); 
+  const [next, setNext] = useState(false);
+
+ const [frontImage, setFrontImage] = useState(null);
+ const [backImage, setBackImage] = useState(null);
+ const [isFlipped, setIsFlipped] = useState(false);
+
+ // Handle the upload of front or back image
+ const [step, setStep] = useState(1);
+
+ const handleNextpage = () => {
+   setStep(2);
+ };
+
+
+ useEffect(() => {
+   if (frontImage && backImage) {
+     handleUpload();
+   }
+ }, [frontImage, backImage]);
+
+
+ const handleImageChange = (e, type) => {
+   const file = e.target.files[0];
+   if (file) {
+     if (type === 'front') {
+       setFrontImage(file);
+       setIsFlipped(true); // Automatically "flip" to show the back after uploading the front image
+     } else {
+       setBackImage(file);
+     }
+   }
+ };
+
+ // Toggle flip state to switch between front and back image
+ const handleFlip = () => {
+   if (frontImage && backImage) setIsFlipped(!isFlipped); // Only allow flipping if both images are uploaded
+ };
+
+ const handleUpload = async () => {
+   if (!frontImage || !backImage) {
+     alert('Please select both front and back images');
+     return;
+   }
+
+   const formData = new FormData();
+   formData.append('file1', frontImage);
+   formData.append('file2', backImage);
+
+   try {
+     const user_id = localStorage.getItem('user_id');
+
+     const response = await fetch(`https://dev.quizifai.com:8010/upload-qz_image?quiz_id=${user_id}`, {
+       method: 'POST',
+       headers: {
+         'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Replace with your actual token
+       },
+       body: formData,
+     });
+
+     if (response.ok) {
+       alert('Images uploaded successfully');
+     } else {
+       alert('Image upload failed');
+     }
+   } catch (error) {
+     console.error('Error uploading images:', error);
+     alert('An error occurred while uploading images');
+   }
+ };
 
   useEffect(() => {
     fetchCategories();
@@ -788,6 +863,7 @@ if (!authToken) {
             setReleased(responseData.data.released_date);
             setRevision(responseData.data.revision_year);
             setDocumentType(responseData.data.document_type);
+            setNext(true);
         } else {
           setErrorMessage("Questions data is missing from the response.");
         }
@@ -1096,259 +1172,282 @@ const handleDeleteSelected = () => {
   return (
     
     <>
-     <div>
-        {/* Navigation-Section */}
-        <header className="w-[219px] h-[1000px] absolute top-[-19px] left-[-9px] rounded-tl-[20px] rounded-bl-[20px] bg-[#F5F5FB] z-10 shadow-lg shadow-gray-400/60">
-          {/* <div className="h-[300px] w-[270px] absolute top-[20px] -left-[20px]">
-            <img src={QuizifAilogo} alt="QuizifAi Logo Icon" />
+    <div className="flex flex-row w-full bg-[#f5f5f5] ">
+      <div className="w-[16%]">
+      <Navigation />
+
+      </div>
+<div className="w-[84%]  p-5">
+
+<div className="flex justify-end pr-2 cursor-pointer text-[#eeb600f0]" onClick={Back}><MdOutlineCancel /></div>
+
+    {!showRegistrationSuccess && (
+  <main className="container mx-auto mt-10">
+   <div className="bg-[#d3d3d3] rounded-[10px] p-4 mb-8 text-center">
+      <h1 className="font-Poppins font-semibold text-[20px] text-[#214082]">
+        Finalize the configuration and click 'Next' to proceed with adding your quiz questions.
+      </h1>
+    </div>
+<div className="flex w-full h-[20%] border-[#a9a9a9] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-4 bg-white ">
+      {/* <img
+        src={physics}
+        alt="Quiz Cover"
+        className="w-32 h-44 rounded-md mr-4"
+      /> */}
+          <div className="relative mr-2">
+          <img
+  src={
+    isFlipped 
+      ? (backImage ? URL.createObjectURL(backImage) : back)
+      : (frontImage ? URL.createObjectURL(frontImage) : physics)
+  }
+  alt="Quiz Cover"
+  className="w-32 h-44 rounded-md mr-4 cursor-pointer"
+  onClick={handleFlip}
+/>
+        
+        {/* File inputs for front and back images */}
+        {!frontImage && (
+          <input type="file" onChange={(e) => handleImageChange(e, 'front')} className="hidden" id="front-upload" />
+        )}
+        {!backImage && isFlipped && (
+          <input type="file" onChange={(e) => handleImageChange(e, 'back')} className="hidden" id="back-upload" />
+        )}
+
+        {/* Labels or flip icon for upload buttons */}
+        {!frontImage && (
+          <label htmlFor="front-upload" className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white cursor-pointer text-[12px] rounded-md">
+            Upload Front Cover
+          </label>
+        )}
+        {isFlipped && !backImage && (
+          <label htmlFor="back-upload" className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white cursor-pointer text-[12px] rounded-md">
+            Upload Back Cover
+          </label>
+        )}
+        
+        {/* Flip icon to toggle between front and back after both images are uploaded */}
+        {frontImage && backImage && (
+          <button onClick={handleFlip} className="absolute top-2 right-2 text-white hidden bg-black bg-opacity-75 rounded-full p-1">
+            <FaSyncAlt size={18} />
+          </button>
+        )}
+      </div>
+      <div className="flex flex-col  w-full">
+        {/* Title and Version */}
+        <div className="flex items-center gap-[3px]">
+          <h2 className="text-lg font-semibold text-gray-800">
+          {title}
+          </h2>
+          {/* <span className="text-xs text-red-500">v1.0</span> */}
+        </div>
+
+        {/* Description */}
+        <p className="text-gray-600 w-[80%] line-clamp-2 text-sm mt-1">
+        {description}
+        </p>
+
+        {/* Meta Information */}
+        <div className="text-[#00008b] text-sm flex flex-wrap mt-2">
+          <span>{selectedCategory}</span>
+          <span className="mx-1">.</span>
+          <span>{selectedSubCategory}</span>
+          <span className="mx-1">.</span>
+          <span>{selectedCourse} {selectedClass}</span>
+          <span className="mx-1">.</span>
+          <span>{selectedComplexity}</span>
+        </div>
+
+        {/* Icons Row */}
+        <div className=" flex-col items-center space-y-2  mt-4 text-[#00008b]">
+          {/* Author and Date */}
+          <div className="flex items-center space-x-6">
+            <div className="flex items-center">
+              {/* <i className="fas fa-user"></i> */}
+              <img src={username}  className=" w-[18px] h-[18px] mr-1"/>
+              <span className="ml-1 text-sm">Samantha S</span>
+            </div>
+            <div className="flex items-center">
+              {/* <i className="fas fa-calendar-alt"></i> */}
+              <img src={calander}  className=" w-[18px] h-[18px] mr-1"/>
+
+              <span className="ml-1 text-sm">{availablefrom}</span>
+            </div>
+          </div>
+
+          {/* Quiz Info */}
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center">
+              {/* <i className="fas fa-question-circle"></i> */}
+              <img src={comment}  className=" w-[18px] h-[18px] mr-1"/>
+
+              <span className="ml-1 text-sm">{numQuestions} Questions</span>
+            </div>
+            <div className="flex items-center">
+              {/* <i className="fas fa-clock"></i> */}
+              <img src={timer}  className=" w-[18px] h-[18px] mr-1"/>
+
+              <span className="ml-1 text-sm">{duration} Minutes</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Stats Row */}
+        {/* <div className="flex items-center justify-between mt-4">
+          <div className="text-sm text-gray-500">
+            <span>203 attempts</span> | <span>80% High Score</span> | <span>2:02 mins quickest</span>
+          </div>
+          <div className="flex items-center text-yellow-500">
+            <i className="fas fa-star"></i>
+            <i className="fas fa-star"></i>
+            <i className="fas fa-star"></i>
+            <i className="fas fa-star"></i>
+            <i className="fas fa-star-half-alt"></i>
+          </div>
+        </div> */}
+      </div>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white my-4 p-5">
+      
+      <div className="md:col-span-2"> 
+        <h1 className=" font-semibold text-[20px] text-[#ef5130]">General Details</h1>
+      </div>
+      {/* Show Quiz Title and Description in Step 1 */}
+      {/* {step === 1 && ( */}
+        {/* <> */}
+          {/* Quiz Title */}
+          <div className="flex flex-col md:col-span-2">
+            <div className="w-full flex flex-row">
+              <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+                Title <span className="text-red-500">*</span>
+              </label>
+              <input
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                type="text"
+                required
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+            <hr className="h-[1px] w-full" />
+          </div>
+
+          {/* Quiz Description */}
+          <div className="w-full flex flex-col md:col-span-2">
+            <div className="w-full flex flex-row">
+              <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+               Description <span className="text-red-500">*</span>
+              </label>
+              <input
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                type="text"
+                required
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+            <hr className="h-[1px] w-full" />
+          </div>
+ {/* Quiz instructions */}
+ <div className="w-full flex items-center  md:col-span-2">
+ <div className=" w-full flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className=" w-[20%] text-blue-800 font-semibold mb-2 mr-[10px]">
+               Instructions <span className="text-red-500">*</span>
+              </label>
+              <input
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                type="text"
+                required
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+            <hr className="h-[1px] w-full" />
+
+          </div>
+             <div className="  m-2">
+            <button
+              // onClick={handleNextpage}
+              className="px-2 py-[4px] bg-[#3b61c8] text-white font-semibold rounded-xl hover:bg-blue-700"
+            >
+              Edit
+            </button>
+          </div>
+          </div>
+          {/* Next Button */}
+          {/* <div className="flex justify-end md:col-span-2">
+            <button
+              onClick={handleNextpage}
+              className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-700"
+            >
+              Next
+            </button>
           </div> */}
+        {/* </> */}
+      {/* )} */}
 
-          {/* Navigation-icons */}
-          {/* <div className="flex w-[15px] h-[15px] absolute top-[231px] left-[51px]">
-            <img src={Dashboard} alt="Dashborad img" />
-            <a
-              className="ml-5 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              Dashboard
-            </a>
-          </div>
-
-          <div className="flex w-[16px] h-[15px] absolute top-[285px] left-[51px]">
-            <img src={Quiz} alt="Quiz's img" />
-            <a
-              className="ml-5 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              Quiz
-            </a>
-          </div>
-
-          <div className="flex w-[13.87px] h-[15.41px] absolute top-[338px] left-[51px]">
-            <img src={History} alt="History img" />
-            <a
-              className="ml-5 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              History
-            </a>
-          </div>
-
-          <div className="flex w-[17px] h-4 absolute top-[394px] left-[51px]">
-            <img src={Schedule} alt="Schedule img" />
-            <a
-              className="ml-4 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              Schedule
-            </a>
-          </div>
-
-          <div className="flex w-4 h-[15px] absolute top-[453px] left-[51px]">
-            <img src={Notification} alt="Notification img" />
-            <a
-              className="ml-4 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              Notification
-            </a>
-          </div>
-
-          <div className="flex w-[25.46px] h-[27.87px] absolute top-[508px] left-[51px]">
-            <img className="-ml-2.5" src={QuizAdmin} alt="QuizAdmin img" />
-            <a
-              className="ml-4 text-Poppins font-medium text-[15px] leading-[15px] text-nowrap text-[#30304F]"
-              for=""
-            >
-              Quiz Admin
-            </a>
-          </div>
-
-          <div className="flex w-[17px] h-[17px] absolute top-[581px] left-[51px]">
-            <img src={Profile} alt="Profile img" />
-            <a
-              className="ml-4 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              Profile
-            </a>
-          </div> */}
-          <Navigation/>
-        </header>
-        <div className="absolute top-[30px] left-[1260px] w-[25px] h-[25px]  cursor-pointer text-[#214082]" onClick={Back}><MdOutlineCancel /></div>
-
-        {!showRegistrationSuccess && (
-        <main className="w-max-auto ">
-          <div className="w-[79%] p-[5px] absolute top-[30px] left-[200px] rounded-[10px] bg-[#fee2e2] z-0">
-              <h className="font-Poppins font-semibold text-[20px] leading-[37.5px] text-[#214082] flex justify-center items-center mt-1l">
-              Finalize the configuration and click 'Next' to proceed with adding your quiz questions.
-              </h>
-          </div>
-          <div className="">
-          <div className="flex">
-              {/* <div className="w-[51px] h-[37px] absolute top-[102px] left-[284px]">
-              {/* <img src={QuizTitle} alt="QuizTitle icon" /> */}
-              {/* </div>  */}
-
-              <div className="w-[201px] h-[22px] absolute top-[111px] left-[284px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Quiz Title<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-
-              <div className="">
-                <input
-                  className="w-[420px] h-[35px] texr-[12px] absolute top-[99px] left-[498px] rounded-[10px] border-solid border-[2px] border-[#B8BBC2] p-2"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                ></input>
-              </div>
-
-              <div className="w-[210px] h-[23px] absolute top-[110px] left-[941px] mb-10 justify-center items-center grid">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Number of Questions<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-                {/* <h1 className="font-Poppins font-semibold text-[15px] ml-5 leading-[22.5px]">
-                  of
-                </h1>
-                <h1 className="font-Poppins font-semibold text-[15px] leading-[22.5px]">
-                  Question
-                </h1> */}
-              </div>
-
-              <div className=" rounded-lg absolute top-[99px] left-[1144px]">
-                <input
-                  type="number"
-                  className="w-[135px] h-[35px] border-solid border-[2px] border-[#B8BBC2] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer"
-                  placeholder="No of question "
-                  value={numQuestions}
-                  onChange={(e) => setNumQuestions(e.target.value)}
-                  // onChange={(e) => {
-                  //   const value = parseInt(e.target.value);
-                  //   setNumQuestions(value);
-                  //   setQuestions(
-                  //     Array.from({ length: value }, () => ({
-                  //       question_text: "",
-                  //       options: [
-                  //         { answer_option_text: "" },
-                  //         { answer_option_text: "" },
-                  //         { answer_option_text: "" },
-                  //         { answer_option_text: "" },
-                  //       ],
-                  //     }))
-                  //   );
-                  // }}
-                />
-              </div>
-            </div>
-
-            <div className="flex">
-              {/* <div className="w-[43px] h-[43px] absolute top-[166px] left-[283px]">
-              <img src={QuizDiscription} alt="QuizDiscription icon" />
-            </div> */}
-
-              <div className="w-[201px] h-[22px] absolute top-[174px] left-[284px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Quiz Description<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-
-              <div className="">
-                <input
-                  className="w-[780px] h-[35px] absolute top-[163px] left-[498px] rounded-[10px] border-solid border-[2px] border-[#B8BBC2] p-2"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                ></input>
-              </div>
-            </div>
-
-            <div className="flex">
-              <div className="w-[201px] h-[27px] absolute top-[248px] left-[284px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Quiz Category<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-
-              <div className="  absolute top-[240px] left-[498px]">
-                <select
-                  className="w-[260px] h-[35px] border-solid border-[2px] border-[#B8BBC2]  rounded-md cursor-pointer text-[12px] "
-                  value={selectedCategory}
-                  onChange={handleSelectCategory}
-                >
-                  <option value="" disabled>
-                    Select a category
-                  </option>
-                  {sortedCategories.map((category) => (
-    <option key={category.category_id} value={category.category_name}>
-      {category.category_name}
-    </option>
-  ))}  
-                </select>
-              </div>
-
-              <div className="w-[164px] h-[30px] absolute top-[458px] left-[820px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Multiple Answers<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-
-              {/* <div className="w-[36px] h-5 absolute top-[251px] left-[935px]">
-              <img src={Toggle} />
-            </div> */}
-
-              <div className="w-[36px] h-5 absolute top-[458px] left-[1020px]">
-                <Switch
-                  onChange={toggler1}
-                  checked={multiAnswer}
-                  className="react-switch"
-                />
-              </div>
-            </div>
-
-            <div className="flex">
-              <div className="w-[201px] h-[27px] absolute top-[248px] left-[820px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Sub Category<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-
-              <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] text-[12px] font-medium leading-[18px] absolute top-[240px] left-[1020px]">
-                <select
-                  className="w-[260px] h-[35px] text-[12px] border-solid border-[2px] border-[#B8BBC2] px-3  rounded-md cursor-pointer "
-                  onChange={handleSelectSubCategory}
-                  value={selectedSubCategory}
-                >
-                  <option value="" disabled>
-                    Select a subcategory
-                  </option>
-                  {subCategories.map((subCategory, index) => (
-                    <option key={index} value={subCategory}>
-                      {subCategory}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div className="w-[164px] h-[30px] absolute top-[314px] left-[284px]">
-              <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                Course
-              </h1>
-            </div>
-
-            {/* <div className="w-[36px] h-5 absolute top-[251px] left-[935px]">
-              <img src={Toggle} />
-            </div> */}
-
-            <div className="w-[260px]  absolute top-[309px] left-[500px]">
+      {/* Show Remaining Fields in Step 2 */}
+      {/* {step === 2 && ( */}
+        {/* <> */}
+          {/* Quiz Category */}
+          <div className="flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className=" w-[51%] text-blue-800 font-semibold mb-2 ">
+                Category<span className="text-red-500">*</span>
+              </label>
               <select
-                className="w-[260px] h-[35px] text-[12px] border-solid border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer "
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                value={selectedCategory}
+                onChange={handleSelectCategory}
+              >
+                <option value="" disabled>Select a category</option>
+                {sortedCategories.map((category) => (
+                  <option key={category.category_id} value={category.category_name}>
+                    {category.category_name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <hr className="h-[1px] w-full" />
+          </div>
+
+          {/* Sub Category */}
+          <div className="flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className="w-[51%] text-blue-800 font-semibold mb-2">
+                Sub Category<span className="text-red-500">*</span>
+              </label>
+              <select
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                value={selectedSubCategory}
+                onChange={handleSelectSubCategory}
+              >
+                <option value="" disabled>Select a subcategory</option>
+                {subCategories.map((subCategory, index) => (
+                  <option key={index} value={subCategory}>
+                    {subCategory}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <hr className="h-[1px] w-full" />
+          </div>
+
+          {/* Course */}
+          <div className="flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className="w-[51%] text-blue-800 font-semibold mb-2 ">
+                Course<span className="text-red-500">*</span>
+              </label>
+              <select
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
                 value={selectedCourse}
                 onChange={handleSelectCourse}
               >
-                <option value="" disabled>
-                  Select a course
-                </option>
+                <option value="" disabled>Select a course</option>
+                <option value="">None</option>
                 {courses.map((course) => (
                   <option key={course.course_id} value={course.course_name}>
                     {course.course_name}
@@ -1356,23 +1455,22 @@ const handleDeleteSelected = () => {
                 ))}
               </select>
             </div>
+            <hr className="h-[1px] w-full" />
+          </div>
 
-            <div className="w-[109px] h-[27px] absolute top-[320px] left-[820px]">
-              <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                Classes
-              </h1>
-            </div>
-
-            <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] text-[12px] font-medium leading-[18px] absolute top-[306px] left-[1020px]">
+          {/* Class */}
+          <div className="flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className=" w-[51%] text-blue-800 font-semibold mb-2">
+                Class<span className="text-red-500">*</span>
+              </label>
               <select
-                className="w-[260px] h-[35px] border-solid border-[2px] border-[#B8BBC2] px-3 text-[12px] rounded-md cursor-pointer "
-                onChange={handleSelectClass}
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
                 value={selectedClass}
+                onChange={handleSelectClass}
                 disabled={classes.length === 0}
               >
-                <option value="" disabled>
-                  Select a class
-                </option>
+                <option value="" disabled>Select a class</option>
                 {classes.map((className, index) => (
                   <option key={index} value={className}>
                     {className}
@@ -1380,99 +1478,182 @@ const handleDeleteSelected = () => {
                 ))}
               </select>
             </div>
+            <hr className="h-[1px] w-full" />
+          </div>
+          {/* <div className="flex justify-start md:col-span-2">
+            <button
+              onClick={() => setStep(1)}
+              className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-700"
+            >
+              Back
+            </button>
+          </div> */}
+        {/* </> */}
+      {/* )} */}
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white my-4 p-5">
+    <div className="md:col-span-2">
+        <h1 className=" font-semibold text-[20px] text-[#ef5130]">Quiz Metrics</h1>
+      </div>
 
-            <div className="flex">
-              <div className="w-[164px] h-[30px] absolute top-[383px] left-[284px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Pass percentage<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
+      {/* Number of Questions */}
+     
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[65%] text-blue-800 font-semibold mb-2  ">Number of Questions<span className="text-red-500">*</span></label>
+        <input
+          className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          type="number"
+          required
+          value={numQuestions}
+          onChange={(e) => setNumQuestions(e.target.value)}
+        />
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+    
+     
+      {/*  Quiz total marks*/}
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[59%] text-blue-800 font-semibold mb-2"> Quiz total marks<span className="text-red-500">*</span></label>
+      
+     <input
+                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
 
-              <div className=" rounded-lg w-[129px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[376px] left-[498px]">
-                <select
-                  className="w-[264px] h-[35px] px-3  rounded-md cursor-pointer text-[12px]"
-                  onChange={handleSelect5}
-                  value={percentage}
-                >
-                    {/* <option className="text-[#9696BB]" value="" disabled>
-                    Percentage
-                  </option> */}
-                  {options5.map((options5) => (
-                    <option className="border-grey-400 leading-[18px] font-medium rounded">
-                      {options5.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                  placeholder="Total marks"
+                  value={quiztotalmarks}
+                  onChange={(e) => setquiztotalmarks(e.target.value)}
+                ></input>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+     
+      {/* Complexity */}
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[65%] text-blue-800 font-semibold mb-2 mr-[115px] ">Complexity<span className="text-red-500">*</span></label>
 
-              <div className="w-[164px] h-[30px] absolute top-[383px] left-[820px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Complexity<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
+        <select
+                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          value={selectedComplexity}
+          onChange={handleSelectComplexity}
+        >
+          <option value="" disabled>Simple</option>
+          {Array.from({ length: numQuestions }, (_, index) => (
+          <option key={index + 1} value={index + 1}>
+            {index + 1}
+          </option>
+        ))}
+        </select>
+        <select
+                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          value={selectedComplexity}
+          onChange={handleSelectComplexity}
+        >
+          <option value="" disabled>Moderate</option>
+          {Array.from({ length: numQuestions }, (_, index) => (
+          <option key={index + 1} value={index + 1}>
+            {index + 1}
+          </option>
+        ))}
+        </select>
+        <select
+                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          value={selectedComplexity}
+          onChange={handleSelectComplexity}
+        >
+          <option value="" disabled>Complex</option>
+          {complexities.map((complexity, index) => (
+            <option key={index} value={complexity}>
+              {complexity}
+            </option>
+          ))}
+        </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+       {/* Pass Percentage */}
+      
+ <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[59%] text-blue-800 font-semibold mb-2">Pass Percentage<span className="text-red-500">*</span></label>
+   
+        <select
+         className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          value={percentage}
+          onChange={handleSelect5}
+        >
+          {options5.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      {/* Question Type */}
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[75px] ">Question Type<span className="text-red-500">*</span></label>
 
-              <div className=" rounded-lg w-[129px] flex border-solid border-[2px] border-[#B8BBC2] absolute top-[376px] left-[1020px]">
-                <select
-                  className="w-[264px] h-[35px] p-2 rounded-md cursor-pointer text-[12px] "
-                  onChange={handleSelectComplexity}
-                  value={selectedComplexity}
-                >
-                  <option className="text-[#9696BB]" value="" disabled>
-                    Complexities
-                  </option>
-                  {complexities.map((complexity, index) => (
-                    <option key={index} value={complexity}>
-                      {complexity}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
+        <select
+                  className={ ` w-[80%]  border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          value={selectedComplexity}
+          onChange={handleSelectComplexity}
+        >
+          <option value="" disabled>MCQ</option>
+          {Array.from({ length: numQuestions }, (_, index) => (
+          <option key={index + 1} value={index + 1}>
+            {index + 1}
+          </option>
+        ))}
+        </select>
+        <select
+                  className={ ` w-[80%] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          value={selectedComplexity}
+          onChange={handleSelectComplexity}
+        >
+          <option value="" disabled>Fill in the blank</option>
+          {Array.from({ length: numQuestions }, (_, index) => (
+          <option key={index + 1} value={index + 1}>
+            {index + 1}
+          </option>
+        ))}
+        </select>
+        <select
+                  className={ ` w-[80%] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          value={selectedComplexity}
+          onChange={handleSelectComplexity}
+        >
+          <option value="" disabled>True or False</option>
+          {Array.from({ length: numQuestions }, (_, index) => (
+          <option key={index + 1} value={index + 1}>
+            {index + 1}
+          </option>
+        ))}
+        </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+     
 
-            <div className="flex">
-              <div className="w-[164px] h-[30px] absolute top-[458px] left-[284px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Retake Option<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
+      
+{/* Quiz Duration */}
+      <div className="flex items-center">
+      <div className="w-full flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[59%] text-blue-800 font-semibold mb-2 mr-[10px] ">Duration<span className="text-red-500">*</span></label>
+   
+        <select
+                          className={ `w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
 
-              <div className="w-[36px] h-5 absolute top-[458px] left-[505px]">
-                <Switch onChange={toggler2} checked={isRetakeOn} />
-              </div>
-              <div className="">
-                {isRetakeOn ? (
-                  <select
-                    className="w-[48px] h-[35px] absolute top-[455px] left-[568px] rounded-[10px]  border-solid border-[2px] border-[#B8BBC2] bg-[#F4F4F4]"
-                    value={selectedValue}
-                    onChange={handleDropdownChange}
-                  >
-                    <option value="" disabled>
-                      select
-                    </option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                  </select>
-                ) : (
-                  <input
-                    className="w-[48px] h-[35px] absolute top-[455px] left-[568px] rounded-[10px] border-solid border-[2px] border-[#B8BBC2] bg-[#F4F4F4]"
-                    value={selectedValue}
-                    readOnly
-                  />
-                )}
-              </div>
-            </div>
-
-            <div className="flex">
-              <div className="w-[174px] h-[30px] absolute top-[527px] left-[284px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Quiz Duration<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-
-              <div className=" rounded-lg w-[166px] flex border-solid border-[2px] border-[#B8BBC2]  absolute top-[520px] left-[498px]">
-                <select
-                  className="w-[166px] h-[35px] px-3 rounded-md cursor-pointer text-[12px]"
                   onChange={handleSelect7}
                   value={duration}
                 >
@@ -1485,18 +1666,20 @@ const handleDeleteSelected = () => {
                     </option>
                   ))}
                 </select>
-                {/* <input type="text"className="w-[166px] px-3 py-3 rounded-md  text-[12px]" onChange={handleSelect7} value={duration} 
-              placeholder="Duration"/> */}
-                {/* <TiEyeOutline  className=" absolute left-[165px] top-[15px] " /> */}
-                <div className="relative">
+               
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      <div className="relative mt-2 ">
                   <button
                     onClick={() => setIsOpen(true)}
-                    className="absolute left-[10px] top-[15px]"
+                    className=""
                   >
                     <FiAlertCircle />
                   </button>
                   {isOpen && (
-                    <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-white border-solid border-[2px] border-[#B8BBC2] p-4 rounded shadow-md w-[350px] ">
+                    <div className="absolute bottom-10 left-1/2 transform -translate-x-80 bg-white border border-gray-300 p-4 rounded shadow-md w-[350px] ">
                       <p>The maximum duration time is 180 mints.</p>
                       <button
                         onClick={() => setIsOpen(false)}
@@ -1520,16 +1703,93 @@ const handleDeleteSelected = () => {
                     </div>
                   )}
                 </div>
-              </div>
-              <div className="w-[238px] h-[30px] absolute top-[527px] left-[820px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Time bounded Questions<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
+      </div>
 
-              <div className=" rounded-lg w-[260px] flex border-solid border-[2px] border-[#B8BBC2] absolute top-[520px] left-[1020px]">
-                <select
-                  className="w-[260px] h-[35px] px-3  rounded-md cursor-pointer text-[12px] "
+     
+      {/* Quiz will be available from */}
+      
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[63%] text-blue-800 font-semibold mb-2 mr-[9px] ">Quiz will be available from<span className="text-red-500">*</span></label>
+        <input
+              type="date"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="YYYY-MM-DD"
+                value={availablefrom}
+                onChange={handleAvailableFromChange}
+              ></input>
+  
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      {/* Quiz must be disable on */}
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[60%] text-blue-800 font-semibold mb-2  ">Quiz must be disable on<span className="text-red-500">*</span></label>
+        <input
+              type="date"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                placeholder="YYYY-MM-DD"
+                value={disabledon}
+                o onChange={handleDisabledOnChange}
+              ></input>
+  
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+
+   {/* Retake Option */}
+   <div className="flex items-center mt-4">
+        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[93px]">
+          Retake Option <span className="text-red-500">*</span>
+        </label>
+        <Switch
+          onChange={toggler2}
+          checked={isRetakeOn}
+          className="react-switch"
+        />
+         <div className=" ml-2">
+                {isRetakeOn ? (
+                  <select
+                    className="w-[48px] h-[35px]  rounded-[10px] border-[1.8px] bg-[#F4F4F4]"
+                    value={selectedValue}
+                    onChange={handleDropdownChange}
+                  >
+                    <option value="" disabled>
+                      select
+                    </option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </select>
+                ) : (
+                  <input
+                    className="w-[48px] h-[35px]  rounded-[10px] border-[1.8px] bg-[#F4F4F4]"
+                    value={selectedValue}
+                    readOnly
+                  />
+                )}
+              </div>
+      </div>
+
+
+    </div>
+    <div className=" bg-white my-4 p-5">
+    <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-6 bg-white ">
+    
+    <div className="md:col-span-2">
+        <h1 className=" font-semibold text-[20px] text-[#ef5130]">AI Metrics</h1>
+      </div>
+      {/*  Time bounded Questions */}
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[45%] text-blue-800 font-semibold mb-2 mr-[10px] "> Time bounded Questions<span className="text-red-500">*</span></label>
+
+        <select
+         className={ ` w-[75%] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
                   onChange={handleSelect8}
                   value={timings}
                 >
@@ -1539,167 +1799,166 @@ const handleDeleteSelected = () => {
                     </option>
                   ))}
                 </select>
-              </div>
-            </div>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+     
 
-            <div className="w-[253px] h-[30px] absolute top-[590px] left-[284px]">
-              <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                Quiz will be available from<span className="required ml-[1px] text-red-500">*</span>
-              </h1>
-            </div>
+  {/*  Public access */}
+  <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[60%] text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500">*</span></label>
 
-            <div className="absolute top-[584px] left-[498px]">
-              <input
-              type="date"
-                className="rounded-lg w-[166px] h-[35px] flex border-solid border-[2px] border-[#B8BBC2] 
-              leading-[22.5px] text-[15p] font-medium  px-4"
-                placeholder="YYYY-MM-DD"
-                value={availablefrom}
-                onChange={handleAvailableFromChange}
-              ></input>
-            </div>
+        <select
+          className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
 
-            <div className="w-[253px] h-[30px] absolute top-[590px] left-[820px]">
-              <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                Quiz must be disable on{" "}
-              </h1>
-            </div>
+                  value={publicAccess}
+                  onChange={toggler3}
+                >
+                  <option value="Public">Public</option>
+                  <option value="Subscribed">Subscribed</option>
+                  <option value="Organization">Organization</option>
+                </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
 
-            <div className=" absolute top-[584px] left-[1020px]">
-              <input
-                type="date"
-                className="rounded-lg w-[166px] h-[35px] flex border-solid border-[2px] border-[#B8BBC2]
-               leading-[22.5px] text-[15p] font-medium  px-4"
-                placeholder="YYYY-MM-DD"
-                value={disabledon}
-                onChange={handleDisabledOnChange}
-              ></input>
-            </div>
 
-            <div className="flex">
-              <div className="w-[156px] h-[30px] absolute top-[660px] left-[284px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Public access<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
+     
 
-              <div className="w-[36px] h-5 absolute top-[660px] left-[504px]">
-                <Switch onChange={toggler3} checked={publicAccess} />
-              </div>
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-6 bg-white mt-5 ">
+    
+        {/*  subject name*/}
+        <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[63%] text-blue-800 font-semibold mb-2">Subject Name<span className="text-red-500">*</span></label>
+      
+     <input
+                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
 
-              <div className="w-[174px] h-[30px] absolute top-[660px] left-[820px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Quiz total marks<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-
-              <div className="absolute top-[653px] left-[1020px]">
-                <input
-                  className="rounded-lg w-[166px] h-[35px] flex border-solid border-[2px] border-[#B8BBC2]
-               text-[15px] font-medium px-4"
-                  placeholder="Total marks"
-                  value={quiztotalmarks}
-                  onChange={(e) => setquiztotalmarks(e.target.value)}
-                ></input>
-              </div>
-            </div>
-            <div className="w-[201px] h-[22px] absolute top-[730px] left-[284px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                subject name<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-              <div className="">
-                <input
-                placeholder="subject"
-                  className="w-[166px] h-[35px] absolute top-[720px] left-[498px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2]  p-2"
+                  placeholder="Subject Name"
                   value={subject}
                   onChange={(e) => setsubject(e.target.value)}
                 ></input>
-              </div>
-              {/* {showRegistrationSuccess1 && (
-                <div> */}
-              <div className="w-[201px] h-[22px] absolute top-[730px] left-[820px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                document name<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-              <div className="">
-                <input
-                placeholder="document"
-                  className="w-[166px] h-[35px] absolute top-[720px] left-[1020px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2]  p-2"
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      {/*  document name*/}
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[59%] text-blue-800 font-semibold mb-2">Document Name<span className="text-red-500">*</span></label>
+      
+     <input
+                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                  placeholder="Document Name"
                   value={document}
                   onChange={(e) => setDocument(e.target.value)}
                 ></input>
-              </div>
-              <div className="w-[201px] h-[22px] absolute top-[800px] left-[284px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                author name<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-              <div className="">
-                <input
-                placeholder="author"
-                  className="w-[166px] h-[43px] absolute top-[790px] left-[498px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2] p-2"
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+{/*  author name*/}
+<div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[63%] text-blue-800 font-semibold mb-2">Author Name<span className="text-red-500">*</span></label>
+      
+     <input
+                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                  placeholder="Author Name"
                   value={author}
                   onChange={(e) => setAuthor(e.target.value)}
                 ></input>
-              </div>
-              <div className="w-[201px] h-[22px] absolute top-[800px] left-[820px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                publisher name<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-              <div className="">
-                <input
-                placeholder="publisher"
-                  className="w-[166px] h-[35px] absolute top-[790px] left-[1020px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2] p-2"
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      {/*  publisher name*/}
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[59%] text-blue-800 font-semibold mb-2"> Publisher Name<span className="text-red-500">*</span></label>
+      
+     <input
+                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                  placeholder="Publisher Name"
                   value={publisher}
                   onChange={(e) => setPublisher(e.target.value)}
                 ></input>
-              </div>
-              <div className="w-[201px] h-[22px] absolute top-[870px] left-[284px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                released date<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-              <div className="">
-                <input
-                placeholder="released"
-                  className="w-[166px] h-[35px] absolute top-[860px] left-[498px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2] p-2"
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      {/* released date*/}
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[63%] text-blue-800 font-semibold mb-2">Released Date<span className="text-red-500">*</span></label>
+      
+     <input
+                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                  placeholder="Released Name"
                   value={released}
                   onChange={(e) => setReleased(e.target.value)}
                 ></input>
-              </div>
-              <div className="w-[201px] h-[22px] absolute top-[870px] left-[820px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                revision year<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-              <div className="">
-                <input
-                placeholder="revision"
-                  className="w-[166px] h-[35px] absolute top-[860px] left-[1020px] rounded-[10px]   border-solid border-[2px] border-[#B8BBC2]  p-2"
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      {/* revision year*/}
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[59%] text-blue-800 font-semibold mb-2">Revision Year<span className="text-red-500">*</span></label>
+      
+     <input
+                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                  placeholder="Revision Name"
                   value={revision}
                   onChange={(e) => setRevision(e.target.value)}
                 ></input>
-              </div>
-              <div className="w-[201px] h-[22px] absolute top-[940px] left-[284px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                document type<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-              <div className="">
-                <input
-                placeholder="documentType"
-                  className="w-[166px] h-[35px] absolute top-[930px] left-[498px] rounded-[10px]  border-solid border-[2px] border-[#B8BBC2] p-2 "
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      {/*document type*/}
+      <div className="flex flex-col ">
+        <div className="w-full flex flex-row">
+        <label className="w-[63%] text-blue-800 font-semibold mb-2">Document Type<span className="text-red-500">*</span></label>
+      
+     <input
+                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                  placeholder="Document Type"
                   value={documentType}
                   onChange={(e) => setDocumentType(e.target.value)}
                 ></input>
-              </div>
-              {/* </div>
-              )} */}
-              </div>
-          <div className="w-[145.68px] h-[37px] absolute top-[1010px] left-[653.43px] rounded-[10px] bg-[#1E4DE9]">
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      {/* Multiple Answers */}
+  <div className="flex items-center">
+        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[93px]">
+        Multiple Answers <span className="text-red-500">*</span>
+        </label>
+        <Switch
+          onChange={toggler1}
+          checked={multiAnswer}
+          className="react-switch"
+        />
+        
+      </div>
+
+    </div>
+    <div className="flex flex-col items-center justify-center mt-10">
+    <div className="w-[145.68px] h-[37px] rounded-[10px] bg-[#1E4DE9]">
           <label htmlFor="fileInput" className="font-Poppins font-medium text-[15px] leading-[22.5px] flex justify-between px-4 py-2 text-white cursor-pointer" >
           <div className="relative group">
           <span className="block truncate max-w-[60px]">
@@ -1722,41 +1981,41 @@ const handleDeleteSelected = () => {
             {/* <h1 className="font-Poppins font-normal text-[10px] leading-[15px] text-[#555555] mt-7 ml-5">Uploading 50%</h1> */}
             
           </div>
-          <div className=" absolute top-[1020px] left-[654.43px]">
-          {/* <button
-                className="rounded-[10px] bg-[#1E4DE9] text-slate-50 mt-4 ml-9 p-2"
-                onClick={handleNext}
-              >
-                Upload
-              </button> */}
-        <div className="absolute w-[137.09px] h-[9.05px] top-[725.11px] -mt-[680px] left-[10px]">
-        <Line percent={uploadProgress} strokeWidth={5} strokeColor="#B1FB9B" />
-        <h1 className="font-Poppins text-[#214082] font-normal text-[10px] leading-[15px]  mt-1 ml-8">
-          {`Uploading ${uploadProgress}%`}
-        </h1>
-      </div>
-      </div>
-            <div className="w-[98px] h-[37px] absolute top-[1010px] left-[1085px] rounded-[10px] bg-[#1E4DE9]">
-              <button
-                // href="./enter-quiz"
-                onClick={handleNext1}
-                className="font-Poppins font-medium text-[15px] leading-[29.5px] flex justify-start px-4 py-1 text-white"
-              >
-                Next
-                <img
-                  className="w-[24px] h-[24px] ml-4"
-                  alt="next icon"
-                  src={Next}
-                />
-              </button>
-            </div>
-        </main>
-        )}
-            {showRegistrationSuccess && (
+    </div>
+    {next && (
+  <div className="flex justify-end items-end">
+
+   
+  <div className="w-[98px] h-[37px]  rounded-[10px] bg-[#1E4DE9]">
+            <button
+              // href="./enter-quiz"
+              onClick={handleNext1}
+              className="font-Poppins font-medium text-[15px] leading-[29.5px] flex justify-start px-4 py-1 text-white"
+            >
+              Next
+              <img
+                className="w-[24px] h-[24px] ml-4"
+                alt="next icon"
+                src={Next}
+              />
+            </button>
+          </div>
+          </div>
+    )}
+    <div className="flex justify-center items-center mt-10">
+
+   
+  {errorMessage && <p className=" flex text-red-500">{errorMessage}</p> }
+  </div>
+    </div>
+  </main>
+)}
+
+        {showRegistrationSuccess && (
           <main className="w-max-auto">
             <div className="w-[848px] h-[44px] absolute top-[90px] left-[298px]">
               <h1 className="font-Poppins font-bold text-[30px] leading-[45px] text-orange-400">
-                Create / Edit your Quiz 
+                Create / Edit your Quiz
               </h1>
               <h1 className="font-Poppins font-medium text-[12px] leading-[18px] text-[#214082]">
                 Enter all your questions, options, and answers
@@ -1786,80 +2045,114 @@ const handleDeleteSelected = () => {
       </div>
   
       </div>
-            {questions.map((question, questionIndex) => (
-        <div key={questionIndex} className="mb-8">
-          <span className=" text-[#f25822] font-bold mb-[10px]">{question.lesson}<span className="mb-[10px] text-[#214082]">({question.sub_heading})</span></span>
-          {/* <h3 className="mb-[10px]">{question.sub_heading}</h3> */}
-          <div className="mb-8">
-            {/* Input field for lesson */}
-            {/* <div className="flex items-center mb-4 pl-[23px]">
-              <input
-                type="text"
-                placeholder="Lesson"
-                className="w-[70%] h-[35px] rounded-[20px] border-solid border-[#B8BBC2] border-[1.8px] p-[15px] text-[#214082]"
-                value={question.lesson}
-                onChange={(e) => handleInputChange(questionIndex, "lesson", e.target.value)}
-              />
-            </div> */}
-            {/* Input field for sub-heading */}
-            {/* <div className="flex items-center mb-4 pl-[23px]">
-              <input
-                type="text"
-                placeholder="Sub-heading"
-                className="w-[70%] h-[35px] rounded-[20px] border-solid border-[#B8BBC2] border-[1.8px] p-[15px] text-[#214082]"
-                value={question.sub_heading}
-                onChange={(e) => handleInputChange(questionIndex, "sub_heading", e.target.value)}
-              />
-            </div> */}
-            {/* Input field for question */}
-            <div className="flex items-center mb-4 mt-[10px]">
-            <input
+              {questions.map((question, questionIndex) => (
+                <div key={questionIndex} className="mb-8 ">
+                  {/* Input field for question */}
+                  <div className="flex items-center mb-4">
+                  <input
     className="ml-[-20px] mr-[5px] mt-1 flex justify-center text-center"
             type="checkbox"
             checked={selectedQuestions.includes(questionIndex)}
             onChange={() => toggleQuestionSelection(questionIndex)}
           />
-              <div className="mr-2 text-xl text-[#214082] font-bold">
-                {questionIndex + 1}.
-              </div>
-              <input
-                type="text"
-                placeholder="Question"
-                className="w-[70%] h-[40px] rounded-[5px] text-[#214082] border-solid border-[#B8BBC2] border-[1.8px] p-[15px] text-[14px] font-bold"
-                value={question.question_text}
-                onChange={(e) => handleInputChange(questionIndex, "question_text", e.target.value)}
-              />
-              <input
-                type="number"
-                placeholder="Weightage"
-                className="w-[115px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
-                value={question.question_weightage}
-                onChange={(e) => handleInputChange(questionIndex, "question_weightage", parseInt(e.target.value))}
-              />
-              <input
-                type="text"
-                hidden
-                placeholder="Duration"
-                className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
-                value={question.question_duration / 60 || ""}
-                onChange={(e) => handleInputChange(questionIndex, "question_duration", parseInt(e.target.value) * 60)}
-              />
+                    <div className="mr-2 text-xl font-bold text-[#214082]">
+                      {questionIndex + 1}.
+                    </div>
+                    <input
+                      type="text"
+                      placeholder={`Question`}
+                      className="w-[70%] h-[40px] font-bold text-[#214082] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] p-[10px] text-[14px]"
+                      value={question.question_text}
+                      onChange={(e) => {
+                        const newQuestions = [...questions];
+                        newQuestions[questionIndex].question_text =
+                          e.target.value;
+                        setQuestions(newQuestions);
+                      }}
+                    />
+
+                    {/* Input field for question weightage */}
+                    <input
+                      type="number"
+                      placeholder="Marks"
+                      className="w-[85px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
+                      value={question.question_weightage}
+                      onChange={(e) => {
+                        const value = parseInt(e.target.value);
+                        const updatedQuestions = questions.map((q, index) => {
+                          if (index === questionIndex) {
+                            return { ...q, question_weightage: value };
+                          }
+                          return q;
+                        });
+                        setQuestions(updatedQuestions);
+                      }}
+                    />
+
+                    {/* Input field for question duration */}
+                    <input
+                      type="text"
+                      hidden
+                      placeholder="Duration"
+                      className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
+                      value={question.question_duration}
+                      onChange={(e) => {
+                        const value = parseInt(e.target.value) * 60;
+                        const updatedQuestions = [...questions];
+                        updatedQuestions[questionIndex].question_duration =
+                          value;
+                        setQuestions(updatedQuestions);
+                      }}
+                    />
                   
-            <RiDeleteBinLine 
-                          onClick={() => handleDeleteQuestion(questionIndex)}
+                  <RiDeleteBinLine onClick={() => {
+          const newQuestions = questions.filter((_, index) => index !== questionIndex);
+          setQuestions(newQuestions);
+        }}  
         className="w-[25px] h-[25px] text-orange-500"
 />
-            </div>
-            {/* Input fields for options */}
-            {getOptions(question.options).map((option, optionIndex) => (
+                    {/* <input
+  type="number"
+  placeholder="Duration"
+  className="w-[130px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
+  value={question.question_duration}
+  onChange={(e) => {
+    const value = parseInt(e.target.value); // Parse input value to integer
+    if (!isNaN(value)) { // Check if value is a valid number
+      const updatedQuestions = questions.map((q, index) => {
+        if (index === questionIndex) {
+          return { ...q, question_duration: value };
+        }
+        return q;
+      });
+      setQuestions(updatedQuestions);
+    }
+  }}
+/> */}
+                  </div>
+                  {/* Input fields for options */}
+                  {getOptions(question.options).map((option, optionIndex) => (
               <div key={optionIndex} className="flex items-center mb-2">
-                <div className="mr-2 text-[14px] font-normal  w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#B8BBC2] flex justify-center text-center justify-items-center items-center">
-                {String.fromCharCode(97 + optionIndex).toUpperCase()}
+                <div className="mr-2 text-xl font-normal" style={{
+                  width: '40px',
+                  marginRight: '10px',
+                  padding: '5px',
+                  textAlign: 'center' ,
+                  border: '1px solid #ccc',
+                  borderRadius: '5px',
+                  backgroundColor: '#f9f9f9',
+                  justifycontent: 'center',
+                  display: 'flex',
+                  alignitems: 'center',
+                 justifyContent:"center",
+                 fontSize:"14px"
+                }}>
+                 {String.fromCharCode(97 + optionIndex).toUpperCase()}
                 </div>
                 <input
                   type="text"
                   placeholder="Option Text"
-                  className="w-[850px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal text-black text-[12px]"
+                  className="w-[836px]  rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal text-[12px]"
                   value={option.answer_option_text}
                   onChange={(e) => handleOptionChange(questionIndex, optionIndex, e.target.value)}
                 />
@@ -1870,15 +2163,14 @@ const handleDeleteSelected = () => {
                   <span
                     className={`block ${option.correct_answer_flag ? "translate-x-5" : "translate-x-0"} transform -translate-y-1.5 w-[18px] h-[18px] relative top-[6px] bg-white rounded-full shadow-md transition-transform duration-300`}
                   ></span>
-                </button>               
+                </button>
               </div>
             ))}
-          </div>
-        </div>
-      ))}
-              <div className=" flex justify-between items-center pr-[355px] ">
+                </div>
+              ))}
+              <div className=" flex justify-between items-center pr-[330px] ">
                 <button
-                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
+                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNext2}
                 >
                   Back
@@ -1897,6 +2189,8 @@ const handleDeleteSelected = () => {
           </main>
         )}
       </div>
+
+</div>
     </>
   );
 };

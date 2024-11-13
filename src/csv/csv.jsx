@@ -28,6 +28,12 @@ import Next from "../assets/Images/quiz-type/Next.png";
 import Plus from "../assets/Images/quiz-type/Plus.png";
 import CSV from "../assets/Images/quiz-type/CSV.png";
 import CoverPage from "../coverPage/coverPage";
+import physics from "../../src/assets/Images/quiz-type/quizcover.jpg"
+import back from "../../src/assets/Images/quiz-type/Q back image.webp"
+import username from "../../src/assets/Images/quiz-type/username.png"
+import calander from "../../src/assets/Images/quiz-type/calander.png"
+import timer from "../../src/assets/Images/quiz-type/Timer.png"
+import comment from "../../src/assets/Images/quiz-type/comment.png"
 
 const options1 = [{ label: "Numbers" }];
 
@@ -204,6 +210,76 @@ export default function quiztype() {
 
   const [complexityOptions, setComplexityOptions] = useState([]);
   const [selectedComplexity, setSelectedComplexity] = useState("");
+
+  const [frontImage, setFrontImage] = useState(null);
+  const [backImage, setBackImage] = useState(null);
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  // Handle the upload of front or back image
+  const [step, setStep] = useState(1);
+
+  const handleNextpage = () => {
+    setStep(2);
+  };
+ 
+ 
+  useEffect(() => {
+    if (frontImage && backImage) {
+      handleUpload();
+    }
+  }, [frontImage, backImage]);
+
+ 
+  const handleImageChange = (e, type) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (type === 'front') {
+        setFrontImage(file);
+        setIsFlipped(true); // Automatically "flip" to show the back after uploading the front image
+      } else {
+        setBackImage(file);
+      }
+    }
+  };
+
+  // Toggle flip state to switch between front and back image
+  const handleFlip = () => {
+    if (frontImage && backImage) setIsFlipped(!isFlipped); // Only allow flipping if both images are uploaded
+  };
+
+  const handleUpload = async () => {
+    if (!frontImage || !backImage) {
+      alert('Please select both front and back images');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file1', frontImage);
+    formData.append('file2', backImage);
+
+    try {
+      const user_id = localStorage.getItem('user_id');
+
+      const response = await fetch(`https://dev.quizifai.com:8010/upload-qz_image?quiz_id=${user_id}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Replace with your actual token
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        alert('Images uploaded successfully');
+      } else {
+        alert('Image upload failed');
+      }
+    } catch (error) {
+      console.error('Error uploading images:', error);
+      alert('An error occurred while uploading images');
+    }
+  };
+
+
   // useEffect(() => {
   //   fetchData();
   // }, []);
@@ -742,429 +818,155 @@ export default function quiztype() {
 };
   return (
     <>
-      <div>
-        <header className="w-[219px] h-[1000px] absolute top-[-19px] left-[-9px] rounded-tl-[20px] rounded-bl-[20px] bg-[#F5F5FB] z-10 shadow-lg shadow-gray-400/60">
-          <Navigation />
-        </header>
-        <div className="absolute top-[30px] left-[1260px] cursor-pointer text-[#eeb600f0] " onClick={Back}><MdOutlineCancel /></div>
-        {!showRegistrationSuccess && (
-          <main className="w-max-auto">
-            <div className="w-[79%] p-[5px] absolute top-[30px] left-[200px] rounded-[10px] bg-[#fee2e2] z-0">
-              <h className="font-Poppins font-semibold text-[20px] leading-[37.5px] text-[#214082] flex justify-center items-center mt-1l">
-              Finalize the configuration and click 'Next' to proceed with adding your quiz questions.
-              </h>
+     <div className="flex flex-row w-full bg-[#f5f5f5] ">
+      <div className="w-[16%]">
+      <Navigation />
+
+      </div>
+<div className="w-[84%]  p-5">
+
+<div className="flex justify-end pr-2 cursor-pointer text-[#eeb600f0]" onClick={Back}><MdOutlineCancel /></div>
+
+    {!showRegistrationSuccess && (
+  <main className="container mx-auto mt-10">
+   <div className="bg-[#d3d3d3] rounded-[10px] p-4 mb-8 text-center">
+      <h1 className="font-Poppins font-semibold text-[20px] text-[#214082]">
+        Finalize the configuration and click 'Next' to proceed with adding your quiz questions.
+      </h1>
+    </div>
+<div className="flex w-full h-[20%] border-[#a9a9a9] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-4 bg-white ">
+      {/* <img
+        src={physics}
+        alt="Quiz Cover"
+        className="w-32 h-44 rounded-md mr-4"
+      /> */}
+          <div className="relative mr-2">
+          <img
+  src={
+    isFlipped 
+      ? (backImage ? URL.createObjectURL(backImage) : back)
+      : (frontImage ? URL.createObjectURL(frontImage) : physics)
+  }
+  alt="Quiz Cover"
+  className="w-32 h-44 rounded-md mr-4 cursor-pointer"
+  onClick={handleFlip}
+/>
+        
+        {/* File inputs for front and back images */}
+        {!frontImage && (
+          <input type="file" onChange={(e) => handleImageChange(e, 'front')} className="hidden" id="front-upload" />
+        )}
+        {!backImage && isFlipped && (
+          <input type="file" onChange={(e) => handleImageChange(e, 'back')} className="hidden" id="back-upload" />
+        )}
+
+        {/* Labels or flip icon for upload buttons */}
+        {!frontImage && (
+          <label htmlFor="front-upload" className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white cursor-pointer text-[12px] rounded-md">
+            Upload Front Cover
+          </label>
+        )}
+        {isFlipped && !backImage && (
+          <label htmlFor="back-upload" className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white cursor-pointer text-[12px] rounded-md">
+            Upload Back Cover
+          </label>
+        )}
+        
+        {/* Flip icon to toggle between front and back after both images are uploaded */}
+        {frontImage && backImage && (
+          <button onClick={handleFlip} className="absolute top-2 right-2 text-white hidden bg-black bg-opacity-75 rounded-full p-1">
+            <FaSyncAlt size={18} />
+          </button>
+        )}
+      </div>
+      <div className="flex flex-col  w-full">
+        {/* Title and Version */}
+        <div className="flex items-center gap-[3px]">
+          <h2 className="text-lg font-semibold text-gray-800">
+          {quizData ? quizData.quiz_title : title}
+          </h2>
+          {/* <span className="text-xs text-red-500">v1.0</span> */}
+        </div>
+
+        {/* Description */}
+        <p className="text-gray-600 w-[80%] line-clamp-2 text-sm mt-1">
+        {quizData ? quizData.quiz_description : description}
+        </p>
+
+        {/* Meta Information */}
+        <div className="text-[#00008b] text-sm flex flex-wrap mt-2">
+          <span>{ quizData? quizData.quiz_category_name: categoryOptions[0]}</span>
+          <span className="mx-1">.</span>
+          <span>{quizData? quizData.quiz_sub_category_name: subCategoryOptions[0]}</span>
+          <span className="mx-1">.</span>
+          <span>{quizData ? quizData.course_name : ""} {quizData ? quizData.class_name : ""}</span>
+          <span className="mx-1">.</span>
+          <span>{ quizData ? quizData.quiz_complexity_name: complexityOptions[0]}</span>
+        </div>
+
+        {/* Icons Row */}
+        <div className=" flex-col items-center space-y-2  mt-4 text-[#00008b]">
+          {/* Author and Date */}
+          <div className="flex items-center space-x-6">
+            <div className="flex items-center">
+              {/* <i className="fas fa-user"></i> */}
+              <img src={username}  className=" w-[18px] h-[18px] mr-1"/>
+              <span className="ml-1 text-sm">Samantha S</span>
             </div>
+            <div className="flex items-center">
+              {/* <i className="fas fa-calendar-alt"></i> */}
+              <img src={calander}  className=" w-[18px] h-[18px] mr-1"/>
 
-            <div className=" absolute top-[100px]">
-              <div className="flex">
-                <div className="w-[201px] h-[22px] absolute top-[111px] left-[284px]">
-                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                    Quiz Title<span className="required ml-[1px] text-red-500">*</span>
-                  </h1>
-                </div>
-
-                <div className="">
-                  <input
-                    className="w-[420px] h-[35px] absolute top-[99px] left-[498px] rounded-[10px] border p-2"
-                    value={quizData ? quizData.quiz_title : title}
-                    onChange={(e) => setTitle(e.target.value)}
-                  ></input>
-                </div>
-
-                <div className="w-[210px] h-[23px] absolute top-[110px] left-[941px] mb-10 justify-center items-center grid">
-                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                    Number of Questions<span className="required ml-[1px] text-red-500">*</span>
-                  </h1>
-                 
-                </div>
-
-                <div className=" rounded-lg absolute top-[99px] left-[1144px]">
-                  <input
-                    type="number"
-                    className="w-[135px] h-[35px] border-solid border-[#B8BBC2] border-[1.8px] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer"
-                    placeholder="No of questions"
-                    value={quizData ? quizData.num_questions : numQuestions}
-                    onChange={(e) => {
-                      const value = parseInt(e.target.value);
-                      setNumQuestions(value);
-
-                      // Assuming setQuestions is defined somewhere
-                      // setQuestions(
-                      //   Array.from({ length: value }, () => ({
-                      //     question_text: "",
-                      //     options: [
-                      //       { answer_option_text: "" },
-                      //       { answer_option_text: "" },
-                      //       { answer_option_text: "" },
-                      //       { answer_option_text: "" },
-                      //     ],
-                      //   }))
-                      // );
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div className="flex">
-
-                <div className="w-[201px] h-[22px] absolute top-[174px] left-[284px]">
-                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                    Quiz Description<span className="required ml-[1px] text-red-500">*</span>
-                  </h1>
-                </div>
-
-                <div className="">
-                  <input
-                    className="w-[780px] h-[35px] absolute top-[163px] left-[498px] rounded-[10px] border p-2"
-                    value={quizData ? quizData.quiz_description : description}
-                    onChange={(e) => setDescription(e.target.value)}
-                  ></input>
-                </div>
-              </div>
-
-              <div className="flex">
-                <div className="w-[201px] h-[27px] absolute top-[248px] left-[284px]">
-                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                    Quiz Category<span className="required ml-[1px] text-red-500">*</span>
-                  </h1>
-                </div>
-
-                <div className="  absolute top-[240px] left-[498px]">
-                  <select
-                    className="w-[260px] h-[35px] border-solid border-[2px] border-[#B8BBC2] px-2 rounded-md cursor-pointer"
-                    value={
-                      quizData
-                        ? quizData.quiz_category_name
-                        : categoryOptions[0]
-                    }
-                    onChange={(e) => setQuizCategory(e.target.value)}
-                  >
-                    {categoryOptions.map((category, index) => (
-                      <option key={index} value={category}>
-                        {category}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="w-[164px] h-[30px] absolute top-[458px] left-[820px]">
-                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                    Multiple Answers<span className="required ml-[1px] text-red-500">*</span>
-                  </h1>
-                </div>
-
-                
-
-                <div className="w-[36px] h-5 absolute top-[458px] left-[1020px]">
-                  <Switch
-                    onChange={toggler1}
-                    checked={quizData ? quizData.multi_answer : multiAnswer}
-                    className="react-switch"
-                  />
-                </div>
-              </div>
-
-              <div className="flex">
-                <div className="w-[201px] h-[27px] absolute top-[248px] left-[820px]">
-                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                    Sub Category<span className="required ml-[1px] text-red-500">*</span>
-                  </h1>
-                </div>
-
-                <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] text-[12px] font-medium leading-[18px] absolute top-[240px] left-[1020px]">
-                  <select
-                    className="w-[260px] h-[35px] border-solid border-[#B8BBC2] px-3 rounded-md cursor-pointer"
-                    onChange={(e) => setSubCategory(e.target.value)}
-                    value={
-                      quizData
-                        ? quizData.quiz_sub_category_name
-                        : subCategoryOptions[0]
-                    }
-                  >
-                    {subCategoryOptions.map((subCategory, index) => (
-                      <option key={index} value={subCategory}>
-                        {subCategory}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="w-[164px] h-[30px] absolute top-[314px] left-[284px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Course
-                </h1>
-              </div>
-
-              
-
-              <div className="w-[260px]  absolute top-[309px] left-[500px]">
-                <select
-                  className="w-[260px] h-[35px] border-solid border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer"
-                  onChange={(e) => setcoursename(e.target.value)}
-                  value={quizData ? quizData.course_name : ""}
-                >
-                  {complexities.map((complexity, index) => (
-                    <option key={index} value={complexity}>
-                      {complexity}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="w-[109px] h-[27px] absolute top-[320px] left-[820px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Classes
-                </h1>
-              </div>
-
-              <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] text-[12px] font-medium leading-[18px] absolute top-[306px] left-[1020px]">
-                <select
-                  className="w-[260px] h-[35px]  border-solid border-[#B8BBC2] px-3  rounded-md cursor-pointer"
-                  onChange={(e) => setClasses(e.target.value)}
-                  value={quizData ? quizData.class_name : ""}
-                >
-                  {classOptions.map((classOption, index) => (
-                    <option key={index} value={classOption}>
-                      {classOption}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex">
-                <div className="w-[164px] h-[30px] absolute top-[383px] left-[284px]">
-                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                    Pass percentage<span className="required ml-[1px] text-red-500">*</span>
-                  </h1>
-                </div>
-
-                <div className=" rounded-lg w-[129px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[376px] left-[498px]">
-                  <select
-                    className="w-[264px] px-3 h-[35px] rounded-md cursor-pointer text-[12px]"
-                    onChange={handleSelectPercentage}
-                    value={percentage}
-                  >
-                    {percentageOptions.map((option, index) => (
-                      <option key={index} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="w-[164px] h-[30px] absolute top-[383px] left-[820px]">
-                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                    Complexity{" "}
-                  </h1>
-                </div>
-
-                <div className=" rounded-lg w-[129px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[376px] left-[1020px]">
-                  <select
-                    className="w-[264px] px-3 h-[35px] rounded-md cursor-pointer text-[12px]"
-                    onChange={(e) => setSelectedComplexity(e.target.value)}
-                    value={
-                      quizData
-                        ? quizData.quiz_complexity_name
-                        : complexityOptions[0]
-                    }
-                  >
-                    {complexityOptions.map((complexity, index) => (
-                      <option key={index} value={complexity}>
-                        {complexity}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="flex">
-                <div className="w-[164px] h-[30px] absolute top-[458px] left-[284px]">
-                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                    Retake Option<span className="required ml-[1px] text-red-500">*</span>
-                  </h1>
-                </div>
-
-                <div className="w-[36px] h-5 absolute top-[458px] left-[505px]">
-                  <Switch
-                    onChange={toggler2}
-                    checked={quizData ? quizData.retake_flag : isRetakeOn}
-                  />
-                </div>
-                <div className="">
-                  {isRetakeOn ? (
-                    <select
-                      className="w-[48px] h-[35px] absolute top-[455px] left-[568px] rounded-[10px] border-[1.8px] bg-[#F4F4F4]"
-                      value={selectedValue}
-                      onChange={handleDropdownChange}
-                    >
-                      <option value="" disabled>
-                        select
-                      </option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                    </select>
-                  ) : (
-                    <input
-                      className="w-[48px] h-[35px] absolute top-[455px] left-[568px] rounded-[10px] border-[1.8px] bg-[#F4F4F4]"
-                      value={selectedValue}
-                      readOnly
-                    />
-                  )}
-                </div>
-              </div>
-
-              <div className="flex">
-                <div className="w-[174px] h-[30px] absolute top-[527px] left-[284px]">
-                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                    Quiz Duration<span className="required ml-[1px] text-red-500">*</span>
-                  </h1>
-                </div>
-
-                <div className=" rounded-lg w-[166px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[520px] left-[498px]">
-                  <select
-                    className="w-[166px] px-3 h-[35px] rounded-md cursor-pointer text-[12px]"
-                    onChange={handleSelect7}
-                    value={duration}
-                  >
-                    {options7.map((option, index) => (
-                      <option
-                        key={index}
-                        className="border-grey-400 leading-[18px] font-medium rounded"
-                      >
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                 
-                  <div className="relative">
-                    <button
-                      onClick={() => setIsOpen(true)}
-                      className="absolute left-[10px] top-[15px]"
-                    >
-                      <FiAlertCircle />
-                    </button>
-                    {isOpen && (
-                      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-white border border-gray-300 p-4 rounded shadow-md w-[350px] ">
-                        <p>The maximum duration time is 180 mints.</p>
-                        <button
-                          onClick={() => setIsOpen(false)}
-                          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M6 18L18 6M6 6l12 12"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className="w-[238px] h-[30px] absolute top-[527px] left-[820px]">
-                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                    Time bounded Questions<span className="required ml-[1px] text-red-500">*</span>
-                  </h1>
-                </div>
-
-                <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[520px] left-[1020px]">
-                  <select
-                    className="w-[260px] px-3 h-[35px] rounded-md cursor-pointer text-[12px]"
-                    onChange={(e) => setTimings(e.target.value)}
-                    value={
-                      quizData
-                        ? quizData.quiz_time_bounded_questions
-                        : selectedTiming[0]
-                    }
-                  >
-                    {selectedTiming.map((timing, index) => (
-                      <option key={index} value={timing}>
-                        {timing}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="w-[253px] h-[30px] absolute top-[590px] left-[284px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Quiz will be available from<span className="required ml-[1px] text-red-500">*</span>
-                </h1>
-              </div>
-
-              <div className="absolute top-[584px] left-[498px]">
-                <input
-                type="date"
-                  className="rounded-lg w-[166px] h-[35px] flex border-solid border-[#B8BBC2] border-[1.8px]
-              text-[#9696BB] leading-[22.5px] text-[15p] font-medium  px-4"
-                  placeholder="YYYY-MM-DD"
-                  value={quizData ? quizData.available_from : availablefrom}
-                  onChange={(e) => setavailablefrom(e.target.value)}
-                ></input>
-              </div>
-
-              <div className="w-[233px] h-[30px] absolute top-[590px] left-[820px]">
-                <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                  Quiz must be disable on{" "}
-                </h1>
-              </div>
-
-              <div className=" absolute top-[584px] left-[1020px]">
-                <input
-                 type="date"
-                  className="rounded-lg w-[166px] h-[35px] flex border-solid border-[#B8BBC2] border-[1.8px]
-                  text-[#9696BB] leading-[22.5px] text-[15p] font-medium  px-4"
-                  placeholder="YYYY-MM-DD"
-                  value={quizData ? quizData.disabled_on : disabledon}
-                  onChange={(e) => setdisabledon(e.target.value)}
-                ></input>
-              </div>
-
-              <div className="flex">
-                <div className="w-[156px] h-[30px] absolute top-[660px] left-[284px]">
-                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                    Public access<span className="required ml-[1px] text-red-500">*</span>
-                  </h1>
-                </div>
-
-                <div className="w-[36px] h-5 absolute top-[660px] left-[504px]">
-                  <Switch
-                    onChange={toggler3}
-                    checked={
-                      quizData ? quizData.quiz_public_access : publicAccess
-                    }
-                  />
-                </div>
-
-                <div className="w-[174px] h-[30px] absolute top-[660px] left-[820px]">
-                  <h1 className="font-Poppins text-[#214082] font-medium text-[15px] leading-[22.5px]">
-                    Quiz total marks<span className="required ml-[1px] text-red-500">*</span>
-                  </h1>
-                </div>
-
-                <div className="absolute top-[653px] left-[1020px]">
-                  <input
-                    className="rounded-lg w-[166px] h-[35px] flex border-solid border-[#B8BBC2] border-[1.8px]
-              text-[#9696BB] text-[15p] font-medium bg-[#ffffff] px-4"
-                    placeholder="total marks"
-                    value={quizData ? quizData.quiz_total_marks : description}
-                    onChange={(e) => setquiztotalmarks(e.target.value)}
-                  ></input>
-                </div>
-              </div>
+              <span className="ml-1 text-sm">{quizData ? quizData.available_from : availablefrom}</span>
             </div>
+          </div>
 
-            <div className="w-[140.68px] h-[37.09px] absolute top-[120px] left-[1135.43px] rounded-[10px] bg-[#1E4DE9]">
+          {/* Quiz Info */}
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center">
+              {/* <i className="fas fa-question-circle"></i> */}
+              <img src={comment}  className=" w-[18px] h-[18px] mr-1"/>
+
+              <span className="ml-1 text-sm">{quizData ? quizData.num_questions : numQuestions} Questions</span>
+            </div>
+            <div className="flex items-center">
+              {/* <i className="fas fa-clock"></i> */}
+              <img src={timer}  className=" w-[18px] h-[18px] mr-1"/>
+
+              <span className="ml-1 text-sm">{duration} Minutes</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Stats Row */}
+        {/* <div className="flex items-center justify-between mt-4">
+          <div className="text-sm text-gray-500">
+            <span>203 attempts</span> | <span>80% High Score</span> | <span>2:02 mins quickest</span>
+          </div>
+          <div className="flex items-center text-yellow-500">
+            <i className="fas fa-star"></i>
+            <i className="fas fa-star"></i>
+            <i className="fas fa-star"></i>
+            <i className="fas fa-star"></i>
+            <i className="fas fa-star-half-alt"></i>
+          </div>
+        </div> */}
+      </div>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white my-4 p-5">
+      
+      <div className="md:col-span-2"> 
+        <h1 className=" font-semibold text-[20px] text-[#ef5130]">General Details</h1>
+      </div>
+      {/* Show Quiz Title and Description in Step 1 */}
+      {/* {step === 1 && ( */}
+        {/* <> */}
+          {/* Quiz Title */}
+          <div className="flex flex-col md:col-span-2">
+               <div className="flex justify-end items-center mb-3">
+
+          <div className="w-[140.68px] h-[37.09px] rounded-[10px] bg-[#1E4DE9]">
               <label
                 htmlFor="fileInput"
                 className="font-Poppins font-medium text-[15px] leading-[22.5px] flex justify-start px-4 py-2 text-white cursor-pointer"
@@ -1190,23 +992,629 @@ export default function quiztype() {
               )}
              
             </div>
-            <div className="w-[98px] h-[32px] absolute top-[840px] left-[1182px] rounded-[10px] bg-[#1E4DE9]">
-              <button
-                // href="./enter-quiz"
-                onClick={handleNext1}
-                className="font-Poppins font-medium text-[15px] leading-[22.5px] flex justify-start px-4 py-1 text-white"
-              >
-                Next 
-                <img
-                  className="w-[24px] h-[24px] ml-4"
-                  alt="next icon"
-                  src={Next}
-                />
-              </button>
             </div>
-          </main>
-        )}
-        {showRegistrationSuccess && (
+            <div className="w-full flex flex-row">
+              <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+                Title <span className="text-red-500">*</span>
+              </label>
+              <input
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                type="text"
+                required
+                value={quizData ? quizData.quiz_title : title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+            <hr className="h-[1px] w-full" />
+          </div>
+
+          {/* Quiz Description */}
+          <div className="w-full flex flex-col md:col-span-2">
+            <div className="w-full flex flex-row">
+              <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+               Description <span className="text-red-500">*</span>
+              </label>
+              <input
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                type="text"
+                required
+                value={quizData ? quizData.quiz_description : description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+            <hr className="h-[1px] w-full" />
+          </div>
+ {/* Quiz instructions */}
+ <div className="w-full flex items-center  md:col-span-2">
+ <div className=" w-full flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className=" w-[20%] text-blue-800 font-semibold mb-2 mr-[10px]">
+              Instructions <span className="text-red-500">*</span>
+              </label>
+              <input
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                type="text"
+                required
+                value={quizData ? quizData.quiz_description : description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+            <hr className="h-[1px] w-full" />
+
+          </div>
+             <div className="  m-2">
+            <button
+              // onClick={handleNextpage}
+              className="px-2 py-[4px] bg-[#3b61c8] text-white font-semibold rounded-xl hover:bg-blue-700"
+            >
+              Edit
+            </button>
+          </div>
+          </div>
+          {/* Next Button */}
+          {/* <div className="flex justify-end md:col-span-2">
+            <button
+              onClick={handleNextpage}
+              className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-700"
+            >
+              Next
+            </button>
+          </div> */}
+        {/* </> */}
+      {/* )} */}
+
+      {/* Show Remaining Fields in Step 2 */}
+      {/* {step === 2 && ( */}
+        {/* <> */}
+          {/* Quiz Category */}
+          <div className="flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className=" w-[51%] text-blue-800 font-semibold mb-2 ">
+                Category<span className="text-red-500">*</span>
+              </label>
+              
+              <select
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+
+                    value={
+                      quizData
+                        ? quizData.quiz_category_name
+                        : categoryOptions[0]
+                    }
+                    onChange={(e) => setQuizCategory(e.target.value)}
+                  >
+                    {categoryOptions.map((category, index) => (
+                      <option key={index} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </select>
+            </div>
+            <hr className="h-[1px] w-full" />
+          </div>
+
+          {/* Sub Category */}
+          <div className="flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className="w-[51%] text-blue-800 font-semibold mb-2">
+                Sub Category<span className="text-red-500">*</span>
+              </label>
+          
+              <select
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+
+                    onChange={(e) => setSubCategory(e.target.value)}
+                    value={
+                      quizData
+                        ? quizData.quiz_sub_category_name
+                        : subCategoryOptions[0]
+                    }
+                  >
+                    {subCategoryOptions.map((subCategory, index) => (
+                      <option key={index} value={subCategory}>
+                        {subCategory}
+                      </option>
+                    ))}
+                  </select>
+            </div>
+            <hr className="h-[1px] w-full" />
+          </div>
+
+          {/* Course */}
+          <div className="flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className="w-[51%] text-blue-800 font-semibold mb-2 ">
+                Course<span className="text-red-500">*</span>
+              </label>
+            
+              <select
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                  onChange={(e) => setcoursename(e.target.value)}
+                  value={quizData ? quizData.course_name : ""}
+                >
+                  {complexities.map((complexity, index) => (
+                    <option key={index} value={complexity}>
+                      {complexity}
+                    </option>
+                  ))}
+                </select>
+            </div>
+            <hr className="h-[1px] w-full" />
+          </div>
+
+          {/* Class */}
+          <div className="flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className=" w-[51%] text-blue-800 font-semibold mb-2">
+                Class<span className="text-red-500">*</span>
+              </label>
+              <select
+                  className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                  onChange={(e) => setClasses(e.target.value)}
+                  value={quizData ? quizData.class_name : ""}
+                >
+                  {classOptions.map((classOption, index) => (
+                    <option key={index} value={classOption}>
+                      {classOption}
+                    </option>
+                  ))}
+                </select>
+            </div>
+            <hr className="h-[1px] w-full" />
+          </div>
+          {/* <div className="flex justify-start md:col-span-2">
+            <button
+              onClick={() => setStep(1)}
+              className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-700"
+            >
+              Back
+            </button>
+          </div> */}
+        {/* </> */}
+      {/* )} */}
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white my-4 p-5">
+    <div className="md:col-span-2">
+        <h1 className=" font-semibold text-[20px] text-[#ef5130]">Quiz Metrics</h1>
+      </div>
+
+      {/* Number of Questions */}
+     
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[65%] text-blue-800 font-semibold mb-2  ">Number of Questions<span className="text-red-500">*</span></label>
+        
+                <input
+                    type="number"
+                    className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                    placeholder="No of questions"
+                    value={quizData ? quizData.num_questions : numQuestions}
+                    onChange={(e) => {
+                      const value = parseInt(e.target.value);
+                      setNumQuestions(value);
+
+                      // Assuming setQuestions is defined somewhere
+                      // setQuestions(
+                      //   Array.from({ length: value }, () => ({
+                      //     question_text: "",
+                      //     options: [
+                      //       { answer_option_text: "" },
+                      //       { answer_option_text: "" },
+                      //       { answer_option_text: "" },
+                      //       { answer_option_text: "" },
+                      //     ],
+                      //   }))
+                      // );
+                    }}
+                  />
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+    
+     
+      {/*  Quiz total marks*/}
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[59%] text-blue-800 font-semibold mb-2"> Quiz total marks<span className="text-red-500">*</span></label>
+      
+     <input
+                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                  placeholder="Total marks"
+                  value={quizData ? quizData.quiz_total_marks : description}
+                  onChange={(e) => setquiztotalmarks(e.target.value)}
+                ></input>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+     
+      {/* Complexity */}
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[65%] text-blue-800 font-semibold mb-2 ">Complexity<span className="text-red-500">*</span></label>
+
+        <select
+          className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                    onChange={(e) => setSelectedComplexity(e.target.value)}
+                    value={
+                      quizData
+                        ? quizData.quiz_complexity_name
+                        : complexityOptions[0]
+                    }
+                  >
+                    {complexityOptions.map((complexity, index) => (
+                      <option key={index} value={complexity}>
+                        {complexity}
+                      </option>
+                    ))}
+                  </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+       {/* Pass Percentage */}
+      
+ <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[59%] text-blue-800 font-semibold mb-2">Pass Percentage<span className="text-red-500">*</span></label>
+        <select
+          className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                    onChange={handleSelectPercentage}
+                    value={percentage}
+                  >
+                    {percentageOptions.map((option, index) => (
+                      <option key={index} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      {/* Question Type */}
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[75px] ">Question Type<span className="text-red-500">*</span></label>
+
+        <select
+          className={ ` w-[80%] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                    onChange={(e) => setSelectedComplexity(e.target.value)}
+                    value={
+                      quizData
+                        ? quizData.quiz_complexity_name
+                        : complexityOptions[0]
+                    }
+                  >
+                    {complexityOptions.map((complexity, index) => (
+                      <option key={index} value={complexity}>
+                        {complexity}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+          className={ ` w-[80%] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                    onChange={(e) => setSelectedComplexity(e.target.value)}
+                    value={
+                      quizData
+                        ? quizData.quiz_complexity_name
+                        : complexityOptions[0]
+                    }
+                  >
+                    {complexityOptions.map((complexity, index) => (
+                      <option key={index} value={complexity}>
+                        {complexity}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+          className={ ` w-[80%] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                    onChange={(e) => setSelectedComplexity(e.target.value)}
+                    value={
+                      quizData
+                        ? quizData.quiz_complexity_name
+                        : complexityOptions[0]
+                    }
+                  >
+                    {complexityOptions.map((complexity, index) => (
+                      <option key={index} value={complexity}>
+                        {complexity}
+                      </option>
+                    ))}
+                  </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+     
+
+      
+{/* Quiz Duration */}
+      <div className="flex items-center">
+      <div className="w-full flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[59%] text-blue-800 font-semibold mb-2 mr-[10px] ">Duration<span className="text-red-500">*</span></label>
+   
+                <select
+                className={ `w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+              
+                    onChange={handleSelect7}
+                    value={duration}
+                  >
+                    {options7.map((option, index) => (
+                      <option
+                        key={index}
+                        className="border-grey-400 leading-[18px] font-medium rounded"
+                      >
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>  
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      <div className="relative mt-2 ">
+                  <button
+                    onClick={() => setIsOpen(true)}
+                    className=""
+                  >
+                    <FiAlertCircle />
+                  </button>
+                  {isOpen && (
+                    <div className="absolute bottom-10 left-1/2 transform -translate-x-80 bg-white border border-gray-300 p-4 rounded shadow-md w-[350px] ">
+                      <p>The maximum duration time is 180 mints.</p>
+                      <button
+                        onClick={() => setIsOpen(false)}
+                        className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  )}
+                </div>
+      </div>
+
+     
+      {/* Quiz will be available from */}
+      
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[63%] text-blue-800 font-semibold mb-2 mr-[9px] ">Quiz will be available from<span className="text-red-500">*</span></label>
+        <input
+              type="date"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="YYYY-MM-DD"
+                value={quizData ? quizData.available_from : availablefrom}
+                onChange={(e) => setavailablefrom(e.target.value)}
+              ></input>
+  
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      {/* Quiz must be disable on */}
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[60%] text-blue-800 font-semibold mb-2  ">Quiz must be disable on<span className="text-red-500">*</span></label>
+        <input
+              type="date"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                placeholder="YYYY-MM-DD"
+                value={quizData ? quizData.disabled_on : disabledon}
+                onChange={(e) => setdisabledon(e.target.value)}
+              ></input>
+  
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+
+   {/* Retake Option */}
+   <div className="flex items-center mt-4">
+        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[93px]">
+          Retake Option <span className="text-red-500">*</span>
+        </label>
+        <Switch
+      onChange={toggler2}
+      checked={quizData ? quizData.retake_flag : isRetakeOn}
+          className="react-switch"
+        />
+         <div className=" ml-2">
+                {isRetakeOn ? (
+                  <select
+                    className="w-[48px] h-[35px]  rounded-[10px] border-[1.8px] bg-[#F4F4F4]"
+                    value={selectedValue}
+                    onChange={handleDropdownChange}
+                  >
+                    <option value="" disabled>
+                      select
+                    </option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </select>
+                ) : (
+                  <input
+                    className="w-[48px] h-[35px]  rounded-[10px] border-[1.8px] bg-[#F4F4F4]"
+                    value={selectedValue}
+                    readOnly
+                  />
+                )}
+              </div>
+      </div>
+
+
+    </div>
+    <div className=" bg-white my-4 p-5">
+    <div className="grid grid-cols-1 md:grid-cols-3 justify-center items-center gap-6 bg-white ">
+    
+    <div className="md:col-span-3">
+        <h1 className=" font-semibold text-[20px] text-[#ef5130]">AI Metrics</h1>
+      </div>
+      {/*  Time bounded Questions */}
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] "> Time bounded Questions<span className="text-red-500">*</span></label>
+
+        
+                <select
+           className={ ` w-[75%] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                
+                    onChange={(e) => setTimings(e.target.value)}
+                    value={
+                      quizData
+                        ? quizData.quiz_time_bounded_questions
+                        : selectedTiming[0]
+                    }
+                  >
+                    {selectedTiming.map((timing, index) => (
+                      <option key={index} value={timing}>
+                        {timing}
+                      </option>
+                    ))}
+                  </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+     
+
+  {/*  Public access */}
+  <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[50%] text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500">*</span></label>
+
+        <select
+          className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                  value={  quizData ? quizData.quiz_public_access : publicAccess}
+                  onChange={toggler3}
+                >
+                  <option value="Public">Public</option>
+                  <option value="Subscribed">Subscribed</option>
+                  <option value="Organization">Organization</option>
+                </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+
+  {/* Multiple Answers */}
+  <div className="flex items-center">
+        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[93px]">
+        Multiple Answers <span className="text-red-500">*</span>
+        </label>
+        <Switch
+                   onChange={toggler1}
+                   checked={quizData ? quizData.multi_answer : multiAnswer}
+          className="react-switch"
+        />
+        
+      </div>
+     
+
+    </div>
+    {/* <div className="flex flex-col items-center justify-center mt-10">
+    <div className=" w-[150.68px] h-[37.09px] rounded-[10px] bg-[#1E4DE9]">
+      <label
+        htmlFor="fileInput"
+        className="font-Poppins font-medium text-[15px] leading-[22.5px] flex items-center px-4 py-2 text-white cursor-pointer"
+      >
+        <div className="relative group">
+          <span className="block truncate max-w-[60px]">
+            {uploadedFile ? uploadedFile.name : 'Select'}
+          </span>
+          {uploadedFile && (
+            <span className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-max p-2 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity">
+              {uploadedFile.name}
+            </span>
+          )}
+        </div>
+        <input
+          id="fileInput"
+          type="file"
+          accept="application/pdf"
+          onChange={handleFileChange}
+          className="hidden"
+        />
+        <img
+          className="w-[24px] h-[24px] ml-4 -rotate-90"
+          src={Next}
+          alt="Next"
+        />
+        <img
+          className="w-[20.48px] h-[24.96px] ml-1"
+          src={PDF}
+          alt="PDF"
+        />
+      </label>
+
+      {/* <button
+        className="w-[98px] h-[32px] font-Poppins text-[#214082] font-medium text-[15px] leading-[20px] rounded-[10px] bg-[#1E4DE9] text-white mt-9 ml-5"
+        onClick={handleNext}
+      >
+        Submit
+      </button> */}
+      {/* <div className=" w-[137.09px] h-[9.05px]">
+        <Line percent={uploadProgress} strokeWidth={5} strokeColor="#B1FB9B" />
+        <h1 className="font-Poppins text-[#214082] font-normal text-[10px] leading-[15px]  mt-1 ml-8">
+          {`Uploading ${uploadProgress}%`}
+        </h1>
+      </div>
+    </div>
+    </div>  */}
+   
+  <div className="flex justify-end items-end mt-10">
+
+   
+  <div className="w-[98px] h-[37px]  rounded-[10px] bg-[#1E4DE9]">
+            <button
+              // href="./enter-quiz"
+              onClick={handleNext1}
+              className="font-Poppins font-medium text-[15px] leading-[29.5px] flex justify-start px-4 py-1 text-white"
+            >
+              Next
+              <img
+                className="w-[24px] h-[24px] ml-4"
+                alt="next icon"
+                src={Next}
+              />
+            </button>
+          </div>
+          </div>
+
+    {/* <div className="flex justify-center items-center mt-10">
+
+   
+  {errorMessage && <p className=" flex text-red-500">{errorMessage}</p> }
+  </div> */}
+    </div>
+  </main>
+)}
+
+{showRegistrationSuccess && (
           <main className="w-max-auto">
             <div className="w-[848px] h-[44px] absolute top-[90px] left-[298px]">
               <h1 className="font-Poppins font-bold text-[30px] leading-[45px] text-orange-400">
@@ -1341,6 +1749,8 @@ export default function quiztype() {
           </main>
         )}
       </div>
+
+</div>
     </>
   );
 }

@@ -648,7 +648,7 @@ export default function dashboardNavBar() {
                 <div className="flex flex-col items-center justify-start relative mr-4 border shadow-lg rounded-sm p-2 py-[20px]">
                 <h3 className="text-sm font-bold mb-5 text-[#214082]">Subscription</h3>
 
-                    <h3 className="text-sm font-bold mb-4 text-[#214082]"> <span className=' text-gray-500'>Public</span>/<span>Subcribed</span>/<span className=' text-gray-500'>Organization</span></h3>
+                    <h3 className="text-sm font-bold mb-4 text-[#214082]"> <span>Public</span>/<span  className=' text-gray-500'>Subcribed</span>/<span className=' text-gray-500'>Organization</span></h3>
                     <div className="space-y-2">
                         <div className="flex justify-between">
                             <p className="text-sm text-gray-600 ">Type :</p>

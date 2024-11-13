@@ -32,7 +32,7 @@ import username from "../../src/assets/Images/quiz-type/username.png"
 import calander from "../../src/assets/Images/quiz-type/calander.png"
 import timer from "../../src/assets/Images/quiz-type/Timer.png"
 import comment from "../../src/assets/Images/quiz-type/comment.png"
-
+import editicon from "../../src/assets/Images/quiz-type/edit.png"
 const options1 = [{ label: "Numbers" }];
 
 for (let i = 1; i <= 300; i++) {
@@ -210,6 +210,7 @@ const [pdfurl, setpdfurl] = useState('')
   const [selectedCourse, setSelectedCourse] = useState("");
   const [selectedClass, setSelectedClass] = useState("");
   const [classes, setClasses] = useState([]);
+  // const [activeTab, setActiveTab] = useState('Manual'); // Default to Audio
 
   const [selectedQuestions, setSelectedQuestions] = useState([]); 
 
@@ -221,14 +222,16 @@ const [pdfurl, setpdfurl] = useState('')
   const [frontImage, setFrontImage] = useState(null);
   const [backImage, setBackImage] = useState(null);
   const [isFlipped, setIsFlipped] = useState(false);
-
+ const [instructions,setininstructions] = useState('Carefully read each question before selecting your answer. Answer all questions, even if you are not sure. If available, use the skip or review feature to mark questions you want to revisit later. Make sure to submit your answers before the timer ends. Quizzes may auto-submit, but it is best to double-check.')
   // Handle the upload of front or back image
   const [step, setStep] = useState(1);
 
   const handleNextpage = () => {
     setStep(2);
   };
- 
+  const handleNextpage1 = () => {
+    setStep(3);
+  };
  
   useEffect(() => {
     if (frontImage && backImage) {
@@ -1138,8 +1141,8 @@ const handleNext = async (file) => {
     setSelectedValue(e.target.value);
   };
 
-  const toggler3 = (checked) => {
-    setPublicAccess(checked);
+  const toggler3 = (e) => {
+    setPublicAccess(e.target.value);
   };
 
   function handleSelect1(event) {
@@ -1225,6 +1228,12 @@ const handleNext = async (file) => {
     navigate("/create-quiz");
   
 };
+const [activeTab, setActiveTab] = useState('Manual');
+
+const handleTabClick = (tab) => {
+  setActiveTab(tab);
+};
+// const instructions = 'Carefully read each question before selecting your answer. Answer all questions, even if you are not sure. If available, use the skip or review feature to mark questions you want to revisit later. Make sure to submit your answers before the timer ends. Quizzes may auto-submit, but it is best to double-check.'
   return (
     <>
     <div className="flex flex-row w-full bg-[#f5f5f5] ">
@@ -1232,18 +1241,53 @@ const handleNext = async (file) => {
       <Navigation />
 
       </div>
-<div className="w-[84%]  p-5">
+<div className="w-[84%]  px-5 pt-1">
+<div className="flex justify-end py-2 cursor-pointer text-[#eeb600f0]" onClick={Back}><MdOutlineCancel /></div>
 
-    {/* <div className="absolute top-[30px] left-[1260px] cursor-pointer text-[#eeb600f0]" onClick={Back}><MdOutlineCancel /></div> */}
+<div className="flex w-full bg-[#eedbe5] px-2 pt-2 font-semibold rounded-t-lg">
+      <button
+        onClick={() => handleTabClick('Manual')}
+        className={`w-full px-4 py-2 ${
+          activeTab === 'Manual' ? 'bg-gray-100 text-[#214082] rounded-t-lg' : 'bg-[#F7E3DC] text-[#214082] rounded-lg'
+        }`}
+      >
+       Create a Personalized Quiz Manually
+      </button>
+      <button
+        onClick={() => handleTabClick('Excel')}
+        className={`w-full px-4 py-2 ${
+          activeTab === 'Excel' ? 'bg-gray-100 text-[#214082] rounded-t-lg' : 'bg-[#F7CEE2] text-[#214082] rounded-lg'
+        }`}
+      >
+        Generate your own quiz by importing Excel
+      </button>
+      <button
+        onClick={() => handleTabClick('Pdf')}
+        className={`w-full px-4 py-2 ${
+          activeTab === 'Pdf' ? 'bg-gray-100 text-[#214082] rounded-t-lg' : 'bg-[#CCCAF0] text-[#214082] rounded-lg'
+        }`}
+      >
+       AI-Powered Creation with PDF
+      </button>
+      <button
+        onClick={() => handleTabClick('Textbook')}
+        className={`w-full px-4 py-2 ${
+          activeTab === 'Textbook' ? 'bg-gray-100 text-[#214082] rounded-t-lg' : 'bg-[#CFDFEF] text-[#214082]'
+        }`}
+      >
+        AI-Powered Creation with Textbook
+      </button>
+    </div>
 
     {!showRegistrationSuccess && (
-  <main className="container mx-auto mt-10">
-   <div className="bg-[#d3d3d3] rounded-[10px] p-4 mb-8 text-center">
-      <h1 className="font-Poppins font-semibold text-[20px] text-[#214082]">
+  <main className="container mx-auto mt-5">
+ 
+   <div className="bg-[#eedbe5] rounded-[10px] p-4 mb-8 ">
+      <h1 className="font-Poppins font-normal text-[20px] text-[#214082]">
         Finalize the configuration and click 'Next' to proceed with adding your quiz questions.
       </h1>
     </div>
-<div className="flex w-full h-[20%] border-[#a9a9a9] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-4 bg-white ">
+<div className="flex w-full h-[20%] border-[#d9afc4] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-4 bg-white ">
       {/* <img
         src={physics}
         alt="Quiz Cover"
@@ -1251,10 +1295,7 @@ const handleNext = async (file) => {
       /> */}
           <div className="relative mr-2">
           <img
-  src={
-    isFlipped 
-      ? (backImage ? URL.createObjectURL(backImage) : back)
-      : (frontImage ? URL.createObjectURL(frontImage) : physics)
+  src={isFlipped ? (backImage ? URL.createObjectURL(backImage) : back): (frontImage ? URL.createObjectURL(frontImage) : physics)
   }
   alt="Quiz Cover"
   className="w-32 h-44 rounded-md mr-4 cursor-pointer"
@@ -1291,14 +1332,14 @@ const handleNext = async (file) => {
       <div className="flex flex-col  w-full">
         {/* Title and Version */}
         <div className="flex items-center gap-[3px]">
-          <h2 className="text-lg font-semibold text-gray-800">
+          <h2 className="text-lg font-semibold text-[#00008b]">
           {title}
           </h2>
           {/* <span className="text-xs text-red-500">v1.0</span> */}
         </div>
 
         {/* Description */}
-        <p className="text-gray-600 w-[80%] line-clamp-2 text-sm mt-1">
+        <p className="text-[#00008b] w-[80%] line-clamp-2 text-sm mt-1">
         {description}
         </p>
 
@@ -1308,7 +1349,7 @@ const handleNext = async (file) => {
           <span className="mx-1">.</span>
           <span>{selectedSubCategory}</span>
           <span className="mx-1">.</span>
-          <span>{selectedCourse} {selectedClass}</span>
+          <span>{selectedCourse} . {selectedClass}</span>
           <span className="mx-1">.</span>
           <span>{selectedComplexity}</span>
         </div>
@@ -1362,23 +1403,23 @@ const handleNext = async (file) => {
         </div> */}
       </div>
     </div>
-
+    {step === 1 && (
+         <>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white my-4 p-5">
-      
+    
       <div className="md:col-span-2"> 
-        <h1 className=" font-semibold text-[20px] text-[#ef5130]">General Metrics</h1>
+        <h1 className=" font-semibold text-[20px] text-[#ef5130]">Generic Fields</h1>
       </div>
       {/* Show Quiz Title and Description in Step 1 */}
-      {step === 1 && (
-        <>
+       
           {/* Quiz Title */}
           <div className="flex flex-col md:col-span-2">
             <div className="w-full flex flex-row">
-              <label className="text-blue-800 font-semibold mb-2 mr-[127px]">
-                Quiz Title <span className="text-red-500">*</span>
+              <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+                Title <span className="text-red-500">*</span>
               </label>
               <input
-                className="w-[840px] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
                 type="text"
                 required
                 value={title}
@@ -1389,13 +1430,13 @@ const handleNext = async (file) => {
           </div>
 
           {/* Quiz Description */}
-          <div className="flex flex-col md:col-span-2">
+          <div className="w-full flex flex-col md:col-span-2">
             <div className="w-full flex flex-row">
-              <label className="text-blue-800 font-semibold mb-2 mr-[76px]">
-                Quiz Description <span className="text-red-500">*</span>
+              <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+               Description <span className="text-red-500">*</span>
               </label>
               <input
-                className="w-[840px] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
                 type="text"
                 required
                 value={description}
@@ -1405,55 +1446,47 @@ const handleNext = async (file) => {
             <hr className="h-[1px] w-full" />
           </div>
  {/* Quiz instructions */}
- <div className=" flex items-center">
- <div className="flex flex-col md:col-span-2">
+ <div className="w-full flex items-center  md:col-span-2">
+ <div className=" w-full flex flex-col">
             <div className="w-full flex flex-row">
-              <label className="text-blue-800 font-semibold mb-2 mr-[80px]">
-                Quiz instructions <span className="text-red-500">*</span>
+              <label className=" w-[20%] text-blue-800 font-semibold mb-2 mr-[10px]">
+               Instructions <span className="text-red-500">*</span>
               </label>
               <input
-                className="w-[840px] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
                 type="text"
                 required
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                value={instructions}
+                onChange={(e) => setinstructions(e.target.value)}
               />
             </div>
             <hr className="h-[1px] w-full" />
 
           </div>
              <div className="  m-2">
-            <button
+              <img src={editicon} className=" w-[18px] h-[18px] "/>
+            {/* <button
               // onClick={handleNextpage}
               className="px-2 py-[4px] bg-[#3b61c8] text-white font-semibold rounded-xl hover:bg-blue-700"
             >
-              edit
-            </button>
+              Edit
+            </button> */}
           </div>
           </div>
-          {/* Next Button */}
-          <div className="flex justify-end md:col-span-2">
-            <button
-              onClick={handleNextpage}
-              className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-700"
-            >
-              Next
-            </button>
-          </div>
-        </>
-      )}
+       
+         
+       
 
-      {/* Show Remaining Fields in Step 2 */}
-      {step === 2 && (
-        <>
+   
+     
           {/* Quiz Category */}
           <div className="flex flex-col">
             <div className="w-full flex flex-row">
-              <label className="text-blue-800 font-semibold mb-2 mr-[97px]">
-                Quiz Category<span className="text-red-500">*</span>
+              <label className=" w-[51%] text-blue-800 font-semibold mb-2 ">
+                Category<span className="text-red-500">*</span>
               </label>
               <select
-                className="w-[304px] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
                 value={selectedCategory}
                 onChange={handleSelectCategory}
               >
@@ -1471,11 +1504,11 @@ const handleNext = async (file) => {
           {/* Sub Category */}
           <div className="flex flex-col">
             <div className="w-full flex flex-row">
-              <label className="text-blue-800 font-semibold mb-2 mr-[95px]">
+              <label className="w-[51%] text-blue-800 font-semibold mb-2">
                 Sub Category<span className="text-red-500">*</span>
               </label>
               <select
-                className="w-[310px] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
                 value={selectedSubCategory}
                 onChange={handleSelectSubCategory}
               >
@@ -1493,11 +1526,11 @@ const handleNext = async (file) => {
           {/* Course */}
           <div className="flex flex-col">
             <div className="w-full flex flex-row">
-              <label className="text-blue-800 font-semibold mb-2 mr-[150px]">
+              <label className="w-[51%] text-blue-800 font-semibold mb-2 ">
                 Course<span className="text-red-500">*</span>
               </label>
               <select
-                className="w-[304px] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
                 value={selectedCourse}
                 onChange={handleSelectCourse}
               >
@@ -1516,11 +1549,11 @@ const handleNext = async (file) => {
           {/* Class */}
           <div className="flex flex-col">
             <div className="w-full flex flex-row">
-              <label className="text-blue-800 font-semibold mb-2 mr-[157px]">
+              <label className=" w-[51%] text-blue-800 font-semibold mb-2">
                 Class<span className="text-red-500">*</span>
               </label>
               <select
-                className="w-[310px] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
                 value={selectedClass}
                 onChange={handleSelectClass}
                 disabled={classes.length === 0}
@@ -1535,29 +1568,40 @@ const handleNext = async (file) => {
             </div>
             <hr className="h-[1px] w-full" />
           </div>
-          <div className="flex justify-start md:col-span-2">
+          {/* <div className="flex justify-start md:col-span-2">
             <button
               onClick={() => setStep(1)}
               className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-700"
             >
-              back
+              Back
+            </button>
+          </div> */}
+           <div className="flex justify-end md:col-span-2">
+            <button
+              onClick={handleNextpage}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+            >
+              Next
             </button>
           </div>
-        </>
-      )}
     </div>
+        </> 
+       )}
+         {step === 2 && (
+         <>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white my-4 p-5">
+  
     <div className="md:col-span-2">
-        <h1 className=" font-semibold text-[20px] text-[#ef5130]">Statistical Metrics</h1>
+        <h1 className=" font-semibold text-[20px] text-[#ef5130]">Quiz Metrics</h1>
       </div>
 
       {/* Number of Questions */}
      
       <div className="flex flex-col">
         <div className="w-full flex flex-row">
-        <label className=" text-blue-800 font-semibold mb-2 mr-[46px] ">Number of Questions<span className="text-red-500">*</span></label>
+        <label className="w-[65%] text-blue-800 font-semibold mb-2  ">Number of Questions<span className="text-red-500">*</span></label>
         <input
-          className={ ` w-[303px] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
           type="number"
           required
           value={numQuestions}
@@ -1572,10 +1616,10 @@ const handleNext = async (file) => {
       {/*  Quiz total marks*/}
       <div className="flex flex-col">
         <div className="w-full flex flex-row">
-        <label className=" text-blue-800 font-semibold mb-2 mr-[72px] "> Quiz total marks<span className="text-red-500">*</span></label>
+        <label className="w-[59%] text-blue-800 font-semibold mb-2"> Quiz total marks<span className="text-red-500">*</span></label>
       
      <input
-                             className={ ` w-[313px] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
 
                   placeholder="Total marks"
                   value={quiztotalmarks}
@@ -1589,10 +1633,10 @@ const handleNext = async (file) => {
       {/* Complexity */}
       <div className="flex flex-col">
         <div className="w-full flex flex-row">
-        <label className=" text-blue-800 font-semibold mb-2 mr-[120px] ">Complexity<span className="text-red-500">*</span></label>
+        <label className="w-[65%] text-blue-800 font-semibold mb-2 mr-[115px] ">Complexity<span className="text-red-500">*</span></label>
 
         <select
-                  className={ ` w-[99px] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
           value={selectedComplexity}
           onChange={handleSelectComplexity}
         >
@@ -1604,7 +1648,7 @@ const handleNext = async (file) => {
         ))}
         </select>
         <select
-                  className={ ` w-[108px] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
           value={selectedComplexity}
           onChange={handleSelectComplexity}
         >
@@ -1616,7 +1660,7 @@ const handleNext = async (file) => {
         ))}
         </select>
         <select
-                  className={ ` w-[108px] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
           value={selectedComplexity}
           onChange={handleSelectComplexity}
         >
@@ -1635,10 +1679,10 @@ const handleNext = async (file) => {
       
  <div className="flex flex-col">
         <div className="w-full flex flex-row">
-        <label className=" text-blue-800 font-semibold mb-2 mr-[76px] ">Pass Percentage<span className="text-red-500">*</span></label>
+        <label className="w-[59%] text-blue-800 font-semibold mb-2">Pass Percentage<span className="text-red-500">*</span></label>
    
         <select
-         className={ ` w-[313px] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+         className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
           value={percentage}
           onChange={handleSelect5}
         >
@@ -1655,10 +1699,10 @@ const handleNext = async (file) => {
       {/* Question Type */}
       <div className="flex flex-col">
         <div className="w-full flex flex-row">
-        <label className=" text-blue-800 font-semibold mb-2 mr-[98px] ">Question Type<span className="text-red-500">*</span></label>
+        <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[75px] ">Question Type<span className="text-red-500">*</span></label>
 
         <select
-                  className={ ` w-[100px] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                  className={ ` w-[80%]  border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
           value={selectedComplexity}
           onChange={handleSelectComplexity}
         >
@@ -1670,7 +1714,7 @@ const handleNext = async (file) => {
         ))}
         </select>
         <select
-                  className={ ` w-[100px] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                  className={ ` w-[80%] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
           value={selectedComplexity}
           onChange={handleSelectComplexity}
         >
@@ -1682,7 +1726,7 @@ const handleNext = async (file) => {
         ))}
         </select>
         <select
-                  className={ ` w-[100px] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                  className={ ` w-[80%] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
           value={selectedComplexity}
           onChange={handleSelectComplexity}
         >
@@ -1702,12 +1746,12 @@ const handleNext = async (file) => {
       
 {/* Quiz Duration */}
       <div className="flex items-center">
-      <div className="flex flex-col">
+      <div className="w-full flex flex-col">
         <div className="w-full flex flex-row">
-        <label className=" text-blue-800 font-semibold mb-2 mr-[91px] ">Quiz Duration<span className="text-red-500">*</span></label>
+        <label className="w-[59%] text-blue-800 font-semibold mb-2 mr-[10px] ">Duration<span className="text-red-500">*</span></label>
    
         <select
-                          className={ ` w-[290px] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                          className={ `w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
 
                   onChange={handleSelect7}
                   value={duration}
@@ -1765,10 +1809,10 @@ const handleNext = async (file) => {
       
       <div className="flex flex-col">
         <div className="w-full flex flex-row">
-        <label className=" text-blue-800 font-semibold mb-2 mr-[9px] ">Quiz will be available from<span className="text-red-500">*</span></label>
+        <label className="w-[63%] text-blue-800 font-semibold mb-2 mr-[9px] ">Quiz will be available from<span className="text-red-500">*</span></label>
         <input
               type="date"
-              className={ ` w-[304px] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
                 placeholder="YYYY-MM-DD"
                 value={availablefrom}
                 onChange={handleAvailableFromChange}
@@ -1781,10 +1825,10 @@ const handleNext = async (file) => {
       {/* Quiz must be disable on */}
       <div className="flex flex-col">
         <div className="w-full flex flex-row">
-        <label className=" text-blue-800 font-semibold mb-2 mr-[17px] ">Quiz must be disable on<span className="text-red-500">*</span></label>
+        <label className="w-[60%] text-blue-800 font-semibold mb-2  ">Quiz must be disable on<span className="text-red-500">*</span></label>
         <input
               type="date"
-              className={ ` w-[312px] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
 
                 placeholder="YYYY-MM-DD"
                 value={disabledon}
@@ -1829,22 +1873,42 @@ const handleNext = async (file) => {
                 )}
               </div>
       </div>
+  
 
+        <div className="flex justify-between md:col-span-2">
+            <button
+              onClick={() => setStep(1)}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
 
-    </div>
+            >
+              Back
+            </button>
+            <button
+              onClick={handleNextpage1}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Next
+            </button>
+          </div>
+      </div>
+      </> 
+       )}
+    {step === 3 && (
+         <>
     <div className=" bg-white my-4 p-5">
-    <div className="grid grid-cols-1 md:grid-cols-3 justify-center items-center gap-6 bg-white ">
+    <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-6 bg-white ">
     
-    <div className="md:col-span-3">
-        <h1 className=" font-semibold text-[20px] text-[#ef5130]">Fluctuating Metrics</h1>
+    <div className="md:col-span-2">
+        <h1 className=" font-semibold text-[20px] text-[#ef5130]">AI Inputs</h1>
       </div>
       {/*  Time bounded Questions */}
       <div className="flex flex-col">
         <div className="w-full flex flex-row">
-        <label className=" text-blue-800 font-semibold mb-2 mr-[10px] "> Time bounded Questions<span className="text-red-500">*</span></label>
+        <label className="w-[57%] text-blue-800 font-semibold mb-2 mr-[10px] "> Time bounded Questions<span className="text-red-500">*</span></label>
 
         <select
-         className={ ` w-[133px] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+         className={ ` w-[75%] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
                   onChange={handleSelect8}
                   value={timings}
                 >
@@ -1861,17 +1925,25 @@ const handleNext = async (file) => {
      
 
   {/*  Public access */}
-  <div className="flex items-center ">
-        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[93px]">
-        Public access <span className="text-red-500">*</span>
-        </label>
-        <Switch
-          onChange={toggler3}
-          checked={publicAccess}
-          className="react-switch"
-        />
-        
+  <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[50%] text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500">*</span></label>
+
+        <select
+          className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                  value={publicAccess}
+                  onChange={toggler3}
+                >
+                  <option value="Public">Public</option>
+                  <option value="Subscribed">Subscribed</option>
+                  <option value="Organization">Organization</option>
+                </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
       </div>
+
   {/* Multiple Answers */}
   <div className="flex items-center">
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[93px]">
@@ -1885,9 +1957,20 @@ const handleNext = async (file) => {
         
       </div>
      
-
+ {/* Multiple Answers */}
+ <div className="flex items-center">
+        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[40px]">
+        Learning Material <span className="text-red-500">*</span>
+        </label>
+        <Switch
+          onChange={toggler1}
+          checked={multiAnswer}
+          className="react-switch"
+        />
+        
+      </div>
     </div>
-    <div className="flex flex-col items-center justify-center mt-5">
+    <div className="flex flex-col items-center justify-center mt-10">
     <div className=" w-[150.68px] h-[37.09px] rounded-[10px] bg-[#1E4DE9]">
       <label
         htmlFor="fileInput"
@@ -1936,6 +2019,16 @@ const handleNext = async (file) => {
       </div>
     </div>
     </div>
+    <div className="flex justify-start md:col-span-2">
+            <button
+              onClick={() => setStep(2)}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Back
+            </button>
+        
+          </div>
     {next && (
   <div className="flex justify-end items-end">
 
@@ -1962,6 +2055,8 @@ const handleNext = async (file) => {
   {errorMessage && <p className=" flex text-red-500">{errorMessage}</p> }
   </div>
     </div>
+    </> 
+       )}
   </main>
 )}
 
@@ -2145,8 +2240,9 @@ const handleNext = async (file) => {
       </div>
 
 </div>
-   
+
  
     </>
+  
   );
 }

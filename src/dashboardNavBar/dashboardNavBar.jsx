@@ -502,7 +502,7 @@ export default function dashboardNavBar() {
     return (
         <div className="container mx-auto p-4">
             <div className="grid grid-cols-5 gap-4 mb-4">
-                <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-md p-2 ">
+                <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-md p-2 bg-white ">
                     <div className="relative">
                     {loading ? (
         <p>Loading...</p>
@@ -582,7 +582,7 @@ export default function dashboardNavBar() {
                     </div>
                 </div>
 
-                <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2">
+                <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2 bg-white">
                     <div className="text-center">
                         <h3 className="text-[16px] font-[500] text-[#214082] mb-2">Quizzes</h3>
                         <p className="text-2xl font-bold text-orange-500">{userData.totalQuizzes}</p>
@@ -596,11 +596,11 @@ export default function dashboardNavBar() {
                         <p className="text-2xl font-bold text-orange-500">{userData.averageScore}%</p>
                     </div>
                 </div>
-                <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2 py-[20px] ">
+                <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2 py-[20px] bg-white">
            <ProgressIndicator />
            
         </div>
-        <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2">
+        <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2 bg-white">
         <div className="flex flex-col items-center mt-6">
       {/* Icons above the rank number */}
       <div className="flex justify-center items-center">
@@ -622,7 +622,7 @@ export default function dashboardNavBar() {
       </div>
 
       {/* Global Score Label */}
-      <div className="text-lg font-semibold text-gray-600">
+      <div className="text-[14px]  font-semibold text-gray-600">
         Global Score
       </div>
 
@@ -645,10 +645,10 @@ export default function dashboardNavBar() {
 
     </div>
 
-                <div className="flex flex-col items-center justify-start relative mr-4 border shadow-lg rounded-sm p-2 py-[20px]">
-                <h3 className="text-sm font-bold mb-5 text-[#214082]">Subscription</h3>
+                <div className="flex flex-col items-center justify-start relative mr-4 border shadow-lg rounded-sm p-2 py-[20px] bg-white">
+                <h3 className="text-[14px] font-bold mb-5 text-[#214082]">Subscription</h3>
 
-                    <h3 className="text-sm font-bold mb-4 text-[#214082]"> <span>Public</span>/<span  className=' text-gray-500'>Subcribed</span>/<span className=' text-gray-500'>Organization</span></h3>
+                    <h3 className="text-sm font-bold mb-4 text-[#214082]"> <span>Public</span>/<span  className=' text-gray-500 text-[12px]'>Subcribed</span>/<span className=' text-gray-500 text-[12px]'>Organization</span></h3>
                     <div className="space-y-2">
                         <div className="flex justify-between">
                             <p className="text-sm text-gray-600 ">Type :</p>

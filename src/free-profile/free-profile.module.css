@@ -166,6 +166,7 @@ text-align: left;
     flex-direction: column;
     position: relative;
     gap: 20px;
+    padding: 20px;
   }
   
   .contentWrapper {
@@ -271,8 +272,8 @@ font-weight: 500;
 line-height: 30px;
 letter-spacing: 0em;
 text-align: left;
-margin-left: 205px;
-margin-top: 16px;
+/* margin-left: 205px;
+margin-top: 16px; */
   }
   
   /*.latestResult {

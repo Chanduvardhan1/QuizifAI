@@ -43,6 +43,7 @@ import username from "../../src/assets/Images/quiz-type/username.png"
 import calander from "../../src/assets/Images/quiz-type/calander.png"
 import timer from "../../src/assets/Images/quiz-type/Timer.png"
 import comment from "../../src/assets/Images/quiz-type/comment.png"
+import editicon from "../../src/assets/Images/quiz-type/edit.png"
 
 const options1 = [{ label: "Numbers" }];
 for (let i = 1; i <= 300; i++) {
@@ -209,6 +210,12 @@ export default function quiztype() {
   const [questionsData, setquestionsData] = useState("");
   const [numQuestions, setNumQuestions] = useState();
   const [questionDuration, setQuestionDuration] = useState(0);
+  const [instructions,setininstructions] = useState('Carefully read each question before selecting your answer. Answer all questions, even if you are not sure. If available, use the skip or review feature to mark questions you want to revisit later. Make sure to submit your answers before the timer ends. Quizzes may auto-submit, but it is best to double-check.')
+  const [simplequestions, setSimplequestions] = useState('')
+  const [moderatequestions, setModeratequestions] = useState('')
+  const [complexquestions, setComplexquestions] = useState('')
+  const [ isEditing ,setisEditing] = useState(false);
+
   const [questions, setQuestions] = useState(
     Array.from({ length: numQuestions }, () => ({
       question_text: "",
@@ -253,8 +260,24 @@ export default function quiztype() {
   const handleNextpage = () => {
     setStep(2);
   };
- 
- 
+  const handleNextpage1 = () => {
+    setStep(3);
+  };
+  const handleNextpage2 = () => {
+    setStep(4);
+
+  };
+  const handleNextpage3 = () => {
+    setStep(5);
+
+  };
+  const handleNextpage4 = () => {
+    setStep(6);
+
+  };
+  const handeledit =()=> {
+    setisEditing(true);
+   }
   useEffect(() => {
     if (frontImage && backImage) {
       handleUpload();
@@ -741,25 +764,36 @@ export default function quiztype() {
     navigate("/create-quiz");
 
   };
+  const handleSimplequestions = (event) => {
+    setSimplequestions(event.target.value);
+  };
+  const handleModeratequestions = (event) => {
+    setModeratequestions(event.target.value);
+  };
+  const handleComplexquestions = (event) => {
+    setComplexquestions(event.target.value);
+  };
   return (
     <>
     <div className="flex flex-row w-full bg-[#f5f5f5] ">
-      <div className="w-[16%]">
+      {/* <div className="w-[16%]">
       <Navigation />
 
-      </div>
-<div className="w-[84%]  p-5">
+      </div> */}
+      <div className="w-full ">
+{/* <div className="flex justify-end py-2 cursor-pointer text-[#eeb600f0]" onClick={Back}><MdOutlineCancel /></div> */}
 
-<div className="flex justify-end pr-2 cursor-pointer text-[#eeb600f0]" onClick={Back}><MdOutlineCancel /></div>
+
 
     {!showRegistrationSuccess && (
-  <main className="container mx-auto mt-10">
-   <div className="bg-[#d3d3d3] rounded-[10px] p-4 mb-8 text-center">
-      <h1 className="font-Poppins font-semibold text-[20px] text-[#214082]">
+  <main className="container mx-auto mt-5">
+ 
+   {/* <div className="bg-[#eedbe5] rounded-[10px] p-4 mb-8 ">
+      <h1 className="font-Poppins font-normal text-[20px] text-[#214082]">
         Finalize the configuration and click 'Next' to proceed with adding your quiz questions.
       </h1>
-    </div>
-<div className="flex w-full h-[20%] border-[#a9a9a9] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-4 bg-white ">
+    </div> */}
+<div className="flex w-full h-[15%] border-[#d9afc4] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-2 bg-white ">
       {/* <img
         src={physics}
         alt="Quiz Cover"
@@ -767,13 +801,10 @@ export default function quiztype() {
       /> */}
           <div className="relative mr-2">
           <img
-  src={
-    isFlipped 
-      ? (backImage ? URL.createObjectURL(backImage) : back)
-      : (frontImage ? URL.createObjectURL(frontImage) : physics)
+  src={isFlipped ? (backImage ? URL.createObjectURL(backImage) : back): (frontImage ? URL.createObjectURL(frontImage) : physics)
   }
   alt="Quiz Cover"
-  className="w-32 h-44 rounded-md mr-4 cursor-pointer"
+  className="w-[120px] h-[140px] rounded-md mr-4 cursor-pointer"
   onClick={handleFlip}
 />
         
@@ -807,14 +838,14 @@ export default function quiztype() {
       <div className="flex flex-col  w-full">
         {/* Title and Version */}
         <div className="flex items-center gap-[3px]">
-          <h2 className="text-lg font-semibold text-gray-800">
+          <h2 className="text-lg font-semibold text-[#00008b]">
           {title}
           </h2>
           {/* <span className="text-xs text-red-500">v1.0</span> */}
         </div>
 
         {/* Description */}
-        <p className="text-gray-600 w-[80%] line-clamp-2 text-sm mt-1">
+        <p className="text-[#00008b] w-[80%] line-clamp-2 text-sm mt-1">
         {description}
         </p>
 
@@ -824,13 +855,13 @@ export default function quiztype() {
           <span className="mx-1">.</span>
           <span>{selectedSubCategory}</span>
           <span className="mx-1">.</span>
-          <span>{selectedCourse} {selectedClass}</span>
+          <span>{selectedCourse} . {selectedClass}</span>
           <span className="mx-1">.</span>
           <span>{selectedComplexity}</span>
         </div>
 
         {/* Icons Row */}
-        <div className=" flex-col items-center space-y-2  mt-4 text-[#00008b]">
+        <div className=" flex-col items-center space-y-2  mt-2 text-[#00008b]">
           {/* Author and Date */}
           <div className="flex items-center space-x-6">
             <div className="flex items-center">
@@ -878,94 +909,92 @@ export default function quiztype() {
         </div> */}
       </div>
     </div>
-
+    {step === 1 && (
+         <>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white my-4 p-5">
-      
+    
       <div className="md:col-span-2"> 
-        <h1 className=" font-semibold text-[20px] text-[#ef5130]">General Details</h1>
+        <h1 className=" font-semibold text-[20px] text-[#ef5130]">Generic Fields</h1>
       </div>
       {/* Show Quiz Title and Description in Step 1 */}
-      {/* {step === 1 && ( */}
-        {/* <> */}
+       
           {/* Quiz Title */}
           <div className="flex flex-col md:col-span-2">
             <div className="w-full flex flex-row">
-              <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+              <label className="w-[10%] text-blue-800 font-semibold mb-2 ">
                 Title <span className="text-red-500">*</span>
               </label>
               <input
-                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-                type="text"
-                required
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
+  className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+  type="text"
+  required
+  value={title}
+  onChange={(e) => setTitle(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1))}
+/>
+
             </div>
             <hr className="h-[1px] w-full" />
           </div>
 
           {/* Quiz Description */}
-          <div className="w-full flex flex-col md:col-span-2">
+          <div className="w-full flex flex-col ">
             <div className="w-full flex flex-row">
-              <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+              <label className="w-[23%] text-blue-800 font-semibold mb-2 ">
                Description <span className="text-red-500">*</span>
               </label>
-              <input
+              <textarea
                 className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-                type="text"
+                type=""
+                rows="4" 
+                cols="50"
                 required
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) => setDescription(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1))}
               />
             </div>
             <hr className="h-[1px] w-full" />
           </div>
  {/* Quiz instructions */}
- <div className="w-full flex items-center  md:col-span-2">
+ <div className="w-full flex items-center ">
  <div className=" w-full flex flex-col">
             <div className="w-full flex flex-row">
-              <label className=" w-[20%] text-blue-800 font-semibold mb-2 mr-[10px]">
-              Instructions <span className="text-red-500">*</span>
+              <label className=" w-[23%] text-blue-800 font-semibold mb-2 mr-[10px]">
+               Instructions <span className="text-red-500">*</span>
               </label>
-              <input
+              <textarea
                 className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-                type="text"
+                 rows="4" 
+                cols="50"
                 required
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                value={instructions}
+                onChange={(e) => setininstructions(e.target.value)}
+                disabled={!isEditing}
+
               />
             </div>
             <hr className="h-[1px] w-full" />
 
           </div>
              <div className="  m-2">
-            <button
+              <img src={editicon} onClick={handeledit} className=" w-[18px] h-[18px] cursor-pointer "/>
+            {/* <button
               // onClick={handleNextpage}
               className="px-2 py-[4px] bg-[#3b61c8] text-white font-semibold rounded-xl hover:bg-blue-700"
             >
               Edit
-            </button>
+            </button> */}
           </div>
           </div>
-          {/* Next Button */}
-          {/* <div className="flex justify-end md:col-span-2">
-            <button
-              onClick={handleNextpage}
-              className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-700"
-            >
-              Next
-            </button>
-          </div> */}
-        {/* </> */}
-      {/* )} */}
+       
+         
+       
 
-      {/* Show Remaining Fields in Step 2 */}
-      {/* {step === 2 && ( */}
-        {/* <> */}
+   
+     
           {/* Quiz Category */}
           <div className="flex flex-col">
             <div className="w-full flex flex-row">
-              <label className=" w-[51%] text-blue-800 font-semibold mb-2 ">
+              <label className=" w-[23%] text-blue-800 font-semibold mb-2 ">
                 Category<span className="text-red-500">*</span>
               </label>
               <select
@@ -987,7 +1016,7 @@ export default function quiztype() {
           {/* Sub Category */}
           <div className="flex flex-col">
             <div className="w-full flex flex-row">
-              <label className="w-[51%] text-blue-800 font-semibold mb-2">
+              <label className="w-[24%] text-blue-800 font-semibold mb-2">
                 Sub Category<span className="text-red-500">*</span>
               </label>
               <select
@@ -1007,9 +1036,12 @@ export default function quiztype() {
           </div>
 
           {/* Course */}
-          <div className="flex flex-col">
+          <div className="md:col-span-2">
+
+          <div className="flex gap-6">
+          <div className="w-full flex flex-col">
             <div className="w-full flex flex-row">
-              <label className="w-[51%] text-blue-800 font-semibold mb-2 ">
+              <label className="w-[31%] text-blue-800 font-semibold mb-2 ">
                 Course<span className="text-red-500">*</span>
               </label>
               <select
@@ -1030,9 +1062,9 @@ export default function quiztype() {
           </div>
 
           {/* Class */}
-          <div className="flex flex-col">
+          <div className="w-full flex flex-col">
             <div className="w-full flex flex-row">
-              <label className=" w-[51%] text-blue-800 font-semibold mb-2">
+              <label className=" w-[20%] text-blue-800 font-semibold mb-2">
                 Class<span className="text-red-500">*</span>
               </label>
               <select
@@ -1051,6 +1083,21 @@ export default function quiztype() {
             </div>
             <hr className="h-[1px] w-full" />
           </div>
+           {/*  Public access */}
+  <div className=" w-[50%] flex flex-col">
+        <div className="w-[100%] flex flex-row">
+        <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500">*</span></label>
+        <Switch
+          onChange={toggler3}
+          checked={publicAccess}
+          className="react-switch"
+        />
+       
+        </div>
+      
+      </div>
+      </div>
+      </div>
           {/* <div className="flex justify-start md:col-span-2">
             <button
               onClick={() => setStep(1)}
@@ -1059,10 +1106,21 @@ export default function quiztype() {
               Back
             </button>
           </div> */}
-        {/* </> */}
-      {/* )} */}
+           <div className="flex justify-end md:col-span-2">
+            <button
+              onClick={handleNextpage}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+            >
+              Next
+            </button>
+          </div>
     </div>
+        </> 
+       )}
+         {step === 2 && (
+         <>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white my-4 p-5">
+  
     <div className="md:col-span-2">
         <h1 className=" font-semibold text-[20px] text-[#ef5130]">Quiz Metrics</h1>
       </div>
@@ -1072,7 +1130,8 @@ export default function quiztype() {
       <div className="flex flex-col">
         <div className="w-full flex flex-row">
         <label className="w-[65%] text-blue-800 font-semibold mb-2  ">Number of Questions<span className="text-red-500">*</span></label>
-         <input
+      
+        <input
                  type="number"
                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
                  placeholder="No of question"
@@ -1093,6 +1152,7 @@ export default function quiztype() {
                    );
                  }}
                />
+
         </div>
       
         <hr className={`h-[1px] w-full`} />
@@ -1119,9 +1179,45 @@ export default function quiztype() {
       {/* Complexity */}
       <div className="flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[65%] text-blue-800 font-semibold mb-2 ">Complexity<span className="text-red-500">*</span></label>
+        <label className="w-[65%] text-blue-800 font-semibold mb-2 mr-[131px] ">Complexity<span className="text-red-500">*</span></label>
 
         <select
+                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          value={simplequestions}
+          onChange={handleSimplequestions}
+        >
+          <option value="" disabled>Simple</option>
+          {Array.from({ length: numQuestions }, (_, index) => (
+          <option key={index + 1} value={index + 1}>
+            {index + 1}
+          </option>
+        ))}
+        </select>
+        <select
+                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          value={moderatequestions}
+          onChange={handleModeratequestions}
+        >
+          <option value="" disabled>Moderate</option>
+          {Array.from({ length: numQuestions }, (_, index) => (
+          <option key={index + 1} value={index + 1}>
+            {index + 1}
+          </option>
+        ))}
+        </select>
+        <select
+                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          value={complexquestions}
+          onChange={handleComplexquestions}
+        >
+          <option value="" disabled>Complex</option>
+          {Array.from({ length: numQuestions }, (_, index) => (
+          <option key={index + 1} value={index + 1}>
+            {index + 1}
+          </option>
+        ))}
+        </select>
+        {/* <select
                   className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
           value={selectedComplexity}
           onChange={handleSelectComplexity}
@@ -1132,7 +1228,7 @@ export default function quiztype() {
               {complexity}
             </option>
           ))}
-        </select>
+        </select> */}
         </div>
       
         <hr className={`h-[1px] w-full`} />
@@ -1148,11 +1244,11 @@ export default function quiztype() {
           value={percentage}
           onChange={handleSelect5}
         >
-         {options5.map((options5) => (
-                   <option>
-                     {options5.label}
-                   </option>
-                 ))}
+          {options5.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
         </select>
         </div>
       
@@ -1301,10 +1397,50 @@ export default function quiztype() {
       
         <hr className={`h-[1px] w-full`} />
       </div>
+       {/* Complexity */}
+       <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[65%] text-blue-800 font-semibold mb-2">Complexity<span className="text-red-500">*</span></label>
+        
+        <select
+                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          value={selectedComplexity}
+          onChange={handleSelectComplexity}
+        >
+          <option value="" disabled>Complex</option>
+          {complexities.map((complexity, index) => (
+            <option key={index} value={complexity}>
+              {complexity}
+            </option>
+          ))}
+        </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+ {/*  Time bounded Questions */}
+ <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[50%] text-blue-800 font-semibold mb-2 "> Time bounded Questions<span className="text-red-500">*</span></label>
 
+        <select
+         className={ ` w-[75%] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                  onChange={handleSelect8}
+                  value={timings}
+                >
+                  {options8.map((options8) => (
+                    <option className="border-grey-400 leading-[18px] font-medium rounded">
+                      {options8.label}
+                    </option>
+                  ))}
+                </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
    {/* Retake Option */}
-   <div className="flex items-center mt-4">
-        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[93px]">
+   <div className="flex items-center">
+        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[105px]">
           Retake Option <span className="text-red-500">*</span>
         </label>
         <Switch
@@ -1335,19 +1471,43 @@ export default function quiztype() {
                 )}
               </div>
       </div>
+  
 
+        <div className="flex justify-between md:col-span-2">
+            <button
+              onClick={() => setStep(1)}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
 
-    </div>
-    <div className=" bg-white my-4 p-5">
-    <div className="grid grid-cols-1 md:grid-cols-3 justify-center items-center gap-6 bg-white ">
-    
-    <div className="md:col-span-3">
-        <h1 className=" font-semibold text-[20px] text-[#ef5130]">AI Metrics</h1>
+            >
+              Back
+            </button>
+            <button
+              onClick={handleNextpage1}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Next
+            </button>
+          </div>
       </div>
-      {/*  Time bounded Questions */}
-      <div className="flex flex-col">
+      </> 
+       )}
+    {step === 3 && (
+         <>
+    <div className=" bg-white my-4 p-5">
+    <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-6 bg-white ">
+    
+    <div className="md:col-span-2">
+        <h1 className=" font-semibold text-[20px] text-[#ef5130]">AI Inputs</h1>
+      </div>
+     
+     
+
+ 
+       {/*  Time bounded Questions */}
+       {/* <div className="flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] "> Time bounded Questions<span className="text-red-500">*</span></label>
+        <label className="w-[57%] text-blue-800 font-semibold mb-2 mr-[10px] "> Subject<span className="text-red-500">*</span></label>
 
         <select
          className={ ` w-[75%] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -1363,13 +1523,13 @@ export default function quiztype() {
         </div>
       
         <hr className={`h-[1px] w-full`} />
-      </div>
+      </div> */}
      
 
   {/*  Public access */}
-  <div className="flex flex-col">
+  {/* <div className="flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[50%] text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500">*</span></label>
+        <label className="w-[50%] text-blue-800 font-semibold mb-2 mr-[10px] ">Chapters<span className="text-red-500">*</span></label>
 
         <select
           className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -1384,11 +1544,11 @@ export default function quiztype() {
         </div>
       
         <hr className={`h-[1px] w-full`} />
-      </div>
+      </div> */}
 
   {/* Multiple Answers */}
   <div className="flex items-center">
-        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[93px]">
+        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[115px]">
         Multiple Answers <span className="text-red-500">*</span>
         </label>
         <Switch
@@ -1399,59 +1559,38 @@ export default function quiztype() {
         
       </div>
      
-
-    </div>
-    {/* <div className="flex flex-col items-center justify-center mt-10">
-    <div className=" w-[150.68px] h-[37.09px] rounded-[10px] bg-[#1E4DE9]">
-      <label
-        htmlFor="fileInput"
-        className="font-Poppins font-medium text-[15px] leading-[22.5px] flex items-center px-4 py-2 text-white cursor-pointer"
-      >
-        <div className="relative group">
-          <span className="block truncate max-w-[60px]">
-            {uploadedFile ? uploadedFile.name : 'Select'}
-          </span>
-          {uploadedFile && (
-            <span className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-max p-2 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity">
-              {uploadedFile.name}
-            </span>
-          )}
-        </div>
-        <input
-          id="fileInput"
-          type="file"
-          accept="application/pdf"
-          onChange={handleFileChange}
-          className="hidden"
+ {/* Multiple Answers */}
+ <div className="flex items-center">
+        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[55px]">
+        Learning Material <span className="text-red-500">*</span>
+        </label>
+        <Switch
+          onChange={toggler1}
+          checked={multiAnswer}
+          className="react-switch"
         />
-        <img
-          className="w-[24px] h-[24px] ml-4 -rotate-90"
-          src={Next}
-          alt="Next"
-        />
-        <img
-          className="w-[20.48px] h-[24.96px] ml-1"
-          src={PDF}
-          alt="PDF"
-        />
-      </label>
-
-      {/* <button
-        className="w-[98px] h-[32px] font-Poppins text-[#214082] font-medium text-[15px] leading-[20px] rounded-[10px] bg-[#1E4DE9] text-white mt-9 ml-5"
-        onClick={handleNext}
-      >
-        Submit
-      </button> */}
-      {/* <div className=" w-[137.09px] h-[9.05px]">
-        <Line percent={uploadProgress} strokeWidth={5} strokeColor="#B1FB9B" />
-        <h1 className="font-Poppins text-[#214082] font-normal text-[10px] leading-[15px]  mt-1 ml-8">
-          {`Uploading ${uploadProgress}%`}
-        </h1>
+        
       </div>
     </div>
-    </div>  */}
-   
-  <div className="flex justify-end items-end mt-10">
+  
+    <div className="flex justify-between md:col-span-2 py-5">
+            <button
+              onClick={() => setStep(2)}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Back
+            </button>
+            <button
+              onClick={handleNextpage2}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Next
+            </button>
+          </div>
+    {/* {next && (
+  <div className="flex justify-end items-end">
 
    
   <div className="w-[98px] h-[37px]  rounded-[10px] bg-[#1E4DE9]">
@@ -1469,30 +1608,31 @@ export default function quiztype() {
             </button>
           </div>
           </div>
-
-    <div className="flex justify-center items-center mt-10">
-
+    )} */}
    
-  {errorMessage && <p className=" flex text-red-500">{errorMessage}</p> }
-  </div>
     </div>
-  </main>
-)}
+    </> 
+       )}
+  {/* </main>
+)} */}
+{step === 4 && (
+         <>
+        {/* {showRegistrationSuccess && ( */}
+          <main className="w-max-auto">
+          
+            <div className="w-full">
+              <h1 className="font-Poppins font-bold text-[30px] leading-[45px] text-orange-400">
+                Create / Edit your Quiz
+              </h1>
+              <h1 className="font-Poppins font-medium text-[12px] leading-[18px] text-[#214082]">
+                Enter all your questions, options, and answers
+              </h1>
+            </div>
 
-{showRegistrationSuccess && (
-         <main className="w-max-auto">
-           <div className="w-[848px] h-[44px] absolute top-[90px] left-[298px]">
-             <h1 className="font-Poppins font-bold text-[30px] leading-[45px] text-orange-400">
-               Create / Edit your Quiz
-             </h1>
-             <h1 className="font-Poppins font-medium text-[12px] text-[#214082] leading-[18px]">
-               Enter all your questions, options, and answers
-             </h1>
-           </div>
-
-
-           <div className="absolute top-[210px] left-[298px] w-[1212px] h-[450px] ">
-             {questions.map((question, questionIndex) => (
+            {/* Questions and options */}
+            <div className="w-full ">
+            
+            {questions.map((question, questionIndex) => (
                <div key={questionIndex} className="mb-8 ">
 
                  <div className="flex items-center mb-4">
@@ -1609,25 +1749,231 @@ export default function quiztype() {
                  ))}
                </div>
              ))}
+              <div className=" flex justify-between items-center py-5 ">
+                <button
+                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
+                  onClick={() => setStep(3)}
+                >
+                  Back
+                </button>
+                <button
+                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
+                  onClick={() => setStep(3)}
+                >
+                  Save as Driaft
+                </button>
 
-             <div className=" flex justify-between items-center pr-[330px] ">
-               <button
-                 className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
-                 onClick={handleNext2}
-               >
-                 Back
-               </button>
+                <button
+                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
+                  onClick={handleNextpage3}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
 
-               <button
-                 className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
-                 onClick={handleNext}
-               >
-                 Save
-               </button>
-             </div>
-           </div>
-         </main>
+            {/* Submit button */}
+          </main>
+        {/* // )} */}
+        </>
+)}
+{step === 5 && (
+         <>
+          <div className=" bg-white my-4 p-5">
+    <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-6 bg-white ">
+    
+    <div className="md:col-span-2">
+        <h1 className=" font-semibold text-[20px] text-[#ef5130]">Assign Quizzes</h1>
+      </div>
+     
+      <div className="flex flex-col w-full">
+  <div className="w-full flex flex-row">
+    <label className="w-[40%] text-blue-800 font-semibold mb-2 ">
+      Oragnization<span className="text-red-500">*</span>
+    </label>
+    <input
+                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                  placeholder="Oragnization"
+                  // value={quiztotalmarks}
+                  // onChange={(e) => setquiztotalmarks(e.target.value)}
+                ></input>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+<div className="flex flex-col w-full">
+  <div className="w-full flex flex-row">
+    <label className="w-[40%] text-blue-800 font-semibold mb-2 ">
+      School<span className="text-red-500">*</span>
+    </label>
+    <input
+                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                  placeholder="School"
+                  // value={quiztotalmarks}
+                  // onChange={(e) => setquiztotalmarks(e.target.value)}
+                ></input>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+<div className="flex flex-col w-full">
+  <div className="w-full flex flex-row">
+    <label className="w-[40%] text-blue-800 font-semibold mb-2 ">
+      Deparment<span className="text-red-500">*</span>
+    </label>
+    <select
+      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+      value={selectedCourse}
+      onChange={handleSelectCourse}
+    >
+      <option value="" disabled>Select a Deparment</option>
+      <option value="">None</option>
+      {courses.map((course) => (
+        <option key={course.course_id} value={course.course_name}>
+          {course.course_name}
+        </option>
+      ))}
+    </select>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+<div className="w-full flex flex-col">
+  <div className="w-full flex flex-row">
+    <label className="w-[40%] text-blue-800 font-semibold mb-2 ">
+      Class<span className="text-red-500">*</span>
+    </label>
+    <select
+      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+      value={selectedCourse}
+      onChange={handleSelectCourse}
+    >
+      <option value="" disabled>Select a Class</option>
+      <option value="">None</option>
+      {courses.map((course) => (
+        <option key={course.course_id} value={course.course_name}>
+          {course.course_name}
+        </option>
+      ))}
+    </select>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+
+
+
+{/* Multiple Answers */}
+<div className="flex items-center">
+        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[72px]">
+        Email Alert <span className="text-red-500">*</span>
+        </label>
+        <Switch
+          onChange={toggler1}
+          checked={multiAnswer}
+          className="react-switch"
+        />
+        
+      </div>
+
+{/* Section */}
+<div className="w-full flex flex-col">
+  <div className="w-full flex flex-row">
+    <label className=" w-[40%] text-blue-800 font-semibold mb-2">
+    Section<span className="text-red-500">*</span>
+    </label>
+    <select
+      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+      value={selectedClass}
+      onChange={handleSelectClass}
+      disabled={classes.length === 0}
+    >
+      <option value="" disabled>Select a Section</option>
+      {classes.map((className, index) => (
+        <option key={index} value={className}>
+          {className}
+        </option>
+      ))}
+    </select>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+
+
+    </div>
+  
+    <div className="flex justify-between md:col-span-2 py-5">
+            <button
+              onClick={() => setStep(4)}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Back
+            </button>
+            <button
+              onClick={handleNextpage4}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Next
+            </button>
+          </div>
+   
+ 
+   
+    </div>
+
+
+
+
+
+  
+    </> 
        )}
+        {step === 6 && (
+         <>
+    <div className=" bg-white my-4 p-5">
+    <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-6 bg-white ">
+    
+    <div className="md:col-span-2">
+        <h1 className=" font-semibold text-[20px] text-[#ef5130]">Print Quiz</h1>
+      </div>
+     
+     
+
+
+  {/* Multiple Answers */}
+  <button
+           
+              className="px-[40px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Print
+            </button>
+     
+ {/* Multiple Answers */}
+ <button
+              className="px-[40px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Save
+            </button>
+    </div>
+  
+    <div className="flex justify-between md:col-span-2 py-5">
+            <button
+              onClick={() => setStep(5)}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Back
+            </button>
+          </div>
+ 
+   
+    </div>
+    </> 
+       )}
+ </main>
+)}
       </div>
 
 </div>

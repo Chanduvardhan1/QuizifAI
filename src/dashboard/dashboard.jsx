@@ -46,7 +46,7 @@ import NonAtemptedCard from "../../src/commonCard/nonAttemtedCard.jsx";
 import AtemptedCard from "../../src/commonCard/attemptedCard.jsx";
 import WeeklyProgess from "../../src/weeklyProgress/weeklyProgress.jsx";
 import DashBoardNavBar from "../../src/dashboardNavBar/dashboardNavBar.jsx";
-
+import more from "../../src/assets/Images/dashboard/more.png"
 const Dashboard = () => {
   const getFormattedDate = () => {
     const currentDate = new Date();
@@ -536,20 +536,20 @@ const Dashboard = () => {
               />
             </span>
           </div>
-          <div className="flex flex-row w-full max-w-[400px] h-[170px] border-[#1E90FF] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-4 bg-white mb-4">
+          <div className="flex flex-row w-full max-w-[400px] h-[170px] border-[#1E90FF] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4">
   {/* Image Section */}
   <div       className="w-[93px] h-[127px]  rounded-md  mr-2"
   >
     <img
       src={physics}
       alt="Quiz Cover"
-      className="w-[93px] h-[127px] rounded-md mr-2"
+      className="w-[93px] h-[140px] rounded-md mr-2"
     />
   </div>
 
   <div className="flex flex-col w-full">
     {/* Title and Version */}
-    <div className="relative group flex items-center justify-center gap-[3px]">
+    <div className="relative group flex justify-between items-center gap-[3px]">
       {/* Truncated text container */}
       <h2 className="text-[15px] font-semibold text-gray-800 w-[170px] sm:w-[215px] truncate">
         Physics,Physics,Physics,Physics
@@ -559,21 +559,22 @@ const Dashboard = () => {
       <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
         Physics,Physics,Physics,Physics
       </span>
+      <img src={more} alt="" className=" w-[12px] h-[12px]" />
     </div>
 
     {/* Meta Information */}
-    <div className="text-[#00008b] text-[12px] flex flex-wrap justify-center mt-1">
-      <span>General</span>
+    <div className="text-[#00008b] text-[12px] truncate max-w-[230px] justify-start mt-1">
+      <span>General General</span>
       <span className="mx-1">.</span>
-      <span>General</span>
+      <span>General General</span>
       <span className="mx-1">.</span>
-      <span>General</span>
+      <span>General General</span>
       <span className="mx-1">.</span>
-      <span>Simple</span>
+      <span>SimpleGeneral</span>
     </div>
 
     {/* Icons Row */}
-    <div className="flex-col items-center text-[12px] space-y-2 mt-2 text-[#00008b]">
+    <div className="flex-col items-center text-[12px] space-y-1 mt-2 text-[#00008b]">
       {/* Author and Date */}
       <div className="flex items-center justify-between text-xs sm:text-sm">
         <div className="flex items-center">

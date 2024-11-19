@@ -272,6 +272,7 @@ margin-bottom: 25px;
   text-align: left;
   margin-left: 4.5%;
   color: #214082;
+  padding-right:40px;
 
 }
 
@@ -347,7 +348,7 @@ margin-bottom: 25px;
   justify-content: left;
 } */
 
-.headerRight {
+/* .headerRight {
   display: flex;
   justify-content: center;
   align-items: row;
@@ -360,7 +361,7 @@ margin-bottom: 25px;
   letter-spacing: 0em;
   text-align: left;
   color: #343452;
-}
+} */
 
 .completionInfo {
   border-radius: 10px;

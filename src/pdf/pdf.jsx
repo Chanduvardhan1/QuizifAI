@@ -36,6 +36,7 @@ import editicon from "../../src/assets/Images/quiz-type/edit.png"
 import Quiztype from "../quiz-type/quiz-type";
 import Textboook from "../textbook/textbook";
 import Csv from "../csv/csv"
+import GreaterThan from "../assets/Images/images/dashboard/greaterthan.png";
 const options1 = [{ label: "Numbers" }];
 
 for (let i = 1; i <= 300; i++) {
@@ -231,6 +232,26 @@ const [ isEditing ,setisEditing] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
  const [instructions,setininstructions] = useState('Carefully read each question before selecting your answer. Answer all questions, even if you are not sure. If available, use the skip or review feature to mark questions you want to revisit later. Make sure to submit your answers before the timer ends. Quizzes may auto-submit, but it is best to double-check.')
   // Handle the upload of front or back image
+  const [currentPage, setCurrentPage] = useState(1);
+  const questionsPerPage = 20; // Number of questions per page
+
+  // Calculate start and end indices for the current page
+  const startIndex = (currentPage - 1) * questionsPerPage;
+  const endIndex = startIndex + questionsPerPage;
+
+  // Get the questions for the current page
+  const paginatedQuestions = questions.slice(startIndex, endIndex);
+
+  const handlePageChange = (direction) => {
+    setCurrentPage((prevPage) => {
+      if (direction === "next") {
+        return Math.min(prevPage + 1, Math.ceil(questions.length / questionsPerPage));
+      } else {
+        return Math.max(prevPage - 1, 1);
+      }
+    });
+  };
+
   const [step, setStep] = useState(1);
 
   const handleNextpage = () => {
@@ -1234,10 +1255,7 @@ const handleNext = async (file) => {
     return selectedOptions;
   };
 
-  const handleDeleteQuestion = (questionIndex) => {
-    const updatedQuestions = questions.filter((_, index) => index !== questionIndex);
-    setQuestions(updatedQuestions);
-  };
+
   
   const toggleQuestionSelection = (index) => {
     setSelectedQuestions(prevSelected => {
@@ -1248,6 +1266,11 @@ const handleNext = async (file) => {
       }
     });
   };
+  const handleOptionChange = (questionIndex, optionIndex, value) => {
+    const updatedQuestions = [...questions];
+    updatedQuestions[questionIndex].options[optionIndex].answer_option_text = value;
+    setQuestions(updatedQuestions);
+  };
   const handleDeleteSelected = () => {
     const newQuestions = questions.filter((_, index) => !selectedQuestions.includes(index));
     setQuestions(newQuestions);
@@ -1255,9 +1278,8 @@ const handleNext = async (file) => {
     setSelectedQuestions([]);
     // setIsAllSelected(false);
   };
-  const handleOptionChange = (questionIndex, optionIndex, value) => {
-    const updatedQuestions = [...questions];
-    updatedQuestions[questionIndex].options[optionIndex].answer_option_text = value;
+  const handleDeleteQuestion = (questionIndex) => {
+    const updatedQuestions = questions.filter((_, index) => index !== questionIndex);
     setQuestions(updatedQuestions);
   };
   const Back = () => {
@@ -1381,14 +1403,14 @@ const handleTabClick = (tab) => {
         {/* Title and Version */}
         <div className="flex items-center gap-[3px]">
           <h2 className="text-lg font-semibold text-[#00008b]">
-          {title}
+          {title || "Enter the Title"}
           </h2>
           {/* <span className="text-xs text-red-500">v1.0</span> */}
         </div>
 
         {/* Description */}
         <p className="text-[#00008b] w-[80%] line-clamp-2 text-sm mt-1">
-        {description}
+        {description || "Enter the Description"}
         </p>
 
         {/* Meta Information */}
@@ -1456,7 +1478,7 @@ const handleTabClick = (tab) => {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white my-4 p-5">
     
       <div className="md:col-span-2"> 
-        <h1 className=" font-semibold text-[20px] text-[#ef5130]">Generic Fields</h1>
+        <h1 className=" font-semibold text-[20px] text-[#214082]">Generic Fields</h1>
       </div>
       {/* Show Quiz Title and Description in Step 1 */}
        
@@ -1664,7 +1686,7 @@ const handleTabClick = (tab) => {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white my-4 p-5">
   
     <div className="md:col-span-2">
-        <h1 className=" font-semibold text-[20px] text-[#ef5130]">Quiz Metrics</h1>
+        <h1 className=" font-semibold text-[20px] text-[#214082]">Quiz Metrics</h1>
       </div>
 
       {/* Number of Questions */}
@@ -2025,7 +2047,7 @@ const handleTabClick = (tab) => {
     <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-6 bg-white ">
     
     <div className="md:col-span-2">
-        <h1 className=" font-semibold text-[20px] text-[#ef5130]">AI Inputs</h1>
+        <h1 className=" font-semibold text-[20px] text-[#214082]">AI Inputs</h1>
       </div>
      
      
@@ -2074,8 +2096,8 @@ const handleTabClick = (tab) => {
       </div> */}
 
   {/* Multiple Answers */}
-  <div className="flex items-center">
-        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[115px]">
+  <div className="flex items-center md:col-span-2">
+        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[59px]">
         Multiple Answers <span className="text-red-500">*</span>
         </label>
         <Switch
@@ -2087,7 +2109,7 @@ const handleTabClick = (tab) => {
       </div>
      
  {/* Multiple Answers */}
- <div className="flex items-center">
+ <div className="flex items-center md:col-span-2">
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[55px]">
         Learning Material <span className="text-red-500">*</span>
         </label>
@@ -2145,9 +2167,9 @@ const handleTabClick = (tab) => {
 {step === 4 && (
          <>
         {/* {showRegistrationSuccess && ( */}
-          <main className="w-max-auto">
+          <main className="w-max-auto bg-white p-[10px] mt-[10px]">
               <div className="flex flex-col items-center justify-center mt-10">
-                <div className=" p-2 border-[1px] bg-white flex flex-col justify-center">
+                <div className=" p-2 border-[1px] bg-gray-300 rounded-lg flex flex-col justify-center">
                   <div className="flex">
                     <img className="w-[24px] h-[24px] ml-4 -rotate-90" src={Next}/>
                
@@ -2240,7 +2262,7 @@ const handleTabClick = (tab) => {
 </div>
     </div>
             <div className="w-full">
-              <h1 className="font-Poppins font-bold text-[30px] leading-[45px] text-orange-400">
+              <h1 className="font-Poppins font-bold text-[20px] leading-[45px] text-orange-400">
                 Create / Edit your Quiz
               </h1>
               <h1 className="font-Poppins font-medium text-[12px] leading-[18px] text-[#214082]">
@@ -2271,9 +2293,8 @@ const handleTabClick = (tab) => {
       </div>
   
       </div>
-              {questions.map((question, questionIndex) => (
+              {/* {questions.map((question, questionIndex) => (
                 <div key={questionIndex} className="mb-8 ">
-                  {/* Input field for question */}
                   <div className="flex items-center mb-4">
                   <input
     className="ml-[-20px] mr-[5px] mt-1 flex justify-center text-center"
@@ -2297,7 +2318,6 @@ const handleTabClick = (tab) => {
                       }}
                     />
 
-                    {/* Input field for question weightage */}
                     <input
                       type="number"
                       placeholder="Marks"
@@ -2315,7 +2335,6 @@ const handleTabClick = (tab) => {
                       }}
                     />
 
-                    {/* Input field for question duration */}
                     <input
                       type="text"
                       hidden
@@ -2337,26 +2356,8 @@ const handleTabClick = (tab) => {
         }}  
         className="w-[25px] h-[25px] text-orange-500"
 />
-                    {/* <input
-  type="number"
-  placeholder="Duration"
-  className="w-[130px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
-  value={question.question_duration}
-  onChange={(e) => {
-    const value = parseInt(e.target.value); // Parse input value to integer
-    if (!isNaN(value)) { // Check if value is a valid number
-      const updatedQuestions = questions.map((q, index) => {
-        if (index === questionIndex) {
-          return { ...q, question_duration: value };
-        }
-        return q;
-      });
-      setQuestions(updatedQuestions);
-    }
-  }}
-/> */}
+           
                   </div>
-                  {/* Input fields for options */}
                   {getOptions(question.options).map((option, optionIndex) => (
               <div key={optionIndex} className="flex items-center mb-2">
                 <div className="mr-2 text-xl font-normal" style={{
@@ -2393,15 +2394,142 @@ const handleTabClick = (tab) => {
               </div>
             ))}
                 </div>
-              ))}
+              ))} */}
+                <div>
+      {paginatedQuestions.map((question, questionIndex) => (
+        <div key={startIndex + questionIndex} className="mb-8">
+          {/* Input field for question */}
+          <div className="flex items-center mb-4">
+            <input
+              className="ml-[-20px] mr-[5px] mt-1 flex justify-center text-center"
+              type="checkbox"
+              checked={selectedQuestions.includes(startIndex + questionIndex)}
+              onChange={() => toggleQuestionSelection(startIndex + questionIndex)}
+            />
+            <div className="mr-2 text-xl font-bold text-[#214082]">
+              {startIndex + questionIndex + 1}.
+            </div>
+            <input
+              type="text"
+              placeholder={`Question`}
+              className="w-[70%] h-[40px] font-bold text-[#214082] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] p-[10px] text-[14px]"
+              value={question.question_text}
+              onChange={(e) => {
+                const newQuestions = [...questions];
+                newQuestions[startIndex + questionIndex].question_text =
+                  e.target.value;
+                setQuestions(newQuestions);
+              }}
+            />
+
+            {/* Input field for question weightage */}
+            <input
+              type="number"
+              placeholder="Marks"
+              className="w-[85px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
+              value={question.question_weightage}
+              onChange={(e) => {
+                const value = parseInt(e.target.value);
+                const updatedQuestions = questions.map((q, index) => {
+                  if (index === startIndex + questionIndex) {
+                    return { ...q, question_weightage: value };
+                  }
+                  return q;
+                });
+                setQuestions(updatedQuestions);
+              }}
+            />
+          </div>
+
+          {/* Options */}
+          {getOptions(question.options).map((option, optionIndex) => (
+            <div key={optionIndex} className="flex items-center mb-2">
+              <div
+                className="mr-2 text-xl font-normal"
+                style={{
+                  width: "40px",
+                  marginRight: "10px",
+                  padding: "5px",
+                  textAlign: "center",
+                  border: "1px solid #ccc",
+                  borderRadius: "5px",
+                  backgroundColor: "#f9f9f9",
+                  justifyContent: "center",
+                  display: "flex",
+                  alignItems: "center",
+                  fontSize: "14px",
+                }}
+              >
+                {String.fromCharCode(97 + optionIndex).toUpperCase()}
+              </div>
+              <input
+                type="text"
+                placeholder="Option Text"
+                className="w-[836px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal text-[12px]"
+                value={option.answer_option_text}
+                onChange={(e) =>
+                  handleOptionChange(startIndex + questionIndex, optionIndex, e.target.value)
+                }
+              />
+              <button
+                className={`mr-2 ${
+                  option.correct_answer_flag ? "bg-green-500" : "bg-gray-300"
+                } rounded-full w-10 h-[20px] transition-colors duration-300 focus:outline-none`}
+                onClick={() => handleToggleButton(startIndex + questionIndex, optionIndex)}
+              >
+                <span
+                  className={`block ${
+                    option.correct_answer_flag ? "translate-x-5" : "translate-x-0"
+                  } transform -translate-y-1.5 w-[18px] h-[18px] relative top-[6px] bg-white rounded-full shadow-md transition-transform duration-300`}
+                ></span>
+              </button>
+            </div>
+          ))}
+        </div>
+      ))}
+
+      {/* Pagination Controls */}
+    
+      <div className="flex justify-between mt-4">
+              <button
+                className="flex gap-1 items-center cursor-pointer"
+                disabled={currentPage === 1}
+                onClick={() => handlePageChange("previous")}
+              >
+                <img
+                  className="h-3 w-3 rotate-180"
+                  src={GreaterThan}
+                  alt="Previous icon"
+                />
+                <h1 className="text-[#F17530]">Previous</h1>
+              </button>
+              <span>
+              Page {currentPage} of {Math.ceil(questions.length / questionsPerPage)}
+
+              </span>
+              <button
+                className="flex gap-1 items-center cursor-pointer"
+                disabled={currentPage === Math.ceil(questions.length / questionsPerPage)}
+                 onClick={() => handlePageChange("next")}
+              >
+                <h1 className="text-[#F17530]">Next</h1>
+                <img className="h-3 w-3" src={GreaterThan} alt="Next icon" />
+              </button>
+            </div>
+    </div>
               <div className=" flex justify-between items-center py-5 ">
+                <div>
+
+               
                 <button
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={() => setStep(3)}
                 >
                   Back
                 </button>
-                <button
+                </div>
+                <div className="flex gap-[5px]">
+                                  <button
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={() => setStep(3)}
                 >
@@ -2412,8 +2540,9 @@ const handleTabClick = (tab) => {
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNextpage3}
                 >
-                  Next
+                  Create
                 </button>
+                </div>
               </div>
             </div>
 
@@ -2428,7 +2557,7 @@ const handleTabClick = (tab) => {
     <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-6 bg-white ">
     
     <div className="md:col-span-2">
-        <h1 className=" font-semibold text-[20px] text-[#ef5130]">Assign Quizzes</h1>
+        <h1 className=" font-semibold text-[20px] text-[#214082]">Assign Quizzes</h1>
       </div>
      
       <div className="flex flex-col w-full">
@@ -2570,7 +2699,7 @@ const handleTabClick = (tab) => {
     <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-6 bg-white ">
     
     <div className="md:col-span-2">
-        <h1 className=" font-semibold text-[20px] text-[#ef5130]">Print Quiz</h1>
+        <h1 className=" font-semibold text-[20px] text-[#214082]">Print Quiz</h1>
       </div>
      
      

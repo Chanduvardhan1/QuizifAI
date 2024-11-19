@@ -21,6 +21,7 @@ import Attempt1 from "/images/dashboard/Attempt1.png";
 import NoOfQuestion from "/images/dashboard/NoOfQuestion.png";
 import Easy from "/images/dashboard/Easy.png";
 import Clock from "/images/dashboard/Clock.png";
+import userplues from "../../src/assets/Images/dashboard/Admin-User.png"
 import arrow from "../../src/assets/Images/dashboard/rightArrow.png";
 import "react-sweet-progress/lib/style.css";
 import { toast, ToastContainer } from "react-toastify";
@@ -47,6 +48,11 @@ import AtemptedCard from "../../src/commonCard/attemptedCard.jsx";
 import WeeklyProgess from "../../src/weeklyProgress/weeklyProgress.jsx";
 import DashBoardNavBar from "../../src/dashboardNavBar/dashboardNavBar.jsx";
 import more from "../../src/assets/Images/dashboard/more.png"
+import Attemts from "../../src/assets/Images/dashboard/Attemts.png"
+import view1 from "../../src/assets/Images/dashboard/view1.png"
+import leader from "../../src/assets/Images/dashboard/Leader.png"
+import print1 from "../../src/assets/Images/dashboard/print.png"
+
 const Dashboard = () => {
   const getFormattedDate = () => {
     const currentDate = new Date();
@@ -353,6 +359,9 @@ const Dashboard = () => {
   const createQuiz = () => {
     navigate(`/create-quiz`);
   };
+  const createUser = () => {
+    navigate(`/usersgroup`);
+  };
   const [cardStates, setCardStates] = useState(
     Array(allquizzes.length).fill(false)
   );
@@ -481,9 +490,51 @@ const Dashboard = () => {
             {username.charAt(0).toUpperCase() + username.slice(1)}
           </p>
 
-          <div className={styles.headerRight}>
+<div>
+          <div className="flex gap-[10px]">
             {userRole === "Quiz Master" && (
-              <div className="w-[99px] h-[41px] absolute mr-[80px] mb-2 pb-2 -mt-[35px] rounded-[10px] bg-[#fee2e2]">
+
+              <div className="w-[99px] h-[41px]  rounded-[10px] bg-[#fee2e2]">
+                <div onClick={createUser} className="flex cursor-pointer">
+                  <img
+                    className="w-[25px] h-[25px] ml-2 mt-2"
+                    src={userplues}
+                    alt="Plus Icon"
+                  />
+                  <a
+                    onClick={createUser}
+                    className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
+                  >
+                    users
+                  </a>
+                </div>
+              </div>
+              
+            )}
+             {userRole === "Quiz Master" && (
+
+<div className="w-[99px] h-[41px]  rounded-[10px] bg-[#fee2e2]">
+  <div className="flex cursor-pointer"  onClick={createQuiz}>
+    <img
+      className="w-[25px] h-[25px] ml-2 mt-2"
+      src={Plus}
+      alt="Plus Icon"
+    />
+    <a
+      onClick={createQuiz}
+      className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
+    >
+      Quiz
+    </a>
+  </div>
+</div>
+
+)}
+          </div>
+          {/* <div className={styles.headerRight1}>
+            {userRole === "Quiz Master" && (
+              
+              <div className="w-[99px] h-[41px]  mr-[80px] mb-2 pb-2 -mt-[35px] rounded-[10px] bg-[#fee2e2]">
                 <div className="flex">
                   <img
                     className="w-[25px] h-[25px] ml-2 mt-2"
@@ -498,7 +549,9 @@ const Dashboard = () => {
                   </a>
                 </div>
               </div>
+              
             )}
+          </div> */}
           </div>
         </div>
         <div className={styles.completionInfo}>
@@ -602,15 +655,15 @@ const Dashboard = () => {
       {/* Attempt Info */}
       <div className="flex items-center space-x-4 text-xs sm:text-sm">
         <div className="flex items-center">
-          <img src={comment} className="w-[18px] h-[18px] mr-1" />
+          <img src={Attemts} className="w-[18px] h-[18px] mr-1" />
           <span className="ml-1 text-[12px]">1 Attempt</span>
         </div>
       </div>
       <div className="flex items-end justify-end ">
         <div className="flex items-end">
-          <img src={username1} className="w-[18px] h-[18px] mr-1" />
-          <img src={calander} className="w-[18px] h-[18px] mr-1" />
-          <img src={comment} className="w-[18px] h-[18px] mr-1" />
+          <img src={view1} className="w-[18px] h-[18px] mr-1" />
+          <img src={leader} className="w-[18px] h-[18px] mr-1" />
+          <img src={print1} className="w-[18px] h-[18px] mr-1" />
 
         </div>
       </div>

@@ -914,7 +914,7 @@ const handleComplexquestions = (event) => {
         {/* Title and Version */}
         <div className="flex items-center gap-[3px]">
           <h2 className="text-lg font-semibold text-[#00008b]">
-          {quizData ? quizData.quiz_title : title}
+          {quizData ? quizData.quiz_title : title || "Enter the Title"}
 
           </h2>
           {/* <span className="text-xs text-red-500">v1.0</span> */}
@@ -922,7 +922,7 @@ const handleComplexquestions = (event) => {
 
         {/* Description */}
         <p className="text-[#00008b] w-[80%] line-clamp-2 text-sm mt-1">
-        {quizData ? quizData.quiz_description : description}
+        {quizData ? quizData.quiz_description : description || "Enter the Description"}
 
         </p>
 

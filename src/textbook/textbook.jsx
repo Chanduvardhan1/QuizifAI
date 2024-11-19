@@ -1264,14 +1264,14 @@ const handleComplexquestions = (event) => {
         {/* Title and Version */}
         <div className="flex items-center gap-[3px]">
           <h2 className="text-lg font-semibold text-[#00008b]">
-          {title}
+          {title || "Enter the Title"}
           </h2>
           {/* <span className="text-xs text-red-500">v1.0</span> */}
         </div>
 
         {/* Description */}
         <p className="text-[#00008b] w-[80%] line-clamp-2 text-sm mt-1">
-        {description}
+        {description || "Enter the Description"}
         </p>
 
         {/* Meta Information */}
@@ -1339,7 +1339,7 @@ const handleComplexquestions = (event) => {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white my-4 p-5">
     
       <div className="md:col-span-2"> 
-        <h1 className=" font-semibold text-[20px] text-[#ef5130]">Generic Fields</h1>
+        <h1 className=" font-semibold text-[20px] text-[#214082]">Generic Fields</h1>
       </div>
       {/* Show Quiz Title and Description in Step 1 */}
        
@@ -1547,7 +1547,7 @@ className="react-switch"
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white my-4 p-5">
   
     <div className="md:col-span-2">
-        <h1 className=" font-semibold text-[20px] text-[#ef5130]">Quiz Metrics</h1>
+        <h1 className=" font-semibold text-[20px] text-[#214082]">Quiz Metrics</h1>
       </div>
 
       {/* Number of Questions */}
@@ -1907,7 +1907,7 @@ className="react-switch"
     <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-6 bg-white ">
     
     <div className="md:col-span-2">
-        <h1 className=" font-semibold text-[20px] text-[#ef5130]">AI Inputs</h1>
+        <h1 className=" font-semibold text-[20px] text-[#214082]">AI Inputs</h1>
       </div>
      
      
@@ -2382,7 +2382,7 @@ className="react-switch"
     <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-6 bg-white ">
     
     <div className="md:col-span-2">
-        <h1 className=" font-semibold text-[20px] text-[#ef5130]">Assign Quizzes</h1>
+        <h1 className=" font-semibold text-[20px] text-[#214082]">Assign Quizzes</h1>
       </div>
      
       <div className="flex flex-col w-full">
@@ -2528,7 +2528,7 @@ className="react-switch"
     <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-6 bg-white ">
     
     <div className="md:col-span-2">
-        <h1 className=" font-semibold text-[20px] text-[#ef5130]">Print Quiz</h1>
+        <h1 className=" font-semibold text-[20px] text-[#214082]">Print Quiz</h1>
       </div>
      
      

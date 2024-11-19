@@ -28,7 +28,21 @@ const UserAndGroups = () => {
   const userId = localStorage.getItem("user_id");
   const [options, setOptions] = useState([]);
   const [notification, setNotification] = useState(null);
-  
+  const [isOrganization, setIsOrganization] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+
+  const handleSelectChange = (event) => {
+    if (event.target.value === "createAdmin") {
+      setShowPopup(true);
+    }
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
+  };
+  const handleCheckboxChange = (event) => {
+    setIsOrganization(event.target.checked);
+  };
 
   const fetchGroups = async () => {
     const authToken = localStorage.getItem("authToken");
@@ -194,10 +208,10 @@ const UserAndGroups = () => {
   };
 
   const filteredGroups = groups.filter((group) =>
-    group.group_name.includes(searchInput)
+    group.group_name?.includes(searchInput)
   );
   const filteredUsers = users.filter((user) =>
-    filteredGroups.some((group) => group.user_ids.includes(user.user_id))
+    filteredGroups.some((group) => group.user_ids?.includes(user.user_id))
   );
 
   const highlightText = (text, highlight) => {
@@ -277,7 +291,10 @@ const UserAndGroups = () => {
                 onChange={(e) => setGroupDescription(e.target.value)}
                 className=" w-[115px] rounded-3xl text-left pl-3 -mt-[5px]  py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
               />
-
+              <div className="flex items-center justify-center">
+                <input type="checkbox" name="" id="" onChange={handleCheckboxChange}  />
+                <p className="pl-1">Is an organization</p>
+              </div>
      <Select
       className="w-[200px] text-[#214082] -mt-[10px] rounded-3xl"
       isMulti
@@ -298,7 +315,124 @@ const UserAndGroups = () => {
               </button>
             </div>
           )}
+          {isOrganization && (
+ <div className="text-[10px] mx-[10px] text-[#214082] h-[50px] mt-[30px] rounded-md bg-[#CBF2FB] flex flex-row justify-start p-4">
+ <select
+       className="w-[200px] text-[#214082] -mt-[10px] rounded-3xl"
+placeholder="Select User"
+onChange={handleSelectChange}
 
+              // value={selectedClass}
+              // disabled={classes.length === 0}
+            >
+              <option value="" disabled>Select a class</option>
+              <option value="">Select a class</option>
+
+              <option value="createAdmin" >Creat Admin</option>
+
+            </select>    
+            {showPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-[500px]">
+            <h2 className="text-lg font-semibold mb-4">Create Admin</h2>
+
+<div className="flex w-full mb-2">
+<label className="block mb-2 w-[65%] text-blue-800 font-semibold text-[14px] ">
+                User Role
+              </label>
+              <div className="flex w-full border border-gray-500 p-2  ">
+
+            <input type="checkbox" name="" id="" className="p"/>
+              <p className="pl-1">Orgination Admin</p>
+              </div>
+</div>
+
+            <div className="flex flex-col mb-2">
+        <div className="w-full flex flex-row">
+        <label className="w-[65%] text-blue-800 font-semibold mb-2 text-[14px]  ">Name<span className="text-red-500">*</span></label>
+        <input
+          className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          type="text"
+          required
+          // value={numQuestions}
+          // onChange={(e) => setNumQuestions(e.target.value)}
+        />
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      <div className="flex flex-col mb-2">
+        <div className="w-full flex flex-row">
+        <label className="w-[65%] text-blue-800 font-semibold mb-2 text-[14px]  ">Mobile<span className="text-red-500">*</span></label>
+        <input
+          className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          type="text"
+          required
+          // value={numQuestions}
+          // onChange={(e) => setNumQuestions(e.target.value)}
+        />
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      <div className="flex flex-col mb-2">
+        <div className="w-full flex flex-row">
+        <label className="w-[65%] text-blue-800 font-semibold mb-2 text-[14px]  ">Login Method<span className="text-red-500">*</span></label>
+        <input
+          className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          type="text"
+          required
+          // value={numQuestions}
+          // onChange={(e) => setNumQuestions(e.target.value)}
+        />
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+              
+  
+             
+             
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={closePopup}
+                  className="px-4 py-2 bg-gray-300 rounded-lg mr-2"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+                >
+                  Create
+                </button>
+              </div>
+         
+          </div>
+        </div>
+      )}
+   {/* <select
+    className="w-[200px] text-[#214082] -mt-[10px] rounded-3xl"
+    isMulti
+    value={options.filter(option => selectedUserIds.includes(option.value))}
+    onChange={handleChange}
+    options={options}
+    closeMenuOnSelect={false} // Keeps dropdown open after each selection
+    placeholder="Select User"
+    hideSelectedOptions={false} // Shows selected options with a checkbox
+  /> */}
+
+
+            {/* <button
+              onClick={handleSubmit}
+              className="bg-[#214082] w-[80px] -mt-[10px] ml-[20px] py-[14px] rounded-3xl text-white flex items-center justify-center"
+            >
+              {isEditing ? "Update" : "Add"}
+            </button> */}
+          </div>
+          )}
+  
           <table className="h-[20px] table-auto mt-[30px] mx-[20px] rounded text-left bg-[#F7E0E3] text-[#2b51a1] text-[13px] font-light">
             <thead>
               <tr className="h-[50px]">
@@ -388,8 +522,8 @@ const UserAndGroups = () => {
             </tbody>
           </table>
         </div>
-
-        <LogoutBar />
+{/* 
+        <LogoutBar /> */}
       </div>
     </>
   );

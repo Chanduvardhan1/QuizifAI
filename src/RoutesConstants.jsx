@@ -87,6 +87,10 @@ import Quizresults1 from "./quizview_results/quiz_results.jsx";
 
 import SampleLeaderBoard from "./sample/sampleLeaderBoard.jsx";
 import DashboardNavBar from "./dashboardNavBar/dashboardNavBar.jsx";
+
+import useradmin from "./useradmin/useradmin.jsx";
+import Usersgroup from "./usersgroup/usersgroup.jsx";
+import Excelcreat from "./configure/excelcreat.jsx";
 export default () => {
     return [
         {
@@ -98,8 +102,14 @@ export default () => {
             isIndex: true
         },
         {
-            path:'dashboardNavBar',
-            component:DashboardNavBar,
+            path:'usersgroup',
+            component:Usersgroup,
+            isPrivate: true
+        },
+        {
+            path:'excelcreat',
+            component:Excelcreat,
+            isPrivate: true
         },
         {
             path: '/contact',

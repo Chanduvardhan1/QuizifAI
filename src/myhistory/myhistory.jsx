@@ -506,7 +506,7 @@ const handlePrevious = () => {
               </tbody>
             </table>
             )}
-        
+       
             <div className="flex justify-between mt-4">
               <button
                 className="flex gap-1 items-center cursor-pointer"

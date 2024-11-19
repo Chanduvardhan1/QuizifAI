@@ -34,12 +34,13 @@ const configure = () => {
   };
   const handleCategoriesClick = () => handleRestrictedClick("/category");
   const handleCoursesClick = () => handleRestrictedClick("/Course");
-  const handleSpecialisationsClick = () =>
-    handleRestrictedClick("/specialisations");
+  const handleSpecialisationsClick = () => handleRestrictedClick("/specialisations");
   const handleClassesClick = () => handleRestrictedClick("/classes");
   const handleSubjectsClick = () => handleRestrictedClick("/Subjects");
   const handleUsergroupsClick = () => handleRestrictedClick("/userandgroups");
   const handleQuizDownloadAndPrintClick = () => handleRestrictedClick("/print");
+  const handleUsercrat = () => handleRestrictedClick("/excelcreat");
+
   const handleExamClick = () => handleRestrictedClick("/papertemplates");
 
   useEffect(() => {
@@ -102,7 +103,7 @@ const configure = () => {
       id: 3,
       title: "Organization",
       content:
-        "Profile, Manage Subscription, Performance Metrics, Marketing and Sales, Financial Information, Mission and Vision, Goals and Objectives",
+        "User Creat(Organization), Manage Subscription, Performance Metrics, Marketing and Sales, Financial Information, Mission and Vision, Goals and Objectives",
     },
     {
       id: 4,
@@ -243,10 +244,12 @@ const configure = () => {
                   key={index}
                   className={`mt-3 text-[10px] ml-[20px] font-semibold ${
                     contentItem === "Quiz sharing and access control" &&
-                    item.title === "Quizzes"
-                      ? "text-gray-500"
+                    item.title === "Quizzes" ? "text-gray-500"
                       : contentItem === "User Groups" &&
                         item.title === "User & Roles"
+                      ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
+                      : contentItem === "User Creat(Organization)" &&
+                        item.title === "Organization"
                       ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : ["Configuration", "Quizzes"].includes(item.title)
                       ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
@@ -269,6 +272,8 @@ const configure = () => {
                       ? handleQuizDownloadAndPrintClick
                       : contentItem === "Exam"
                       ? handleExamClick
+                      : contentItem === "User Creat(Organization)"
+                      ? handleUsercrat
                       : null
                   }
                 >

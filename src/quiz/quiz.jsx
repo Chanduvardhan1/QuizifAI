@@ -29,6 +29,12 @@ import Modal from "react-modal";
 import AttemptedCard from "../../src/commonCard/attemptedCard.jsx"
 import NonttemptedCard from "../../src/commonCard/nonAttemtedCard.jsx";
 import DashBoardNavBar from "../../src/dashboardNavBar/dashboardNavBar.jsx";
+import physics from "../../src/assets/Images/quiz-type/quizcover.jpg"
+import username1 from "../../src/assets/Images/quiz-type/username.png"
+import calander from "../../src/assets/Images/quiz-type/calander.png"
+import timer from "../../src/assets/Images/quiz-type/Timer.png"
+import comment from "../../src/assets/Images/quiz-type/comment.png"
+import back from "../../src/assets/Images/quiz-type/Q back image.webp"
 
 // Modal.setAppElement(el);
 const Quiz = () => {
@@ -391,7 +397,7 @@ const Quiz = () => {
   // };
 
   const createquiz = () => {
-    navigate("/create-quiz");
+    navigate("/pdf");
   };
 
   const Edit = (quizId) => {
@@ -765,8 +771,9 @@ const Quiz = () => {
           <div className={styles.headerRight}>
             {userRole === "Quiz Master" && (
               <div className="w-[99px] h-[40px] absolute mr-[300px] mb-2 pb-2 -mt-[25px] rounded-[10px] bg-[#fee2e2]">
-                <div className="flex">
+                <div  onClick={createquiz} className="flex">
                   <img
+                   onClick={createquiz}
                     className="w-[25px] h-[25px] ml-2 mt-2"
                     src={Plus}
                     alt="Plus Icon"
@@ -800,7 +807,7 @@ const Quiz = () => {
         <div
           className=" h-[41px] mx-[33px] pl-[20px] text-[15px] mr-[58px] font-Poppins font-medium flex items-center -mt-[15px] leading-6 text-left justify-left
          text-[#002366] rounded-md"
-          style={{ background: "#30CDF040" }}
+          style={{ background: "#eedbe5" }}
         >
           <p>
             {weeklyQuizCount > 0 && averageScorePercentage > 0
@@ -885,26 +892,7 @@ const Quiz = () => {
                     placeholder="Sub Category"
                   />
                 </div>
-              </div>
-              <div className="flex flex-wrap gap-1 mb-3 bg-[#f3d0d5] w-full border-none px-2 ml-[25px] -mr-[20px] mx-auto mt-[10px] rounded-md">
-                {/* complexity    */}
-                <Select
-                  isMulti
-                  options={complexities.map((complex) => ({
-                    value: complex,
-                    label: complex,
-                  }))}
-                  value={selectedComplexity.map((complex) => ({
-                    value: complex,
-                    label: complex,
-                  }))}
-                  onChange={(selected) =>
-                    setSelectedComplexity(selected.map((item) => item.value))
-                  }
-                  styles={customStyles}
-                  placeholder="Complexity"
-                />
-                {/* Courses  */}
+                <div className="flex-1 min-w-[150px]">
                 <Select
                   isMulti
                   options={courses.map((course) => ({
@@ -921,7 +909,8 @@ const Quiz = () => {
                   styles={customStyles}
                   placeholder="Courses"
                 />
-                {/* classes    */}
+                </div>
+                <div className="flex-1 min-w-[150px]">
                 <Select
                   isMulti
                   options={filteredClasses.map((cls) => ({
@@ -938,7 +927,29 @@ const Quiz = () => {
                   styles={customStyles}
                   placeholder="Classes"
                 />
-                {/* CreatedBy   */}
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-1 mb-3  w-full border-none px-2 ml-[25px] -mr-[20px] mx-auto mt-[10px] rounded-md">
+                {/* complexity    */}
+                {/* <div className="flex-1 min-w-[150px]"> */}
+                <Select
+                  isMulti
+                  options={complexities.map((complex) => ({
+                    value: complex,
+                    label: complex,
+                  }))}
+                  value={selectedComplexity.map((complex) => ({
+                    value: complex,
+                    label: complex,
+                  }))}
+                  onChange={(selected) =>
+                    setSelectedComplexity(selected.map((item) => item.value))
+                  }
+                  styles={customStyles}
+                  placeholder="Complexity"
+                />
+                {/* </div> */}
+                {/* <div className="flex-1 min-w-[150px]"> */}
                 <Select
                   isMulti
                   options={createdBy.map((ctdBy) => ({
@@ -955,6 +966,11 @@ const Quiz = () => {
                   styles={customStyles}
                   placeholder="Created By"
                 />
+                {/* </div> */}
+                
+                
+                {/* CreatedBy   */}
+            
               </div>
             </div>
           </div>
@@ -979,16 +995,186 @@ const Quiz = () => {
                 .map((quizItem, index) => (
                   <div className={quizItem?.active_flag?.toLowerCase() != "true" ? "quizDisabled" : ""} key={index}>
                     {quizItem.attempt_flag === "Y" ? (
-                      <div className="attemptedCard">
-                        <AttemptedCard quizItem={quizItem} handleView={() =>
-                                      leaderboard1(
-                                        quizItem.quiz_id,
-                                        quizItem.quiz_level_attempt_id,
-                                        quizItem.complexity,
-                                        quizItem.quiz_duration,
-                                        quizItem.pass_percentage
-                                      )} />
-                      </div>
+                     <div
+                     key={index}
+                        onClick={() =>
+                                handleStartQuiz1(
+                                  quizItem.quiz_id,
+                                  quizItem.attempts_count,
+                                  quizItem.retake_flag
+                                )
+                              }
+                     className={`${quizItem.attempts_count < quizItem.retake_flag
+                            ? quizItem.active_flag ?.toLowerCase() != "true" ?  'border-[#989a9b] border-[1px] border-b-[8px]' : "border-[#fee2e2] border-[1px] border-b-[8px]" 
+                             : quizItem.active_flag ?.toLowerCase() != "true" ? 'border-[#989a9b] border-[1px] border-b-[8px]' : "border-[#55505026] border-[1px] border-b-[8px]" } flex flex-row w-full max-w-[390px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4`}
+                   >
+                     {/* Image Section */}
+                     <div       className="w-[140px] h-[127px]  rounded-md  mr-2"
+                     >
+                       <img
+                         src={quizItem.photo1 || back}
+                         alt="Quiz Cover"
+                         className="w-[140px] h-[140px] rounded-md mr-2"
+                       />
+                     </div>
+                   
+                     <div className="flex flex-col w-full">
+                       {/* Title and Version */}
+                       <div className="relative group flex justify-between items-center gap-[3px]">
+                         {/* Truncated text container */}
+                         <h2 className="text-[15px] font-semibold text-gray-800 w-[170px] sm:w-[215px] truncate">
+                         {quizItem.quiz_name}
+                         </h2>
+                   
+                         {/* Full text that will appear above on hover */}
+                         {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+                           Physics,Physics,Physics,Physics
+                         </span> */}
+                         <img src={more} alt="" onClick={() => toggleNavbar(index)} className=" w-[12px] h-[12px] hover:bg-gray-200   hover:rounded-full" />
+                         {cardStates[index] && (
+                           <div
+                             className="absolute rounded-md w-[150px]  flex flex-col p-1 bg-gray-200 mt-[55px] ml-[115px]"
+                             style={{
+                               clipPath:
+                                 "polygon(0% 0%, 80% 0, 80% 8%, 95% 15%, 81% 23%, 80% 100%, 0 100%)",
+                             }}
+                           >
+                             {/* <div className="flex items-center">
+                               <img
+                                 className="w-2 h-2 mr-1"
+                                 src={Start_button}
+                                 alt="Play icon"
+                               />
+                               <span
+                                 className="text-[12px] text-blue-500 cursor-pointer hover:underline"
+                                 onClick={() => handleStartQuiz(quizItem.quiz_id)}
+                               >
+                                 Start
+                               </span>
+                             </div> */}
+                             {userRole === "Quiz Master" && (
+                               <div className="flex items-center ">
+                                 <img
+                                   className="w-2 h-2 mr-1"
+                                   src={Edit_button}
+                                   alt="Edit icon"
+                                 />
+                                 <span
+                                   className="text-[12px] text-blue-500 cursor-pointer hover:underline"
+                                   onClick={() => Edit(quizItem.quiz_id)}
+                                 >
+                                   Edit
+                                 </span>
+                               </div>
+                             )}
+                             <div className="flex items-center">
+                               <img
+                                 className="w-2 h-2 mr-1"
+                                 src={leaderboard_button}
+                                 alt="Leaderboard icon"
+                               />
+                               <span
+                                 className="text-[12px] text-blue-500 cursor-pointer hover:underline"
+                                 onClick={() =>
+                                   leaderboard(
+                                    quizItem.quiz_id,
+                                                      quizItem.quiz_level_attempt_id,
+                                                      quizItem.complexity,
+                                                      quizItem.quiz_duration,
+                                                      quizItem.pass_percentage
+                                   )
+                                 }
+                               >
+                                 Leaderboard
+                               </span>
+                             </div>
+                             {userRole === "Quiz Master" && (
+                               <div className="flex items-center">
+                                 <img
+                                   className="w-2 h-2 mr-1"
+                                   src={Delete}
+                                   alt="Delete icon"
+                                 />
+                                 <span
+                                   className="text-[12px] text-blue-500 cursor-pointer hover:underline"
+                                   onClick={() => handleDeleteClick(quizItem.quiz_id)}
+                                 >
+                                   Delete
+                                 </span>
+                               </div>
+                             )}
+                           </div>
+                         )}
+                       </div>
+                      
+                       {/* Meta Information */}
+                       <div className="text-[#00008b] text-[10px] truncate max-w-[230px] max-h-4 justify-start mt-1">
+                         <span>{quizItem.category}</span>
+                         <span className="mx-1">.</span>
+                         <span>{quizItem.sub_category}</span>
+                         <span className="mx-1">.</span>
+                         <span>{quizItem.complexity}</span>
+                       </div>
+                   
+                       {/* Icons Row */}
+                       <div className="flex-col items-center text-[10px] space-y-1 mt-2 text-[#00008b]">
+                         {/* Author and Date */}
+                         <div className="flex items-center justify-between text-[12px] sm:text-[10px]">
+                           <div className="flex items-center">
+                             <img src={username1} className="w-[20px] h-[20px] mr-1" />
+                             <span className="ml-1 text-[12px]  ">{quizItem.created_by}</span>
+                           </div>
+                           <div className="flex items-center">
+                             <img src={calander} className="w-[20px] h-[20px] mr-1" />
+                             <span className="ml-1 text-[12px] ">{quizItem.quiz_create_date}</span>
+                           </div>
+                         </div>
+                   
+                         {/* Quiz Info */}
+                         <div className="flex items-center justify-between pr-1 text-xs sm:text-sm">
+                           <div className="flex items-center">
+                             <img src={comment} className="w-[20px]   h-[20px] mr-1" />
+                             <span className="ml-1 text-[12px] ">{quizItem.number_of_questions} Questions</span>
+                           </div>
+                           <div className="flex items-center">
+                             <img src={timer} className="w-[20px] h-[20px] mr-1" />
+                             <span className="ml-1 text-[12px] ">{quizItem.quiz_duration} Minutes</span>
+                           </div>
+                         </div>
+                   
+                         {/* Attempt Info */}
+                         <div className="flex items-center space-x-4 text-xs sm:text-sm">
+                           <div className="flex items-center">
+                             <img src={Attemts} className="w-[18px] h-[18px] mr-1" />
+                             <span className="ml-1 text-[12px]">{quizItem.quiz_attempts} Attempts</span>
+                           </div>
+                         </div>
+                         <div className="flex items-end justify-end ">
+                           <div className="flex items-end">
+                             <img      onClick={() =>
+                                       quizresults(
+                                         quizItem.quiz_id,
+                                      quizItem.quiz_level_attempt_id
+                    )
+                                    } src={view1} className="w-[18px] h-[18px] mr-1" />
+                             <img   onClick={() =>
+                        
+                                                  leaderboard1(
+                                                    quizItem.quiz_id,
+                                                    quizItem.quiz_level_attempt_id,
+                                                    quizItem.complexity,
+                                                    quizItem.quiz_duration,
+                                                    quizItem.pass_percentage
+                                                  )
+                                                }
+                             src={leader} className="w-[18px] h-[18px] mr-1" />
+                             <img src={print1} className="w-[18px] h-[18px] mr-1" />
+                   
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
                       // <div
                       //   key={index}
                       //   className={styles.card}
@@ -1101,6 +1287,7 @@ const Quiz = () => {
                       //             <span
                       //               className={styles.leaderboardtext}
                       //               onClick={() =>
+
                       //                 leaderboard1(
                       //                   quizItem.quiz_id,
                       //                   quizItem.quiz_level_attempt_id,
@@ -1516,9 +1703,195 @@ const Quiz = () => {
                     ) : (
 
                       <div className="mr-2">
-                        <NonttemptedCard quizItem={quizItem}handleStartQuiz={()=>{
-                          handleStartQuiz(quizItem.quiz_id)
-                        }} />
+                         <div
+                     key={index}
+                     onClick={() =>
+                                  handleStartQuiz(quizItem.quiz_id)
+                                  }
+                     className={`flex flex-row w-full max-w-[390px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4 border-[#CBF2FB] border-[1px] border-b-[8px]`}
+                   >
+                     {/* Image Section */}
+                     <div       className="w-[140px] h-[127px]  rounded-md  mr-2"
+                     >
+                       <img
+                         src={quizItem.photo1 || back}
+                         alt="Quiz Cover"
+                         className="w-[140px] h-[140px] rounded-md mr-2"
+                       />
+                     </div>
+                   
+                     <div className="flex flex-col w-full">
+                       {/* Title and Version */}
+                       <div className="relative group flex justify-between items-center gap-[3px]">
+                         {/* Truncated text container */}
+                         <h2 className="text-[15px] font-semibold text-gray-800 w-[170px] sm:w-[215px] truncate">
+                         {quizItem.quiz_name}
+                         </h2>
+                   
+                         {/* Full text that will appear above on hover */}
+                         {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
+                           Physics,Physics,Physics,Physics
+                         </span> */}
+                         <img src={more} alt="" onClick={() => toggleNavbar(index)} className=" w-[12px] h-[12px] hover:bg-gray-200   hover:rounded-full" />
+                         {cardStates[index] && (
+                           <div
+                             className="absolute rounded-md w-[150px]  flex flex-col p-1 bg-gray-200 mt-[55px] ml-[115px]"
+                             style={{
+                               clipPath:
+                                 "polygon(0% 0%, 80% 0, 80% 8%, 95% 15%, 81% 23%, 80% 100%, 0 100%)",
+                             }}
+                           >
+                             {/* <div className="flex items-center">
+                               <img
+                                 className="w-2 h-2 mr-1"
+                                 src={Start_button}
+                                 alt="Play icon"
+                               />
+                               <span
+                                 className="text-[12px] text-blue-500 cursor-pointer hover:underline"
+                                 onClick={() => handleStartQuiz(quizItem.quiz_id)}
+                               >
+                                 Start
+                               </span>
+                             </div> */}
+                             {userRole === "Quiz Master" && (
+                               <div className="flex items-center ">
+                                 <img
+                                   className="w-2 h-2 mr-1"
+                                   src={Edit_button}
+                                   alt="Edit icon"
+                                 />
+                                 <span
+                                   className="text-[12px] text-blue-500 cursor-pointer hover:underline"
+                                   onClick={() => Edit(quizItem.quiz_id)}
+                                 >
+                                   Edit
+                                 </span>
+                               </div>
+                             )}
+                             {/* <div className="flex items-center">
+                               <img
+                                 className="w-2 h-2 mr-1"
+                                 src={leaderboard_button}
+                                 alt="Leaderboard icon"
+                               />
+                               <span
+                                 className="text-[12px] text-blue-500 cursor-pointer hover:underline"
+                                 onClick={() =>
+                                                  leaderboard(
+                                                    quizItem.quiz_id,
+                                                    quizItem.quiz_total_marks,
+                                                    quizItem.pass_percentage,
+                                                    quizItem.quiz_name,
+                                                    quizItem.quiz_description,
+                                                    quizItem.created_by,
+                                                    quizItem.complexity,
+                                                    quizItem.quiz_duration,
+                                                    quizItem.number_of_questions,
+                                                    quizItem.min_completion_time,
+                                                    quizItem.quiz_attempts,
+                                                    quizItem.avg_score,
+                                                    quizItem.max_percentage
+                                                  )
+                                                }
+                               >
+                                 Leaderboard
+                               </span>
+                             </div> */}
+                             {userRole === "Quiz Master" && (
+                               <div className="flex items-center">
+                                 <img
+                                   className="w-2 h-2 mr-1"
+                                   src={Delete}
+                                   alt="Delete icon"
+                                 />
+                                 <span
+                                   className="text-[12px] text-blue-500 cursor-pointer hover:underline"
+                                   onClick={() => handleDeleteClick(quizItem.quiz_id)}
+                                 >
+                                   Delete
+                                 </span>
+                               </div>
+                             )}
+                           </div>
+                         )}
+                       </div>
+                      
+                       {/* Meta Information */}
+                       <div className="text-[#00008b] text-[10px] truncate max-w-[230px] max-h-4 justify-start mt-1">
+                         <span>{quizItem.category}</span>
+                         <span className="mx-1">.</span>
+                         <span>{quizItem.sub_category}</span>
+                         <span className="mx-1">.</span>
+                         <span>{quizItem.complexity}</span>
+                       </div>
+                   
+                       {/* Icons Row */}
+                       <div className="flex-col items-center text-[10px] space-y-1 mt-2 text-[#00008b]">
+                         {/* Author and Date */}
+                         <div className="flex items-center justify-between text-[12px] sm:text-[10px]">
+                           <div className="flex items-center">
+                             <img src={username1} className="w-[20px] h-[20px] mr-1" />
+                             <span className="ml-1 text-[12px]  ">{quizItem.created_by}</span>
+                           </div>
+                           <div className="flex items-center">
+                             <img src={calander} className="w-[20px] h-[20px] mr-1" />
+                             <span className="ml-1 text-[12px] ">{quizItem.quiz_create_date}</span>
+                           </div>
+                         </div>
+                   
+                         {/* Quiz Info */}
+                         <div className="flex items-center justify-between pr-1 text-xs sm:text-sm">
+                           <div className="flex items-center">
+                             <img src={comment} className="w-[20px]   h-[20px] mr-1" />
+                             <span className="ml-1 text-[12px] ">{quizItem.number_of_questions} Questions</span>
+                           </div>
+                           <div className="flex items-center">
+                             <img src={timer} className="w-[20px] h-[20px] mr-1" />
+                             <span className="ml-1 text-[12px] ">{quizItem.quiz_duration} Minutes</span>
+                           </div>
+                         </div>
+                   
+                         {/* Attempt Info */}
+                         <div className="flex items-center space-x-4 text-xs sm:text-sm">
+                           <div className="flex items-center">
+                             <img src={Attemts} className="w-[18px] h-[18px] mr-1" />
+                             <span className="ml-1 text-[12px]">{quizItem.quiz_attempts} Attempts</span>
+                           </div>
+                         </div>
+                         <div className="flex items-end justify-end ">
+                           <div className="flex items-end">
+                             <img      onClick={() =>
+                                       quizresults(
+                                         quizItem.quiz_id,
+                                      quizItem.quiz_level_attempt_id
+                    )
+                                    } src={view1} className="w-[18px] h-[18px] mr-1" />
+                             <img      onClick={() =>
+                                                  leaderboard(
+                                                    quizItem.quiz_id,
+                                                    quizItem.quiz_total_marks,
+                                                    quizItem.pass_percentage,
+                                                    quizItem.quiz_name,
+                                                    quizItem.quiz_description,
+                                                    quizItem.created_by,
+                                                    quizItem.complexity,
+                                                    quizItem.quiz_duration,
+                                                    quizItem.number_of_questions,
+                                                    quizItem.min_completion_time,
+                                                    quizItem.quiz_attempts,
+                                                    quizItem.avg_score,
+                                                    quizItem.max_percentage
+                                                  )
+                                                }
+                             src={leader} className="w-[18px] h-[18px] mr-1" />
+                             <img src={print1} className="w-[18px] h-[18px] mr-1" />
+                   
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
                       </div>
                       // <div
                       //   className={styles.card}

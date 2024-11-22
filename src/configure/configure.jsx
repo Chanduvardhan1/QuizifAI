@@ -13,6 +13,7 @@ const configure = () => {
   const [userName, setUserName] = useState("");
   const [weeklyQuizCount, setWeeklyQuizCount] = useState(null);
   const [averageScorePercentage, setAverageScorePercentage] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleInputChange = (event) => {
     setSearchQuery(event.target.value);
@@ -23,15 +24,19 @@ const configure = () => {
     navigate("/dashboard");
   };
   const userRole = localStorage.getItem("user_role");
-  const allowedRoles = ["Quiz Master"]; // Roles allowed to access the pages
+  const allowedRoles = ["Admin"]; // Roles allowed to access the pages
 
   const handleRestrictedClick = (navigateTo) => {
     if (allowedRoles.includes(userRole)) {
       navigate(navigateTo);
     } else {
-      alert("You do not have permission to access this page.");
+      setIsModalOpen(true);
     }
   };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   const handleCategoriesClick = () => handleRestrictedClick("/category");
   const handleCoursesClick = () => handleRestrictedClick("/Course");
   const handleSpecialisationsClick = () => handleRestrictedClick("/specialisations");
@@ -100,36 +105,37 @@ const configure = () => {
       id: 2,
       title: "User & Roles",
       content:
-        "User Groups, User Creat(Organization), User Information, Roles and Permissions, Communication, Responsibilities and Expectations",
+        "Add/Edit User, Add/Edit User Groups, Reset User Password",
     },
     {
       id: 3,
       title: "Organization",
       content:
-        "Profile, Settings, Manage Subscription, Performance Metrics, Marketing and Sales, Financial Information, Mission and Vision, Goals and Objectives",
+        "Organization Profile, Organization Preferences, Settings",
     },
     {
       id: 4,
-      title: "Notification",
+      title: "Subscription",
       content:
-        "Contact Information, Date and Time, Main Content, Additional Information",
+        "Order List, Subscription Details",
     },
     {
       id: 5,
-      title: "Quizzes",
-      content: "Quiz sharing and access control, Exam, Quiz download and print",
+      title: "Reports",
+      content:
+        "Global Leaderboard, Quiz-wise Leaderboard, Quiz Status Report, (Other Possible Reports)",
     },
     {
       id: 6,
-      title: "Developer & Data",
+      title: "Quizzes",
       content:
-        "Developer Information, Data Information, Access and Permissions",
+        "Quiz Print Templates",
     },
     {
       id: 7,
-      title: "Preferences",
+      title: "Notification",
       content:
-        "User Information, Preference Categories, Default Settings, Subscription Preferences",
+        "Notification Preferences, Notification List",
     },
   ];
 
@@ -186,7 +192,21 @@ const configure = () => {
               src={cancel}
             />
           </div>
-
+ {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+            <p className="text-lg font-semibold mb-4">
+              You do not have permission to access this page. Only for Admin.
+            </p>
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              onClick={closeModal}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
           {/* <div className={styles.headerRight}>
           <div className="w-[99px] h-[41px] absolute mr-[170px] -mt-2 rounded-[10px] bg-[#f3d0d5]">
             <div className="flex">
@@ -248,13 +268,13 @@ const configure = () => {
                   className={`mt-3 text-[10px] ml-[20px] font-semibold ${
                     contentItem === "Quiz sharing and access control" &&
                     item.title === "Quizzes" ? "text-gray-500"
-                      : contentItem === "User Groups" &&
+                      : contentItem === "Add/Edit User Groups" &&
                         item.title === "User & Roles"
                       ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
-                      : contentItem === "User Creat(Organization)" &&
+                      : contentItem === "Add/Edit User" &&
                       item.title === "User & Roles"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
-                      : contentItem === "Profile" &&
+                      : contentItem === "Organization Profile" &&
                         item.title === "Organization"
                       ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : contentItem ==="Settings" &&
@@ -275,15 +295,15 @@ const configure = () => {
                       ? handleClassesClick
                       : contentItem === "Subjects"
                       ? handleSubjectsClick
-                      : contentItem === "User Groups"
+                      : contentItem === "Add/Edit User Groups"
                       ? handleUsergroupsClick
                       : contentItem === "Quiz download and print"
                       ? handleQuizDownloadAndPrintClick
-                      : contentItem === "Exam"
+                      : contentItem === "Quiz Print Templates"
                       ? handleExamClick
-                      : contentItem === "User Creat(Organization)"
+                      : contentItem === "Add/Edit User"
                       ? handleUsercrat
-                      : contentItem === "Profile"
+                      : contentItem === "Organization Profile"
                       ? handleProfile
                       : contentItem === "Settings"
                       ? handleSettings

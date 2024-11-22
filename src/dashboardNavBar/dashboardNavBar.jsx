@@ -223,24 +223,24 @@ import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
 import { useNavigate } from "react-router-dom";
 
 export default function dashboardNavBar() {
-    const [userData, setUserData] = useState({
-        name: "Samantha S",
-        occupation: "Professional",
-        userId: "809",
-        city: "New York",
-        district: "Manhattan",
-        country: "USA",
-        // globalRank: "1",
-        globalScore: "15626",
-        totalQuizzes: "25",
-        totalMinutes: "320",
-        averageScore: "85",
-        subscription: {
-            type: "Public",
-            startDate: "2024-01-01",
-            remainingDays: "30"
-        }
-    });
+    // const [userData, setUserData] = useState({
+    //     name: "Samantha S",
+    //     occupation: "Professional",
+    //     userId: "809",
+    //     city: "New York",
+    //     district: "Manhattan",
+    //     country: "USA",
+    //     // globalRank: "1",
+    //     globalScore: "15626",
+    //     totalQuizzes: "25",
+    //     totalMinutes: "320",
+    //     averageScore: "85",
+    //     subscription: {
+    //         type: "Public",
+    //         startDate: "2024-01-01",
+    //         remainingDays: "30"
+    //     }
+    // });
     const { isAuthenticated, authToken, logout } = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -271,15 +271,15 @@ export default function dashboardNavBar() {
 
     useEffect(() => {
       // Detect if rank has increased or decreased
-      if (rank > previousRank) {
+      if (globalRank > previousRank) {
         setRankChange('increase');
-      } else if (rank < previousRank) {
+      } else if (globalRank < previousRank) {
         setRankChange('decrease');
       } else {
         setRankChange(null);
       }
-      setPreviousRank(rank);
-    }, [rank]);
+      setPreviousRank(globalRank);
+    }, [globalRank]);
   
     // Determine triangle color based on rank and rankChange
     const getTriangleColors = () => {
@@ -295,7 +295,7 @@ export default function dashboardNavBar() {
         };
       } else {
         // Default colors based on rank threshold
-        return rank <= 10
+        return globalRank <= 10
           ? { upColor: 'bg-green-500', downColor: 'bg-red-200' }
           : { upColor: 'bg-green-200', downColor: 'bg-red-500' };
       }
@@ -336,29 +336,58 @@ export default function dashboardNavBar() {
             }
             const data = await response.json();
             console.log("Data:", data);
+
+
             const auditDetails = data.data[0].audit_details || {};
+
+            setCountry(auditDetails.country_name || "");
+            setGlobalRank(auditDetails.global_score_rank || "");
+            setGlobalscore(auditDetails.global_score || "");
+            setRegisteredOn(auditDetails.created_date || "");
+            setLastLogin(auditDetails.last_login_timestamp || "");
+            setPasswordChanged(auditDetails.user_password_change_date || "");
+  
+  
+
+
+
             const userProfile = data.data[0].user_profile_details || {};
+
+            setDistrict(userProfile.district_name || "N/A");
+            setOccupation(userProfile.occupation_name || "N/A");
+            setCity(userProfile.location_name || "N/A");
+            setOtherOccupation(userProfile.other_occupation_name || "N/A");
+            setUserName(userProfile.full_name || "N/A");
+            setEmail(userProfile.user_email || "N/A");
+            setPhoneNumber(userProfile.user_phone_number || "N/A");
+            setRoleName(userProfile.role_name || "N/A");
+            setOccupation(userProfile.occupation_name || "N/A");
+         // setLocation(userProfile.location_name || "N/A");
+           setCountry(userProfile.country_name || "N/A");
+
+
+
             const userMetrics = data.data[0].user_metrics || {};
+
+            setTotalQuizzes(userMetrics.countofquizes || 0);
+            setAverageScorePercentage(userMetrics.average_total_percentage || 0);
+           
             const latestResults = data.data[0].latest_result || [];
 
-            setUserName(userProfile.full_name || "N/A");
-      setEmail(userProfile.user_email || "N/A");
-      setPhoneNumber(userProfile.user_phone_number || "N/A");
-      setRoleName(userProfile.role_name || "N/A");
-      setOccupation(userProfile.occupation_name || "N/A");
-      // setLocation(userProfile.location_name || "N/A");
-      setCountry(userProfile.country_name || "N/A");
-      setTotalQuizzes(userMetrics.countofquizes || 0);
-      setAverageScorePercentage(userMetrics.average_total_percentage || 0);
-
-      setCountry(auditDetails.country_name || "");
-          setGlobalRank(auditDetails.global_score_rank || "");
-          setGlobalscore(auditDetails.global_score || "");
-          setRegisteredOn(auditDetails.created_date || "");
-          setLastLogin(auditDetails.last_login_timestamp || "");
-          setPasswordChanged(auditDetails.user_password_change_date || "");
 
 
+            const subscriptionDetails = data.data[0].subscription_details || {};
+
+            setSubscriptionStartDate(subscriptionDetails.start_date || "");
+            setSubscriptionEndDate(subscriptionDetails.end_date || "");
+            setRemainingDays(subscriptionDetails.remaining_days || "");
+
+
+
+
+
+ 
+     
            } catch (error) {
             console.error("Error fetching quiz data:", error);
           }
@@ -590,7 +619,7 @@ export default function dashboardNavBar() {
                         {userName}
 
                         </h2>
-                        <p className="text-[14px] text-[#214082] font-400 font-family-[lato]">{userData.occupation}</p>
+                        <p className="text-[14px] text-[#214082] font-400 font-family-[lato]">{occupation}</p>
                         <p className="text-sm text-[#FF6701]">User ID: {userId}</p>
                         <p className="text-sm text-[#002366]">{city}</p>
 
@@ -604,15 +633,15 @@ export default function dashboardNavBar() {
                   <div className=" space-y-2 flex flex-col items-start justify-center pl-[10px]">
                     <div className=" flex justify-center items-center text-center mt-2">
                         <h3 className="text-[16px] font-[500] text-[#214082] ">Quizzes : </h3>
-                        <p className="text-[16px] font-bold text-orange-500 ml-[2px]"> {userData.totalQuizzes}</p>
+                        <p className="text-[16px] font-bold text-orange-500 ml-[2px]"> {totalQuizzes}</p>
                     </div>
                     <div className=" flex justify-center items-center text-center my-4">
                         <h3 className="text-[16px] font-[500] text-[#214082] ">Minutes : </h3>
-                        <p className="text-[16px] font-bold text-orange-500 ml-[2px]"> {userData.totalMinutes}</p>
+                        <p className="text-[16px] font-bold text-orange-500 ml-[2px]"> {totalMinutes}</p>
                     </div>
                     <div className="flex justify-center items-center text-center">
                         <h3 className="text-[16px] font-[500] text-[#214082] ">Average Score : </h3>
-                        <p className="text-[16px] font-bold text-orange-500 ml-[2px]"> {userData.averageScore}%</p>
+                        <p className="text-[16px] font-bold text-orange-500 ml-[2px]"> {averageScorePercentage}%</p>
                     </div>
                     </div>
                 </div>
@@ -632,13 +661,13 @@ export default function dashboardNavBar() {
 
         {/* Rank Number */}
         <div className="text-6xl font-bold text-orange-500">
-          {rank}
+          {globalRank}
         </div>
       </div>
 
       {/* Score */}
       <div className="text-lg text-orange-500 ml-[30%]">
-        {score}
+        {globalscore}
       </div>
 
       {/* Global Score Label */}
@@ -685,7 +714,7 @@ export default function dashboardNavBar() {
                         </div>
                         <div className="flex justify-between">
                             <p className="text-sm text-[#214082] mr-31%">Days Remaining : </p>
-                            <p className="font-medium ml-1 text-orange-500"> {userData.subscription.remainingDays}</p>
+                            <p className="font-medium ml-1 text-orange-500"> {remainingDays}</p>
                         </div>
                     </div>
                 </div>

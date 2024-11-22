@@ -216,10 +216,10 @@ import { useEffect, useState } from 'react';
 import profileimg from "../assets/Images/images/profile/profileImage.png";
 import physics from "../../src/assets/Images/quiz-type/physics.img.png"
 import { AuthContext } from "../Authcontext/AuthContext.jsx";
-import camera1 from "../../src/assets/Images/quiz-type/camera (2).png"
+import camera1 from "../../src/assets/Images/dashboard/edit.png"
 import ProgressIndicator from '../weeklyProgress/weeklyProgress';
 import x from "../../src/assets/Images/quiz-type/cross-button.png"
-import defaultPhoto from '../../src/assets/Images/quiz-type/pic.jpg'
+import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
 import { useNavigate } from "react-router-dom";
 
 export default function dashboardNavBar() {
@@ -336,51 +336,30 @@ export default function dashboardNavBar() {
             }
             const data = await response.json();
             console.log("Data:", data);
-    
-            const auditDetails = data.data[0].audit_details;
-            if (auditDetails) {
-              // setCity(auditDetails.location_name || "");
-              setCountry(auditDetails.country_name || "");
-              setGlobalRank(auditDetails.global_score_rank || "");
-              setGlobalscore(auditDetails.global_score || "");
-              setRegisteredOn(auditDetails.created_date || "");
-              setLastLogin(auditDetails.last_login_timestamp || "");
-              setPasswordChanged(auditDetails.user_password_change_date || "");
-    
-            //   const userDetails = auditDetails;
-            //   setUserName(userDetails.full_name);
+            const auditDetails = data.data[0].audit_details || {};
+            const userProfile = data.data[0].user_profile_details || {};
+            const userMetrics = data.data[0].user_metrics || {};
+            const latestResults = data.data[0].latest_result || [];
 
-              const userDetails = data.audit_details;
-              setUserName(userDetails.full_name);
+            setUserName(userProfile.full_name || "N/A");
+      setEmail(userProfile.user_email || "N/A");
+      setPhoneNumber(userProfile.user_phone_number || "N/A");
+      setRoleName(userProfile.role_name || "N/A");
+      setOccupation(userProfile.occupation_name || "N/A");
+      // setLocation(userProfile.location_name || "N/A");
+      setCountry(userProfile.country_name || "N/A");
+      setTotalQuizzes(userMetrics.countofquizes || 0);
+      setAverageScorePercentage(userMetrics.average_total_percentage || 0);
 
-              const UserProfileDetails = data.data[0].user_profile_details;
-              setDistrict(UserProfileDetails.district_name);
-              setOccupation(UserProfileDetails.occupation_name);
-              setCity(UserProfileDetails.location_name);
-              setOtherOccupation(UserProfileDetails.other_occupation_name);
-    
-              const subscriptionDetails = auditDetails.subscription_details && auditDetails.subscription_details[0];
-              if (subscriptionDetails) {
-                setSubscriptionStartDate(subscriptionDetails.start_date || "");
-                setSubscriptionEndDate(subscriptionDetails.end_date || "");
-                setRemainingDays(subscriptionDetails.remaining_days || "");
-              } else {
-                console.error("No subscription details found.");
-              }
-            } else {
-              console.error("No user details found.");
-            }
-    
-            const usermetrics = data.data[0].user_metrics;
-            if (usermetrics) {
-              setTotalQuizzes(usermetrics.countofquizes || 0);
-              setTotalMinutes(usermetrics.total_minutes || 0);
-              setAverageScorePercentage(usermetrics.average_total_percentage || 0);
-              // setGlobalRank(usermetrics.global_score_rank || "");
-            } else {
-              console.error("No user metrics found.");
-            }
-          } catch (error) {
+      setCountry(auditDetails.country_name || "");
+          setGlobalRank(auditDetails.global_score_rank || "");
+          setGlobalscore(auditDetails.global_score || "");
+          setRegisteredOn(auditDetails.created_date || "");
+          setLastLogin(auditDetails.last_login_timestamp || "");
+          setPasswordChanged(auditDetails.user_password_change_date || "");
+
+
+           } catch (error) {
             console.error("Error fetching quiz data:", error);
           }
         };
@@ -501,6 +480,45 @@ export default function dashboardNavBar() {
 // const score = 1564;
     return (
         <div className="container mx-auto p-4">
+          <div className="flex w-full bg-[#F3D0D5]  gap-4 mb-1  px-2 p-2 font-semibold rounded-lg">
+      <button
+        // onClick={() => handleTabClick('Manual')}
+        className={`w-full px-4 py-2 mr-4
+          text-[#214082] bg-[#c1e7e3] rounded-lg
+        `}
+      >
+      Profile
+      </button>
+      <button
+        // onClick={() => handleTabClick('Excel')}
+        className={`w-full px-4 py-2 mr-4 text-[#214082] bg-[#ceffe4] rounded-lg
+        `}
+      >
+        Quizzes Overview 
+      </button>
+      <button
+        // onClick={() => handleTabClick('Pdf')}
+        className={`w-full px-4 py-2  mr-4 bg-[#ffe5d9]
+      rounded-lg  text-[#214082] 
+        `}
+      >
+       Weekly Progress
+      </button>
+      <button
+        // onClick={() => handleTabClick('Textbook')}
+        className={`w-full px-4 py-2 mr-4 rounded-lg text-[#214082] bg-[#ffe9ee]
+        `}
+      >
+        Global Rank
+      </button>
+      <button
+        // onClick={() => handleTabClick('Textbook')}
+        className={`w-full px-4 py-2 mr-4 text-[#214082] rounded-lg  bg-[#c1bbdd]
+        `}
+      >
+        Subscription 
+      </button>
+    </div>
             <div className="grid grid-cols-5 gap-4 mb-4">
                 <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-md p-2 bg-white ">
                     <div className="relative">
@@ -514,10 +532,10 @@ export default function dashboardNavBar() {
           src={photo}
           alt="Profile"
           onClick={openModal}
-          className="w-[100px] h-[100px] rounded-[50px]"
+          className="w-[80px] h-[80px] rounded-2xl"
         />
         <div 
-          className="absolute bottom-0 right-0 bg-gray-300 p-2 rounded-full cursor-pointer"
+          className="absolute bottom-0 right-0 rounded-full cursor-pointer"
           onClick={openModal}
         >
          <img src={camera1} alt="" className="w-[20px] h-[20px]"/>
@@ -569,7 +587,7 @@ export default function dashboardNavBar() {
       )}
                     <div className="mt-2 text-center">
                         <h2 className="text-[16px] font-semibold text-[#214082] font-family-[lato]">
-                        {userData.name}
+                        {userName}
 
                         </h2>
                         <p className="text-[14px] text-[#214082] font-400 font-family-[lato]">{userData.occupation}</p>
@@ -582,18 +600,20 @@ export default function dashboardNavBar() {
                     </div>
                 </div>
 
-                <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2 bg-white">
-                    <div className="text-center">
-                        <h3 className="text-[16px] font-[500] text-[#214082] mb-2">Quizzes</h3>
-                        <p className="text-2xl font-bold text-orange-500">{userData.totalQuizzes}</p>
+                <div className="flex flex-col  justify-start items-start relative mr-4 border shadow-lg rounded-sm p-2 bg-white">
+                  <div className=" space-y-2 flex flex-col items-start justify-center pl-[10px]">
+                    <div className=" flex justify-center items-center text-center mt-2">
+                        <h3 className="text-[16px] font-[500] text-[#214082] ">Quizzes : </h3>
+                        <p className="text-[16px] font-bold text-orange-500 ml-[2px]"> {userData.totalQuizzes}</p>
                     </div>
-                    <div className="text-center my-4">
-                        <h3 className="text-[16px] font-[500] text-[#214082] mb-2">Minutes</h3>
-                        <p className="text-2xl font-bold text-orange-500">{userData.totalMinutes}</p>
+                    <div className=" flex justify-center items-center text-center my-4">
+                        <h3 className="text-[16px] font-[500] text-[#214082] ">Minutes : </h3>
+                        <p className="text-[16px] font-bold text-orange-500 ml-[2px]"> {userData.totalMinutes}</p>
                     </div>
-                    <div className="text-center">
-                        <h3 className="text-[16px] font-[500] text-[#214082] mb-2">Average Score</h3>
-                        <p className="text-2xl font-bold text-orange-500">{userData.averageScore}%</p>
+                    <div className="flex justify-center items-center text-center">
+                        <h3 className="text-[16px] font-[500] text-[#214082] ">Average Score : </h3>
+                        <p className="text-[16px] font-bold text-orange-500 ml-[2px]"> {userData.averageScore}%</p>
+                    </div>
                     </div>
                 </div>
                 <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2 py-[20px] bg-white">
@@ -601,7 +621,7 @@ export default function dashboardNavBar() {
            
         </div>
         <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2 bg-white">
-        <div className="flex flex-col items-center mt-6">
+        <div className="flex flex-col items-center">
       {/* Icons above the rank number */}
       <div className="flex justify-center items-center">
         <div className="flex flex-col gap-1 mt-2 mr-3">
@@ -622,7 +642,7 @@ export default function dashboardNavBar() {
       </div>
 
       {/* Global Score Label */}
-      <div className="text-[14px]  font-semibold text-gray-600">
+      <div className="text-[14px]  font-semibold text-[#214082] ">
         Global Score
       </div>
 
@@ -646,21 +666,26 @@ export default function dashboardNavBar() {
     </div>
 
                 <div className="flex flex-col items-center justify-start relative mr-4 border shadow-lg rounded-sm p-2 py-[20px] bg-white">
-                <h3 className="text-[14px] font-bold mb-5 text-[#214082]">Subscription</h3>
+                {/* <h3 className="text-[14px] font-bold mb-5 text-[#214082]">Subscription</h3> */}
 
-                    <h3 className="text-sm font-bold mb-4 text-[#214082]"> <span>Public</span>/<span  className=' text-gray-500 text-[12px]'>Subcribed</span>/<span className=' text-gray-500 text-[12px]'>Organization</span></h3>
+                    {/* <h3 className="text-sm font-bold mb-4 text-[#214082]"> <span>Public</span></h3> */}
                     <div className="space-y-2">
                         <div className="flex justify-between">
-                            <p className="text-sm text-gray-600 ">Type :</p>
-                            <p className="font-medium"> {userData.subscription.type}</p>
+                            <p className="text-sm text-[#214082] ">Type :</p>
+                            <div>
+
+                            <p className="text-[14px] font-medium text-orange-500"> Public/</p>
+                            <p className="text-[14px] font-medium text-[#8b8c8d] "> Subcribed/</p>
+                            <p className="text-[14px] font-medium text-[#8b8c8d] "> Organization</p>
+                            </div>
                         </div>
                         <div className="flex justify-between">
-                            <p className="text-sm text-gray-600 ">Date : </p>
-                            {/* <p className="font-medium">{userData.subscription.startDate}</p> */}
+                            <p className="text-sm text-[#214082]">Date : </p>
+                            {/* <p className="font-medium text-orange-500">{userData.subscription.startDate}</p> */}
                         </div>
                         <div className="flex justify-between">
-                            <p className="text-sm text-gray-600 mr-31%">Days Remaining : </p>
-                            <p className="font-medium ml-1"> {userData.subscription.remainingDays}</p>
+                            <p className="text-sm text-[#214082] mr-31%">Days Remaining : </p>
+                            <p className="font-medium ml-1 text-orange-500"> {userData.subscription.remainingDays}</p>
                         </div>
                     </div>
                 </div>

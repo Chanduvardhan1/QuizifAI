@@ -47,6 +47,7 @@ import timer from "../../src/assets/Images/quiz-type/Timer.png"
 import comment from "../../src/assets/Images/quiz-type/comment.png"
 import editicon from "../../src/assets/Images/quiz-type/edit.png"
 import QuestionPaper from "../assets/Images/Assets/questionPaper.png";
+import GreaterThan from "../assets/Images/images/dashboard/greaterthan.png";
 
 const options1 = [{ label: "Numbers" }];
 for (let i = 1; i <= 300; i++) {
@@ -219,6 +220,8 @@ export default function quiztype() {
   const [complexquestions, setComplexquestions] = useState('')
   const [ isEditing ,setisEditing] = useState(false);
 
+  const questionsPerPage = 20; // Number of questions per tab
+  const [currentPage, setCurrentPage] = useState(1)
   const [questions, setQuestions] = useState(
     Array.from({ length: numQuestions }, () => ({
       question_text: "",
@@ -262,6 +265,24 @@ export default function quiztype() {
   const [layout4 , setlayout4] = useState(false)
 
   // Handle the upload of front or back image
+
+
+
+  const totalPages = Math.ceil(questions.length / questionsPerPage); // Calculate total tabs
+
+  // Get the questions for the current tab
+  const currentQuestions = questions.slice(
+    (currentPage - 1) * questionsPerPage,
+    currentPage * questionsPerPage
+  );
+
+  const handleNext3 = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePrevious = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
 
 //-------------****print quiz****-----------//
 const pdfRef1 = useRef(null);
@@ -1807,143 +1828,178 @@ const handleToLayout4 = () =>{
             {/* Questions and options */}
             <div className="w-full ">
             
-            {questions.map((question, questionIndex) => (
-               <div key={questionIndex} className="mb-8 ">
+            {currentQuestions.map((question, questionIndex) => {
+              const globalIndex =
+              (currentPage - 1) * questionsPerPage + questionIndex;
+            return (
+              <div key={questionIndex} className="mb-8 ">
 
-                 <div className="flex items-center mb-4">
-                   <div className="mr-2 text-xl font-bold text-[#214082]">
-                     {questionIndex + 1}.
-                   </div>
-                   <input
-                     type="text"
-                     placeholder={`Question`}
-                     className="w-[70%] h-[40px] text-[#214082] font-bold rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] p-[10px] text-[14px]"
-                     value={question.question_text}
-                     onChange={(e) => {
-                       const newQuestions = [...questions];
-                       newQuestions[questionIndex].question_text = e.target.value;
-                       setQuestions(newQuestions);
-                     }}
-                   />
+              <div className="flex items-center mb-4">
+                <div className="mr-2 text-xl font-bold text-[#214082]">
+                  {questionIndex + 1}.
+                </div>
+                <input
+                  type="text"
+                  placeholder={`Question`}
+                  className="w-[70%] h-[40px] text-[#214082] font-bold rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] p-[10px] text-[14px]"
+                  value={question.question_text}
+                  onChange={(e) => {
+                    const newQuestions = [...questions];
+                    newQuestions[questionIndex].question_text = e.target.value;
+                    setQuestions(newQuestions);
+                  }}
+                />
 
 
-                   <input
-                     type="number"
-                     placeholder="Marks"
-                     className="w-[85px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
-                     value={calculateWeightage(numQuestions, quiztotalmarks)}
-                     onChange={(e) => {
-                       const value = parseInt(e.target.value);
-                       // Update the question_weightage in all questions
-                       const updatedQuestions = questions.map(question => ({
-                         ...question,
-                         question_weightage: value
-                       }));
-                       setQuestions(updatedQuestions);
-                     }}
-                   />
+                <input
+                  type="number"
+                  placeholder="Marks"
+                  className="w-[85px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
+                  value={calculateWeightage(numQuestions, quiztotalmarks)}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value);
+                    // Update the question_weightage in all questions
+                    const updatedQuestions = questions.map(question => ({
+                      ...question,
+                      question_weightage: value
+                    }));
+                    setQuestions(updatedQuestions);
+                  }}
+                />
 
-                   {timings === "No" ? (
-                     <input
+                {timings === "No" ? (
+                  <input
 
-                       type="number"
-                       placeholder="Duration"
-                       className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal hidden"
-                       value={duration}
-                       onChange={(e) => setDuration(parseInt(e.target.value))}
-                       disabled
-                     />
-                   ) : timings === "All questions in same time" ? (
-                     // Calculate and prepopulate quiz duration
-                     <input
-                       type="number"
-                       placeholder="Duration"
-                       className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
-                       value={calculateQuizDuration()}
-                       onChange={() => { }}
-                       disabled
-                     />
-                   ) : (
-                     // Each question has different time
-                     <select
-                       className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[2px] font-normal"
-                       value={questionDuration}
-                       onChange={(e) => {
-                         const newQuestionDuration = parseInt(e.target.value);
-                         setQuestionDuration(newQuestionDuration); // Update questionDuration state
-                         // Update the corresponding question's duration in the questions array
-                         const updatedQuestions = questions.map((question, index) => {
-                           if (index === questionIndex) {
-                             return { ...question, question_duration: newQuestionDuration };
-                           }
-                           return question;
-                         });
-                         setQuestions(updatedQuestions);
-                       }}
-                     >
-                       {[...Array(60)].map((_, index) => ( // Create options for 10 to 600 seconds
-                         <option key={index} value={(index + 1) * 5}>{(index + 1) * 5} seconds</option>
-                       ))}
-                     </select>
+                    type="number"
+                    placeholder="Duration"
+                    className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal hidden"
+                    value={duration}
+                    onChange={(e) => setDuration(parseInt(e.target.value))}
+                    disabled
+                  />
+                ) : timings === "All questions in same time" ? (
+                  // Calculate and prepopulate quiz duration
+                  <input
+                    type="number"
+                    placeholder="Duration"
+                    className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
+                    value={calculateQuizDuration()}
+                    onChange={() => { }}
+                    disabled
+                  />
+                ) : (
+                  // Each question has different time
+                  <select
+                    className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[2px] font-normal"
+                    value={questionDuration}
+                    onChange={(e) => {
+                      const newQuestionDuration = parseInt(e.target.value);
+                      setQuestionDuration(newQuestionDuration); // Update questionDuration state
+                      // Update the corresponding question's duration in the questions array
+                      const updatedQuestions = questions.map((question, index) => {
+                        if (index === questionIndex) {
+                          return { ...question, question_duration: newQuestionDuration };
+                        }
+                        return question;
+                      });
+                      setQuestions(updatedQuestions);
+                    }}
+                  >
+                    {[...Array(60)].map((_, index) => ( // Create options for 10 to 600 seconds
+                      <option key={index} value={(index + 1) * 5}>{(index + 1) * 5} seconds</option>
+                    ))}
+                  </select>
 
-                   )}
-                 </div>
-                 {/* Input fields for options */}
-                 {question.options.map((option, optionIndex) => (
-                   <div key={optionIndex} className="flex items-center mb-2 ">
-                     <div className="mr-2 text-[14px] font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#B8BBC2] flex justify-center text-center  justify-items-center items-center">
-                       {String.fromCharCode(97 + optionIndex).toUpperCase()}
-                     </div>
-                     <input
-                       type="text"
-                       placeholder={`Option Text`}
-                       className="w-[70%]  rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal text-[12px]"
-                       value={option.answer_option_text}
-                       onChange={(e) => {
-                         const newOptions = [...questions[questionIndex].options];
-                         newOptions[optionIndex].answer_option_text = e.target.value;
-                         const newQuestions = [...questions];
-                         newQuestions[questionIndex].options = newOptions;
-                         setQuestions(newQuestions);
-                       }}
-                     />
-                     {/* Add correct answer flag input */}
-                     <button
-                       className={`mr-2 ${option.correct_answer_flag ? "bg-green-500" : "bg-gray-300"
-                         } rounded-full w-10 h-[20px] transition-colors duration-300 focus:outline-none`}
-                       onClick={() =>
-                         handleToggleButton(questionIndex, optionIndex)
-                       }
-                     >
-                       <span
-                         className={`block ${option.correct_answer_flag ? "translate-x-5" : "translate-x-0"
-                           } transform -translate-y-1.5 w-[18px] h-[18px] relative top-[6px] bg-white rounded-full shadow-md transition-transform duration-300`}
-                       ></span>
-                     </button>
-                   </div>
-                 ))}
-               </div>
-             ))}
-              <div className=" flex justify-between items-center py-5 ">
+                )}
+              </div>
+              {/* Input fields for options */}
+              {question.options.map((option, optionIndex) => (
+                <div key={optionIndex} className="flex items-center mb-2 ">
+                  <div className="mr-2 text-[14px] font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#B8BBC2] flex justify-center text-center  justify-items-center items-center">
+                    {String.fromCharCode(97 + optionIndex).toUpperCase()}
+                  </div>
+                  <input
+                    type="text"
+                    placeholder={`Option Text`}
+                    className="w-[70%]  rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal text-[12px]"
+                    value={option.answer_option_text}
+                    onChange={(e) => {
+                      const newOptions = [...questions[questionIndex].options];
+                      newOptions[optionIndex].answer_option_text = e.target.value;
+                      const newQuestions = [...questions];
+                      newQuestions[questionIndex].options = newOptions;
+                      setQuestions(newQuestions);
+                    }}
+                  />
+                  {/* Add correct answer flag input */}
+                  <button
+                    className={`mr-2 ${option.correct_answer_flag ? "bg-green-500" : "bg-gray-300"
+                      } rounded-full w-10 h-[20px] transition-colors duration-300 focus:outline-none`}
+                    onClick={() =>
+                      handleToggleButton(questionIndex, optionIndex)
+                    }
+                  >
+                    <span
+                      className={`block ${option.correct_answer_flag ? "translate-x-5" : "translate-x-0"
+                        } transform -translate-y-1.5 w-[18px] h-[18px] relative top-[6px] bg-white rounded-full shadow-md transition-transform duration-300`}
+                    ></span>
+                  </button>
+                </div>
+              ))}
+            </div>
+             );
+            })}
+             <div className="flex justify-between mt-4">
+     
+        <button
+                className="flex gap-1 items-center cursor-pointer"
+                onClick={handlePrevious}
+                disabled={currentPage === 1}
+              >
+                <img
+                  className="h-3 w-3 rotate-180"
+                  src={GreaterThan}
+                  alt="Previous icon"
+                />
+                <h1 className="text-[#F17530]">Previous</h1>
+              </button>
+        <div>Page {currentPage} of {totalPages}</div>
+
+        <button
+                className="flex gap-1 items-center cursor-pointer"
+                onClick={handleNext3}
+          disabled={currentPage === totalPages}
+              >
+                <h1 className="text-[#F17530]">Next</h1>
+                <img className="h-3 w-3" src={GreaterThan} alt="Next icon" />
+              </button>
+      </div>
+             <div className=" flex justify-between items-center py-5 ">
+                <div>
+
+               
                 <button
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={() => setStep(3)}
                 >
                   Back
                 </button>
-                <button
+                </div>
+                <div className="flex gap-[5px]">
+                                  <button
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
-                  onClick={() => setStep(3)}
+                  // onClick={() => setStep(3)}
                 >
                   Save as Driaft
                 </button>
 
                 <button
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
-                  onClick={handleNextpage3}
+                  onClick={handleNext}
                 >
-                  Next
+                  Create
                 </button>
+                </div>
               </div>
             </div>
 

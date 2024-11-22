@@ -196,17 +196,8 @@ const Navigation = () => {
         </div>
        </div>
        <div>
-        <div className="h-[5px] w-full bg-white mt-[10px]"></div>
-        <div className=" flex items-center justify-center z-50 ">
-          <img src={rocket} alt="" className=" w-[49px] h-[112px] z-50" />
-        </div>
-        <div className=" flex flex-col justify-center items-center p-[10px] bg-white rounded-[25px] w-[90%] ml-[10px] pt-[80px] relative top-[-75px]">
-
-          <div>
-            <p className=" text-[#9696BB] text-[13px]">Upgrade to <span className=" text-black font-bold">Pro</span>  for more resources</p>
-          </div>
-          <button className=" bg-[#3B61C8] p-[5px] px-[20px] rounded-[10px] text-white text-[13px] mt-2" >Upgrade </button>
-        </div>
+        {/* <div className="h-[5px] w-full bg-white mt-[10px]"></div> */}
+      
       </div>
     </div>
   );

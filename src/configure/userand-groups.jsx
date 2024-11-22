@@ -31,11 +31,129 @@ const UserAndGroups = () => {
   const [isOrganization, setIsOrganization] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
 
-  const handleSelectChange = (event) => {
-    if (event.target.value === "createAdmin") {
-      setShowPopup(true);
+  const [roles, setRoles] = useState([]); // Store user details
+  const [selectedUser, setSelectedUser] = useState(""); // Store selected username
+  const [selectedRoleId, setSelectedRoleId] = useState(""); // Store user_role_id for selected username
+
+  const [orgId, setOrgId] = useState('');
+  const [userId1, setUserId1] = useState('');
+  const [orgName, setOrgName] = useState('');
+  const [roleId, setRoleId] = useState('');
+  const [mobile, setMobile] = useState('');
+  const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [middleName, setMiddleName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [erroradmin, seterroradmin] = useState('');
+  const [successadmin, setsuccessadmin] = useState('');
+
+  // Handle form submission
+  const handleSubmit1 = async (e) => {
+    e.preventDefault();
+    
+    // Prepare the payload
+    const payload = {
+      org_id: parseInt(orgId),  // Ensure numbers are integers
+      user_id: parseInt(userId),
+      org_name: orgName,
+      role_id: parseInt(roleId),
+      mobile,
+      email,
+      user_first_name: firstName,
+      user_middle_name: middleName,
+      user_last_name: lastName,
+    };
+
+    try {
+      const response = await fetch('https://dev.quizifai.com:8010/admin-role-updation', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+      
+      if (response.ok) {
+        // Handle success
+        setsuccessadmin('Role updated successfully');
+        seterroradmin('')
+      } else {
+        // Handle error
+        seterroradmin(`Error: ${result.message}`);
+      }
+    } catch (error) {
+      alert('Error during submission');
+      console.error('Error:', error);
     }
   };
+
+
+  // Fetch group-admin data
+  useEffect(() => {
+    const fetchRoles = async () => {
+      try {
+        const response = await fetch(
+          "https://dev.quizifai.com:8010/groups-admins/",
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization:
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjaGFuZHUgdmFyZGhhbiBrIiwiZXhwIjoyNTM0MDIzMDA3OTl9.Dke5RuSafS1gwDyvylEzw6qKDnNIKfbm2PfpCsPoFrA",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        // Extract user details with unique usernames
+        const users = result.data
+          .flatMap((group) => group.user_details || [])
+          .map((user) => ({
+            userId: user.user_id,
+            userName: user.user_name,
+            roleId: user.user_role_id,
+            roleName: user.role_name,
+          }));
+
+        setRoles(users);
+      } catch (error) {
+        console.error("Error fetching roles:", error);
+      }
+    };
+
+    fetchRoles();
+  }, []);
+
+  // Handle dropdown change
+  const handleSelectChange = (event) => {
+    const selectedValue = event.target.value;
+    setSelectedUser(selectedValue);
+
+    // Find the selected user's role_id
+    const selectedUserDetails = roles.find((user) => user.userName === selectedValue);
+    if (selectedUserDetails) {
+      setSelectedRoleId(selectedUserDetails.roleId);
+    }
+    if (selectedValue === "createAdmin") {
+      setShowPopup(true);
+    }
+
+    console.log("Selected Role:", selectedValue);
+  };
+
+
+  // const handleSelectChange = (event) => {
+  //   if (event.target.value === "createAdmin") {
+  //     setShowPopup(true);
+  //   }
+  // };
 
   const closePopup = () => {
     setShowPopup(false);
@@ -320,14 +438,16 @@ const UserAndGroups = () => {
  <select
        className="w-[200px] text-[#214082] -mt-[10px] rounded-3xl"
 placeholder="Select User"
+value={selectedUser}
 onChange={handleSelectChange}
 
-              // value={selectedClass}
-              // disabled={classes.length === 0}
             >
-              <option value="" disabled>Select a class</option>
-              <option value="">Select a class</option>
-
+              <option value="" disabled>Select a Role</option>
+              {roles.map((user) => (
+          <option key={user.userId} value={user.userName}>
+            {user.userName}
+          </option>
+        ))}
               <option value="createAdmin" >Creat Admin</option>
 
             </select>    
@@ -349,13 +469,97 @@ onChange={handleSelectChange}
 
             <div className="flex flex-col mb-2">
         <div className="w-full flex flex-row">
-        <label className="w-[65%] text-blue-800 font-semibold mb-2 text-[14px]  ">Name<span className="text-red-500">*</span></label>
+        <label className="w-[65%] text-blue-800 font-semibold mb-2 text-[14px]  ">Fist Name<span className="text-red-500">*</span></label>
         <input
           className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
           type="text"
           required
-          // value={numQuestions}
-          // onChange={(e) => setNumQuestions(e.target.value)}
+          value={firstName} 
+          onChange={(e) => setFirstName(e.target.value)} 
+        />
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      <div className="flex flex-col mb-2">
+        <div className="w-full flex flex-row">
+        <label className="w-[65%] text-blue-800 font-semibold mb-2 text-[14px]  ">Middle Name<span className="text-red-500">*</span></label>
+        <input
+          className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          type="text"
+          required
+          value={middleName} 
+          onChange={(e) => setMiddleName(e.target.value)} 
+        />
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      <div className="flex flex-col mb-2">
+        <div className="w-full flex flex-row">
+        <label className="w-[65%] text-blue-800 font-semibold mb-2 text-[14px]  ">Last Name<span className="text-red-500">*</span></label>
+        <input
+          className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          type="text"
+          required
+          value={lastName} 
+          onChange={(e) => setLastName(e.target.value)} 
+        />
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      <div className="flex flex-col mb-2">
+        <div className="w-full flex flex-row">
+        <label className="w-[65%] text-blue-800 font-semibold mb-2 text-[14px]  ">User ID<span className="text-red-500">*</span></label>
+        <input
+          className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          type="text"
+          required
+          value={userId1} 
+          onChange={(e) => setUserId1(e.target.value)} 
+        />
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      <div className="flex flex-col mb-2">
+        <div className="w-full flex flex-row">
+        <label className="w-[65%] text-blue-800 font-semibold mb-2 text-[14px]  ">Role ID<span className="text-red-500">*</span></label>
+        <input
+          className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          type="text"
+          required
+          value={roleId} 
+          onChange={(e) => setRoleId(e.target.value)} 
+        />
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      <div className="flex flex-col mb-2">
+        <div className="w-full flex flex-row">
+        <label className="w-[65%] text-blue-800 font-semibold mb-2 text-[14px]  ">Organization ID<span className="text-red-500">*</span></label>
+        <input
+          className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          type="text"
+          required
+          value={orgId} 
+          onChange={(e) => setOrgId(e.target.value)}  
+        />
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      <div className="flex flex-col mb-2">
+        <div className="w-full flex flex-row">
+        <label className="w-[65%] text-blue-800 font-semibold mb-2 text-[14px]  ">Name of Organization<span className="text-red-500">*</span></label>
+        <input
+          className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          type="text"
+          required
+          value={orgName} 
+          onChange={(e) => setOrgName(e.target.value)}
         />
         </div>
       
@@ -368,22 +572,23 @@ onChange={handleSelectChange}
           className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
           type="text"
           required
-          // value={numQuestions}
-          // onChange={(e) => setNumQuestions(e.target.value)}
+          value={mobile} 
+          onChange={(e) => setMobile(e.target.value)} 
         />
         </div>
       
         <hr className={`h-[1px] w-full`} />
       </div>
+     
       <div className="flex flex-col mb-2">
         <div className="w-full flex flex-row">
-        <label className="w-[65%] text-blue-800 font-semibold mb-2 text-[14px]  ">Login Method<span className="text-red-500">*</span></label>
+        <label className="w-[65%] text-blue-800 font-semibold mb-2 text-[14px]  ">Email<span className="text-red-500">*</span></label>
         <input
           className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
           type="text"
           required
-          // value={numQuestions}
-          // onChange={(e) => setNumQuestions(e.target.value)}
+          value={email} 
+          onChange={(e) => setEmail(e.target.value)} 
         />
         </div>
       
@@ -402,13 +607,17 @@ onChange={handleSelectChange}
                   Cancel
                 </button>
                 <button
+                onClick={handleSubmit1}
                   type="submit"
                   className="px-4 py-2 bg-blue-500 text-white rounded-lg"
                 >
                   Create
                 </button>
               </div>
-         
+         <div>
+         {erroradmin && <p className="text-red-500">{erroradmin}</p>}
+          {successadmin && <p className="text-green-500">{successadmin}</p>}
+         </div>
           </div>
         </div>
       )}

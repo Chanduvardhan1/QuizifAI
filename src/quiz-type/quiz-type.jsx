@@ -1793,7 +1793,7 @@ const handleToLayout4 = () =>{
 {step === 4 && (
          <>
         {/* {showRegistrationSuccess && ( */}
-          <main className="w-max-auto">
+          <main className="w-max-auto bg-white p-[10px] mt-[10px]">
           
             <div className="w-full">
               <h1 className="font-Poppins font-bold text-[30px] leading-[45px] text-orange-400">

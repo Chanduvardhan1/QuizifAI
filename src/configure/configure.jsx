@@ -42,7 +42,10 @@ const configure = () => {
   const handleUsercrat = () => handleRestrictedClick("/excelcreat");
 
   const handleExamClick = () => handleRestrictedClick("/papertemplates");
+  const handleProfile = () => handleRestrictedClick("/profileorganization");
+  const handleSettings = () => handleRestrictedClick("/Profilesettings");
 
+  
   useEffect(() => {
     const fetchQuizData = async () => {
       try {
@@ -97,13 +100,13 @@ const configure = () => {
       id: 2,
       title: "User & Roles",
       content:
-        "User Groups, User Information, Roles and Permissions, Communication, Responsibilities and Expectations",
+        "User Groups, User Creat(Organization), User Information, Roles and Permissions, Communication, Responsibilities and Expectations",
     },
     {
       id: 3,
       title: "Organization",
       content:
-        "User Creat(Organization), Manage Subscription, Performance Metrics, Marketing and Sales, Financial Information, Mission and Vision, Goals and Objectives",
+        "Profile, Settings, Manage Subscription, Performance Metrics, Marketing and Sales, Financial Information, Mission and Vision, Goals and Objectives",
     },
     {
       id: 4,
@@ -206,7 +209,7 @@ const configure = () => {
             </div>
           </div> */}
         </div>
-        <div
+        {/* <div
           className=" h-[41px] mx-[20px] pl-[23px] text-[15px] font-Poppins font-medium flex items-center -mt-[10px] leading-6 text-left justify-left
          text-[#002366] rounded-md"
           style={{ background: "#30CDF040" }}
@@ -216,17 +219,17 @@ const configure = () => {
               ? `You have successfully completed ${weeklyQuizCount} Quizzes this week, achieving an average score of ${averageScorePercentage}%`
               : "You have not attended any quizzes yet, Please attempt the quizzes below."}
           </p>{" "}
-        </div>
+        </div> */}
 
-        <div className="flex bg-[#F3D0D5] h-[41px] mt-[20px] rounded-md ml-[20px] mr-[20px]">
+        {/* <div className="flex bg-[#F3D0D5] h-[41px] mt-[20px] rounded-md ml-[20px] mr-[20px]">
           <h1 className="mt-[10px] ml-[20px] font-Poppins font-semibold text-[#214082] text-[16px]">
             All Settings
           </h1>
           <div className="flex gap-1 h-[30px] p-2 ml-auto mr-[2%] mt-[1%] rounded">
-            {/* <h1 className='text-[10px]'>Cancel settings</h1> */}
-            {/* <img onClick={handleBanckToDashbaord} className='h-4 w-4 cursor-pointer mt-[1px]' title='close settings' src={cancel}/>  */}
+            <h1 className='text-[10px]'>Cancel settings</h1>
+            <img onClick={handleBanckToDashbaord} className='h-4 w-4 cursor-pointer mt-[1px]' title='close settings' src={cancel}/> 
           </div>
-        </div>
+        </div> */}
 <div className="flex">
 <DashBoardNavBar/>
 </div>
@@ -249,8 +252,14 @@ const configure = () => {
                         item.title === "User & Roles"
                       ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : contentItem === "User Creat(Organization)" &&
+                      item.title === "User & Roles"
+                    ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
+                      : contentItem === "Profile" &&
                         item.title === "Organization"
                       ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
+                      : contentItem ==="Settings" &&
+                      item.title === "Organization"
+                    ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : ["Configuration", "Quizzes"].includes(item.title)
                       ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : "text-gray-500"
@@ -274,6 +283,10 @@ const configure = () => {
                       ? handleExamClick
                       : contentItem === "User Creat(Organization)"
                       ? handleUsercrat
+                      : contentItem === "Profile"
+                      ? handleProfile
+                      : contentItem === "Settings"
+                      ? handleSettings
                       : null
                   }
                 >

@@ -91,6 +91,8 @@ import DashboardNavBar from "./dashboardNavBar/dashboardNavBar.jsx";
 import useradmin from "./useradmin/useradmin.jsx";
 import Usersgroup from "./usersgroup/usersgroup.jsx";
 import Excelcreat from "./configure/excelcreat.jsx";
+import Profileorganization from "./configure/profileorganization.jsx";
+import Profilesettings from "./configure/profilesettings.jsx";
 export default () => {
     return [
         {
@@ -104,6 +106,16 @@ export default () => {
         {
             path:'usersgroup',
             component:Usersgroup,
+            isPrivate: true
+        },
+        {
+            path:'Profilesettings',
+            component:Profilesettings,
+            isPrivate: true
+        },
+        {
+            path:'profileorganization',
+            component:Profileorganization,
             isPrivate: true
         },
         {

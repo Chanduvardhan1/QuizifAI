@@ -24,7 +24,7 @@ const configure = () => {
     navigate("/dashboard");
   };
   const userRole = localStorage.getItem("user_role");
-  const allowedRoles = ["Admin"]; // Roles allowed to access the pages
+  const allowedRoles = ["Quiz Master"]; // Roles allowed to access the pages
 
   const handleRestrictedClick = (navigateTo) => {
     if (allowedRoles.includes(userRole)) {

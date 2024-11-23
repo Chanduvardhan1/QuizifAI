@@ -36,6 +36,7 @@ import timer from "../../src/assets/Images/quiz-type/Timer.png"
 import comment from "../../src/assets/Images/quiz-type/comment.png"
 import editicon from "../../src/assets/Images/quiz-type/edit.png"
 import QuestionPaper from "../assets/Images/Assets/questionPaper.png";
+import GreaterThan from "../assets/Images/images/dashboard/greaterthan.png";
 
 const options1 = [{ label: "Numbers" }];
 
@@ -378,6 +379,29 @@ useEffect(() =>{
 //----------------***quiz print end***-----------------
 
 
+
+const [currentPage, setCurrentPage] = useState(0);
+const questionsPerPage = 20;
+
+// Calculate start and end indices for current page
+const startIndex = currentPage * questionsPerPage;
+const endIndex = startIndex + questionsPerPage;
+
+// Slice the questions for the current page
+const currentQuestions = questions.slice(startIndex, endIndex);
+
+const handleNext4 = () => {
+  if ((currentPage + 1) * questionsPerPage < questions.length) {
+    setCurrentPage(currentPage + 1);
+  }
+};
+
+const handlePrevious = () => {
+  if (currentPage > 0) {
+    setCurrentPage(currentPage - 1);
+  }
+};
+
   // Handle the upload of front or back image
   const [step, setStep] = useState(1);
 
@@ -403,7 +427,18 @@ useEffect(() =>{
  const handeledit =()=> {
   setisEditing(true);
  }
- 
+ const handleToLayout1 = () =>{
+  navigate('/pdf1');
+}
+const handleToLayout2 = () =>{
+  navigate('/pdf2');
+}
+const handleToLayout3 = () =>{
+  navigate('/pdf3');
+}
+const handleToLayout4 = () =>{
+  navigate('/pdf1');
+}
  const handleSimplequestions = (event) => {
   setSimplequestions(event.target.value);
 };
@@ -1925,13 +1960,12 @@ const handleComplexquestions = (event) => {
       </div> */}
       
       </div>
-      {questions.map((question, questionIndex) => (
-                <div key={questionIndex} className="mb-8 ">
-                  {/* Input field for question */}
-                  <div className="flex items-center mb-4">
-                    <div className="mr-2 text-xl font-bold text-[#214082]">
-                      {questionIndex + 1}.
-                    </div>
+      {currentQuestions.map((question, questionIndex) => (
+        <div key={startIndex + questionIndex} className="mb-8">
+          <div className="flex items-center mb-4">
+            <div className="mr-2 text-xl font-bold text-[#214082]">
+              {startIndex + questionIndex + 1}.
+            </div>
                     <input
                       type="text"
                       placeholder={`Question`}
@@ -2024,6 +2058,34 @@ const handleComplexquestions = (event) => {
                   ))}
                 </div>
               ))}
+                  <div className="flex justify-between mt-4">
+        <button
+                className="flex gap-1 items-center cursor-pointer"
+                onClick={handlePrevious}
+                disabled={currentPage === 0}
+              >
+                <img
+                  className="h-3 w-3 rotate-180"
+                  src={GreaterThan}
+                  alt="Previous icon"
+                />
+                <h1 className="text-[#F17530]">Previous</h1>
+              </button>
+              <span>
+              Page {currentPage} of {Math.ceil(questions.length / questionsPerPage)}
+
+              </span>
+     
+        <button
+                className="flex gap-1 items-center cursor-pointer"
+                onClick={handleNext}
+                disabled={(currentPage + 1) * questionsPerPage >= questions.length}
+              >
+                <h1 className="text-[#F17530]">Next</h1>
+                <img className="h-3 w-3" src={GreaterThan} alt="Next icon" />
+              </button>
+      </div>
+  
               <div className=" flex justify-between items-center py-5 ">
                 <button
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"

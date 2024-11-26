@@ -51,6 +51,9 @@ const configure = () => {
   const handleSettings = () => handleRestrictedClick("/Profilesettings");
 
   
+
+
+
   useEffect(() => {
     const fetchQuizData = async () => {
       try {
@@ -131,12 +134,12 @@ const configure = () => {
       content:
         "Quiz Print Templates",
     },
-    {
-      id: 7,
-      title: "Notification",
-      content:
-        "Notification Preferences, Notification List",
-    },
+    // {
+    //   id: 7,
+    //   title: "Notification",
+    //   content:
+    //     "Notification Preferences, Notification List",
+    // },
   ];
 
   const filteredItems = items.filter(

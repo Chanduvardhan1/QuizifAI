@@ -49,6 +49,7 @@ const configure = () => {
   const handleExamClick = () => handleRestrictedClick("/papertemplates");
   const handleProfile = () => handleRestrictedClick("/profileorganization");
   const handleSettings = () => handleRestrictedClick("/Profilesettings");
+  const handleQuestionBank = () => handleRestrictedClick("/questionbank");
 
   
 
@@ -132,14 +133,14 @@ const configure = () => {
       id: 6,
       title: "Quizzes",
       content:
-        "Quiz Print Templates",
+        "Question Bank, Quiz Print Templates",
     },
-    // {
-    //   id: 7,
-    //   title: "Notification",
-    //   content:
-    //     "Notification Preferences, Notification List",
-    // },
+    {
+      id: 7,
+      title: "Notification",
+      content:
+        "Notification Preferences, Notification List",
+    },
   ];
 
   const filteredItems = items.filter(
@@ -253,9 +254,9 @@ const configure = () => {
             <img onClick={handleBanckToDashbaord} className='h-4 w-4 cursor-pointer mt-[1px]' title='close settings' src={cancel}/> 
           </div>
         </div> */}
-<div className="flex">
+{/* <div className="flex">
 <DashBoardNavBar/>
-</div>
+</div> */}
         <div className="flex flex-wrap gap-[20px] mt-[20px] ml-[15px] mr-[10px] justify-center">
           {filteredItems.map((item) => (
             <div
@@ -310,6 +311,8 @@ const configure = () => {
                       ? handleProfile
                       : contentItem === "Settings"
                       ? handleSettings
+                      : contentItem === "Question Bank"
+                      ? handleQuestionBank
                       : null
                   }
                 >

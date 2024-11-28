@@ -29,6 +29,7 @@ const UserAndGroups = () => {
   const [options, setOptions] = useState([]);
   const [notification, setNotification] = useState(null);
   const [isOrganization, setIsOrganization] = useState(false);
+  const [Organizationid, setOrganizationid] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
 
   const [roles, setRoles] = useState([]); // Store user details
@@ -160,6 +161,7 @@ const UserAndGroups = () => {
   };
   const handleCheckboxChange = (event) => {
     setIsOrganization(event.target.checked);
+    setOrganizationid(event.target.checked);
   };
 
   const fetchGroups = async () => {
@@ -386,6 +388,19 @@ const UserAndGroups = () => {
           </div>
           {isNavbarOpen && (
             <div className="text-[10px] mx-[10px] text-[#214082] h-[50px] mt-[30px] rounded-md bg-[#CBF2FB] flex flex-row justify-around p-4">
+        {Organizationid &&(
+ <input
+ type="text"
+ placeholder="Organization ID"
+//  value={groupId}
+//  onChange={(e) => setGroupId(e.target.value)}
+ className=" w-[85px] -mt-[5px] text-center rounded-3xl py-[14px] pl-1 text-[#214082] placeholder:text-[#214082] outline-[#214082]"
+ style={{ "::placeholder": { color: "#214082" } }}
+ readOnly
+/>
+
+        )
+      }
               <input
                 type="text"
                 placeholder="Group ID"
@@ -409,6 +424,7 @@ const UserAndGroups = () => {
                 onChange={(e) => setGroupDescription(e.target.value)}
                 className=" w-[115px] rounded-3xl text-left pl-3 -mt-[5px]  py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
               />
+
               <div className="flex items-center justify-center">
                 <input type="checkbox" name="" id="" onChange={handleCheckboxChange}  />
                 <p className="pl-1">Is an organization</p>

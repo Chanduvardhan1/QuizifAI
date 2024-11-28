@@ -266,7 +266,11 @@ export default function quiztype() {
 
   // Handle the upload of front or back image
 
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 
+  const handleCheckboxChange = () => {
+    setIsCheckboxChecked((prev) => !prev);
+  };
 
   const totalPages = Math.ceil(questions.length / questionsPerPage); // Calculate total tabs
 
@@ -1154,7 +1158,7 @@ const handleToLayout4 = () =>{
  <div className="w-full flex items-center ">
  <div className=" w-full flex flex-col">
             <div className="w-full flex flex-row">
-              <label className=" w-[23%] text-blue-800 font-semibold mb-2 mr-[10px]">
+              <label className=" w-[25%] text-blue-800 font-semibold mb-2 mr-[10px]">
                Instructions <span className="text-red-500">*</span>
               </label>
               <textarea
@@ -1212,7 +1216,7 @@ const handleToLayout4 = () =>{
           {/* Sub Category */}
           <div className="flex flex-col">
             <div className="w-full flex flex-row">
-              <label className="w-[24%] text-blue-800 font-semibold mb-2">
+              <label className="w-[26%] text-blue-800 font-semibold mb-2">
                 Sub Category<span className="text-red-500">*</span>
               </label>
               <select
@@ -1282,18 +1286,100 @@ const handleToLayout4 = () =>{
            {/*  Public access */}
   <div className=" w-[50%] flex flex-col">
         <div className="w-[100%] flex flex-row">
-        <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500">*</span></label>
+        <label className="w-[100%] inline-flex items-center cursor-pointer text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500">*</span>
         <Switch
           onChange={toggler3}
           checked={publicAccess}
           className="react-switch"
         />
-       
+  {/* <input type="checkbox" value="" class="sr-only peer"/> */}
+  {/* <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div> */}
+</label>
         </div>
       
       </div>
       </div>
       </div>
+
+
+      <div className="md:col-span-2">
+
+<div className="flex gap-6">
+<div className="w-[40%] flex flex-col">
+  <div className="w-full flex flex-row">
+    <label className="w-[30%] text-blue-800 font-semibold mb-2 ">
+      Subject<span className="text-red-500">*</span>
+    </label>
+    <select
+      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+      value={selectedCourse}
+      onChange={handleSelectCourse}
+    >
+      <option value="" disabled>Select a Subject</option>
+      <option value="">None</option>
+      {courses.map((course) => (
+        <option key={course.course_id} value={course.course_name}>
+          {course.course_name}
+        </option>
+      ))}
+    </select>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+
+<div className="w-[30%] flex flex-col">
+            <div className="w-full flex flex-row items-center">
+              <label className="w-full text-blue-800 font-semibold mb-2 ">
+                You want to contribute the Question Bank <span className="text-red-500">*</span>
+              </label>
+             
+
+              <input
+  className="w-[12px] h-[12px] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+  type="checkbox"
+  required
+  checked={isCheckboxChecked}
+  onChange={handleCheckboxChange}
+/>
+
+            </div>
+            {/* <hr className="h-[1px] w-full" /> */}
+          </div>
+ {/* isCheckboxChecked */}
+ {isCheckboxChecked && (
+   <div className="w-[30%] flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className="w-full text-blue-800 font-semibold mb-2">
+                Question Bank<span className="text-red-500">*</span>
+              </label>
+              <select
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                value={selectedSubCategory}
+                onChange={handleSelectSubCategory}
+              >
+                <option value="" disabled>Select a question bank</option>
+                {subCategories.map((subCategory, index) => (
+                  <option key={index} value={subCategory}>
+                    {subCategory}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <hr className="h-[1px] w-full" />
+          </div>
+   )}
+</div>
+</div>
+
+
+
+
+
+
+
+  
+
+
           {/* <div className="flex justify-start md:col-span-2">
             <button
               onClick={() => setStep(1)}

@@ -93,6 +93,11 @@ import Usersgroup from "./usersgroup/usersgroup.jsx";
 import Excelcreat from "./configure/excelcreat.jsx";
 import Profileorganization from "./configure/profileorganization.jsx";
 import Profilesettings from "./configure/profilesettings.jsx";
+import Questionbank from "./configure/questionbank.jsx";
+import Questionbankview from "./configure/questionbamkview.jsx";
+import Leaderboardall from "./leaderboardall/leaderboardall.jsx";
+import Institution from "./leaderboardall/institution.jsx";
+
 export default () => {
     return [
         {
@@ -104,13 +109,33 @@ export default () => {
             isIndex: true
         },
         {
+            path:'institution',
+            component:Institution,
+            isPrivate: true
+        },
+        {
             path:'usersgroup',
             component:Usersgroup,
             isPrivate: true
         },
         {
+            path:'leaderboardall',
+            component:Leaderboardall,
+            isPrivate: true
+        },
+        {
+            path:'questionbankview',
+            component:Questionbankview,
+            isPrivate: true
+        },
+        {
             path:'Profilesettings',
             component:Profilesettings,
+            isPrivate: true
+        },
+        {
+            path:'questionbank',
+            component:Questionbank,
             isPrivate: true
         },
         {

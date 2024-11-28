@@ -509,7 +509,7 @@ onChange={handleSelectChange}
       
         <hr className={`h-[1px] w-full`} />
       </div>
-      <div className="flex flex-col mb-2">
+      {/* <div className="flex flex-col mb-2">
         <div className="w-full flex flex-row">
         <label className="w-[65%] text-blue-800 font-semibold mb-2 text-[14px]  ">User ID<span className="text-red-500">*</span></label>
         <input
@@ -522,8 +522,8 @@ onChange={handleSelectChange}
         </div>
       
         <hr className={`h-[1px] w-full`} />
-      </div>
-      <div className="flex flex-col mb-2">
+      </div> */}
+      {/* <div className="flex flex-col mb-2">
         <div className="w-full flex flex-row">
         <label className="w-[65%] text-blue-800 font-semibold mb-2 text-[14px]  ">Role ID<span className="text-red-500">*</span></label>
         <input
@@ -536,8 +536,8 @@ onChange={handleSelectChange}
         </div>
       
         <hr className={`h-[1px] w-full`} />
-      </div>
-      <div className="flex flex-col mb-2">
+      </div> */}
+      {/* <div className="flex flex-col mb-2">
         <div className="w-full flex flex-row">
         <label className="w-[65%] text-blue-800 font-semibold mb-2 text-[14px]  ">Organization ID<span className="text-red-500">*</span></label>
         <input
@@ -550,8 +550,8 @@ onChange={handleSelectChange}
         </div>
       
         <hr className={`h-[1px] w-full`} />
-      </div>
-      <div className="flex flex-col mb-2">
+      </div> */}
+      {/* <div className="flex flex-col mb-2">
         <div className="w-full flex flex-row">
         <label className="w-[65%] text-blue-800 font-semibold mb-2 text-[14px]  ">Name of Organization<span className="text-red-500">*</span></label>
         <input
@@ -564,8 +564,8 @@ onChange={handleSelectChange}
         </div>
       
         <hr className={`h-[1px] w-full`} />
-      </div>
-      <div className="flex flex-col mb-2">
+      </div> */}
+      {/* <div className="flex flex-col mb-2">
         <div className="w-full flex flex-row">
         <label className="w-[65%] text-blue-800 font-semibold mb-2 text-[14px]  ">Mobile<span className="text-red-500">*</span></label>
         <input
@@ -578,7 +578,7 @@ onChange={handleSelectChange}
         </div>
       
         <hr className={`h-[1px] w-full`} />
-      </div>
+      </div> */}
      
       <div className="flex flex-col mb-2">
         <div className="w-full flex flex-row">

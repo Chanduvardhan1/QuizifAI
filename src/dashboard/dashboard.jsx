@@ -616,12 +616,10 @@ const Dashboard = () => {
                   {quizItem.attempt_flag === "Y" ? (
                         // <div className={` ${`quizItem.attempts_count < quizItem.retake_flag ? "#fee2e2"
                         //    : "#55505026"`} flex flex-row w-full max-w-[400px] h-[170px] border-[#1E90FF] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4`}>
-                        <div  onClick={() =>
-                                                 handleStartQuiz(quizItem.quiz_id)
-                                            }
+                        <div  
                         className={`${
                           quizItem.attempts_count < quizItem.retake_flag ? "border-[#1E90FF] border-[1px] border-b-[8px]" : "border-[#dd6a79] border-[1px] border-b-[8px]"
-                        } flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4`}
+                        } flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4 gap-[5px]`}
                       >
                         {/* Image Section */}
                         <div       className="w-[140px] h-[127px]  rounded-md  mr-2"
@@ -633,7 +631,9 @@ const Dashboard = () => {
                           />
                         </div>
                       
-                        <div className="flex flex-col w-full">
+                        <div onClick={() =>
+                                                 handleStartQuiz(quizItem.quiz_id)
+                                            } className="flex flex-col w-full ">
                           {/* Title and Version */}
                           <div className="relative group flex justify-between items-center gap-[3px]">
                             {/* Truncated text container */}
@@ -1197,7 +1197,7 @@ const Dashboard = () => {
                     <div  onClick={() =>
                       handleStartQuiz(quizItem.quiz_id)
                  }
-className={`flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4 border-[#dd6a79] border-[1px] border-b-[8px]`}
+className={`flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4 border-[#dd6a79] border-[1px] border-b-[8px] gap-[5px]`}
 >
 {/* Image Section */}
 <div       className="w-[140px] h-[127px]  rounded-md  mr-2"
@@ -1820,7 +1820,7 @@ Cancel
               .map((quizItem, index) => (
                 <div key={index} >
                   {quizItem.attempt_flag === "Y" ? (
-                    <div className="mr-4" >
+                    <div className="" >
                        <div
                        onClick={() =>
                             handleStartQuiz1(
@@ -1831,7 +1831,7 @@ Cancel
                           } 
                         className={`${
                           quizItem.attempts_count < quizItem.retake_flag ? "border-[#1E90FF] border-[1px] border-b-[8px]" : "border-[#dd6a79] border-[1px] border-b-[8px]"
-                        } flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4`}
+                        } flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4 gap-[5px]`}
                       >
                         {/* Image Section */}
                         <div       className="w-[140px] h-[127px]  rounded-md  mr-2"
@@ -2333,11 +2333,11 @@ Cancel
 
                   ) : (
                     <>
-                      <div className="mr-4" >
+                      <div className="" >
                       <div  onClick={() =>
                       handleStartQuiz(quizItem.quiz_id)
                  }
-className={`flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4 border-[#dd6a79] border-[1px] border-b-[8px]`}
+className={`flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4 border-[#dd6a79] border-[1px] border-b-[8px] gap-[5px]`}
 >
 {/* Image Section */}
 <div       className="w-[140px] h-[127px]  rounded-md  mr-2"

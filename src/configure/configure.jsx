@@ -24,7 +24,7 @@ const configure = () => {
     navigate("/dashboard");
   };
   const userRole = localStorage.getItem("user_role");
-  const allowedRoles = ["Quiz Master"]; // Roles allowed to access the pages
+  const allowedRoles = ["Super Admin","Admin"]; // Roles allowed to access the pages
 
   const handleRestrictedClick = (navigateTo) => {
     if (allowedRoles.includes(userRole)) {
@@ -50,8 +50,9 @@ const configure = () => {
   const handleProfile = () => handleRestrictedClick("/profileorganization");
   const handleSettings = () => handleRestrictedClick("/Profilesettings");
   const handleQuestionBank = () => handleRestrictedClick("/questionbank");
-
   
+  const handleUserList = () => handleRestrictedClick("/userslist");
+
 
 
 
@@ -109,7 +110,7 @@ const configure = () => {
       id: 2,
       title: "User & Roles",
       content:
-        "Add/Edit User, Add/Edit User Groups, Reset User Password",
+        "Add/Edit User, Add/Edit User Groups, User List, Reset User Password",
     },
     {
       id: 3,
@@ -275,6 +276,9 @@ const configure = () => {
                       : contentItem === "Add/Edit User Groups" &&
                         item.title === "User & Roles"
                       ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
+                      : contentItem === "User List" &&
+                      item.title === "User & Roles"
+                    ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : contentItem === "Add/Edit User" &&
                       item.title === "User & Roles"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
@@ -313,6 +317,8 @@ const configure = () => {
                       ? handleSettings
                       : contentItem === "Question Bank"
                       ? handleQuestionBank
+                      : contentItem === "User List"
+                      ? handleUserList
                       : null
                   }
                 >

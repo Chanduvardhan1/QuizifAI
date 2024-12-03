@@ -99,7 +99,7 @@ export default function SegmentedProgressIndicator({
            <div className='flex flex-col gap-2 w-[125px]'>
             <h1 className='text-[#002366] text-[11px]'>Assigned Quizzes <span className=' ml-[17px]'>:</span> <span className='text-[#FF6701]'>10</span></h1>
             <h1 className='text-[#002366] text-[11px]'>Incompleted Quizzes : <span className='text-[#FF6701]'>5</span></h1>
-            <h1 className='text-[11px] text-[#00ab00] font-medium' >Excellent</h1>
+            <h1 className='text-[16px] text-[#00ab00] font-medium' >Excellent</h1>
             <h1 className='text-[#002366] text-[11px]'>5/10 Quizzes Done</h1>
            </div>
 

@@ -57,8 +57,8 @@ const profilesettings = () => {
     <>
     <div className='flex w-full font-Poppins'>
     <Navigation/> 
-    <div className='w-full p-5'>
-  <div className='flex gap-5'>
+    <div className='w-full p-5 bg-[#f5f5f5]'>
+  <div className='flex gap-5 bg-white p-5 rounded-lg'>
  <div>
   <h2 className='text-[#214082] font-semibold'>Organization Settings : 
   </h2>
@@ -85,6 +85,11 @@ const profilesettings = () => {
       <input type="checkbox" className='w-[12px] mx-2 h-[12px]' name="" id="" />
       <h1 className='text-[#214082] font-semibold'>Mobile</h1>
     </div>
+  </div>
+  <div>
+    <button className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]" >
+    print
+    </button>
   </div>
  </div>
   </div>

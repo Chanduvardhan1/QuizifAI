@@ -244,6 +244,7 @@ export default function quiztype() {
 
 
  const [layout1 , setlayout1] = useState(false)
+ const [pdfUrl, setPdfUrl] = useState("");
 
 
 
@@ -1013,6 +1014,8 @@ if (!authToken) {
       formData.append("quiz_public_access", publicAccess);
       formData.append("available_from", availablefrom);
       formData.append("disabled_on", disabledon);
+      formData.append("org_id", selectedOrg);
+      formData.append("quiz_instructions", instructions);
       formData.append("subject_name", subject);
       formData.append("quiz_total_marks", quiztotalmarks);
       formData.append("file", file);
@@ -1074,6 +1077,11 @@ if (!authToken) {
       const responseData = JSON.parse(responseText);
       console.log(responseData, "data");
       if (responseData.response === "success") {
+        if (responseData.pdf_url?.status === "success") {
+          const pdfUrl = responseData.pdf_url.pdf_url;
+          setPdfUrl(pdfUrl); // Save PDF URL to state
+          console.log("File uploaded successfully. PDF URL:", pdfUrl);
+        }
         if (responseData.data && responseData.data.questions) {
           setQuestions(responseData.data.questions);
             setDocument(responseData.data.document_name);
@@ -1263,6 +1271,9 @@ if (!authToken) {
             document_type: document,
             subject_name: subject,
             user_id:user_id,
+            quiz_instructions: instructions,
+            org_id: selectedOrg,
+            pdf_url:pdfUrl,
             questions: questions.map((question) => ({
               question_text: question.question_text,
               lesson:question.lesson,
@@ -1303,7 +1314,51 @@ if (!authToken) {
       setErrorMessage("An error occurred while choosing the type of the quiz");
     }
   };
-
+  const [organizations, setOrganizations] = useState([]);
+  const [selectedOrg, setSelectedOrg] = useState('');
+  
+  useEffect(() => {
+    const fetchOrganizations = async () => {
+      try {
+        const response = await fetch('https://dev.quizifai.com:8010/organization/', {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjaGFuZHUgdmFyZGhhbiBrIiwiZXhwIjoyNTM0MDIzMDA3OTl9.H_wmqwEmdspaXzFRthV49YH_y25UZlj5zul3hV0bXF8',
+          },
+        });
+        const result = await response.json();
+        if (result.response === 'success') {
+          setOrganizations(result.data);
+        } else {
+          console.error(result.response_message);
+        }
+      } catch (error) {
+        console.error('Error fetching organizations:', error);
+      }
+    };
+  
+    fetchOrganizations();
+  }, []);
+  
+    const handleOrgSelect = (orgId) => {
+      setSelectedOrg(orgId);
+      // Pass org_id to the backend
+      console.log('Selected Organization ID:', orgId);
+      // Example POST request to send org_id
+      fetch('https://your-backend-endpoint.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ org_id: orgId }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Response from backend:', data);
+        })
+        .catch((error) => console.error('Error sending org_id:', error));
+    };
   const handleQuestionChange = (index, value) => {
     const updatedQuestions = [...questions];
     updatedQuestions[index] = value;
@@ -1716,7 +1771,32 @@ className="react-switch"
 
 </div>
 </div>
+
 </div>
+<div className="w-full flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className=" w-[20%] text-blue-800 font-semibold mb-2">
+              organizations<span className="text-red-500">*</span>
+              </label>
+             
+
+               {organizations.length > 0 ? (
+        <select 
+         className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+        onChange={(e) => handleOrgSelect(e.target.value)} value={selectedOrg}>
+          <option value="">Select an organization</option>
+          {organizations.map((org) => (
+            <option key={org.org_id} value={org.org_id}>
+              {org.org_name}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <p>Loading organizations...</p>
+      )}
+            </div>
+            <hr className="h-[1px] w-full" />
+          </div>
           {/* <div className="flex justify-start md:col-span-2">
             <button
               onClick={() => setStep(1)}

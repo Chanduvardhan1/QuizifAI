@@ -4,6 +4,8 @@ import visible from "../assets/Images/images/profile/visible.png";
 import hide from "../assets/Images/images/profile/hide.png";
 import Navigation from "../navbar/navbar";
 import { useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
 
 function usersgroup() {
     const [preferredLoginMethod, setPreferredLoginMethod] = useState("Email");
@@ -12,22 +14,222 @@ function usersgroup() {
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
     const [showNewPasswords, setShowNewPasswords] = useState(false);
     const navigate = useNavigate();
+    const userId = localStorage.getItem("user_id");
 
     const handleLoginCancelClick1 = () => {
         setShowNewPasswords(false);
       };
-      const togglePasswordVisibility = (type) => {
-        if (type === "old") {
-          setOldPasswordVisible(!oldPasswordVisible);
-        } else if (type === "new") {
-          setNewPasswordVisible(!newPasswordVisible);
-        } else if (type === "confirm") {
-          setConfirmPasswordVisible(!confirmPasswordVisible);
-        }
-      };
+
+      // const togglePasswordVisibility = (type) => {
+      //   if (type === "old") {
+      //     setOldPasswordVisible(!oldPasswordVisible);
+      //   } else if (type === "new") {
+      //     setNewPasswordVisible(!newPasswordVisible);
+      //   } else if (type === "confirm") {
+      //     setConfirmPasswordVisible(!confirmPasswordVisible);
+      //   }
+      // };
       const handleexcel = () => {
         navigate("/excelcreat")
       }
+
+// Randompassword generate //
+const [randomPassword, setRandomPassword] = useState('');
+const [password, setPassword] = useState('');
+ const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
+
+
+  const generateRandomPassword = (length = 8) => {
+    const characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+';
+    let password = '';
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      password += characters[randomIndex];
+    }
+    return password;
+  };
+
+  // Handle change for email input
+  const handleEmailChange = (e) => {
+    const email = e.target.value;
+    setUserEmail(email);
+
+    // Generate a random password whenever the email changes
+    if (email) {
+      const password = generateRandomPassword();
+      setRandomPassword(password);
+    } else {
+      setRandomPassword(''); // Clear password if email is empty
+    }
+  };
+
+// Randompassword generate end //
+
+
+// roles linst fetch //
+
+const [roles, setRoles] = useState([]); // To store roles from API
+const [selectedRoleId, setSelectedRoleId] = useState(null); 
+
+useEffect(() => {
+  const fetchRoles = async () => {
+    try {
+      const authToken = localStorage.getItem("authToken");
+
+      if (!authToken) {
+        console.error("No authentication token found");
+        return;
+      }
+      const response = await fetch('https://dev.quizifai.com:8010/roles/', {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+        },
+      });
+      const result = await response.json();
+      if (result.response === 'success') {
+        setRoles(result.data); // Store roles in state
+      } else {
+        console.error('Failed to fetch roles:', result.response_message);
+      }
+    } catch (error) {
+      console.error('Error fetching roles:', error);
+    }
+  };
+
+  fetchRoles();
+}, []);
+
+const handleRoleChange = (e) => {
+  const selectedId = e.target.value;
+  setSelectedRoleId(selectedId);
+  console.log('Selected Role ID:', selectedId);
+};
+
+// roles linst fetch end //
+
+
+      // integrating user create //
+
+
+      const [firstName, setFirstName] = useState("");
+      const [middleName, setMiddleName] = useState("");
+      const [lastName, setLastName] = useState("");
+      const [userEmail, setUserEmail] = useState("");
+      const [userTypeId, setUserTypeId] = useState(0);
+      const [orgId, setOrgId] = useState(0);
+      
+      const [dateOfBirth, setDateOfBirth] = useState("");
+      const [userAddressId, setUserAddressId] = useState('');
+    
+      const [responseMessage, setResponseMessage] = useState("");
+
+      const handleChange = (e, setter) => {
+        setter(e.target.value);
+      };
+    
+      // Handle form submission
+      const handleSubmit = (e) => {
+        e.preventDefault();
+    
+        const formData = {
+          first_name: firstName,
+          middle_name: middleName,
+          last_name: lastName,
+          user_email: userEmail,
+          user_type_id: 3,
+          password: randomPassword,
+          user_role_id: selectedRoleId,
+          created_by: userId,
+          updated_by: userId,
+        };
+        const authToken = localStorage.getItem("authToken");
+
+        if (!authToken) {
+          console.error("No authentication token found");
+          return;
+        }
+        fetch("https://dev.quizifai.com:8010/users-create-by-superadmin", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+
+          },
+          body: JSON.stringify(formData),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if  (data.success) {
+              setResponseMessage("User created successfully!");
+            
+              reset('');
+              
+            } else {
+              setResponseMessage(data.message || "Failed to create user.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error creating user:", error);
+            setResponseMessage("An error occurred. Please try again.");
+          });
+      };
+
+ 
+      const reset =()=> {
+        setFirstName('');
+        setMiddleName('');
+        setLastName('');
+        setUserEmail('');
+        setRandomPassword('');
+        setSelectedRoleId('');
+      }
+    // integrating user create end //
+      
+
+
+    // user type list//
+const [userTypes, setUserTypes] = useState([]);
+const [selectedUserTypeId, setSelectedUserTypeId] = useState(null);
+
+useEffect(() => {
+
+  fetch("https://dev.quizifai.com:8010/user_type/", {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.response === "success") {
+        setUserTypes(data.data);
+      } else {
+        alert(data.response_message || "Failed to fetch user types.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching user types:", error);
+    });
+}, []);
+
+// Handle selection of user type
+const handleUserTypeChange = (e) => {
+  const userTypeId = parseInt(e.target.value, 10); // Get the selected user_type_id
+  setSelectedUserTypeId(userTypeId);
+  console.log("Selected User Type ID:", userTypeId);
+  // Here you can send the `userTypeId` to the backend or perform other actions
+};
+// user type end//
+
+
   return (
     <>
       <div className="w-full flex">
@@ -40,7 +242,7 @@ function usersgroup() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white my-4 p-5">
   
   <div className="md:col-span-2">
-      <h1 className=" font-semibold text-[20px] text-[#214082]">User Create</h1>
+      <h1 className=" font-semibold text-[20px] text-[#214082]">Create User</h1>
     </div>
 
     {/* User Id*/}
@@ -70,16 +272,32 @@ function usersgroup() {
         className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
         type="text"
         required
-        // value={numQuestions}
-        // onChange={(e) => setNumQuestions(e.target.value)}
+        value={firstName}
+        onChange={(e) => handleChange(e, setFirstName)}
       />
       </div>
     
       <hr className={`h-[1px] w-full`} />
     </div>
    
+   {/* Middle Name */}
+<div className="flex flex-col ">
+      <div className="w-full flex flex-row">
+      <label className="w-[50%] text-blue-800 font-semibold mb-2 ">Middle Name<span className="text-red-500"></span></label>
+
+      <input
+        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+        type="text"
+        required
+        value={middleName}
+        onChange={(e) => handleChange(e, setMiddleName)}
+      />
+      </div>
+    
+      <hr className={`h-[1px] w-full`} />
+    </div>
     {/* Address */}
-    <div className="flex flex-col">
+    {/* <div className="flex flex-col">
       <div className="w-full flex flex-row">
       <label className="w-[50%] text-blue-800 font-semibold mb-2">Address 1</label>
 
@@ -88,16 +306,16 @@ function usersgroup() {
         className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
         type="text"
         required
-        // value={numQuestions}
-        // onChange={(e) => setNumQuestions(e.target.value)}
+        value={userAddressId}
+            onChange={(e) => handleChange(e, setUserAddressId)}
       />
       </div>
     
       <hr className={`h-[1px] w-full`} />
-    </div>
+    </div> */}
      {/* last Name */}
     
-<div className="flex flex-col">
+<div className="flex flex-col ">
       <div className="w-full flex flex-row">
       <label className="w-[50%] text-blue-800 font-semibold mb-2">last Name<span className="text-red-500">*</span></label>
  
@@ -105,15 +323,38 @@ function usersgroup() {
         className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
         type="text"
         required
-        // value={numQuestions}
-        // onChange={(e) => setNumQuestions(e.target.value)}
+        value={lastName}
+        onChange={(e) => handleChange(e, setLastName)}
       />
       </div>
     
       <hr className={`h-[1px] w-full`} />
     </div>
-    {/* Address 2 */}
     <div className="flex flex-col">
+      <div className="w-full flex flex-row">
+      <label className="w-[50%] text-blue-800 font-semibold mb-2">User Role<span className="text-red-500">*</span></label>
+      <select
+        id="roles"
+        name="roles"
+        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+        onChange={handleRoleChange}
+      >
+        <option value="" disabled selected>
+         Select a Role
+        </option>
+        {roles.map((role) => (
+          <option key={role.user_role_id} value={role.user_role_id}>
+            {role.role_name}
+          </option>
+        ))}
+      </select>
+     
+      </div>
+    
+      <hr className={`h-[1px] w-full`} />
+    </div>
+    {/* Address 2 */}
+    {/* <div className="flex flex-col">
       <div className="w-full flex flex-row">
       <label className="w-[50%] text-blue-800 font-semibold mb-2 ">Address 2</label>
 
@@ -127,29 +368,14 @@ function usersgroup() {
       </div>
     
       <hr className={`h-[1px] w-full`} />
-    </div>
+    </div> */}
    
 
     
-{/* Middle Name */}
-<div className="flex flex-col">
-      <div className="w-full flex flex-row">
-      <label className="w-[50%] text-blue-800 font-semibold mb-2 ">Middle Name<span className="text-red-500">*</span></label>
 
-      <input
-        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-        type="number"
-        required
-        // value={numQuestions}
-        // onChange={(e) => setNumQuestions(e.target.value)}
-      />
-      </div>
-    
-      <hr className={`h-[1px] w-full`} />
-    </div>
 
    {/* email */}
-<div className="flex flex-col">
+<div className="flex flex-col ">
       <div className="w-full flex flex-row">
       <label className="w-[50%] text-blue-800 font-semibold mb-2 ">Email<span className="text-red-500">*</span></label>
 
@@ -157,15 +383,34 @@ function usersgroup() {
         className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
         type="text"
         required
-        // value={numQuestions}
-        // onChange={(e) => setNumQuestions(e.target.value)}
+        value={userEmail}
+        onChange={handleEmailChange}
       />
       </div>
     
       <hr className={`h-[1px] w-full`} />
     </div>
  
-   
+    <div className="flex flex-col">
+      <div className="w-full flex flex-row">
+      <label className="w-[50%] text-blue-800 font-semibold mb-2 ">Password<span className="text-red-500">*</span></label>
+
+      <input
+        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+        type={showPassword ? 'text' : 'password'}
+        value={randomPassword}
+        required
+      />
+        <div
+        className="absolute  right-5 mt-2 mr-1 text-lg text-[#A7A3FF] cursor-pointer"
+        onClick={togglePasswordVisibility}
+      >
+        {showPassword ? <FaEye /> : <FaEyeSlash />}
+      </div>
+      </div>
+    
+      <hr className={`h-[1px] w-full`} />
+    </div>
 
   
     
@@ -208,164 +453,44 @@ function usersgroup() {
           </div>
 
           <div className="flex flex-col pl-[100px]">
-      <div className="w-full flex flex-row">
+      <div className="w-[50%] flex flex-row">
       <label className="w-[25%] text-blue-800 font-semibold mb-2 ">Email<span className="text-red-500">*</span></label>
 
       <input
         className={ `  w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
         type="text"
         required
-        // value={numQuestions}
-        // onChange={(e) => setNumQuestions(e.target.value)}
+        value={userEmail}
+        onChange={handleEmailChange}
       />
       </div>
     
-      <hr className={`h-[1px] w-full`} />
+      <hr className={`h-[1px] w-[50%]`} />
     </div>
     </div>
-    <div className="bg-white w-full ">
-          <h1 className="mt-4 text-[13px] text-[#EF5130] font-semibold colour red">
-            Update Password
-          </h1>
-          <div className="flex">
-            <div className="inputGroup1" >
-              <label className="text-blue-800 text-[13px] font-semibold">
-                Password
-              </label>
-              <input
-                className="border-transparent border-b-2 hover:border-blue-200 mr-[40px] ml-[px] h-[30px] w-[173px] text-[11px] focus:outline-gray-300 pl-[5px]"
-                // type={oldPasswordVisible ? "text" : "password"}
-                placeholder="password"
-                // value={oldPassword}
-                // onChange={(e) => setOldPassword(e.target.value)}
-              />
-              <span
-                onClick={() => togglePasswordVisibility("old")}
-                className="cursor-pointer"
-              >
-                {oldPasswordVisible ? (
-                  <img
-                    className="h-[17px] w-[17px] ml-[66%] relative -top-[25px]"
-                    src={visible}
-                    title="hide"
-                    alt="Hide Password"
-                  />
-                ) : (
-                  <img
-                    className="h-[17px] w-[17px] ml-[66%] relative -top-[25px]"
-                    src={hide}
-                    title="show"
-                    alt="Show Password"
-                  />
-                )}
-              </span>
-              {/* {oldPasswordError && (
-                <div className="text-red-500 text-xs mt-1">
-                  {oldPasswordError}
-                </div>
-              )} */}
-            </div>
-
-            {/* {showNewPasswords && ( */}
-              <>
-                <div className="inputGroup1">
-                  <label className="text-blue-800 font-semibold ml-[15px] text-[13px]">
-                    New Password
-                  </label>
-                  <input
-                    className="border-transparent border-b-2 hover:border-blue-200 ml-[15px] h-[30px] w-[163px] text-[11px] focus:outline-gray-300"
-                    // type={newPasswordVisible ? "text" : "password"}
-                    placeholder="new password"
-                    // value={newPassword}
-                    // onChange={(e) => setNewPassword(e.target.value)}
-                  />
-                  <span
-                    onClick={() => togglePasswordVisibility("new")}
-                    className="cursor-pointer"
-                  >
-                    {newPasswordVisible ? (
-                      <img
-                        className="h-[17px] w-[17px] ml-[72%] relative -top-[25px]"
-                        src={visible}
-                        title="hide"
-                        alt="Hide Password"
-                      />
-                    ) : (
-                      <img
-                        className="h-[17px] w-[17px] ml-[72%] relative -top-[25px]"
-                        src={hide}
-                        title="show"
-                        alt="Show Password"
-                      />
-                    )}
-                  </span>
-                  {/* {newPasswordError && (
-                    <div className="text-red-500 text-xs mt-1 w-[190px] mx-[10px]">
-                      {newPasswordError}
-                    </div>
-                  )} */}
-                </div>
-
-                <div className="inputGroup1">
-                  <label className="text-blue-800 font-semibold ml-[20px] text-[13px]">
-                    Confirm Password
-                  </label>
-                  <input
-                    className="border-transparent border-b-2 hover:border-blue-200 ml-[20px] h-[30px] w-[178px] text-[11px] focus:outline-gray-300"
-                    // type={confirmPasswordVisible ? "text" : "password"}
-                    placeholder="confirm password"
-                    // value={confirmPassword}
-                    // onChange={(e) => setConfirmPassword(e.target.value)}
-                  />
-                  <span
-                    onClick={() => togglePasswordVisibility("confirm")}
-                    className="cursor-pointer"
-                  >
-                    {confirmPasswordVisible ? (
-                      <img
-                        className="h-[17px] w-[17px] ml-[67%] relative -top-[25px]"
-                        src={visible}
-                        title="hide"
-                        alt="Hide Password"
-                      />
-                    ) : (
-                      <img
-                        className="h-[17px] w-[17px] ml-[67%] relative -top-[25px]"
-                        src={hide}
-                        title="show"
-                        alt="Show Password"
-                      />
-                    )}
-                  </span>
-                  {/* {confirmPasswordError && (
-                    <div className="text-red-500 text-xs mt-1 w-[200px]">
-                      {confirmPasswordError}
-                    </div>
-                  )} */}
-                </div>
-              </>
-            {/* )} */}
-          </div>
-<div className="flex justify-end pr-[50px]">
-<button
-            className=" bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[150px] text-[13px] font-semibold rounded-[20px]  mb-[20px] text-white mt-[20px] text-nowrap"
-            // onClick={handleUpdatePassword}
-          >
-         Update Password
-          </button>
-</div>
-        
-          {showNewPasswords && (
-            <button
-              className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[80px] text-[13px] font-semibold rounded-[20px] ml-[4%] text-white"
-              onClick={handleLoginCancelClick1}
-            >
-              Cancel
-            </button>
-          )}
-         
+   
         </div>
-        </div>
+       
+
+{responseMessage && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div
+      className={`p-4 rounded shadow-lg w-[300px] text-center ${
+        responseMessage.includes('success')
+          ? 'bg-green-100 text-green-800'
+          : 'bg-red-100 text-red-800'
+      }`}
+    >
+      <p>{responseMessage}</p>
+      <button
+        onClick={() => setResponseMessage('')} // Close the popup
+        className="mt-4 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
     <div className="flex justify-between  p-5 pr-[50px] ">
             <button
             //   onClick={() => setStep(2)}
@@ -375,7 +500,7 @@ function usersgroup() {
               Edit
             </button>
             <button
-            //   onClick={handleNextpage2}
+              onClick={handleSubmit}
               className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
 
             >

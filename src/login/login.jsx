@@ -153,13 +153,21 @@ const LoginPage = () => {
         if (responseData.response === "success") {
           const userId = responseData.data && responseData.data[0] && responseData.data[0].user_id;
         const userRole = responseData.data && responseData.data[0] && responseData.data[0].user_role;
+        const orgId = responseData.data?.[0]?.org_id;
+
         if (userId && userRole) {
           login(accessToken);
           localStorage.setItem('user_id', userId);
           localStorage.setItem('user_role', userRole);
           localStorage.setItem('password', password);
+          localStorage.setItem('org_id', orgId);
+
           setErrorMessage("");
-          navigate("/dashboard");
+          if (userRole === "Admin" && orgId) {
+            navigate("/profileorganization");
+          } else {
+            navigate("/dashboard");
+          }
             console.log("Login successful!");
           } else {
             setErrorMessage("An unknown error occurred while logging in.");

@@ -97,6 +97,7 @@ import Questionbank from "./configure/questionbank.jsx";
 import Questionbankview from "./configure/questionbamkview.jsx";
 import Leaderboardall from "./leaderboardall/leaderboardall.jsx";
 import Institution from "./leaderboardall/institution.jsx";
+import Userslist from "./configure/userslist.jsx";
 
 export default () => {
     return [
@@ -116,6 +117,11 @@ export default () => {
         {
             path:'usersgroup',
             component:Usersgroup,
+            isPrivate: true
+        },
+        {
+            path:'userslist',
+            component:Userslist,
             isPrivate: true
         },
         {

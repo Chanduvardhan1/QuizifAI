@@ -497,7 +497,7 @@ const Dashboard = () => {
 
 <div>
           <div className="flex gap-[10px]">
-            {userRole === "Quiz Master" && (
+            { userRole === "Super Admin" && (
 
               <div className="w-[99px] h-[41px]  rounded-[10px] bg-[#fee2e2]">
                 <div onClick={createUser} className="flex cursor-pointer">
@@ -510,13 +510,13 @@ const Dashboard = () => {
                     onClick={createUser}
                     className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
                   >
-                    users
+                    User
                   </a>
                 </div>
               </div>
               
             )}
-             {userRole === "Quiz Master" && (
+             {(userRole === "Quiz Master" || userRole === "Super Admin") && (
 
 <div className="w-[99px] h-[41px]  rounded-[10px] bg-[#fee2e2]">
   <div className="flex cursor-pointer"  onClick={createQuiz}>

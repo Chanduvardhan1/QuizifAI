@@ -67,21 +67,23 @@ const statusreport = () => {
 
 <div class=" p-4">
     <div class="container mx-auto">
-        <h1 class="text-2xl font-bold text-center mb-6">Rank Table</h1>
+        {/* <h1 class="text-2xl font-bold text-center mb-6">Rank Table</h1> */}
         <div class="overflow-x-auto">
             <table class="table-auto w-full border-collapse border border-gray-300">
                 <thead>
                     <tr class="bg-gray-200">
                         <th class="border border-gray-300 px-4 py-2">Rank</th>
                         <th class="border border-gray-300 px-4 py-2">Name</th>
+                        <th class="border border-gray-300 px-4 py-2">User Id</th>
                         <th class="border border-gray-300 px-4 py-2">Score</th>
-                        <th class="border border-gray-300 px-4 py-2">Grade</th>
+                        <th class="border border-gray-300 px-4 py-2">Percentage</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="bg-white hover:bg-gray-100">
                         <td class="border border-gray-300 px-4 py-2 text-center">4</td>
                         <td class="border border-gray-300 px-4 py-2">John Doe</td>
+                        <td class="border border-gray-300 px-4 py-2">1</td>
                         <td class="border border-gray-300 px-4 py-2 text-center">95</td>
                         <td class="border border-gray-300 px-4 py-2 text-center text-green-600 font-bold">A</td>
                     </tr>

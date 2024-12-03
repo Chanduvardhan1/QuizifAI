@@ -5,7 +5,7 @@ import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
 
 
 
-const institution = () => {
+const global = () => {
   
  
     
@@ -54,7 +54,7 @@ const institution = () => {
 
 <div class=" p-4">
     <div class="container mx-auto">
-        <h1 class="text-2xl font-bold text-center mb-6">Rank Table</h1>
+        {/* <h1 class="text-2xl font-bold text-center mb-6">Rank Table</h1> */}
         <div class="overflow-x-auto">
             <table class="table-auto w-full border-collapse border border-gray-300">
                 <thead>
@@ -108,4 +108,4 @@ const institution = () => {
   )
 }
 
-export default institution
+export default global

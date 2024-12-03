@@ -509,7 +509,7 @@ export default function dashboardNavBar() {
 // const score = 1564;
     return (
         <div className="container mx-auto p-4">
-          <div className="flex w-full bg-[#F3D0D5]  gap-4 mb-1  px-2 p-2 font-semibold rounded-lg">
+          <div className="flex w-full  gap-4 mb-1 py-2 font-semibold rounded-lg">
       <button
         // onClick={() => handleTabClick('Manual')}
         className={`w-full px-4 py-2 mr-4
@@ -520,7 +520,7 @@ export default function dashboardNavBar() {
       </button>
       <button
         // onClick={() => handleTabClick('Excel')}
-        className={`w-full px-4 py-2 mr-4 text-[#214082] bg-[#ceffe4] rounded-lg
+        className={`w-full px-4 py-2  mr-4 text-[#214082] bg-[#ceffe4] rounded-lg
         `}
       >
         Quizzes Overview 
@@ -535,14 +535,14 @@ export default function dashboardNavBar() {
       </button>
       <button
         // onClick={() => handleTabClick('Textbook')}
-        className={`w-full px-4 py-2 mr-4 rounded-lg text-[#214082] bg-[#ffe9ee]
+        className={`w-full px-4 py-2  mr-4 rounded-lg text-[#214082] bg-[#ffe9ee]
         `}
       >
         Global Rank
       </button>
       <button
         // onClick={() => handleTabClick('Textbook')}
-        className={`w-full px-4 py-2 mr-4 text-[#214082] rounded-lg  bg-[#c1bbdd]
+        className={`w-full px-4 py-2  mr-4 text-[#214082] rounded-lg  bg-[#c1bbdd]
         `}
       >
         Subscription 

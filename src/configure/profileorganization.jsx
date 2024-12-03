@@ -13,7 +13,7 @@ import Edit from "../../src/assets/Images/Assets/Edit.png"
 import Delete from "../../src/assets/Images/Assets/Delete.png"
 import Line from "../../src/assets/Images/Assets/Line.png"
 import { RiDeleteBinLine } from "react-icons/ri";
-import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
+import defaultPhoto from '../../src/assets/Images/dashboard/narmtech.jpg'
 import camera1 from "../../src/assets/Images/dashboard/edit.png"
 import search from "../assets/Images/images/dashboard/Search.png";
 
@@ -166,7 +166,7 @@ const handleUserSelect = (e) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${authToken}`,
     },
     body: JSON.stringify({ user_id: selectedId }),
   })
@@ -179,6 +179,133 @@ const handleUserSelect = (e) => {
 
 //---------**users end**------------//
 
+//---------**AddOrganizationProfile list dropdown**------------//
+const orgId = localStorage.getItem('org_id');
+
+
+const fetchOrganizationDetails = async () => {
+  try {
+    const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+
+    if (!authToken) {
+      throw new Error("No authentication token found");
+    }
+    const response = await fetch(
+      `https://dev.quizifai.com:8010/get_organization_dtls?org_id=${8}`,
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
+    );
+    const data = await response.json();
+    console.log('API Response:', data);
+    if (data.response === 'success') {
+
+      const organizationDetails = data.data[0]; // Access the first object in the `data` array
+
+      // setOrgId(organizationDetails.org_id || '');
+      setOrgName(organizationDetails.org_name || '');
+      setSelectedUser(organizationDetails.org_admin_id || '');
+      setOrgSubscriptionKey(organizationDetails.org_subscription_key || '');
+      setOrgPointOfContactId(organizationDetails.org_point_of_contact_id || '');
+      setOrgAddressLine1(organizationDetails.org_address_line1 || '');
+      setOrgAddressLine2(organizationDetails.org_address_line2 || '');
+      setOrgLocationId(organizationDetails.org_location_id || '');
+      // setCreatedDate(organizationDetails.created_date || '');
+      // setUpdatedDate(organizationDetails.updated_date || '');
+      // setCreatedBy(organizationDetails.created_by || '');
+      // setUpdatedBy(organizationDetails.updated_by || '');
+      setOrgType(organizationDetails.org_type || '');
+      setOrgPublicQuizzesAccessFlag(organizationDetails.org_public_quizzes_access_flag || '');
+      setOrgCreatePublicQuizzesFlag(organizationDetails.org_create_public_quizzes_flag || '');
+      // setOrgPhotoUrl(organizationDetails.org_photo_url || '');
+      // setDefaultLoginMethod(organizationDetails.default_login_method || '');
+      // setPrintFlag(organizationDetails.print_flag || '');
+    } else {
+      setErrorMessage(data.response_message || 'Failed to fetch data');
+    }
+  }  catch (error) {
+    console.error('Fetch Error:', error);
+    alert('An error occurred while fetching data');
+  }
+};
+
+
+useEffect(() => {
+  fetchOrganizationDetails();
+}, []);
+
+
+//---------**AddOrganizationProfile list dropdown**------------//
+
+
+
+//---------**AddOrganizationProfile**------------//
+const [orgName, setOrgName] = useState('');
+const [orgAdminId, setOrgAdminId] = useState(0);
+const [orgLocationId, setOrgLocationId] = useState(0);
+const [orgSubscriptionKey, setOrgSubscriptionKey] = useState('');
+const [orgPointOfContactId, setOrgPointOfContactId] = useState(0);
+const [orgAddressLine1, setOrgAddressLine1] = useState('');
+const [orgAddressLine2, setOrgAddressLine2] = useState('');
+const [orgType, setOrgType] = useState('School');
+const [orgPublicQuizzesAccessFlag, setOrgPublicQuizzesAccessFlag] = useState(true);
+const [orgCreatePublicQuizzesFlag, setOrgCreatePublicQuizzesFlag] = useState(true);
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+
+  const payload = {
+    user_id: userId,
+    org_name: orgName,
+    org_admin_id:  selectedUser.user_id ,
+    org_location_id: locationId,
+    org_subscription_key: orgSubscriptionKey,
+    org_point_of_contact_id:  selectedUser.user_id ,
+    org_address_line_1: orgAddressLine1,
+    org_address_line_2: orgAddressLine2,
+    org_type: orgType,
+    org_public_quizzes_access_flag: true,
+    org_create_public_quizzes_flag: true,
+  };
+
+  try {
+    const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+
+  if (!authToken) {
+    throw new Error("No authentication token found");
+  }
+    const response = await fetch('https://dev.quizifai.com:8010/add_organizationprofile', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${authToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('Response:', data);
+    alert('Organization profile added successfully!');
+    fetchOrganizationDetails();
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Failed to add organization profile.');
+  }
+};
+
+
+
+//---------**AddOrganizationProfile End**------------//
 
 
 
@@ -189,24 +316,29 @@ const handleUserSelect = (e) => {
 
   const handleedit = () =>{
     setShowsave(true);
+   setIsEditing(true)
   }
   const handleeditback = () =>{
     setShowsave(false);
+    setIsEditing(false)
   }
   return (
     <>
-    <div className='flex w-full font-Poppins'>
+    <div className='flex w-full'>
     <Navigation/> 
-    <div className='w-full p-5'>
+    <div className='w-full p-5 bg-[#F5F5F5]'>
+      <div className=' bg-white p-5 rounded-lg '>
+
+     
         <div>
             <h1 className=' font-semibold text-[#EF5130] mb-2'>Organization Profile</h1>
         </div>
   <div className='flex gap-5'>
-  <div className="relative w-[100px] h-[100px]">
+  <div className="relative w-[90px] h-[90px]">
         <img
           src={defaultPhoto}
           alt="Profile"
-          className="w-[100px] h-[100px] rounded-xl"
+          className="w-[90px] h-[90px] rounded-xl"
         />
         <div 
           className="absolute bottom-0 right-0 rounded-full cursor-pointer"
@@ -214,9 +346,11 @@ const handleUserSelect = (e) => {
         >
          <img src={camera1} alt="" className="w-[20px] h-[20px]"/>
         </div>
-        <div className='flex justify-center'>Logo</div>
+        <div className='flex justify-center text-blue-800'>Org ID : <span className=' text-black ml-1'> 466</span> </div>
+        <div className='flex justify-center text-blue-800'>Narmtech</div>
+
       </div>
-    <div className='w-[70%] flex flex-col gap-5'>
+    <div className='w-[80%] flex flex-col gap-5'>
     {/* <div className="flex flex-col">
         <div className="w-full flex flex-row">
         <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">Organization ID<span className="text-red-500">*</span></label>
@@ -231,129 +365,17 @@ const handleUserSelect = (e) => {
       
         <hr className={`h-[1px] w-full`} />
       </div> */}
-      <div className="flex flex-col">
+      <div className='flex gap-[5px]'>
+      <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
-        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">Organization Name<span className="text-red-500">*</span></label>
+        <label className="w-[59%] text-blue-800 font-semibold mb-2 mr-[9px] ">Organization Name<span className="text-red-500">*</span></label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
                 placeholder="Organization Name"
-                // value={availablefrom}
-                // onChange={handleAvailableFromChange}
-              ></input>
-  
-        </div>
-      
-        <hr className={`h-[1px] w-full`} />
-      </div>
-
-      <div className="flex flex-col">
-        <div className="w-full flex flex-row">
-        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">Pincode<span className="text-red-500">*</span></label>
-        <input
-              type="text"
-              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-                placeholder="Organization Name"
-                value={postalCode}
-                onChange={handlePostalCodeChange}
-              ></input>
-   <img
-                    className="h-[15px] w-[15px] absolute right-[275px] mt-[5px]"
-                    src={search}
-                    onClick={handleSearchClick}
-                  />
-        </div>
-        {error && (
-                    <div className="text-red-500 text-[10px] mt-1">{error}</div>
-                  )}
-        <hr className={`h-[1px] w-full`} />
-      </div>
-      <div className="flex flex-col">
-        <div className="w-full flex flex-row">
-        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] "> District Name<span className="text-red-500">*</span></label>
-        <input
-              type="text"
-              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-                placeholder="Organization Name"
-                value={district}
-                onChange={(e) => setDistrict(e.target.value)}
-              ></input>
-  
-        </div>
-      
-        <hr className={`h-[1px] w-full`} />
-      </div>
-      <div className="flex flex-col">
-        <div className="w-full flex flex-row">
-        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">City Name<span className="text-red-500">*</span></label>
-     
-    <select
-       className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-
-                    type="text"
-                    value={city}
-                    onChange={handleCityChange}
-                  
-                  >
-                    <option value={city}>{city}</option>
-                    {locations.map((location) => (
-                      <option
-                        key={location.location_id}
-                        value={location.location}
-                      >
-                        {location.location}
-                      </option>
-                    ))}
-                  </select>
-        </div>
-      
-        <hr className={`h-[1px] w-full`} />
-      </div>
-      <div className="flex flex-col">
-        <div className="w-full flex flex-row">
-        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">State Name<span className="text-red-500">*</span></label>
-        <input
-              type="text"
-              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-                placeholder="Organization Name"
-                value={state}
-                onChange={(e) => setState(e.target.value)}
-              ></input>
-  
-        </div>
-      
-        <hr className={`h-[1px] w-full`} />
-      </div>
-      <div className="flex flex-col">
-        <div className="w-full flex flex-row">
-        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">Country Name<span className="text-red-500">*</span></label>
-        <input
-              type="text"
-              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-                placeholder="Organization Name"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-              ></input>
-  
-        </div>
-      
-        <hr className={`h-[1px] w-full`} />
-      </div>
-
-
-
-
-
-
-      <div className="flex flex-col">
-        <div className="w-full flex flex-row">
-        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">Website URL</label>
-        <input
-              type="text"
-              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-                placeholder="Website URL"
-                // value={availablefrom}
-                // onChange={handleAvailableFromChange}
+                value={orgName}
+                onChange={(e) => setOrgName(e.target.value)}
+                disabled={!isEditing}
               ></input>
   
         </div>
@@ -362,8 +384,9 @@ const handleUserSelect = (e) => {
       </div>
       <div className="w-full flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">Organization Type<span className="text-red-500">*</span></label>
+        <label className="w-[50%] text-blue-800 font-semibold mb-2 mr-[9px] ">Organization Type<span className="text-red-500">*</span></label>
         <select
+         disabled={!isEditing}
                   className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
         //   value={selectedComplexity}
         //   onChange={handleSelectComplexity}
@@ -380,15 +403,34 @@ const handleUserSelect = (e) => {
       
         <hr className={`h-[1px] w-full`} />
       </div>
-      <div className="flex flex-col">
+      </div>
+      {/* <div className="flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">Description</label>
+        <label className="w-[22%] text-blue-800 font-semibold mb-2 mr-[9px] ">Description</label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
                 placeholder="Description"
-                // value={availablefrom}
-                // onChange={handleAvailableFromChange}
+
+              ></input>
+  
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div> */}
+<div className='flex gap-[5px]'>
+
+
+      <div className="w-full flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[57%] text-blue-800 font-semibold mb-2 mr-[9px] ">Address line 1<span className="text-red-500"></span></label>
+        <input
+              type="text"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="Organization admin Name"
+                value={orgAddressLine1}
+                onChange={(e) => setOrgAddressLine1(e.target.value)}
+                disabled={!isEditing}
               ></input>
   
         </div>
@@ -397,13 +439,14 @@ const handleUserSelect = (e) => {
       </div>
       <div className="w-full flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">Organization Address<span className="text-red-500">*</span></label>
+        <label className="w-[40%] text-blue-800 font-semibold mb-2 mr-[9px] ">Address line 2<span className="text-red-500"></span></label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
                 placeholder="Organization admin Name"
-                // value={availablefrom}
-                // onChange={handleAvailableFromChange}
+                value={orgAddressLine2}
+                onChange={(e) => setOrgAddressLine2(e.target.value)}
+                disabled={!isEditing}
               ></input>
   
         </div>
@@ -411,20 +454,176 @@ const handleUserSelect = (e) => {
         <hr className={`h-[1px] w-full`} />
       </div>
 
+      </div>
+<div className='flex gap-[5px]'>
+
+<div className="flex flex-col w-full">
+  <div className="w-full flex flex-row items-center">
+    <label className="w-[36%] text-blue-800 font-semibold mb-2 mr-[9px]">
+      Pincode<span className="text-red-500">*</span>
+    </label>
+    <div className="flex-grow flex items-center relative">
+      <input
+        type="text"
+        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] h-[30px] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+        placeholder="postalCode"
+        value={postalCode}
+        onChange={handlePostalCodeChange}
+        disabled={!isEditing}
+      />
+      <img
+        className="h-[15px] w-[15px] absolute right-1 cursor-pointer"
+        src={search}
+        onClick={handleSearchClick}
+        alt="Search Icon"
+      />
+    </div>
+  </div>
+  {error && (
+    <div className="text-red-500 text-[10px] mt-1">{error}</div>
+  )}
+  <hr className="h-[1px] w-full" />
+</div>
+
+      <div className="flex flex-col w-full">
+        <div className="w-full flex flex-row">
+        <label className="w-[40%] text-blue-800 font-semibold mb-2 mr-[9px] "> District Name<span className="text-red-500"></span></label>
+        <input
+              type="text"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="District"
+                value={district}
+                onChange={(e) => setDistrict(e.target.value)}
+                disabled={!isEditing}
+              ></input>
+  
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+       
+</div>
+<div className='flex gap-[5px]'>
+
+
+<div className="flex flex-col w-full">
+        <div className="w-full flex flex-row">
+        <label className="w-[57%] text-blue-800 font-semibold mb-2 mr-[9px] ">City Name<span className="text-red-500"></span></label>
+     
+    <select
+       className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                    type="text"
+                    value={city}
+                    onChange={handleCityChange}
+                    disabled={!isEditing}
+                  >
+                    <option value={city}>{city}</option>
+                    {locations.map((location) => (
+                      <option
+                        key={location.location_id}
+                        value={location.location}
+                      >
+                        {location.location}
+                      </option>
+                    ))}
+                  </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div> 
+      <div className="flex flex-col w-full">
+        <div className="w-full flex flex-row">
+        <label className="w-[40%] text-blue-800 font-semibold mb-2 mr-[9px] ">State Name<span className="text-red-500"></span></label>
+        <input
+              type="text"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="State"
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+                disabled={!isEditing}
+              ></input>
+  
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      </div>
+
+      <div className='flex gap-[5px]'>
+
+     
+      <div className="flex flex-col w-full">
+        <div className="w-full flex flex-row">
+        <label className="w-[57%] text-blue-800 font-semibold mb-2 mr-[9px] ">Country Name<span className="text-red-500"></span></label>
+        <input
+              type="text"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="Country"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                disabled={!isEditing}
+              ></input>
+  
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+{/* 
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">Pincode<span className="text-red-500">*</span></label>
+        <select id="userSelect"               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+ onChange={handleUserSelect}>
+        <option value="">Select User Name</option>
+        {users.map((user) => (
+          <option key={user.user_id} value={user.user_id}>
+            {user.user_name}
+          </option>
+        ))}
+      </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div> */}
+
+
+
+
+      <div className="flex flex-col w-full">
+        <div className="w-full flex flex-row">
+        <label className="w-[40%] text-blue-800 font-semibold mb-2 mr-[9px] ">Website URL</label>
+        <input
+              type="text"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="Website URL"
+                // value={availablefrom}
+                // onChange={handleAvailableFromChange}
+                disabled={!isEditing}
+              ></input>
+  
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+     
+      </div>
   
     </div>
   </div>
-  <div className=' flex flex-col gap-5'>
+  </div>
+  <div className=' flex flex-col gap-5 mt-2 bg-white p-5 rounded-lg'>
       <div>
-            <h1 className=' font-semibold text-[#EF5130] mb-2'>Organization Admin</h1>
+            <h1 className=' font-semibold text-[#EF5130] mb-2'>Administration</h1>
         </div>
-        <div className='w-[80%] flex flex-col gap-5 pl-[125px]'>
+        <div className='w-[89%] flex flex-col gap-5 pl-[110px]'>
 
      
       <div className='flex gap-2 w-full'>
-      <div className="flex flex-col w-full">
+      {/* <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
-        <label className="w-[69%] text-blue-800 font-semibold mb-2 mr-[9px] ">Admin ID<span className="text-red-500">*</span></label>
+        <label className="w-[57%] text-blue-800 font-semibold mb-2 mr-[9px] ">Admin ID<span className="text-red-500">*</span></label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -436,13 +635,14 @@ const handleUserSelect = (e) => {
         </div>
       
         <hr className={`h-[1px] w-full`} />
-      </div>
+      </div> */}
       <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
-        <label className="w-[50%] text-blue-800 font-semibold mb-2 mr-[9px] ">Name<span className="text-red-500">*</span></label>
+        <label className="w-[22%] text-blue-800 font-semibold mb-2 mr-[9px] ">Name<span className="text-red-500">*</span></label>
       
     <select id="userSelect"               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
  onChange={handleUserSelect}>
+   disabled={!isEditing}
         <option value="">Select User Name</option>
         {users.map((user) => (
           <option key={user.user_id} value={user.user_id}>
@@ -460,13 +660,14 @@ const handleUserSelect = (e) => {
       <div className='flex gap-2 w-full'>
       <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
-        <label className="w-[69%] text-blue-800 font-semibold mb-2 mr-[9px] ">Mobile<span className="text-red-500">*</span></label>
+        <label className="w-[57%] text-blue-800 font-semibold mb-2 mr-[9px] ">Mobile<span className="text-red-500"></span></label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
                 placeholder="Mobile"
                 // value={availablefrom}
                 // onChange={handleAvailableFromChange}
+                disabled={!isEditing}
               ></input>
   
         </div>
@@ -482,6 +683,7 @@ const handleUserSelect = (e) => {
                 placeholder="Email"
                 // value={availablefrom}
                 // onChange={handleAvailableFromChange}
+                disabled={!isEditing}
               ></input>
   
         </div>
@@ -495,7 +697,7 @@ const handleUserSelect = (e) => {
             
             {showsave ?  (
                    
-                   <div className="flex justify-end gap-[10px] md:col-span-2 w-[80%] pl-[125px]">
+                   <div className="flex justify-end gap-[10px] md:col-span-2 w-[89%] pl-[125px]">
 
                    <button
                      onClick={handleeditback}
@@ -505,7 +707,7 @@ const handleUserSelect = (e) => {
                      Cancel
                    </button>  
                     <button
-                    //   onClick={handleNextpage1}
+                     onClick={handleSubmit}
                       className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
         
                     >
@@ -513,7 +715,7 @@ const handleUserSelect = (e) => {
                     </button>
                     </div>
             ) :(
-                <div className="flex justify-end gap-[10px] md:col-span-2 w-[80%] ">
+                <div className="flex justify-end gap-[10px] md:col-span-2 w-[89%] ">
 
                 <button
                            onClick={handleedit}

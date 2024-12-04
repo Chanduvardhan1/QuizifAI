@@ -98,6 +98,8 @@ import Questionbankview from "./configure/questionbamkview.jsx";
 import Leaderboardall from "./leaderboardall/leaderboardall.jsx";
 import Institution from "./leaderboardall/institution.jsx";
 import Userslist from "./configure/userslist.jsx";
+// import Resetpassword from "./reset-password/restpassword.jsx";
+
 
 export default () => {
     return [
@@ -119,6 +121,11 @@ export default () => {
             component:Usersgroup,
             isPrivate: true
         },
+        // {
+        //     path:'resetpassword',
+        //     component:Resetpassword,
+        //     isPrivate: true
+        // },
         {
             path:'userslist',
             component:Userslist,

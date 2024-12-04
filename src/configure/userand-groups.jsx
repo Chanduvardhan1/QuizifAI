@@ -40,8 +40,10 @@ const UserAndGroups = () => {
   const [selectedUser2, setSelectedUser2] = useState(""); // Store selected username
   const [selectedRoleId2, setSelectedRoleId2] = useState('') // Store user_role_id for selected username
 
+  const userRole = localStorage.getItem("user_role");
+  const orgId = localStorage.getItem('org_id');
 
-  const [orgId, setOrgId] = useState('');
+  // const [orgId, setOrgId] = useState('');
   const [userId1, setUserId1] = useState('');
   const [orgName, setOrgName] = useState('');
   const [roleId, setRoleId] = useState('');
@@ -177,8 +179,8 @@ const handleSubmit2 = (e) => {
     .then((data) => {
       if  (data.success) {
         setResponseMessage("Admin created successfully!");
-        setShowPopup(false);
-        fetchRoles();
+        // setShowPopup(false);
+        fetchUsers();
 
         reset('');
         
@@ -226,7 +228,7 @@ const handleSubmit3 = (e) => {
       if  (data.success) {
         setResponseMessage("Admin created successfully!");
         setShowPopup1(false);
-        fetchRoles();
+        fetchUsers();
         reset('');
         
       } else {
@@ -303,7 +305,7 @@ const handleSubmit1 = async (e) => {
   const payload = {
     user_id: userId,
     org_name: groupName,
-    org_admin_id: selectedRoleId2,
+    org_admin_id: selectedUser2,
   };
 
   try {
@@ -379,51 +381,81 @@ const handleSubmit1 = async (e) => {
   // };
 
 
-  // Fetch group-admin data
- 
-    const fetchRoles = async () => {
+  // Fetch group-admin data//
+  const [users1, setUsers1] = useState([]);
+  const [selectedUserId, setSelectedUserId] = useState([]);
+  const [selectedUserId2, setSelectedUserId2] = useState([]);
+
+
+    // Fetch users from the API
+    const fetchUsers = async () => {
       try {
-        const response = await fetch(
-          "https://dev.quizifai.com:8010/groups-admins/",
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization:
-                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjaGFuZHUgdmFyZGhhbiBrIiwiZXhwIjoyNTM0MDIzMDA3OTl9.Dke5RuSafS1gwDyvylEzw6qKDnNIKfbm2PfpCsPoFrA",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        const response = await fetch("https://dev.quizifai.com:8010/admin-users/", {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjaGFuZHUgdmFyZGhhbiBrIiwiZXhwIjoyNTM0MDIzMDA3OTl9.9gCqjDdJvlOzvV-Bqpian_CpYAen9Uh739KAZ5qEYr8",
+          },
+        });
+        const data = await response.json();
+        if (data.response === "success") {
+          setUsers1(data.data);
+        } else {
+          console.error("Failed to fetch user data:", data.response_message);
         }
-
-        const result = await response.json();
-
-        // Extract user details with unique usernames
-        const users = result.data
-          .flatMap((group) => group.user_details || [])
-          .map((user) => ({
-            userId: user.user_id,
-            userName: user.user_name,
-            roleId: user.user_role_id,
-            roleName: user.role_name,
-          }));
-
-        setRoles(users);
       } catch (error) {
-        console.error("Error fetching roles:", error);
+        console.error("Error fetching user data:", error);
       }
     };
-
     useEffect(() => {
-    fetchRoles();
+    fetchUsers();
   }, []);
+
+
+  
+  //   const fetchRoles = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         "https://dev.quizifai.com:8010/groups-admins/",
+  //         {
+  //           headers: {
+  //             Accept: "application/json",
+  //             Authorization:
+  //               "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjaGFuZHUgdmFyZGhhbiBrIiwiZXhwIjoyNTM0MDIzMDA3OTl9.Dke5RuSafS1gwDyvylEzw6qKDnNIKfbm2PfpCsPoFrA",
+  //           },
+  //         }
+  //       );
+
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
+
+  //       const result = await response.json();
+
+  //       // Extract user details with unique usernames
+  //       const users = result.data
+  //         .flatMap((group) => group.user_details || [])
+  //         .map((user) => ({
+  //           userId: user.user_id,
+  //           userName: user.user_name,
+  //           roleId: user.user_role_id,
+  //           roleName: user.role_name,
+  //         }));
+
+  //       setRoles(users);
+  //     } catch (error) {
+  //       console.error("Error fetching roles:", error);
+  //     }
+  //   };
+
+  //   useEffect(() => {
+  //   fetchRoles();
+  // }, []);
 
   // Handle dropdown change
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value;
-    setSelectedUser(selectedValue);
+    setSelectedUserId(selectedValue);
 
     // Find the selected user's role_id
     const selectedUserDetails = roles.find((user) => user.userName === selectedValue);
@@ -528,11 +560,11 @@ const handleSubmit1 = async (e) => {
     const groupData = {
       group_name: groupName,
       organization: isOrganization,
-      organization_id: selectedOrg,
+      organization_id: orgId,
       group_description: groupDescription,
       active_flag: activeflag,
       created_by: userId,
-      users_for_regular_role_id: selectedUserIds,// Replace with the selected user IDs
+      users_for_regular_role_id: selectedUserId,// Replace with the selected user IDs
       users_for_admin_role_id:selectedRoleId,
    
     };
@@ -586,7 +618,7 @@ const handleSubmit1 = async (e) => {
       group_description: groupDescription,
       active_flag: activeflag,
       updated_by: userId,
-      users_for_regular_role_id: selectedUserIds,
+      users_for_regular_role_id: selectedUserId,
       users_for_admin_role_id:selectedRoleId,
 
     };
@@ -722,7 +754,7 @@ const handleSubmit1 = async (e) => {
             />
           </div>
           {isNavbarOpen && (
-            <div className="text-[10px] mx-[10px] text-[#214082] h-[50px] mt-[30px] rounded-md bg-[#CBF2FB] flex flex-row justify-around p-4">
+            <div className="text-[14px] mx-[10px] text-[#214082] h-[50px] mt-[30px] rounded-md bg-[#CBF2FB] flex flex-row justify-around p-4">
         {/* {Organizationid &&(
  <input
  type="text"
@@ -744,95 +776,101 @@ const handleSubmit1 = async (e) => {
                 style={{ "::placeholder": { color: "#214082" } }}
                 readOnly
               /> */}
+                          { userRole === "Super Admin" && (
+
               <div className="flex items-center justify-center">
                 <input type="checkbox" name="" id=""
                  onChange={handleCheckboxChange}
                  checked={isOrganization} />
                 <p className="pl-1">Is an organization</p>
               </div>
+                          )}
               <input
                 type="text"
                 placeholder="Group Name"
                 value={groupName}
                 onChange={(e) => setGroupName(e.target.value)}
-                className="w-[95px] rounded-3xl text-left pl-3 -mt-[5px]  py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
+                className="w-[120px] rounded-sm  text-left pl-3 -mt-[5px]  py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
               />
               <input
                 type="text"
                 placeholder="Group Description"
                 value={groupDescription}
                 onChange={(e) => setGroupDescription(e.target.value)}
-                className=" w-[115px] rounded-3xl text-left pl-3 -mt-[5px]  py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
+                className=" w-[200px] rounded-sm text-left pl-3 px-5 -mt-[5px]  py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
               />
 
-              
-     <Select
-      className="w-[200px] text-[#214082] -mt-[10px] rounded-3xl"
-      isMulti
-      value={options.filter(option => selectedUserIds.includes(option.value))}
-      onChange={handleChange}
-      options={options}
-      closeMenuOnSelect={false} // Keeps dropdown open after each selection
-      placeholder="Select User"
-      hideSelectedOptions={false} // Shows selected options with a checkbox
-    />
-     {isOrganization ? (
+{isOrganization ? (
    
-        <div>
-            <select
-     className="w-[200px] text-[#214082] -mt-[10px] rounded-3xl p-[5px]"
+   <div>
+       <select
+className="w-[200px] text-[#214082] -mt-[10px] rounded-sm p-[8px]"
 placeholder="Select User"
 value={selectedUser2}
 onChange={handleSelectChange2}
 
-          >
-            <option value="" disabled>Select a Admin</option>
-            <option value="createAdmin" >Creat Admin</option>
-
-            {roles.map((user) => (
-        <option key={user.userId} value={user.userName}>
-          {user.userName}
-        </option>
-      ))}
-
-          </select> 
-       
- 
-      </div>
-     ):(
-      <div>
-     <select
-       className="w-[200px] text-[#214082] -mt-[10px] rounded-3xl p-[5px]"
-placeholder="Select User"
-value={selectedUser}
-onChange={handleSelectChange}
-
-            >
-              <option value="" disabled>Select a Admin</option>
-              <option value="createAdmin" >Creat Admin</option>
-
-              {roles.map((user) => (
-          <option key={user.userId} value={user.userName}>
-            {user.userName}
+     >
+       <option value="" disabled>Select a Admin</option>
+       <option value="createAdmin" >Creat Admin</option>
+       {users1.map((user) => (
+          <option key={user.user_id} value={user.user_id}>
+            {user.user_name}
           </option>
         ))}
 
-            </select> 
-            {organizations.length > 0 ? (
-        <select className="w-[200px] text-[#214082] -mt-[10px] ml-2 rounded-3xl p-[5px]" 
-        onChange={(e) => handleOrgSelect(e.target.value)} value={selectedOrg}>
-          <option value="">Select an organization</option>
-          {organizations.map((org) => (
-            <option key={org.org_id} value={org.org_id}>
-              {org.org_name}
-            </option>
-          ))}
-        </select>
-      ) : (
-        <p>Loading organizations...</p>
-      )}
-    </div>
-     )}
+     </select> 
+  
+
+ </div>
+):(
+ <div>
+<select
+  className="w-[200px] text-[#214082] -mt-[10px] rounded-sm p-[8px]"
+placeholder="Select User"
+value={selectedUserId}
+onChange={handleSelectChange}
+
+       >
+         <option value="" disabled>Select a Admin</option>
+         <option value="createAdmin" >Creat Admin</option>
+
+         {users1.map((user) => (
+          <option key={user.user_id} value={user.user_id}>
+            {user.user_name}
+          </option>
+        ))}
+
+       </select> 
+       {/* {organizations.length > 0 ? (
+   <select className="w-[200px] text-[#214082] -mt-[10px] ml-2 rounded-sm p-[8px]" 
+   onChange={(e) => handleOrgSelect(e.target.value)} value={selectedOrg}>
+     <option value="">Select an organization</option>
+     {organizations.map((org) => (
+       <option key={org.org_id} value={org.org_id}>
+         {org.org_name}
+       </option>
+     ))}
+   </select>
+ ) : (
+   <p>Loading organizations...</p>
+ )} */}
+</div>
+)}   
+{isOrganization ? (    
+     <div></div>
+
+):(
+  <Select
+  className="w-[200px] text-[#214082] -mt-[10px] rounded-sm"
+  isMulti
+  value={options.filter(option => selectedUserIds.includes(option.value))}
+  onChange={handleChange}
+  options={options}
+  closeMenuOnSelect={false} // Keeps dropdown open after each selection
+  placeholder="Select User"
+  hideSelectedOptions={false} // Shows selected options with a checkbox
+/>
+)}
     {isOrganization ? (
   <button
   onClick={handleSubmit1}

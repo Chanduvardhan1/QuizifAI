@@ -129,7 +129,7 @@ const handleCityChange = (event) => {
 
 //---------**users**------------//
 const [users, setUsers] = useState([]); // Store fetched users
-const [selectedUser, setSelectedUser] = useState(null);
+const [selectedUser, setSelectedUser] = useState('');
 
 useEffect(() => {
   const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
@@ -180,9 +180,20 @@ const handleUserSelect = (e) => {
 //---------**users end**------------//
 
 //---------**AddOrganizationProfile list dropdown**------------//
+
+// const [OrgId1, setOrgId1] = useState('')
+
+
 const orgId = localStorage.getItem('org_id');
+const [email, setEmail] = useState('');
 
-
+useEffect(() => {
+  const storedEmail = localStorage.getItem('email');
+  if (storedEmail) {
+    setEmail(storedEmail);
+  }
+}, []);
+console.log('email id 1:',email)
 const fetchOrganizationDetails = async () => {
   try {
     const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
@@ -260,15 +271,16 @@ const handleSubmit = async (e) => {
 
 
   const payload = {
-    user_id: userId,
+    updated_by: userId,
+    org_id: 8,
     org_name: orgName,
-    org_admin_id:  selectedUser.user_id ,
+    org_admin_id: selectedUser,
     org_location_id: locationId,
     org_subscription_key: orgSubscriptionKey,
     org_point_of_contact_id:  selectedUser.user_id ,
     org_address_line_1: orgAddressLine1,
     org_address_line_2: orgAddressLine2,
-    org_type: orgType,
+    org_type: selectedOrgTypeId,
     org_public_quizzes_access_flag: true,
     org_create_public_quizzes_flag: true,
   };
@@ -279,7 +291,7 @@ const handleSubmit = async (e) => {
   if (!authToken) {
     throw new Error("No authentication token found");
   }
-    const response = await fetch('https://dev.quizifai.com:8010/add_organizationprofile', {
+    const response = await fetch('https://dev.quizifai.com:8010/edit_organizationprofile', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -307,6 +319,53 @@ const handleSubmit = async (e) => {
 
 //---------**AddOrganizationProfile End**------------//
 
+//---------**AddOrganizationProfile User Type**------------//
+
+const [orgTypes, setOrgTypes] = useState([]);
+const [selectedOrgTypeId, setSelectedOrgTypeId] = useState(null);
+
+// Fetch organization types
+useEffect(() => {
+  const fetchOrgTypes = async () => {
+    try {
+      const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+
+      if (!authToken) {
+        throw new Error("No authentication token found");
+      }
+      const response = await fetch(
+        'https://dev.quizifai.com:8010/organization-types-dropdown/',
+        {
+          method: 'GET',
+          headers: {
+            'accept': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+          },
+        }
+      );
+      const data = await response.json();
+      if (data.response === 'success') {
+        setOrgTypes(data.data);
+      } else {
+        console.error(data.response_message);
+      }
+    } catch (error) {
+      console.error('Error fetching organization types:', error);
+    }
+  };
+
+  fetchOrgTypes();
+}, []);
+
+// Handle dropdown selection
+const handleSelectChange = (event) => {
+  const selectedName = event.target.value;
+  setSelectedOrgTypeId(selectedName);
+  console.log('Selected Organization Type ID:', selectedId);
+
+};
+
+//---------**AddOrganizationProfile User Type end**------------//
 
 
   const navigate = useNavigate();
@@ -347,7 +406,7 @@ const handleSubmit = async (e) => {
          <img src={camera1} alt="" className="w-[20px] h-[20px]"/>
         </div>
         <div className='flex justify-center text-blue-800'>Org ID : <span className=' text-black ml-1'> 466</span> </div>
-        <div className='flex justify-center text-blue-800'>Narmtech</div>
+        <div className='flex justify-center text-blue-800'>{selectedOrgTypeId}</div>
 
       </div>
     <div className='w-[80%] flex flex-col gap-5'>
@@ -389,14 +448,14 @@ const handleSubmit = async (e) => {
          disabled={!isEditing}
                   className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
         //   value={selectedComplexity}
-        //   onChange={handleSelectComplexity}
+        onChange={handleSelectChange}
         >
           <option value="" disabled>Institations</option>
-          {/* {complexities.map((complexity, index) => (
-            <option key={index} value={complexity}>
-              {complexity}
-            </option>
-          ))} */}
+          {orgTypes.map((org) => (
+          <option key={org.org_type} value={org.org_type}>
+            {org.org_type}
+          </option>
+        ))}
         </select>
   
         </div>
@@ -465,7 +524,7 @@ const handleSubmit = async (e) => {
     <div className="flex-grow flex items-center relative">
       <input
         type="text"
-        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] h-[30px] hover:border-blue-200 text-[11px] focus:outline-none `}
+        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] h-[31px] hover:border-blue-200 text-[11px] focus:outline-none `}
 
         placeholder="postalCode"
         value={postalCode}
@@ -681,7 +740,7 @@ const handleSubmit = async (e) => {
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
                 placeholder="Email"
-                // value={availablefrom}
+                value={email}
                 // onChange={handleAvailableFromChange}
                 disabled={!isEditing}
               ></input>

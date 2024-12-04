@@ -161,7 +161,9 @@ const LoginPage = () => {
           localStorage.setItem('user_role', userRole);
           localStorage.setItem('password', password);
           localStorage.setItem('org_id', orgId);
-
+          if (loginOption === "email") {
+            localStorage.setItem('email', email); // Store email in localStorage
+          }
           setErrorMessage("");
           if (userRole === "Admin" && orgId) {
             navigate("/profileorganization");
@@ -253,7 +255,7 @@ const LoginPage = () => {
         if (data.response_message === "OTP Succuessfully Sent") {
           navigate("/resetpasswordmobile", { state: { userId,mobile } });
         } else if (data.response_message === "OTP Sent Successfully, Please reset your password") {
-          navigate("/resetpassword", { state: { userId,email} });
+          navigate("/restpassword", { state: { userId,email} });
         }
       }else if (data.response === "fail" && data.response_message === "Email is incorrect or not registered.") {
         setForgotmassage(data.response_message);

@@ -515,12 +515,12 @@ export default () => {
         {
             path:'restpassword',
             component: Resetpassword,
-            isPrivate: true
+            // isPrivate: true
         },
         {
                 path:'restpasswordmobile',
                 component: Resetpasswordmobile,
-                isPrivate: true
+                // isPrivate: true
         },
         {
             path:'create-editquiz',

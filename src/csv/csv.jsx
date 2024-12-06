@@ -1,10 +1,12 @@
 "use client";
 import React, { useState, useEffect,useRef } from "react";
 import { Line } from "rc-progress";
-import Switch from "react-switch";
+// import Switch from "react-switch";
 import Navigation from "../navbar/navbar";
 import { FiAlertCircle } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 
 import { useNavigate } from "react-router-dom";
 // import ToggleButton from 'react-toggle-button'
@@ -1460,7 +1462,9 @@ const handleComplexquestions = (event) => {
   <div className=" w-[50%] flex flex-col">
         <div className="w-[100%] flex flex-row">
         <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500">*</span></label>
-        <Switch
+        <FormControlLabel 
+        required control={<Switch />} 
+        label="Required"
           onChange={toggler3}
           checked={ quizData ? quizData.quiz_public_access : publicAccess}
           className="react-switch"
@@ -1838,7 +1842,9 @@ const handleComplexquestions = (event) => {
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[105px]">
           Retake Option <span className="text-red-500">*</span>
         </label>
-        <Switch
+        <FormControlLabel 
+        required control={<Switch />} 
+        label="Required"
           onChange={toggler2}
           checked={quizData ? quizData.retake_flag : isRetakeOn}
 
@@ -1947,7 +1953,9 @@ const handleComplexquestions = (event) => {
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[59px]">
         Multiple Answers <span className="text-red-500">*</span>
         </label>
-        <Switch
+        <FormControlLabel 
+        required control={<Switch />} 
+        label="Required"
           onChange={toggler1}
           checked={quizData ? quizData.multi_answer : multiAnswer}
 
@@ -1961,7 +1969,9 @@ const handleComplexquestions = (event) => {
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[55px]">
         Learning Material <span className="text-red-500">*</span>
         </label>
-        <Switch
+        <FormControlLabel 
+        required control={<Switch />} 
+        label="Required"
           onChange={toggler1}
           checked={quizData ? quizData.multi_answer : multiAnswer}
           className="react-switch"
@@ -2283,7 +2293,9 @@ const handleComplexquestions = (event) => {
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[72px]">
         Email Alert <span className="text-red-500">*</span>
         </label>
-        <Switch
+        <FormControlLabel 
+        required control={<Switch />} 
+        label="Required"
           onChange={toggler1}
           checked={multiAnswer}
           className="react-switch"

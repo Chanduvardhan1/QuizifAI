@@ -101,6 +101,12 @@ const Dashboard = () => {
   const [isChecked1, setIsChecked1] = useState(false);
   const [isDisableConfirmed, setIsDisableConfirmed] = useState(false);
   const [isOptionsVisible, setIsOptionsVisible] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
+  
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
 
   const handleDisableClick = (quiz_id) => {
     setQuizId(quiz_id);
@@ -112,21 +118,21 @@ const Dashboard = () => {
   const handleDisableQuiz = async () => {
     try {
       const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
-
+  
       if (!authToken) {
         throw new Error("No authentication token found");
       }
-
+  
       const headers = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
       };
-
+  
       const body = JSON.stringify({
         user_id: userId,
-        quiz_id: quiz_id,
+        quiz_id: quizId,
       });
-
+  
       const response = await fetch(
         "https://dev.quizifai.com:8010/disable_quiz/",
         {
@@ -135,11 +141,19 @@ const Dashboard = () => {
           body,
         }
       );
-
+  
       if (response.ok) {
         const result = await response.json();
         console.log("Disable response:", result);
-        setModalIsOpen1(false);
+  
+        if (result.response === "fail") {
+          // Show popup with message
+          setPopupMessage(result.response_message);
+          setShowPopup(true);
+          setModalIsOpen1(false);
+        } else {
+          setModalIsOpen1(false);
+        }
       } else {
         console.error("Failed to disable quiz");
       }
@@ -147,6 +161,53 @@ const Dashboard = () => {
       console.error("Error during disable operation:", error);
     }
   };
+  
+  // const handleDisableQuiz = async () => {
+  //   try {
+  //     const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+
+  //     if (!authToken) {
+  //       throw new Error("No authentication token found");
+  //     }
+
+  //     const headers = {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${authToken}`,
+  //     };
+
+  //     const body = JSON.stringify({
+  //       user_id: userId,
+  //       quiz_id: quizId,
+  //     });
+
+  //     const response = await fetch(
+  //       "https://dev.quizifai.com:8010/disable_quiz/",
+  //       {
+  //         method: "POST",
+  //         headers,
+  //         body,
+  //       }
+  //     );
+
+  //     if (response.ok) {
+  //       const result = await response.json();
+  //       console.log("Disable response:", result);
+  //     //   setModalIsOpen1(false);
+  //     // } else {
+  //     //   console.error("Failed to disable quiz");
+  //     // }
+  //     if (result.response === "fail") {
+  //       // Show popup with message
+  //       setPopupMessage(result.response_message);
+  //       setShowPopup(true);
+  //     } else {
+  //       setModalIsOpen1(false);
+  //     }
+  //   }
+  //   } catch (error) {
+  //     console.error("Error during disable operation:", error);
+  //   }
+  // };
   useEffect(() => {
     if (isDisableConfirmed) {
       handleDisableQuiz();
@@ -559,13 +620,13 @@ const Dashboard = () => {
           </div> */}
           </div>
         </div>
-        <div className={styles.completionInfo}>
+        {/* <div className={styles.completionInfo}>
           <p>
             {weeklyQuizCount > 0 && averageScorePercentage > 0
               ? `You have successfully completed ${weeklyQuizCount} Quizzes this week, achieving an average score of ${averageScorePercentage}%`
               : "You have not attended any quizzes yet, Please attempt the quizzes below."}
           </p>{" "}
-        </div>
+        </div> */}
      
         <div className="flex mx-auto">
           <DashBoardNavBar />
@@ -596,7 +657,7 @@ const Dashboard = () => {
     
 
 
-          <div className="flex flex-wrap mx-auto ml-[15px] -mt-[20px]">
+          <div className="flex flex-wrap mx-auto gap-[10px]">
             {allquizzes
               .filter((quizItem) => {
                 const quizCreateDate = new Date(quizItem.quiz_start_date);
@@ -637,7 +698,9 @@ const Dashboard = () => {
                           {/* Title and Version */}
                           <div className="relative group flex justify-between items-center gap-[3px]">
                             {/* Truncated text container */}
-                            <h2 className="text-[15px] font-semibold text-gray-800 w-[170px] sm:w-[215px] truncate">
+                            <h2 
+                            onClick={() => handleStartQuiz(quizItem.quiz_id)}
+                               className="text-[15px] font-semibold text-gray-800 w-[170px] sm:w-[215px] truncate">
                             {quizItem.quiz_name}
                             </h2>
                       
@@ -751,6 +814,7 @@ const Dashboard = () => {
           className={`bg-red-500 text-white px-4 py-2 rounded transition-opacity duration-200 ${!isChecked1 ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"
             }`}
           onClick={setIsDisableConfirmed}
+          // onClick={() => setIsDisableConfirmed(quizItem.quiz_id)}
           disabled={!isChecked1}
         >
           Disable
@@ -771,7 +835,7 @@ const Dashboard = () => {
                           </div>
                          
                           {/* Meta Information */}
-                          <div className="text-[#00008b] text-[10px] truncate max-w-[230px] max-h-4 justify-start mt-1">
+                          <div onClick={() => handleStartQuiz(quizItem.quiz_id)} className="text-[#00008b] text-[10px] truncate max-w-[230px] max-h-4 justify-start mt-1">
                             <span>{quizItem.category}</span>
                             <span className="mx-1">.</span>
                             <span>{quizItem.sub_category}</span>
@@ -782,7 +846,7 @@ const Dashboard = () => {
                           {/* Icons Row */}
                           <div className="flex-col items-center text-[10px] space-y-1 mt-2 text-[#00008b]">
                             {/* Author and Date */}
-                            <div className="flex items-center justify-between text-[12px] sm:text-[10px]">
+                            <div onClick={() => handleStartQuiz(quizItem.quiz_id)} className="flex items-center justify-between text-[12px] sm:text-[10px]">
                               <div className="flex items-center">
                                 <img src={username1} className="w-[20px] h-[20px] mr-1" />
                                 <span className="ml-1 text-[12px]  ">{quizItem.created_by}</span>
@@ -794,7 +858,7 @@ const Dashboard = () => {
                             </div>
                       
                             {/* Quiz Info */}
-                            <div className="flex items-center justify-between pr-1 text-xs sm:text-sm">
+                            <div onClick={() => handleStartQuiz(quizItem.quiz_id)} className="flex items-center justify-between pr-1 text-xs sm:text-sm">
                               <div className="flex items-center">
                                 <img src={comment} className="w-[20px]   h-[20px] mr-1" />
                                 <span className="ml-1 text-[12px] ">{quizItem.number_of_questions} Questions</span>
@@ -806,7 +870,7 @@ const Dashboard = () => {
                             </div>
                       
                             {/* Attempt Info */}
-                            <div className="flex items-center space-x-4 text-xs sm:text-sm">
+                            <div onClick={() => handleStartQuiz(quizItem.quiz_id)} className="flex items-center space-x-4 text-xs sm:text-sm">
                               <div className="flex items-center">
                                 <img src={Attemts} className="w-[18px] h-[18px] mr-1" />
                                 <span className="ml-1 text-[12px]">{quizItem.quiz_attempts} Attempt</span>
@@ -1194,15 +1258,13 @@ const Dashboard = () => {
                     //     </div>
                     //   </div>
                   ) : (
-                    <div  onClick={() =>
-                      handleStartQuiz(quizItem.quiz_id)
-                 }
+                    <div  onClick={() => handleStartQuiz(quizItem.quiz_id) }
 className={`flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4 border-[#dd6a79] border-[1px] border-b-[8px] gap-[5px]`}
 >
 {/* Image Section */}
 <div       className="w-[140px] h-[127px]  rounded-md  mr-2"
 >
-<img
+<img onClick={() => handleStartQuiz(quizItem.quiz_id) }
 src={quizItem.photo1 || back}
  alt="Quiz Cover"
  className="w-[140px] h-[140px] rounded-md mr-2"
@@ -1213,7 +1275,7 @@ src={quizItem.photo1 || back}
 {/* Title and Version */}
 <div className="relative group flex justify-between items-center gap-[3px]">
  {/* Truncated text container */}
- <h2 className="text-[15px] font-semibold text-gray-800 w-[170px] sm:w-[215px] truncate">
+ <h2 onClick={() => handleStartQuiz(quizItem.quiz_id) } className="text-[15px] font-semibold text-gray-800 w-[170px] sm:w-[215px] truncate">
  {quizItem.quiz_name}
  </h2>
 
@@ -1230,7 +1292,7 @@ src={quizItem.photo1 || back}
          "polygon(0% 0%, 80% 0, 80% 8%, 95% 15%, 81% 23%, 80% 100%, 0 100%)",
      }}
    >
-     {/* <div className="flex items-center">
+     <div className="flex items-center">
        <img
          className="w-2 h-2 mr-1"
          src={Start_button}
@@ -1242,7 +1304,7 @@ src={quizItem.photo1 || back}
        >
          Start
        </span>
-     </div> */}
+     </div>
      {userRole === "Quiz Master" && (
        <div className="flex items-center ">
          <img
@@ -1347,7 +1409,7 @@ Cancel
 </div>
 
 {/* Meta Information */}
-<div className="text-[#00008b] text-[10px] truncate max-w-[230px] max-h-4 justify-start mt-1">
+<div onClick={() => handleStartQuiz(quizItem.quiz_id) } className="text-[#00008b] text-[10px] truncate max-w-[230px] max-h-4 justify-start mt-1">
  <span>{quizItem.category}</span>
  <span className="mx-1">.</span>
  <span>{quizItem.sub_category}</span>
@@ -1358,7 +1420,7 @@ Cancel
 {/* Icons Row */}
 <div className="flex-col items-center text-[10px] space-y-1 mt-2 text-[#00008b]">
  {/* Author and Date */}
- <div className="flex items-center justify-between text-[12px] sm:text-[10px]">
+ <div onClick={() => handleStartQuiz(quizItem.quiz_id) } className="flex items-center justify-between text-[12px] sm:text-[10px]">
    <div className="flex items-center">
      <img src={username1} className="w-[20px] h-[20px] mr-1" />
      <span className="ml-1 text-[12px]  ">{quizItem.created_by}</span>
@@ -1370,7 +1432,7 @@ Cancel
  </div>
 
  {/* Quiz Info */}
- <div className="flex items-center justify-between pr-1 text-xs sm:text-sm">
+ <div onClick={() => handleStartQuiz(quizItem.quiz_id) } className="flex items-center justify-between pr-1 text-xs sm:text-sm">
    <div className="flex items-center">
      <img src={comment} className="w-[20px]   h-[20px] mr-1" />
      <span className="ml-1 text-[12px] ">{quizItem.number_of_questions} Questions</span>
@@ -1382,7 +1444,7 @@ Cancel
  </div>
 
  {/* Attempt Info */}
- <div className="flex items-center space-x-4 text-xs sm:text-sm">
+ <div onClick={() => handleStartQuiz(quizItem.quiz_id) } className="flex items-center space-x-4 text-xs sm:text-sm">
    <div className="flex items-center">
      <img src={Attemts} className="w-[18px] h-[18px] mr-1" />
      <span className="ml-1 text-[12px]">{quizItem.quiz_attempts} Attempt</span>
@@ -1801,7 +1863,7 @@ Cancel
             </span>
           </div>
 
-          <div className="flex flex-wrap mx-auto ml-[15px] -mt-[20px]">
+          <div className="flex flex-wrap mx-auto gap-[10px]">
             {allquizzes
               .filter((quizItem) => {
                 const quizCreateDate = new Date(quizItem.quiz_start_date);
@@ -1822,13 +1884,6 @@ Cancel
                   {quizItem.attempt_flag === "Y" ? (
                     <div className="" >
                        <div
-                       onClick={() =>
-                            handleStartQuiz1(
-                              quizItem.quiz_id,
-                              quizItem.attempts_count,
-                              quizItem.retake_flag
-                            )
-                          } 
                         className={`${
                           quizItem.attempts_count < quizItem.retake_flag ? "border-[#1E90FF] border-[1px] border-b-[8px]" : "border-[#dd6a79] border-[1px] border-b-[8px]"
                         } flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4 gap-[5px]`}
@@ -1845,9 +1900,15 @@ Cancel
                       
                         <div className="flex flex-col w-full">
                           {/* Title and Version */}
-                          <div className="relative group flex justify-between items-center gap-[3px]">
+                          <div  className="relative group flex justify-between items-center gap-[3px]">
                             {/* Truncated text container */}
-                            <h2 className="text-[15px] font-semibold text-gray-800 w-[170px] sm:w-[215px] truncate">
+                            <h2    onClick={() =>
+                            handleStartQuiz1(
+                              quizItem.quiz_id,
+                              quizItem.attempts_count,
+                              quizItem.retake_flag
+                            )
+                          } className="text-[15px] font-semibold text-gray-800 w-[170px] sm:w-[215px] truncate">
                             {quizItem.quiz_name}
                             </h2>
                       
@@ -1855,16 +1916,16 @@ Cancel
                             {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                               Physics,Physics,Physics,Physics
                             </span> */}
-                            <img src={more} alt="" onClick={toggleOptions} className=" w-[12px] h-[12px] hover:bg-gray-200   hover:rounded-full" />
+                            <img src={more} alt="" onClick={() => toggleNavbar(index)} className=" w-[12px] h-[12px] hover:bg-gray-200 z-10 hover:rounded-full" />
                             {cardStates[index]  && (
                               <div
-                                className="absolute rounded-md w-[150px]  flex flex-col p-1 bg-gray-200 mt-[55px] ml-[115px]"
+                                className="absolute rounded-md w-[150px] z-10  flex flex-col p-1 bg-gray-200 mt-[55px] ml-[115px]"
                                 style={{
                                   clipPath:
                                     "polygon(0% 0%, 80% 0, 80% 8%, 95% 15%, 81% 23%, 80% 100%, 0 100%)",
                                 }}
                               >
-                                {/* <div className="flex items-center">
+                                <div className="flex items-center">
                                   <img
                                     className="w-2 h-2 mr-1"
                                     src={Start_button}
@@ -1872,11 +1933,17 @@ Cancel
                                   />
                                   <span
                                     className="text-[12px] text-blue-500 cursor-pointer hover:underline"
-                                    onClick={() => handleStartQuiz(quizItem.quiz_id)}
+                                    onClick={() =>
+                                      handleStartQuiz1(
+                                        quizItem.quiz_id,
+                                        quizItem.attempts_count,
+                                        quizItem.retake_flag
+                                      )
+                                    }
                                   >
-                                    Start
+                                    Retake
                                   </span>
-                                </div> */}
+                                </div>
                                 {userRole === "Quiz Master" && (
                                   <div className="flex items-center ">
                                     <img
@@ -1923,14 +1990,15 @@ Cancel
                                   </span>
                                 </div> */}
                                 {userRole === "Quiz Master" && (
-  <div className="flex flex-col items-center">
+  <div className="flex  items-center">
     <img
-      className="w-6 h-6 mb-2 cursor-pointer"
+    onClick={() => handleDisableClick(quizItem.quiz_id)}
+      className="w-2 h-2 mr-1 cursor-pointer"
       src={disable}
       alt="Disable icon"
     />
     <span
-      className="text-red-500 font-medium cursor-pointer hover:underline"
+      className="text-red-500 text-[12px] cursor-pointer hover:underline"
       onClick={() => handleDisableClick(quizItem.quiz_id)}
     >
       Disable
@@ -1981,7 +2049,13 @@ Cancel
                           </div>
                          
                           {/* Meta Information */}
-                          <div className="text-[#00008b] text-[10px] truncate max-w-[230px] max-h-4 justify-start mt-1">
+                          <div   onClick={() =>
+                            handleStartQuiz1(
+                              quizItem.quiz_id,
+                              quizItem.attempts_count,
+                              quizItem.retake_flag
+                            )
+                          }  className="text-[#00008b] text-[10px] truncate max-w-[230px] max-h-4 justify-start mt-1">
                             <span>{quizItem.category}</span>
                             <span className="mx-1">.</span>
                             <span>{quizItem.sub_category}</span>
@@ -1990,9 +2064,15 @@ Cancel
                           </div>
                       
                           {/* Icons Row */}
-                          <div className="flex-col items-center text-[10px] space-y-1 mt-2 text-[#00008b]">
+                          <div    className="flex-col items-center text-[10px] space-y-1 mt-2 text-[#00008b]">
                             {/* Author and Date */}
-                            <div className="flex items-center justify-between text-[12px] sm:text-[10px]">
+                            <div  onClick={() =>
+                            handleStartQuiz1(
+                              quizItem.quiz_id,
+                              quizItem.attempts_count,
+                              quizItem.retake_flag
+                            )
+                          } className="flex items-center justify-between text-[12px] sm:text-[10px]">
                               <div className="flex items-center">
                                 <img src={username1} className="w-[20px] h-[20px] mr-1" />
                                 <span className="ml-1 text-[12px]  ">{quizItem.created_by}</span>
@@ -2004,7 +2084,13 @@ Cancel
                             </div>
                       
                             {/* Quiz Info */}
-                            <div className="flex items-center justify-between pr-1 text-xs sm:text-sm">
+                            <div  onClick={() =>
+                            handleStartQuiz1(
+                              quizItem.quiz_id,
+                              quizItem.attempts_count,
+                              quizItem.retake_flag
+                            )
+                          } className="flex items-center justify-between pr-1 text-xs sm:text-sm">
                               <div className="flex items-center">
                                 <img src={comment} className="w-[20px]   h-[20px] mr-1" />
                                 <span className="ml-1 text-[12px] ">{quizItem.number_of_questions} Questions</span>
@@ -2016,7 +2102,13 @@ Cancel
                             </div>
                       
                             {/* Attempt Info */}
-                            <div className="flex items-center space-x-4 text-xs sm:text-sm">
+                            <div  onClick={() =>
+                            handleStartQuiz1(
+                              quizItem.quiz_id,
+                              quizItem.attempts_count,
+                              quizItem.retake_flag
+                            )
+                          } className="flex items-center space-x-4 text-xs sm:text-sm">
                               <div className="flex items-center">
                                 <img src={Attemts} className="w-[18px] h-[18px] mr-1" />
                                 <span className="ml-1 text-[12px]">{quizItem.quiz_attempts} Attempt</span>
@@ -2334,15 +2426,16 @@ Cancel
                   ) : (
                     <>
                       <div className="" >
-                      <div  onClick={() =>
-                      handleStartQuiz(quizItem.quiz_id)
-                 }
+                      <div 
 className={`flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4 border-[#dd6a79] border-[1px] border-b-[8px] gap-[5px]`}
 >
 {/* Image Section */}
 <div       className="w-[140px] h-[127px]  rounded-md  mr-2"
 >
 <img
+ onClick={() =>
+  handleStartQuiz(quizItem.quiz_id)
+}
 src={quizItem.photo1 || back}
  alt="Quiz Cover"
  className="w-[140px] h-[140px] rounded-md mr-2"
@@ -2353,7 +2446,8 @@ src={quizItem.photo1 || back}
 {/* Title and Version */}
 <div className="relative group flex justify-between items-center gap-[3px]">
  {/* Truncated text container */}
- <h2 className="text-[15px] font-semibold text-gray-800 w-[170px] sm:w-[215px] truncate">
+ <h2  onClick={() => handleStartQuiz(quizItem.quiz_id)} 
+ className="text-[15px] font-semibold text-gray-800 w-[170px] sm:w-[215px] truncate">
  {quizItem.quiz_name}
  </h2>
 
@@ -2361,7 +2455,7 @@ src={quizItem.photo1 || back}
  {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
    Physics,Physics,Physics,Physics
  </span> */}
- <img src={more} alt="" onClick={toggleOptions} className=" w-[12px] h-[12px] hover:bg-gray-200   hover:rounded-full" />
+ <img src={more} alt="" onClick={() => toggleNavbar(index)} className=" w-[12px] h-[12px] hover:bg-gray-200 z-10  hover:rounded-full" />
  {cardStates[index]  && (
    <div
      className="absolute rounded-md w-[150px]  flex flex-col p-1 bg-gray-200 mt-[55px] ml-[115px]"
@@ -2370,8 +2464,9 @@ src={quizItem.photo1 || back}
          "polygon(0% 0%, 80% 0, 80% 8%, 95% 15%, 81% 23%, 80% 100%, 0 100%)",
      }}
    >
-     {/* <div className="flex items-center">
+     <div className="flex items-center">
        <img
+       
          className="w-2 h-2 mr-1"
          src={Start_button}
          alt="Play icon"
@@ -2382,7 +2477,7 @@ src={quizItem.photo1 || back}
        >
          Start
        </span>
-     </div> */}
+     </div>
      {userRole === "Quiz Master" && (
        <div className="flex items-center ">
          <img
@@ -2487,7 +2582,8 @@ Cancel
 </div>
 
 {/* Meta Information */}
-<div className="text-[#00008b] text-[10px] truncate max-w-[230px] max-h-4 justify-start mt-1">
+<div onClick={() => handleStartQuiz(quizItem.quiz_id)} 
+ className="text-[#00008b] text-[10px] truncate max-w-[230px] max-h-4 justify-start mt-1">
  <span>{quizItem.category}</span>
  <span className="mx-1">.</span>
  <span>{quizItem.sub_category}</span>
@@ -2498,7 +2594,8 @@ Cancel
 {/* Icons Row */}
 <div className="flex-col items-center text-[10px] space-y-1 mt-2 text-[#00008b]">
  {/* Author and Date */}
- <div className="flex items-center justify-between text-[12px] sm:text-[10px]">
+ <div onClick={() => handleStartQuiz(quizItem.quiz_id)} 
+  className="flex items-center justify-between text-[12px] sm:text-[10px]">
    <div className="flex items-center">
      <img src={username1} className="w-[20px] h-[20px] mr-1" />
      <span className="ml-1 text-[12px]  ">{quizItem.created_by}</span>
@@ -2510,7 +2607,7 @@ Cancel
  </div>
 
  {/* Quiz Info */}
- <div className="flex items-center justify-between pr-1 text-xs sm:text-sm">
+ <div onClick={() => handleStartQuiz(quizItem.quiz_id)}  className="flex items-center justify-between pr-1 text-xs sm:text-sm">
    <div className="flex items-center">
      <img src={comment} className="w-[20px]   h-[20px] mr-1" />
      <span className="ml-1 text-[12px] ">{quizItem.number_of_questions} Questions</span>
@@ -2522,7 +2619,7 @@ Cancel
  </div>
 
  {/* Attempt Info */}
- <div className="flex items-center space-x-4 text-xs sm:text-sm">
+ <div onClick={() => handleStartQuiz(quizItem.quiz_id)}  className="flex items-center space-x-4 text-xs sm:text-sm">
    <div className="flex items-center">
      <img src={Attemts} className="w-[18px] h-[18px] mr-1" />
      <span className="ml-1 text-[12px]">{quizItem.quiz_attempts} Attempt</span>
@@ -2917,6 +3014,19 @@ Cancel
                   )}
                 </div>
               ))}
+                {showPopup && (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div className="bg-white p-6 rounded shadow-md text-center">
+          <p className="text-lg font-semibold">{popupMessage}</p>
+          <button
+            onClick={handleClosePopup}
+            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    )}
           </div>
         </div>
       </div>

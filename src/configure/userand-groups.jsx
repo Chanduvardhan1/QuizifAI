@@ -1,20 +1,37 @@
 import React, { useEffect } from "react";
-import Navigation from "../navbar/navbar.jsx";
-import LogoutBar from "../logoutbar/logoutbar.jsx";
-import searchIcon from "../assets/Images/images/dashboard/Search.png";
 import { useState } from "react";
 import Select from 'react-select';
-import Switch from "react-switch";
 import { useNavigate } from "react-router-dom";
-import cancel from "../assets/Images/images/dashboard/cancel.png";
-import Plus from "../../src/assets/Images/dashboard/Plus.png";
-import Edit from "../../src/assets/Images/Assets/Edit.png";
-import Delete from "../../src/assets/Images/Assets/Delete.png";
-import Line from "../../src/assets/Images/Assets/Line.png";
+
+//-------------**importing  navbar**-------------//
+
+import Navigation from "../navbar/navbar.jsx";
+
+//-------------**importing  navbar end**-------------//
+
+
+//-------------**importing images react-icons**------------- //
+
 import { RiDeleteBinLine } from "react-icons/ri";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
+//-------------**importing images react-icons end**-------------//
+
+//-------------**importing images**------------- //
+
+import cancel from "../assets/Images/images/dashboard/cancel.png";
+import Plus from "../../src/assets/Images/dashboard/Plus.png";
+import Edit from "../../src/assets/Images/Assets/Edit.png";
+import searchIcon from "../assets/Images/images/dashboard/Search.png";
+// import Delete from "../../src/assets/Images/Assets/Delete.png";
+// import Line from "../../src/assets/Images/Assets/Line.png";
+
+//-------------**importing imagesend**------------- //
+
+
 const UserAndGroups = () => {
+
+
   const [groups, setGroups] = useState([]);
   const [users, setUsers] = useState([]);
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
@@ -34,7 +51,7 @@ const UserAndGroups = () => {
   const [showPopup, setShowPopup] = useState(false);
 
   const [roles, setRoles] = useState([]); // Store user details
-  const [selectedUser, setSelectedUser] = useState(""); // Store selected username
+  const [selectedUser, setSelectedUser] = useState([]); // Store selected username
   const [selectedRoleId, setSelectedRoleId] = useState([]) // Store user_role_id for selected username
 
   const [selectedUser2, setSelectedUser2] = useState(""); // Store selected username
@@ -141,6 +158,8 @@ const [updatedBy, setUpdatedBy] = useState("");
 const [dateOfBirth, setDateOfBirth] = useState("");
 const [userAddressId, setUserAddressId] = useState(0);
 const [responseMessage, setResponseMessage] = useState("");
+const [responseMessage1, setResponseMessage1] = useState("");
+
 const [showPopup1, setShowPopup1] = useState(false);
 
 
@@ -330,10 +349,10 @@ const handleSubmit1 = async (e) => {
 
     const data = await response.json();
     console.log('Response:', data);
-    alert('Organization profile added successfully!');
+    setResponseMessage1('Organization Created successfully!');
   } catch (error) {
     console.error('Error:', error);
-    alert('Failed to add organization profile.');
+    setResponseMessage1('Failed to add organization Created.');
   }
 };
 
@@ -382,6 +401,7 @@ const handleSubmit1 = async (e) => {
 
 
   // Fetch group-admin data//
+ 
   const [users1, setUsers1] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState([]);
   const [selectedUserId2, setSelectedUserId2] = useState([]);
@@ -412,7 +432,7 @@ const handleSubmit1 = async (e) => {
   }, []);
 
 
-  
+
   //   const fetchRoles = async () => {
   //     try {
   //       const response = await fetch(
@@ -455,19 +475,17 @@ const handleSubmit1 = async (e) => {
   // Handle dropdown change
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value;
-    setSelectedUserId(selectedValue);
+    setSelectedUser(selectedValue);
 
-    // Find the selected user's role_id
-    const selectedUserDetails = roles.find((user) => user.userName === selectedValue);
-    if (selectedUserDetails) {
-      setSelectedRoleId([selectedUserDetails.roleId]);
-    }
     if (selectedValue === "createAdmin") {
       setShowPopup(true);
+    } else {
+      setSelectedRoleId([selectedValue]);
     }
 
-    console.log("Selected Role:", selectedValue);
+    console.log("Selected Role ID:", [selectedValue]);
   };
+
   const handleSelectChange2 = (event) => {
     const selectedValue = event.target.value;
     setSelectedUser2(selectedValue);
@@ -559,13 +577,13 @@ const handleSubmit1 = async (e) => {
   const handleCreateGroup = async () => {
     const groupData = {
       group_name: groupName,
-      organization: isOrganization,
+      organization: true,
       organization_id: orgId,
       group_description: groupDescription,
       active_flag: activeflag,
       created_by: userId,
-      users_for_regular_role_id: selectedUserId,// Replace with the selected user IDs
-      users_for_admin_role_id:selectedRoleId,
+      users_for_regular_role_id: selectedUserIds,// Replace with the selected user IDs
+      users_for_admin_role_id:[parseInt(selectedUser)],
    
     };
 
@@ -596,7 +614,7 @@ const handleSubmit1 = async (e) => {
             }
 
       const newGroup = await response.json();
-      alert("Groups updated successfully");
+      setResponseMessage1("Groups updated successfully");
       console.log("groups added successfully..", newGroup);
       fetchGroups(); // Refresh groups list afzter creation
       resetForm();
@@ -619,7 +637,7 @@ const handleSubmit1 = async (e) => {
       active_flag: activeflag,
       updated_by: userId,
       users_for_regular_role_id: selectedUserId,
-      users_for_admin_role_id:selectedRoleId,
+      users_for_admin_role_id:[parseInt(selectedUser)],
 
     };
     try {
@@ -648,7 +666,7 @@ const handleSubmit1 = async (e) => {
         throw new Error(`Failed to update group: ${errorData.response_message || 'Unknown error'}`);
       }
       const result = await response.json();
-      alert("Groups updated successfully");
+      setResponseMessage1("Groups updated successfully");
       console.log("Groups updated successfully", result);
       fetchGroups();
       resetForm();
@@ -814,7 +832,7 @@ onChange={handleSelectChange2}
        <option value="createAdmin" >Creat Admin</option>
        {users1.map((user) => (
           <option key={user.user_id} value={user.user_id}>
-            {user.user_name}
+           {user.user_name} (Id: {user.user_id})
           </option>
         ))}
 
@@ -827,7 +845,7 @@ onChange={handleSelectChange2}
 <select
   className="w-[200px] text-[#214082] -mt-[10px] rounded-sm p-[8px]"
 placeholder="Select User"
-value={selectedUserId}
+value={selectedUser}
 onChange={handleSelectChange}
 
        >
@@ -836,7 +854,7 @@ onChange={handleSelectChange}
 
          {users1.map((user) => (
           <option key={user.user_id} value={user.user_id}>
-            {user.user_name}
+          {user.user_name} (ID: {user.user_id})
           </option>
         ))}
 
@@ -886,7 +904,25 @@ onChange={handleSelectChange}
     {isEditing ? "Update" : "Add"}
     </button>
     )}
-            
+                {responseMessage1 && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div
+      className={`p-4 rounded shadow-lg w-[300px] text-center ${
+        responseMessage1.includes('success')
+          ? 'bg-green-100 text-green-800'
+          : 'bg-red-100 text-red-800'
+      }`}
+    >
+      <p>{responseMessage1}</p>
+      <button
+        onClick={() => setResponseMessage1('')} // Close the popup
+        className="mt-4 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}   
 
 
             </div>

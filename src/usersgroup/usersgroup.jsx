@@ -123,7 +123,8 @@ const handleRoleChange = (e) => {
       const [lastName, setLastName] = useState("");
       const [userEmail, setUserEmail] = useState("");
       const [userTypeId, setUserTypeId] = useState(0);
-      const [orgId, setOrgId] = useState(0);
+      const orgId = localStorage.getItem('org_id');
+
       
       const [dateOfBirth, setDateOfBirth] = useState("");
       const [userAddressId, setUserAddressId] = useState('');
@@ -146,6 +147,8 @@ const handleRoleChange = (e) => {
           user_type_id: 3,
           password: randomPassword,
           user_role_id: selectedRoleId,
+          user_email: userEmail,
+          org_id:orgId,
           created_by: userId,
           updated_by: userId,
         };

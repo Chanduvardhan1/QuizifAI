@@ -253,7 +253,7 @@ const LoginPage = () => {
       if (data.response === "success") {
         const userId = data.data[0]?.user_id;
         if (data.response_message === "OTP Succuessfully Sent") {
-          navigate("/resetpasswordmobile", { state: { userId,mobile } });
+          navigate("/restpasswordmobile", { state: { userId,mobile } });
         } else if (data.response_message === "OTP Sent Successfully, Please reset your password") {
           navigate("/restpassword", { state: { userId,email} });
         }

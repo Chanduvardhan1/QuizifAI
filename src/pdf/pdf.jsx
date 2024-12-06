@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect,useRef } from "react";
 import { Line } from "rc-progress";
-import Switch from "react-switch";
+// import Switch from "react-switch";
 import { useNavigate } from "react-router-dom";
 import Navigation from "../navbar/navbar";
 import { FiAlertCircle } from "react-icons/fi";
@@ -38,6 +38,8 @@ import Textboook from "../textbook/textbook";
 import Csv from "../csv/csv"
 import GreaterThan from "../assets/Images/images/dashboard/greaterthan.png";
 import QuestionPaper from "../assets/Images/Assets/questionPaper.png";
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch'
 
 const options1 = [{ label: "Numbers" }];
 
@@ -1861,7 +1863,9 @@ const handleTabClick = (tab) => {
   <div className=" w-[50%] flex flex-col">
         <div className="w-[100%] flex flex-row">
         <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500">*</span></label>
-        <Switch
+        <FormControlLabel
+        required control={<Switch />} 
+        // label="Required"
           onChange={toggler3}
           checked={publicAccess}
           className="react-switch"
@@ -2229,7 +2233,9 @@ const handleTabClick = (tab) => {
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[105px]">
           Retake Option <span className="text-red-500">*</span>
         </label>
-        <Switch
+        <FormControlLabel
+        required control={<Switch />} 
+        // label="Required"
           onChange={toggler2}
           checked={isRetakeOn}
           className="react-switch"
@@ -2337,7 +2343,9 @@ const handleTabClick = (tab) => {
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[59px]">
         Multiple Answers <span className="text-red-500">*</span>
         </label>
-        <Switch
+        <FormControlLabel
+        required control={<Switch />} 
+        // label="Required"
           onChange={toggler1}
           checked={multiAnswer}
           className="react-switch"
@@ -2350,7 +2358,9 @@ const handleTabClick = (tab) => {
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[55px]">
         Learning Material <span className="text-red-500">*</span>
         </label>
-        <Switch
+        <FormControlLabel
+        required control={<Switch />} 
+        // label="Required"
           onChange={toggler1}
           checked={multiAnswer}
           className="react-switch"
@@ -2877,7 +2887,9 @@ const handleTabClick = (tab) => {
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[72px]">
         Email Alert <span className="text-red-500">*</span>
         </label>
-        <Switch
+        <FormControlLabel
+        required control={<Switch />} 
+        // label="Required"
           onChange={toggler1}
           checked={multiAnswer}
           className="react-switch"

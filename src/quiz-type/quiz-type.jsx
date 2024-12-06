@@ -1343,7 +1343,7 @@ const handleToLayout4 = () =>{
         <label className="w-[100%] inline-flex items-center cursor-pointer text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500">*</span>
         <FormControlLabel
         control={<Switch />} 
-        label="Required"
+        // label="Required"
           onChange={toggler3}
           checked={publicAccess}
           className="react-switch"
@@ -1806,7 +1806,7 @@ const handleToLayout4 = () =>{
         </label>
         <FormControlLabel
         control={<Switch />} 
-        label="Required"
+        // label="Required"
           onChange={toggler2}
           checked={isRetakeOn}
           className="react-switch"
@@ -1916,7 +1916,7 @@ const handleToLayout4 = () =>{
         </label>
         <FormControlLabel
         control={<Switch />} 
-        label="Required"
+        // label="Required"
           onChange={toggler1}
           checked={multiAnswer}
           className="react-switch"
@@ -1931,7 +1931,7 @@ const handleToLayout4 = () =>{
         </label>
         <FormControlLabel
         control={<Switch />} 
-        label="Required"
+        // label="Required"
           onChange={toggler1}
           checked={multiAnswer}
           className="react-switch"
@@ -2270,7 +2270,7 @@ const handleToLayout4 = () =>{
         </label>
         <FormControlLabel
         control={<Switch />} 
-        label="Required"
+        // label="Required"
           onChange={toggler1}
           checked={multiAnswer}
           className="react-switch"

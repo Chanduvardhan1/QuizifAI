@@ -247,6 +247,7 @@ const [image, setImage] = useState("");
 const currentDate = new Date();
 const userRole = localStorage.getItem('user_role');
 const FormattedDate = `${currentDate.getDate().toString().padStart(2, '0')}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getFullYear()}`;
+const orgId = localStorage.getItem('org_id');
 
 const [editableFields, setEditableFields] = useState({
     hallTicket: false,
@@ -1292,7 +1293,7 @@ const handleNext = async (file) => {
             quiz_total_marks: quiztotalmarks,
             user_id: user_id,
             quiz_instructions: instructions,
-            org_id: selectedOrg,
+            org_id: orgId,
             pdf_url:pdfUrl,
             questions: questions.map((question) => ({
               question_text: question.question_text,
@@ -1864,7 +1865,7 @@ const handleTabClick = (tab) => {
         <div className="w-[100%] flex flex-row">
         <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500">*</span></label>
         <FormControlLabel
-        required control={<Switch />} 
+         control={<Switch />} 
         // label="Required"
           onChange={toggler3}
           checked={publicAccess}
@@ -2234,7 +2235,7 @@ const handleTabClick = (tab) => {
           Retake Option <span className="text-red-500">*</span>
         </label>
         <FormControlLabel
-        required control={<Switch />} 
+         control={<Switch />} 
         // label="Required"
           onChange={toggler2}
           checked={isRetakeOn}
@@ -2344,7 +2345,7 @@ const handleTabClick = (tab) => {
         Multiple Answers <span className="text-red-500">*</span>
         </label>
         <FormControlLabel
-        required control={<Switch />} 
+         control={<Switch />} 
         // label="Required"
           onChange={toggler1}
           checked={multiAnswer}
@@ -2359,7 +2360,7 @@ const handleTabClick = (tab) => {
         Learning Material <span className="text-red-500">*</span>
         </label>
         <FormControlLabel
-        required control={<Switch />} 
+         control={<Switch />} 
         // label="Required"
           onChange={toggler1}
           checked={multiAnswer}
@@ -2888,7 +2889,7 @@ const handleTabClick = (tab) => {
         Email Alert <span className="text-red-500">*</span>
         </label>
         <FormControlLabel
-        required control={<Switch />} 
+         control={<Switch />} 
         // label="Required"
           onChange={toggler1}
           checked={multiAnswer}

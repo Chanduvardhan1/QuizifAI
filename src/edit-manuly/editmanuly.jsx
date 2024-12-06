@@ -237,6 +237,9 @@ export default function editmanuly() {
 
   const [quizcreation, setQuizcreation] = useState('')
 
+  const [instructions, setinstructions] = useState("Carefully read each question before selecting your answer. Answer all questions, even if you are not sure. If available, use the skip or review feature to mark questions you want to revisit later. Make sure to submit your answers before the timer ends. Quizzes may auto-submit, but it is best to double-check.Good Luck!")
+
+
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -712,19 +715,32 @@ export default function editmanuly() {
           quiz_creation_method: quizcreation,
           disabled_on: disabledon,
           quiz_total_marks: quiztotalmarks,
+          quiz_instructions:instructions,
           questions: questions.map((question) => ({
             question_text: question.question_text,
             question_weightage: question.question_weightage,
-            multi_answer_flag: multiAnswer,
+            multi_answer_flag: question.multi_answer_flag, // Using multi_answer_flag from the question object
             question_duration: question.question_duration,
-            options: question.options.map((option) => ({
-              answer_option_text: option.answer_option_text,
-              correct_answer_flag: option.correct_answer_flag,
-            })),
+            quiz_ans_option_1_text: question.options[0]?.answer_option_text || "",
+            quiz_ans_option_2_text: question.options[1]?.answer_option_text || "",
+            quiz_ans_option_3_text: question.options[2]?.answer_option_text || "",
+            quiz_ans_option_4_text: question.options[3]?.answer_option_text || "",
+            correct_option_text: question.options
+              .find((option) => option.correct_answer_flag)?.answer_option_text || "",
           })),
+         
         }),
       });
-
+      // questions: questions.map((question) => ({
+      //   question_text: question.question_text,
+      //   question_weightage: question.question_weightage,
+      //   multi_answer_flag: multiAnswer,
+      //   question_duration: question.question_duration,
+      //   options: question.options.map((option) => ({
+      //     answer_option_text: option.answer_option_text,
+      //     correct_answer_flag: option.correct_answer_flag,
+      //   })),
+      // })),
       const responseData = await response.json();
       console.log(responseData, "data");
 

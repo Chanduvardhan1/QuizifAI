@@ -249,6 +249,7 @@ export default function quiztype() {
  const [layout1 , setlayout1] = useState(false)
  const [pdfUrl, setPdfUrl] = useState("");
 
+ const orgId = localStorage.getItem('org_id');
 
 
  //-------------****print quiz****-----------//
@@ -1275,7 +1276,7 @@ if (!authToken) {
             subject_name: subject,
             user_id:user_id,
             quiz_instructions: instructions,
-            org_id: selectedOrg,
+            org_id: orgId,
             pdf_url:pdfUrl,
             questions: questions.map((question) => ({
               question_text: question.question_text,
@@ -1765,8 +1766,8 @@ const handleComplexquestions = (event) => {
 <div className="w-[100%] flex flex-row">
 <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500">*</span></label>
 <FormControlLabel
- required control={<Switch />}
- label="Required" 
+  control={<Switch />}
+//  label="Required" 
 onChange={toggler3}
 checked={publicAccess}
 className="react-switch"
@@ -2132,8 +2133,8 @@ className="react-switch"
           Retake Option <span className="text-red-500">*</span>
         </label>
         <FormControlLabel
- required control={<Switch />}
- label="Required"
+  control={<Switch />}
+//  label="Required"
           onChange={toggler2}
           checked={isRetakeOn}
           className="react-switch"
@@ -2314,8 +2315,8 @@ className="react-switch"
         Multiple Answers <span className="text-red-500">*</span>
         </label>
         <FormControlLabel
- required control={<Switch />}
- label="Required"
+  control={<Switch />}
+//  label="Required"
           onChange={toggler1}
           checked={multiAnswer}
           className="react-switch"
@@ -2329,8 +2330,8 @@ className="react-switch"
         Learning Material <span className="text-red-500">*</span>
         </label>
         <FormControlLabel
- required control={<Switch />}
- label="Required"
+  control={<Switch />}
+//  label="Required"
           onChange={toggler1}
           checked={multiAnswer}
           className="react-switch"
@@ -2778,8 +2779,8 @@ className="react-switch"
         Email Alert <span className="text-red-500">*</span>
         </label>
         <FormControlLabel
- required control={<Switch />}
- label="Required"
+  control={<Switch />}
+//  label="Required"
           onChange={toggler1}
           checked={multiAnswer}
           className="react-switch"

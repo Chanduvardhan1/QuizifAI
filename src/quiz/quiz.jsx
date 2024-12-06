@@ -1098,16 +1098,18 @@ const Quiz = () => {
                          {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                            Physics,Physics,Physics,Physics
                          </span> */}
+                          {userRole === "Quiz Master" && (
                          <img src={more} alt="" onClick={() => toggleNavbar1(index)} className=" w-[12px] h-[12px] hover:bg-gray-200   hover:rounded-full" />
+                          )}
                          {cardStates1[index] && (
                            <div
-                             className="absolute rounded-md w-[150px]  flex flex-col p-1 bg-gray-200 mt-[55px] ml-[115px]"
+                             className="absolute rounded-md w-[150px]  flex flex-col p-1 bg-gray-200 mt-[43px] ml-[115px]"
                              style={{
                                clipPath:
                                  "polygon(0% 0%, 80% 0, 80% 8%, 95% 15%, 81% 23%, 80% 100%, 0 100%)",
                              }}
                            >
-                             <div className="flex items-center">
+                             {/* <div className="flex items-center">
                                <img
                                  className="w-2 h-2 mr-1"
                                  src={Start_button}
@@ -1119,7 +1121,7 @@ const Quiz = () => {
                                >
                                  Start
                                </span>
-                             </div>
+                             </div> */}
                              {userRole === "Quiz Master" && (
                                <div className="flex items-center ">
                                  <img
@@ -1135,6 +1137,61 @@ const Quiz = () => {
                                  </span>
                                </div>
                              )}
+                               {userRole === "Quiz Master" && (
+  <div className="flex items-center">
+    <img
+    onClick={() => handleDeleteClick(quizItem.quiz_id)}
+      className="w-2 h-2 mr-1 cursor-pointer"
+      src={Delete}
+      alt="Delete icon"
+    />
+    <span
+      className="text-red-500 text-[12px] cursor-pointer hover:underline"
+      onClick={() => handleDeleteClick(quizItem.quiz_id)}
+    >
+      Delete
+    </span>
+    <Modal
+      isOpen={modalIsOpen}
+      onRequestClose={() => setModalIsOpen(false)}
+      className="bg-white rounded-lg p-8 mx-auto max-w-md border border-red-400"
+      overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+    >
+      <h2 className="text-xl font-semibold mb-4">
+        Are you sure you want to delete this card?
+      </h2>
+      <div className="mb-4 flex items-center">
+        <input
+          type="checkbox"
+          id="confirmCheckbox"
+          className="mr-2 h-4 w-4"
+          checked={isChecked}
+          onChange={(e) => setIsChecked(e.target.checked)}
+        />
+        <label htmlFor="confirmCheckbox" className="text-sm">
+          I understand the consequences.
+        </label>
+      </div>
+      <div className="flex justify-end space-x-4">
+        <button
+          className={`px-4 py-2 rounded bg-red-500 text-white transition-opacity duration-200 ${
+            !isChecked ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"
+          }`}
+          onClick={() => setIsDeleteConfirmed(true)}
+          disabled={!isChecked}
+        >
+          Delete
+        </button>
+        <button
+          className="px-4 py-2 rounded bg-gray-300 text-black hover:bg-gray-400"
+          onClick={() => setModalIsOpen(false)}
+        >
+          Cancel
+        </button>
+      </div>
+    </Modal>
+  </div>
+)}
                              {/* <div className="flex items-center">
                                <img
                                  className="w-2 h-2 mr-1"
@@ -1828,16 +1885,18 @@ const Quiz = () => {
                          {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                            Physics,Physics,Physics,Physics
                          </span> */}
+                            {userRole === "Quiz Master" && (
                          <img src={more} alt="" onClick={() => toggleNavbar(index)} className=" w-[12px] h-[12px] hover:bg-gray-200   hover:rounded-full" />
+                            )}
                          {cardStates[index] && (
                            <div
-                             className="absolute rounded-md w-[150px]  flex flex-col p-1 bg-gray-200 mt-[55px] ml-[115px]"
+                             className="absolute rounded-md w-[150px]  flex flex-col p-1 bg-gray-200 mt-[43px] ml-[115px]"
                              style={{
                                clipPath:
                                  "polygon(0% 0%, 80% 0, 80% 8%, 95% 15%, 81% 23%, 80% 100%, 0 100%)",
                              }}
                            >
-                             <div className="flex items-center">
+                             {/* <div className="flex items-center">
                                <img
                                  className="w-2 h-2 mr-1"
                                  src={Start_button}
@@ -1849,7 +1908,7 @@ const Quiz = () => {
                                >
                                  Start
                                </span>
-                             </div>
+                             </div> */}
                              {userRole === "Quiz Master" && (
                                <div className="flex items-center ">
                                  <img
@@ -1865,6 +1924,61 @@ const Quiz = () => {
                                  </span>
                                </div>
                              )}
+                             {userRole === "Quiz Master" && (
+  <div className="flex items-center">
+    <img
+    onClick={() => handleDeleteClick(quizItem.quiz_id)}
+      className="w-2 h-2 mr-1 cursor-pointer"
+      src={Delete}
+      alt="Delete icon"
+    />
+    <span
+      className="text-red-500 text-[12px] cursor-pointer hover:underline"
+      onClick={() => handleDeleteClick(quizItem.quiz_id)}
+    >
+      Delete
+    </span>
+    <Modal
+      isOpen={modalIsOpen}
+      onRequestClose={() => setModalIsOpen(false)}
+      className="bg-white rounded-lg p-8 mx-auto max-w-md border border-red-400"
+      overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+    >
+      <h2 className="text-xl font-semibold mb-4">
+        Are you sure you want to delete this card?
+      </h2>
+      <div className="mb-4 flex items-center">
+        <input
+          type="checkbox"
+          id="confirmCheckbox"
+          className="mr-2 h-4 w-4"
+          checked={isChecked}
+          onChange={(e) => setIsChecked(e.target.checked)}
+        />
+        <label htmlFor="confirmCheckbox" className="text-sm">
+          I understand the consequences.
+        </label>
+      </div>
+      <div className="flex justify-end space-x-4">
+        <button
+          className={`px-4 py-2 rounded bg-red-500 text-white transition-opacity duration-200 ${
+            !isChecked ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"
+          }`}
+          onClick={() => setIsDeleteConfirmed(true)}
+          disabled={!isChecked}
+        >
+          Delete
+        </button>
+        <button
+          className="px-4 py-2 rounded bg-gray-300 text-black hover:bg-gray-400"
+          onClick={() => setModalIsOpen(false)}
+        >
+          Cancel
+        </button>
+      </div>
+    </Modal>
+  </div>
+)}
                              {/* <div className="flex items-center">
                                <img
                                  className="w-2 h-2 mr-1"

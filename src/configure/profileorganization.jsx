@@ -16,6 +16,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import defaultPhoto from '../../src/assets/Images/dashboard/narmtech.jpg'
 import camera1 from "../../src/assets/Images/dashboard/edit.png"
 import search from "../assets/Images/images/dashboard/Search.png";
+import x from "../../src/assets/Images/quiz-type/cross-button.png"
 
 const profileorganization = () => {
   const [categories, setCategories] = useState([]);
@@ -50,6 +51,15 @@ const profileorganization = () => {
  
   const [showsave, setShowsave] = useState(false);
   const [showcancel, setShowcancel] = useState(false);
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, []);
+
 
 //---------**Pincode**------------//
 
@@ -255,6 +265,7 @@ useEffect(() => {
 
 
 //---------**AddOrganizationProfile**------------//
+
 const [orgName, setOrgName] = useState('');
 const [orgAdminId, setOrgAdminId] = useState(0);
 const [orgLocationId, setOrgLocationId] = useState(0);
@@ -272,17 +283,18 @@ const handleSubmit = async (e) => {
 
   const payload = {
     updated_by: userId,
-    org_id: 8,
+    org_id: orgId,
     org_name: orgName,
-    org_admin_id: selectedUser,
+    org_admin_id: userId,
     org_location_id: locationId,
     org_subscription_key: orgSubscriptionKey,
-    org_point_of_contact_id:  selectedUser.user_id ,
-    org_address_line_1: orgAddressLine1,
-    org_address_line_2: orgAddressLine2,
+    org_point_of_contact_id:  userId ,
+    org_address_line1: orgAddressLine1,
+    org_address_line2: orgAddressLine2,
     org_type: selectedOrgTypeId,
     org_public_quizzes_access_flag: true,
     org_create_public_quizzes_flag: true,
+    print_flag: true,
   };
 
   try {
@@ -367,6 +379,123 @@ const handleSelectChange = (event) => {
 
 //---------**AddOrganizationProfile User Type end**------------//
 
+//---------**AddOrganizationProfile Image **------------//
+const [photo, setPhoto] = useState(''); // State to store the image URL
+    const [loading, setLoading] = useState(true); // State to manage loading status
+    const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
+
+    const fetchProfileImage = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
+              if (!authToken) {
+                console.error("No authentication token found. Please log in again.");
+                return;
+              }
+        const response = await fetch(`https://dev.quizifai.com:8010/view-org-image?org_id=${orgId}`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            'accept': 'application/json',
+          },
+        });
+    
+        if (response.ok) {
+          const data = await response.json();
+          if (data.response === 'success') {
+            setPhoto(data.data); // Set the image URL from the response
+          } else {
+            setPhoto(defaultPhoto);
+          }
+        } else {
+          setPhoto(defaultPhoto);
+          // setError('Failed to fetch image');
+        }
+      } catch (error) {
+        setPhoto(defaultPhoto);
+        // setError('Error fetching image: ' + error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    const uploadImage = async (file) => {
+      const formData = new FormData();
+      formData.append('file', file);
+    
+      try {
+        const response = await fetch(`https://dev.quizifai.com:8010/upload-org-image?org_id=${orgId}`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: formData,
+        });
+    
+        if (response.ok) {
+          // After successfully uploading, fetch the updated image
+          fetchProfileImage();
+          navigate(0)
+        } else {
+          setError('Failed to upload image');
+        }
+      } catch (error) {
+        setError('Error uploading image: ' + error.message);
+      }
+    };
+    
+    const handleIconClick = () => {
+      document.getElementById('fileInput').click();
+    };
+    
+    // Handle file selection
+    const handleFileChange = (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        uploadImage(file);
+      }
+    };
+    
+    useEffect(() => {
+      fetchProfileImage();
+    }, []);
+
+
+    const deleteImage = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
+              if (!authToken) {
+                console.error("No authentication token found. Please log in again.");
+                return;
+              }
+        const response = await fetch(`https://dev.quizifai.com:8010/remove-org-image?org_id=${orgId}`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            'accept': 'application/json',
+          },
+        });
+    
+        if (response.ok) {
+          // Clear the photo state after successful deletion
+          setPhoto('');
+          setError(null); // Reset any errors
+          navigate(0)
+        } else {
+          setError('Failed to delete image');
+        }
+      } catch (error) {
+        setError('Error deleting image: ' + error.message);
+      }
+    };
+    const openModal = () => {
+      setIsModalOpen(true);
+    };
+    const closeModal = () => {
+      setIsModalOpen(false);
+    };
+
+//---------**AddOrganizationProfile Image END**------------//
+
+
 
   const navigate = useNavigate();
   const handleBanckToDashbaord = () =>{
@@ -390,25 +519,72 @@ const handleSelectChange = (event) => {
 
      
         <div>
-            <h1 className=' font-semibold text-[#EF5130] mb-2'>Organization Profile</h1>
+            <h1 className=' font-semibold text-[#EF5130] mb-2'>Profile</h1>
         </div>
   <div className='flex gap-5'>
-  <div className="relative w-[90px] h-[90px]">
+  <div className="relative">
+                    {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : (
+        <div className="relative w-full h-full">
         <img
-          src={defaultPhoto}
+          src={photo}
           alt="Profile"
-          className="w-[90px] h-[90px] rounded-xl"
+          onClick={openModal}
+          className="w-[80px] h-[80px] rounded-2xl"
         />
         <div 
           className="absolute bottom-0 right-0 rounded-full cursor-pointer"
-        //   onClick={openModal}
+          onClick={openModal}
         >
          <img src={camera1} alt="" className="w-[20px] h-[20px]"/>
         </div>
-        <div className='flex justify-center text-blue-800'>Org ID : <span className=' text-black ml-1'> 466</span> </div>
-        <div className='flex justify-center text-blue-800'>{selectedOrgTypeId}</div>
-
       </div>
+      )}
+
+      {/* Hidden file input for selecting image */}
+      <input
+        type="file"
+        id="fileInput"
+        accept="image/*"
+        style={{ display: 'none' }}
+        onChange={handleFileChange}
+      />
+                    </div>
+                    {isModalOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          onClick={closeModal}
+        >
+         <div class="flex items-center justify-center min-h-screen ">
+  <div class="bg-gray-800 text-white rounded-lg p-6 shadow-lg max-w-xs">
+    <div class="relative">
+      <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-gray-200">
+        <img src={photo} alt="Profile" class="w-full h-full object-cover"/>
+      </div>
+      
+      <div class="absolute top-[-15px] right-[-15px] flex space-x-2">
+        <button class="bg-gray-600 p-2 rounded-full text-white hover:bg-gray-500">
+        
+          <img src={x} alt="" class="h-5 w-5" />
+        </button>
+      </div>
+    </div>
+    
+    <h2 class="text-center text-xl  mt-4">Profile photo</h2>
+    
+    <div class="mt-4 flex justify-between">
+      <button class="bg-gray-700 px-4 py-2 rounded text-sm text-white hover:bg-gray-600"  onClick={handleIconClick}>Add photo</button>
+
+      <button class="bg-red-600 px-4 py-2 rounded text-sm text-white hover:bg-red-500" onClick={deleteImage}>Delete</button>
+    </div>
+  </div>
+</div>
+
+        </div>
+      )}
     <div className='w-[80%] flex flex-col gap-5'>
     {/* <div className="flex flex-col">
         <div className="w-full flex flex-row">
@@ -671,10 +847,42 @@ const handleSelectChange = (event) => {
   
     </div>
   </div>
+  {showsave ?  (
+                   
+                   <div className="flex justify-end gap-[10px] md:col-span-2 w-[89%] pl-[125px] mt-2">
+
+                   <button
+                     onClick={handleeditback}
+                     className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+       
+                   >
+                     Cancel
+                   </button>  
+                    <button
+                     onClick={handleSubmit}
+                      className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+        
+                    >
+                      Save
+                    </button>
+                    </div>
+            ) :(
+                <div className="flex justify-end gap-[10px] md:col-span-2 w-[89%] mt-2 ">
+
+                <button
+                           onClick={handleedit}
+                              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+                
+                            >
+                              Edit
+                            </button>
+                                 </div>
+            )
+        }
   </div>
   <div className=' flex flex-col gap-5 mt-2 bg-white p-5 rounded-lg'>
       <div>
-            <h1 className=' font-semibold text-[#EF5130] mb-2'>Administration</h1>
+            <h1 className=' font-semibold text-[#EF5130] mb-2'>Admin</h1>
         </div>
         <div className='w-[89%] flex flex-col gap-5 pl-[110px]'>
 
@@ -699,16 +907,13 @@ const handleSelectChange = (event) => {
         <div className="w-full flex flex-row">
         <label className="w-[22%] text-blue-800 font-semibold mb-2 mr-[9px] ">Name<span className="text-red-500">*</span></label>
       
-    <select id="userSelect"               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
- onChange={handleUserSelect}>
-   disabled={!isEditing}
-        <option value="">Select User Name</option>
-        {users.map((user) => (
-          <option key={user.user_id} value={user.user_id}>
-            {user.user_name}
-          </option>
-        ))}
-      </select>
+      <input
+              type="text"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="Name"
+                value={username}
+              ></input>
+  
         </div>
       
         <hr className={`h-[1px] w-full`} />
@@ -754,38 +959,7 @@ const handleSelectChange = (event) => {
       </div>
       
             
-            {showsave ?  (
-                   
-                   <div className="flex justify-end gap-[10px] md:col-span-2 w-[89%] pl-[125px]">
-
-                   <button
-                     onClick={handleeditback}
-                     className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
-       
-                   >
-                     Cancel
-                   </button>  
-                    <button
-                     onClick={handleSubmit}
-                      className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
-        
-                    >
-                      Save
-                    </button>
-                    </div>
-            ) :(
-                <div className="flex justify-end gap-[10px] md:col-span-2 w-[89%] ">
-
-                <button
-                           onClick={handleedit}
-                              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
-                
-                            >
-                              Edit
-                            </button>
-                                 </div>
-            )
-        }
+          
            
            </div>
     </div>

@@ -345,7 +345,9 @@ const handleUserTypeChange = (e) => {
         <option value="" disabled selected>
          Select a Role
         </option>
-        {roles.map((role) => (
+        {roles  
+          .filter((role) => role.role_name !== "Super Admin") 
+           .map((role) => (
           <option key={role.user_role_id} value={role.user_role_id}>
             {role.role_name}
           </option>

@@ -3,7 +3,10 @@ import styles from "./email.module.css";
 import styles1 from "./signup.module.css";
 import icon1 from "../assets/Images/images/mdi_gmail.png";
 import icon2 from "../assets/Images/images/clarity_mobile-line.png";
-import quizifailogo from "../assets/Images/images/home/Quizifai3.png";
+import quizifailogo1 from "../assets/Images/images/home/Quizifai3.png";
+import quizifailogo from "../../public/chatbots1.png";
+// import quizifailogo1 from "../assets/Images/images/home/newlogo.png";
+
 import successImage from "../assets/Images/images/signup/successImage.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FaTimes, FaCheck } from "react-icons/fa";
@@ -216,10 +219,14 @@ const resetpasswordmobile = () => {
   };
   return (
     <div className={styles.container}>
+      
       <div className={styles.mainContent}>
         <div className={styles.leftSection}>
+        <div>
+        <img src={quizifailogo1} className=" w-[200px] h-[80px] pl-2 pt-2" alt="" />
+      </div>
           <div className={styles1.logo}>
-            <img src={quizifailogo} alt="Logo" width={300} height={308} />
+            <img className="h-[400px]  w-[641px]" src={quizifailogo} alt="Logo" width={300} height={308} />
           </div>
         </div>
         <div className={styles.rightSection}>

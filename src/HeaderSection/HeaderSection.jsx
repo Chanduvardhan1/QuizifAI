@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 // import quizifailogo from "../assets/Images/images/home/Quizifai3.png";
 // import newlogo from "../../public/newlogo.png";
 // import chartbots2 from "../../public/chatbots2.png";.
-import homepagelogo from "../../public/homepagelogo.png"
+import homepagelogo from "../assets/Images/images/home/Quizifai3.png"
 import Menu from "../assets/Images/images/home/menu.png";
 import { Link, useLocation } from "react-router-dom";
 import homeIcon from "../../public/images/homeicon.png";

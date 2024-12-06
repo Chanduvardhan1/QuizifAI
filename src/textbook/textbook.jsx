@@ -1,8 +1,9 @@
 "use client";
 import React, { useState ,useEffect,useRef} from "react";
 import { Line } from "rc-progress";
-import Switch from "react-switch";
+// import Switch from "react-switch";
 import { useNavigate } from "react-router-dom";
+
 import { FiAlertCircle } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -37,6 +38,8 @@ import comment from "../../src/assets/Images/quiz-type/comment.png"
 import editicon from "../../src/assets/Images/quiz-type/edit.png"
 import QuestionPaper from "../assets/Images/Assets/questionPaper.png";
 import GreaterThan from "../assets/Images/images/dashboard/greaterthan.png";
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch'
 
 const options1 = [{ label: "Numbers" }];
 
@@ -1761,7 +1764,9 @@ const handleComplexquestions = (event) => {
 <div className=" w-[50%] flex flex-col">
 <div className="w-[100%] flex flex-row">
 <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500">*</span></label>
-<Switch
+<FormControlLabel
+ required control={<Switch />}
+ label="Required" 
 onChange={toggler3}
 checked={publicAccess}
 className="react-switch"
@@ -2126,7 +2131,9 @@ className="react-switch"
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[105px]">
           Retake Option <span className="text-red-500">*</span>
         </label>
-        <Switch
+        <FormControlLabel
+ required control={<Switch />}
+ label="Required"
           onChange={toggler2}
           checked={isRetakeOn}
           className="react-switch"
@@ -2306,7 +2313,9 @@ className="react-switch"
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[75px]">
         Multiple Answers <span className="text-red-500">*</span>
         </label>
-        <Switch
+        <FormControlLabel
+ required control={<Switch />}
+ label="Required"
           onChange={toggler1}
           checked={multiAnswer}
           className="react-switch"
@@ -2319,7 +2328,9 @@ className="react-switch"
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[76px]">
         Learning Material <span className="text-red-500">*</span>
         </label>
-        <Switch
+        <FormControlLabel
+ required control={<Switch />}
+ label="Required"
           onChange={toggler1}
           checked={multiAnswer}
           className="react-switch"
@@ -2766,7 +2777,9 @@ className="react-switch"
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[72px]">
         Email Alert <span className="text-red-500">*</span>
         </label>
-        <Switch
+        <FormControlLabel
+ required control={<Switch />}
+ label="Required"
           onChange={toggler1}
           checked={multiAnswer}
           className="react-switch"

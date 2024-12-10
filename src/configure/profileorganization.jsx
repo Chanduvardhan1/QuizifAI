@@ -321,6 +321,8 @@ const handleSubmit = async (e) => {
     console.log('Response:', data);
     alert('Organization profile added successfully!');
     fetchOrganizationDetails();
+    setShowsave(false);
+    setIsEditing(false)
   } catch (error) {
     console.error('Error:', error);
     alert('Failed to add organization profile.');

@@ -110,7 +110,7 @@ const configure = () => {
       id: 2,
       title: "User & Roles",
       content:
-        "Add/Edit User, Add/Edit User Groups, User List, Reset User Password",
+        "Add User, Add/Edit User Groups, User List, Reset User Password",
     },
     {
       id: 3,
@@ -279,7 +279,7 @@ const configure = () => {
                       : contentItem === "User List" &&
                       item.title === "User & Roles"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
-                      : contentItem === "Add/Edit User" &&
+                      : contentItem === "Add User" &&
                       item.title === "User & Roles"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : contentItem === "Organization Profile" &&
@@ -309,7 +309,7 @@ const configure = () => {
                       ? handleQuizDownloadAndPrintClick
                       : contentItem === "Quiz Print Templates"
                       ? handleExamClick
-                      : contentItem === "Add/Edit User"
+                      : contentItem === "Add User"
                       ? handleUsercrat
                       : contentItem === "Organization Profile"
                       ? handleProfile

@@ -18,6 +18,19 @@ import LogoutBar from "../logoutbar/logoutbar.jsx";
 import { toast, ToastContainer } from "react-toastify";
 // import useBlocker from '../useBlocker/useBlocker.jsx';
 
+//------------------**import images**------------------//
+import physics from "../../src/assets/Images/quiz-type/quizcover.jpg"
+import startIcon from "../../src/assets/Images/images/quiz-Access/start.png";
+import username from "../../src/assets/Images/quiz-type/username.png"
+import calander from "../../src/assets/Images/quiz-type/calander.png"
+import timer from "../../src/assets/Images/quiz-type/Timer.png"
+import comment from "../../src/assets/Images/quiz-type/comment.png"
+import editicon from "../../src/assets/Images/quiz-type/edit.png"
+import Playbutton from "../../src/assets/Images/quiz-type/image.png"
+import closeimage from "../../public/closeimage.png";
+import stars from "../../src/assets/Images/quiz-type/star.png"
+
+
 import "react-toastify/dist/ReactToastify.css";
 import useBlocker from "../useBlocker/useBlocker.jsx";
 // import usePrompt from '../usePrompt/usePrompt.jsx';
@@ -666,7 +679,154 @@ const QuizQuestions = () => {
       <Navigation />
       <ToastContainer />
       <div className={styles.mainContent}>
-        <div>
+      <div className="flex justify-end py-2">
+            <div className="flex items-center px-[10px] p-[5px] border-[1px] border-[#FF6865] bg-[#FFCCCB] text-[#FF0500] font-semibold rounded-[10px] "
+            >
+                <p>Close</p>
+                <img src={closeimage} alt="" className="w-[20px] h-[20px]" />
+            </div>
+    </div>
+<div className="flex w-full border-[#8cd18e] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-2 bg-white">
+      {/* Quiz Image */}
+      <div className="relative mr-2">
+        <img
+          src={physics}
+          alt="Quiz Cover"
+          className="w-[120px] h-[165px] rounded-md mr-4 cursor-pointer"
+        />
+      </div>
+
+      {/* Quiz Details */}
+      <div className="flex flex-col w-full">
+        {/* Title */}
+        <div className="flex justify-between items-center">
+            <div>
+
+          <h2 className="text-lg font-semibold text-[#00008b]">Quiz Title-- NCERT Class 10, Physics Quiz</h2>
+            </div>
+            <div className="flex gap-3">
+                <div className="flex gap-2">
+                <img src={timer}
+                 alt="" 
+                className="w-[18px] h-[18px] "   
+                   />
+                <img src={timer}
+                 alt="" 
+                className="w-[18px] h-[18px] "  />
+                </div>
+                <div className="flex">
+                    <img src={stars}
+                 alt="" 
+                className="w-[18px] h-[18px] "  
+                 /> <img src={stars}
+                 alt="" 
+                className="w-[18px] h-[18px]"  
+                 />
+                  <img src={stars}
+                 alt="" 
+                className="w-[18px] h-[18px] "  
+                 />
+                  <img src={stars}
+                 alt="" 
+                className="w-[18px] h-[18px]"  
+                 />
+                  <img src={stars}
+                 alt="" 
+                className="w-[18px] h-[18px]"  
+                 />
+                  
+                </div>
+            </div>
+        </div>
+
+        {/* Description */}
+        <p className="text-[#00008b] w-[80%] line-clamp-2 text-sm mt-1">
+        The definition of physics is the study of the physical plane of matter, motion, force, and energy.
+        </p>
+
+        {/* Meta Information */}
+        <div className="text-[#00008b] text-sm flex flex-wrap mt-3">
+          <span>Science</span>
+          <span className="mx-1">.</span>
+          <span>Physics</span>
+          <span className="mx-1">.</span>
+          <span>Class 10</span>
+          <span className="mx-1">.</span>
+          <span>CBSE</span>
+          <span className="mx-1">.</span>
+          <span>Intermediate</span>
+        </div>
+
+        {/* Icons and Additional Info */}
+        <div className="flex-col items-center space-y-4 mt-3 text-[#00008b]">
+          {/* Author and Date */}
+          <div className="flex items-center space-x-10">
+            <div className="flex items-center">
+              <img
+               src={username}
+                alt="User"
+                className="w-[18px] h-[18px] mr-1"
+              />
+              <span className="ml-1 text-sm">John Doe</span>
+            </div>
+            <div className="flex items-center">
+              <img
+                src={calander} 
+                alt="Calendar"
+                className="w-[18px] h-[18px] mr-1"
+              />
+              <span className="ml-1 text-sm">2024-12-01</span>
+            </div>
+          </div>
+
+          {/* Quiz Info */}
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center">
+              <img
+                src={comment}
+                alt="Questions"
+                className="w-[18px] h-[18px] mr-1"
+              />
+              <span className="ml-1 text-sm">20 Questions</span>
+            </div>
+            <div className="flex items-center">
+              <img
+                src={timer}
+                alt="Timer"
+                className="w-[18px] h-[18px] mr-1"
+              />
+              <span className="ml-1 text-sm">30 Minutes</span>
+            </div>
+            <div className="flex items-center">
+              <img
+                src={Playbutton}
+                alt="Timer"
+                className="w-[18px] h-[18px] mr-1"
+              />
+              <span className="ml-1 text-sm">30 Attemts</span>
+            </div>
+            <div className="flex items-center">
+              <img
+                src={timer}
+                alt="Timer"
+                className="w-[18px] h-[18px] mr-1"
+              />
+              <span className="ml-1 text-sm">90% High Score</span>
+            </div>
+            <div className="flex items-center">
+              <img
+                src={Playbutton}
+                alt="Timer"
+                className="w-[18px] h-[18px] mr-1"
+              />
+              <span className="ml-1 text-sm">2:02 Mins Quickest</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+        {/* <div>
           <h1 className={styles.quiztitle} style={{ color: "#214082" }}>
             {quiz_title}
           </h1>
@@ -725,8 +885,7 @@ const QuizQuestions = () => {
               </div>
             </div>
           </div>
-        </div>
-
+        </div> */}
         <div>
           <h1 className={styles.sentence1}>
             Question{" "}
@@ -740,6 +899,7 @@ const QuizQuestions = () => {
             <span className={styles.sentence1}>"Next"</span> button
           </h1>
         </div>
+        <div className="flex">
 
         <div className={styles.currentQuestion}>
           {currentQuestion && (
@@ -879,14 +1039,17 @@ const QuizQuestions = () => {
             </button>
           </div>
         </div>
-      </div>
-      <div style={{ paddingRight: "5px" }}>
-        <div className={styles.verticalLine}></div>
-      </div>
+     
+        <div className='flex flex-col justify-end px-2 items-center'>
+  <div className=' w-[10px] rounded-full bg-[#00008b] h-[10px]'></div>
+  <div className='h-[80%] w-[1px] bg-[#00008b]'></div>
+  <div className=' w-[10px] rounded-full bg-[#00008b] h-[10px]'></div>
+
+</div>
       <div className={styles.Totaltimer}>
-        <div className={styles.back1} onClick={Back}>
+        {/* <div className={styles.back1} onClick={Back}>
           <MdOutlineCancel />
-        </div>
+        </div> */}
         <div className={styles.sentence1} style={{ marginTop: "140px" }}>
           {/* {`${currentQuestionIndex + 1} out of ${filteredQuizData.length}`} */}
         </div>
@@ -949,8 +1112,9 @@ const QuizQuestions = () => {
       <div className={styles.sentence3} style={{ marginTop: "230px" }}>
         {/* {formatTime(elapsedTime)} */}
       </div>
-
-      <LogoutBar />
+      </div>
+      </div>
+      {/* <LogoutBar /> */}
     </div>
   );
 };

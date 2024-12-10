@@ -5,6 +5,8 @@ import hide from "../assets/Images/images/profile/hide.png";
 import Navigation from "../navbar/navbar";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import defaultPhoto from '../../src/assets/Images/dashboard/narmtech.jpg'
+
 
 
 function usersgroup() {
@@ -15,6 +17,15 @@ function usersgroup() {
     const [showNewPasswords, setShowNewPasswords] = useState(false);
     const navigate = useNavigate();
     const userId = localStorage.getItem("user_id");
+
+    const [username1, setUsername1] = useState("");
+
+useEffect(() => {
+  const storedUsername = localStorage.getItem("username");
+  if (storedUsername) {
+    setUsername1(storedUsername);
+  }
+}, []);
 
     const handleLoginCancelClick1 = () => {
         setShowNewPasswords(false);
@@ -32,6 +43,51 @@ function usersgroup() {
       const handleexcel = () => {
         navigate("/excelcreat")
       }
+
+// --------------***view image*** -------------- //
+const [photo, setPhoto] = useState(''); // State to store the image URL
+const [loading, setLoading] = useState(true); 
+const [error, setError] = useState(null);
+
+      const fetchProfileImage = async () => {
+        try {
+          const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
+                if (!authToken) {
+                  console.error("No authentication token found. Please log in again.");
+                  return;
+                }
+          const response = await fetch(`https://dev.quizifai.com:8010/view-profile_image?user_id=${userId}`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              'accept': 'application/json',
+            },
+          });
+      
+          if (response.ok) {
+            const data = await response.json();
+            if (data.response === 'success') {
+              setPhoto(data.data); // Set the image URL from the response
+            } else {
+              setPhoto(defaultPhoto);
+            }
+          } else {
+            setPhoto(defaultPhoto);
+            // setError('Failed to fetch image');
+          }
+        } catch (error) {
+          setPhoto(defaultPhoto);
+          // setError('Error fetching image: ' + error.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      useEffect(() => {
+        fetchProfileImage();
+      }, []);
+// --------------***view image end*** -------------- //
+
 
 // Randompassword generate //
 const [randomPassword, setRandomPassword] = useState('');
@@ -242,12 +298,37 @@ const handleUserTypeChange = (e) => {
         <div className="w-full">
 
        
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white my-4 p-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white mt-4 px-5 pb-5">
   
   <div className="md:col-span-2">
-      <h1 className=" font-semibold text-[20px] text-[#214082]">Create User</h1>
+      <h1 className="text-center text-[24px] font-bold text-[#F17530]">Create User</h1>
     </div>
+    <div className="flex md:col-span-2 gap-2 items-center">
+                <div
+                  className="rounded-full w-[80px]  h-[80px]"
 
+                >
+                 
+                    <img
+                      className="w-[80px] h-[80px] rounded-2xl"
+                      src={photo}
+                      alt="Default"
+                    />
+                
+                </div>
+
+                <div className=" font-bold text-[#214082]">
+                  <span className="text-[15px]">Welcome </span>
+                  <span className="text-[15px]">
+                    {username1.charAt(0).toUpperCase() + username1.slice(1)}
+                  </span>
+                  <br />
+                  <span className="text-[15px]">User ID : </span>
+                  <span className=" font-normal text-[12px]">{userId}</span>
+                  {/* <span className="text-[15px] ml-1">A ID : </span>
+                  <span className=" font-normal text-[12px]">{userId}</span> */}
+                </div>
+                </div>
     {/* User Id*/}
    
     {/* <div className="flex flex-col md:col-span-2">
@@ -269,10 +350,10 @@ const handleUserTypeChange = (e) => {
     {/*  Fist Name*/}
     <div className="flex flex-col">
       <div className="w-full flex flex-row">
-      <label className="w-[50%] text-blue-800 font-semibold mb-2">Fist Name<span className="text-red-500">*</span></label>
+      <label className="w-[20%] text-blue-800 font-semibold mb-2">Fist Name<span className="text-red-500">*</span></label>
     
       <input
-        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[15px] focus:outline-none `}
         type="text"
         required
         value={firstName}
@@ -286,10 +367,10 @@ const handleUserTypeChange = (e) => {
    {/* Middle Name */}
 <div className="flex flex-col ">
       <div className="w-full flex flex-row">
-      <label className="w-[50%] text-blue-800 font-semibold mb-2 ">Middle Name<span className="text-red-500"></span></label>
+      <label className="w-[25%] text-blue-800 font-semibold mb-2 ">Middle Name<span className="text-red-500"></span></label>
 
       <input
-        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[15px] focus:outline-none `}
         type="text"
         required
         value={middleName}
@@ -320,10 +401,10 @@ const handleUserTypeChange = (e) => {
     
 <div className="flex flex-col ">
       <div className="w-full flex flex-row">
-      <label className="w-[50%] text-blue-800 font-semibold mb-2">last Name<span className="text-red-500">*</span></label>
+      <label className="w-[20%] text-blue-800 font-semibold mb-2">last Name<span className="text-red-500">*</span></label>
  
       <input
-        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[15px] focus:outline-none `}
         type="text"
         required
         value={lastName}
@@ -335,11 +416,11 @@ const handleUserTypeChange = (e) => {
     </div>
     <div className="flex flex-col">
       <div className="w-full flex flex-row">
-      <label className="w-[50%] text-blue-800 font-semibold mb-2">User Role<span className="text-red-500">*</span></label>
+      <label className="w-[25%] text-blue-800 font-semibold mb-2">User Role<span className="text-red-500">*</span></label>
       <select
         id="roles"
         name="roles"
-        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[15px] focus:outline-none `}
         onChange={handleRoleChange}
       >
         <option value="" disabled selected>
@@ -382,10 +463,10 @@ const handleUserTypeChange = (e) => {
    {/* email */}
 <div className="flex flex-col ">
       <div className="w-full flex flex-row">
-      <label className="w-[50%] text-blue-800 font-semibold mb-2 ">Email<span className="text-red-500">*</span></label>
+      <label className="w-[20%] text-blue-800 font-semibold mb-2 ">Email<span className="text-red-500">*</span></label>
 
       <input
-        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[15px] focus:outline-none `}
         type="text"
         required
         value={userEmail}
@@ -398,10 +479,10 @@ const handleUserTypeChange = (e) => {
  
     <div className="flex flex-col">
       <div className="w-full flex flex-row">
-      <label className="w-[50%] text-blue-800 font-semibold mb-2 ">Password<span className="text-red-500">*</span></label>
+      <label className="w-[25%] text-blue-800 font-semibold mb-2 ">Password<span className="text-red-500">*</span></label>
 
       <input
-        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[15px] focus:outline-none `}
         type={showPassword ? 'text' : 'password'}
         value={randomPassword}
         required
@@ -421,17 +502,17 @@ const handleUserTypeChange = (e) => {
     
     </div>
     
-<div className="flex">
-    <div className="w-full flex gap-5 flex-col p-5 ">
+<div className="flex w-full">
+    <div className="w-full flex flex-col gap-5 px-5 ">
     {/* <div className="flex justify-start items-start ">
       <h1 className=" font-semibold text-[20px] text-[#214082]">Login Method</h1>
     </div> */}
-    <div
+    <div className="flex w-[75%]"
             
           >
                       <label className="text-blue-800 font-semibold">Login Method</label>
             <button
-              className={`border-b-2 w-[25%] text-[14px] pl-[10px] ml-[10px] focus:outline-none ${
+              className={`border-b-2 w-[10%] text-[15px] pl-[10px] ml-[10px] focus:outline-none ${
                 preferredLoginMethod === "Email"
                   ? "border-blue-200"
                   : "border-transparent"
@@ -441,6 +522,8 @@ const handleUserTypeChange = (e) => {
             >
               Email
             </button>
+
+           
             {/* <button
               className={`border-b-2 w-[20%] text-[14px] pl-[10px] focus:outline-none ${
                 preferredLoginMethod === "Mobile"
@@ -456,13 +539,15 @@ const handleUserTypeChange = (e) => {
             </button> */}
             {/* <hr className="h-[1px] w-[90px] bg-gray-200"></hr> */}
           </div>
+          <div className="flex justify-between">
 
-          <div className="flex flex-col pl-[100px]">
-      <div className="w-[50%] flex flex-row">
-      <label className="w-[25%] text-blue-800 font-semibold mb-2 ">Email<span className="text-red-500">*</span></label>
+         
+          <div className="flex w-full flex-col">
+      <div className="w-[56%] flex flex-row">
+      <label className="w-[20%] text-blue-800 font-semibold mb-2 ">Email<span className="text-red-500">*</span></label>
 
       <input
-        className={ `  w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+        className={ `  w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[15px] focus:outline-none `}
         type="text"
         required
         value={userEmail}
@@ -470,8 +555,26 @@ const handleUserTypeChange = (e) => {
       />
       </div>
     
-      <hr className={`h-[1px] w-[50%]`} />
+      <hr className={`h-[1px] w-[56%]`} />
     </div>
+    <div className="flex  pr-[50px] ">
+            {/* <button
+            //   onClick={() => setStep(2)}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Edit
+            </button> */}
+            <button
+              onClick={handleSubmit}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Create
+            </button>
+          </div>
+    </div>
+        
     </div>
    
         </div>
@@ -496,24 +599,9 @@ const handleUserTypeChange = (e) => {
     </div>
   </div>
 )}
-    <div className="flex justify-between  p-5 pr-[50px] ">
-            <button
-            //   onClick={() => setStep(2)}
-              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
-
-            >
-              Edit
-            </button>
-            <button
-              onClick={handleSubmit}
-              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
-
-            >
-              Create
-            </button>
-          </div>
+    
           <div className="flex justify-end px-10">
-        <h1 className="text-blue-800 font-semibold"> Settings &gt; Organization &gt; <span onClick={handleexcel} className=" cursor-pointer hover:underline">Bulk user Import</span></h1> 
+        {/* <h1 className="text-blue-800 font-semibold"> Settings &gt; Organization &gt; <span onClick={handleexcel} className=" cursor-pointer hover:underline">Bulk user Import</span></h1>  */}
     </div>
       </div>
       </div>

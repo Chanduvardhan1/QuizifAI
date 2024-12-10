@@ -381,7 +381,14 @@ useEffect(() =>{
 
 //----------------***quiz print end***-----------------
 
+const [username1, setUsername1] = useState("");
 
+useEffect(() => {
+  const storedUsername = localStorage.getItem("username");
+  if (storedUsername) {
+    setUsername1(storedUsername);
+  }
+}, []);
 
 const [currentPage, setCurrentPage] = useState(0);
 const questionsPerPage = 20;
@@ -1192,7 +1199,7 @@ const handleComplexquestions = (event) => {
             <div className="flex items-center">
               {/* <i className="fas fa-user"></i> */}
               <img src={username}  className=" w-[18px] h-[18px] mr-1"/>
-              <span className="ml-1 text-sm">Samantha S</span>
+              <span className="ml-1 text-sm">{username1}</span>
             </div>
             <div className="flex items-center">
               {/* <i className="fas fa-calendar-alt"></i> */}
@@ -1477,7 +1484,7 @@ const handleComplexquestions = (event) => {
       </div>
       </div>
       </div>
-      <div className="w-full flex flex-col">
+      {/* <div className="w-full flex flex-col">
             <div className="w-full flex flex-row">
               <label className=" w-[20%] text-blue-800 font-semibold mb-2">
                 organizations<span className="text-red-500">*</span>
@@ -1500,7 +1507,7 @@ const handleComplexquestions = (event) => {
       )}
             </div>
             <hr className="h-[1px] w-full" />
-          </div>
+          </div> */}
           {/* <div className="flex justify-start md:col-span-2">
             <button
               onClick={() => setStep(1)}

@@ -403,7 +403,15 @@ export default function quiztype() {
    }
  
  //----------------***quiz print end***-----------------
- 
+ const [username1, setUsername1] = useState("");
+
+useEffect(() => {
+  const storedUsername = localStorage.getItem("username");
+  if (storedUsername) {
+    setUsername1(storedUsername);
+  }
+}, []);
+
  const [currentPage, setCurrentPage] = useState(1);
  const questionsPerPage = 20; // Number of questions per page
 
@@ -1545,7 +1553,7 @@ const handleComplexquestions = (event) => {
             <div className="flex items-center">
               {/* <i className="fas fa-user"></i> */}
               <img src={username}  className=" w-[18px] h-[18px] mr-1"/>
-              <span className="ml-1 text-sm">Samantha S</span>
+              <span className="ml-1 text-sm">{username1}</span>
             </div>
             <div className="flex items-center">
               {/* <i className="fas fa-calendar-alt"></i> */}
@@ -1779,7 +1787,7 @@ className="react-switch"
 </div>
 
 </div>
-<div className="w-full flex flex-col">
+{/* <div className="w-full flex flex-col">
             <div className="w-full flex flex-row">
               <label className=" w-[20%] text-blue-800 font-semibold mb-2">
               organizations<span className="text-red-500">*</span>
@@ -1802,7 +1810,7 @@ className="react-switch"
       )}
             </div>
             <hr className="h-[1px] w-full" />
-          </div>
+          </div> */}
           {/* <div className="flex justify-start md:col-span-2">
             <button
               onClick={() => setStep(1)}

@@ -270,6 +270,15 @@ export default function quiztype() {
 
   // Handle the upload of front or back image
 
+  const [username1, setUsername1] = useState("");
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername1(storedUsername);
+    }
+  }, []);
+
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 
   const handleCheckboxChange = () => {
@@ -291,6 +300,7 @@ export default function quiztype() {
   const handlePrevious = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
+  const orgId = localStorage.getItem('org_id');
 
 //-------------****print quiz****-----------//
 const pdfRef1 = useRef(null);
@@ -812,7 +822,7 @@ const handleToLayout4 = () =>{
           quiz_total_marks: quiztotalmarks,
           user_id: user_id,
           quiz_instructions: instructions,
-          org_id: selectedOrg,
+          org_id: orgId,
           questions: questions.map((question) => ({
             question_text: question.question_text,
             question_weightage: calculateWeightage(numQuestions, quiztotalmarks),
@@ -1121,7 +1131,7 @@ const handleToLayout4 = () =>{
             <div className="flex items-center">
               {/* <i className="fas fa-user"></i> */}
               <img src={username}  className=" w-[18px] h-[18px] mr-1"/>
-              <span className="ml-1 text-sm">Samantha S</span>
+              <span className="ml-1 text-sm">{username1}</span>
             </div>
             <div className="flex items-center">
               {/* <i className="fas fa-calendar-alt"></i> */}
@@ -1434,7 +1444,7 @@ const handleToLayout4 = () =>{
 
 
   
-<div className="w-full flex flex-col">
+{/* <div className="w-full flex flex-col">
             <div className="w-full flex flex-row">
               <label className=" w-[20%] text-blue-800 font-semibold mb-2">
                 organizations<span className="text-red-500">*</span>
@@ -1457,7 +1467,7 @@ const handleToLayout4 = () =>{
       )}
             </div>
             <hr className="h-[1px] w-full" />
-          </div>
+          </div> */}
 
           {/* <div className="flex justify-start md:col-span-2">
             <button

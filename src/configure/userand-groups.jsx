@@ -23,6 +23,8 @@ import cancel from "../assets/Images/images/dashboard/cancel.png";
 import Plus from "../../src/assets/Images/dashboard/Plus.png";
 import Edit from "../../src/assets/Images/Assets/Edit.png";
 import searchIcon from "../assets/Images/images/dashboard/Search.png";
+import defaultPhoto from '../../src/assets/Images/dashboard/narmtech.jpg'
+
 // import Delete from "../../src/assets/Images/Assets/Delete.png";
 // import Line from "../../src/assets/Images/Assets/Line.png";
 
@@ -60,6 +62,14 @@ const UserAndGroups = () => {
   const userRole = localStorage.getItem("user_role");
   const orgId = localStorage.getItem('org_id');
 
+  const [username1, setUsername1] = useState("");
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername1(storedUsername);
+    }
+  }, []);
   // const [orgId, setOrgId] = useState('');
   const [userId1, setUserId1] = useState('');
   const [orgName, setOrgName] = useState('');
@@ -106,6 +116,50 @@ const [userTypes, setUserTypes] = useState([]);
     // Here you can send the `userTypeId` to the backend or perform other actions
   };
 // user type end//
+
+// --------------***view image*** -------------- //
+const [photo, setPhoto] = useState(''); // State to store the image URL
+const [loading, setLoading] = useState(true); 
+const [error, setError] = useState(null);
+
+      const fetchProfileImage = async () => {
+        try {
+          const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
+                if (!authToken) {
+                  console.error("No authentication token found. Please log in again.");
+                  return;
+                }
+          const response = await fetch(`https://dev.quizifai.com:8010/view-profile_image?user_id=${userId}`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              'accept': 'application/json',
+            },
+          });
+      
+          if (response.ok) {
+            const data = await response.json();
+            if (data.response === 'success') {
+              setPhoto(data.data); // Set the image URL from the response
+            } else {
+              setPhoto(defaultPhoto);
+            }
+          } else {
+            setPhoto(defaultPhoto);
+            // setError('Failed to fetch image');
+          }
+        } catch (error) {
+          setPhoto(defaultPhoto);
+          // setError('Error fetching image: ' + error.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      useEffect(() => {
+        fetchProfileImage();
+      }, []);
+// --------------***view image end*** -------------- //
 
 
 // Randompassword generate //
@@ -751,7 +805,43 @@ const handleSubmit1 = async (e) => {
       <div className="flex w-full font-Poppins">
         <Navigation />
         <div className="flex w-full flex-col">
-          <div className="flex justify-end mt-[30px]">
+        { userRole === "Admin" && (
+        <div className="flex justify-center p-[5px] text-[24px]">
+            <h1 className="text-[#F17530] font-bold">Create Group</h1>
+          </div>
+        )}
+                { userRole === "Super Admin" && (
+
+          <div className="flex justify-center p-[5px] text-[24px]">
+            <h1 className="text-[#F17530] font-bold">Create Organization</h1>
+          </div>
+                )}
+        <div className="flex justify-between items-center mx-[20px] pt-2">
+          <div className="flex gap-2 justify-center items-center">
+                <div
+                  className="rounded-full w-[80px]  h-[80px]"
+
+                >
+                 
+                    <img
+                      className="w-[80px] h-[80px] rounded-2xl"
+                      src={photo}
+                      alt="Default"
+                    />
+                
+                </div>
+
+                <div className=" font-bold text-[#214082]">
+                  <span className="text-[15px]">Welcome </span>
+                  <span className="text-[15px]">
+                    {username1.charAt(0).toUpperCase() + username1.slice(1)}
+                  </span>
+                  <br />
+                  <span className="text-[15px]">User id : </span>
+                  <span className=" font-normal text-[12px]">{userId}</span>
+                </div>
+                </div>
+                <div className="flex items-center">
             <div className="w-[118px] h-[30px] rounded-[10px] bg-[#F7E0E3] mr-[10px]">
               <div className="flex" onClick={toggleNavbar}>
                 <img
@@ -766,13 +856,17 @@ const handleSubmit1 = async (e) => {
             </div>
             <img
               onClick={handleBanckToDashbaord}
-              className="h-4 w-4 cursor-pointer mt-[6px] mr-6"
+              className="h-4 w-4 cursor-pointer"
               title="close settings"
               src={cancel}
             />
           </div>
+            
+
+              </div>
+        
           {isNavbarOpen && (
-            <div className="text-[14px] mx-[10px] text-[#214082] h-[50px] mt-[30px] rounded-md bg-[#CBF2FB] flex flex-row justify-around p-4">
+            <div className="text-[14px] mx-[20px] pl-4 p-2 mt-[30px] items-center rounded-md bg-[#DCFCE7] flex flex-row justify-between font-bold text-[#214082]">
         {/* {Organizationid &&(
  <input
  type="text"
@@ -803,26 +897,30 @@ const handleSubmit1 = async (e) => {
                 <p className="pl-1">Is an organization</p>
               </div>
                           )}
+              <div className="flex items-center justify-center">
               <input
                 type="text"
                 placeholder="Group Name"
                 value={groupName}
                 onChange={(e) => setGroupName(e.target.value)}
-                className="w-[120px] rounded-sm  text-left pl-3 -mt-[5px]  py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
+                className="w-[120px] rounded-sm  text-left pl-3 border-[#486ec0] border-[1px] py-[8px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
               />
+              </div>
+              <div className="flex items-center justify-center">
+
               <input
                 type="text"
                 placeholder="Group Description"
                 value={groupDescription}
                 onChange={(e) => setGroupDescription(e.target.value)}
-                className=" w-[200px] rounded-sm text-left pl-3 px-5 -mt-[5px]  py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
+                className=" w-[200px] rounded-sm text-left pl-3 px-5 border-[1px]  py-[8px] text-[#214082] border-[#486ec0] placeholder:text-[#214082] outline-[#214082]"
               />
-
+</div>
 {isOrganization ? (
    
-   <div>
+   <div className="flex items-center justify-center">
        <select
-className="w-[200px] text-[#214082] -mt-[10px] rounded-sm p-[8px]"
+className="w-[200px] text-[#214082] border-[#486ec0] border-[1px] p-[8px]"
 placeholder="Select User"
 value={selectedUser2}
 onChange={handleSelectChange2}
@@ -841,9 +939,9 @@ onChange={handleSelectChange2}
 
  </div>
 ):(
- <div>
+ <div className="flex items-center justify-center">
 <select
-  className="w-[200px] text-[#214082] -mt-[10px] rounded-sm p-[8px]"
+  className="w-[200px] text-[#214082] border-[#486ec0] border-[1px] p-[8px]"
 placeholder="Select User"
 value={selectedUser}
 onChange={handleSelectChange}
@@ -879,7 +977,7 @@ onChange={handleSelectChange}
 
 ):(
   <Select
-  className="w-[200px] text-[#214082] -mt-[10px] rounded-sm"
+  className="w-[200px] text-[#214082] rounded-sm"
   isMulti
   value={options.filter(option => selectedUserIds.includes(option.value))}
   onChange={handleChange}
@@ -887,19 +985,48 @@ onChange={handleSelectChange}
   closeMenuOnSelect={false} // Keeps dropdown open after each selection
   placeholder="Select User"
   hideSelectedOptions={false} // Shows selected options with a checkbox
+  styles={{
+    control: (provided, state) => ({
+      ...provided,
+      border: state.isFocused ? "2px solid #486ec0" : "1px solid #486ec0", // Border on focus and normal
+      borderRadius: "4px", // Rounded corners
+      boxShadow: state.isFocused ? "#486ec0" : "none", // Subtle shadow on focus
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: "#214082", // Change placeholder color
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected ? "#486ec0" : state.isFocused ? "#dce4f5" : "white", // Highlight for selected/focused options
+      color: state.isSelected ? "white" : "#214082",
+    }),
+    dropdownIndicator: (provided, state) => ({
+      ...provided,
+      color: "#214082", // Change arrow color
+      transform: state.selectProps.menuIsOpen ? "rotate(180deg)" : "none", // Optional: rotate arrow on open
+      transition: "transform 0.2s", // Smooth transition for arrow rotation
+    }),
+    menu: (provided) => ({
+      ...provided,
+      border: "1px solid #486ec0", // Border around the dropdown menu
+      borderRadius: "4px", // Rounded corners
+    }),
+  }}
 />
+
 )}
     {isOrganization ? (
   <button
   onClick={handleSubmit1}
-  className="bg-[#214082] w-[80px] -mt-[10px] ml-[20px] py-[14px] rounded-3xl text-white flex items-center justify-center"
+  className="w-[50px] h-[25px] rounded-full bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center"
 >
     Add
 </button>
     ):(
       <button
       onClick={handleSubmit}
-      className="bg-[#214082] w-[80px] -mt-[10px] ml-[20px] py-[14px] rounded-3xl text-white flex items-center justify-center"
+      className="w-[50px] h-[30px] rounded-full bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center"
     >
     {isEditing ? "Update" : "Add"}
     </button>
@@ -1368,43 +1495,46 @@ onChange={handleSelectChange}
             </button> */}
         
   
-          <table className="h-[20px] table-auto mt-[30px] mx-[20px] rounded text-left bg-[#F7E0E3] text-[#2b51a1] text-[13px] font-light">
+          <table className="h-[20px] table-auto mt-[30px] mx-[20px] rounded text-left bg-[#CBF2FB] text-[#2b51a1] border-gray-200 text-[14px] font-bold">
             <thead>
-              <tr className="h-[50px]">
-                <th className="px-4 py-2 text-nowrap">Group Id</th>
+              <tr className="h-[50px] text-center border-b">
+                <th className="px-4 py-2 text-nowrap">Group ID</th>
                 <th className="pl-[10px] ml-[15px] py-2">Group Name</th>
-                <th className="px-4 py-2 text-nowrap">Group Description</th>
-                <th className="px-4 py-2 text-nowrap">Flag</th>
-                <th className="px-2 py-2 text-nowrap">Users List</th>
-                <div className="flex -mt-[5px]">
+                <th className="px-4 py-2 text-nowrap">Org ID</th>
+                <th className="px-4 py-2 text-nowrap">Org Flag</th>
+                <th className="px-4 py-2 text-nowrap">Group Flag</th>
+                {/* <th className="px-2 py-2 text-nowrap">Users List</th> */}
+                <th className="flex px-2 py-2 text-nowrap">
                   <input
-                    className="mt-[15px] text-[10px] pl-[30px] pr-[10px] rounded-[20px] h-[28px] mr-[10px] w-fit bg-[#FFFFFF] text-left placeholder-[#214082] border-none focus:border-none outline-none"
+                    className="text-[10px] pl-[30px] pr-[10px] border-[#486ec0] border-[1px] h-[28px] w-fit bg-[#FFFFFF] text-left placeholder-[#214082] "
                     type="text"
                     placeholder="Search"
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
                   />
                   <img
-                    className="h-[12px] w-[12px] relative top-[25px] right-[160px]"
+                    className="h-[12px] w-[12px] relative top-[10px] right-[145px]"
                     src={searchIcon}
                   />
-                </div>
+                </th>
               </tr>
             </thead>
-            <tbody className="bg-white border-gray-500 ">
+            <tbody className="bg-white border border-b border-gray-200">
               {filteredGroups.map((group) => (
-                <tr key={group.group_id}>
-                  <td className="px-4 py-2 border text-[#214082] font-bold text-[10px] text-center">
+                <tr key={group.group_id}
+                className="bg-white hover:bg-gray-100 active:bg-green-200 text-[12px]"
+>
+                  <td className="px-4 py-2 border-b text-[#214082] font-semibold text-[14px] text-center">
                     {highlightText(group.group_id.toString(), searchInput)}
                   </td>
 
-                  <td className="px-4 py-2 border text-[#214082] font-medium text-[10px]">
+                  <td className="px-4 py-2 border-b text-[#214082] font-semiboldtext-[14px]">
                     {highlightText(group.group_name, searchInput)}
                   </td>
 
-                  <td className="px-4 py-2 border text-[#214082] font-medium text-[10px] w-[200px]">
+                  <td className="px-4 py-2 border-b text-[#214082] font-semibold text-[14px] w-[200px]">
                     <span className="relative group">
-                      <span className="text-[10px] text-[#002366] absolute w-[170px] cursor-pointer z-0 truncate">
+                      <span className="text-[14px] text-[#002366] absolute w-[170px] cursor-pointer z-0 truncate">
                       {highlightText(group.group_description, searchInput)
                      .toLowerCase()
                      .replace(/^\w/, (c) => c.toUpperCase())}
@@ -1417,16 +1547,16 @@ onChange={handleSelectChange}
                     </span>
                   </td>
 
-                  <td className="px-4 py-2 border text-[#214082] font-medium text-[10px] text-center">
+                  <td className="px-4 py-2 border-b text-[#214082] font-semibold text-[14px] text-center">
                     {highlightText(
                       group.active_flag ? "Active" : "Inactive",
                       searchInput
                     )}
                   </td>
 
-  <td className="px-4 py-2 border text-[#214082] font-medium text-[10px] w-[200px]">
+  <td className="px-4 py-2 border-b text-[#214082] font-semibold text-[14px] w-[200px]">
   <span className="relative group">
-    <span className="text-[10px] text-[#002366] absolute w-[170px] cursor-pointer z-0 truncate">
+    <span className="text-[14px] text-[#002366] absolute w-[170px] cursor-pointer z-0 truncate">
       {filteredUsers
         .filter((user) => group.user_ids.includes(user.user_id))
         .map((user) => user.user_name)
@@ -1441,7 +1571,7 @@ onChange={handleSelectChange}
   </span>
 </td>
                   
-                  <td className="h-full border text-[#214082] flex gap-2 pl-[40px] pt-2 text-[12px] cursor-pointer hover:font-medium hover:underline">
+                  <td className="h-full border-b text-[#214082] flex gap-2 pl-[40px] pt-2 text-[12px] cursor-pointer hover:font-medium hover:underline">
                     <img
                       className="h-[13px] w-[13px] mr-1 cursor-pointer"
                       src={Edit}

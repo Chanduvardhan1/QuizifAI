@@ -394,6 +394,15 @@ useEffect(() =>{
 //----------------***quiz print end***-----------------
 
 
+const [username1, setUsername1] = useState("");
+
+useEffect(() => {
+  const storedUsername = localStorage.getItem("username");
+  if (storedUsername) {
+    setUsername1(storedUsername);
+  }
+}, []);
+
   const [currentPage, setCurrentPage] = useState(1);
   const questionsPerPage = 20; // Number of questions per page
 
@@ -1505,7 +1514,6 @@ const [activeTab, setActiveTab] = useState('Manual');
 const handleTabClick = (tab) => {
   setActiveTab(tab);
 };
-// const instructions = 'Carefully read each question before selecting your answer. Answer all questions, even if you are not sure. If available, use the skip or review feature to mark questions you want to revisit later. Make sure to submit your answers before the timer ends. Quizzes may auto-submit, but it is best to double-check.'
   return (
     <>
     <div className="flex flex-row w-full bg-[#f5f5f5] ">
@@ -1527,9 +1535,7 @@ const handleTabClick = (tab) => {
       </button>
       <button
         onClick={() => handleTabClick('Excel')}
-        className={`w-full px-4 py-2 ${
-          activeTab === 'Excel' ? 'bg-gray-100 text-[#214082] rounded-t-lg' : 'bg-[#F7CEE2] text-[#214082] rounded-lg'
-        }`}
+        className={`w-full px-4 py-2 ${ activeTab === 'Excel' ? 'bg-gray-100 text-[#214082] rounded-t-lg' : 'bg-[#F7CEE2] text-[#214082] rounded-lg'}`}
       >
         Generate your own quiz by importing Excel
       </button>
@@ -1571,11 +1577,7 @@ const handleTabClick = (tab) => {
       </h1>
     </div> */}
 <div className="flex w-full h-[15%] border-[#d9afc4] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-2 bg-white ">
-      {/* <img
-        src={physics}
-        alt="Quiz Cover"
-        className="w-32 h-44 rounded-md mr-4"
-      /> */}
+     
           <div className="relative mr-2">
           <img
   src={isFlipped ? (backImage ? URL.createObjectURL(backImage) : back): (frontImage ? URL.createObjectURL(frontImage) : physics)
@@ -1644,7 +1646,7 @@ const handleTabClick = (tab) => {
             <div className="flex items-center">
               {/* <i className="fas fa-user"></i> */}
               <img src={username}  className=" w-[18px] h-[18px] mr-1"/>
-              <span className="ml-1 text-sm">Samantha S</span>
+              <span className="ml-1 text-sm">{username1}</span>
             </div>
             <div className="flex items-center">
               {/* <i className="fas fa-calendar-alt"></i> */}
@@ -1880,7 +1882,7 @@ const handleTabClick = (tab) => {
       </div>
      
       </div>
-      <div className="w-full flex flex-col">
+      {/* <div className="w-full flex flex-col">
             <div className="w-full flex flex-row">
               <label className=" w-[20%] text-blue-800 font-semibold mb-2">
                 organizations<span className="text-red-500">*</span>
@@ -1903,7 +1905,7 @@ const handleTabClick = (tab) => {
       )}
             </div>
             <hr className="h-[1px] w-full" />
-          </div>
+          </div> */}
           {/* <div className="flex justify-start md:col-span-2">
             <button
               onClick={() => setStep(1)}

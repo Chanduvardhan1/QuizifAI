@@ -99,8 +99,7 @@ import Leaderboardall from "./leaderboardall/leaderboardall.jsx";
 import Institution from "./leaderboardall/institution.jsx";
 import Userslist from "./configure/userslist.jsx";
 // import Resetpassword from "./reset-password/restpassword.jsx";
-
-
+import QuizAccess1 from "./quizaccess1/quizaccess1.jsx";
 export default () => {
     return [
         {
@@ -174,6 +173,12 @@ export default () => {
             path:'signup',
             component:Signup
         },
+        {
+            path:'quizAccess1',
+            component:QuizAccess1,
+            isPrivate: true
+        },
+        
         {
             path:'login',
             component: Login

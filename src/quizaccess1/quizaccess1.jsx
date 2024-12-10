@@ -36,6 +36,7 @@ const quizAccess1 = () => {
                 <img src={closeimage} alt="" className="w-[20px] h-[20px]" />
             </div>
     </div>
+    {quizData && (
 <div className="flex w-[90%] border-[#8cd18e] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-2 bg-white">
       {/* Quiz Image */}
       <div className="relative mr-2">
@@ -175,6 +176,7 @@ const quizAccess1 = () => {
         </div>
       </div>
     </div>
+     )}
     <div className="flex py-4 text-[#F17530] text-[16px] font-bold">
         <p >Read the below instructions before starting the quiz</p>
     </div>

@@ -2104,19 +2104,7 @@ const handleToLayout4 = () =>{
 
                 )}
               </div>
-              <div className="my-2 pl-[25px] pr-[8px]">
-              <input
-                  type="text"
-                  placeholder={`correct answer description`}
-                  className="w-[80%] h-[40px] text-[#214082] font-bold rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] p-[10px] text-[14px]"
-                  value={question.correct_answer_description}
-                  onChange={(e) => {
-                    const newQuestions = [...questions];
-                    newQuestions[questionIndex].correct_answer_description = e.target.value;
-                    setQuestions(newQuestions);
-                  }}
-                />
-              </div>
+       
              
               {/* Input fields for options */}
               {question.options.map((option, optionIndex) => (
@@ -2152,6 +2140,20 @@ const handleToLayout4 = () =>{
                   </button>
                 </div>
               ))}
+
+<div className="my-2 pl-[50px]">
+              <input
+                  type="text"
+                  placeholder={`Answer Description`}
+                  className="w-[73%] h-[40px] text-[#214082] font-bold rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] p-[10px] text-[14px]"
+                  value={question.correct_answer_description}
+                  onChange={(e) => {
+                    const newQuestions = [...questions];
+                    newQuestions[questionIndex].correct_answer_description = e.target.value;
+                    setQuestions(newQuestions);
+                  }}
+                />
+              </div>
             </div>
              );
             })}

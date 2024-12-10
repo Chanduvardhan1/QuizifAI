@@ -979,7 +979,7 @@ const QuizQuestions = () => {
   <div className={styles.buttonsContainer} style={{ display: "flex", justifyContent: "space-between", width: "200px" }}>
   {currentQuestionIndex > 0 ? (
     <div>
-      <button
+      {/* <button
         className={styles.button}
         style={{
           color: "#FFFFFF",
@@ -994,33 +994,51 @@ const QuizQuestions = () => {
         disabled={currentQuestionIndex === 0}
       >
         Previous
-      </button>
+      </button> */}
+      <div 
+      onClick={handlePreviousQuestion}
+      disabled={currentQuestionIndex === 0}
+       className="flex items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px]"
+      >
+          <p>Previous</p>
+          <img src={Playbutton} alt="" className="w-[20px] h-[20px]" />
+      </div>
     </div>
   ) : (
     <div style={{ width: "97px" }}></div> // Placeholder div to keep space
   )}
 
   <div>
-    {quizData?.questions?.length - 1 !== currentQuestionIndex && <button
-      className="text-[13px] cursor-pointer rounded-md font-medium"
-      style={{
-        backgroundColor: "#8453FC",
-        height: "29px",
-        borderRadius: "10px",
-        width: "97px",
-        border: "none",
-        color: "#FFFFFF",
-        marginLeft: "410px",
-      }}
+    {quizData?.questions?.length - 1 !== currentQuestionIndex && 
+    // <button
+    //   className="text-[13px] cursor-pointer rounded-md font-medium"
+    //   style={{
+    //     backgroundColor: "#8453FC",
+    //     height: "29px",
+    //     borderRadius: "10px",
+    //     width: "97px",
+    //     border: "none",
+    //     color: "#FFFFFF",
+    //     marginLeft: "410px",
+    //   }}
+    //   onClick={handleNextQuestion}
+    //   disabled={currentQuestionIndex === filteredQuizData.length - 1}
+    // >
+    //   Next 
+    // </button>
+      <div 
       onClick={handleNextQuestion}
       disabled={currentQuestionIndex === filteredQuizData.length - 1}
-    >
-      Next 
-    </button>}
+       className="flex items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px]"
+      >
+          <p>Next</p>
+          <img src={Playbutton} alt="" className="w-[20px] h-[20px]" />
+      </div>
+    }
   </div>
 </div>
           <div className={styles.button3}>
-            <button
+            {/* <button
               className={styles.button}
               style={{
                 marginTop: "-39px",
@@ -1036,7 +1054,14 @@ const QuizQuestions = () => {
               onClick={handleSubmit}
             >
               Submit 
-            </button>
+            </button> */}
+            <div 
+                   onClick={handleSubmit}
+       className="flex items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px]"
+      >
+          <p>Submit</p>
+          <img src={Playbutton} alt="" className="w-[20px] h-[20px]" />
+      </div>
           </div>
         </div>
      

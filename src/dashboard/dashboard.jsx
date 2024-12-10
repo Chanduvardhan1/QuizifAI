@@ -52,7 +52,7 @@ import Attemts from "../../src/assets/Images/dashboard/Attemts.png"
 import view1 from "../../src/assets/Images/dashboard/view1.png"
 import leader from "../../src/assets/Images/dashboard/Leader.png"
 import print1 from "../../src/assets/Images/dashboard/print.png"
-import back from "../../src/assets/Images/quiz-type/Q back image.webp"
+import back from "../../src/assets/Images/dashboard/quiz12.png"
 
 const Dashboard = () => {
   const getFormattedDate = () => {
@@ -681,7 +681,7 @@ const Dashboard = () => {
                         //    : "#55505026"`} flex flex-row w-full max-w-[400px] h-[170px] border-[#1E90FF] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4`}>
                         <div  
                         className={`${
-                          quizItem.attempts_count < quizItem.retake_flag ? "border-[#dd6a79] border-[1px] border-b-[8px]" : "border-[#55505026] border-[1px] border-b-[8px]"
+                          quizItem.attempts_count < quizItem.retake_flag ? "border-[#fba0e3] border-[1px] border-b-[8px]" : "border-[#81c784] border-[1px] border-b-[8px]"
                         } flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4 gap-[5px]`}
                       >
                         {/* Image Section */}
@@ -727,7 +727,7 @@ const Dashboard = () => {
                             {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                               Physics,Physics,Physics,Physics
                             </span> */}
-                            {userRole === "Quiz Master" && (
+                            {(userRole === "Quiz Master" || userRole === "Super Admin") && (
                             <img src={more} alt="" onClick={toggleOptions} className=" w-[12px] h-[12px] hover:bg-gray-200   hover:rounded-full" />
                             )}
                             {cardStates[index]  && (
@@ -751,7 +751,7 @@ const Dashboard = () => {
                                     Start
                                   </span>
                                 </div> */}
-                                {userRole === "Quiz Master" && (
+                                {(userRole === "Quiz Master" || userRole === "Super Admin")&& (
                                   <div className="flex items-center ">
                                     <img
                                       className="w-2 h-2 mr-1"
@@ -766,7 +766,7 @@ const Dashboard = () => {
                                     </span>
                                   </div>
                                 )}
-                                {userRole === "Quiz Master" && (
+                                {(userRole === "Quiz Master" || userRole === "Super Admin") && (
   <div className="flex items-center">
     <img
     onClick={() => handleDeleteClick(quizItem.quiz_id)}
@@ -1359,7 +1359,7 @@ const Dashboard = () => {
                     //   </div>
                   ) : (
                     <div  onClick={() => handleStartQuiz(quizItem.quiz_id) }
-className={`flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4 border-[#1E90FF] border-[1px] border-b-[8px] gap-[5px]`}
+className={`flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4 border-[#84acfa] border-[1px] border-b-[8px] gap-[5px]`}
 >
 {/* Image Section */}
 <div       className="w-[140px] h-[127px]  rounded-md  mr-2"
@@ -1383,7 +1383,10 @@ src={quizItem.photo1 || back}
  {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
    Physics,Physics,Physics,Physics
  </span> */}
- <img src={more} alt="" onClick={toggleOptions} className=" w-[12px] h-[12px] hover:bg-gray-200   hover:rounded-full" />
+ {(userRole === "Quiz Master" || userRole === "Super Admin") &&  (
+  <img src={more} alt="" onClick={toggleOptions} className=" w-[12px] h-[12px] hover:bg-gray-200   hover:rounded-full" />
+
+ )}
  {cardStates[index]  && (
    <div
      className="absolute rounded-md w-[150px]  flex flex-col p-1 bg-gray-200 mt-[43px] ml-[115px]"
@@ -1405,7 +1408,7 @@ src={quizItem.photo1 || back}
          Start
        </span>
      </div> */}
-     {userRole === "Quiz Master" && (
+     {(userRole === "Quiz Master" || userRole === "Super Admin") && (
        <div className="flex items-center ">
          <img
            className="w-2 h-2 mr-1"
@@ -1420,7 +1423,7 @@ src={quizItem.photo1 || back}
          </span>
        </div>
      )}
-       {userRole === "Quiz Master" && (
+       {(userRole === "Quiz Master" || userRole === "Super Admin")  (
   <div className="flex items-center">
     <img
     onClick={() => handleDeleteClick(quizItem.quiz_id)}
@@ -1505,7 +1508,7 @@ src={quizItem.photo1 || back}
          Leaderboard
        </span>
      </div> */}
-     {userRole === "Quiz Master" && (
+     {(userRole === "Quiz Master" || userRole === "Super Admin")  && (
 <div className="flex flex-col items-center">
 <img
 className="w-6 h-6 mb-2 cursor-pointer"
@@ -2040,7 +2043,7 @@ Cancel
                     <div className="" >
                        <div
                         className={`${
-                          quizItem.attempts_count < quizItem.retake_flag ? "border-[#dd6a79] border-[1px] border-b-[8px]" : "border-[#55505026] border-[1px] border-b-[8px]"
+                          quizItem.attempts_count < quizItem.retake_flag ? "border-[#fba0e3] border-[1px] border-b-[8px]" : "border-[#81c784] border-[1px] border-b-[8px]"
                         } flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4 gap-[5px]`}
                       >
                         {/* Image Section */}
@@ -2078,7 +2081,7 @@ Cancel
                             {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                               Physics,Physics,Physics,Physics
                             </span> */}
-                             {userRole === "Quiz Master" && (
+                             {(userRole === "Quiz Master" || userRole === "Super Admin")  && (
                               
                             <img src={more} alt="" onClick={() => toggleNavbar(index)} className=" w-[12px] h-[12px] hover:bg-gray-200 z-10 hover:rounded-full" />
                           )}
@@ -2109,7 +2112,7 @@ Cancel
                                     Retake
                                   </span>
                                 </div> */}
-                                {userRole === "Quiz Master" && (
+                                {(userRole === "Quiz Master" || userRole === "Super Admin")  && (
                                   <div className="flex items-center ">
                                     <img
                                       className="w-2 h-2 mr-1"
@@ -2124,7 +2127,7 @@ Cancel
                                     </span>
                                   </div>
                                 )}
-                                {userRole === "Quiz Master" && (
+                                {(userRole === "Quiz Master" || userRole === "Super Admin")  && (
   <div className="flex items-center">
     <img
     onClick={() => handleDeleteClick(quizItem.quiz_id)}
@@ -2210,7 +2213,7 @@ Cancel
                                     Leaderboard
                                   </span>
                                 </div> */}
-                                {userRole === "Quiz Master" && (
+                                {(userRole === "Quiz Master" || userRole === "Super Admin") && (
   <div className="flex  items-center">
     <img
     onClick={() => handleDisableClick(quizItem.quiz_id)}
@@ -2649,7 +2652,7 @@ Cancel
                     <>
                       <div className="" >
                       <div 
-className={`flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4 border-[#1E90FF] border-[1px] border-b-[8px] gap-[5px]`}
+className={`flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4 border-[#84acfa] border-[1px] border-b-[8px] gap-[5px]`}
 >
 {/* Image Section */}
 <div       className="w-[140px] h-[127px]  rounded-md  mr-2"

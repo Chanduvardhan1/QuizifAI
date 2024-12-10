@@ -202,6 +202,7 @@ export default function quiztype() {
   const [minutes, setMinutes] = useState("");
   const [availablefrom, setavailablefrom] = useState("");
   const [disabledon, setdisabledon] = useState("");
+  const [correctanswerdescription, setcorrectanswerdescription] = useState("");
 
   const [publicAccess, setPublicAccess] = useState("Public");
   const [errorMessage, setErrorMessage] = useState("");
@@ -229,6 +230,7 @@ export default function quiztype() {
   const [questions, setQuestions] = useState(
     Array.from({ length: numQuestions }, () => ({
       question_text: "",
+      correct_answer_description: "",
       options: [
         { answer_option_text: "" },
         { answer_option_text: "" },
@@ -758,7 +760,15 @@ const handleToLayout4 = () =>{
     }));
     setQuestions(newQuestions);
   };
-
+  const handleDescriptionChange = (index, value) => {
+    setQuestions((prevQuestions) =>
+      prevQuestions.map((question, i) =>
+        i === index
+          ? { ...question, correct_answer_description: value }
+          : question
+      )
+    );
+  };
   // const handleNext = async () => {
   //   // const id = responseData.data.quid_id;
   //   dispatch(getUploadImage(2345678));
@@ -825,6 +835,7 @@ const handleToLayout4 = () =>{
           org_id: orgId,
           questions: questions.map((question) => ({
             question_text: question.question_text,
+            correct_answer_description:question.correct_answer_description,
             question_weightage: calculateWeightage(numQuestions, quiztotalmarks),
             multi_answer_flag: multiAnswer,
             question_duration: questionDuration,
@@ -2093,6 +2104,20 @@ const handleToLayout4 = () =>{
 
                 )}
               </div>
+              <div className="my-2 pl-[25px] pr-[8px]">
+              <input
+                  type="text"
+                  placeholder={`correct answer description`}
+                  className="w-[80%] h-[40px] text-[#214082] font-bold rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] p-[10px] text-[14px]"
+                  value={question.correct_answer_description}
+                  onChange={(e) => {
+                    const newQuestions = [...questions];
+                    newQuestions[questionIndex].correct_answer_description = e.target.value;
+                    setQuestions(newQuestions);
+                  }}
+                />
+              </div>
+             
               {/* Input fields for options */}
               {question.options.map((option, optionIndex) => (
                 <div key={optionIndex} className="flex items-center mb-2 ">

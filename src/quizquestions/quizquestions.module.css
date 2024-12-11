@@ -194,6 +194,7 @@ padding-top: 10px;
 .Totaltimer{
     /* width: 400px; */
     padding: 5px;
+    padding-top: 40px;
 }
 .sentence1{
     font-family: Poppins;
@@ -461,5 +462,5 @@ margin-left: -130px;
 {
   display: flex;
   justify-content: end;
-  margin-left: 100px;
+  margin-left: 25px;
 }

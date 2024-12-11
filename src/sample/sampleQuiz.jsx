@@ -35,6 +35,9 @@ import editicon from "../../src/assets/Images/quiz-type/edit.png"
 import Playbutton from "../../src/assets/Images/quiz-type/image.png"
 import closeimage from "../../public/closeimage.png";
 import stars from "../../src/assets/Images/quiz-type/star.png"
+import print1 from "../../src/assets/Images/dashboard/print.png"
+import trophy from "../../src/assets/Images/dashboard/trophy.png"
+
 const performers = [
   { id: 1, name: "Ram M Reddy", attempts: 2, score: "94.34 %", duration: "01:03:30", version: "03", date: "03-Sep-2024" },
   { id: 2, name: "Samantha S", attempts: 8, score: "89.14 %", duration: "04:03:30", version: "03", date: "01-Sep-2024" },
@@ -116,11 +119,11 @@ const Samplequiz = () => {
             </div>
             <div className="flex gap-3">
                 <div className="flex gap-2">
-                <img src={timer}
+                <img src={trophy}
                  alt="" 
                 className="w-[18px] h-[18px] "   
                    />
-                <img src={timer}
+                <img src={print1}
                  alt="" 
                 className="w-[18px] h-[18px] "  />
                 </div>
@@ -235,23 +238,25 @@ const Samplequiz = () => {
         </div>
       </div>
     </div>
-    <div className='flex w-full' >
-    <div class="w-[50%] text-center mt-4">
-  <div class="">
-    <div class="flex items-center justify-center">
-      <span class="inline-block h-[1px] bg-blue-900 w-[80px] mr-[5px]"></span>
-      <label class="text-[#d98b19] font-lato text-[18px] font-semibold">Your Attempt Details</label>
-      <span class="inline-block h-[1px] bg-blue-900 w-[80px] ml-[5px]"></span>
+    <div class="">
+    <div class="flex items-center justify-center px-[10px] mt-2">
+      <span class="inline-block h-[1px] bg-blue-900 w-full mr-[5px]"></span>
+      <label class="text-[#d98b19] font-lato text-[18px] font-semibold flex justify-center w-[500px]">Your Attempt Details</label>
+      <span class="inline-block h-[1px] bg-blue-900 w-full ml-[5px]"></span>
     </div>
   </div>
+    <div className='flex w-full' >
+  
+      <div className=' w-full'>
+      <SampleAnswerBoard q={randomQuestions} />
 
-  <div class="relative flex justify-center flex-col items-center">
-    <label class="absolute top-[40%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 text-[50px] text-blue-900 font-bold font-lato">{rank}</label>
-    <img class="h-[108.62px] w-[130.01px] flex justify-center" src={rankimage} alt="Icon 1" />
-    <span class="text-blue-900 font-medium font-lato text-[17px]">Your Rank</span>
-  </div>
+      </div>
+    <div class="w-[50%] text-center mt-4">
 
-  <div class="w-full flex items-center">
+
+ 
+
+  <div class="w-full flex items-end">
   <div class="w-full flex justify-center items-center flex-col gap-4 sm:w-[50%]">
   <div class="w-[210px] h-[7vh] flex items-center">
     <img class="h-[30px] w-[30px]" src={dateIcon} alt="Calendar Icon" />
@@ -270,17 +275,26 @@ const Samplequiz = () => {
     <span class="ml-2 font-lato text-blue-900">Attempted {leaderBoard.attemptedQuestions} questions</span>
   </div>
 </div>
-<div className='w-full flex justify-center items-center sm:w-[50%]'>
-<div class="flex  w-[70%] flex-col p-2 px-6 rounded-2xl bg-green-300 items-center">
+<div className='w-full flex-col gap-2 flex justify-center items-center sm:w-[50%]'>
+<div class="relative flex justify-center flex-col items-center">
+    <label class="absolute top-[40%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 text-[50px] text-blue-900 font-bold font-lato">{rank}</label>
+    <img class="h-[108.62px] w-[130.01px] flex justify-center" src={rankimage} alt="Icon 1" />
+    <span class="text-blue-900 font-medium font-lato text-[17px]">Your Rank</span>
+  </div>
+<div class="flex  w-[70%] flex-col p-2 px-6 rounded-xl bg-green-100 border-green-300 border-[1px] items-center">
 
       <div class=" text-green-700 font-medium text-center">{percentage}%</div>
-      <div class=" text-[#fa5967]  text-center">{Grade}, {passed ? "Grade" : "Fail"}</div>
     </div>
+    <div class="flex  w-[70%] flex-col p-2 px-6 rounded-xl bg-red-100 border-red-300 border-[1px] items-center">
+
+      <div class=" text-[#fa5967]  text-center">{Grade}, {passed ? "Grade" : "Fail"}</div>
 </div>
+</div>
+
 
     
   </div>
-  <div className="flex flex-wrap justify-end gap-2">
+  {/* <div className="flex  mt-2 gap-2">
   <div className="flex items-center justify-center ">
     <button
       onClick={handleOnAnswer}
@@ -296,91 +310,30 @@ const Samplequiz = () => {
       className="text-blue-900 text-sm bg-blue-200 border border-blue-900 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
     >
       Print
-      <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" />
+      <img className="ml-2 h-5 w-5" src={print1} alt="Correction Icon" />
     </button>
   </div>
-</div>
-
-</div>
-<div className='flex flex-col justify-end px-2 items-center'>
-  <div className=' w-[10px] rounded-full bg-[#00008b] h-[10px]'></div>
-  <div className='h-[85%] w-[1px] bg-[#00008b]'></div>
-  <div className=' w-[10px] rounded-full bg-[#00008b] h-[10px]'></div>
-
-</div>
-<div className=' w-full'>
-<div className="max-w-4xl mx-auto p-4  rounded-md">
-<div class="">
-    <div class="flex items-center justify-center  ">
-      <span class="inline-block h-[1px] bg-blue-900 w-full mr-[5px]"></span>
-      <label class="text-[#d98b19] flex w-[60%] font-lato text-[18px] items-center justify-center font-semibold">Top Performers</label>
-      <span class="inline-block h-[1px] bg-blue-900 w-full ml-[5px]"></span>
-    </div>
-  </div>
-  {/* {performers.some((performer) => performer.current) && (
-  <div className="mb-4 flex items-center justify-start">
-    <span
-      className="inline-block w-4 h-4 rounded-full bg-green-500 text-white flex items-center justify-center mr-2"
-      title="Current Performer"
-    >
-      ✓
-    </span>
-    <span className="text-sm text-gray-700 mr-2">Indicates the current performer:</span>
-    <span className="font-medium text-gray-800">{performers.find((performer) => performer.current)?.name}</span>
-  </div>
-)} */}
-
-
-      <div className="overflow-x-auto py-2">
-        <table className="table-auto w-full border-collapse border border-gray-300">
-          <thead className="bg-gray-100 font-bold text-[#00008b]">
-            <tr>
-              <th className="border-b border-gray-300 px-4 py-2 text-left">Name</th>
-              <th className="border-b border-gray-300 px-4 py-2 text-center">Attempts</th>
-              <th className="border-b border-gray-300 px-4 py-2 text-left">Score</th>
-              <th className="border-b border-gray-300 px-4 py-2 text-left">Duration</th>
-              <th className="border-b border-gray-300 px-4 py-2 text-center">Version</th>
-              <th className="border-b border-gray-300 px-4 py-2 text-left">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {performers.map((performer) => (
-              <tr
-                key={performer.id}
-                className={`${
-                  performer.current ? "bg-green-100" : ""
-                } hover:bg-gray-50 text-[#00008b]`}
-              >
-                <td className="border-b px-4 py-2">{performer.name}</td>
-                <td className="border-b px-4 py-2 text-center">{performer.attempts}</td>
-                <td className="border-b px-4 py-2">{performer.score}</td>
-                <td className="border-b px-4 py-2">{performer.duration}</td>
-                <td className="border-b px-4 py-2 text-center">{performer.version}</td>
-                <td className="border-b px-4 py-2">
-                  {performer.date}
-                 
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div className="mt-8 text-right flex justify-end">
-        {/* <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
-          Leader Board
-        </button> */}
-        <button
+  <div className="flex items-center justify-center">
+  <button
       onClick={handleOnAnswer}
       className="text-blue-900 text-sm bg-blue-200 border border-blue-900 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
     >
-       Leader Board
-      <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" />
+      Leader Board
+      <img className="ml-2 h-5 w-5" src={trophy} alt="Correction Icon" />
     </button>
-      </div>
+  </div>
+  <div className="flex justify-end py-2">
+            <div onClick={handleOnClose} className="flex items-center px-[10px] cursor-pointer p-[5px] border-[1px] border-[#FF6865] bg-[#FFCCCB] text-[#FF0500] font-semibold rounded-[10px] "
+            >
+                <p>Close</p>
+                <img src={closeimage} alt="" className="w-[20px] h-[20px]" />
+            </div>
     </div>
+</div> */}
+
 </div>
+
     </div>
-     
 
 
 
@@ -403,7 +356,6 @@ const Samplequiz = () => {
 </div> */}
 
 
-      {showAnswers && <SampleAnswerBoard q={randomQuestions} />}
     </div>
   );
 }

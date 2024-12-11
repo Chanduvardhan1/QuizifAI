@@ -109,14 +109,82 @@ const QuizQuestions = () => {
 
   const startIndex = Math.floor(currentQuestionIndex / 50) * 10; // Calculate startIndex based on currentQuestionIndex
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
+
+  //     if (!authToken) {
+  //       console.error("No authentication token found");
+  //       return;
+  //     }
+  //     const quizId = localStorage.getItem("quiz_id");
+  //     try {
+  //       const response = await fetch(
+  //         "https://dev.quizifai.com:8010/get-questions",
+  //         {
+  //           method: "POST",
+  //           headers: {
+  //             Accept: "application/json",
+  //             "Content-Type": "application/json",
+  //             Authorization: `Bearer ${authToken}`,
+  //           },
+  //           body: JSON.stringify({
+  //             quiz_id: quizId,
+  //             user_id: userId,
+  //           }),
+  //         }
+  //       );
+
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok");
+  //       }
+
+  //       const data = await response.json();
+  //       console.log("Fetched data:", data);
+
+  //       if (data && data.data && Array.isArray(data.data)) {
+  //         const questions = data.data.filter(
+  //           (item) => item.question_id !== undefined
+  //         );
+  //         const attemptData = data.data.find(
+  //           (item) => item.quiz_level_attempt_id !== undefined
+  //         );
+
+  //         console.log("Setting quiz data:", questions);
+  //         setQuizData({ questions });
+  //         setIsLoading(false);
+
+  //         if (attemptData) {
+  //           setAttemptNo(attemptData.quiz_level_attempt_id);
+  //           setQuizData((prevState) => ({
+  //             ...prevState,
+  //             created_by: attemptData.created_by,
+  //             created_on: attemptData.created_on,
+  //           }));
+  //           console.log("Attempt No:", attemptData.quiz_level_attempt_id);
+  //         } else {
+  //           console.warn("No object with quiz_level_attempt_id found");
+  //         }
+  //       } else {
+  //         throw new Error("Unexpected response format");
+  //       }
+  //     } catch (error) {
+  //       console.error("There was a problem with your fetch operation:", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [userId]);
+
   useEffect(() => {
     const fetchData = async () => {
-      const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
-
+      const authToken = localStorage.getItem("authToken");
+  
       if (!authToken) {
         console.error("No authentication token found");
         return;
       }
+  
       const quizId = localStorage.getItem("quiz_id");
       try {
         const response = await fetch(
@@ -134,47 +202,49 @@ const QuizQuestions = () => {
             }),
           }
         );
-
+  
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-
-        const data = await response.json();
-        console.log("Fetched data:", data);
-
-        if (data && data.data && Array.isArray(data.data)) {
-          const questions = data.data.filter(
-            (item) => item.question_id !== undefined
-          );
-          const attemptData = data.data.find(
-            (item) => item.quiz_level_attempt_id !== undefined
-          );
-
-          console.log("Setting quiz data:", questions);
-          setQuizData({ questions });
-          setIsLoading(false);
-
-          if (attemptData) {
-            setAttemptNo(attemptData.quiz_level_attempt_id);
+  
+        const result = await response.json();
+        console.log("Fetched data:", result);
+  
+        if (result.response === "success" && result.data) {
+          const { questions, quiz_level_attempt_id, created_by, created_on } = result.data;
+  
+          if (Array.isArray(questions)) {
+            setQuizData({ questions });
+            console.log("Setting quiz questions:", questions);
+          } else {
+            console.warn("Questions data is not an array or missing.");
+          }
+  
+          if (quiz_level_attempt_id) {
+            setAttemptNo(quiz_level_attempt_id);
             setQuizData((prevState) => ({
               ...prevState,
-              created_by: attemptData.created_by,
-              created_on: attemptData.created_on,
+              created_by,
+              created_on,
             }));
-            console.log("Attempt No:", attemptData.quiz_level_attempt_id);
+            console.log("Attempt No:", quiz_level_attempt_id);
           } else {
-            console.warn("No object with quiz_level_attempt_id found");
+            console.warn("quiz_level_attempt_id is missing.");
           }
+  
+          setIsLoading(false);
         } else {
-          throw new Error("Unexpected response format");
+          throw new Error("Unexpected response format or data missing");
         }
       } catch (error) {
         console.error("There was a problem with your fetch operation:", error);
       }
     };
-
+  
     fetchData();
   }, [userId]);
+  
+
 
   useEffect(() => {
     if (quizData && quizData.questions && quizData.questions.length > 0) {
@@ -943,7 +1013,7 @@ const QuizQuestions = () => {
                               textAlign: "center",
                               border: "1px solid #ccc",
                               borderRadius: "5px",
-                              backgroundColor: "#f9f9f9",
+                              backgroundColor: "#E8E9E8",
                             }}
                           >
                             {optionLabel}
@@ -955,7 +1025,7 @@ const QuizQuestions = () => {
                               fontWeight: isSelected ? "bold" : "normal",
                               backgroundColor: isSelected
                                 ? "lightyellow"
-                                : "transparent",
+                                : "#E8E9E8",
                               width: "550px", // Ensure the button takes full width
                               padding: "10px", // Adds padding for better click area
                               border: isSelected
@@ -976,93 +1046,8 @@ const QuizQuestions = () => {
               </div>
             </>
           )}
-  <div className={styles.buttonsContainer} style={{ display: "flex", justifyContent: "space-between", width: "200px" }}>
-  {currentQuestionIndex > 0 ? (
-    <div>
-      {/* <button
-        className={styles.button}
-        style={{
-          color: "#FFFFFF",
-          backgroundColor: "#FEBB42",
-          height: "29px",
-          width: "97px",
-          textAlign: "center",
-          borderRadius: "10px",
-          border: "none",
-        }}
-        onClick={handlePreviousQuestion}
-        disabled={currentQuestionIndex === 0}
-      >
-        Previous
-      </button> */}
-      <div 
-      onClick={handlePreviousQuestion}
-      disabled={currentQuestionIndex === 0}
-       className="flex items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px]"
-      >
-          <p>Previous</p>
-          <img src={Playbutton} alt="" className="w-[20px] h-[20px]" />
-      </div>
-    </div>
-  ) : (
-    <div style={{ width: "97px" }}></div> // Placeholder div to keep space
-  )}
 
-  <div>
-    {quizData?.questions?.length - 1 !== currentQuestionIndex && 
-    // <button
-    //   className="text-[13px] cursor-pointer rounded-md font-medium"
-    //   style={{
-    //     backgroundColor: "#8453FC",
-    //     height: "29px",
-    //     borderRadius: "10px",
-    //     width: "97px",
-    //     border: "none",
-    //     color: "#FFFFFF",
-    //     marginLeft: "410px",
-    //   }}
-    //   onClick={handleNextQuestion}
-    //   disabled={currentQuestionIndex === filteredQuizData.length - 1}
-    // >
-    //   Next 
-    // </button>
-      <div 
-      onClick={handleNextQuestion}
-      disabled={currentQuestionIndex === filteredQuizData.length - 1}
-       className="flex items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px]"
-      >
-          <p>Next</p>
-          <img src={Playbutton} alt="" className="w-[20px] h-[20px]" />
-      </div>
-    }
-  </div>
-</div>
-          <div className={styles.button3}>
-            {/* <button
-              className={styles.button}
-              style={{
-                marginTop: "-39px",
-                backgroundColor: "#15c51596",
-                height: "29px",
-                width: "97px",
-                borderRadius: "10px",
-                border: "none",
-                color: "#FFFFFF",
-                marginRight: "-165px",
-                zIndex: "1",
-              }}
-              onClick={handleSubmit}
-            >
-              Submit 
-            </button> */}
-            <div 
-                   onClick={handleSubmit}
-       className="flex items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px]"
-      >
-          <p>Submit</p>
-          <img src={Playbutton} alt="" className="w-[20px] h-[20px]" />
-      </div>
-          </div>
+        
         </div>
      
         <div className='flex flex-col justify-end px-2 items-center'>
@@ -1075,7 +1060,7 @@ const QuizQuestions = () => {
         {/* <div className={styles.back1} onClick={Back}>
           <MdOutlineCancel />
         </div> */}
-        <div className={styles.sentence1} style={{ marginTop: "140px" }}>
+        <div className={styles.sentence1} style={{ marginTop: "35x" }}>
           {/* {`${currentQuestionIndex + 1} out of ${filteredQuizData.length}`} */}
         </div>
         <div className={styles.sentence2}>
@@ -1133,11 +1118,99 @@ const QuizQuestions = () => {
             </div>
           </div>
         )}
+          
       </div>
       <div className={styles.sentence3} style={{ marginTop: "230px" }}>
         {/* {formatTime(elapsedTime)} */}
       </div>
       </div>
+      <div className={styles.buttonsContainer} style={{ display: "flex", justifyContent: "center", width: "100%", gap:"10px",paddingRight:"50px" }}>
+  {currentQuestionIndex > 0 ? (
+    <div className=" mr-[10px]">
+      {/* <button
+        className={styles.button}
+        style={{
+          color: "#FFFFFF",
+          backgroundColor: "#FEBB42",
+          height: "29px",
+          width: "97px",
+          textAlign: "center",
+          borderRadius: "10px",
+          border: "none",
+        }}
+        onClick={handlePreviousQuestion}
+        disabled={currentQuestionIndex === 0}
+      >
+        Previous
+      </button> */}
+      <div 
+      onClick={handlePreviousQuestion}
+      disabled={currentQuestionIndex === 0}
+       className="flex items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px]"
+      >
+          <p>Previous</p>
+          <img src={Playbutton} alt="" className="w-[20px] h-[20px]" />
+      </div>
+    </div>
+  ) : (
+    <div style={{ width: "97px" }}></div> // Placeholder div to keep space
+  )}
+
+  <div>
+    {quizData?.questions?.length - 1 !== currentQuestionIndex && 
+    // <button
+    //   className="text-[13px] cursor-pointer rounded-md font-medium"
+    //   style={{
+    //     backgroundColor: "#8453FC",
+    //     height: "29px",
+    //     borderRadius: "10px",
+    //     width: "97px",
+    //     border: "none",
+    //     color: "#FFFFFF",
+    //     marginLeft: "410px",
+    //   }}
+    //   onClick={handleNextQuestion}
+    //   disabled={currentQuestionIndex === filteredQuizData.length - 1}
+    // >
+    //   Next 
+    // </button>
+      <div 
+      onClick={handleNextQuestion}
+      disabled={currentQuestionIndex === filteredQuizData.length - 1}
+       className="flex items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px]"
+      >
+          <p>Next</p>
+          <img src={Playbutton} alt="" className="w-[20px] h-[20px]" />
+      </div>
+    }
+  </div>
+  <div className={styles.button3}>
+            {/* <button
+              className={styles.button}
+              style={{
+                marginTop: "-39px",
+                backgroundColor: "#15c51596",
+                height: "29px",
+                width: "97px",
+                borderRadius: "10px",
+                border: "none",
+                color: "#FFFFFF",
+                marginRight: "-165px",
+                zIndex: "1",
+              }}
+              onClick={handleSubmit}
+            >
+              Submit 
+            </button> */}
+            <div 
+                   onClick={handleSubmit}
+       className="flex items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px]"
+      >
+          <p>Submit</p>
+          <img src={Playbutton} alt="" className="w-[20px] h-[20px]" />
+      </div>
+          </div>
+</div>
       </div>
       {/* <LogoutBar /> */}
     </div>

@@ -121,7 +121,7 @@
 //                         /> */}
 //                     </div>
 //                     <div className="mt-2 text-center">
-//                         <h2 className="text-[16px] font-semibold text-[#214082] font-family-[lato]">
+//                         <h2 className="text-[14px] font-semibold text-[#214082] font-family-[lato]">
 //                             {userData.name}
 //                         </h2>
 //                         <p className="text-[14px] text-[#214082] font-400 font-family-[lato]">{userData.occupation}</p>
@@ -134,15 +134,15 @@
 
 //                 <div className="flex flex-col items-center relative ml-[-111%] mr-4 border border-[#dddddd] rounded-sm p-2 h-64 w-40 ">
 //                     <div className="text-center">
-//                         <h3 className="text-[16px] font-[500] text-[#214082] mb-2">Quizzes</h3>
+//                         <h3 className="text-[14px] font-[500] text-[#214082] mb-2">Quizzes</h3>
 //                         <p className="text-2xl font-bold text-orange-500">{userData.totalQuizzes}</p>
 //                     </div>
 //                     <div className="text-center my-4">
-//                         <h3 className="text-[16px] font-[500] text-[#214082] mb-2">Minutes</h3>
+//                         <h3 className="text-[14px] font-[500] text-[#214082] mb-2">Minutes</h3>
 //                         <p className="text-2xl font-bold text-orange-500">{userData.totalMinutes}</p>
 //                     </div>
 //                     <div className="text-center">
-//                         <h3 className="text-[16px] font-[500] text-[#214082] mb-2">Average Score</h3>
+//                         <h3 className="text-[14px] font-[500] text-[#214082] mb-2">Average Score</h3>
 //                         <p className="text-2xl font-bold text-orange-500">{userData.averageScore}%</p>
 //                     </div>
 //                 </div>
@@ -615,37 +615,37 @@ export default function dashboardNavBar() {
         </div>
       )}
                     <div className="mt-2 text-center">
-                        <h2 className="text-[16px] font-semibold text-[#214082] font-family-[lato]">
+                        <h2 className="text-[14px] font-semibold text-[#214082] font-family-[lato]">
                         {userName}
 
                         </h2>
                         <p className="text-[14px] text-[#214082] font-400 font-family-[lato]">{occupation}</p>
-                        <p className="text-sm text-[#FF6701]">User ID: {userId}</p>
-                        <p className="text-sm text-[#002366]">{city}</p>
+                        <p className="text-[14px] text-[#FF6701]">User ID: {userId}</p>
+                        <p className="text-[14px] text-[#002366]">{city}</p>
 
 
-                        <p className="text-sm text-[#002366]">{district}</p>
-                        <p className="text-sm text-[#002366]">{country}</p>
+                        <p className="text-[14px] text-[#002366]">{district}</p>
+                        <p className="text-[14px] text-[#002366]">{country}</p>
                     </div>
                 </div>
 
                 <div className="flex flex-col  justify-start items-start relative mr-4 border shadow-lg rounded-sm p-2 bg-white">
                   <div className=" space-y-2 flex flex-col items-start justify-center pl-[10px]">
                     <div className=" flex justify-center items-center text-center mt-2">
-                        <h3 className="text-[16px] font-[500] text-[#214082] ">Quizzes : </h3>
-                        <p className="text-[16px] font-bold text-orange-500 ml-[2px]"> {totalQuizzes}</p>
+                        <h3 className="text-[14px] font-[500] text-[#214082] ">Quizzes : </h3>
+                        <p className="text-[14px] font-bold text-orange-500 ml-[2px]"> {totalQuizzes}</p>
                     </div>
                     <div className=" flex justify-center items-center text-center my-4">
-                        <h3 className="text-[16px] font-[500] text-[#214082] ">Minutes : </h3>
-                        <p className="text-[16px] font-bold text-orange-500 ml-[2px]"> {totalMinutes}</p>
+                        <h3 className="text-[14px] font-[500] text-[#214082] ">Minutes : </h3>
+                        <p className="text-[14px] font-bold text-orange-500 ml-[2px]"> {totalMinutes}</p>
                     </div>
                     <div className="flex justify-center items-center text-center">
-                        <h3 className="text-[16px] font-[500] text-[#214082] ">Average Score : </h3>
-                        <p className="text-[16px] font-bold text-orange-500 ml-[2px]"> {averageScorePercentage}%</p>
+                        <h3 className="text-[14px] font-[500] text-[#214082] ">Average Score : </h3>
+                        <p className="text-[14px] font-bold text-orange-500 ml-[2px]"> {averageScorePercentage}%</p>
                     </div>
                     </div>
                 </div>
-                <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2 py-[20px] bg-white">
+                <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2 bg-white">
            <ProgressIndicator />
            
         </div>

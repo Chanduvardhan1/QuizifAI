@@ -1501,8 +1501,7 @@ onChange={handleSelectChange}
                 <th className="px-4 py-2 text-nowrap">Group ID</th>
                 <th className="pl-[10px] ml-[15px] py-2">Group Name</th>
                 <th className="px-4 py-2 text-nowrap">Org ID</th>
-                <th className="px-4 py-2 text-nowrap">Org Flag</th>
-                <th className="px-4 py-2 text-nowrap">Group Flag</th>
+                <th className="px-4 py-2 text-nowrap">Flag</th>
                 {/* <th className="px-2 py-2 text-nowrap">Users List</th> */}
                 <th className="flex px-2 py-2 text-nowrap">
                   <input
@@ -1535,12 +1534,12 @@ onChange={handleSelectChange}
                   <td className="px-4 py-2 border-b text-[#214082] font-semibold text-[14px] w-[200px]">
                     <span className="relative group">
                       <span className="text-[14px] text-[#002366] absolute w-[170px] cursor-pointer z-0 truncate">
-                      {highlightText(group.group_description, searchInput)
+                      {highlightText(`${group.org_name}(ID:${group.org_id})`, searchInput)
                      .toLowerCase()
                      .replace(/^\w/, (c) => c.toUpperCase())}
                       </span>
                       <span className="absolute -top-1 w-[170px] h-auto cursor-pointer hidden group-hover:inline-block text-wrap z-20 bg-black text-white px-2 py-1 border border-black-300 rounded leading-tight whitespace-nowrap">
-                      {highlightText(group.group_description, searchInput)
+                      {highlightText(`${group.org_name}(ID:${group.org_id})`, searchInput)
                      .toLowerCase()
                      .replace(/^\w/, (c) => c.toUpperCase())}
                       </span>
@@ -1554,7 +1553,7 @@ onChange={handleSelectChange}
                     )}
                   </td>
 
-  <td className="px-4 py-2 border-b text-[#214082] font-semibold text-[14px] w-[200px]">
+  {/* <td className="px-4 py-2 border-b text-[#214082] font-semibold text-[14px] w-[200px]">
   <span className="relative group">
     <span className="text-[14px] text-[#002366] absolute w-[170px] cursor-pointer z-0 truncate">
       {filteredUsers
@@ -1569,7 +1568,7 @@ onChange={handleSelectChange}
         .join(", ")}
     </span>
   </span>
-</td>
+</td> */}
                   
                   <td className="h-full border-b text-[#214082] flex gap-2 pl-[40px] pt-2 text-[12px] cursor-pointer hover:font-medium hover:underline">
                     <img

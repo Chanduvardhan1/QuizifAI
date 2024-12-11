@@ -55,52 +55,14 @@ export default function SegmentedProgressIndicator({
   <div class="bg-green-500 text-white py-2 px-2 rounded-lg">Step 2</div>
   <div class="bg-[#6fb044] text-white py-2 px-2 rounded-lg">Step 3</div>
 </div> */}
-<div className='flex  items-center '>
-            <svg className="w-20 h-20" viewBox="0 0 100 100">
-            {segmentsArray.map((segment, index) => {
-                    const angleStart = (index / segments) * 360 - 90; // Starting angle for the segment
-                    const angleEnd = ((index + 1) / segments) * 360 - 90; // Ending angle for the segment
+<div className='flex flex-col w-full px-5 items-center '>
+    
+        <div className='flex w-full flex-col gap-1 justify-between mt-1'>
 
-                    return (
-                        <circle
-                            key={index}
-                            strokeWidth={strokeWidth}
-                            strokeLinecap="line" // Use "line" to create sharp ends for the stroke
-                            fill="transparent"
-                            r={radius}
-                            cx="50"
-                            cy="50"
-                            stroke={
-                                segment === "filled"
-                                    ? "#16a34a" // Green for filled segments (Completed)
-                                    : segment === "inProgress"
-                                    ? "##22c55e" // Yellow for in-progress segments
-                                    : "#6fb044" // Gray for empty segments
-                            }
-                            strokeDasharray={`${segmentLength} ${circumference}`} // Length and gap of each segment
-                            strokeDashoffset={-segmentLength * index} // Offset to create the circular segments
-                            style={{
-                                transformOrigin: "50% 50%",
-                                transform: `rotate(${angleStart}deg)`,
-                                transition: "stroke-dashoffset 0.5s ease-in-out",
-                            }}
-                        />
-                    );
-                })}
-                {/* Progress point */}
-                {/* <circle cx={progressPointX} cy={progressPointY} r="5" fill={strokeColor} /> */}
-                {/* Progress text */}
-                <text x="50" y="55" fontSize="20" fontWeight="bold" textAnchor="middle">
-                    {progress}%
-                </text>
-            </svg>
-        <div className='flex flex-col gap-1 justify-between mt-1'>
-
-           <div className='flex flex-col gap-2 w-[125px]'>
-            <h1 className='text-[#002366] text-[11px]'>Assigned Quizzes <span className=' ml-[17px]'>:</span> <span className='text-[#FF6701]'>10</span></h1>
-            <h1 className='text-[#002366] text-[11px]'>Incompleted Quizzes : <span className='text-[#FF6701]'>5</span></h1>
-            <h1 className='text-[16px] text-[#00ab00] font-medium' >Excellent</h1>
-            <h1 className='text-[#002366] text-[11px]'>5/10 Quizzes Done</h1>
+           <div className='flex flex-col gap-2'>
+            <h1 className='text-[#002366] text-[14px]'>Assigned Quizzes <span className=' ml-[17px]'>:</span> <span className='text-[#FF6701]'>10</span></h1>
+            <h1 className='text-[#002366] text-[14px]'>Incompleted Quizzes : <span className='text-[#FF6701]'>5</span></h1>
+            <h1 className='text-[#002366] text-[14px]'>5/10 Quizzes Done</h1>
            </div>
 
 
@@ -178,7 +140,47 @@ export default function SegmentedProgressIndicator({
                 <div className='text-[10px] text-[#00ab00]'>Excellent</div>
             </div> */}
         </div>
-       
+        <div>
+            <svg className="w-20 h-20" viewBox="0 0 100 100">
+            {segmentsArray.map((segment, index) => {
+                    const angleStart = (index / segments) * 360 - 90; // Starting angle for the segment
+                    const angleEnd = ((index + 1) / segments) * 360 - 90; // Ending angle for the segment
+
+                    return (
+                        <circle
+                            key={index}
+                            strokeWidth={strokeWidth}
+                            strokeLinecap="line" // Use "line" to create sharp ends for the stroke
+                            fill="transparent"
+                            r={radius}
+                            cx="50"
+                            cy="50"
+                            stroke={
+                                segment === "filled"
+                                    ? "#16a34a" // Green for filled segments (Completed)
+                                    : segment === "inProgress"
+                                    ? "##22c55e" // Yellow for in-progress segments
+                                    : "#6fb044" // Gray for empty segments
+                            }
+                            strokeDasharray={`${segmentLength} ${circumference}`} // Length and gap of each segment
+                            strokeDashoffset={-segmentLength * index} // Offset to create the circular segments
+                            style={{
+                                transformOrigin: "50% 50%",
+                                transform: `rotate(${angleStart}deg)`,
+                                transition: "stroke-dashoffset 0.5s ease-in-out",
+                            }}
+                        />
+                    );
+                })}
+                {/* Progress point */}
+                {/* <circle cx={progressPointX} cy={progressPointY} r="5" fill={strokeColor} /> */}
+                {/* Progress text */}
+                <text x="50" y="55" fontSize="20" fontWeight="bold" textAnchor="middle">
+                    {progress}%
+                </text>
+            </svg>
+            <h1 className='text-[20px] text-[#00ab00] font-medium' >Excellent</h1>
+            </div>
         </div>
             {/* <span className="text-sm text-[#FF6701] font-medium mt-2">
                 {tasksCompleted}/{totalTasks} Quizzes Done

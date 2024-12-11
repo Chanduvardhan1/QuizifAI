@@ -188,7 +188,7 @@ const quizAccess = () => {
         </div>
 <div className="w-full p-5">
     <div className="flex justify-end py-2">
-            <div onClick={Back} className="flex items-center px-[10px] p-[5px] border-[1px] border-[#FF6865] bg-[#FFCCCB] text-[#FF0500] font-semibold rounded-[10px] "
+            <div onClick={Back} className="flex items-center px-[10px] p-[5px] border-[1px] border-[#FF6865] bg-[#FFCCCB] text-[#FF0500] font-semibold rounded-[10px] cursor-pointer "
             >
                 <p>Close</p>
                 <img src={closeimage} alt="" className="w-[20px] h-[20px]" />
@@ -347,7 +347,7 @@ const quizAccess = () => {
       <p><span>6 . </span> Contact <span className="text-[#F17530] underline" href="">Support@quizifai.com</span> in case you face any challanges</p>
     </div>
     <div className="flex justify-center py-10">
-            <div onClick={handleStartQuiz} className="flex items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px]"
+            <div onClick={handleStartQuiz} className="flex items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px] cursor-pointer"
             >
                 <p>Start</p>
                 <img src={Playbutton} alt="" className="w-[20px] h-[20px]" />

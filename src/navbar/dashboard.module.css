@@ -104,7 +104,7 @@ border: none;
 }
 
 .activeIcon {
-   /* filter: brightness(0) saturate(100%) invert(36%) sepia(92%) saturate(1751%) hue-rotate(326deg) brightness(98%) contrast(101%);  */
+   filter: brightness(0) saturate(100%) invert(36%) sepia(92%) saturate(1751%) hue-rotate(326deg) brightness(98%) contrast(101%); 
 }
 
 .bold {

@@ -678,7 +678,7 @@ if (!quizData1 || !quizData1.questions) {
       </div>
     </div>
         </div>
-         <LogoutBar/>
+         {/* <LogoutBar/> */}
       </div>
       
     

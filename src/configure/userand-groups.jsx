@@ -23,7 +23,7 @@ import cancel from "../assets/Images/images/dashboard/cancel.png";
 import Plus from "../../src/assets/Images/dashboard/Plus.png";
 import Edit from "../../src/assets/Images/Assets/Edit.png";
 import searchIcon from "../assets/Images/images/dashboard/Search.png";
-import defaultPhoto from '../../src/assets/Images/dashboard/narmtech.jpg'
+import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
 
 // import Delete from "../../src/assets/Images/Assets/Delete.png";
 // import Line from "../../src/assets/Images/Assets/Line.png";

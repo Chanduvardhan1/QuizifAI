@@ -335,50 +335,57 @@ export default function dashboardNavBar() {
               throw new Error("Failed to fetch data");
             }
             const data = await response.json();
-            console.log("Data:", data);
+            // console.log("Data:", data);
 
+            if (!data.data || data.data.length === 0) {
+              throw new Error("No data available");
+            }
 
-            const auditDetails = data.data[0].audit_details || {};
+            const auditDetails = data.data[0]?.audit_details || {};
 
             setCountry(auditDetails.country_name || "");
             setGlobalRank(auditDetails.global_score_rank || "");
             setGlobalscore(auditDetails.global_score || "");
             setRegisteredOn(auditDetails.created_date || "");
-            setLastLogin(auditDetails.last_login_timestamp || "");
-            setPasswordChanged(auditDetails.user_password_change_date || "");
+            // setLastLogin(auditDetails.last_login_timestamp || "");
+            // setPasswordChanged(auditDetails.user_password_change_date || "");
   
   
 
 
 
-            const userProfile = data.data[0].user_profile_details || {};
+            const userProfile = data.data[0]?.user_profile_details || {};
 
             setDistrict(userProfile.district_name || "N/A");
             setOccupation(userProfile.occupation_name || "N/A");
             setCity(userProfile.location_name || "N/A");
             setOtherOccupation(userProfile.other_occupation_name || "N/A");
             setUserName(userProfile.full_name || "N/A");
-            setEmail(userProfile.user_email || "N/A");
-            setPhoneNumber(userProfile.user_phone_number || "N/A");
-            setRoleName(userProfile.role_name || "N/A");
+            // setEmail(userProfile.user_email || "N/A");
+            // setPhoneNumber(userProfile.user_phone_number || "N/A");
+            // setRoleName(userProfile.role_name || "N/A");
             setOccupation(userProfile.occupation_name || "N/A");
          // setLocation(userProfile.location_name || "N/A");
            setCountry(userProfile.country_name || "N/A");
 
 
 
-            const userMetrics = data.data[0].user_metrics || {};
+            const userMetrics = data.data[0]?.user_metrics || {};
+            setTotalMinutes(userMetrics.total_minutes || 0);
 
             setTotalQuizzes(userMetrics.countofquizes || 0);
             setAverageScorePercentage(userMetrics.average_total_percentage || 0);
-           
-            const latestResults = data.data[0].latest_result || [];
+            // console.log("Quizzes:", userMetrics.countofquizes);
+            // console.log("Minutes:", userMetrics.total_minutes);
+            // console.log("Average Score:", userMetrics.average_total_percentage);
+
+            const latestResults = data.data[0]?.latest_result || [];
 
 
 
-            const subscriptionDetails = data.data[0].subscription_details || {};
+            const subscriptionDetails = data.data[0]?.subscription_details || {};
 
-            setSubscriptionStartDate(subscriptionDetails.start_date || "");
+            // setSubscriptionStartDate(subscriptionDetails.start_date || "");
             setSubscriptionEndDate(subscriptionDetails.end_date || "");
             setRemainingDays(subscriptionDetails.remaining_days || "");
 
@@ -506,50 +513,57 @@ export default function dashboardNavBar() {
       const closeModal = () => {
         setIsModalOpen(false);
       };
+      const handleprofile = () => {
+       navigate("/free-profile")
+      };
+      const handlemyhistory = () => {
+        navigate("/myhistory")
+       };
+
 // const score = 1564;
     return (
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto ">
           <div className="flex w-full  gap-4 mb-1 py-2 font-semibold rounded-lg">
       <button
-        // onClick={() => handleTabClick('Manual')}
-        className={`w-full px-4 py-2 mr-4
+      onClick={handleprofile}
+        className={`w-full px-4 py-2 
           text-[#214082] bg-[#c1e7e3] rounded-lg
         `}
       >
       Profile
       </button>
       <button
-        // onClick={() => handleTabClick('Excel')}
-        className={`w-full px-4 py-2  mr-4 text-[#214082] bg-[#ceffe4] rounded-lg
+             onClick={handlemyhistory}
+        className={`w-full px-4 py-2  text-[#214082] bg-[#ceffe4] rounded-lg
         `}
       >
         Quizzes Overview 
       </button>
       <button
-        // onClick={() => handleTabClick('Pdf')}
-        className={`w-full px-4 py-2  mr-4 bg-[#ffe5d9]
+         onClick={handlemyhistory}
+        className={`w-full px-4 py-2  bg-[#ffe5d9]
       rounded-lg  text-[#214082] 
         `}
       >
        Weekly Progress
       </button>
       <button
-        // onClick={() => handleTabClick('Textbook')}
-        className={`w-full px-4 py-2  mr-4 rounded-lg text-[#214082] bg-[#ffe9ee]
+          onClick={handlemyhistory}
+        className={`w-full px-4 py-2 rounded-lg text-[#214082] bg-[#ffe9ee]
         `}
       >
         Global Rank
       </button>
       <button
         // onClick={() => handleTabClick('Textbook')}
-        className={`w-full px-4 py-2  mr-4 text-[#214082] rounded-lg  bg-[#c1bbdd]
+        className={`w-full px-4 py-2   text-[#214082] rounded-lg  bg-[#c1bbdd]
         `}
       >
         Subscription 
       </button>
     </div>
             <div className="grid grid-cols-5 gap-4 mb-4">
-                <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-md p-2 bg-white ">
+                <div onClick={handleprofile} className="flex flex-col cursor-pointer items-center justify-center relative  border shadow-lg rounded-md p-2 bg-white ">
                     <div className="relative">
                     {loading ? (
         <p>Loading...</p>
@@ -620,7 +634,7 @@ export default function dashboardNavBar() {
 
                         </h2>
                         <p className="text-[14px] text-[#214082] font-400 font-family-[lato]">{occupation}</p>
-                        <p className="text-[14px] text-[#FF6701]">User ID: {userId}</p>
+                        <p className="text-[14px] text-[#002366]">User ID: {userId}</p>
                         <p className="text-[14px] text-[#002366]">{city}</p>
 
 
@@ -629,7 +643,7 @@ export default function dashboardNavBar() {
                     </div>
                 </div>
 
-                <div className="flex flex-col  justify-start items-start relative mr-4 border shadow-lg rounded-sm p-2 bg-white">
+                <div   onClick={handlemyhistory} className="flex flex-col cursor-pointer justify-start items-start relative  border shadow-lg rounded-sm p-2 bg-white">
                   <div className=" space-y-2 flex flex-col items-start justify-center pl-[10px]">
                     <div className=" flex justify-center items-center text-center mt-2">
                         <h3 className="text-[14px] font-[500] text-[#214082] ">Quizzes : </h3>
@@ -645,11 +659,11 @@ export default function dashboardNavBar() {
                     </div>
                     </div>
                 </div>
-                <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2 bg-white">
+                <div   onClick={handlemyhistory} className="flex flex-col cursor-pointer items-center justify-center relative  border shadow-lg rounded-sm p-2 bg-white">
            <ProgressIndicator />
            
         </div>
-        <div className="flex flex-col items-center justify-center relative mr-4 border shadow-lg rounded-sm p-2 bg-white">
+        <div onClick={handlemyhistory} className="flex flex-col items-center cursor-pointer justify-center relative mr-4 border shadow-lg rounded-sm p-2 bg-white">
         <div className="flex flex-col items-center">
       {/* Icons above the rank number */}
       <div className="flex justify-center items-center">
@@ -666,12 +680,12 @@ export default function dashboardNavBar() {
       </div>
 
       {/* Score */}
-      <div className="text-lg text-orange-500 ml-[30%]">
+      <div className="text-[16px] text-orange-500 ml-[30%]">
         {globalscore}
       </div>
 
       {/* Global Score Label */}
-      <div className="text-[14px]  font-semibold text-[#214082] ">
+      <div className="text-[16px]  font-semibold text-[#214082] ">
         Global Score
       </div>
 
@@ -694,27 +708,27 @@ export default function dashboardNavBar() {
 
     </div>
 
-                <div className="flex flex-col items-center justify-start relative mr-4 border shadow-lg rounded-sm p-2 py-[20px] bg-white">
+                <div className="flex flex-col items-center justify-start relative border shadow-lg rounded-sm p-2 py-[20px] bg-white">
                 {/* <h3 className="text-[14px] font-bold mb-5 text-[#214082]">Subscription</h3> */}
 
                     {/* <h3 className="text-sm font-bold mb-4 text-[#214082]"> <span>Public</span></h3> */}
                     <div className="space-y-2">
                         <div className="flex justify-between">
-                            <p className="text-sm text-[#214082] ">Type :</p>
+                            <p className="text-[14px] text-[#214082] ">Type : </p>
                             <div>
 
-                            <p className="text-[14px] font-medium text-orange-500"> Public/</p>
-                            <p className="text-[14px] font-medium text-[#8b8c8d] "> Subcribed/</p>
-                            <p className="text-[14px] font-medium text-[#8b8c8d] "> Organization</p>
+                            <p className="text-[14px] font-medium text-orange-500 ml-2"> Public/</p>
+                            <p className="text-[14px] font-medium text-[#8b8c8d] ml-2"> Subcribed/</p>
+                            <p className="text-[14px] font-medium text-[#8b8c8d] ml-2"> Organization</p>
                             </div>
                         </div>
                         <div className="flex justify-between">
-                            <p className="text-sm text-[#214082]">Date : </p>
+                            <p className="text-[14px] text-[#214082]">Date : </p>
                             {/* <p className="font-medium text-orange-500">{userData.subscription.startDate}</p> */}
                         </div>
-                        <div className="flex justify-between">
-                            <p className="text-sm text-[#214082] mr-31%">Days Remaining : </p>
-                            <p className="font-medium ml-1 text-orange-500"> {remainingDays}</p>
+                        <div className="flex ">
+                            <p className="text-[14px] text-[#214082] mr-31%">Days : </p>
+                            <p className="font-medium text-[14px] ml-2 text-orange-500"> Unlimited</p>
                         </div>
                     </div>
                 </div>

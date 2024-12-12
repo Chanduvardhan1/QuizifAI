@@ -204,7 +204,7 @@ export default function quiztype() {
   const [disabledon, setdisabledon] = useState("");
   const [correctanswerdescription, setcorrectanswerdescription] = useState("");
 
-  const [publicAccess, setPublicAccess] = useState("Public");
+  const [publicAccess, setPublicAccess] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isRetakeOn, setIsRetakeOn] = useState(false);
@@ -967,8 +967,8 @@ const handleToLayout4 = () =>{
     updatedQuestions[index] = value;
     setQuestions(updatedQuestions);
   };
-  const toggler1 = (checked) => {
-    setMultiAnswer(checked);
+  const toggler1 = (event) => {
+    setMultiAnswer(event.target.checked);
   };
 
   const toggler2 = () => {
@@ -991,10 +991,9 @@ const handleToLayout4 = () =>{
     setSelectedValue(e.target.value);
   };
 
-  const toggler3 = (e) => {
-    // console.log('e.target.value', e.target.value);
-    setPublicAccess(e.target.value);
-    console.log('publicAccess11',e.target.value);
+  const toggler3 = (event) => {
+    setPublicAccess(event.target.checked);
+
   };
 
   function handleSelect1(event) {
@@ -1363,12 +1362,15 @@ const handleToLayout4 = () =>{
         <div className="w-[100%] flex flex-row">
         <label className="w-[100%] inline-flex items-center cursor-pointer text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500">*</span>
         <FormControlLabel
-        control={<Switch />} 
-        // label="Required"
-          onChange={toggler3}
-          checked={publicAccess}
-          className="react-switch"
+      control={
+        <Switch 
+          onChange={toggler3} 
+          checked={publicAccess} 
+          className="react-switch" 
         />
+      }
+      // label="Required"
+    />
   {/* <input type="checkbox" value="" class="sr-only peer"/> */}
   {/* <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div> */}
 </label>

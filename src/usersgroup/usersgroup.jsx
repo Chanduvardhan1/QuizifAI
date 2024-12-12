@@ -5,7 +5,7 @@ import hide from "../assets/Images/images/profile/hide.png";
 import Navigation from "../navbar/navbar";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import defaultPhoto from '../../src/assets/Images/dashboard/narmtech.jpg'
+import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
 
 
 
@@ -17,6 +17,7 @@ function usersgroup() {
     const [showNewPasswords, setShowNewPasswords] = useState(false);
     const navigate = useNavigate();
     const userId = localStorage.getItem("user_id");
+  const userRole = localStorage.getItem("user_role");
 
     const [username1, setUsername1] = useState("");
 
@@ -303,32 +304,35 @@ const handleUserTypeChange = (e) => {
   <div className="md:col-span-2">
       <h1 className="text-center text-[24px] font-bold text-[#F17530]">Create User</h1>
     </div>
+    {userRole === 'Admin' && (
     <div className="flex md:col-span-2 gap-2 items-center">
-                <div
-                  className="rounded-full w-[80px]  h-[80px]"
+    <div
+      className="rounded-full w-[80px]  h-[80px]"
 
-                >
-                 
-                    <img
-                      className="w-[80px] h-[80px] rounded-2xl"
-                      src={photo}
-                      alt="Default"
-                    />
-                
-                </div>
+    >
+     
+        <img
+          className="w-[80px] h-[80px] rounded-2xl"
+          src={photo}
+          alt="Default"
+        />
+    
+    </div>
 
-                <div className=" font-bold text-[#214082]">
-                  <span className="text-[15px]">Welcome </span>
-                  <span className="text-[15px]">
-                    {username1.charAt(0).toUpperCase() + username1.slice(1)}
-                  </span>
-                  <br />
-                  <span className="text-[15px]">User ID : </span>
-                  <span className=" font-normal text-[12px]">{userId}</span>
-                  {/* <span className="text-[15px] ml-1">A ID : </span>
-                  <span className=" font-normal text-[12px]">{userId}</span> */}
-                </div>
-                </div>
+    <div className=" font-bold text-[#214082]">
+      <span className="text-[15px]">Welcome </span>
+      <span className="text-[15px]">
+        {username1.charAt(0).toUpperCase() + username1.slice(1)}
+      </span>
+      <br />
+      <span className="text-[15px]">User ID : </span>
+      <span className=" font-normal text-[12px]">{userId}</span>
+      {/* <span className="text-[15px] ml-1">A ID : </span>
+      <span className=" font-normal text-[12px]">{userId}</span> */}
+    </div>
+    </div>
+    )}
+
     {/* User Id*/}
    
     {/* <div className="flex flex-col md:col-span-2">
@@ -427,7 +431,7 @@ const handleUserTypeChange = (e) => {
          Select a Role
         </option>
         {roles  
-          .filter((role) => role.role_name !== "Super Admin") 
+          .filter((role) => role.role_name !== "Super Admin" && role.role_name !== "Admin") 
            .map((role) => (
           <option key={role.user_role_id} value={role.user_role_id}>
             {role.role_name}

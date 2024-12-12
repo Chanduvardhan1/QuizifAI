@@ -659,22 +659,22 @@ const Quiz = () => {
       marginLeft: "-2px",
       borderRadius: "4px",
       cursor: "pointer",
-      fontSize: "11px",
-      backgroundColor: "#f3d0d5",
+      fontSize: "12px",
+      backgroundColor: "#CBF2FB",
       border: "none",
       outline: "none",
       boxShadow: state.isFocused ? "0 0 0 1px #2684FF" : "none", // Focused state border
     }),
     menu: (provided) => ({
       ...provided,
-      backgroundColor: "#f3d0d5",
+      backgroundColor: "#CBF2FB",
       overflowX: "hidden",
       zIndex: 9999,
     }),
     option: (provided, state) => ({
       ...provided,
-      backgroundColor: state.isFocused ? "#A5CCE3" : "#f3d0d5",
-      color: "black",
+      backgroundColor: state.isFocused ? "#A5CCE3" : "#CBF2FB",
+      color: "#00008b",
       fontSize: "10px",
       whiteSpace: "nowrap",
       maxWidth: "100%",
@@ -690,7 +690,7 @@ const Quiz = () => {
     multiValueLabel: (provided) => ({
       ...provided,
       color: "black",
-      fontSize: "10px",
+      fontSize: "12px",
       lineHeight: "normal",
       maxWidth: "100px",
       overflow: "hidden",
@@ -699,14 +699,14 @@ const Quiz = () => {
     }),
     multiValueRemove: (provided) => ({
       ...provided,
-      fontSize: "10px",
+      fontSize: "12px",
       cursor: "pointer",
     }),
     placeholder: (provided) => ({
       ...provided,
       fontWeight: "bold",
       color: "#495487",
-      fontSize: "10px",
+      fontSize: "12px",
     }),
     dropdownIndicator: (provided) => ({
       ...provided,
@@ -885,8 +885,8 @@ const Quiz = () => {
 
           <div className={styles.infoCards}>
             <div className={styles.sortBy}>
-              <div className="flex flex-wrap gap-1 mb-3 bg-[#f3d0d5] border-none px-2 ml-[11px] -mr-[20px] mx-auto mt-[10px] rounded-md">
-                <div className="flex-1 min-w-[150px]">
+              <div className="flex flex-wrap gap-[20px] mb-3  border-none px-2 ml-[7px] -mr-[20px] mx-auto mt-[10px] rounded-md">
+                <div className="flex-1 min-w-[10px]">
                   <Select
                     isMulti
                     options={dateRanges.map((dtrng) => ({
@@ -991,7 +991,7 @@ const Quiz = () => {
                 />
                 </div>
               </div>
-              <div className="flex flex-wrap gap-1 mb-3  w-full border-none px-2 ml-[5px] -mr-[20px] mx-auto mt-[10px] rounded-md">
+              <div className="flex flex-wrap gap-[20px] mb-3  w-full border-none px-2 ml-[7px] -mr-[20px] mx-auto mt-[10px] rounded-md">
                 {/* complexity    */}
                 {/* <div className="flex-1 min-w-[150px]"> */}
                 <Select
@@ -1036,9 +1036,9 @@ const Quiz = () => {
               </div>
             </div>
           </div>
-<div className="flex mx-auto">
+{/* <div className="flex mx-auto">
   <DashBoardNavBar/>
-</div>
+</div> */}
           <div className="mx-auto">
             <div className="flex flex-wrap mx-auto gap-[10px] ml-[18px]">
               {filteredQuizzes
@@ -1093,7 +1093,7 @@ const Quiz = () => {
                                   quizItem.attempts_count,
                                   quizItem.retake_flag
                                 )
-                              } className="text-[15px] font-semibold text-gray-800 w-[170px] sm:w-[215px] truncate">
+                              } className="text-[15px] font-semibold text-[#00008b] w-[170px] sm:w-[215px] truncate">
                          {quizItem.quiz_name}
                          </h2>
                    
@@ -1855,7 +1855,7 @@ const Quiz = () => {
                       // </div>
                     ) : (
 
-                      <div className="mr-2">
+                      <div className="">
                          <div
                      key={index}
                      
@@ -1879,7 +1879,7 @@ const Quiz = () => {
                        <div className="relative group flex justify-between items-center gap-[3px]">
                          {/* Truncated text container */}
                          <h2 onClick={() => handleStartQuiz(quizItem.quiz_id) } 
-                         className="text-[15px] font-semibold text-gray-800 w-[170px] sm:w-[215px] truncate">
+                         className="text-[15px] font-semibold text-[#00008b] w-[170px] sm:w-[215px] truncate">
                          {quizItem.quiz_name}
                          </h2>
                    

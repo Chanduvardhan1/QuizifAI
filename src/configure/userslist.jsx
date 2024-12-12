@@ -13,7 +13,7 @@ import Delete from "../../src/assets/Images/Assets/Delete.png";
 import Line from "../../src/assets/Images/Assets/Line.png";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import defaultPhoto from '../../src/assets/Images/dashboard/narmtech.jpg'
+import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
 // import searchIcon from "../assets/Images/images/dashboard/Search.png";
 
 const userslist = () => {
@@ -23,6 +23,7 @@ const userslist = () => {
   
     const userId = localStorage.getItem("user_id");
     const orgId = localStorage.getItem('org_id');
+    const userRole = localStorage.getItem("user_role");
 
     const [username1, setUsername1] = useState("");
 
@@ -32,36 +33,50 @@ useEffect(() => {
     setUsername1(storedUsername);
   }
 }, []);
+const [errorMessage, setErrorMessage] = useState("");
 
-    useEffect(() => {
-      const fetchUsers = async () => {
-        try {
-          const response = await fetch('https://dev.quizifai.com:8010/nrml-users/', {
-            method: 'GET',
-            headers: {
-              'accept': 'application/json',
-              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjaGFuZHUgdmFyZGhhbiBrIiwiZXhwIjoyNTM0MDIzMDA3OTl9.iWUpVhKE_YtFj5W_ReJgK6DqPA2rnsS5_j-cTnlQUPw',
-            },
-          });
-  
-          if (!response.ok) {
-            throw new Error('Failed to fetch user data');
-          }
-  
-          const data = await response.json();
-  
-          if (data.response === 'success') {
-            setUsers(data.data);
-          } else {
-            setError(data.response_message || 'Failed to fetch users');
-          }
-        } catch (err) {
-          setError(err.message || 'An unknown error occurred');
+const fetchOrganizationUsers = async () => {
+    try {
+      const authToken = localStorage.getItem("authToken"); // Get the token from localStorage
+      if (!authToken) {
+        throw new Error("No authentication token found");
+      }
+
+      const response = await fetch(
+        `https://dev.quizifai.com:8010/get_organization_nrml_usrs?org_id=${orgId}`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: "", // Empty body as per the cURL request
         }
-      };
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("API Response:", data);
+
+      if (data.response === "success") {
+        setUsers(data.data); // Assuming `data.data` contains the users
+      } else {
+        setError(data.response_message || "Failed to fetch users");
+      }
+    } catch (error) {
+      console.error("Fetch Error:", error);
+      setError(error.message || "An error occurred while fetching data");
+    }
+  };
+
+  useEffect(() => {
+    fetchOrganizationUsers();
+  }, []);
+
   
-      fetchUsers();
-    }, []);
 
     // --------------***view image*** -------------- //
 const [photo, setPhoto] = useState(''); // State to store the image URL
@@ -118,7 +133,8 @@ const [loading, setLoading] = useState(true);
             <div className="">
       <h1 className="text-center text-[24px] font-bold text-[#F17530]">Users List</h1>
     </div>
-    <div className="flex justify-between gap-2 mb-2 items-center">
+    {userRole === 'Admin' && (
+      <div className="flex justify-between gap-2 mb-2 items-center">
         <div className="flex items-center gap-2 justify-center">
         <div
                   className="rounded-full w-[80px]  h-[80px]"
@@ -163,11 +179,13 @@ const [loading, setLoading] = useState(true);
         </div>
                
                 </div>
+    )}
+    
 
 
       {error && <div className="text-red-500 mb-4">{error}</div>}
 
-      <div className="flex gap-3 border-2 px-2 py-2 bg-[#DCFCE7] w-full">
+      <div className="flex gap-3 border-2 px-2 py-2 bg-[#DCFCE7] text-[#214082] w-full">
               <div>
                   <div>
                     <span>Organization ID  </span>
@@ -204,8 +222,8 @@ const [loading, setLoading] = useState(true);
             <th className="py-2 px-4 border-b text-[#214082]">Name</th>
             <th className="py-2 px-4 border-b text-[#214082]">Email</th>
             <th className="py-2 px-4 border-b text-[#214082]">Active Status</th>
-            <th className="py-2 px-4 border-b text-[#214082]">Role</th>
-            <th className="py-2 px-4 border-b text-[#214082]">Organization ID/Name</th>
+            <th className="py-2 px-4 border-b text-[#214082]">Role Name</th>
+            <th className="py-2 px-4 border-b text-[#214082]">Organization Name</th>
             <th className="py-2 px-4 border-b text-[#214082]">Edit/Delete</th>
 
           </tr>
@@ -215,17 +233,17 @@ const [loading, setLoading] = useState(true);
             <tr key={user.user_id} className="bg-white hover:bg-gray-100 active:bg-green-200 text-[12px]">
               <td className="py-2 px-4 border-b text-[#214082]">{user.user_id}</td>
               <td className="py-2 px-4 border-b text-[#214082]">{user.user_name}</td>
-              <td className="py-2 px-4 border-b text-[#214082]">{user.user_name}</td>
+              <td className="py-2 px-4 border-b text-[#214082]">{user.user_email}</td>
 
-              <td className="py-2 px-4 border-b text-[#214082]">
+              <td className="py-2 px-4 border-b text-[#214082] text-center">
                 {user.active_status ? (
                   <span className="text-green-500">Active</span>
                 ) : (
                   <span className="text-red-500">Inactive</span>
                 )}
               </td>
-              <td className="py-2 px-4 border-b text-[#214082]">{user.user_role_id}</td>
-              <td className="py-2 px-4 border-b text-[#214082]">{user.user_role_id} {user.user_name}</td>
+              <td className="py-2 px-4 border-b text-[#214082]">{user.role_name}</td>
+              <td className="py-2 px-4 border-b text-[#214082]">{user.org_name}</td>
               <td className="h-full border-b text-[#214082] flex gap-2 pl-[40px] pt-2 text-[12px] cursor-pointer hover:font-medium hover:underline">
                     <img
                       className="h-[13px] w-[13px] mr-1 cursor-pointer"

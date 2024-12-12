@@ -13,7 +13,7 @@ import Edit from "../../src/assets/Images/Assets/Edit.png"
 import Delete from "../../src/assets/Images/Assets/Delete.png"
 import Line from "../../src/assets/Images/Assets/Line.png"
 import { RiDeleteBinLine } from "react-icons/ri";
-import defaultPhoto from '../../src/assets/Images/dashboard/narmtech.jpg'
+import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
 import camera1 from "../../src/assets/Images/dashboard/edit.png"
 import search from "../assets/Images/images/dashboard/Search.png";
 import x from "../../src/assets/Images/quiz-type/cross-button.png"
@@ -204,6 +204,8 @@ useEffect(() => {
   }
 }, []);
 console.log('email id 1:',email)
+
+
 const fetchOrganizationDetails = async () => {
   try {
     const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
@@ -239,12 +241,24 @@ const fetchOrganizationDetails = async () => {
       // setUpdatedDate(organizationDetails.updated_date || '');
       // setCreatedBy(organizationDetails.created_by || '');
       // setUpdatedBy(organizationDetails.updated_by || '');
-      setOrgType(organizationDetails.org_type || '');
+      setSelectedOrgTypeId(organizationDetails.org_type || '');
       setOrgPublicQuizzesAccessFlag(organizationDetails.org_public_quizzes_access_flag || '');
       setOrgCreatePublicQuizzesFlag(organizationDetails.org_create_public_quizzes_flag || '');
+      setWebsiteurl(organizationDetails.website_url || '');
       // setOrgPhotoUrl(organizationDetails.org_photo_url || '');
       // setDefaultLoginMethod(organizationDetails.default_login_method || '');
-      // setPrintFlag(organizationDetails.print_flag || '');
+      // setPrintFlag(organizationDetails.print_flag || '');'
+
+      const locationDetails = organizationDetails.location_details[0]; // Access the first location detail
+      if (locationDetails) {
+        setCity(locationDetails.location_name || "N/A");
+        setDistrict(locationDetails.district_name || "N/A");
+        setState(locationDetails.state_name || "N/A");
+        setCountry(locationDetails.country_name || "N/A");
+        setPostalCode(locationDetails.pin_code || "N/A");
+      } else {
+        console.warn("No location details found");
+      }
     } else {
       setErrorMessage(data.response_message || 'Failed to fetch data');
     }
@@ -264,7 +278,7 @@ useEffect(() => {
 
 
 
-//---------**AddOrganizationProfile**------------//
+//---------**update OrganizationProfile**------------//
 
 const [orgName, setOrgName] = useState('');
 const [orgAdminId, setOrgAdminId] = useState(0);
@@ -273,9 +287,10 @@ const [orgSubscriptionKey, setOrgSubscriptionKey] = useState('');
 const [orgPointOfContactId, setOrgPointOfContactId] = useState(0);
 const [orgAddressLine1, setOrgAddressLine1] = useState('');
 const [orgAddressLine2, setOrgAddressLine2] = useState('');
-const [orgType, setOrgType] = useState('School');
+// const [orgType, setOrgType] = useState('School');
 const [orgPublicQuizzesAccessFlag, setOrgPublicQuizzesAccessFlag] = useState(true);
 const [orgCreatePublicQuizzesFlag, setOrgCreatePublicQuizzesFlag] = useState(true);
+const [websiteurl, setWebsiteurl] = useState('');
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -292,6 +307,7 @@ const handleSubmit = async (e) => {
     org_address_line1: orgAddressLine1,
     org_address_line2: orgAddressLine2,
     org_type: selectedOrgTypeId,
+    website_url:websiteurl,
     org_public_quizzes_access_flag: true,
     org_create_public_quizzes_flag: true,
     print_flag: true,
@@ -331,7 +347,7 @@ const handleSubmit = async (e) => {
 
 
 
-//---------**AddOrganizationProfile End**------------//
+//---------**update OrganizationProfile End**------------//
 
 //---------**AddOrganizationProfile User Type**------------//
 
@@ -530,7 +546,7 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
       ) : error ? (
         <p>{error}</p>
       ) : (
-        <div className="relative w-full h-full">
+        <div className="relative w-[80px] h-[80px] ">
         <img
           src={photo}
           alt="Profile"
@@ -611,8 +627,8 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
                 placeholder="Organization Name"
                 value={orgName}
-                onChange={(e) => setOrgName(e.target.value)}
-                disabled={!isEditing}
+                // onChange={(e) => setOrgName(e.target.value)}
+                // disabled={!isEditing}
               ></input>
   
         </div>
@@ -625,7 +641,7 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
         <select
          disabled={!isEditing}
                   className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-        //   value={selectedComplexity}
+          value={selectedOrgTypeId}
         onChange={handleSelectChange}
         >
           <option value="" disabled>Institations</option>
@@ -664,7 +680,7 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-                placeholder="Organization admin Name"
+                placeholder="Organization Address Line1"
                 value={orgAddressLine1}
                 onChange={(e) => setOrgAddressLine1(e.target.value)}
                 disabled={!isEditing}
@@ -680,7 +696,7 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-                placeholder="Organization admin Name"
+                placeholder="Organization Address Line2"
                 value={orgAddressLine2}
                 onChange={(e) => setOrgAddressLine2(e.target.value)}
                 disabled={!isEditing}
@@ -704,7 +720,7 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
         type="text"
         className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] h-[31px] hover:border-blue-200 text-[11px] focus:outline-none `}
 
-        placeholder="postalCode"
+        placeholder="PostalCode"
         value={postalCode}
         onChange={handlePostalCodeChange}
         disabled={!isEditing}
@@ -835,8 +851,8 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
                 placeholder="Website URL"
-                // value={availablefrom}
-                // onChange={handleAvailableFromChange}
+                value={websiteurl}
+                onChange={(e) => setWebsiteurl(e.target.value)}
                 disabled={!isEditing}
               ></input>
   

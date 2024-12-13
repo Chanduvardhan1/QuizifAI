@@ -586,22 +586,28 @@ const handleUserTypeChange = (e) => {
 
 {responseMessage && (
   <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-    <div
-      className={`p-4 rounded shadow-lg w-[300px] text-center ${
-        responseMessage.includes('success')
-          ? 'bg-green-100 text-green-800'
-          : 'bg-red-100 text-red-800'
+  <div
+    className={`bg-white rounded-lg shadow-lg p-6 w-96 text-center ${
+      responseMessage.includes('success') ? 'border-green-500' : 'border-red-500'
+    } border-t-4`}
+  >
+    <h2
+      className={`text-xl font-semibold ${
+        responseMessage.includes('success') ? 'text-green-500' : 'text-red-500'
       }`}
     >
-      <p>{responseMessage}</p>
-      <button
-        onClick={() => setResponseMessage('')} // Close the popup
-        className="mt-4 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700"
-      >
-        Close
-      </button>
-    </div>
+      {responseMessage.includes('success') ? 'Success' : 'Error'}
+    </h2>
+    <p className="mt-2 text-gray-700">{responseMessage}</p>
+    <button
+      onClick={() => setResponseMessage('')} // Close the popup
+      className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+    >
+      Close
+    </button>
   </div>
+</div>
+
 )}
     
           <div className="flex justify-end px-10">

@@ -33,7 +33,8 @@
 .currentQuestion{
     display: flex;
     flex-direction: column;
-    gap: 0px;  
+    gap: 0px;
+    width: 55%;  
 }
 
 .pageItem {

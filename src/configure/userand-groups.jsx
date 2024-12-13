@@ -800,6 +800,16 @@ const handleSubmit1 = async (e) => {
   const handleChange = (selectedOptions) => {
     setSelectedUserIds(selectedOptions.map((option) => option.value));
   };
+ const  handleclose = () => {
+  setResponseMessage('');
+  setShowPopup(false);
+
+ }
+ const  handleclose1 = () => {
+  setResponseMessage1('');
+  setShowPopup(false);
+
+ }
   return (
     <>
       <div className="flex w-full font-Poppins">
@@ -1042,7 +1052,7 @@ onChange={handleSelectChange}
     >
       <p>{responseMessage1}</p>
       <button
-        onClick={() => setResponseMessage1('')} // Close the popup
+        onClick={handleclose1} // Close the popup
         className="mt-4 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700"
       >
         Close
@@ -1251,7 +1261,7 @@ onChange={handleSelectChange}
     >
       <p>{responseMessage}</p>
       <button
-        onClick={() => setResponseMessage('')} // Close the popup
+        onClick={handleclose} // Close the popup
         className="mt-4 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700"
       >
         Close

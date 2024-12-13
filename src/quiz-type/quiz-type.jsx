@@ -50,6 +50,7 @@ import QuestionPaper from "../assets/Images/Assets/questionPaper.png";
 import GreaterThan from "../assets/Images/images/dashboard/greaterthan.png";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch'
+import { FaSyncAlt } from 'react-icons/fa';
 
 
 
@@ -826,7 +827,7 @@ const handleToLayout4 = () =>{
           quiz_duration: duration,
           course_name: selectedCourse,
           quiz_time_bounded_questions: timings,
-          quiz_public_access: publicAccess,
+          quiz_public_access: publicAccess ? 'on' : 'off',
           available_from: availablefrom,
           disabled_on: disabledon,
           quiz_total_marks: quiztotalmarks,
@@ -993,6 +994,7 @@ const handleToLayout4 = () =>{
 
   const toggler3 = (event) => {
     setPublicAccess(event.target.checked);
+
 
   };
 

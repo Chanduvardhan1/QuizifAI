@@ -44,7 +44,8 @@ import editicon from "../../src/assets/Images/quiz-type/edit.png"
 import Playbutton from "../../src/assets/Images/quiz-type/image.png"
 import closeimage from "../../public/closeimage.png";
 import stars from "../../src/assets/Images/quiz-type/star.png"
-
+import print1 from "../../src/assets/Images/dashboard/print.png"
+import trophy from "../../src/assets/Images/dashboard/trophy.png"
 
 const dashboardLogo = "/images/dashboard/quizifaiDashboard.png";
 const dashboardIcon = "/images/dashboard/dashboard.png";
@@ -188,8 +189,7 @@ const quizAccess = () => {
         </div>
 <div className="w-full p-5">
     <div className="flex justify-end py-2">
-            <div onClick={Back} className="flex items-center px-[10px] p-[5px] border-[1px] border-[#FF6865] bg-[#FFCCCB] text-[#FF0500] font-semibold rounded-[10px] cursor-pointer "
-            >
+            <div onClick={Back} className="flex items-center px-[10px] p-[5px] border-[1px] border-[#FF6865] bg-[#FFCCCB] text-[#FF0500] font-semibold rounded-[10px] cursor-pointer">
                 <p>Close</p>
                 <img src={closeimage} alt="" className="w-[20px] h-[20px]" />
             </div>
@@ -215,11 +215,11 @@ const quizAccess = () => {
             </div>
             <div className="flex gap-3">
                 <div className="flex gap-2">
-                <img src={timer}
+                <img src={trophy}
                  alt="" 
                 className="w-[18px] h-[18px] "   
                    />
-                <img src={timer}
+                <img src={print1}
                  alt="" 
                 className="w-[18px] h-[18px] "  />
                 </div>

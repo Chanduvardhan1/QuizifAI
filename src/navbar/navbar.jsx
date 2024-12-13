@@ -5,7 +5,7 @@ import quizifailogo from "../assets/Images/images/home/Quizifai3.png";
 import rocket from "../assets/Images/images/dashboard/rocket.png";
 import infinity from "../assets/Images/images/dashboard/infinity.png";
 import { AuthContext } from "../Authcontext/AuthContext.jsx"
- import Quiz from "../../public/quiz.png";
+ import Quiz from "../../src/assets/Images/dashboard/quiz (1).png";
  import profileIcon from "../../public/profilepage.png";
  import settingsicon from "../../public/settingsicon.png";
  import myHistoryIcon from "../../public/myhistory.png"

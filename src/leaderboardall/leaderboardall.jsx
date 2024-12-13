@@ -38,18 +38,8 @@ const handleTabClick = (tab) => {
     <div>
         <h1 className='flex font-bold justify-center text-[25px] text-[#214082]'>Leaderboard</h1>
     </div>
-   <div className="flex w-full bg-[#F3D0D5]  gap-4 mb-1  px-2 p-2 font-semibold rounded-lg">
-      {/* <button
-        onClick={() => handleTabClick('Global')}
-        className={`w-full px-4 py-2 mr-4 ${
-          activeTab === 'Global' ? 'bg-gray-100 text-[#214082] rounded-t-lg' : ' text-[#214082] bg-[#c1e7e3] rounded-lg'
-        }`}
-       
-         
-       
-      >
-      Institution
-      </button> */}
+   {/* <div className="flex w-full bg-[#F3D0D5]  gap-4 mb-1  px-2 p-2 font-semibold rounded-lg">
+     
       <button
         onClick={() => handleTabClick('Global')}
        
@@ -72,16 +62,17 @@ const handleTabClick = (tab) => {
       Status Report
       </button>
     
-    </div>
+    </div> */}
     {activeTab === 'Global' &&(
  <div>
- <Global/>
+ 
+ <Statusreport/>
 </div>
     )}
        {activeTab === 'Status' &&(
 
    <div>
-    <Statusreport/>
+   <Global/>
    </div>
        )}
 

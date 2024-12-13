@@ -16,6 +16,9 @@ import { useLocation } from "react-router-dom";
 import Navigation from "../navbar/navbar.jsx";
 import LogoutBar from "../logoutbar/logoutbar.jsx";
 import { toast, ToastContainer } from "react-toastify";
+import print1 from "../../src/assets/Images/dashboard/print.png"
+import trophy from "../../src/assets/Images/dashboard/trophy.png"
+
 // import useBlocker from '../useBlocker/useBlocker.jsx';
 
 //------------------**import images**------------------//
@@ -776,11 +779,11 @@ const QuizQuestions = () => {
             </div>
             <div className="flex gap-3">
                 <div className="flex gap-2">
-                <img src={timer}
+                <img src={trophy}
                  alt="" 
                 className="w-[18px] h-[18px] "   
                    />
-                <img src={timer}
+                <img src={print1}
                  alt="" 
                 className="w-[18px] h-[18px] "  />
                 </div>
@@ -1146,7 +1149,7 @@ const QuizQuestions = () => {
       <div 
       onClick={handlePreviousQuestion}
       disabled={currentQuestionIndex === 0}
-       className="flex items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px]"
+       className="flex  cursor-pointer items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px]"
       >
           <p>Previous</p>
           <img src={Playbutton} alt="" className="w-[20px] h-[20px]" />
@@ -1177,7 +1180,7 @@ const QuizQuestions = () => {
       <div 
       onClick={handleNextQuestion}
       disabled={currentQuestionIndex === filteredQuizData.length - 1}
-       className="flex items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px]"
+       className="flex cursor-pointer items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px]"
       >
           <p>Next</p>
           <img src={Playbutton} alt="" className="w-[20px] h-[20px]" />
@@ -1204,7 +1207,7 @@ const QuizQuestions = () => {
             </button> */}
             <div 
                    onClick={handleSubmit}
-       className="flex items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px]"
+       className="flex cursor-pointer items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px]"
       >
           <p>Submit</p>
           <img src={Playbutton} alt="" className="w-[20px] h-[20px]" />

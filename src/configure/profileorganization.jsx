@@ -52,6 +52,8 @@ const profileorganization = () => {
   const [showsave, setShowsave] = useState(false);
   const [showcancel, setShowcancel] = useState(false);
   const [username, setUsername] = useState("");
+  const [adminname, setAdminname] = useState('');
+  const [adminemail, setAdminemail] = useState('');
 
   useEffect(() => {
     const storedUsername = localStorage.getItem("username");
@@ -227,7 +229,7 @@ const fetchOrganizationDetails = async () => {
     console.log('API Response:', data);
     if (data.response === 'success') {
 
-      const organizationDetails = data.data[0]; // Access the first object in the `data` array
+      const organizationDetails = data.data; // Access the first object in the `data` array
 
       // setOrgId(organizationDetails.org_id || '');
       setOrgName(organizationDetails.org_name || '');
@@ -241,6 +243,8 @@ const fetchOrganizationDetails = async () => {
       // setUpdatedDate(organizationDetails.updated_date || '');
       // setCreatedBy(organizationDetails.created_by || '');
       // setUpdatedBy(organizationDetails.updated_by || '');
+
+
       setSelectedOrgTypeId(organizationDetails.org_type || '');
       setOrgPublicQuizzesAccessFlag(organizationDetails.org_public_quizzes_access_flag || '');
       setOrgCreatePublicQuizzesFlag(organizationDetails.org_create_public_quizzes_flag || '');
@@ -249,16 +253,14 @@ const fetchOrganizationDetails = async () => {
       // setDefaultLoginMethod(organizationDetails.default_login_method || '');
       // setPrintFlag(organizationDetails.print_flag || '');'
 
-      const locationDetails = organizationDetails.location_details[0]; // Access the first location detail
-      if (locationDetails) {
-        setCity(locationDetails.location_name || "N/A");
-        setDistrict(locationDetails.district_name || "N/A");
-        setState(locationDetails.state_name || "N/A");
-        setCountry(locationDetails.country_name || "N/A");
-        setPostalCode(locationDetails.pin_code || "N/A");
-      } else {
-        console.warn("No location details found");
-      }
+        setAdminemail(organizationDetails.organization_admin_email || "N/A")
+        setAdminname(organizationDetails.organization_admin_name || "N/A")
+        setCity(organizationDetails.location_name || "N/A");
+        setDistrict(organizationDetails.district_name || "N/A");
+        setState(organizationDetails.state_name || "N/A");
+        setCountry(organizationDetails.country_name || "N/A");
+        setPostalCode(organizationDetails.pin_code || "N/A");
+   
     } else {
       setErrorMessage(data.response_message || 'Failed to fetch data');
     }
@@ -291,6 +293,10 @@ const [orgAddressLine2, setOrgAddressLine2] = useState('');
 const [orgPublicQuizzesAccessFlag, setOrgPublicQuizzesAccessFlag] = useState(true);
 const [orgCreatePublicQuizzesFlag, setOrgCreatePublicQuizzesFlag] = useState(true);
 const [websiteurl, setWebsiteurl] = useState('');
+const [modalMessage, setModalMessage] = useState(''); // Message to display
+const [isModalVisible, setIsModalVisible] = useState(false); // Modal visibility
+const [isError, setIsError] = useState(false); // Determine success or error modal
+
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -308,9 +314,9 @@ const handleSubmit = async (e) => {
     org_address_line2: orgAddressLine2,
     org_type: selectedOrgTypeId,
     website_url:websiteurl,
-    org_public_quizzes_access_flag: true,
-    org_create_public_quizzes_flag: true,
-    print_flag: true,
+    org_public_quizzes_access_flag: false,
+    org_create_public_quizzes_flag: false,
+    print_flag: false,
   };
 
   try {
@@ -335,17 +341,24 @@ const handleSubmit = async (e) => {
 
     const data = await response.json();
     console.log('Response:', data);
-    alert('Organization profile added successfully!');
+    setModalMessage('Organization profile added successfully!');
+    setIsError(false);
+
     fetchOrganizationDetails();
+    setIsModalVisible(true);
     setShowsave(false);
     setIsEditing(false)
   } catch (error) {
-    console.error('Error:', error);
-    alert('Failed to add organization profile.');
+    setModalMessage('Failed to add organization profile. Please try again.');
+    setIsError(true);
+    setIsModalVisible(true);
   }
 };
 
-
+const closeModal1 = () => {
+  setIsModalVisible(false);
+  setModalMessage('');
+};
 
 //---------**update OrganizationProfile End**------------//
 
@@ -523,6 +536,7 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
   const handleedit = () =>{
     setShowsave(true);
    setIsEditing(true)
+   handlePostalCodeChange();
   }
   const handleeditback = () =>{
     setShowsave(false);
@@ -865,6 +879,22 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
   
     </div>
   </div>
+  {isModalVisible && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className={`bg-white rounded-lg shadow-lg p-6 w-96 text-center ${isError ? 'border-red-500' : 'border-green-500'} border-t-4`}>
+            <h2 className={`text-xl font-semibold ${isError ? 'text-red-500' : 'text-green-500'}`}>
+              {isError ? 'Error' : 'Success'}
+            </h2>
+            <p className="mt-2 text-gray-700">{modalMessage}</p>
+            <button
+              onClick={closeModal1}
+              className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
   {showsave ?  (
                    
                    <div className="flex justify-end gap-[10px] md:col-span-2 w-[89%] pl-[125px] mt-2">
@@ -929,7 +959,7 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
                 placeholder="Name"
-                value={username}
+                value={adminname}
               ></input>
   
         </div>
@@ -963,7 +993,7 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
                 placeholder="Email"
-                value={email}
+                value={adminemail}
                 // onChange={handleAvailableFromChange}
                 disabled={!isEditing}
               ></input>

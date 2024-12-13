@@ -52,7 +52,8 @@ const configure = () => {
   const handleQuestionBank = () => handleRestrictedClick("/questionbank");
   
   const handleUserList = () => handleRestrictedClick("/userslist");
-
+  
+  const handleGlobalLeaderboard = () => handleRestrictedClick("/leaderboardall");
 
 
 
@@ -282,6 +283,10 @@ const configure = () => {
                       : contentItem === "Add User" &&
                       item.title === "User & Roles"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
+
+                    : contentItem === "Global Leaderboard" &&
+                      item.title === "Reports"
+                    ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : contentItem === "Organization Profile" &&
                         item.title === "Organization"
                       ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
@@ -319,6 +324,8 @@ const configure = () => {
                       ? handleQuestionBank
                       : contentItem === "User List"
                       ? handleUserList
+                      : contentItem === "Global Leaderboard"
+                      ? handleGlobalLeaderboard
                       : null
                   }
                 >

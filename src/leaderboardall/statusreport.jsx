@@ -14,9 +14,9 @@ const statusreport = () => {
   return (
     <>
     <div className='w-full '>
-   <div className='mb-2'>
+   {/* <div className='mb-2'>
     <h1 className=' text-[20px] text-[#214082] font-semibold underline'>Status Report leaderboard</h1>
-   </div>
+   </div> */}
    <div className='flex gap-[10px] w-[40%] h-10'>
         <select
                   className="w-full border-[1px]  "
@@ -24,11 +24,11 @@ const statusreport = () => {
                 //   onChange={(e) => setQuestionType(e.target.value)}
         >
                <option value="" disabled>
-              Department  
+              Quizs
             </option>
-            <option value="Department">Department</option>
-            <option value="Department">Department</option>
-            <option value="Department">Department</option>
+            <option value="Department">English</option>
+            <option value="Department">Maths</option>
+            <option value="Department">Scoical</option>
         
         </select> 
         <select
@@ -37,11 +37,11 @@ const statusreport = () => {
                 //   onChange={(e) => setQuestionType(e.target.value)}
         >
                <option value="" disabled>
-              Quiz name  
+              Quiz Master  
             </option>
-            <option value="Quiz name ">Quiz name </option>
-            <option value="Quiz name ">Quiz name </option>
-            <option value="Quiz name ">Quiz name </option>
+            <option value="Quiz name ">chandu </option>
+            <option value="Quiz name ">Vardhan </option>
+            <option value="Quiz name ">Kotakondla </option>
         
         </select> 
    </div>

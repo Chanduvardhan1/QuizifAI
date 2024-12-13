@@ -153,9 +153,10 @@ const LoginPage = () => {
         if (responseData.response === "success") {
           const userId = responseData.data && responseData.data[0] && responseData.data[0].user_id;
         const userRole = responseData.data && responseData.data[0] && responseData.data[0].user_role;
-        const orgId = responseData.data?.[0]?.org_id;
+        // const orgId = responseData.data?.[0]?.org_id;
         // const orgId = responseData.data?.[0]?.org_id || 0; // Default to 0 if null or undefined
-
+        const orgId = responseData.data?.[0]?.org_id ?? "";
+        
         if (userId && userRole) {
           login(accessToken);
           localStorage.setItem('user_id', userId);

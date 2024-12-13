@@ -206,12 +206,12 @@ const [loading, setLoading] = useState(true);
                     </span>
                   </div>
 
-                  <div>
+                  {/* <div>
                     <span>Admin Name </span>
                     <span className="pl-[91px] font-normal">
                       <span className="font-bold">:</span> {username1}
                     </span>
-                  </div>
+                  </div> */}
                 </div>
 
               </div>

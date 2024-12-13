@@ -781,22 +781,22 @@ const FreeProfile = () => {
               <p className="text-[#002366] ml-[16px]">
                 Welcome {userName.charAt(0).toUpperCase() + userName.slice(1)}
               </p>
-              <div className="bg-[#30CDF040] mt-[10px] pl-[20px] text-[15px] font-medium text-[#214082] leading-6 py-[10px] rounded-[10px]">
+              {/* <div className="bg-[#30CDF040] mt-[10px] pl-[20px] text-[15px] font-medium text-[#214082] leading-6 py-[10px] rounded-[10px]">
                 <p>
                   {weeklyQuizCount > 0 && averageScorePercentage > 0
                     ? `You have successfully completed ${weeklyQuizCount} Quizzes this week, achieving an average score of ${averageScorePercentage}%`
                     : "You have not attended any quizzes yet, Please attempt the quizzes below."}
                 </p>
-              </div>
+              </div> */}
             </div>
             <div className={styles.headerRight}>
               <div className="text-[#002366]">{getFormattedDate()}</div>
             </div>
           </div>
         </div>
-<div className="flex relative ">
+{/* <div className="flex relative ">
   <DashBoardNavBar/>
-</div>
+</div> */}
 {step === 1 && (
          <>
         {/* Main content  */}

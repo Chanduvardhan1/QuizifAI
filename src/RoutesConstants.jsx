@@ -100,6 +100,8 @@ import Institution from "./leaderboardall/institution.jsx";
 import Userslist from "./configure/userslist.jsx";
 // import Resetpassword from "./reset-password/restpassword.jsx";
 import QuizAccess1 from "./quizaccess1/quizaccess1.jsx";
+import Creatorganization from "./configure/creatorganization.jsx";
+
 export default () => {
     return [
         {
@@ -120,11 +122,6 @@ export default () => {
             component:Usersgroup,
             isPrivate: true
         },
-        // {
-        //     path:'resetpassword',
-        //     component:Resetpassword,
-        //     isPrivate: true
-        // },
         {
             path:'userslist',
             component:Userslist,
@@ -148,6 +145,11 @@ export default () => {
         {
             path:'questionbank',
             component:Questionbank,
+            isPrivate: true
+        },
+        {
+            path:'creatorganization',
+            component:Creatorganization,
             isPrivate: true
         },
         {

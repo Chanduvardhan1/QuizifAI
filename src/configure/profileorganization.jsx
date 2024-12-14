@@ -255,11 +255,11 @@ const fetchOrganizationDetails = async () => {
 
         setAdminemail(organizationDetails.organization_admin_email || "N/A")
         setAdminname(organizationDetails.organization_admin_name || "N/A")
-        setCity(organizationDetails.location_name || "N/A");
-        setDistrict(organizationDetails.district_name || "N/A");
-        setState(organizationDetails.state_name || "N/A");
-        setCountry(organizationDetails.country_name || "N/A");
-        setPostalCode(organizationDetails.pin_code || "N/A");
+        setCity(organizationDetails.location_name );
+        setDistrict(organizationDetails.district_name);
+        setState(organizationDetails.state_name);
+        setCountry(organizationDetails.country_name);
+        setPostalCode(organizationDetails.pin_code);
    
     } else {
       setErrorMessage(data.response_message || 'Failed to fetch data');
@@ -551,7 +551,7 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
 
      
         <div>
-            <h1 className=' font-semibold text-[#EF5130] mb-2'>Profile</h1>
+            <h1 className=' font-semibold text-[#EF5130] mb-2'>Organization Profile</h1>
         </div>
   <div className='flex gap-5'>
   <div className="relative">
@@ -635,7 +635,7 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
       <div className='flex gap-[5px]'>
       <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
-        <label className="w-[59%] text-blue-800 font-semibold mb-2 mr-[9px] ">Organization Name<span className="text-red-500">*</span></label>
+        <label className="w-[40%] text-blue-800 font-semibold mb-2 mr-[9px] ">Name<span className="text-red-500">*</span></label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -651,7 +651,7 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
       </div>
       <div className="w-full flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[50%] text-blue-800 font-semibold mb-2 mr-[9px] ">Organization Type<span className="text-red-500">*</span></label>
+        <label className="w-[40%] text-blue-800 font-semibold mb-2 mr-[9px] ">Type<span className="text-red-500">*</span></label>
         <select
          disabled={!isEditing}
                   className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -690,7 +690,7 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
 
       <div className="w-full flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[57%] text-blue-800 font-semibold mb-2 mr-[9px] ">Address line 1<span className="text-red-500"></span></label>
+        <label className="w-[40%] text-blue-800 font-semibold mb-2 mr-[9px] ">Address line 1<span className="text-red-500"></span></label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -726,7 +726,7 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
 
 <div className="flex flex-col w-full">
   <div className="w-full flex flex-row items-center">
-    <label className="w-[36%] text-blue-800 font-semibold mb-2 mr-[9px]">
+    <label className="w-[28%] text-blue-800 font-semibold mb-2 mr-[9px]">
       Pincode<span className="text-red-500">*</span>
     </label>
     <div className="flex-grow flex items-center relative">
@@ -776,7 +776,7 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
 
 <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
-        <label className="w-[57%] text-blue-800 font-semibold mb-2 mr-[9px] ">City Name<span className="text-red-500"></span></label>
+        <label className="w-[40%] text-blue-800 font-semibold mb-2 mr-[9px] ">City Name<span className="text-red-500"></span></label>
      
     <select
        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -823,7 +823,7 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
      
       <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
-        <label className="w-[57%] text-blue-800 font-semibold mb-2 mr-[9px] ">Country Name<span className="text-red-500"></span></label>
+        <label className="w-[40%] text-blue-800 font-semibold mb-2 mr-[9px] ">Country Name<span className="text-red-500"></span></label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -953,7 +953,7 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
       </div> */}
       <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
-        <label className="w-[22%] text-blue-800 font-semibold mb-2 mr-[9px] ">Name<span className="text-red-500">*</span></label>
+        <label className="w-[10%] text-blue-800 font-semibold mb-2 mr-[9px] ">Name<span className="text-red-500">*</span></label>
       
       <input
               type="text"
@@ -972,7 +972,7 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
       <div className='flex gap-2 w-full'>
       <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
-        <label className="w-[57%] text-blue-800 font-semibold mb-2 mr-[9px] ">Mobile<span className="text-red-500"></span></label>
+        <label className="w-[23%] text-blue-800 font-semibold mb-2 mr-[9px] ">Mobile<span className="text-red-500"></span></label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}

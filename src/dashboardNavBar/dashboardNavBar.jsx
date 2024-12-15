@@ -221,6 +221,7 @@ import ProgressIndicator from '../weeklyProgress/weeklyProgress';
 import x from "../../src/assets/Images/quiz-type/cross-button.png"
 import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
 import { useNavigate } from "react-router-dom";
+import questionmark from "../assets/Images/images/dashboard/questionmark.png";
 
 export default function dashboardNavBar() {
     // const [userData, setUserData] = useState({
@@ -356,17 +357,17 @@ export default function dashboardNavBar() {
 
             const userProfile = data.data[0]?.user_profile_details || {};
 
-            setDistrict(userProfile.district_name || "N/A");
-            setOccupation(userProfile.occupation_name || "N/A");
-            setCity(userProfile.location_name || "N/A");
-            setOtherOccupation(userProfile.other_occupation_name || "N/A");
-            setUserName(userProfile.full_name || "N/A");
+            setDistrict(userProfile.district_name);
+            setOccupation(userProfile.occupation_name );
+            setCity(userProfile.location_name );
+            setOtherOccupation(userProfile.other_occupation_name);
+            setUserName(userProfile.full_name);
             // setEmail(userProfile.user_email || "N/A");
             // setPhoneNumber(userProfile.user_phone_number || "N/A");
             // setRoleName(userProfile.role_name || "N/A");
-            setOccupation(userProfile.occupation_name || "N/A");
+            setOccupation(userProfile.occupation_name);
          // setLocation(userProfile.location_name || "N/A");
-           setCountry(userProfile.country_name || "N/A");
+           setCountry(userProfile.country_name);
 
 
 
@@ -519,7 +520,9 @@ export default function dashboardNavBar() {
       const handlemyhistory = () => {
         navigate("/myhistory")
        };
-
+const handleglobal =()=> {
+  navigate("/globalleaderboard")
+}
 // const score = 1564;
     return (
         <div className="container mx-auto ">
@@ -548,7 +551,7 @@ export default function dashboardNavBar() {
        Weekly Progress
       </button>
       <button
-          onClick={handlemyhistory}
+          onClick={handleglobal}
         className={`w-full px-4 py-2 rounded-lg text-[#214082] bg-[#ffe9ee]
         `}
       >
@@ -634,7 +637,21 @@ export default function dashboardNavBar() {
 
                         </h2>
                         <p className="text-[14px] text-[#214082] font-400 font-family-[lato]">{occupation}</p>
+                        <div className="flex gap-1">
                         <p className="text-[14px] text-[#002366]">User ID: {userId}</p>
+
+                        <div className="relative group inline-block">
+  <img 
+    src={questionmark} 
+    alt="question mark icon"
+    className="h-[15px] w-[15px] cursor-pointer ml-[5px]" 
+  />
+  <span className="hidden group-hover:inline-block absolute left-1/2 -translate-x-1/2 -top-[15px] h-[70px] w-[250px] z-10 bg-black text-white text-xs px-2 py-1 rounded">
+    This is your unique identification number. It will help our support team to identify your account when you need assistance through QuizifAI's support channels.
+  </span>
+</div>
+
+                        </div>
                         <p className="text-[14px] text-[#002366]">{city}</p>
 
 
@@ -663,7 +680,7 @@ export default function dashboardNavBar() {
            <ProgressIndicator />
            
         </div>
-        <div onClick={handlemyhistory} className="flex flex-col items-center cursor-pointer justify-center relative border shadow-lg rounded-sm p-2 bg-white">
+        <div onClick={handleglobal} className="flex flex-col items-center cursor-pointer justify-center relative border shadow-lg rounded-sm p-2 bg-white">
         <div className="flex flex-col items-center">
       {/* Icons above the rank number */}
       <div className="flex justify-center items-center">

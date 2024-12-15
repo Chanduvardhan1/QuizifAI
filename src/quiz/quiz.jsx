@@ -1043,6 +1043,7 @@ const Quiz = () => {
             <div className="flex flex-wrap mx-auto gap-[10px] ml-[18px]">
               {filteredQuizzes
                 .filter((quizItem) => {
+                  const adjustedAttemptsCount = quizItem.attempts_count === 1 ? 0 : quizItem.attempts_count;
                   const quizCreateDate = new Date(quizItem.quiz_start_date);
                   const quizEndDate = quizItem.quiz_end_date
                     ? new Date(quizItem.quiz_end_date)
@@ -1059,13 +1060,26 @@ const Quiz = () => {
                     {quizItem.attempt_flag === "Y" ? (
                       <div className="quiz-list">
 
-                     <div
+                     {/* <div
                      key={index}
                      
                      className={`${quizItem.attempts_count < quizItem.retake_flag
-                            ? quizItem.active_flag ?.toLowerCase() != "true" ?  'border-[#81c784] border-[1px] border-b-[8px]' : "border-[#fba0e3] border-[1px] border-b-[8px]" 
-                             : quizItem.active_flag ?.toLowerCase() != "true" ? 'border-[#81c784] border-[1px] border-b-[8px]' : "border-[#A7A7A7] border-[1px] border-b-[8px]" } flex flex-row w-full max-w-[390px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4`}
-                   >
+                            ? quizItem.active_flag ?.toLowerCase() != "true" ?  'border-[#81c784] border-[1px] border-b-[8px]' : "border-[#fba0e3] border-[1px] border-b-[8px]": quizItem.active_flag ?.toLowerCase() != "true" ? 'border-[#81c784] border-[1px] border-b-[8px]' : "border-[#A7A7A7] border-[1px] border-b-[8px]" } flex flex-row w-full max-w-[390px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4`}
+                   > */}
+                 
+       <div
+      key={index}
+      className={`
+        ${
+          quizItem.active_flag?.toLowerCase() === "false"
+            ? "border-[#A7A7A7] border-[1px] border-b-[8px]"
+            : quizItem.attempts_count > 0 && quizItem.attempts_count >= quizItem.retake_flag
+            ? "border-[#81c784] border-[1px] border-b-[8px]"
+            : "border-[#fba0e3] border-[1px] border-b-[8px]"
+        }
+        flex flex-row w-full max-w-[390px] h-[170px] rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4
+      `}
+    >
                      {/* Image Section */}
                      <div       className="w-[140px] h-[127px]  rounded-md  mr-2"
                      >

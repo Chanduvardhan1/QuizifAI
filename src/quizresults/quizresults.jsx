@@ -497,7 +497,7 @@ const quizresults = () => {
               <th className="border-b border-gray-300 px-4 py-2 text-center">Attempts</th>
               <th className="border-b border-gray-300 px-4 py-2 text-left">Score</th>
               <th className="border-b border-gray-300 px-4 py-2 text-left">Duration</th>
-              <th className="border-b border-gray-300 px-4 py-2 text-center">Version</th>
+              {/* <th className="border-b border-gray-300 px-4 py-2 text-center">Version</th> */}
               <th className="border-b border-gray-300 px-4 py-2 text-left">Date</th>
             </tr>
           </thead>
@@ -514,7 +514,7 @@ const quizresults = () => {
                 <td className="border-b px-4 py-2 text-center">{entry.attempts_count}</td>
                 <td className="border-b px-4 py-2">{entry.total_score}</td>
                 <td className="border-b px-4 py-2">{entry.attempt_duration_mins}</td>
-                <td className="border-b px-4 py-2 text-center">{entry.version}</td>
+                {/* <td className="border-b px-4 py-2 text-center">{entry.version}</td> */}
                 <td className="border-b px-4 py-2">
                   {entry.created_date}
                  

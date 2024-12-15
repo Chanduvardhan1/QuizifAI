@@ -323,7 +323,7 @@ useEffect(() => {
         </div>
         </div>
 
-        <LogoutBar/>
+        {/* <LogoutBar/> */}
     </div>
   )
 }

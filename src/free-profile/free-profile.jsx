@@ -776,12 +776,12 @@ const FreeProfile = () => {
       >
         <div className={styles.header}>
           {/* Header content */}
-          <div className="flex w-full">
-            <div className=" left-0  w-full">
+          <div className="flex">
+            <div className="absolute left-0 ml-[20px] w-full">
               <p className="text-[#002366] ml-[16px]">
                 Welcome {userName.charAt(0).toUpperCase() + userName.slice(1)}
               </p>
-              {/* <div className="bg-[#30CDF040] mt-[10px] pl-[20px] text-[15px] font-medium text-[#214082] leading-6 py-[10px] rounded-[10px]">
+              {/* <div className="bg-[#30CDF040] mr-[40px] mt-[10px] pl-[20px] text-[15px] font-medium text-[#214082] leading-6 py-[10px] rounded-[10px]">
                 <p>
                   {weeklyQuizCount > 0 && averageScorePercentage > 0
                     ? `You have successfully completed ${weeklyQuizCount} Quizzes this week, achieving an average score of ${averageScorePercentage}%`
@@ -794,14 +794,9 @@ const FreeProfile = () => {
             </div>
           </div>
         </div>
-{/* <div className="flex relative ">
-  <DashBoardNavBar/>
-</div> */}
-{step === 1 && (
-         <>
-        {/* Main content  */}
 
-        <div className="relative bg-white flex-col">
+        {/* Main content  */}
+        <div className="relative top-[40px] bg-white flex-col">
           <div className="flex">
             <div className="relative left-[35px]">
               <div className={styles.imgAndTextContainer}>
@@ -1255,21 +1250,10 @@ const FreeProfile = () => {
               </p>
             )}
           </div>
-          <div className="flex justify-end md:col-span-2 p-5">
-            <button
-              onClick={handleNextpage}
-              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
-            >
-              Next
-            </button>
-          </div>
         </div>
-        </> 
-       )}
-       {step === 2 && (
-         <>
+
         {/* *************login details ******************************* */}
-        <div className="bg-white w-full">
+        <div className="bg-white w-full mt-[4%]">
           <h1 className="ml-[6%] mt-4 text-[13px] text-[#EF5130] font-semibold">
             Login User Details
           </h1>
@@ -1403,32 +1387,14 @@ const FreeProfile = () => {
               Cancel
             </button>
           )}
-<div className="flex justify-between md:col-span-2 p-5">
-            <button
-              onClick={() => setStep(1)}
-              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
 
-            >
-              Back
-            </button>
-            <button
-              onClick={handleNextpage1}
-              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
-
-            >
-              Next
-            </button>
-          </div>
           {message && (
             <div className="mt-[20px] text-green-500 font-semibold">
               {message}
             </div>
           )}
         </div>
-  </> 
-)}
-  {step === 3 && (
-         <>
+
         {/* *************password details ******************************* */}
         <div className="bg-white w-full ">
           <h1 className="ml-[6%] mt-4 text-[13px] text-[#EF5130] font-semibold colour red">
@@ -1568,20 +1534,7 @@ const FreeProfile = () => {
               Cancel
             </button>
           )}
-            <div className="flex justify-start md:col-span-2 p-5">
-            <button
-              onClick={() => setStep(2)}
-              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
-
-            >
-              Back
-            </button>
-        
-          </div>
         </div>
-      
-         </> 
-        )}
       </div>
       {/* <LogoutBar /> */}
     </div>

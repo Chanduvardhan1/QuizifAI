@@ -7,6 +7,16 @@ import searchIcon from "../assets/Images/images/dashboard/Search.png";
 import cancel from "../assets/Images/images/dashboard/cancel.png";
 import DashBoardNavBar from "../../src/dashboardNavBar/dashboardNavBar.jsx";
 
+import congiguration from "../../src/assets/Images/dashboard/configuration 1.png"
+import preferences from "../../src/assets/Images/dashboard/preferences.png"
+import software from "../../src/assets/Images/dashboard/image (11).png"
+import card from "../../src/assets/Images/dashboard/image (6).png"
+import pepooles from "../../src/assets/Images/dashboard/image (7).png"
+import Q from "../../src/assets/Images/dashboard/image (8).png"
+import notification from "../../src/assets/Images/dashboard/image (9).png"
+import ball from "../../src/assets/Images/dashboard/image (10).png"
+
+
 const configure = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
@@ -103,41 +113,48 @@ const configure = () => {
   const items = [
     {
       id: 1,
+      image:congiguration,
       title: "Configuration",
       content: "Categories, Courses, Specialisations, Classes, Subjects",
     },
     {
       id: 2,
+      image:pepooles,
       title: "User & Roles",
       content:
         "Add User, Add/Edit User Groups, User List, Reset User Password",
     },
     {
       id: 3,
+      image:software,
       title: "Organization",
       content:
-        "Organization Profile, Create Organization, Organization Preferences, Settings",
+        "Create Organization, Organization Profile, Organization Preferences, Settings",
     },
     {
       id: 4,
+      image:card,
       title: "Subscription",
       content:
         "Order List, Subscription Details",
     },
     {
       id: 5,
+      image:notification,
       title: "Reports",
       content:
         "Global Leaderboard, Quiz-wise Leaderboard, Quiz Status Report, (Other Possible Reports)",
     },
     {
       id: 6,
+      image:Q,
       title: "Quizzes",
       content:
         "Question Bank, Quiz Print Templates",
     },
     {
       id: 7,
+      image:ball,
       title: "Notification",
       content:
         "Notification Preferences, Notification List",
@@ -184,7 +201,7 @@ const configure = () => {
               alt="Search Icon"
             />
             <input
-              className="-mt-[5px] text-[10px] pl-[38px] pr-[10px] rounded-md h-[38px] mr-[10px] w-fit bg-[#FFFFFF] text-left placeholder-[#214082] border-none focus:border-none outline-none"
+              className="-mt-[5px] border-solid border-[1px] border-[#000084] text-[10px] pl-[38px] pr-[10px] rounded-md h-[38px] mr-[10px] w-fit bg-[#FFFFFF] text-left placeholder-[#214082]  focus:border-none outline-none"
               type="text"
               placeholder="Search your settings"
               value={searchQuery}
@@ -262,15 +279,20 @@ const configure = () => {
           {filteredItems.map((item) => (
             <div
               key={item.id}
-              className="h-auto pb-[20px] w-[calc((100%-80px)/4)] bg-white rounded-md shadow-xl transition-transform duration-300 transform scale-95 hover:scale-100 flex-none"
+              className="p-[20px] w-[calc((90%-80px)/4)] bg-white rounded-md shadow-xl transition-transform duration-300 transform scale-95 hover:scale-100 flex-none"
             >
-              <h1 className="text-[12px] font-semibold text-[#EF5130] text-center pt-2">
+              <div className="flex flex-col justify-start items-start">
+              <div className="flex justify-start items-start">
+
+              <img src={item.image} alt="" className="w-[40px] h-[40px]" />
+              </div>
+              <h1 className="text-[12px] font-semibold text-[#EF5130] text-center pt-4">
                 {highlightText(item.title, searchQuery)}
               </h1>
               {item.content.split(", ").map((contentItem, index) => (
                 <p
                   key={index}
-                  className={`mt-3 text-[10px] ml-[20px] font-semibold ${
+                  className={`mt-3 text-[11px] font-semibold ${
                     contentItem === "Quiz sharing and access control" &&
                     item.title === "Quizzes" ? "text-gray-500"
                       : contentItem === "Add/Edit User Groups" &&
@@ -282,7 +304,7 @@ const configure = () => {
                       : contentItem === "Add User" &&
                       item.title === "User & Roles"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
-                    : contentItem === "Global Leaderboard" &&
+                    : contentItem === "Quiz Status Report" &&
                       item.title === "Reports"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : contentItem === "Organization Profile" &&
@@ -325,7 +347,7 @@ const configure = () => {
                       ? handleQuestionBank
                       : contentItem === "User List"
                       ? handleUserList
-                      : contentItem === "Global Leaderboard"
+                      : contentItem === "Quiz Status Report"
                       ? handleGlobalLeaderboard
                       : contentItem === "Create Organization"
                       ? handleCreateOrganization
@@ -335,6 +357,7 @@ const configure = () => {
                   {highlightText(contentItem, searchQuery)}
                 </p>
               ))}
+            </div>
             </div>
           ))}
         </div>

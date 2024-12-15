@@ -386,7 +386,7 @@ export default function dashboardNavBar() {
             const subscriptionDetails = data.data[0]?.subscription_details || {};
 
             // setSubscriptionStartDate(subscriptionDetails.start_date || "");
-            setSubscriptionEndDate(subscriptionDetails.end_date || "");
+            // setSubscriptionEndDate(subscriptionDetails.end_date || "");
             setRemainingDays(subscriptionDetails.remaining_days || "");
 
 
@@ -663,7 +663,7 @@ export default function dashboardNavBar() {
            <ProgressIndicator />
            
         </div>
-        <div onClick={handlemyhistory} className="flex flex-col items-center cursor-pointer justify-center relative mr-4 border shadow-lg rounded-sm p-2 bg-white">
+        <div onClick={handlemyhistory} className="flex flex-col items-center cursor-pointer justify-center relative border shadow-lg rounded-sm p-2 bg-white">
         <div className="flex flex-col items-center">
       {/* Icons above the rank number */}
       <div className="flex justify-center items-center">

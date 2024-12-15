@@ -179,6 +179,74 @@ const QuizQuestions = () => {
   //   fetchData();
   // }, [userId]);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const authToken = localStorage.getItem("authToken");
+  
+  //     if (!authToken) {
+  //       console.error("No authentication token found");
+  //       return;
+  //     }
+  
+  //     const quizId = localStorage.getItem("quiz_id");
+  //     try {
+  //       const response = await fetch(
+  //         "https://dev.quizifai.com:8010/get-questions",
+  //         {
+  //           method: "POST",
+  //           headers: {
+  //             Accept: "application/json",
+  //             "Content-Type": "application/json",
+  //             Authorization: `Bearer ${authToken}`,
+  //           },
+  //           body: JSON.stringify({
+  //             quiz_id: quizId,
+  //             user_id: userId,
+  //           }),
+  //         }
+  //       );
+  
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok");
+  //       }
+  
+  //       const result = await response.json();
+  //       console.log("Fetched data:", result);
+  
+  //       if (result.response === "success" && result.data) {
+  //         const { questions, quiz_level_attempt_id, created_by, created_on } = result.data;
+  
+  //         if (Array.isArray(questions)) {
+  //           setQuizData({ questions });
+  //           console.log("Setting quiz questions:", questions);
+  //         } else {
+  //           console.warn("Questions data is not an array or missing.");
+  //         }
+  
+  //         if (quiz_level_attempt_id) {
+  //           setAttemptNo(quiz_level_attempt_id);
+  //           setQuizData((prevState) => ({
+  //             ...prevState,
+  //             created_by,
+  //             created_on,
+  //           }));
+  //           console.log("Attempt No:", quiz_level_attempt_id);
+  //         } else {
+  //           console.warn("quiz_level_attempt_id is missing.");
+  //         }
+  
+  //         setIsLoading(false);
+  //       } else {
+  //         throw new Error("Unexpected response format or data missing");
+  //       }
+  //     } catch (error) {
+  //       console.error("There was a problem with your fetch operation:", error);
+  //     }
+  //   };
+  
+  //   fetchData();
+  // }, [userId]);
+  
   useEffect(() => {
     const fetchData = async () => {
       const authToken = localStorage.getItem("authToken");
@@ -214,16 +282,22 @@ const QuizQuestions = () => {
         console.log("Fetched data:", result);
   
         if (result.response === "success" && result.data) {
-          const { questions, quiz_level_attempt_id, created_by, created_on } = result.data;
+          const questions = result.data.filter(
+            (item) => item.question_id && item.question_text
+          );
   
-          if (Array.isArray(questions)) {
+          if (questions.length > 0) {
             setQuizData({ questions });
             console.log("Setting quiz questions:", questions);
           } else {
-            console.warn("Questions data is not an array or missing.");
+            console.warn("No valid questions found in the response.");
           }
   
-          if (quiz_level_attempt_id) {
+          const metadata = result.data.find(
+            (item) => item.quiz_level_attempt_id
+          );
+          if (metadata) {
+            const { quiz_level_attempt_id, created_by, created_on } = metadata;
             setAttemptNo(quiz_level_attempt_id);
             setQuizData((prevState) => ({
               ...prevState,
@@ -247,7 +321,6 @@ const QuizQuestions = () => {
     fetchData();
   }, [userId]);
   
-
 
   useEffect(() => {
     if (quizData && quizData.questions && quizData.questions.length > 0) {
@@ -674,10 +747,10 @@ const QuizQuestions = () => {
   };
 
   if (!quizData || !quizData.questions) {
-    return <div>Loading...</div>;
+    return <div>Loading aaaa...</div>;
   }
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>Loading bbbb...</div>;
   }
   const filteredQuizData = quizData.questions.filter(
     (item) => item.question_id

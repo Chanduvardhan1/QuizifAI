@@ -50,12 +50,11 @@ const configure = () => {
   const handleProfile = () => handleRestrictedClick("/profileorganization");
   const handleSettings = () => handleRestrictedClick("/Profilesettings");
   const handleQuestionBank = () => handleRestrictedClick("/questionbank");
-  
   const handleUserList = () => handleRestrictedClick("/userslist");
-  
+
   const handleGlobalLeaderboard = () => handleRestrictedClick("/leaderboardall");
-
-
+  const handleCreateOrganization = () => handleRestrictedClick('/creatorganization')
+  
 
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -117,7 +116,7 @@ const configure = () => {
       id: 3,
       title: "Organization",
       content:
-        "Organization Profile, Organization Preferences, Settings",
+        "Organization Profile, Create Organization, Organization Preferences, Settings",
     },
     {
       id: 4,
@@ -283,13 +282,15 @@ const configure = () => {
                       : contentItem === "Add User" &&
                       item.title === "User & Roles"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
-
                     : contentItem === "Global Leaderboard" &&
                       item.title === "Reports"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : contentItem === "Organization Profile" &&
                         item.title === "Organization"
                       ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
+                      : contentItem === "Create Organization" &&
+                      item.title === "Organization"
+                    ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : contentItem ==="Settings" &&
                       item.title === "Organization"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
@@ -326,6 +327,8 @@ const configure = () => {
                       ? handleUserList
                       : contentItem === "Global Leaderboard"
                       ? handleGlobalLeaderboard
+                      : contentItem === "Create Organization"
+                      ? handleCreateOrganization
                       : null
                   }
                 >

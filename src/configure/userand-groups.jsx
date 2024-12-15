@@ -24,7 +24,7 @@ import Plus from "../../src/assets/Images/dashboard/Plus.png";
 import Edit from "../../src/assets/Images/Assets/Edit.png";
 import searchIcon from "../assets/Images/images/dashboard/Search.png";
 import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
-
+import close from "../../src/assets/Images/images/dashboard/close.png"
 // import Delete from "../../src/assets/Images/Assets/Delete.png";
 // import Line from "../../src/assets/Images/Assets/Line.png";
 
@@ -815,17 +815,17 @@ const handleSubmit1 = async (e) => {
       <div className="flex w-full font-Poppins">
         <Navigation />
         <div className="flex w-full flex-col">
-        { userRole === "Admin" && (
+        {/* { userRole === "Admin" && ( */}
         <div className="flex justify-center p-[5px] text-[24px]">
             <h1 className="text-[#F17530] font-bold">Create Group</h1>
           </div>
-        )}
-                { userRole === "Super Admin" && (
+        {/* // )} */}
+                {/* { userRole === "Super Admin" && (
 
           <div className="flex justify-center p-[5px] text-[24px]">
             <h1 className="text-[#F17530] font-bold">Create Organization</h1>
           </div>
-                )}
+                )} */}
         <div className="flex justify-between items-center mx-[20px] pt-2">
           <div className="flex gap-2 justify-center items-center">
                 <div
@@ -898,7 +898,7 @@ const handleSubmit1 = async (e) => {
                 style={{ "::placeholder": { color: "#214082" } }}
                 readOnly
               /> */}
-                          { userRole === "Super Admin" && (
+                          {/* { userRole === "Super Admin" && (
 
               <div className="flex items-center justify-center">
                 <input type="checkbox" name="" id=""
@@ -906,7 +906,7 @@ const handleSubmit1 = async (e) => {
                  checked={isOrganization} />
                 <p className="pl-1">Is an organization</p>
               </div>
-                          )}
+                          )} */}
               <div className="flex items-center justify-center">
               <input
                 type="text"
@@ -937,7 +937,7 @@ onChange={handleSelectChange2}
 
      >
        <option value="" disabled>Select a Admin</option>
-       <option value="createAdmin" >Creat Admin</option>
+       <option value="createAdmin" >Create Admin</option>
        {users1.map((user) => (
           <option key={user.user_id} value={user.user_id}>
            {user.user_name} (Id: {user.user_id})
@@ -1068,22 +1068,13 @@ onChange={handleSelectChange}
             {showPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-[500px]">
+            <div className="flex justify-between">
             <h2 className="text-lg font-semibold mb-4">Create Admin</h2>
-
-{/* <div className="flex w-full mb-2">
-<label className="block mb-2 w-[65%] text-blue-800 font-semibold text-[14px] ">
-                User Role
-              </label>
-              <div className="flex w-full border border-gray-500 p-2  ">
-
-            <input type="checkbox" name="" id="" className="p"/>
-              <p className="pl-1">Orgination Admin</p>
-              </div>
-</div> */}
-
+<img src={close} onClick={closePopup} alt="" className="w-[20px] h-[20px] cursor-pointer" />
+</div>
             <div className="flex flex-col mb-2">
         <div className="w-full flex flex-row">
-        <label className="w-[65%] text-blue-800 font-semibold mb-2 text-[14px]  ">Fist Name<span className="text-red-500">*</span></label>
+        <label className="w-[65%] text-blue-800 font-semibold mb-2 text-[14px]  ">First Name<span className="text-red-500">*</span></label>
         <input
           className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
           type="text"
@@ -1234,13 +1225,13 @@ onChange={handleSelectChange}
              
              
               <div className="flex justify-end">
-                <button
+                {/* <button
                   type="button"
                   onClick={closePopup}
                   className="px-4 py-2 bg-gray-300 rounded-lg mr-2"
                 >
                   Cancel
-                </button>
+                </button> */}
                 <button
                 onClick={handleSubmit2}
                   type="submit"

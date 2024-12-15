@@ -46,7 +46,6 @@ const creatorganization = () => {
   const [groupDescription, setGroupDescription] = useState("");
   const [activeFlag, setActiveFlag] = useState("");
   const [selectedUserIds, setSelectedUserIds] = useState([]);
-  const [selectedUserName, setSelectedUserName] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const userId = localStorage.getItem("user_id");
   const [options, setOptions] = useState([]);
@@ -208,111 +207,112 @@ const [dateOfBirth, setDateOfBirth] = useState("");
 const [userAddressId, setUserAddressId] = useState(0);
 const [responseMessage, setResponseMessage] = useState("");
 const [responseMessage1, setResponseMessage1] = useState("");
+const [selectedUserName, setSelectedUserName] = useState("");
 
 const [showPopup1, setShowPopup1] = useState(false);
 
 
 
 const handleSubmit2 = (e) => {
-  e.preventDefault();
-
-  const formData = {
-    first_name: firstName1,
-    middle_name: middleName1,
-    last_name: lastName1,
-    user_email: userEmail1,
-    user_type_id: 3,
-    password: randomPassword,
-    user_role_id: 2,
-    created_by: userId,
-    updated_by: userId,
-  };
-  const authToken = localStorage.getItem("authToken");
-
-  if (!authToken) {
-    console.error("No authentication token found");
-    return;
-  }
-  fetch("https://dev.quizifai.com:8010/users-create-by-superadmin", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${authToken}`,
-
-    },
-    body: JSON.stringify(formData),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if  (data.success) {
-        setResponseMessage("Admin created successfully!");
-        // setShowPopup(false);
-        fetchUsers();
-
-        reset('');
-        
-      } else {
-        setResponseMessage(data.message || "Failed to create user.");
-      }
+    e.preventDefault();
+  
+    const formData = {
+      first_name: firstName1,
+      middle_name: middleName1,
+      last_name: lastName1,
+      user_email: userEmail1,
+      user_type_id: 3,
+      password: randomPassword,
+      user_role_id: 2,
+      created_by: userId,
+      updated_by: userId,
+    };
+    const authToken = localStorage.getItem("authToken");
+  
+    if (!authToken) {
+      console.error("No authentication token found");
+      return;
+    }
+  
+    fetch("https://dev.quizifai.com:8010/users-create-by-superadmin", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+      body: JSON.stringify(formData),
     })
-    .catch((error) => {
-      console.error("Error creating user:", error);
-      setResponseMessage("An error occurred. Please try again.");
-    });
-};
-const handleSubmit3 = (e) => {
-  e.preventDefault();
-
-  const formData = {
-    first_name: firstName1,
-    middle_name: middleName1,
-    last_name: lastName1,
-    user_email: userEmail1,
-    user_type_id: 3,
-    password: randomPassword,
-    user_role_id: 3,
-    created_by: userId,
-    updated_by: userId,
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Response data:", data); // Debug response
+        if (data?.success) {
+          setResponseMessage("Admin created successfully!");
+          fetchUsers();
+          reset('');
+        } else {
+          console.error("Error response:", data);
+          setResponseMessage(data.message || "Failed to create user.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error creating user:", error);
+        setResponseMessage("An error occurred. Please try again.");
+      });
   };
-  const authToken = localStorage.getItem("authToken");
+  
+// const handleSubmit3 = (e) => {
+//   e.preventDefault();
 
-  if (!authToken) {
-    console.error("No authentication token found");
-    return;
-  }
-  fetch("https://dev.quizifai.com:8010/users-create-by-superadmin", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${authToken}`,
+//   const formData = {
+//     first_name: firstName1,
+//     middle_name: middleName1,
+//     last_name: lastName1,
+//     user_email: userEmail1,
+//     user_type_id: 3,
+//     password: randomPassword,
+//     user_role_id: 3,
+//     created_by: userId,
+//     updated_by: userId,
+//   };
+//   const authToken = localStorage.getItem("authToken");
 
-    },
-    body: JSON.stringify(formData),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if  (data.success) {
-        setResponseMessage("Admin created successfully!");
-        setShowPopup1(false);
-        fetchUsers();
-        reset('');
+//   if (!authToken) {
+//     console.error("No authentication token found");
+//     return;
+//   }
+//   fetch("https://dev.quizifai.com:8010/users-create-by-superadmin", {
+//     method: "POST",
+//     headers: {
+//       Accept: "application/json",
+//       "Content-Type": "application/json",
+//       Authorization: `Bearer ${authToken}`,
+
+//     },
+//     body: JSON.stringify(formData),
+//   })
+//     .then((response) => response.json())
+//     .then((data) => {
+//       if  (data.success) {
+//         setResponseMessage("Admin created successfully!");
+//         setShowPopup1(false);
+//         fetchUsers();
+//         reset('');
         
-      } else {
-        setResponseMessage(data.message || "Failed to create user.");
-      }
-    })
-    .catch((error) => {
-      console.error("Error creating user:", error);
-      setResponseMessage("An error occurred. Please try again.");
-    });
-};
+//       } else {
+//         setResponseMessage(data.message || "Failed to create user.");
+//       }
+//     })
+//     .catch((error) => {
+//       console.error("Error creating user:", error);
+//       setResponseMessage("An error occurred. Please try again.");
+//     });
+// };
 
 const reset =()=> {
-  setFirstName('');
-  setMiddleName('');
-  setLastName('');
+//   setFirstName('');
+//   setMiddleName('');
+//   setLastName('');
   setUserEmail1('');
   setRandomPassword('');
   setSelectedRoleId('');
@@ -451,16 +451,23 @@ const handleSubmit1 = async (e) => {
     setSelectedUser2(selectedValue);
 
     // Find the selected user's role_id
-    const selectedUserDetails = roles.find((user) => user.userName === selectedValue);
-    if (selectedUserDetails) {
-      setSelectedRoleId2(selectedUserDetails.roleId);
+    // const selectedUserDetails = roles.find((user) => user.userName === selectedValue);
+    
+    const selectedUserDetails = users1.find(
+        (user) => user.user_id.toString() === selectedValue
+      );
+      if (selectedUserDetails) {
+        setSelectedUserName(selectedUserDetails.user_name.trim() || "Unnamed User");
     }
-    if (selectedValue === "createAdmin") {
-      setShowPopup(true);
-    }
+    // if (selectedValue === "createAdmin") {
+    //   setShowPopup(true);
+    // }
+    console.log("Selected selectedUserName:", selectedUserName);
 
     console.log("Selected Role:", selectedValue);
   };
+
+
   const handleSelectChange1 = (event) => {
     const selectedValue = event.target.value;
     setSelectedUser(selectedValue);
@@ -477,11 +484,9 @@ const handleSubmit1 = async (e) => {
     console.log("Selected Role:", selectedValue);
   };
 
-  // const handleSelectChange = (event) => {
-  //   if (event.target.value === "createAdmin") {
-  //     setShowPopup(true);
-  //   }
-  // };
+  const handleAdminopen = () => {
+    setShowPopup(true);
+  };
 
   const closePopup = () => {
     setShowPopup(false);
@@ -522,7 +527,11 @@ const handleSubmit1 = async (e) => {
   setShowPopup(false);
 
  }
-
+ const  handleclose1 = () => {
+    setResponseMessage1('');
+    setShowPopup(false);
+  
+   }
   return (
     <>
       <div className="flex w-full font-Poppins">
@@ -533,12 +542,12 @@ const handleSubmit1 = async (e) => {
           <div className="flex justify-center p-[5px] text-[24px]">
             <h1 className="text-[#F17530] font-bold">Create Organization</h1>
           </div>
-          <div className="w-full bg-white rounded-lg p-5">
+          <div className="w-full bg-white rounded-lg flex justify-center p-5">
 
         
-          <div className='w-[80%] justify-center flex flex-col gap-5'>
+          <div className='w-[90%] justify-center flex flex-col gap-5'>
    
-      <div className="flex flex-col w-full">
+      {/* <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
         <label className="w-[23%] text-blue-800 font-semibold mb-2 mr-[9px] ">Organization<span className="text-red-500">*</span></label>
         <FormControlLabel
@@ -549,15 +558,14 @@ const handleSubmit1 = async (e) => {
           
         </div>
       
-        {/* <hr className={`h-[1px] w-full`} /> */}
-      </div>
+      </div> */}
 
 
 
 
       <div className="w-full flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[40%] text-blue-800 font-semibold mb-2 mr-[9px] ">Organization Name<span className="text-red-500"></span></label>
+        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">Organization Name<span className="text-red-500"></span></label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -572,7 +580,7 @@ const handleSubmit1 = async (e) => {
       </div>
       <div className="w-full flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[40%] text-blue-800 font-semibold mb-2 mr-[9px] ">Organization Description<span className="text-red-500"></span></label>
+        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">Organization Description<span className="text-red-500"></span></label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -591,33 +599,53 @@ const handleSubmit1 = async (e) => {
 
 
 <div className="flex flex-col w-full">
-        <div className="w-full flex flex-row">
-        <label className="w-[40%] text-blue-800 font-semibold mb-2 mr-[9px] ">Select Admin<span className="text-red-500"></span></label>
-
+        <div className="w-full flex gap-[50px] flex-row">
+        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">Admin<span className="text-red-500"></span></label>
+ 
+        <button
+                     onClick={handleAdminopen}
+                      className="w-[25%] px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+        
+                    >
+                      Create Admin
+                    </button>
         <select
-       className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+       className={ ` w-full  border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
 
 placeholder="Select User"
 value={selectedUser2}
 onChange={handleSelectChange2}
 
      >
-       <option value="" disabled>Select a Admin</option>
-       <option value="createAdmin" >Create Admin</option>
-       {users1.map((user) => (
-          <option key={user.user_id} value={user.user_id}>
-           {user.user_name} (Id: {user.user_id})
-          </option>
-        ))}
+        <option value="" disabled>Select an Admin</option>
+        {users1.map((user) => (
+        <option key={user.user_id} value={user.user_id}>
+          {user.user_name.trim() || "Unnamed User"} (Id: {user.user_id})
+        </option>
+      ))}
 
      </select> 
 
         </div>
       
-        <hr className={`h-[1px] w-full`} />
+        {/* <hr className={`h-[1px] w-full`} /> */}
       </div> 
   
-
+      <div className="w-full flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">Admin Name<span className="text-red-500"></span></label>
+        <input
+              type="text"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="Organization Description"
+                value={selectedUserName}
+                // onChange={(e) => setGroupDescription(e.target.value)}
+              ></input>
+  
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
                    
                    <div className="flex justify-end md:col-span-2 mt-2">
 
@@ -627,14 +655,33 @@ onChange={handleSelectChange2}
                       className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
         
                     >
-                      create
+                      Create
                     </button>
                     </div>
          
   
     </div>
     </div>
-          
+    {responseMessage1 && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div
+      className={`p-4 rounded shadow-lg w-[300px] text-center ${
+        responseMessage1.includes('success')
+          ? 'bg-green-100 text-green-800'
+          : 'bg-red-100 text-red-800'
+      }`}
+    >
+      <p>{responseMessage1}</p>
+      <button
+        onClick={handleclose1} // Close the popup
+        className="mt-4 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}   
+
       
             {showPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -821,6 +868,7 @@ onChange={handleSelectChange2}
                 </button>
               </div>
          <div>
+    
          {responseMessage && (
   <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
     <div

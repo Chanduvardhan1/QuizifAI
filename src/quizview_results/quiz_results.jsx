@@ -735,7 +735,7 @@ const quiz_results = () => {
         </div>
 
       </div>
-      <LogoutBar />
+      {/* <LogoutBar /> */}
     </div>
 
 

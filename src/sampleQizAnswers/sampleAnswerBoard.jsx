@@ -31,15 +31,15 @@ function sampleAnswerBoard(props) {
         // </div>
         <div>
       {/* Question Navigation */}
-      <div className="flex justify-center  my-6">
+      <div className="flex justify-center  my-2">
         {props.q?.map((_, index) => (
           <div
             key={index}
             onClick={() => setCurrentQuestionIndex(index)} // Set selected question index
-            className={`cursor-pointer w-8 h-8 flex items-center justify-center border-[1px] border-green-500  text-sm font-medium ${
+            className={`cursor-pointer w-8 h-8 flex items-center justify-center border-[1px] border-green-300  text-sm font-medium ${
               index === currentQuestionIndex
-                ? "bg-blue-500 text-white" // Highlight selected question
-                : "bg-green-200"
+                ? "bg-[#c9e4ca] text-white" // Highlight selected question
+                : "bg-green-100"
             }`}
           >
             {index + 1}
@@ -67,12 +67,12 @@ function sampleAnswerBoard(props) {
                 }`}
               >
                 <div
-                  className={`mr-2 font-normal font-[lato] w-[40px] rounded-[5px] h-[37px] p-[8px] border-[#777777] border-[1px] border-solid border-[#D3D3D3] flex justify-center text-center items-center text-[14px]`}
+                  className={`mr-2 font-normal font-[lato] w-[40px] rounded-[5px] h-[37px] p-[8px] bg-[#E8E9E8] border-[1px] border-solid border-[#D3D3D3] flex justify-center text-center items-center text-[14px]`}
                 >
                   {String.fromCharCode(97 + y).toUpperCase()}
                 </div>
                 <div
-                  className={`w-[100%] font-[lato] h-[37px] rounded-[5px] border-solid border-[#D3D3D3] border-[#777777] border-[1.8px] p-[5px] text-[14px] text-[#000] ${
+                  className={`w-[100%] font-[lato] h-[37px] rounded-[5px] border-solid border-[#D3D3D3] bg-[#E8E9E8] border-[1.8px] p-[5px] text-[14px] text-[#000] ${
                     y === props.q[currentQuestionIndex].answerIndex
                       ? "correct-answer-option"
                       : ""

@@ -208,6 +208,7 @@ const [userAddressId, setUserAddressId] = useState(0);
 const [responseMessage, setResponseMessage] = useState("");
 const [responseMessage1, setResponseMessage1] = useState("");
 const [selectedUserName, setSelectedUserName] = useState("");
+const [orgdescription, setorgdescription] = useState("");
 
 const [showPopup1, setShowPopup1] = useState(false);
 
@@ -336,6 +337,7 @@ const handleSubmit1 = async (e) => {
     user_id: userId,
     org_name: groupName,
     org_admin_id: selectedUser2,
+    org_description:orgdescription,
   };
 
   try {
@@ -585,8 +587,8 @@ const handleSubmit1 = async (e) => {
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
                 placeholder="Organization Description"
-                value={groupDescription}
-                onChange={(e) => setGroupDescription(e.target.value)}
+                value={orgdescription}
+                onChange={(e) => setorgdescription(e.target.value)}
               ></input>
   
         </div>

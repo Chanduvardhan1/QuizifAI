@@ -5,14 +5,14 @@ div.correctAnswerQ div{
 }
 .answerQ h3 {
     margin-bottom: 10px;
-    font-family: Segoe_UI_Historic;
+    /* font-family: Segoe_UI_Historic; */
     /* margin-left:-14%; */
     
 }
 .heading1{
     color: #214082;
     font-size: 15px;
-    font-family: Segoe_UI_Historic;
+    /* font-family: Segoe_UI_Historic; */
     font-weight: 600;
     /* background-color: #E8E9E8 */
 

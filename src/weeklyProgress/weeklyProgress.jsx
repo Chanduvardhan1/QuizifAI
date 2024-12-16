@@ -3,27 +3,27 @@ import React from 'react';
 
 export default function SegmentedProgressIndicator({
     progress = 92,
-    tasksCompleted = 4,
-    totalTasks = 5,
+ 
 }) {
-    const radius = 30; // Radius of the circle
-    const strokeWidth = 12; // Stroke width, making it smaller
-    const circumference = 2 * Math.PI * radius; // Circumference of the circle
-    const segments = 30; // Total number of segments
-    const segmentLength = circumference / segments; // Length of each segment
+   
+    const getProgressColor = (progress) => {
+        if (progress <= 35) return "#ff2c2c"; // Red
+        if (progress <= 50) return "#ff7900"; // Yellow
+        if (progress <= 70) return "#FFFF00"; // Orange
+        if (progress <= 85) return "#90EE91"; // Light Green
+        return "#00ab00"; // Green
+    };
+    const getProgressLabel = (progress) => {
+        if (progress <= 35) return "Very Poor";
+        if (progress <= 50) return "Poor";
+        if (progress <= 70) return "Average";
+        if (progress <= 85) return "Good";
+        return "Excellent";
+    };
 
-    const filledSegments = Math.round((progress / 100) * segments); // Number of segments to fill
+    const progressColor = getProgressColor(progress);
+    const progressLabel = getProgressLabel(progress);
 
-    const segmentsArray = Array.from({ length: segments }, (_, index) => {
-        // Assigning colors for segments
-        if (index < filledSegments) {
-            return "filled"; // Color this segment as filled (progress)
-        } else if (index < filledSegments + Math.floor(segments / 3)) {
-            return "inProgress"; // Color this segment as in-progress
-        } else {
-            return "empty"; // Color this segment as empty
-        }
-    });
     // const radius = 45; // Set the radius
     // const circumference = 2 * Math.PI * radius; // Calculate circumference
     // const strokeDashoffset = circumference - (progress / 100) * circumference; // Calculate offset based on progress
@@ -140,47 +140,35 @@ export default function SegmentedProgressIndicator({
                 <div className='text-[10px] text-[#00ab00]'>Excellent</div>
             </div> */}
         </div>
-        <div>
-            <svg className="w-20 h-20" viewBox="0 0 100 100">
-            {segmentsArray.map((segment, index) => {
-                    const angleStart = (index / segments) * 360 - 90; // Starting angle for the segment
-                    const angleEnd = ((index + 1) / segments) * 360 - 90; // Ending angle for the segment
-
-                    return (
-                        <circle
-                            key={index}
-                            strokeWidth={strokeWidth}
-                            strokeLinecap="line" // Use "line" to create sharp ends for the stroke
-                            fill="transparent"
-                            r={radius}
-                            cx="50"
-                            cy="50"
-                            stroke={
-                                segment === "filled"
-                                    ? "#16a34a" // Green for filled segments (Completed)
-                                    : segment === "inProgress"
-                                    ? "##22c55e" // Yellow for in-progress segments
-                                    : "#6fb044" // Gray for empty segments
-                            }
-                            strokeDasharray={`${segmentLength} ${circumference}`} // Length and gap of each segment
-                            strokeDashoffset={-segmentLength * index} // Offset to create the circular segments
-                            style={{
-                                transformOrigin: "50% 50%",
-                                transform: `rotate(${angleStart}deg)`,
-                                transition: "stroke-dashoffset 0.5s ease-in-out",
-                            }}
-                        />
-                    );
-                })}
-                {/* Progress point */}
-                {/* <circle cx={progressPointX} cy={progressPointY} r="5" fill={strokeColor} /> */}
-                {/* Progress text */}
-                <text x="50" y="55" fontSize="20" fontWeight="bold" textAnchor="middle">
-                    {progress}%
-                </text>
-            </svg>
-            <h1 className='text-[20px] text-[#00ab00] font-medium' >Excellent</h1>
+        <div className="flex flex-col items-center w-full mt-1 space-y-4">
+            {/* Progress bar container */}
+            <div className="w-full max-w-lg bg-gray-200 h-4 rounded-lg relative">
+                {/* Progress bar */}
+                <div
+                    className="h-4 rounded-lg"
+                    style={{
+                        width: `${progress}%`,
+                        backgroundColor: progressColor,
+                        transition: "width 0.5s ease-in-out",
+                    }}
+                ></div>
             </div>
+            {/* Progress percentage and label */}
+            <div className="text-center">
+                <h1
+                    className="text-lg font-bold"
+                    style={{ color: progressColor }} // Dynamic text color
+                >
+                    {progress}%
+                </h1>
+                <h2
+                    className="text-xl font-medium"
+                    style={{ color: progressColor }} // Dynamic label color
+                >
+                    {progressLabel}
+                </h2>
+            </div>
+        </div>
         </div>
             {/* <span className="text-sm text-[#FF6701] font-medium mt-2">
                 {tasksCompleted}/{totalTasks} Quizzes Done

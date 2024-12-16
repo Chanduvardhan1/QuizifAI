@@ -970,7 +970,7 @@ margin-bottom: 25px;
 }
 
 .container {
-  align-items: start;
+  /* align-items: start; */
 }
 
 .clock {

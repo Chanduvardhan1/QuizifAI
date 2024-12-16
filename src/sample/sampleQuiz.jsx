@@ -7,14 +7,11 @@ import rank1Icon from "../../src/assets/Images/images/quizresults/rank1.png";
 import rank2Icon from "../../src/assets/Images/images/quizresults/rank2.png";
 import rank3Icon from "../../src/assets/Images/images/quizresults/rank3.png";
 import rightIcon1 from "../../src/assets/Images/images/quizresults/righticon.png";
-import timeIcon from "../../src/assets/Images/images/quizresults/stopwatch1.png";
 import "./sampleQuiz.scss";
 import { useNavigate } from 'react-router-dom';
 import quizifailogo from "../assets/Images/images/home/Quizifai3.png";
 import homeImage from "/images/oldimage.png";
-import dateIcon from "../../src/assets/Images/images/quizresults/schedule.png";
-import vector from "../../src/assets/Images/images/quizresults/icon-park_check-correct.png";
-import current from "../../src/assets/Images/images/quizresults/faq.png";
+
 import { useSelector } from "react-redux";
 import SampleAnswerBoard from '../sampleQizAnswers/sampleAnswerBoard';
 import showUserAnswers, { setDynamicStateFlags } from "../../src/home/slice.jsx";
@@ -37,6 +34,10 @@ import closeimage from "../../public/closeimage.png";
 import stars from "../../src/assets/Images/quiz-type/star.png"
 import print1 from "../../src/assets/Images/dashboard/print.png"
 import trophy from "../../src/assets/Images/dashboard/trophy.png"
+import dateIcon from "../../src/assets/Images/images/quizresults/schedule.png";
+import vector from "../../src/assets/Images/images/quizresults/icon-park_check-correct.png";
+import current from "../../src/assets/Images/images/quizresults/faq.png";
+import timeIcon from "../../src/assets/Images/images/quizresults/stopwatch1.png";
 
 const performers = [
   { id: 1, name: "Ram M Reddy", attempts: 2, score: "94.34 %", duration: "01:03:30", version: "03", date: "03-Sep-2024" },
@@ -91,7 +92,10 @@ const Samplequiz = () => {
   return (
     <div>
       <HeaderSection />
-      <div className=' p-5'>
+      <div className='flex w-full'>
+
+    
+      <div className=' p-1'>
       {/* <div className="flex justify-end py-2">
             <div className="flex items-center px-[10px] p-[5px] border-[1px] border-[#FF6865] bg-[#FFCCCB] text-[#FF0500] font-semibold rounded-[10px] "
             >
@@ -226,14 +230,14 @@ const Samplequiz = () => {
               />
               <span className="ml-1 text-sm">90% High Score</span>
             </div>
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <img
                 src={Playbutton}
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
               <span className="ml-1 text-sm">2:02 Mins Quickest</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
@@ -247,32 +251,30 @@ const Samplequiz = () => {
   </div>
     <div className='flex w-full' >
   
-      <div className=' w-full'>
+      <div className=' w-[50%] '>
       <SampleAnswerBoard q={randomQuestions} />
 
       </div>
-    <div class="w-[50%] text-center mt-4">
-
-
- 
+    <div class="w-[50%] flex justify-center text-center mt-4">
 
   <div class="w-full flex items-end">
+    
   <div class="w-full flex justify-center items-center flex-col gap-4 sm:w-[50%]">
   <div class="w-[210px] h-[7vh] flex items-center">
-    <img class="h-[30px] w-[30px]" src={dateIcon} alt="Calendar Icon" />
-    <span class="ml-2 font-lato text-blue-900">{dateString}</span>
+    <img class="h-[20px] w-[20px]" src={dateIcon} alt="Calendar Icon" />
+    <span class="ml-2 font-lato text-[14px] font-semibold text-blue-900">{dateString}</span>
   </div>
   <div class="w-[210px] h-[7vh] flex items-center">
-    <img class="h-[30px] w-[30px]" src={timeIcon} alt="Clock Icon" />
-    <span class="ml-2 font-lato text-blue-900">15 Minutes</span>
+    <img class="h-[20px] w-[20px]" src={timeIcon} alt="Clock Icon" />
+    <span class="ml-2 font-lato text-[14px] font-semibold text-blue-900">15 Minutes</span>
   </div>
   <div class="w-[210px] h-[7vh] flex items-center">
-    <img class="h-[30px] w-[30px]" src={vector} alt="Check Icon" />
-    <span class="ml-2 font-lato text-blue-900">{leaderBoard.correctAnswers} Correct answers</span>
+    <img class="h-[20px] w-[20px]" src={vector} alt="Check Icon" />
+    <span class="ml-2 font-lato text-[14px] font-semibold text-blue-900">{leaderBoard.correctAnswers} Correct answers</span>
   </div>
   <div class="w-[210px] h-[7vh] flex items-center">
-    <img class="h-[30px] w-[30px]" src={current} alt="Question Icon" />
-    <span class="ml-2 font-lato text-blue-900">Attempted {leaderBoard.attemptedQuestions} questions</span>
+    <img class="h-[20px] w-[20px]" src={current} alt="Question Icon" />
+    <span class="ml-2 font- text-[14px] font-semibold  text-blue-900">Attempted {leaderBoard.attemptedQuestions} questions</span>
   </div>
 </div>
 <div className='w-full flex-col gap-2 flex justify-center items-center sm:w-[50%]'>
@@ -340,6 +342,13 @@ const Samplequiz = () => {
         {/* <img src={homeImage} alt="home Image" className="float-right" /> */}
         {/* <img src={chartbots1} alt="home Image" className="h-[400px] w-full max-w-[641px] ml-[0%] mt-[8%] mr-[3%]" /> */}
       </div>
+
+<div>
+<img src={chartbots1} alt="home Image" className="h-[400px] w-[92%] max-w-[641px] ml-[8%] mt-[8%]"/>
+
+</div>
+
+      </div>
       {/* <div className='button'>
     <div className='answer-container'>
         <button onClick={handleOnAnswer} className='answer'>
@@ -356,7 +365,13 @@ const Samplequiz = () => {
 </div> */}
 
 
+
+
     </div>
+
+
+
+
   );
 }
 

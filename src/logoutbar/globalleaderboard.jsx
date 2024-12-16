@@ -7,6 +7,7 @@ import profileimg from "../assets/Images/images/profile/profileImage.png";
 import Camera from "../assets/Images/images/profile/Camera.png";
 import searchIcon from "../assets/Images/images/dashboard/Search.png";
 import GreaterThan from "../assets/Images/images/dashboard/greaterthan.png";
+import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 
 const Globalleaderboard = () => {
   const inputReff = useRef(null);
@@ -194,12 +195,60 @@ useEffect(() => {
     const handleToggle = () => {
       setIsExpanded(!isExpanded);
     };
-
+    const handleBackToLogin = () => {
+      const authToken = localStorage.getItem('authToken') || null;
+    
+      if (!authToken) {
+        console.error('No authToken found in localStorage.');
+        return;
+      }
+    
+      fetch('https://dev.quizifai.com:8010/usr_logout/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+          user_id: userId,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Logout response:', data);
+          if (data.response === 'success') {
+            localStorage.clear();
+            logout(); // Clear AuthContext
+            console.log('Navigating to login...');
+            navigate('/login'); // Navigate to login page
+          } else {
+            console.error('Logout failed:', data.response_message);
+          }
+        })
+        .catch((error) => {
+          console.error('Error logging out:', error);
+        });
+    };
   return (
-    <div className='flex h-screen font-Poppins'>
+    <div className='flex font-Poppins'>
         <Navigation/>
         <div className='full mt-6'>
+        <div className=" absolute top-[5px] right-[5px]">
+            
+          
+            <div className="flex flex-col justify-center items-center">
+    <img
+      src={LogoutIcon}
+      onClick={handleBackToLogin}
+      alt="Logout Icon"
+      className="w-5 h-5 cursor-pointer "
+    />
+    {/* <p className="text-[#002366] text-[14px]">Logout</p> */}
+  </div>
+  </div>
         <h1 className='text-center text-lg text-[#E97132] font-bold text-[35px]'>Global Score Leader Board</h1>
+
         <h1 className='text-[20px] text-[#002366] font-medium ml-5 mt-10'>Welcome {userName.charAt(0).toUpperCase() + userName.slice(1)}</h1>
         <div className='flex justify-between mt-2  bg-green-100 border-2 mx-5'>
         <div className="flex ml-5 mt-5 relative top-5">

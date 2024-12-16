@@ -40,32 +40,32 @@ function Home() {
   const handleOnClickButton = () => {
     dispatch(setDynamicStateFlags({ key: 'started', value: true }));
   }
-  const handleOnClickNext = () => {
-    dispatch(setDynamicStateFlags({ key: 'index', value: index + 1 }));
-    handleAttemptedQuestions();
-    dispatch(setAttempted({
-      isAttempted: false,
-      answeredIndex: null,
-      isCorrect: false,
-    }));
-  }
+    const handleOnClickNext = () => {
+      dispatch(setDynamicStateFlags({ key: 'index', value: index + 1 }));
+      handleAttemptedQuestions();
+      dispatch(setAttempted({
+        isAttempted: false,
+        answeredIndex: null,
+        isCorrect: false,
+      }));
+    }
 
-  const handleAttemptedQuestions = () => {
-    const obj = { ...leaderBoard }
-    const list = [...leaderBoard.attemptedQList]
-    if (attempted.isCorrect) {
-      obj.correctAnswers = leaderBoard.correctAnswers + 1;
+    const handleAttemptedQuestions = () => {
+      const obj = { ...leaderBoard }
+      const list = [...leaderBoard.attemptedQList]
+      if (attempted.isCorrect) {
+        obj.correctAnswers = leaderBoard.correctAnswers + 1;
+      }
+      if (!obj.attemptedQList.includes(index)) {
+        obj.attemptedQuestions = leaderBoard.attemptedQuestions + 1;
+        list.push(index);
+      }
+      obj.attemptedQList = list;
+      dispatch(saveUserAttemptedQuestions(obj))
     }
-    if (!obj.attemptedQList.includes(index)) {
-      obj.attemptedQuestions = leaderBoard.attemptedQuestions + 1;
-      list.push(index);
+    const handleOnClickPrevious = () => {
+      dispatch(setDynamicStateFlags({ key: 'index', value: index - 1 }));
     }
-    obj.attemptedQList = list;
-    dispatch(saveUserAttemptedQuestions(obj))
-  }
-  const handleOnClickPrevious = () => {
-    dispatch(setDynamicStateFlags({ key: 'index', value: index - 1 }));
-  }
 
   const padZero = (number) => {
     return (number < 10 ? "0" : "") + number;
@@ -248,14 +248,18 @@ function Home() {
                 </div>
               </div>
             </>}
-            {started && index != 5 && <button className="next" onClick={handleOnClickNext}>Next <img className="h-[17px] ml-3 " src={nextbutton} /> </button>}
-            {/* {started && index != 1 && <button className="previous" onClick={handleOnClickPrevious} > <img className="previous-icon" src={previousicon} /> Prev </button>} */}
-            {started && index > 1 && index < 5 && (
-              <button className="previous" onClick={handleOnClickPrevious}>
+            <div className="flex gap-1 justify-end">
+
+            {started && index > 1 &&  (
+              <button className="w-[13%] text-[#00008b] text-[14px] bg-[#ADD8E6] border-[1px] border-[#2196F3] cursor-pointer pt-[1px] pl-[11px] flex items-center rounded-[5px]" onClick={handleOnClickPrevious}>
                 <img className="previous-icon" src={previousicon} /> Prev
               </button>
             )}
-            {started && index === 5 && <button onClick={handleOnClickSubmit} className="submit">Submit </button>}
+            {started && index != 5 && <button  className="w-[13%] text-[#00008b] text-[14px] bg-[#ADD8E6] border-[1px] border-[#2196F3] cursor-pointer pt-[1px] pl-[11px] flex items-center rounded-[5px]"onClick={handleOnClickNext}>Next <img className="h-[17px] ml-3 " src={nextbutton} /> </button>}
+            {/* {started && index != 1 && <button className="previous" onClick={handleOnClickPrevious} > <img className="previous-icon" src={previousicon} /> Prev </button>} */}
+           
+            {started && index === 5 && <button onClick={handleOnClickSubmit}  className="w-[13%] text-[#00008b] text-[14px] bg-[#ADD8E6] border-[1px] border-[#2196F3] cursor-pointer pt-[1px] pl-[11px] flex items-center rounded-[5px]">Submit </button>}
+            </div>
           </div>
           {activeSection === "home" && (
             <div className="w-50% md:w-1/2 pr-0 md pt-4 md:pt-20 flex flex-col justify-center items-center md:items-end mt-[12%],ml-[2%]">

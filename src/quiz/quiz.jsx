@@ -41,6 +41,7 @@ import Attemts from "../../src/assets/Images/dashboard/Attemts.png"
 import view1 from "../../src/assets/Images/dashboard/view1.png"
 import leader from "../../src/assets/Images/dashboard/Leader.png"
 import print1 from "../../src/assets/Images/dashboard/print.png"
+import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 
 // Modal.setAppElement(el);
 const Quiz = () => {
@@ -813,6 +814,41 @@ const Quiz = () => {
     }
   };
 
+  const handleBackToLogin = () => {
+    const authToken = localStorage.getItem('authToken') || null;
+  
+    if (!authToken) {
+      console.error('No authToken found in localStorage.');
+      return;
+    }
+  
+    fetch('https://dev.quizifai.com:8010/usr_logout/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authToken}`,
+      },
+      body: JSON.stringify({
+        user_id: userId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Logout response:', data);
+        if (data.response === 'success') {
+          localStorage.clear();
+          logout(); // Clear AuthContext
+          console.log('Navigating to login...');
+          navigate('/login'); // Navigate to login page
+        } else {
+          console.error('Logout failed:', data.response_message);
+        }
+      })
+      .catch((error) => {
+        console.error('Error logging out:', error);
+      });
+  };
   // useEffect(() => {
   //   if (isDisableConfirmed) {
   //     handleDisableQuiz(isDisableConfirmed,selectedQuizItem);
@@ -864,6 +900,15 @@ const Quiz = () => {
                 onChange={handleSearchChange}
               />
             </div>
+            <div className="flex flex-col justify-center items-center">
+  <img
+    src={LogoutIcon}
+    onClick={handleBackToLogin}
+    alt="Logout Icon"
+    className="w-5 h-5 cursor-pointer mt-[-30px]"
+  />
+  {/* <p className="text-[#002366] text-[14px]">Logout</p> */}
+</div>
           </div>
         </div>
         {/* <div

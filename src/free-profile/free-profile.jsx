@@ -1,11 +1,11 @@
 // profile.js
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef,  useContext } from "react";
 //import { useRouter } from 'next/router';
 import Navigation from "../navbar/navbar.jsx";
 import axios from "axios";
-import LogoutBar from "../logoutbar/logoutbar.jsx";
 import styles from "./free-profile.module.css";
+import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 
 import visible from "../assets/Images/images/profile/visible.png";
 import hide from "../assets/Images/images/profile/hide.png";
@@ -16,6 +16,11 @@ import "react-sweet-progress/lib/style.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DashBoardNavBar from "../../src/dashboardNavBar/dashboardNavBar.jsx";
+import { AuthContext } from "../Authcontext/AuthContext.jsx";
+import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
+import camera1 from "../../src/assets/Images/dashboard/edit.png"
+import x from "../../src/assets/Images/quiz-type/cross-button.png"
+import { useNavigate } from "react-router-dom";
 
 const FreeProfile = () => {
   const getFormattedDate = () => {
@@ -33,6 +38,8 @@ const FreeProfile = () => {
   const maxValue1 = 100;
   const currentValue2 = 30;
   const maxValue2 = 80;
+
+  const navigate = useNavigate();
 
   const [isFocused, setIsFocused] = useState(false);
   const [selectedButton, setSelectedButton] = useState("email");
@@ -105,6 +112,13 @@ const FreeProfile = () => {
   const [image, setImage] = useState("");
 
   const [step, setStep] = useState(1);
+  const { isAuthenticated, authToken, logout } = useContext(AuthContext);
+
+
+  const [photo, setPhoto] = useState(''); // State to store the image URL
+  const [loading, setLoading] = useState(true); // State to manage loading status
+  // const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
 
 
   const handleNextpage = () => {
@@ -766,6 +780,155 @@ const FreeProfile = () => {
     );
     setCrop(crop);
   };
+  const handleBackToLogin = () => {
+    const authToken = localStorage.getItem('authToken') || null;
+  
+    if (!authToken) {
+      console.error('No authToken found in localStorage.');
+      return;
+    }
+  
+    fetch('https://dev.quizifai.com:8010/usr_logout/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authToken}`,
+      },
+      body: JSON.stringify({
+        user_id: userId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Logout response:', data);
+        if (data.response === 'success') {
+          localStorage.clear();
+          logout(); // Clear AuthContext
+          console.log('Navigating to login...');
+          navigate('/login'); // Navigate to login page
+        } else {
+          console.error('Logout failed:', data.response_message);
+        }
+      })
+      .catch((error) => {
+        console.error('Error logging out:', error);
+      });
+  };
+  
+
+  const fetchProfileImage = async () => {
+    try {
+      const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
+            if (!authToken) {
+              console.error("No authentication token found. Please log in again.");
+              return;
+            }
+      const response = await fetch(`https://dev.quizifai.com:8010/view-profile_image?user_id=${userId}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          'accept': 'application/json',
+        },
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        if (data.response === 'success') {
+          setPhoto(data.data); // Set the image URL from the response
+        } else {
+          setPhoto(defaultPhoto);
+        }
+      } else {
+        setPhoto(defaultPhoto);
+        // setError('Failed to fetch image');
+      }
+    } catch (error) {
+      setPhoto(defaultPhoto);
+      // setError('Error fetching image: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+  
+    try {
+      const response = await fetch(`https://dev.quizifai.com:8010/upload-image?user_id=${userId}`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: formData,
+      });
+  
+      if (response.ok) {
+        // After successfully uploading, fetch the updated image
+        fetchProfileImage();
+        navigate(0)
+      } else {
+        setError('Failed to upload image');
+      }
+    } catch (error) {
+      setError('Error uploading image: ' + error.message);
+    }
+  };
+  
+  const handleIconClick = () => {
+    document.getElementById('fileInput').click();
+  };
+  
+  // Handle file selection
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      uploadImage(file);
+    }
+  };
+  
+  useEffect(() => {
+    fetchProfileImage();
+  }, []);
+  
+//   useEffect(() => {
+//     fetchUserProfile();
+//   }, []);
+  
+  const deleteImage = async () => {
+    try {
+      const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
+            if (!authToken) {
+              console.error("No authentication token found. Please log in again.");
+              return;
+            }
+      const response = await fetch(`https://dev.quizifai.com:8010/remove-image?user_id=${userId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          'accept': 'application/json',
+        },
+      });
+  
+      if (response.ok) {
+        // Clear the photo state after successful deletion
+        setPhoto('');
+        setError(null); // Reset any errors
+        navigate(0)
+      } else {
+        setError('Failed to delete image');
+      }
+    } catch (error) {
+      setError('Error deleting image: ' + error.message);
+    }
+  };
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  
   return (
     <div className={styles.container}>
       <Navigation />
@@ -776,8 +939,8 @@ const FreeProfile = () => {
       >
         <div className={styles.header}>
           {/* Header content */}
-          <div className="flex">
-            <div className="absolute left-0 ml-[20px] w-full">
+          <div className="flex justify-between w-full items-center">
+            <div className=" w-full">
               <p className="text-[#002366] ml-[16px]">
                 Welcome {userName.charAt(0).toUpperCase() + userName.slice(1)}
               </p>
@@ -789,14 +952,24 @@ const FreeProfile = () => {
                 </p>
               </div> */}
             </div>
-            <div className={styles.headerRight}>
+            {/* <div className={styles.headerRight}>
               <div className="text-[#002366]">{getFormattedDate()}</div>
-            </div>
+            </div> */}
+            <div className="flex flex-col justify-center items-center">
+  <img
+    src={LogoutIcon}
+    onClick={handleBackToLogin}
+    alt="Logout Icon"
+    className="w-5 h-5 cursor-pointer "
+  />
+  <p className="text-[#002366] text-[14px]">Logout</p>
+</div>
+
           </div>
         </div>
 
         {/* Main content  */}
-        <div className="relative top-[40px] bg-white flex-col">
+        <div className="relative bg-white flex-col">
           <div className="flex">
             <div className="relative left-[35px]">
               <div className={styles.imgAndTextContainer}>
@@ -804,88 +977,247 @@ const FreeProfile = () => {
                   <h1 className=" text-[13px] text-[#EF5130] font-semibold relative top-3 left-2 text-nowrap">
                     Personal Information
                   </h1>
-                  <div
-                    className="rounded-full w-[100px] ml-[5px] h-[100px] mt-10"
-                    style={{ position: "relative" }}
-                  >
-                    {image ? (
-                      <img
-                        className="w-[80px] h-[80px] rounded-full border-2 border-white"
-                        src={image}
-                        alt="Uploaded"
-                      />
-                    ) : (
-                      <img
-                        className="w-[80px] h-[80px] rounded-full border-2 border-white"
-                        src={profileimg}
-                        alt="Default"
-                      />
-                    )}
-                    <input
-                      type="file"
-                      ref={inputReff}
-                      onChange={handleImageChange}
-                      style={{ display: "none" }}
-                    />
-
-                    {/* <div className="bg-[#C3EAF3] rounded-full w-fit h-[24px] px-[2px] py-[1px] relative left-14 -top-9">
-        <div className="rounded-full w-fit h-[28px] px-[2px] py-[2px] flex items-center justify-center group">
-          <img className="h-4 w-4 relative -top-[3px] cursor-pointer" src={Camera} alt="Camera" />
-          <div className="absolute top-full text-[7px] left-0 right-[30px] mt-1 bg-white rounded-sm text-black w-fit h-[37px] cursor-pointer px-1 py-[2px] text-nowrap items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <p onClick={handleReplaceImage}>Replace Image</p><br/>
-            <p className="relative -top-[10px]" onClick={handleViewImage}>View Image</p><br/>
-            <p className="relative -top-[20px]" onClick={handleDeleteImage}>Delete Image</p>
-          </div>
+                  <div className="relative mt-4">
+                    {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : (
+        <div className="relative w-[80px] h-[80px]">
+        <img
+          src={photo}
+          alt="Profile"
+          onClick={openModal}
+          className="w-[80px] h-[80px] rounded-2xl"
+        />
+        <div 
+          className="absolute bottom-0 right-0 rounded-full cursor-pointer"
+          onClick={openModal}
+        >
+         <img src={camera1} alt="" className="w-[20px] h-[20px]"/>
         </div>
-      </div> */}
-                  </div>
+      </div>
+      )}
+
+      {/* Hidden file input for selecting image */}
+      <input
+        type="file"
+        id="fileInput"
+        accept="image/*"
+        style={{ display: 'none' }}
+        onChange={handleFileChange}
+      />
+                    </div>
+                    {isModalOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          onClick={closeModal}
+        >
+         <div class="flex items-center justify-center min-h-screen ">
+  <div class="bg-gray-800 text-white rounded-lg p-6 shadow-lg max-w-xs">
+    <div class="relative">
+      <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-gray-200">
+        <img src={photo} alt="Profile" class="w-full h-full object-cover"/>
+      </div>
+      
+      <div class="absolute top-[-15px] right-[-15px] flex space-x-2">
+        <button class="bg-gray-600 p-2 rounded-full text-white hover:bg-gray-500">
+        
+          <img src={x} alt="" class="h-5 w-5" />
+        </button>
+      </div>
+    </div>
+    
+    <h2 class="text-center text-xl  mt-4">Profile photo</h2>
+    
+    <div class="mt-4 flex justify-between">
+      <button class="bg-gray-700 px-4 py-2 rounded text-sm text-white hover:bg-gray-600"  onClick={handleIconClick}>Add photo</button>
+      {/* <button class="bg-gray-700 px-4 py-2 rounded text-sm text-white hover:bg-gray-600">Add photo</button> */}
+      {/* <button class="bg-gray-700 px-4 py-2 rounded text-sm text-white hover:bg-gray-600">Frames</button> */}
+      <button class="bg-red-600 px-4 py-2 rounded text-sm text-white hover:bg-red-500" onClick={deleteImage}>Delete</button>
+    </div>
+  </div>
+</div>
+
+        </div>
+      )}
                 </div>
               </div>
             </div>
+            <div className='w-full flex flex-col gap-5 p-5 pt-10'>
 
-            <div className="-ml-[55px]">
-              {/* first name and occupation  */}
-              <div className="flex flex-nowrap mt-[55px] ml-[85px]">
-                <div className={styles.inputGroup1}>
-                  <label className="text-blue-800 font-semibold">
-                    First Name
-                  </label>
-                  <input
-                    className="border-transparent 
-                          border-b-2  
-                        hover:border-blue-200 
-                          ml-[25px] 
-                          mr-[73px]
-                          h-[30px] 
-                          w-[155px] 
-                          pl-[8px]
-                          text-[11px] 
-                          focus:outline-none ${isEditing ? 'input-highlight' : ''}`}"
-                    type="text"
-                    required
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    disabled={!isEditing}
-                  />
-                  <hr
-                    className={`h-[1px] w-[250px] ${
+      <div className='flex gap-[5px]'>
+      <div className="flex flex-col w-full">
+        <div className="w-full flex flex-row">
+        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">First Name<span className="text-red-500">*</span></label>
+        <input
+              type="text"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="First Name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                disabled={!isEditing}
+             
+              ></input>
+  
+        </div>
+      
+        <hr
+                    className={`h-[1px] w-full ${
                       isEditing ? "hr-highlight" : "bg-whitet"
                     }`}
                   ></hr>
-                </div>
+      </div>
+      <div className="flex flex-col w-full">
+        <div className="w-full flex flex-row">
+        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">Middle Name<span className="text-red-500">*</span></label>
+        <input
+              type="text"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="Middle Name"
+                value={middleName}
+                onChange={(e) => setMiddleName(e.target.value)}
+                disabled={!isEditing}
+             
+              ></input>
+  
+        </div>
+      
+        <hr
+                    className={`h-[1px] w-full ${
+                      isEditing ? "hr-highlight" : "bg-whitet"
+                    }`}
+                  ></hr>
+      </div>
+      <div className="flex flex-col w-full">
+        <div className="w-full flex flex-row">
+        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">Last Name<span className="text-red-500">*</span></label>
+        <input
+              type="text"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="Last Name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                disabled={!isEditing}
+             
+              ></input>
+  
+        </div>
+      
+        <hr
+                    className={`h-[1px] w-full ${
+                      isEditing ? "hr-highlight" : "bg-whitet"
+                    }`}
+                  ></hr>
+      </div>
 
-                <div className={styles.inputGroup1}>
-                  <label className="text-blue-800 font-semibold">
-                    Occupation
-                  </label>
-                  <select
-                    name="occupation"
-                    className="border-transparent border-b-2 hover:border-blue-200 ml-[25px] h-[30px] w-[165px] text-[11px] pl-[3px] focus:outline-none"
-                    value={occupation}
-                    onChange={handleOccupationChange}
+      
+
+
+      
+      </div>
+   
+
+<div className='flex gap-[5px]'>
+<div className="flex flex-col w-full">
+        <div className="w-full flex flex-row">
+        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">Gender<span className="text-red-500">*</span></label>
+        <select
+                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                  disabled={!isEditing}
+        >
+                   <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+        </select>
+  
+        </div>
+      
+        <hr
+                    className={`h-[1px] w-full ${
+                      isEditing ? "hr-highlight" : "bg-whitet"
+                    }`}
+                  ></hr>
+      </div>
+
+      <div className="flex flex-col w-full">
+        <div className="w-full flex flex-row">
+        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] "> Date of birth<span className="text-red-500">*</span></label>
+        <input
+              type="date"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="Middle Name"
+                value={dob}
+                onChange={handleDateChange}
+                disabled={!isEditing}
+              ></input>
+  
+        </div>
+      
+        <hr
+                    className={`h-[1px] w-full ${
+                      isEditing ? "hr-highlight" : "bg-whitet"
+                    }`}
+                  ></hr>
+      </div>
+<div className="flex flex-col w-full">
+        <div className="w-full flex flex-row">
+        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">User Address1<span className="text-red-500">*</span></label>
+        <input
+              type="text"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="Last Name"
+                value={address}
+                    onChange={(e) => setAddress(e.target.value)}
                     disabled={!isEditing}
-                  >
-                    {occupations.map((occ) => (
+              ></input>
+  
+        </div>
+      
+        <hr
+                    className={`h-[1px] w-full ${
+                      isEditing ? "hr-highlight" : "bg-whitet"
+                    }`}
+                  ></hr>
+      </div>
+    
+      
+</div>
+
+<div className='flex gap-[5px]'>
+
+<div className="flex flex-col w-full">
+        <div className="w-full flex flex-row">
+        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">User Address2<span className="text-red-500">*</span></label>
+        <input
+              type="text"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="Last Name"
+                value={address1}
+                onChange={(e) => setAddress1(e.target.value)}
+                disabled={!isEditing}
+              ></input>
+  
+        </div>
+      
+        <hr
+                    className={`h-[1px] w-full ${
+                      isEditing ? "hr-highlight" : "bg-whitet"
+                    }`}
+                  ></hr>
+      </div>
+      <div className="flex flex-col w-full">
+        <div className="w-full flex flex-row">
+        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">Occupation<span className="text-red-500">*</span></label>
+        <select
+                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                  value={occupation}
+                  onChange={handleOccupationChange}
+                  disabled={!isEditing}
+        >
+           {occupations.map((occ) => (
                       <option
                         key={occ.occupation_id}
                         value={occ.occupation_name}
@@ -893,160 +1225,75 @@ const FreeProfile = () => {
                         {occ.occupation_name}
                       </option>
                     ))}
-                  </select>
-                  <hr className="h-[0.5px] w-[270px] bg-gray-100"></hr>
-                </div>
-              </div>
-
-              {/* Middle name and pincode*/}
-              <div className="flex ml-[85px] mt-[5px]">
-                <div
-                  className={styles.inputGroup1}
-                  style={{ flexWrap: "nowrap" }}
-                >
-                  <label className="text-blue-800 font-semibold">
-                    Middle Name
-                  </label>
-                  <input
-                    className="border-transparent 
-                          border-b-2  
-                        hover:border-blue-200 
-                          ml-[10px] 
-                          mr-[73px]
-                          h-[30px] 
-                          w-[155px] 
-                          pl-[7px]
-                          text-[11px] 
-                          focus:outline-none ${isEditing ? 'input-highlight' : ''}`}"
-                    type="text"
-                    value={middleName}
-                    onChange={(e) => setMiddleName(e.target.value)}
-                    disabled={!isEditing}
-                  />
-                  <hr className="h-[0.5px] w-[250px] bg-gray-200"></hr>
-                </div>
-
-                <div className={styles.inputGroup1}>
-                  <label className="text-blue-800 font-semibold">Pincode</label>
-                  <input
-                    className="border-transparent 
-                          border-b-2  
-                        hover:border-blue-200 
-                          ml-[50px] 
-                          h-[30px] 
-                          w-[165px] 
-                          pl-[7px]
-                          text-[11px] 
-                          focus:outline-none ${isEditing ? 'input-highlight' : ''}`}"
-                    type="text"
-                    value={postalCode}
-                    onChange={handlePostalCodeChange}
-                    disabled={!isEditing}
-                  />
-                  <img
-                    className="h-[15px] w-[15px] -mt-[15px] ml-[93%] relative -top-[8px] cursor-pointer"
-                    src={search}
-                    onClick={handleSearchClick}
-                  />
-                  {error && (
-                    <div className="text-red-500 text-[10px] mt-1">{error}</div>
-                  )}
-                  <hr className="h-[0.5px] w-[270px] bg-gray-200"></hr>
-                </div>
-              </div>
-
-              {/* Last name and district name */}
-              <div className="flex ml-[85px] mt-[5px]">
-                <div className={styles.inputGroup1}>
-                  <label className="text-blue-800 font-semibold">
-                    Last Name
-                  </label>
-                  <input
-                    className="border-transparent 
-                           border-b-2   
-                        hover:border-blue-200 
-                          ml-[28px] 
-                          mr-[72px]
-                          h-[30px] 
-                          w-[155px] 
-                          text-[11px]
-                          pl-[7px] 
-                          focus:outline-none"
-                    type="text"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    disabled={!isEditing}
-                  />
-                  <hr className="h-[0.5px] w-[250px] bg-gray-200"></hr>
-                </div>
-
-                <div className={styles.inputGroup1}>
-                  <label className="text-blue-800 font-semibold">
-                    District Name
-                  </label>
-                  <input
-                    className="border-transparent 
-                           border-b-2   
-                        hover:border-blue-200 
-                          ml-[15px] 
-                          h-[30px] 
-                          w-[170px] 
-                          text-[11px] 
-                          pl-[7px]
-                          focus:outline-none"
-                    type="text"
-                    value={district}
-                    onChange={(e) => setDistrict(e.target.value)}
-                    disabled={!isEditing}
-                  />
-                  <hr
-                    className={`h-[0.5px] w-[270px] bg-gray-200 ${
-                      isFocused ? "bg-blue-500" : ""
+        </select>
+  
+        </div>
+      
+        <hr
+                    className={`h-[1px] w-full ${
+                      isEditing ? "hr-highlight" : "bg-whitet"
                     }`}
-                  />
-                </div>
-              </div>
+                  ></hr>
+      </div>
+     
 
-              {/* gender and city name*/}
-              <div className="flex ml-[85px] mt-[5px]">
-                <div className={styles.inputGroup1}>
-                  <label className="text-blue-800 font-semibold">Gender</label>
-                  <select
-                    className="border-transparent 
-                           border-b-2   
-                        hover:border-blue-200 
-                          ml-[50px] 
-                          mr-[72px]
-                          h-[30px] 
-                          w-[155px] 
-                          text-[11px]
-                          pl-[3px] 
-                          focus:outline-none"
-                    value={gender}
-                    onChange={(e) => setGender(e.target.value)}
-                    disabled={!isEditing}
-                  >
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                  </select>
-                  <hr className="h-[0.5px] w-[250px] bg-gray-200"></hr>
-                </div>
+<div className="flex flex-col w-full">
+  <div className="w-full flex flex-row items-center">
+    <label className="w-[35%] text-blue-800 font-semibold mb-2 mr-[9px]">
+      Pincode<span className="text-red-500">*</span>
+    </label>
+    <div className="flex-grow flex items-center relative">
+      <input
+        type="text"
+        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] h-[31px] hover:border-blue-200 text-[11px] focus:outline-none `}
 
-                <div className={styles.inputGroup1}>
-                  <label className="text-blue-800 font-semibold">
-                    City Name
-                  </label>
-                  <select
-                    className="border-transparent 
-                           border-b-2   
-                        hover:border-blue-200 
-                          ml-[35px] 
-                          h-[30px] 
-                          w-[165px] 
-                          text-[11px] 
-                          pl-[3px]
-                          focus:outline-none"
+        placeholder="PostalCode"
+        value={postalCode}
+        onChange={handlePostalCodeChange}
+        disabled={!isEditing}
+      />
+      <img
+        className="h-[15px] w-[15px] absolute right-1 cursor-pointer"
+        src={search}
+        onClick={handleSearchClick}
+        alt="Search Icon"
+      />
+    </div>
+  </div>
+  {error && (
+    <div className="text-red-500 text-[10px] mt-1">{error}</div>
+  )}
+  <hr className="h-[1px] w-full" />
+</div>
+
+     
+    
+</div>
+
+<div className='flex gap-[5px]'>
+<div className="flex flex-col w-full">
+        <div className="w-full flex flex-row">
+        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] "> District Name<span className="text-red-500"></span></label>
+        <input
+              type="text"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="District"
+                value={district}
+                onChange={(e) => setDistrict(e.target.value)}
+                disabled={!isEditing}
+              ></input>
+  
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      <div className="flex flex-col w-full">
+        <div className="w-full flex flex-row">
+        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">City Name<span className="text-red-500"></span></label>
+     
+    <select
+       className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
                     type="text"
                     value={city}
                     onChange={handleCityChange}
@@ -1062,165 +1309,73 @@ const FreeProfile = () => {
                       </option>
                     ))}
                   </select>
-                  <hr className="h-[1px] w-[270px] bg-gray-200"></hr>
-                </div>
-              </div>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div> 
+      <div className="flex flex-col w-full">
+        <div className="w-full flex flex-row">
+        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">State Name<span className="text-red-500"></span></label>
+        <input
+              type="text"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="State"
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+                disabled={!isEditing}
+              ></input>
+  
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+</div>
 
-              {/* addrress and country  */}
-              <div className="flex ml-[85px] mt-[5px]">
-                <div className={styles.inputGroup1}>
-                  <label className="text-blue-800 font-semibold">
-                    Date of birth
-                  </label>
-                  <input
-                    className="border-transparent 
-                           border-b-2   
-                        hover:border-blue-200 
-                          ml-[20px] 
-                          mr-[72px]
-                          h-[30px] 
-                          w-[152px] 
-                          text-[11px]
-                          pl-[3px] 
-                          focus:outline-none"
-                    type="date"
-                    value={dob}
-                    onChange={handleDateChange}
-                    disabled={!isEditing}
-                  />
-                  <hr className="h-[1px] w-[250px] bg-gray-200"></hr>
-                </div>
-                <div className={styles.inputGroup1}>
-                  <label className="text-blue-800 font-semibold">
-                    State Name
-                  </label>
-                  <input
-                    className="border-transparent 
-                           border-b-2   
-                        hover:border-blue-200 
-                          ml-[28px] 
-                          h-[30px] 
-                          w-[165px] 
-                          text-[11px] 
-                          pl-[7px]
-                          focus:outline-none"
-                    type="text"
-                    value={state}
-                    onChange={(e) => setState(e.target.value)}
-                    disabled={!isEditing}
-                  />
-                  <hr className="h-[1px] w-[270px] bg-gray-200"></hr>
-                </div>
-              </div>
+    <div className='flex gap-[5px]'>
+    <div className="flex flex-col w-full">
+        <div className="w-full flex flex-row">
+        <label className="w-[14%] text-blue-800 font-semibold mb-2">Country Name<span className="text-red-500"></span></label>
+        <input
+              type="text"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="Country"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                disabled={!isEditing}
+              ></input>
+  
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      {showOtherInput && (
 
-              <div className="flex ml-[85px] mt-[5px]">
-                <div className={styles.inputGroup1}>
-                  <label for="address" className="text-blue-800 font-semibold">
-                    User Address1
-                  </label>
-                  <input
-                    className="border-transparent 
-                           border-b-2   
-                        hover:border-blue-200 
-                          ml-[20px] 
-                          mr-[70px]
-                          h-[30px] 
-                          w-[144px] 
-                          text-[11px]
-                          pl-[3px] 
-                          focus:outline-none"
-                    type="text"
-                    id="address"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    disabled={!isEditing}
-                  />
-                  <hr className="h-[1px] w-[250px] bg-gray-200"></hr>
-                </div>
-                <div className={styles.inputGroup1}>
-                  <label className="text-blue-800 font-semibold">
-                    Country Name
-                  </label>
-                  <input
-                    className="border-transparent 
-                           border-b-2   
-                        hover:border-blue-200 
-                          ml-[10px] 
-                          h-[30px] 
-                          w-[164px] 
-                          text-[11px] 
-                          pl-[7px]
-                          focus:outline-none"
-                    type="text"
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
-                    disabled={!isEditing}
-                    onFocus={() => setIsFocused(true)}
-                    onBlur={() => setIsFocused(false)}
-                  />
-                  <hr
-                    className={`h-[1px] w-[270px] bg-gray-200 ${
-                      isFocused ? "bg-blue-500" : ""
+<div className="flex flex-col w-full">
+        <div className="w-full flex flex-row">
+        <label className="w-full text-blue-800 font-semibold mb-2 mr-[9px] ">Other Occupation<span className="text-red-500">*</span></label>
+        <input
+              type="text"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="Last Name"
+                value={otheroccupation}
+                disabled={!isEditing}
+                onChange={(e) => setOtherccupation(e.target.value)}
+              ></input>
+  
+        </div>
+      
+        <hr
+                    className={`h-[1px] w-full ${
+                      isEditing ? "hr-highlight" : "bg-whitet"
                     }`}
-                  />
-                </div>
-              </div>
-
-              <div className="flex ml-[85px] mt-[5px]">
-                <div className={styles.inputGroup1}>
-                  <label for="address" className="text-blue-800 font-semibold">
-                    User Address2
-                  </label>
-                  <input
-                    className="border-transparent 
-                           border-b-2   
-                        hover:border-blue-200 
-                          ml-[20px] 
-                          mr-[70px]
-                          h-[30px] 
-                          w-[142px] 
-                          text-[11px]
-                          pl-[3px] 
-                          focus:outline-none"
-                    type="text"
-                    id="address"
-                    value={address1}
-                    onChange={(e) => setAddress1(e.target.value)}
-                    disabled={!isEditing}
-                  />
-                  <hr className="h-[1px] w-[250px] bg-gray-200"></hr>
-                </div>
-                {showOtherInput && (
-                  <div className={styles.inputGroup1}>
-                    <label className="text-blue-800 font-semibold">
-                      Other Occupation
-                    </label>
-                    <input
-                      className="border-transparent 
-                           border-b-2   
-                        hover:border-blue-200 
-                          ml-[10px] 
-                          h-[30px] 
-                          w-[164px] 
-                          text-[11px] 
-                          pl-[7px]
-                          focus:outline-none"
-                      type="text"
-                      value={otheroccupation}
-                      disabled={!isEditing}
-                      onChange={(e) => setOtherccupation(e.target.value)}
-                    />
-                    <hr
-                      className={`h-[1px] w-[270px] bg-gray-200 ${
-                        isFocused ? "bg-blue-500" : ""
-                      }`}
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
+                  ></hr>
+      </div>
+    )}
+    </div>
+    </div>
+          
           </div>
-          <div className="flex justify-start ml-[24%] mt-[20px] mb-[20px]">
+          <div className="flex justify-end mr-[20px] mb-[20px]">
             {isEditing ? (
               <>
                 <button
@@ -1251,9 +1406,9 @@ const FreeProfile = () => {
             )}
           </div>
         </div>
-
+<div className="flex gap-1 mb-4">
         {/* *************login details ******************************* */}
-        <div className="bg-white w-full mt-[4%]">
+        <div className="bg-white w-full mt-[1%]">
           <h1 className="ml-[6%] mt-4 text-[13px] text-[#EF5130] font-semibold">
             Login User Details
           </h1>
@@ -1396,7 +1551,7 @@ const FreeProfile = () => {
         </div>
 
         {/* *************password details ******************************* */}
-        <div className="bg-white w-full ">
+        <div className="bg-white w-full mt-[1%]">
           <h1 className="ml-[6%] mt-4 text-[13px] text-[#EF5130] font-semibold colour red">
             Update Password
           </h1>
@@ -1534,6 +1689,8 @@ const FreeProfile = () => {
               Cancel
             </button>
           )}
+        </div>
+
         </div>
       </div>
       {/* <LogoutBar /> */}

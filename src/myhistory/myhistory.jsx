@@ -12,6 +12,7 @@ import Easy from "../assets/Images/history/Easy.png";
 import Moderate from "../assets/Images/history/Moderate.png"; 
 import Complex from "../assets/Images/history/Complex.png"; 
 import DashBoardNavBar from "../../src/dashboardNavBar/dashboardNavBar.jsx";
+import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 
 
 const myhistory = () => {
@@ -247,6 +248,42 @@ const handlePrevious = () => {
       },
     });
   };
+  const handleBackToLogin = () => {
+    const authToken = localStorage.getItem('authToken') || null;
+  
+    if (!authToken) {
+      console.error('No authToken found in localStorage.');
+      return;
+    }
+  
+    fetch('https://dev.quizifai.com:8010/usr_logout/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authToken}`,
+      },
+      body: JSON.stringify({
+        user_id: userId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Logout response:', data);
+        if (data.response === 'success') {
+          localStorage.clear();
+          logout(); // Clear AuthContext
+          console.log('Navigating to login...');
+          navigate('/login'); // Navigate to login page
+        } else {
+          console.error('Logout failed:', data.response_message);
+        }
+      })
+      .catch((error) => {
+        console.error('Error logging out:', error);
+      });
+  };
+  
   return (
     <>
       <div className="flex w-full">
@@ -255,6 +292,19 @@ const handlePrevious = () => {
           <div className="flex justify-center p-[5px] text-[24px]">
             <h1 className="text-[#F17530]">My History</h1>
           </div>
+          <div className=" absolute top-[5px] right-[5px]">
+            
+          
+          <div className="flex flex-col justify-center items-center">
+  <img
+    src={LogoutIcon}
+    onClick={handleBackToLogin}
+    alt="Logout Icon"
+    className="w-5 h-5 cursor-pointer "
+  />
+  {/* <p className="text-[#002366] text-[14px]">Logout</p> */}
+</div>
+</div>
 {/* <div className="flex">
 <DashBoardNavBar/>
 </div> */}

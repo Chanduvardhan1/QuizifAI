@@ -4,6 +4,7 @@ import styles from "./dashboard.module.css";
 import Navigation from "../navbar/navbar.jsx";
 import LogoutBar from "../logoutbar/logoutbar.jsx";
 import { Line } from "rc-progress";
+import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 import { useNavigate } from "react-router-dom";
 import Delete from "../../src/assets/Images/dashboard/delete.png";
 import disable from "../../src/assets/Images/dashboard/disable.png";
@@ -546,6 +547,43 @@ const Dashboard = () => {
     );
   });
 
+  const handleBackToLogin = () => {
+    const authToken = localStorage.getItem('authToken') || null;
+  
+    if (!authToken) {
+      console.error('No authToken found in localStorage.');
+      return;
+    }
+  
+    fetch('https://dev.quizifai.com:8010/usr_logout/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authToken}`,
+      },
+      body: JSON.stringify({
+        user_id: userId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Logout response:', data);
+        if (data.response === 'success') {
+          localStorage.clear();
+          logout(); // Clear AuthContext
+          console.log('Navigating to login...');
+          navigate('/login'); // Navigate to login page
+        } else {
+          console.error('Logout failed:', data.response_message);
+        }
+      })
+      .catch((error) => {
+        console.error('Error logging out:', error);
+      });
+  };
+
+
   return (
     <div className={styles.container}>
       <Navigation />
@@ -597,7 +635,16 @@ const Dashboard = () => {
   </div>
 </div>
 
-)}
+            )}    
+    <div className="flex flex-col justify-center items-center">
+<img
+  src={LogoutIcon}
+  onClick={handleBackToLogin}
+  alt="Logout Icon"
+  className="w-5 h-5 cursor-pointer "
+/>
+{/* <p className="text-[#002366] text-[14px]">Logout</p> */}
+</div>
           </div>
           {/* <div className={styles.headerRight1}>
             {userRole === "Quiz Master" && (

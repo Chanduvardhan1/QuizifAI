@@ -636,8 +636,7 @@ const handleglobal =()=> {
                         {userName}
 
                         </h2>
-                        <p className="text-[14px] text-[#214082] font-400 font-family-[lato]">{occupation}</p>
-                        <div className="flex gap-1">
+                        <div className="flex items-center justify-center gap-1">
                         <p className="text-[14px] text-[#002366]">User ID: {userId}</p>
 
                         <div className="relative group inline-block">
@@ -646,13 +645,15 @@ const handleglobal =()=> {
     alt="question mark icon"
     className="h-[15px] w-[15px] cursor-pointer ml-[5px]" 
   />
-  <span className="hidden group-hover:inline-block absolute left-1/2 -translate-x-1/2 -top-[15px] h-[70px] w-[250px] z-10 bg-black text-white text-xs px-2 py-1 rounded">
+  <span className="hidden group-hover:inline-block absolute left-1/2 -translate-x-[65%] -top-[15px] h-[70px] w-[250px] z-10 bg-black text-white text-xs px-2 py-1 rounded">
     This is your unique identification number. It will help our support team to identify your account when you need assistance through QuizifAI's support channels.
   </span>
 </div>
 
                         </div>
-                        <p className="text-[14px] text-[#002366]">{city}</p>
+                        <p className="text-[14px] text-[#214082] font-400 font-family-[lato]">{occupation}</p>
+
+                        {/* <p className="text-[14px] text-[#002366]">{city}</p> */}
 
 
                         <p className="text-[14px] text-[#002366]">{district}</p>
@@ -680,7 +681,7 @@ const handleglobal =()=> {
            <ProgressIndicator />
            
         </div>
-        <div onClick={handleglobal} className="flex flex-col items-center cursor-pointer justify-center relative border shadow-lg rounded-sm p-2 bg-white">
+        <div onClick={handleglobal} className="flex flex-col items-center cursor-pointer justify-start relative border shadow-lg rounded-sm p-2 bg-white">
         <div className="flex flex-col items-center">
       {/* Icons above the rank number */}
       <div className="flex justify-center items-center">
@@ -705,7 +706,12 @@ const handleglobal =()=> {
       <div className="text-[16px]  font-semibold text-[#214082] ">
         Global Score
       </div>
+      <div className="">
 
+      
+      <h1 className='text-[#002366] text-[14px]'>Global Rank <span className=' ml-[10px]'>:</span> <span className='text-[#FF6701]'>{globalRank}</span></h1>
+      <h1 className='text-[#002366] text-[14px]'>Global score  <span className=' ml-[10px]'>:</span> <span className='text-[#FF6701]'>{globalscore}</span></h1>
+      </div>
       {/* Buttons to simulate rank change for testing */}
       {/* <div className="flex gap-2 mt-4">
         <button

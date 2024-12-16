@@ -101,6 +101,7 @@ import Userslist from "./configure/userslist.jsx";
 // import Resetpassword from "./reset-password/restpassword.jsx";
 import QuizAccess1 from "./quizaccess1/quizaccess1.jsx";
 import Creatorganization from "./configure/creatorganization.jsx";
+import Quizmasterleaderboard from "./Quiz_master_leaderboard/quizleaderboard.jsx";
 
 export default () => {
     return [
@@ -145,6 +146,11 @@ export default () => {
         {
             path:'questionbank',
             component:Questionbank,
+            isPrivate: true
+        },
+        {
+            path:'quizmasterleaderboard',
+            component:Quizmasterleaderboard,
             isPrivate: true
         },
         {

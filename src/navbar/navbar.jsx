@@ -11,6 +11,9 @@ import { AuthContext } from "../Authcontext/AuthContext.jsx"
  import myHistoryIcon from "../../public/myhistory.png"
  import contactUs from "../../public/contactus.png";
  import dashboard from "../../public/dashboardnew.png";
+import global1 from "../../src/assets/Images/dashboard/image (13).png";
+
+
 const Navigation = () => {
   // Initialize activePage state to the current pathname
   const [activePage, setActivePage] = useState(window.location.pathname);
@@ -191,6 +194,18 @@ const Navigation = () => {
               className={`${styles.pageIcon} ${activePage === '/myhistory' ? styles.activeIcon : ''}`}
             />
             <span className={styles.pageLink}>My History</span>
+          </NavLink>
+          <NavLink
+            to="/globalleaderboard"
+            className={`${styles.pageItem} ${activePage === '/globalleaderboard' ? styles.bold : ''}`}
+            onClick={() => handleNavigation('/globalleaderboard')}
+          >
+            <img
+              src={global1}
+              alt="Settings Icon"
+              className={`${styles.pageIcon} ${activePage === '/globalleaderboard' ? styles.activeIcon : ''}`}
+            />
+            <span className={styles.pageLink}>Global Rank</span>
           </NavLink>
           {/* <img className="h-[122px] w-[60px] ml-[35px] mt-[50px]" src={rocket} alt="rocket"/> */}
         </div>

@@ -67,6 +67,7 @@ const profileorganization = () => {
 
 const [postalCode, setPostalCode] = useState("");
 const [error, setError] = useState("");
+const [error1, setError1] = useState("");
 const [city, setCity] = useState("");
 const [locations, setLocations] = useState([]);
 const [state, setState] = useState("");
@@ -448,11 +449,17 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
         setLoading(false);
       }
     };
+
     const uploadImage = async (file) => {
       const formData = new FormData();
       formData.append('file', file);
     
       try {
+        const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+
+        if (!authToken) {
+          throw new Error("No authentication token found");
+        }
         const response = await fetch(`https://dev.quizifai.com:8010/upload-org-image?org_id=${orgId}`, {
           method: 'POST',
           headers: {
@@ -466,10 +473,10 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
           fetchProfileImage();
           navigate(0)
         } else {
-          setError('Failed to upload image');
+          setError1('Failed to upload image');
         }
       } catch (error) {
-        setError('Error uploading image: ' + error.message);
+        setError1('Error uploading image: ' + error.message);
       }
     };
     
@@ -508,13 +515,13 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
         if (response.ok) {
           // Clear the photo state after successful deletion
           setPhoto('');
-          setError(null); // Reset any errors
+          setError1(null); // Reset any errors
           navigate(0)
         } else {
           setError('Failed to delete image');
         }
       } catch (error) {
-        setError('Error deleting image: ' + error.message);
+        setError1('Error deleting image: ' + error.message);
       }
     };
     const openModal = () => {
@@ -557,8 +564,8 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
   <div className="relative">
                     {loading ? (
         <p>Loading...</p>
-      ) : error ? (
-        <p>{error}</p>
+      ) : error1 ? (
+        <p>{error1}</p>
       ) : (
         <div className="relative w-[80px] h-[80px] ">
         <img
@@ -671,9 +678,9 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
         <hr className={`h-[1px] w-full`} />
       </div>
       </div>
-      {/* <div className="flex flex-col">
+      <div className="flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[22%] text-blue-800 font-semibold mb-2 mr-[9px] ">Description</label>
+        <label className="w-[20%] text-blue-800 font-semibold mb-2 mr-[9px] ">Description</label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -684,7 +691,8 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
         </div>
       
         <hr className={`h-[1px] w-full`} />
-      </div> */}
+      </div>
+
 <div className='flex gap-[5px]'>
 
 

@@ -6,6 +6,7 @@ import { useState } from "react";
 import searchIcon from "../assets/Images/images/dashboard/Search.png";
 import cancel from "../assets/Images/images/dashboard/cancel.png";
 import DashBoardNavBar from "../../src/dashboardNavBar/dashboardNavBar.jsx";
+import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 
 import congiguration from "../../src/assets/Images/dashboard/configuration 1.png"
 import preferences from "../../src/assets/Images/dashboard/preferences.png"
@@ -24,6 +25,7 @@ const configure = () => {
   const [weeklyQuizCount, setWeeklyQuizCount] = useState(null);
   const [averageScorePercentage, setAverageScorePercentage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen1, setIsModalOpen1] = useState(false);
 
   const handleInputChange = (event) => {
     setSearchQuery(event.target.value);
@@ -35,6 +37,7 @@ const configure = () => {
   };
   const userRole = localStorage.getItem("user_role");
   const allowedRoles = ["Super Admin","Admin"]; // Roles allowed to access the pages
+  const allowedRoles1 = ["Quiz Master"];
 
   const handleRestrictedClick = (navigateTo) => {
     if (allowedRoles.includes(userRole)) {
@@ -43,8 +46,19 @@ const configure = () => {
       setIsModalOpen(true);
     }
   };
+  
+  const handleRestrictedClick1 = (navigateTo) => {
+    if (allowedRoles1.includes(userRole)) {
+      navigate(navigateTo);
+    } else {
+      setIsModalOpen1(true);
+    }
+  };
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+  const closeModal1 = () => {
+    setIsModalOpen1(false);
   };
 
   const handleCategoriesClick = () => handleRestrictedClick("/category");
@@ -64,7 +78,8 @@ const configure = () => {
 
   const handleGlobalLeaderboard = () => handleRestrictedClick("/leaderboardall");
   const handleCreateOrganization = () => handleRestrictedClick('/creatorganization')
-  
+  const handleQuizMasterReport = () => handleRestrictedClick1('/quizmasterleaderboard')
+
 
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -143,7 +158,7 @@ const configure = () => {
       image:notification,
       title: "Reports",
       content:
-        "Global Leaderboard, Quiz-wise Leaderboard, Quiz Status Report, (Other Possible Reports)",
+        "Global Leaderboard, Quiz-wise Leaderboard, Quiz Status Report, Quiz Master Report, (Other Possible Reports)",
     },
     {
       id: 6,
@@ -184,7 +199,42 @@ const configure = () => {
       </span>
     );
   };
-
+  const handleBackToLogin = () => {
+    const authToken = localStorage.getItem('authToken') || null;
+  
+    if (!authToken) {
+      console.error('No authToken found in localStorage.');
+      return;
+    }
+  
+    fetch('https://dev.quizifai.com:8010/usr_logout/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authToken}`,
+      },
+      body: JSON.stringify({
+        user_id: userId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Logout response:', data);
+        if (data.response === 'success') {
+          localStorage.clear();
+          logout(); // Clear AuthContext
+          console.log('Navigating to login...');
+          navigate('/login'); // Navigate to login page
+        } else {
+          console.error('Logout failed:', data.response_message);
+        }
+      })
+      .catch((error) => {
+        console.error('Error logging out:', error);
+      });
+  };
+  
   return (
     <div className="flex font-Poppins">
       <Navigation />
@@ -213,7 +263,16 @@ const configure = () => {
               title="close settings"
               src={cancel}
             />
+                <div className="flex flex-col justify-center items-center">
+  <img
+    src={LogoutIcon}
+    onClick={handleBackToLogin}
+    alt="Logout Icon"
+    className="w-5 h-5 cursor-pointer "
+  />
+</div>
           </div>
+      
  {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
@@ -223,6 +282,21 @@ const configure = () => {
             <button
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
               onClick={closeModal}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+       {isModalOpen1 && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+            <p className="text-lg font-semibold mb-4">
+              You do not have permission to access this page. Only for Quiz Master.
+            </p>
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              onClick={closeModal1}
             >
               Close
             </button>
@@ -307,6 +381,9 @@ const configure = () => {
                     : contentItem === "Quiz Status Report" &&
                       item.title === "Reports"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
+                    : contentItem === "Quiz Master Report" &&
+                    item.title === "Reports"
+                  ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : contentItem === "Organization Profile" &&
                         item.title === "Organization"
                       ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
@@ -349,6 +426,8 @@ const configure = () => {
                       ? handleUserList
                       : contentItem === "Quiz Status Report"
                       ? handleGlobalLeaderboard
+                      : contentItem === "Quiz Master Report"
+                      ? handleQuizMasterReport
                       : contentItem === "Create Organization"
                       ? handleCreateOrganization
                       : null

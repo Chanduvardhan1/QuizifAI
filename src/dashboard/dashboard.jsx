@@ -91,7 +91,7 @@ const Dashboard = () => {
   const [retakeFlag, setRetakeFlag] = useState(0);
 
   const navigate = useNavigate();
-  const { isAuthenticated, authToken } = useContext(AuthContext);
+  const { isAuthenticated, authToken,logout } = useContext(AuthContext);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
@@ -104,7 +104,7 @@ const Dashboard = () => {
   const [isOptionsVisible, setIsOptionsVisible] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
-  
+
   const handleClosePopup = () => {
     setShowPopup(false);
   };
@@ -234,7 +234,7 @@ const Dashboard = () => {
       };
 
       const body = JSON.stringify({
-        user_id: userid,
+        user_id: userId,
         quiz_id: quizId,
       });
 
@@ -250,7 +250,14 @@ const Dashboard = () => {
       if (response.ok) {
         const result = await response.json();
         console.log("Delete response:", result);
-        setModalIsOpen(false);
+        if (result.response === "fail") {
+          // Show popup with message
+          setPopupMessage(result.response_message);
+          setShowPopup(true);
+          setModalIsOpen(false);
+        } else {
+          setModalIsOpen(false);
+        }
       } else {
         console.error("Failed to delete quiz");
       }
@@ -436,6 +443,16 @@ const Dashboard = () => {
   );
   const toggleNavbar = (index) => {
     setCardStates((prevState) => {
+      const updatedStates = [...prevState];
+      updatedStates[index] = !updatedStates[index];
+      return updatedStates;
+    });
+  };
+  const [cardStates1, setCardStates1] = useState(
+    Array(allquizzes.length).fill(false)
+  );
+  const toggleNavbar1 = (index) => {
+    setCardStates1((prevState) => {
       const updatedStates = [...prevState];
       updatedStates[index] = !updatedStates[index];
       return updatedStates;
@@ -769,7 +786,7 @@ const Dashboard = () => {
                               Physics,Physics,Physics,Physics
                             </span> */}
                             {(userRole === "Quiz Master" || userRole === "Super Admin") && (
-                            <img src={more} alt="" onClick={toggleOptions} className=" w-[12px] h-[12px] hover:bg-gray-200   hover:rounded-full" />
+                            <img src={more} alt="" onClick={() => toggleNavbar(index)} className=" w-[12px] h-[12px] hover:bg-gray-200   hover:rounded-full" />
                             )}
                             {cardStates[index]  && (
                               <div
@@ -800,7 +817,7 @@ const Dashboard = () => {
                                       alt="Edit icon"
                                     />
                                     <span
-                                      className="text-[12px] text-blue-500 cursor-pointer hover:underline"
+                                      className="text-[12px] text-[#00008b] cursor-pointer hover:underline"
                                       onClick={() => Edit(quizItem.quiz_id)}
                                     >
                                       Edit
@@ -816,7 +833,7 @@ const Dashboard = () => {
       alt="Delete icon"
     />
     <span
-      className="text-red-500 text-[12px] cursor-pointer hover:underline"
+      className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
       onClick={() => handleDeleteClick(quizItem.quiz_id)}
     >
       Delete
@@ -847,7 +864,7 @@ const Dashboard = () => {
           className={`px-4 py-2 rounded bg-red-500 text-white transition-opacity duration-200 ${
             !isChecked ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"
           }`}
-          onClick={() => setIsDeleteConfirmed(true)}
+          onClick={setIsDeleteConfirmed}
           disabled={!isChecked}
         >
           Delete
@@ -892,19 +909,28 @@ const Dashboard = () => {
                                     Leaderboard
                                   </span>
                                 </div> */}
-                                {userRole === "Quiz Master" && (
-  <div className="flex flex-col items-center">
+                                {(userRole === "Quiz Master" || userRole === "Super Admin") && (
+  <div className="flex items-center">
     <img
-      className="w-6 h-6 mb-2 cursor-pointer"
+      className="w-2 h-2 mr-1 cursor-pointer"
       src={disable}
       alt="Disable icon"
     />
-    <span
-      className="text-red-500 font-medium cursor-pointer hover:underline"
-      onClick={() => handleDisableClick(quizItem.quiz_id)}
-    >
-      Disable
-    </span>
+                             {quizItem.active_flag ?.toLowerCase() != "true"  ? 
+
+<span
+  className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
+  onClick={handleEnableOnClick}
+>
+  Enable
+</span>:
+<span
+  className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
+  onClick={() => setModalIsOpen1(true)}
+>
+  Disable
+</span>
+}
     <Modal
       isOpen={modalIsOpen1}
       onRequestClose={() => setModalIsOpen1(false)}
@@ -1399,8 +1425,18 @@ const Dashboard = () => {
                     //     </div>
                     //   </div>
                   ) : (
-                    <div  
-className={`flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4 border-[#84acfa] border-[1px] border-b-[8px] gap-[5px]`}
+//                     <div  
+// className={`flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4 border-[#84acfa] border-[1px] border-b-[8px] gap-[5px]`}
+// >
+<div
+key={index}
+className={`flex flex-row w-full max-w-[390px] h-[170px] rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4
+  ${
+    quizItem.active_flag === "i"
+      ? "border-gray-400 border-[1px] border-b-[8px]" // Gray border if active_flag is "i"
+      : "border-[#84acfa] border-[1px] border-b-[8px]" // Default blue border
+  }
+`}
 >
 {/* Image Section */}
 <div       className="w-[140px] h-[127px]  rounded-md  mr-2"
@@ -1425,7 +1461,7 @@ src={quizItem.photo1 || back}
    Physics,Physics,Physics,Physics
  </span> */}
  {(userRole === "Quiz Master" || userRole === "Super Admin") &&  (
-  <img src={more} alt="" onClick={toggleOptions} className=" w-[12px] h-[12px] hover:bg-gray-200   hover:rounded-full" />
+  <img src={more} alt="" onClick={() => toggleNavbar(index)} className=" w-[12px] h-[12px] hover:bg-gray-200   hover:rounded-full" />
 
  )}
  {cardStates[index]  && (
@@ -1457,14 +1493,14 @@ src={quizItem.photo1 || back}
            alt="Edit icon"
          />
          <span
-           className="text-[12px] text-blue-500 cursor-pointer hover:underline"
+           className="text-[12px] text-[#00008b] cursor-pointer hover:underline"
            onClick={() => Edit(quizItem.quiz_id)}
          >
            Edit
          </span>
        </div>
      )}
-       {(userRole === "Quiz Master" || userRole === "Super Admin")  (
+       {(userRole === "Quiz Master" || userRole === "Super Admin") && (
   <div className="flex items-center">
     <img
     onClick={() => handleDeleteClick(quizItem.quiz_id)}
@@ -1473,7 +1509,7 @@ src={quizItem.photo1 || back}
       alt="Delete icon"
     />
     <span
-      className="text-red-500 text-[12px] cursor-pointer hover:underline"
+      className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
       onClick={() => handleDeleteClick(quizItem.quiz_id)}
     >
       Delete
@@ -1504,7 +1540,7 @@ src={quizItem.photo1 || back}
           className={`px-4 py-2 rounded bg-red-500 text-white transition-opacity duration-200 ${
             !isChecked ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"
           }`}
-          onClick={() => setIsDeleteConfirmed(true)}
+          onClick={setIsDeleteConfirmed}
           disabled={!isChecked}
         >
           Delete
@@ -1550,18 +1586,27 @@ src={quizItem.photo1 || back}
        </span>
      </div> */}
      {(userRole === "Quiz Master" || userRole === "Super Admin")  && (
-<div className="flex flex-col items-center">
+<div className="flex l items-center">
 <img
-className="w-6 h-6 mb-2 cursor-pointer"
+className="w-2 h-2 mr-1 cursor-pointer"
 src={disable}
 alt="Disable icon"
 />
+{quizItem.active_flag ?.toLowerCase() != "true"  ? 
+
 <span
-className="text-red-500 font-medium cursor-pointer hover:underline"
-onClick={() => handleDisableClick(quizItem.quiz_id)}
+  className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
+  onClick={handleEnableOnClick}
 >
-Disable
+  Enable
+</span>:
+<span
+  className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
+  onClick={() => setModalIsOpen1(true)}
+>
+  Disable
 </span>
+}
 <Modal
 isOpen={modalIsOpen1}
 onRequestClose={() => setModalIsOpen1(false)}
@@ -2124,9 +2169,9 @@ Cancel
                             </span> */}
                              {(userRole === "Quiz Master" || userRole === "Super Admin")  && (
                               
-                            <img src={more} alt="" onClick={() => toggleNavbar(index)} className=" w-[12px] h-[12px] hover:bg-gray-200 z-10 hover:rounded-full" />
+                            <img src={more} alt="" onClick={() => toggleNavbar1(index)} className=" w-[12px] h-[12px] hover:bg-gray-200 z-10 hover:rounded-full" />
                           )}
-                            {cardStates[index]  && (
+                            {cardStates1[index]  && (
                               <div
                                 className="absolute rounded-md w-[150px] z-10  flex flex-col p-1 bg-gray-200 mt-[43px] ml-[115px]"
                                 style={{
@@ -2161,7 +2206,7 @@ Cancel
                                       alt="Edit icon"
                                     />
                                     <span
-                                      className="text-[12px] text-blue-500 cursor-pointer hover:underline"
+                                      className="text-[12px] text-[#00008b] cursor-pointer hover:underline"
                                       onClick={() => Edit(quizItem.quiz_id)}
                                     >
                                       Edit
@@ -2177,7 +2222,7 @@ Cancel
       alt="Delete icon"
     />
     <span
-      className="text-red-500 text-[12px] cursor-pointer hover:underline"
+      className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
       onClick={() => handleDeleteClick(quizItem.quiz_id)}
     >
       Delete
@@ -2208,7 +2253,7 @@ Cancel
           className={`px-4 py-2 rounded bg-red-500 text-white transition-opacity duration-200 ${
             !isChecked ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"
           }`}
-          onClick={() => setIsDeleteConfirmed(true)}
+          onClick={setIsDeleteConfirmed}
           disabled={!isChecked}
         >
           Delete
@@ -2262,12 +2307,21 @@ Cancel
       src={disable}
       alt="Disable icon"
     />
-    <span
-      className="text-red-500 text-[12px] cursor-pointer hover:underline"
-      onClick={() => handleDisableClick(quizItem.quiz_id)}
-    >
-      Disable
-    </span>
+                            {quizItem.active_flag ?.toLowerCase() != "true"  ? 
+
+<span
+  className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
+  onClick={handleEnableOnClick}
+>
+  Enable
+</span>:
+<span
+  className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
+  onClick={() => setModalIsOpen1(true)}
+>
+  Disable
+</span>
+}
     <Modal
       isOpen={modalIsOpen1}
       onRequestClose={() => setModalIsOpen1(false)}
@@ -2692,8 +2746,18 @@ Cancel
                   ) : (
                     <>
                       <div className="" >
-                      <div 
+                      {/* <div 
 className={`flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4 border-[#84acfa] border-[1px] border-b-[8px] gap-[5px]`}
+> */}
+                   <div
+  key={index}
+  className={`flex flex-row w-full max-w-[390px] h-[170px] rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4
+    ${
+      quizItem.active_flag === "i"
+        ? "border-gray-400 border-[1px] border-b-[8px]" // Gray border if active_flag is "i"
+        : "border-[#84acfa] border-[1px] border-b-[8px]" // Default blue border
+    }
+  `}
 >
 {/* Image Section */}
 <div       className="w-[140px] h-[127px]  rounded-md  mr-2"
@@ -2721,11 +2785,11 @@ src={quizItem.photo1 || back}
  {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
    Physics,Physics,Physics,Physics
  </span> */}
-      {userRole === "Quiz Master" && (
+      {(userRole === "Quiz Master" || userRole === "Super Admin") && (
 
- <img src={more} alt="" onClick={() => toggleNavbar(index)} className=" w-[12px] h-[12px] hover:bg-gray-200 z-10  hover:rounded-full" />
+ <img src={more} alt="" onClick={() => toggleNavbar1(index)} className=" w-[12px] h-[12px] hover:bg-gray-200 z-10  hover:rounded-full" />
       )}
- {cardStates[index]  && (
+ {cardStates1[index]  && (
    <div
      className="absolute rounded-md w-[150px]  flex flex-col p-1 bg-gray-200 mt-[43px] ml-[115px]"
      style={{
@@ -2747,7 +2811,7 @@ src={quizItem.photo1 || back}
          Start
        </span>
      </div> */}
-     {userRole === "Quiz Master" && (
+     {(userRole === "Quiz Master" || userRole === "Super Admin")  && (
        <div className="flex items-center ">
          <img
            className="w-2 h-2 mr-1"
@@ -2755,14 +2819,14 @@ src={quizItem.photo1 || back}
            alt="Edit icon"
          />
          <span
-           className="text-[12px] text-blue-500 cursor-pointer hover:underline"
+           className="text-[12px] text-[#00008b] cursor-pointer hover:underline"
            onClick={() => Edit(quizItem.quiz_id)}
          >
            Edit
          </span>
        </div>
      )}
-                        {userRole === "Quiz Master" && (
+                        {(userRole === "Quiz Master" || userRole === "Super Admin")  && (
   <div className="flex items-center">
     <img
     onClick={() => handleDeleteClick(quizItem.quiz_id)}
@@ -2771,7 +2835,7 @@ src={quizItem.photo1 || back}
       alt="Delete icon"
     />
     <span
-      className="text-red-500 text-[12px] cursor-pointer hover:underline"
+      className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
       onClick={() => handleDeleteClick(quizItem.quiz_id)}
     >
       Delete
@@ -2802,7 +2866,7 @@ src={quizItem.photo1 || back}
           className={`px-4 py-2 rounded bg-red-500 text-white transition-opacity duration-200 ${
             !isChecked ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"
           }`}
-          onClick={() => setIsDeleteConfirmed(true)}
+          onClick={setIsDeleteConfirmed}
           disabled={!isChecked}
         >
           Delete
@@ -2847,59 +2911,68 @@ src={quizItem.photo1 || back}
          Leaderboard
        </span>
      </div> */}
-     {userRole === "Quiz Master" && (
-<div className="flex flex-col items-center">
-<img
-className="w-6 h-6 mb-2 cursor-pointer"
-src={disable}
-alt="Disable icon"
-/>
+     {(userRole === "Quiz Master" || userRole === "Super Admin")  && (
+       <div className="flex  items-center">
+       <img
+       className="w-2 h-2 mr-1 cursor-pointer"
+       src={disable}
+       alt="Disable icon"
+       />
+                               {quizItem.active_flag ?.toLowerCase() != "true"  ? 
+
 <span
-className="text-red-500 font-medium cursor-pointer hover:underline"
-onClick={() => handleDisableClick(quizItem.quiz_id)}
+  className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
+  onClick={handleEnableOnClick}
 >
-Disable
+  Enable
+</span>:
+<span
+  className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
+  onClick={() => setModalIsOpen1(true)}
+>
+  Disable
 </span>
-<Modal
-isOpen={modalIsOpen1}
-onRequestClose={() => setModalIsOpen1(false)}
-className="bg-white rounded-lg p-8 mx-auto mt-10 max-w-md border border-red-400"
-overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
->
-<h2 className="text-xl font-semibold mb-4 text-center">
-Are you sure you want to disable this card?
-</h2>
-<div className="mb-4 flex items-center">
-<input
-type="checkbox"
-id="confirmCheckbox"
-className="mr-2 w-4 h-4 cursor-pointer"
-checked={isChecked1}
-onChange={(e) => setIsChecked1(e.target.checked)}
-/>
-<label htmlFor="confirmCheckbox" className="text-gray-700">
-I understand the consequences.
-</label>
-</div>
-<div className="flex justify-end space-x-4">
-<button
-className={`bg-red-500 text-white px-4 py-2 rounded transition-opacity duration-200 ${!isChecked1 ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"
-}`}
-onClick={setIsDisableConfirmed}
-disabled={!isChecked1}
->
-Disable
-</button>
-<button
-className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 transition-colors duration-200"
-onClick={() => setModalIsOpen1(false)}
->
-Cancel
-</button>
-</div>
-</Modal>
-</div>
-)}
+}
+       <Modal
+       isOpen={modalIsOpen1}
+       onRequestClose={() => setModalIsOpen1(false)}
+       className="bg-white rounded-lg p-8 mx-auto mt-10 max-w-md border border-red-400"
+       overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+       >
+       <h2 className="text-xl font-semibold mb-4 text-center">
+       Are you sure you want to disable this card?
+       </h2>
+       <div className="mb-4 flex items-center">
+       <input
+       type="checkbox"
+       id="confirmCheckbox"
+       className="mr-2 w-4 h-4 cursor-pointer"
+       checked={isChecked1}
+       onChange={(e) => setIsChecked1(e.target.checked)}
+       />
+       <label htmlFor="confirmCheckbox" className="text-gray-700">
+       I understand the consequences.
+       </label>
+       </div>
+       <div className="flex justify-end space-x-4">
+       <button
+       className={`bg-red-500 text-white px-4 py-2 rounded transition-opacity duration-200 ${!isChecked1 ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"
+       }`}
+       onClick={setIsDisableConfirmed}
+      disabled={!isChecked1}
+      >
+      Disable
+      </button>
+      <button
+      className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 transition-colors duration-200"
+      onClick={() => setModalIsOpen1(false)}
+      >
+      Cancel
+      </button>
+      </div>
+      </Modal>
+      </div>
+      )}
 
    </div>
  )}

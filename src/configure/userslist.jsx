@@ -26,6 +26,7 @@ const userslist = () => {
     const userRole = localStorage.getItem("user_role");
 
     const [username1, setUsername1] = useState("");
+    const [orgName, setOrgName] = useState(""); // State to store the organization name
 
 useEffect(() => {
   const storedUsername = localStorage.getItem("username");
@@ -62,7 +63,8 @@ const fetchOrganizationUsers = async () => {
       console.log("API Response:", data);
 
       if (data.response === "success") {
-        setUsers(data.data); // Assuming `data.data` contains the users
+        setUsers(data.data);
+        setOrgName(data.data[0].org_name); // Assuming `data.data` contains the users
       } else {
         setError(data.response_message || "Failed to fetch users");
       }
@@ -195,7 +197,7 @@ const [loading, setLoading] = useState(true);
                   <div>
                     <span>Organization Name </span>
                     <span className="pl-[45px] font-normal">
-                      <span className="font-bold">:</span> Narmtech
+                      <span className="font-bold">:</span> {orgName}
                     </span>
                   </div>
 
@@ -219,8 +221,8 @@ const [loading, setLoading] = useState(true);
         <thead className="bg-[#CBF2FB]">
           <tr className="bg-[#CBF2FB] text-left">
             <th className="py-2 px-4 border-b text-[#214082]">User ID</th>
-            <th className="py-2 px-4 border-b text-[#214082]">Name</th>
-            <th className="py-2 px-4 border-b text-[#214082]">Email</th>
+            <th className="py-2 px-4 border-b text-[#214082] text-center">Name</th>
+            <th className="py-2 px-4 border-b text-[#214082] text-center">Email</th>
             <th className="py-2 px-4 border-b text-[#214082]">Active Status</th>
             <th className="py-2 px-4 border-b text-[#214082]">Role Name</th>
             <th className="py-2 px-4 border-b text-[#214082]">Organization Name</th>
@@ -232,8 +234,8 @@ const [loading, setLoading] = useState(true);
           {users.map((user) => (
             <tr key={user.user_id} className="bg-white hover:bg-gray-100 active:bg-green-200 text-[12px]">
               <td className="py-2 px-4 border-b text-[#214082]">{user.user_id}</td>
-              <td className="py-2 px-4 border-b text-[#214082]">{user.user_name}</td>
-              <td className="py-2 px-4 border-b text-[#214082]">{user.user_email}</td>
+              <td className="py-2 px-4 border-b text-[#214082] text-center">{user.user_name}</td>
+              <td className="py-2 px-4 border-b text-[#214082] text-center">{user.user_email}</td>
 
               <td className="py-2 px-4 border-b text-[#214082] text-center">
                 {user.active_status ? (

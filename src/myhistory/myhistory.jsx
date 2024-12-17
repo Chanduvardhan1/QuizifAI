@@ -32,7 +32,7 @@ const myhistory = () => {
   const [historyData, setHistoryData] = useState(null);
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
   const navigate = useNavigate();
-  const { isAuthenticated, authToken } = useContext(AuthContext);
+  const { isAuthenticated, authToken,logout } = useContext(AuthContext);
   const inputReff = useRef(null);
   const [image, setImage] = useState("");
   const [date, setDate] = useState('');

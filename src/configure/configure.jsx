@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "../navbar/navbar.jsx";
 import LogoutBar from "../logoutbar/logoutbar.jsx";
@@ -16,6 +16,7 @@ import pepooles from "../../src/assets/Images/dashboard/image (7).png"
 import Q from "../../src/assets/Images/dashboard/image (8).png"
 import notification from "../../src/assets/Images/dashboard/image (9).png"
 import ball from "../../src/assets/Images/dashboard/image (10).png"
+import { AuthContext } from "../Authcontext/AuthContext.jsx";
 
 
 const configure = () => {
@@ -26,6 +27,7 @@ const configure = () => {
   const [averageScorePercentage, setAverageScorePercentage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen1, setIsModalOpen1] = useState(false);
+  const {authToken, logout } = useContext(AuthContext);
 
   const handleInputChange = (event) => {
     setSearchQuery(event.target.value);

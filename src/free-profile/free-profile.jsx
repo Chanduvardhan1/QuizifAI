@@ -94,6 +94,7 @@ const FreeProfile = () => {
   const [displayname, setdisplayname] = useState(null);
   const [professions, setProfessions] = useState("student");
   const [emailOtp, setEmailOtp] = useState("");
+  const orgId = localStorage.getItem('org_id');
 
   const [isEmailOtpSent, setIsEmailOtpSent] = useState(false);
   const [isMobileOtpSent, setIsMobileOtpSent] = useState(false);
@@ -335,7 +336,7 @@ const FreeProfile = () => {
       otp: otp,
       user_role: rolename, // Example value, adjust as needed
       user_type: "Public",
-      user_org_id: null,
+      user_org_id: orgId,
       gender: gender,
       display_name: " ",
       date_of_birth: dob,
@@ -623,17 +624,97 @@ const FreeProfile = () => {
     }
   };
 
+  // const handleUpdatePassword = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!showNewPasswords) {
+  //     setShowNewPasswords(true);
+  //     setButtonText("Save Password");
+  //     return;
+  //   }
+
+  //   let valid = true;
+
+  //   if (!validatePassword(newPassword)) {
+  //     setNewPasswordError(
+  //       "Password must be at least 8 characters long, contain 1 uppercase letter, 1 special character, and 1 digit."
+  //     );
+  //     valid = false;
+  //   } else {
+  //     setNewPasswordError("");
+  //   }
+
+  //   if (newPassword !== confirmPassword) {
+  //     setConfirmPasswordError(
+  //       "New password and confirm password do not match."
+  //     );
+  //     valid = false;
+  //   } else {
+  //     setConfirmPasswordError("");
+  //   }
+
+  //   if (!valid) {
+  //     return;
+  //   }
+
+  //   try {
+  //     const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+
+  //     if (!authToken) {
+  //       throw new Error("No authentication token found");
+  //     }
+  //     const headers = {
+  //       'accept': 'application/json',
+  //       'Authorization': `Bearer ${authToken}`,
+  //       'Content-Type': 'application/json',
+  //     };
+  //     const response = await axios.post(
+  //       "https://dev.quizifai.com:8010/update_password",
+  //       {
+  //         user_id: userId, // Replace with your user ID
+  //         old_password: oldPassword,
+  //         new_password: newPassword,
+  //         confirm_password: confirmPassword,
+  //         headers,
+  //       }
+  //     );
+
+  //     if (response.data.response === "success") {
+  //       toast.error(response.data.response_message);
+  //       localStorage.setItem("password", newPassword); // Store the new password in localStorage
+
+  //       setOldPassword(newPassword);
+  //       setNewPassword("");
+  //       setConfirmPassword("");
+  //       setOldPasswordError("");
+  //       setNewPasswordError("");
+  //       setConfirmPasswordError("");
+  //       setShowNewPasswords(false);
+  //       setButtonText("Update Password");
+  //     } else if (response.data.error === "Incorrect old password") {
+  //       setOldPasswordError("Incorrect old password.");
+  //     } else {
+  //       toast.error("Failed to update password. Please try again.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating password", error);
+  //     toast.error("An error occurred while updating the password");
+  //   }
+  // };
+
+
   const handleUpdatePassword = async (e) => {
     e.preventDefault();
-
+  
     if (!showNewPasswords) {
       setShowNewPasswords(true);
       setButtonText("Save Password");
       return;
     }
-
+  
     let valid = true;
-
+  
+    // Validate new password
     if (!validatePassword(newPassword)) {
       setNewPasswordError(
         "Password must be at least 8 characters long, contain 1 uppercase letter, 1 special character, and 1 digit."
@@ -642,30 +723,26 @@ const FreeProfile = () => {
     } else {
       setNewPasswordError("");
     }
-
+  
+    // Validate confirm password
     if (newPassword !== confirmPassword) {
-      setConfirmPasswordError(
-        "New password and confirm password do not match."
-      );
+      setConfirmPasswordError("New password and confirm password do not match.");
       valid = false;
     } else {
       setConfirmPasswordError("");
     }
-
+  
     if (!valid) {
       return;
     }
-
+  
     try {
       const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
-
+  
       if (!authToken) {
-        throw new Error("No authentication token found");
+        throw new Error("No authentication token found. Please log in again.");
       }
-      const headers = {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`,
-      };
+  
       const response = await axios.post(
         "https://dev.quizifai.com:8010/update_password",
         {
@@ -673,14 +750,21 @@ const FreeProfile = () => {
           old_password: oldPassword,
           new_password: newPassword,
           confirm_password: confirmPassword,
-          headers,
+        },
+        {
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${authToken}`, // Pass token in the Authorization header
+            "Content-Type": "application/json",
+          },
         }
       );
-
+  
       if (response.data.response === "success") {
-        toast.error(response.data.response_message);
-        localStorage.setItem("password", newPassword); // Store the new password in localStorage
-
+        toast.success(response.data.response_message);
+  
+        // Update state and reset fields
+        localStorage.setItem("password", newPassword);
         setOldPassword(newPassword);
         setNewPassword("");
         setConfirmPassword("");
@@ -696,9 +780,16 @@ const FreeProfile = () => {
       }
     } catch (error) {
       console.error("Error updating password", error);
-      toast.error("An error occurred while updating the password");
+  
+      if (error.response?.status === 401) {
+        toast.error("Authentication failed. Please log in again.");
+        // Redirect to login if authentication fails
+      } else {
+        toast.error("An error occurred while updating the password.");
+      }
     }
   };
+  
 
   const validatePassword = (password) => {
     return (
@@ -1044,9 +1135,9 @@ const FreeProfile = () => {
                 </div>
               </div>
             </div>
-            <div className='w-full flex flex-col gap-5 p-5 pt-10'>
+            <div className='w-full flex  gap-5 p-5 pt-10'>
 
-      <div className='flex gap-[5px]'>
+      <div className='w-full flex flex-col gap-[5px]'>
       <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
         <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">First Name<span className="text-red-500">*</span></label>
@@ -1110,16 +1201,7 @@ const FreeProfile = () => {
                     }`}
                   ></hr>
       </div>
-
-      
-
-
-      
-      </div>
-   
-
-<div className='flex gap-[5px]'>
-<div className="flex flex-col w-full">
+      <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
         <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">Gender<span className="text-red-500">*</span></label>
         <select
@@ -1162,6 +1244,15 @@ const FreeProfile = () => {
                     }`}
                   ></hr>
       </div>
+      
+
+
+      
+      </div>
+   
+
+<div className='flex w-full flex-col gap-[5px]'>
+
 <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
         <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">User Address1<span className="text-red-500">*</span></label>
@@ -1182,13 +1273,7 @@ const FreeProfile = () => {
                     }`}
                   ></hr>
       </div>
-    
-      
-</div>
-
-<div className='flex gap-[5px]'>
-
-<div className="flex flex-col w-full">
+      <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
         <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">User Address2<span className="text-red-500">*</span></label>
         <input
@@ -1265,12 +1350,6 @@ const FreeProfile = () => {
   )}
   <hr className="h-[1px] w-full" />
 </div>
-
-     
-    
-</div>
-
-<div className='flex gap-[5px]'>
 <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
         <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] "> District Name<span className="text-red-500"></span></label>
@@ -1287,6 +1366,12 @@ const FreeProfile = () => {
       
         <hr className={`h-[1px] w-full`} />
       </div>
+</div>
+
+
+
+<div className='flex w-full flex-col  gap-[5px]'>
+
       <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
         <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">City Name<span className="text-red-500"></span></label>
@@ -1329,10 +1414,7 @@ const FreeProfile = () => {
       
         <hr className={`h-[1px] w-full`} />
       </div>
-</div>
-
-    <div className='flex gap-[5px]'>
-    <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
         <label className="w-[14%] text-blue-800 font-semibold mb-2">Country Name<span className="text-red-500"></span></label>
         <input
@@ -1371,7 +1453,9 @@ const FreeProfile = () => {
                   ></hr>
       </div>
     )}
-    </div>
+</div>
+
+   
     </div>
           
           </div>

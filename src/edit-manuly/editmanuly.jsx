@@ -642,10 +642,10 @@ export default function editmanuly() {
       toast.error("Please fill in all the required fields before proceeding.");
       return; // Prevent further execution
     }
-    if (numQuestions < 5) {
-      toast.error("You need to have at least 5 questions.");
-      return;
-    }
+    // if (numQuestions < 5) {
+    //   toast.error("You need to have at least 5 questions.");
+    //   return;
+    // }
     if (questions.length < numQuestions) {
       toast.error(`You have deleted some questions. You currently have ${questions.length} questions, but 'Number of questions' is set to ${numQuestions}. Please update the 'Number of questions' accordingly.`);
       return; // Prevent further execution

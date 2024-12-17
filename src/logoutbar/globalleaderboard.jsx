@@ -8,6 +8,7 @@ import Camera from "../assets/Images/images/profile/Camera.png";
 import searchIcon from "../assets/Images/images/dashboard/Search.png";
 import GreaterThan from "../assets/Images/images/dashboard/greaterthan.png";
 import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
+import { useNavigate } from "react-router-dom";
 
 const Globalleaderboard = () => {
   const inputReff = useRef(null);
@@ -21,13 +22,14 @@ const Globalleaderboard = () => {
   const [duration, setDuration] = useState("");
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
-  const { isAuthenticated, authToken } = useContext(AuthContext);
+  const { isAuthenticated, authToken,logout } = useContext(AuthContext);
   const [currentPage, setCurrentPage] = useState(1);
   const [allUsersData, setAllUsersData] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
   const rowsPerPage = 25;
   const [sortOption, setSortOption] = useState("latest");
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   useEffect (() =>{
     const fetchQuizData = async () =>{

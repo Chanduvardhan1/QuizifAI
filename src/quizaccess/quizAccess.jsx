@@ -46,6 +46,10 @@ import closeimage from "../../public/closeimage.png";
 import stars from "../../src/assets/Images/quiz-type/star.png"
 import print1 from "../../src/assets/Images/dashboard/print.png"
 import trophy from "../../src/assets/Images/dashboard/trophy.png"
+import Attemts from "../../src/assets/Images/dashboard/Attemts.png"
+import Quickest from "../../src/assets/Images/dashboard/image (15).png"
+import Badge from "../../src/assets/Images/dashboard/badge 1.png"
+
 
 const dashboardLogo = "/images/dashboard/quizifaiDashboard.png";
 const dashboardIcon = "/images/dashboard/dashboard.png";
@@ -129,8 +133,11 @@ const quizAccess = () => {
           pass_percentage: quizData.pass_percentage,
           num_questions: quizData.num_questions,
           quiz_total_marks: quizData.quiz_total_marks,
-          quiz_complexity_name:quizData.quiz_complexity_name
-
+          quiz_complexity_name:quizData.quiz_complexity_name,
+          quiz_category_name:quizData.quiz_category_name,
+          quiz_sub_category_name:quizData.quiz_sub_category_name,
+          course_name:quizData.course_name,
+          class_name:quizData.class_name,
         }
       });
     }
@@ -308,7 +315,7 @@ const quizAccess = () => {
             </div>
             <div className="flex items-center">
               <img
-                src={Playbutton}
+                src={Attemts}
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
@@ -316,7 +323,7 @@ const quizAccess = () => {
             </div>
             <div className="flex items-center">
               <img
-                src={timer}
+                src={Badge}
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
@@ -324,7 +331,7 @@ const quizAccess = () => {
             </div>
             <div className="flex items-center">
               <img
-                src={Playbutton}
+                src={Quickest}
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />

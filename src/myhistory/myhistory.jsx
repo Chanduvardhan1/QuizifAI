@@ -13,6 +13,7 @@ import Moderate from "../assets/Images/history/Moderate.png";
 import Complex from "../assets/Images/history/Complex.png"; 
 import DashBoardNavBar from "../../src/dashboardNavBar/dashboardNavBar.jsx";
 import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
+import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
 
 
 const myhistory = () => {
@@ -283,6 +284,50 @@ const handlePrevious = () => {
         console.error('Error logging out:', error);
       });
   };
+  // --------------***view image*** -------------- //
+const [photo, setPhoto] = useState(''); // State to store the image URL
+const [loading, setLoading] = useState(true); 
+const [error, setError] = useState(null);
+
+      const fetchProfileImage = async () => {
+        try {
+          const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
+                if (!authToken) {
+                  console.error("No authentication token found. Please log in again.");
+                  return;
+                }
+          const response = await fetch(`https://dev.quizifai.com:8010/view-profile_image?user_id=${userId}`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              'accept': 'application/json',
+            },
+          });
+      
+          if (response.ok) {
+            const data = await response.json();
+            if (data.response === 'success') {
+              setPhoto(data.data); // Set the image URL from the response
+            } else {
+              setPhoto(defaultPhoto);
+            }
+          } else {
+            setPhoto(defaultPhoto);
+            // setError('Failed to fetch image');
+          }
+        } catch (error) {
+          setPhoto(defaultPhoto);
+          // setError('Error fetching image: ' + error.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      useEffect(() => {
+        fetchProfileImage();
+      }, []);
+// --------------***view image end*** -------------- //
+
   
   return (
     <>
@@ -310,32 +355,19 @@ const handlePrevious = () => {
 </div> */}
           <div className="py-[20px] my-[10px]">
             <div className="flex flex-col gap-5">
-              <div className="flex -gap-3">
-                <div
-                  className="rounded-full w-[100px] ml-[5px] h-[100px] -mt-[38px]"
-                  style={{ position: "relative" }}
+              <div className="flex gap-3 pb-2 items-center ">
+              <div
+                  className="rounded-full w-[80px]  h-[80px] "
+
                 >
-                  {image ? (
+                 
                     <img
-                      className="w-[80px] h-[80px] rounded-full border-2 border-white"
-                      src={image}
-                      alt="Uploaded"
-                    />
-                  ) : (
-                    <img
-                      className="w-[80px] h-[80px] rounded-full border-2 border-white"
-                      src={profileimg}
+                      className="w-[80px] h-[80px] rounded-2xl"
+                      src={photo}
                       alt="Default"
                     />
-                  )}
-                  <input
-                    type="file"
-                    ref={inputReff}
-                    onChange={handleImageChange}
-                    style={{ display: "none" }}
-                  />
+                
                 </div>
-
                 <div className="-mt-4">
                   <span className="text-[15px]">Welcome </span>
                   <span className="text-[15px]">

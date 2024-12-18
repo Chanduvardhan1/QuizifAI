@@ -718,6 +718,7 @@ export default function editmanuly() {
           quiz_instructions:instructions,
           questions: questions.map((question) => ({
             question_text: question.question_text,
+            correct_answer_description: question.correct_answer_description,
             question_weightage: question.question_weightage,
             multi_answer_flag: question.multi_answer_flag, // Using multi_answer_flag from the question object
             question_duration: question.question_duration,
@@ -1946,6 +1947,18 @@ export default function editmanuly() {
                     </button>
                   </div>
                 ))}
+                  <input
+      type="text"
+      placeholder="Enter correct answer description"
+      className="w-[90%] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] p-[10px] text-[14px] "
+      value={question.correct_answer_description || ''} // Show the correct description
+      onChange={(e) => {
+        const newQuestions = [...questions];
+        newQuestions[questionIndex].correct_answer_description = e.target.value;
+        setQuestions(newQuestions); // Update the questions state
+        setIsModified(true); // Mark as modified
+      }}
+    />
               </div>
             ))}
 

@@ -16,6 +16,7 @@ import camera1 from "../../src/assets/Images/dashboard/edit.png"
 import editicon from "../../src/assets/Images/quiz-type/edit.png"
 import question from "../../src/assets/Images/images/questions/eye.png"
 import delete1 from "../../src/assets/Images/images/questions/delete (1).png"
+import close from "../../src/assets/Images/images/dashboard/cancel.png"
 
 
 const data = [
@@ -29,7 +30,11 @@ const data = [
 
 const questionbank = () => {
 
-  
+  const navigate = useNavigate();
+  const handleBack = () => {
+    navigate("/configure")
+  };
+
   
   return (
     <>
@@ -37,6 +42,9 @@ const questionbank = () => {
     <Navigation/> 
    <div>
    <div className='p-4'>
+   <div onClick={handleBack} className=" absolute top-3 right-3 cursor-pointer">
+          <img src={close} alt="" className="w-[25px] h-[25px]" />
+        </div>
          <h1 className=' text-[18px]  font-semibold text-[#00008b]'>Questions Banks</h1>
      </div>
    

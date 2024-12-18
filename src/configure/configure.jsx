@@ -70,7 +70,7 @@ const configure = () => {
   const handleSubjectsClick = () => handleRestrictedClick("/Subjects");
   const handleUsergroupsClick = () => handleRestrictedClick("/userandgroups");
   const handleQuizDownloadAndPrintClick = () => handleRestrictedClick("/print");
-  const handleUsercrat = () => handleRestrictedClick("/excelcreat");
+  const handleUsercrat = () => handleRestrictedClick("/usersgroup");
 
   const handleExamClick = () => handleRestrictedClick("/papertemplates");
   const handleProfile = () => handleRestrictedClick("/profileorganization");
@@ -81,7 +81,7 @@ const configure = () => {
   const handleGlobalLeaderboard = () => handleRestrictedClick("/leaderboardall");
   const handleCreateOrganization = () => handleRestrictedClick('/creatorganization')
   const handleQuizMasterReport = () => handleRestrictedClick1('/quizmasterleaderboard')
-
+  const handleAddUsersBulk = () => handleRestrictedClick('/excelcreat')
 
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -139,7 +139,7 @@ const configure = () => {
       image:pepooles,
       title: "User & Roles",
       content:
-        "Add User, Add/Edit User Groups, User List, Reset User Password",
+        "Add User, Add Users Bulk, Add/Edit User Groups, User List, Reset User Password",
     },
     {
       id: 3,
@@ -380,6 +380,9 @@ const configure = () => {
                       : contentItem === "Add User" &&
                       item.title === "User & Roles"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
+                    : contentItem === "Add Users Bulk" &&
+                    item.title === "User & Roles"
+                  ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                     : contentItem === "Quiz Status Report" &&
                       item.title === "Reports"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
@@ -398,6 +401,7 @@ const configure = () => {
                       : ["Configuration", "Quizzes"].includes(item.title)
                       ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : "text-gray-500"
+                     
                   }`}
                   onClick={
                     contentItem === "Categories"
@@ -430,8 +434,12 @@ const configure = () => {
                       ? handleGlobalLeaderboard
                       : contentItem === "Quiz Master Report"
                       ? handleQuizMasterReport
+                      : contentItem === "Add Users Bulk"
+                      ? handleAddUsersBulk
                       : contentItem === "Create Organization"
                       ? handleCreateOrganization
+                      
+
                       : null
                   }
                 >

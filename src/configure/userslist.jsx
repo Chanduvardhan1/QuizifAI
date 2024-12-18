@@ -14,10 +14,13 @@ import Line from "../../src/assets/Images/Assets/Line.png";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
+import close from "../../src/assets/Images/images/dashboard/cancel.png"
 // import searchIcon from "../assets/Images/images/dashboard/Search.png";
 
 const userslist = () => {
- 
+
+  const navigate = useNavigate();
+
     const [users, setUsers] = useState([]);
     const [error, setError] = useState('');
   
@@ -27,6 +30,11 @@ const userslist = () => {
 
     const [username1, setUsername1] = useState("");
     const [orgName, setOrgName] = useState(""); // State to store the organization name
+
+
+    const handleBack = () => {
+      navigate("/configure")
+    };
 
 useEffect(() => {
   const storedUsername = localStorage.getItem("username");
@@ -128,6 +136,9 @@ const [loading, setLoading] = useState(true);
     <>
       <div className="flex w-full font-Poppins">
         <Navigation />
+        <div onClick={handleBack} className=" absolute top-3 right-3 cursor-pointer">
+          <img src={close} alt="" className="w-[25px] h-[25px]" />
+        </div>
         <div className="container mx-auto p-6">
         {/* <div className="flex justify-center p-[5px] text-[24px]">
             <h1 className="text-[#F17530] font-bold">Users List</h1>
@@ -201,12 +212,12 @@ const [loading, setLoading] = useState(true);
                     </span>
                   </div>
 
-                  <div className="text-nowrap">
+                  {/* <div className="text-nowrap">
                     <span>Organization description </span>
                     <span className="pl-[8px] font-normal">
                       <span className="font-bold">:</span> Narmtech
                     </span>
-                  </div>
+                  </div> */}
 
                   {/* <div>
                     <span>Admin Name </span>

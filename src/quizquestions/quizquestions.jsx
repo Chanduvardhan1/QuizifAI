@@ -834,11 +834,11 @@ const QuizQuestions = () => {
       <ToastContainer />
       <div className={styles.mainContent}>
       <div className="flex justify-end py-2">
-            <div className="flex items-center px-[10px] p-[5px] border-[1px] border-[#FF6865] bg-[#FFCCCB] text-[#FF0500] font-semibold rounded-[10px] "
+            {/* <div className="flex items-center px-[10px] p-[5px] border-[1px] border-[#FF6865] bg-[#FFCCCB] text-[#FF0500] font-semibold rounded-[10px] "
             >
                 <p>Close</p>
                 <img src={closeimage} alt="" className="w-[20px] h-[20px]" />
-            </div>
+            </div> */}
     </div>
 <div className="flex w-full border-[#8cd18e] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-2 bg-white">
       {/* Quiz Image */}

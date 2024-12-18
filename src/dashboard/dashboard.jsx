@@ -816,7 +816,7 @@ const Dashboard = () => {
                   ? new Date(quizItem.quiz_end_date)
                   : null;
                 return (
-                  (quizItem.active_flag?.toLowerCase() === "i" || quizItem.active_flag === "True") &&
+                  (quizItem.active_flag?.toLowerCase() === "i" || quizItem.active_flag?.toLowerCase() === "true") &&
                   quizItem.latest_flag === "Y" &&
                   currentDate >= quizCreateDate &&
                   (quizEndDate === null || currentDate <= quizEndDate)
@@ -2328,7 +2328,7 @@ alt="Disable icon"
                   ? new Date(quizItem.quiz_end_date)
                   : null;
                 return (
-                  (quizItem.active_flag?.toLowerCase() === "i" || quizItem.active_flag === "True") &&
+                  (quizItem.active_flag?.toLowerCase() === "i" || quizItem.active_flag?.toLowerCase() === "true") &&
                   // quizItem.active_flag === "true" &&
                   quizItem.popularity_flag === "Y" &&
                   currentDate >= quizCreateDate &&

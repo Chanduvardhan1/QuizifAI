@@ -15,6 +15,7 @@ import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
 import camera1 from "../../src/assets/Images/dashboard/edit.png"
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch'
+import close from "../../src/assets/Images/images/dashboard/cancel.png"
 
 
 const profilesettings = () => {
@@ -207,12 +208,19 @@ const closeModal1 = () => {
   setIsModalVisible(false);
   setModalMessage('');
 };
+const handleBack = () => {
+  navigate("/configure")
+};
   
   return (
     <>
     <div className='flex w-full font-Poppins'>
     <Navigation/> 
     <div className='w-full p-5 bg-[#f5f5f5]'>
+      
+    <div onClick={handleBack} className=" absolute top-5 right-5 cursor-pointer">
+          <img src={close} alt="" className="w-[25px] h-[25px]" />
+        </div>
   <div className='flex gap-5 bg-white p-5 rounded-lg'>
  <div>
   <h2 className='text-[#EF5130] font-semibold'>Organization Settings 

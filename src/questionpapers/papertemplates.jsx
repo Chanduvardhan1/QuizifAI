@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Navigation from '../navbar/navbar'
 import LogoutBar from '../logoutbar/logoutbar'
 import QuestionPaper from "../assets/Images/Assets/questionPaper.png";
- 
+import close from "../../src/assets/Images/images/dashboard/cancel.png"
+
 const papertemplates = () => {
     const navigate = useNavigate();
     const handleToLayout1 = () =>{
@@ -18,10 +19,17 @@ const papertemplates = () => {
     const handleToLayout4 = () =>{
         navigate('/pdf1');
     }
+    const handleBack = () => {
+        navigate("/configure")
+      };
+  
   return (
     <div className='flex font-Poppins h-full'>
        <Navigation/> 
        <div className='w-full'>
+       <div onClick={handleBack} className=" absolute top-3 right-3 cursor-pointer">
+          <img src={close} alt="" className="w-[25px] h-[25px]" />
+        </div>
         <div className='font-bold text-center text-[25px] font-Poppins text-blue-900 mt-3 hover:transform hover:scale-110 transition-transform duration-300 ease-in-out'style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>   
          <h1>EXAM PAPER TEMPLATES</h1>
         </div>
@@ -60,7 +68,7 @@ const papertemplates = () => {
             </div>
         </div>
        </div>
-      <LogoutBar/>
+      {/* <LogoutBar/> */}
     </div>
   )
 }

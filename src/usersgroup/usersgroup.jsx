@@ -6,6 +6,7 @@ import Navigation from "../navbar/navbar";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
+import close from "../../src/assets/Images/images/dashboard/cancel.png"
 
 
 
@@ -288,13 +289,18 @@ const handleUserTypeChange = (e) => {
   // Here you can send the `userTypeId` to the backend or perform other actions
 };
 // user type end//
-
+const handleBack = () => {
+  navigate("/configure")
+};
 
   return (
     <>
       <div className="w-full flex">
         <div>
 <Navigation/>
+        </div>
+        <div onClick={handleBack} className=" absolute top-3 right-3 cursor-pointer">
+          <img src={close} alt="" className="w-[25px] h-[25px]" />
         </div>
         <div className="w-full">
 

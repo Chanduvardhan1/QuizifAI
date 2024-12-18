@@ -49,6 +49,7 @@ import trophy from "../../src/assets/Images/dashboard/trophy.png"
 import Attemts from "../../src/assets/Images/dashboard/Attemts.png"
 import Quickest from "../../src/assets/Images/dashboard/image (15).png"
 import Badge from "../../src/assets/Images/dashboard/badge 1.png"
+import close from "../../src/assets/Images/images/dashboard/cancel.png"
 
 
 const dashboardLogo = "/images/dashboard/quizifaiDashboard.png";
@@ -143,10 +144,9 @@ const quizAccess = () => {
     }
   };
   
-  const Back = () => {
-    
-      navigate("/dashboard");
-    
+
+  const handleBack = () => {
+    navigate("/dashboard")
   };
   const [createdBy, setCreatedBy] = useState('');
   const [createdOn, setCreatedOn] = useState('');
@@ -196,10 +196,13 @@ const quizAccess = () => {
         </div>
 <div className="w-full p-5">
     <div className="flex justify-end py-2">
-            <div onClick={Back} className="flex items-center px-[10px] p-[5px] border-[1px] border-[#FF6865] bg-[#FFCCCB] text-[#FF0500] font-semibold rounded-[10px] cursor-pointer">
+    <div onClick={handleBack} className=" absolute top-3 right-3 cursor-pointer">
+          <img src={close} alt="" className="w-[25px] h-[25px]" />
+        </div>
+            {/* <div onClick={Back} className="flex items-center px-[10px] p-[5px] border-[1px] border-[#FF6865] bg-[#FFCCCB] text-[#FF0500] font-semibold rounded-[10px] cursor-pointer">
                 <p>Close</p>
                 <img src={closeimage} alt="" className="w-[20px] h-[20px]" />
-            </div>
+            </div> */}
     </div>
     {quizData && (
 <div className="flex w-[90%] border-[#8cd18e] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-2 bg-white">

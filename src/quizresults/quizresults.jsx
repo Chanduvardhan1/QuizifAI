@@ -62,6 +62,9 @@ import dateIcon from "../../src/assets/Images/images/quizresults/schedule.png";
 // import current from "../../src/assets/Images/images/quizresults/faq.png";
 // import timeIcon from "../../src/assets/Images/images/quizresults/stopwatch1.png";
 import correction from "../../public/correcticon.png";
+import Attemts from "../../src/assets/Images/dashboard/Attemts.png"
+import Quickest from "../../src/assets/Images/dashboard/image (15).png"
+import Badge from "../../src/assets/Images/dashboard/badge 1.png"
 
 
 
@@ -378,7 +381,7 @@ const quizresults = () => {
             </div>
             <div className="flex items-center">
               <img
-                src={Playbutton}
+                src={Attemts}
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
@@ -386,7 +389,7 @@ const quizresults = () => {
             </div>
             <div className="flex items-center">
               <img
-                src={timer}
+                src={Badge}
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
@@ -394,7 +397,7 @@ const quizresults = () => {
             </div>
             <div className="flex items-center">
               <img
-                src={Playbutton}
+                src={Quickest}
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />

@@ -703,9 +703,9 @@ const handleglobal =()=> {
       </div>
 
       {/* Global Score Label */}
-      <div className="text-[16px]  font-semibold text-[#214082] ">
+      {/* <div className="text-[16px]  font-semibold text-[#214082] ">
         Global Score
-      </div>
+      </div> */}
       <div className="">
 
       

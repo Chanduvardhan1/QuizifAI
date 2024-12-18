@@ -1030,9 +1030,9 @@ const FreeProfile = () => {
       >
         <div className={styles.header}>
           {/* Header content */}
-          <div className="flex justify-between w-full items-center">
+          <div className="flex justify-between w-full items-center px-[25px]">
             <div className=" w-full">
-              <p className="text-[#002366] ml-[16px]">
+              <p className="text-[#002366]">
                 Welcome {userName.charAt(0).toUpperCase() + userName.slice(1)}
               </p>
               {/* <div className="bg-[#30CDF040] mr-[40px] mt-[10px] pl-[20px] text-[15px] font-medium text-[#214082] leading-6 py-[10px] rounded-[10px]">
@@ -1065,7 +1065,7 @@ const FreeProfile = () => {
             <div className="relative left-[35px]">
               <div className={styles.imgAndTextContainer}>
                 <div className={styles.profileimgContainer}>
-                  <h1 className=" text-[13px] text-[#EF5130] font-semibold relative top-3 left-2 text-nowrap">
+                  <h1 className=" text-[14px] text-[#EF5130] font-semibold relative top-3 left-2 text-nowrap">
                     Personal Information
                   </h1>
                   <div className="relative mt-4">
@@ -1099,6 +1099,7 @@ const FreeProfile = () => {
         onChange={handleFileChange}
       />
                     </div>
+                    <div className="text-blue-800 font-bold">User ID : <span>{userId}</span></div>
                     {isModalOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
@@ -1135,9 +1136,9 @@ const FreeProfile = () => {
                 </div>
               </div>
             </div>
-            <div className='w-full flex  gap-5 p-5 pt-10'>
+            <div className='w-full flex text-[14px]  gap-5 p-5 pt-10'>
 
-      <div className='w-full flex flex-col gap-[5px]'>
+      <div className='w-full flex flex-col gap-[10px]'>
       <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
         <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">First Name<span className="text-red-500">*</span></label>
@@ -1251,7 +1252,7 @@ const FreeProfile = () => {
       </div>
    
 
-<div className='flex w-full flex-col gap-[5px]'>
+<div className='flex w-full flex-col gap-[10px]'>
 
 <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
@@ -1370,7 +1371,7 @@ const FreeProfile = () => {
 
 
 
-<div className='flex w-full flex-col  gap-[5px]'>
+<div className='flex w-full flex-col  gap-[10px]'>
 
       <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
@@ -1416,7 +1417,7 @@ const FreeProfile = () => {
       </div>
       <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
-        <label className="w-[14%] text-blue-800 font-semibold mb-2">Country Name<span className="text-red-500"></span></label>
+        <label className="w-[55%] text-blue-800 font-semibold mb-2">Country Name<span className="text-red-500"></span></label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -1434,7 +1435,7 @@ const FreeProfile = () => {
 
 <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
-        <label className="w-full text-blue-800 font-semibold mb-2 mr-[9px] ">Other Occupation<span className="text-red-500">*</span></label>
+        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">Other Occupation<span className="text-red-500">*</span></label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -1493,13 +1494,13 @@ const FreeProfile = () => {
 <div className="flex gap-1 mb-4">
         {/* *************login details ******************************* */}
         <div className="bg-white w-full mt-[1%]">
-          <h1 className="ml-[6%] mt-4 text-[13px] text-[#EF5130] font-semibold">
+          <h1 className="ml-[6%] mt-4 text-[14px] text-[#EF5130] font-semibold">
             Login User Details
           </h1>
           <div
             className={styles.inputGroup1}
             style={{
-              marginLeft: "168px",
+              marginLeft: "150px",
               textWrap: "nowrap",
               marginTop: "5px",
             }}
@@ -1531,7 +1532,7 @@ const FreeProfile = () => {
             </button>
             <hr className="h-[1px] w-[90px] bg-gray-200"></hr>
           </div>
-          <div className="flex ml-[28%] mt-[20px]">
+          <div className="flex ml-[34%] mt-[20px]">
             {preferredLoginMethod === "Email" && (
               <div
                 className={styles.inputGroup1}
@@ -1636,10 +1637,10 @@ const FreeProfile = () => {
 
         {/* *************password details ******************************* */}
         <div className="bg-white w-full mt-[1%]">
-          <h1 className="ml-[6%] mt-4 text-[13px] text-[#EF5130] font-semibold colour red">
+          <h1 className="ml-[6%] mt-4 text-[14px] text-[#EF5130] font-semibold colour red">
             Update Password
           </h1>
-          <div className="flex ml-[27%] mt-[20px]">
+          <div className="flex pl-[145px] mt-[20px]">
             <div className="inputGroup1" style={{ marginLeft: "-50px" }}>
               <label className="text-blue-800 text-[13px] font-semibold">
                 Password

@@ -17,7 +17,7 @@ import Q from "../../src/assets/Images/dashboard/image (8).png"
 import notification from "../../src/assets/Images/dashboard/image (9).png"
 import ball from "../../src/assets/Images/dashboard/image (10).png"
 import { AuthContext } from "../Authcontext/AuthContext.jsx";
-
+import report from "../../src/assets/Images/dashboard/image (14).png"
 
 const configure = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -157,7 +157,7 @@ const configure = () => {
     },
     {
       id: 5,
-      image:notification,
+      image:report,
       title: "Reports",
       content:
         "Global Leaderboard, Quiz-wise Leaderboard, Quiz Status Report, Quiz Master Report, (Other Possible Reports)",
@@ -259,12 +259,12 @@ const configure = () => {
               value={searchQuery}
               onChange={handleInputChange}
             />
-            <img
+            {/* <img
               onClick={handleBanckToDashbaord}
               className="h-4 w-4 cursor-pointer mt-[5px] mr-1"
               title="close settings"
               src={cancel}
-            />
+            /> */}
                 <div className="flex flex-col justify-center items-center">
   <img
     src={LogoutIcon}

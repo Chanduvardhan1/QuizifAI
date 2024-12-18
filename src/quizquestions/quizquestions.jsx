@@ -18,6 +18,10 @@ import LogoutBar from "../logoutbar/logoutbar.jsx";
 import { toast, ToastContainer } from "react-toastify";
 import print1 from "../../src/assets/Images/dashboard/print.png"
 import trophy from "../../src/assets/Images/dashboard/trophy.png"
+import Attemts from "../../src/assets/Images/dashboard/Attemts.png"
+import Quickest from "../../src/assets/Images/dashboard/image (15).png"
+import Badge from "../../src/assets/Images/dashboard/badge 1.png"
+
 
 // import useBlocker from '../useBlocker/useBlocker.jsx';
 
@@ -65,6 +69,10 @@ const QuizQuestions = () => {
     num_questions,
     pass_percentage,
     quiz_complexity_name,
+    quiz_category_name,
+    quiz_sub_category_name,
+    course_name,
+    class_name,
   } = location.state || {};
   const [elapsedTime, setElapsedTime] = useState(quiz_duration * 60);
   // const isSubmitting = useRef(false);
@@ -848,7 +856,7 @@ const QuizQuestions = () => {
         <div className="flex justify-between items-center">
             <div>
 
-          <h2 className="text-lg font-semibold text-[#00008b]">Quiz Title-- NCERT Class 10, Physics Quiz</h2>
+          <h2 className="text-lg font-semibold text-[#00008b]"> {quiz_title}</h2>
             </div>
             <div className="flex gap-3">
                 <div className="flex gap-2">
@@ -887,20 +895,20 @@ const QuizQuestions = () => {
 
         {/* Description */}
         <p className="text-[#00008b] w-[80%] line-clamp-2 text-sm mt-1">
-        The definition of physics is the study of the physical plane of matter, motion, force, and energy.
+        {quiz_description}
         </p>
 
         {/* Meta Information */}
         <div className="text-[#00008b] text-sm flex flex-wrap mt-3">
-          <span>Science</span>
+          <span>{quiz_category_name}</span>
           <span className="mx-1">.</span>
-          <span>Physics</span>
+          <span>{quiz_sub_category_name}</span>
           <span className="mx-1">.</span>
-          <span>Class 10</span>
+          <span>{course_name}</span>
           <span className="mx-1">.</span>
-          <span>CBSE</span>
+          <span>{class_name}</span>
           <span className="mx-1">.</span>
-          <span>Intermediate</span>
+          <span>{quiz_complexity_name}</span>
         </div>
 
         {/* Icons and Additional Info */}
@@ -913,7 +921,7 @@ const QuizQuestions = () => {
                 alt="User"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">John Doe</span>
+              <span className="ml-1 text-sm">{`${quizData.created_by}`}</span>
             </div>
             <div className="flex items-center">
               <img
@@ -921,7 +929,7 @@ const QuizQuestions = () => {
                 alt="Calendar"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">2024-12-01</span>
+              <span className="ml-1 text-sm">{`${quizData.created_on}`}</span>
             </div>
           </div>
 
@@ -933,7 +941,7 @@ const QuizQuestions = () => {
                 alt="Questions"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">20 Questions</span>
+              <span className="ml-1 text-sm">{num_questions} Questions</span>
             </div>
             <div className="flex items-center">
               <img
@@ -941,11 +949,11 @@ const QuizQuestions = () => {
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">30 Minutes</span>
+              <span className="ml-1 text-sm">{quiz_duration} Minutes</span>
             </div>
             <div className="flex items-center">
               <img
-                src={Playbutton}
+                src={Attemts}
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
@@ -953,7 +961,7 @@ const QuizQuestions = () => {
             </div>
             <div className="flex items-center">
               <img
-                src={timer}
+                src={Badge}
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
@@ -961,7 +969,7 @@ const QuizQuestions = () => {
             </div>
             <div className="flex items-center">
               <img
-                src={Playbutton}
+                src={Quickest}
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />

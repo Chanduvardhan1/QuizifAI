@@ -142,10 +142,10 @@ export default function SegmentedProgressIndicator({
         </div>
         <div className="flex flex-col items-center w-full mt-1 space-y-4">
             {/* Progress bar container */}
-            <div className="w-full max-w-lg bg-gray-200 h-4 rounded-lg relative">
+            <div className="w-full max-w-lg bg-gray-200 h-2 rounded-lg relative">
                 {/* Progress bar */}
                 <div
-                    className="h-4 rounded-lg"
+                    className="h-2 rounded-lg"
                     style={{
                         width: `${progress}%`,
                         backgroundColor: progressColor,

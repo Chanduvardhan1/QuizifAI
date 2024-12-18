@@ -27,6 +27,7 @@ import Plus from "../../src/assets/Images/dashboard/Plus.png";
 import Edit from "../../src/assets/Images/Assets/Edit.png";
 import searchIcon from "../assets/Images/images/dashboard/Search.png";
 import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
+import close from "../../src/assets/Images/images/dashboard/cancel.png"
 
 // import Delete from "../../src/assets/Images/Assets/Delete.png";
 // import Line from "../../src/assets/Images/Assets/Line.png";
@@ -534,13 +535,19 @@ const handleSubmit1 = async (e) => {
     setShowPopup(false);
   
    }
+
+   const handleBack = () => {
+    navigate("/configure")
+  };
   return (
     <>
       <div className="flex w-full font-Poppins">
         <Navigation />
         <div className="flex w-full flex-col p-5 bg-[#cfcfcf]">
       
-
+        <div onClick={handleBack} className=" absolute top-3 right-3 cursor-pointer">
+          <img src={close} alt="" className="w-[25px] h-[25px]" />
+        </div>
           <div className="flex justify-center p-[5px] text-[24px]">
             <h1 className="text-[#F17530] font-bold">Create Organization</h1>
           </div>

@@ -65,6 +65,7 @@ import correction from "../../public/correcticon.png";
 import Attemts from "../../src/assets/Images/dashboard/Attemts.png"
 import Quickest from "../../src/assets/Images/dashboard/image (15).png"
 import Badge from "../../src/assets/Images/dashboard/badge 1.png"
+import close from "../../src/assets/Images/images/dashboard/cancel.png"
 
 
 
@@ -259,6 +260,9 @@ const quizresults = () => {
   const questions = quizData1.questions;
   const topThree = leaderboardData.slice(0, 3);
 
+  const handleBack = () => {
+    navigate("/dashboard")
+  };
   return (
 
     <div className="flex w-full" >
@@ -266,8 +270,10 @@ const quizresults = () => {
       <Navigation />
 
       <div className="w-full p-5" ref={resultRef}>
-        <div className={styles.back1} onClick={Back}><MdOutlineCancel /></div>
-
+        {/* <div className={styles.back1} onClick={Back}><MdOutlineCancel /></div> */}
+        <div onClick={handleBack} className=" absolute top-0 right-0 cursor-pointer">
+          <img src={close} alt="" className="w-[25px] h-[25px]" />
+        </div>
         <div className="flex w-full border-[#8cd18e] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-2 bg-white">
       {/* Quiz Image */}
       <div className="relative mr-2">

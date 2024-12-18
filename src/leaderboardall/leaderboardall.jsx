@@ -19,14 +19,21 @@ import delete1 from "../../src/assets/Images/images/questions/delete (1).png"
 import Institution from './institution.jsx';
 import Statusreport from './statusreport.jsx';
 import Global from './global.jsx';
+import close from "../../src/assets/Images/images/dashboard/cancel.png"
+
 const leaderboardall = () => {
   
- 
+  const navigate = useNavigate();
+
 // Tab changes //
 const [activeTab, setActiveTab] = useState('Global');
 
 const handleTabClick = (tab) => {
   setActiveTab(tab);
+
+};
+const handleBack = () => {
+  navigate("/configure")
 };
 // Tab changes end //
 
@@ -34,6 +41,9 @@ const handleTabClick = (tab) => {
     <>
     <div className='flex w-full '>
     <Navigation/> 
+    <div onClick={handleBack} className=" absolute top-3 right-3 cursor-pointer">
+          <img src={close} alt="" className="w-[25px] h-[25px]" />
+        </div>
    <div className='w-full p-5'>
     <div>
         <h1 className='flex font-bold justify-center text-[25px] text-[#214082]'>Leaderboard</h1>

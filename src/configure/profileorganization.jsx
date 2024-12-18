@@ -17,6 +17,7 @@ import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
 import camera1 from "../../src/assets/Images/dashboard/edit.png"
 import search from "../assets/Images/images/dashboard/Search.png";
 import x from "../../src/assets/Images/quiz-type/cross-button.png"
+import close from "../../src/assets/Images/images/dashboard/cancel.png"
 
 const profileorganization = () => {
   const [categories, setCategories] = useState([]);
@@ -234,6 +235,7 @@ const fetchOrganizationDetails = async () => {
 
       // setOrgId(organizationDetails.org_id || '');
       setOrgName(organizationDetails.org_name || '');
+      setorgdescription(organizationDetails.org_description || '');
       setSelectedUser(organizationDetails.org_admin_id || '');
       setOrgSubscriptionKey(organizationDetails.org_subscription_key || '');
       setOrgPointOfContactId(organizationDetails.org_point_of_contact_id || '');
@@ -284,6 +286,8 @@ useEffect(() => {
 //---------**update OrganizationProfile**------------//
 
 const [orgName, setOrgName] = useState('');
+const [orgdescription, setorgdescription] = useState('');
+
 const [orgAdminId, setOrgAdminId] = useState(0);
 const [orgLocationId, setOrgLocationId] = useState(0);
 const [orgSubscriptionKey, setOrgSubscriptionKey] = useState('');
@@ -307,6 +311,7 @@ const handleSubmit = async (e) => {
     updated_by: userId,
     org_id: orgId,
     org_name: orgName,
+    org_description:orgdescription,
     org_admin_id: userId,
     org_location_id: locationId,
     org_subscription_key: orgSubscriptionKey,
@@ -543,17 +548,25 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
   const handleedit = () =>{
     setShowsave(true);
    setIsEditing(true)
+   handleSearchClick();
    handlePostalCodeChange();
   }
   const handleeditback = () =>{
     setShowsave(false);
     setIsEditing(false)
   }
+  const handleBack = () => {
+    navigate("/configure")
+  };
+
   return (
     <>
     <div className='flex w-full'>
     <Navigation/> 
     <div className='w-full p-5 bg-[#F5F5F5]'>
+    <div onClick={handleBack} className=" absolute top-5 right-5 cursor-pointer">
+          <img src={close} alt="" className="w-[25px] h-[25px]" />
+        </div>
       <div className=' bg-white p-5 rounded-lg '>
 
      
@@ -680,12 +693,14 @@ const [photo, setPhoto] = useState(''); // State to store the image URL
       </div>
       <div className="flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[20%] text-blue-800 font-semibold mb-2 mr-[9px] ">Description</label>
+        <label className="w-[17%] text-blue-800 font-semibold mb-2 mr-[5px] ">Description</label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
                 placeholder="Description"
-
+                disabled={!isEditing}
+                value={orgdescription}
+                onChange={(e) => setorgdescription(e.target.value)}
               ></input>
   
         </div>

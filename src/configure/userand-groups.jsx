@@ -25,6 +25,8 @@ import Edit from "../../src/assets/Images/Assets/Edit.png";
 import searchIcon from "../assets/Images/images/dashboard/Search.png";
 import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
 import close from "../../src/assets/Images/images/dashboard/close.png"
+import close1 from "../../src/assets/Images/images/dashboard/cancel.png"
+
 // import Delete from "../../src/assets/Images/Assets/Delete.png";
 // import Line from "../../src/assets/Images/Assets/Line.png";
 
@@ -792,6 +794,10 @@ const handleSubmit1 = async (e) => {
     navigate("/configure");
   };
 
+  const handleBack = () => {
+    navigate("/configure")
+  };
+
   // const options = users.map(user => ({
   //   value: user.user_id,
   //   label: user.user_name
@@ -815,6 +821,9 @@ const handleSubmit1 = async (e) => {
       <div className="flex w-full font-Poppins">
         <Navigation />
         <div className="flex w-full flex-col">
+        <div onClick={handleBack} className=" absolute top-3 right-3 cursor-pointer">
+          <img src={close1} alt="" className="w-[25px] h-[25px]" />
+        </div>
         {/* { userRole === "Admin" && ( */}
         <div className="flex justify-center p-[5px] text-[24px]">
             <h1 className="text-[#F17530] font-bold">Create Group</h1>
@@ -864,12 +873,12 @@ const handleSubmit1 = async (e) => {
                 </a>
               </div>
             </div>
-            <img
+            {/* <img
               onClick={handleBanckToDashbaord}
               className="h-4 w-4 cursor-pointer"
               title="close settings"
               src={cancel}
-            />
+            /> */}
           </div>
             
 

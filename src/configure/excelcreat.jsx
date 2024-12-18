@@ -11,6 +11,7 @@ import Edit from "../../src/assets/Images/Assets/Edit.png"
 import Delete from "../../src/assets/Images/Assets/Delete.png"
 import Line from "../../src/assets/Images/Assets/Line.png"
 import { RiDeleteBinLine } from "react-icons/ri";
+import close from "../../src/assets/Images/images/dashboard/cancel.png"
 
 const excelcreat = () => {
   const [categories, setCategories] = useState([]);
@@ -48,7 +49,9 @@ const excelcreat = () => {
   const handleBanckToDashbaord = () =>{
     navigate('/configure');
   }
-
+  const handleBack = () => {
+    navigate("/configure")
+  };
   
   
   return (
@@ -57,7 +60,9 @@ const excelcreat = () => {
     <Navigation/> 
     <div className='w-full p-5'>
   
-    
+    <div onClick={handleBack} className=" absolute top-3 right-3 cursor-pointer">
+          <img src={close} alt="" className="w-[25px] h-[25px]" />
+        </div>
     <div className="flex"> 
       <h1 className=" font-semibold text-[20px] text-[#214082]">Creat Users</h1>
     </div>

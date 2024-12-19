@@ -830,11 +830,11 @@ if (!selectedCategory) {
   setIsSubmitting(false);
   return;
 }
-if (!selectedClass) {
-  toast.error("Class name is required.");
-  setIsSubmitting(false);
-  return;
-}
+// if (!selectedClass) {
+//   toast.error("Class name is required.");
+//   setIsSubmitting(false);
+//   return;
+// }
 if (!percentage || isNaN(percentage) || percentage <= 0 || percentage > 100) {
   toast.error("Pass percentage must be a valid number between 1 and 100.");
   setIsSubmitting(false);
@@ -850,11 +850,11 @@ if (!quiztotalmarks || isNaN(quiztotalmarks) || quiztotalmarks <= 0) {
   setIsSubmitting(false);
   return;
 }
-if (!availablefrom || !disabledon || new Date(availablefrom) >= new Date(disabledon)) {
-  toast.error("Please provide valid start and end dates for the quiz.");
-  setIsSubmitting(false);
-  return;
-}
+// if (!availablefrom || !disabledon || new Date(availablefrom) >= new Date(disabledon)) {
+//   toast.error("Please provide valid start and end dates for the quiz.");
+//   setIsSubmitting(false);
+//   return;
+// }
 if (!questions || questions.length < numQuestions) {
   toast.error("Please add all questions before proceeding.");
   setIsSubmitting(false);

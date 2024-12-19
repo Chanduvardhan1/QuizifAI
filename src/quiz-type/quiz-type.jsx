@@ -2,6 +2,8 @@
 import React, { useState, useEffect,useRef } from "react";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import Select from 'react-select';
+
 // import Switch from "react-switch";
 import Navigation from "../navbar/navbar";
 import { useNavigate } from "react-router-dom";
@@ -480,7 +482,9 @@ useEffect(() =>{
   const handeledit =()=> {
     setisEditing(true);
    }
-
+   const handleback =() =>{
+    navigate('/dashboard')
+  }
 
 
    const handleToLayout1 = () =>{
@@ -784,13 +788,20 @@ const handleToLayout4 = () =>{
   //     console.error('Error uploading file:', error);
   //   }
   // }
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+
   const handleNext = async () => {
     try {
+      setIsSubmitting(true); // Disable the button while the request is ongoing
+      setErrorMessage("");
       const user_id = localStorage.getItem('user_id');
 
       // Check if user_id is retrieved successfully
       if (!user_id) {
         setErrorMessage("User ID not found. Please log in again.");
+        setIsSubmitting(false); 
         return;
       }
       const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
@@ -798,7 +809,80 @@ const handleToLayout4 = () =>{
       if (!authToken) {
         throw new Error('No authentication token found');
       }
-
+ // Validate required fields
+ if (!title.trim()) {
+  toast.error("Quiz title is required.");
+  setIsSubmitting(false);
+  return;
+}
+if (!numQuestions || isNaN(numQuestions) || numQuestions <= 0) {
+  toast.error("Please provide a valid number of questions.");
+  setIsSubmitting(false);
+  return;
+}
+if (!description.trim()) {
+  toast.error("Quiz description is required.");
+  setIsSubmitting(false);
+  return;
+}
+if (!selectedCategory) {
+  toast.error("Quiz category is required.");
+  setIsSubmitting(false);
+  return;
+}
+if (!selectedClass) {
+  toast.error("Class name is required.");
+  setIsSubmitting(false);
+  return;
+}
+if (!percentage || isNaN(percentage) || percentage <= 0 || percentage > 100) {
+  toast.error("Pass percentage must be a valid number between 1 and 100.");
+  setIsSubmitting(false);
+  return;
+}
+if (!duration || isNaN(duration) || duration <= 0) {
+  toast.error("Quiz duration is required and must be a valid number.");
+  setIsSubmitting(false);
+  return;
+}
+if (!quiztotalmarks || isNaN(quiztotalmarks) || quiztotalmarks <= 0) {
+  toast.error("Total quiz marks must be a valid number.");
+  setIsSubmitting(false);
+  return;
+}
+if (!availablefrom || !disabledon || new Date(availablefrom) >= new Date(disabledon)) {
+  toast.error("Please provide valid start and end dates for the quiz.");
+  setIsSubmitting(false);
+  return;
+}
+if (!questions || questions.length < numQuestions) {
+  toast.error("Please add all questions before proceeding.");
+  setIsSubmitting(false);
+  return;
+}
+for (const question of questions) {
+  if (!question.question_text.trim()) {
+    toast.error("All questions must have text.");
+    setIsSubmitting(false);
+    return;
+  }
+  if (
+    !question.options ||
+    question.options.length === 0 ||
+    !question.options.some((option) => option.correct_answer_flag)
+  ) {
+    toast.error("Each question must have at least one correct answer.");
+    setIsSubmitting(false);
+    return;
+  }
+  for (const option of question.options) {
+    if (!option.answer_option_text.trim()) {
+      toast.error("All answer options must have text.");
+      setIsSubmitting(false);
+      return;
+    }
+  }
+}
       //   const id = responseData.data.quid_id;
       //  dispatch(getUploadImage({quid_id}));
       //  console.log('quid_id',quid_id);
@@ -833,7 +917,7 @@ const handleToLayout4 = () =>{
           quiz_total_marks: quiztotalmarks,
           user_id: user_id,
           quiz_instructions: instructions,
-          org_id: orgId,
+          // org_id: orgId,
           questions: questions.map((question) => ({
             question_text: question.question_text,
             correct_answer_description:question.correct_answer_description,
@@ -853,10 +937,10 @@ const handleToLayout4 = () =>{
 
       if (response.ok && responseData.response === "success") {
       console.log('response',responseData);
-        const id = responseData.data.quiz_id;
-        console.log('id',id);
+       setQuizId(responseData.data.quiz_id)
+        console.log('id',quizid);
         try {
-          const response = await api().uploadFile(uploadImage, files, null, { quiz_id: id });
+          const response = await api().uploadFile(uploadImage, files, null, { quiz_id: quizid });
           console.log('response', response);
           // You can now access the response data here
         } catch (error) {
@@ -864,7 +948,8 @@ const handleToLayout4 = () =>{
           console.error('Error uploading file:', error);
         }
         // Assuming router and state setter are defined properly
-        navigate("/quizcreated", { state: { quizData: responseData } });
+        // navigate("/quizcreated", { state: { quizData: responseData } });
+        setStep(5);
       } else {
         if (responseData.detail) {
           const errorDetails = responseData.detail;
@@ -885,6 +970,7 @@ const handleToLayout4 = () =>{
           toast.error(responseData.response_message);
           toast.error("An error occurred while creating the quiz.");
         }
+        setIsSubmitting(false);
       }
 
     } catch (error) {
@@ -940,6 +1026,108 @@ const handleToLayout4 = () =>{
         .catch((error) => console.error('Error sending org_id:', error));
     };
   
+
+
+//-----------------**AssignQuiz**-----------------//
+const [shareWithGroupOrOrg, setShareWithGroupOrOrg] = useState(false); // Initialize toggle state
+const [groupName, setGroupName] = useState('');
+const [file, setFile] = useState(null);
+const [quizid, setQuizId] = useState(null);
+
+const handleToggle = (event) => {
+  setShareWithGroupOrOrg(event.target.checked); // Update state based on toggle
+}; 
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const selectedUserIds = selectedUsers.map((user) => user.value); // Extract IDs
+
+  // Prepare FormData
+  const formData = new FormData();
+  formData.append('quiz_id', quizid);
+  formData.append('org_id', orgId);
+  formData.append('share_with_group_or_org', shareWithGroupOrOrg);
+  formData.append('group_name', groupName);
+  formData.append('user_ids',selectedUserIds ); // Pass user IDs as a comma-separated string
+  if (file) formData.append('files', file);
+
+  try {
+    const response = await fetch(
+      'https://dev.quizifai.com:8010/assign-quiz-to-group-organization-or-users/',
+      {
+        method: 'POST',
+        body: formData,
+        headers: {
+          accept: 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    alert('Quiz assigned successfully!');
+    console.log('Response:', result);
+  } catch (error) {
+    console.error('Error assigning quiz:', error.message);
+    alert('Failed to assign quiz. Please try again.');
+  }
+};
+
+//-----------------**AssignQuiz END**-----------------//
+
+//-----------------**users dropdown**-----------------//
+const [users, setUsers] = useState([]); // Store dropdown options
+const [selectedUsers, setSelectedUsers] = useState([]); // Store selected user IDs
+// const [quizId, setQuizId] = useState('');
+
+useEffect(() => {
+  const fetchUsers = async () => {
+    try {
+      const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
+
+      if (!authToken) {
+        throw new Error('No authentication token found');
+      }
+      const response = await fetch(
+        `https://dev.quizifai.com:8010/get_organization_nrml_usrs?org_id=${orgId}`,
+        {
+          method: 'POST',
+          headers: {
+            accept: 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result.response === 'success' && result.data) {
+        // Map response data to react-select options
+        const options = result.data.map((user) => ({
+          value: user.user_id,
+          label: user.user_name,
+        }));
+        setUsers(options);
+      } else {
+        console.error('Failed to fetch users:', result.response_message);
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error.message);
+    }
+  };
+
+  fetchUsers();
+}, []);
+//-----------------**users dropdown END**-----------------//
+
+
   const handleAvailableFromChange = (e) => {
     setavailablefrom(e.target.value);
     // Clear the disabledOn date if it's before the new availableFrom date
@@ -1054,8 +1242,9 @@ const handleToLayout4 = () =>{
     <div className="flex flex-row w-full bg-[#f5f5f5] ">
       {/* <div className="w-[16%]">
       <Navigation />
-
       </div> */}
+      <ToastContainer/>
+
       <div className="w-full ">
 {/* <div className="flex justify-end py-2 cursor-pointer text-[#eeb600f0]" onClick={Back}><MdOutlineCancel /></div> */}
 
@@ -2206,10 +2395,11 @@ const handleToLayout4 = () =>{
                 </button>
 
                 <button
+                 disabled={isSubmitting} 
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   onClick={handleNext}
                 >
-                  Create
+                  {isSubmitting ? "Creating..." : "Create"}
                 </button>
                 </div>
               </div>
@@ -2236,10 +2426,9 @@ const handleToLayout4 = () =>{
     </label>
     <input
                              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-
+value={orgId}
                   placeholder="Oragnization"
-                  // value={quiztotalmarks}
-                  // onChange={(e) => setquiztotalmarks(e.target.value)}
+                
                 ></input>
   </div>
   <hr className="h-[1px] w-full" />
@@ -2259,6 +2448,41 @@ const handleToLayout4 = () =>{
   </div>
   <hr className="h-[1px] w-full" />
 </div>
+
+
+<div className="flex flex-col w-full">
+  <div className="w-full flex flex-row">
+    <label className="w-[40%] text-blue-800 font-semibold mb-2 ">
+      Quiz Id<span className="text-red-500">*</span>
+    </label>
+    <input
+                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+value={quizid}
+                  placeholder="Oragnization"
+                
+                ></input>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+<div className="flex flex-col w-full">
+  <div className="w-full flex flex-row">
+    <label className="w-[40%] text-blue-800 font-semibold mb-2 ">
+      User ID<span className="text-red-500">*</span>
+    </label>
+    <Select
+  options={users} // Dynamically populated options
+  isMulti // Enable multi-select
+  value={selectedUsers} // Selected values
+  onChange={setSelectedUsers} // Update state on selection
+  className="basic-multi-select w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+  classNamePrefix="select"
+/>
+
+  </div>
+  {/* <hr className="h-[1px] w-full" /> */}
+</div>
+
+
 <div className="flex flex-col w-full">
   <div className="w-full flex flex-row">
     <label className="w-[40%] text-blue-800 font-semibold mb-2 ">
@@ -2302,7 +2526,19 @@ const handleToLayout4 = () =>{
   <hr className="h-[1px] w-full" />
 </div>
 
-
+<div className="flex items-center">
+        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[72px]">
+        {shareWithGroupOrOrg ? "Sharing with Group/Organization" : "Not Sharing"}
+        <span className="text-red-500">*</span>
+        </label>
+        <FormControlLabel
+        control={<Switch />} 
+        checked={shareWithGroupOrOrg} // Controlled state
+        onChange={handleToggle} // Update state on toggle
+          className="react-switch"
+        />
+        
+      </div>
 
 {/* Multiple Answers */}
 <div className="flex items-center">
@@ -2346,6 +2582,8 @@ const handleToLayout4 = () =>{
     </div>
   
     <div className="flex justify-between md:col-span-2 py-5">
+    
+
             <button
               onClick={() => setStep(4)}
               className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
@@ -2353,13 +2591,21 @@ const handleToLayout4 = () =>{
             >
               Back
             </button>
+            <div className="flex gap-2">
+            <button onClick={handleNextpage4} className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-sm text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
+  Skip
+</button>
+
             <button
-              onClick={handleNextpage4}
+            onClick={handleSubmit}
+              // onClick={handleNextpage4}
               className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
 
             >
-              Next
+              Assign
             </button>
+            </div>
+          
           </div>
    
  
@@ -2663,11 +2909,13 @@ const handleToLayout4 = () =>{
        </div>
   {/* Multiple Answers */}
   <div className="flex justify-end md:col-span-2">
-
+  <button onClick={handleback} className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-sm text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
+  Skip
+</button>
 
   <button
            
-              className="px-[40px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+              className="px-[40px] p-[5px] ml-2 bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
 
             >
               Print

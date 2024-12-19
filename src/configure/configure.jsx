@@ -27,6 +27,7 @@ const configure = () => {
   const [averageScorePercentage, setAverageScorePercentage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen1, setIsModalOpen1] = useState(false);
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
   const {authToken, logout } = useContext(AuthContext);
 
   const handleInputChange = (event) => {
@@ -40,6 +41,7 @@ const configure = () => {
   const userRole = localStorage.getItem("user_role");
   const allowedRoles = ["Super Admin","Admin"]; // Roles allowed to access the pages
   const allowedRoles1 = ["Quiz Master"];
+  const allowedRoles2 = ["Super Admin"];
 
   const handleRestrictedClick = (navigateTo) => {
     if (allowedRoles.includes(userRole)) {
@@ -56,11 +58,22 @@ const configure = () => {
       setIsModalOpen1(true);
     }
   };
+
+  const handleRestrictedClick2 = (navigateTo) => {
+    if (allowedRoles2.includes(userRole)) {
+      navigate(navigateTo);
+    } else {
+      setIsModalOpen2(true);
+    }
+  };
   const closeModal = () => {
     setIsModalOpen(false);
   };
   const closeModal1 = () => {
     setIsModalOpen1(false);
+  };
+  const closeModal2 = () => {
+    setIsModalOpen2(false);
   };
 
   const handleCategoriesClick = () => handleRestrictedClick("/category");
@@ -79,7 +92,7 @@ const configure = () => {
   const handleUserList = () => handleRestrictedClick("/userslist");
 
   const handleGlobalLeaderboard = () => handleRestrictedClick("/leaderboardall");
-  const handleCreateOrganization = () => handleRestrictedClick('/creatorganization')
+  const handleCreateOrganization = () => handleRestrictedClick2('/creatorganization')
   const handleQuizMasterReport = () => handleRestrictedClick1('/quizmasterleaderboard')
   const handleAddUsersBulk = () => handleRestrictedClick('/excelcreat')
 
@@ -299,6 +312,21 @@ const configure = () => {
             <button
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
               onClick={closeModal1}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+       {isModalOpen2 && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+            <p className="text-lg font-semibold mb-4">
+              You do not have permission to access this page. Only for Super Admin.
+            </p>
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              onClick={closeModal2}
             >
               Close
             </button>

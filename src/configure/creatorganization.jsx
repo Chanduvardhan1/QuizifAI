@@ -332,7 +332,22 @@ const reset =()=> {
 
 const handleSubmit1 = async (e) => {
   e.preventDefault();
-
+  if (!userId || userId.trim() === "") {
+    setResponseMessage1("User ID is required.");
+    return;
+  }
+  if (!groupName || groupName.trim() === "") {
+    setResponseMessage1("Organization name is required.");
+    return;
+  }
+  if (!selectedUser2) {
+    setResponseMessage1("Organization admin is required.");
+    return;
+  }
+  if (!orgdescription || orgdescription.trim() === "") {
+    setResponseMessage1("Organization description is required.");
+    return;
+  }
 
   const payload = {
     user_id: userId,

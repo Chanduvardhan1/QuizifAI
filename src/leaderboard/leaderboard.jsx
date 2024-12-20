@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import percentIcon from "../../src/assets/Images/images/quizresults/discount.png";
 import current from "../../src/assets/Images/images/quizresults/faq.png";
-import dateIcon from "../../src/assets/Images/images/quizresults/schedule.png";
+// import dateIcon from "../../src/assets/Images/images/quizresults/schedule.png";
 import timeIcon from "../../src/assets/Images/images/quizresults/stopwatch1.png";
 import styles from './quiz_results.module.css';
 
@@ -22,6 +22,29 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import rankimage from "../../src/assets/Images/images/quizresults/rank.jpg";
 
+import physics from "../../src/assets/Images/dashboard/quiz12.png"
+import startIcon from "../../src/assets/Images/images/quiz-Access/start.png";
+import username from "../../src/assets/Images/quiz-type/username.png"
+import calander from "../../src/assets/Images/quiz-type/calander.png"
+import timer from "../../src/assets/Images/quiz-type/Timer.png"
+import comment from "../../src/assets/Images/quiz-type/comment.png"
+import editicon from "../../src/assets/Images/quiz-type/edit.png"
+import Playbutton from "../../src/assets/Images/quiz-type/image.png"
+import closeimage from "../../public/closeimage.png";
+import stars from "../../src/assets/Images/quiz-type/star.png"
+import print1 from "../../src/assets/Images/dashboard/print.png"
+import trophy from "../../src/assets/Images/dashboard/trophy.png"
+import dateIcon from "../../src/assets/Images/images/quizresults/schedule.png";
+// import vector from "../../src/assets/Images/images/quizresults/icon-park_check-correct.png";
+// import current from "../../src/assets/Images/images/quizresults/faq.png";
+// import timeIcon from "../../src/assets/Images/images/quizresults/stopwatch1.png";
+import correction from "../../public/correcticon.png";
+import Attemts from "../../src/assets/Images/dashboard/Attemts.png"
+import Quickest from "../../src/assets/Images/dashboard/image (15).png"
+import Badge from "../../src/assets/Images/dashboard/badge 1.png"
+import close from "../../src/assets/Images/images/dashboard/cancel.png"
+
+
 const leaderboard = () => {
   const [quizData, setQuizData] = useState(null);
   const [quizData1, setQuizData1] = useState(null);
@@ -33,7 +56,10 @@ const leaderboard = () => {
   const [leaderboardData, setLeaderboardData] = useState([]);
   const navigate = useNavigate();
   const [isQuizSubmitted, setIsQuizSubmitted] = useState(false); // State to track quiz submission
+  const [showAnswers, setShowAnswers] = useState(false);
+
   const resultRef = useRef();
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   const optionLabels = {
     option1: 'A',
@@ -42,7 +68,9 @@ const leaderboard = () => {
     option4: 'D'
   };
   const {passpercentage,complexity,quizduration,attemptId} = location.state || {};
- 
+  const handleToggleAnswers = () => {
+    setShowAnswers(!showAnswers);
+  };
 
  useEffect(() => {
     const userId = localStorage.getItem("user_id");
@@ -98,7 +126,7 @@ const leaderboard = () => {
           console.error('No authentication token found. Please log in again.');
           return;
         }
-        const response = await fetch('https://dev.quizifai.com:8010/leaderboard_result', {
+        const response = await fetch('https://dev.quizifai.com:8010/leaderboard_result_for_user', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -218,6 +246,9 @@ if (!quizData1 || !quizData1.questions) {
    /* fetch or store quizId */;
   navigate(`/dashboard`);
 };
+const handleBack = () => {
+  navigate("/dashboard")
+};
   const questions = quizData1.questions;
   const topThree = leaderboardData.slice(0, 3);
   const handleDownload = () => {
@@ -242,444 +273,426 @@ if (!quizData1 || !quizData1.questions) {
   };
   return (
 
-    <div className={styles.container}>
-      {/* <Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </Head> */}
-      <Navigation/>
-      
-      <div className={styles.mainContent}  ref={resultRef}>
-      <div className={styles.back1} onClick={Back}><MdOutlineCancel /></div>
+    <div className="flex w-full" >
 
-        <div className={styles.header}>
-        <div className={styles.titleContainer}>
-        {/* <img
-  src={titleIcon} 
-  alt="User Icon"
-  className={styles.icon1}
-/> */}
-<div className={styles.downloads} >
-<div className={styles.download} >
+    <Navigation />
 
-          <span className={styles.quizname}>{quizData.quiz_name}</span>
-</div>
+    <div className="w-full p-5 pt-[60px]" ref={resultRef}>
+      {/* <div className={styles.back1} onClick={Back}><MdOutlineCancel /></div> */}
+      <div onClick={handleBack} className=" absolute top-5 right-5 cursor-pointer">
+        <img src={close} alt="" className="w-[25px] h-[25px]" />
+      </div>
+      <div className="flex w-full border-[#8cd18e] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-2 bg-white">
+    {/* Quiz Image */}
+    <div className="relative mr-2">
+      <img
+        src={physics}
+        alt="Quiz Cover"
+        className="w-[120px] h-[165px] rounded-md mr-4 cursor-pointer"
+      />
+    </div>
 
-</div>
+    {/* Quiz Details */}
+    <div className="flex flex-col w-full">
+      {/* Title */}
+      <div className="flex justify-between items-center">
+          <div>
 
-          <p className={styles.quizdescription}>{quizData.quiz_description}</p>
-          {/* <div className={styles.Questionslines }>
-        <div className={styles.Questions}>
+        <h2 className="text-lg font-semibold text-[#00008b]">{quizData.quiz_name}</h2>
+          </div>
+          <div className="flex gap-3">
+              <div className="flex gap-2">
+              <img src={trophy}
+               alt="" 
+              className="w-[18px] h-[18px] "   
+                 />
+              <img src={print1}
+               alt="" 
+              className="w-[18px] h-[18px] "  />
+              </div>
+              <div className="flex">
+                  <img src={stars}
+               alt="" 
+              className="w-[18px] h-[18px] "  
+               /> <img src={stars}
+               alt="" 
+              className="w-[18px] h-[18px]"  
+               />
+                <img src={stars}
+               alt="" 
+              className="w-[18px] h-[18px] "  
+               />
+                <img src={stars}
+               alt="" 
+              className="w-[18px] h-[18px]"  
+               />
+                <img src={stars}
+               alt="" 
+              className="w-[18px] h-[18px]"  
+               />
+                
+              </div>
+          </div>
+      </div>
 
-        <span className={styles.Question} >Questions :</span>{" "}
-          <span className={styles.username1} >{`${quizData.total_questions}`}</span>
+      {/* Description */}
+      <p className="text-[#00008b] w-[80%] line-clamp-2 text-sm mt-1">
+      {quizData.quiz_description}
+      </p>
+
+      {/* Meta Information */}
+      <div className="text-[#00008b] text-sm flex flex-wrap mt-3">
+        <span>Science</span>
+        <span className="mx-1">.</span>
+        <span>Physics</span>
+        <span className="mx-1">.</span>
+        <span>Class 10</span>
+        <span className="mx-1">.</span>
+        <span>CBSE</span>
+        <span className="mx-1">.</span>
+        <span>{`${quizData.complexity}`}</span>
+      </div>
+
+      {/* Icons and Additional Info */}
+      <div className="flex-col items-center space-y-4 mt-3 text-[#00008b]">
+        {/* Author and Date */}
+        <div className="flex items-center space-x-10">
+          <div className="flex items-center">
+            <img
+             src={username}
+              alt="User"
+              className="w-[18px] h-[18px] mr-1"
+            />
+            <span className="ml-1 text-sm">{`${quizData.created_by}`}</span>
+          </div>
+          <div className="flex items-center">
+            <img
+              src={calander} 
+              alt="Calendar"
+              className="w-[18px] h-[18px] mr-1"
+            />
+            <span className="ml-1 text-sm">{`${quizData.created_on}`}</span>
+          </div>
         </div>
-        <div>
 
-        <span className={styles.Question} >Duration:</span>{" "}
-          <span className={styles.username1} >{quizduration} min</span>
+        {/* Quiz Info */}
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center">
+            <img
+              src={comment}
+              alt="Questions"
+              className="w-[18px] h-[18px] mr-1"
+            />
+            <span className="ml-1 text-sm">{`${quizData.total_questions}`} Questions</span>
+          </div>
+          <div className="flex items-center">
+            <img
+              src={timer}
+              alt="Timer"
+              className="w-[18px] h-[18px] mr-1"
+            />
+            <span className="ml-1 text-sm">{`${quizData.quiz_duration}`} Minutes</span>
+          </div>
+          <div className="flex items-center">
+            <img
+              src={Attemts}
+              alt="Timer"
+              className="w-[18px] h-[18px] mr-1"
+            />
+            <span className="ml-1 text-sm">30 Attemts</span>
+          </div>
+          <div className="flex items-center">
+            <img
+              src={Badge}
+              alt="Timer"
+              className="w-[18px] h-[18px] mr-1"
+            />
+            <span className="ml-1 text-sm">90% High Score</span>
+          </div>
+          <div className="flex items-center">
+            <img
+              src={Quickest}
+              alt="Timer"
+              className="w-[18px] h-[18px] mr-1"
+            />
+            <span className="ml-1 text-sm">2:02 Mins Quickest</span>
+          </div>
         </div>
-        <div>
-
-<span className={styles.Question} >Total Marks:</span>{" "}
-  <span className={styles.username1} >{`${quizData.quiz_total_marks}`}</span>
-</div>
-<div>
-
-<span className={styles.Question } >Pass Percentage :</span>{" "}
-  <span className={styles.username1} >{passpercentage}%</span>
-</div>
-<div>
-
-<span className={styles.Question } >complexity :</span>{" "}
-  <span className={styles.username1} >{complexity} </span>
-</div>
-        </div> */}
-        <div className={styles.flexrow}>
-          <div className={styles.Createdbyupdated}>
-          <div className={styles.Questions}>
-
-<span className={styles.Question} >Questions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span>{" "}
-  <span className={styles.username1} >{`${quizData.total_questions}`}</span>
-</div>
-<div>
-
-<span className={styles.Question} >Total Marks&nbsp;&nbsp;:</span>{" "}
-  <span className={styles.username1} >{`${quizData.quiz_total_marks}`}</span>
-</div>
-        <div className={styles.Created}>
-
-        <span className={styles.Createdby} >Created By&nbsp;&nbsp;&nbsp;&nbsp;:</span>{" "}
-          <span className={styles.username} >{`${quizData.created_by}`}</span>
-        </div>
-        
-        <div>
-
-        <span className={styles.Createdby} >Created On&nbsp;&nbsp;&nbsp;&nbsp;:</span>{" "}
-          <span className={styles.username} >{`${quizData.created_on}`}</span>
-        </div>
-        </div>
-        <div className={styles.Questionslines }>
-      
-        <div>
-
-        <span className={styles.Question} >Duration&nbsp;&nbsp;&nbsp;&nbsp;:</span>{" "}
-          <span className={styles.username1} >{`${quizData.quiz_duration}`} min</span>
-        </div>
+      </div>
+    </div>
+  </div>
+     
+      <div className='flex w-full' >
+      {!showAnswers ? (
+         <div class="w-[50%] text-center p-4">
+         <div class="">
        
-<div>
-
-<span className={styles.Question } >Pass Percentage :</span>{" "}
-  <span className={styles.username1} >{`${quizData.pass_percentage}`}</span>
-</div>
-
-        </div>
-        <div className={styles.Questionslines }>
-      
+           <div class="flex items-center justify-center">
+             <span class="inline-block h-[1px] bg-blue-900 w-[80px] mr-[5px]"></span>
+             <label class="text-[#d98b19] font-lato text-[18px] font-semibold">Your Attempt Details</label>
+             <span class="inline-block h-[1px] bg-blue-900 w-[80px] ml-[5px]"></span>
+           </div>
+         </div>
+       
+         <div class="relative flex justify-center flex-col items-center">
+           <label class="absolute top-[40%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 text-[50px] text-blue-900 font-bold font-lato">{quizData.rank}</label>
+           <img class="h-[108.62px] w-[130.01px] flex justify-center" src={rankimage} alt="Icon 1" />
+           <span class="text-blue-900 font-medium font-lato text-[17px]">Your Rank</span>
+         </div>
+       
+         <div class="w-full flex items-center">
+         <div class="w-full flex justify-center items-center flex-col gap-4 sm:w-[50%]">
+         <div class="w-[210px] h-[7vh] flex items-center">
+           <img class="h-[30px] w-[30px]" src={dateIcon} alt="Calendar Icon" />
+           <span class="ml-2 font-lato text-blue-900">{quizData.quiz_start_date}</span>
+         </div>
+         <div class="w-[210px] h-[7vh] flex items-center">
+           <img class="h-[30px] w-[30px]" src={timeIcon} alt="Clock Icon" />
+           <span class="ml-2 font-lato text-blue-900">{quizData.attempt_duration} Minutes</span>
+         </div>
+         <div class="w-[210px] h-[7vh] flex items-center">
+           <img class="h-[30px] w-[30px]" src={vector} alt="Check Icon" />
+           <span class="ml-2 font-lato text-blue-900">{quizData.correct_answers} Correct answers</span>
+         </div>
+         <div class="w-[210px] h-[7vh] flex items-center">
+           <img class="h-[30px] w-[30px]" src={current} alt="Question Icon" />
+           <span class="ml-2 font-lato text-blue-900">Attempted {quizData.attempted_questions} questions</span>
+         </div>
+       </div>
+       <div className='w-full flex justify-center items-center sm:w-[50%]'>
+       <div class="flex  w-[70%] flex-col p-2 px-6 rounded-2xl bg-green-300 items-center">
+       
+             <div class=" text-green-700 font-medium text-center">{quizData.attained_score_percentage}%</div>
+             <div class=" text-[#fa5967]  text-center">{quizData.quiz_grade}, {quizData.pass_flag ? 'Pass' : 'Fail'}</div>
+           </div>
+       </div>
+       
+           
+         </div>
+         <div className="flex flex-wrap justify-end gap-2">
+         <div className="flex items-center gap-1 justify-center ">
+           <button
+             onClick={handleToggleAnswers}
+             className="text-blue-900 text-sm bg-blue-200 border border-blue-900 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
+           >
+             Answers
+             <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" />
+           </button>
+         </div>
+         <div className="flex items-center justify-center">
+         <button
+             // onClick={handleOnAnswer}
+             className="text-blue-900 text-sm bg-blue-200 border border-blue-900 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
+           >
+             Print
+             <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" />
+           </button>
+         </div>
+       </div>
+       
+       </div>
+      ):(
+      <div className="w-[45%] rounded-2xl bg-white">
+        <div className="flex py-1 items-end justify-end ">
+           <button
+             onClick={handleToggleAnswers}
+             className="text-red-500 text-sm bg-[#FFB7B7] border border-red-500 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
+           >
+             Close
+             {/* <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" /> */}
+           </button>
+         </div>
+        <div className="flex flex-row">
+          {/* Question Numbers */}
+          {questions.map((question, index) => {
+            const isCorrect = question.selected_option === question.correct_option;
+            const isWrong = question.selected_option !== null && !isCorrect;
     
-
-<div>
-
-<span className={styles.Question } >Complexity :</span>{" "}
-  <span className={styles.username1} >{`${quizData.complexity}`}</span>
-</div>
-        </div>
-        </div>
-        </div>
-        {/* <div className={styles.infoContainer}>
-        {/* <img
-  src={createdIcon} 
-  alt="Calendar Icon"
-  className={styles.icon2}
-/> */}
-          {/* <span>user name<br></br>date</span> */}
-        {/* </div>  */}
-      </div>
-      {/* <div className={styles.descriptionContainer}>
-      {/* <img
-    src={descriptionIcon} 
-    alt="Description Icon"
-    className={styles.description}
-  /> */}
-      {/* <span className={styles.descriptionText}>{quizData.quiz_description}</span> */}
-      {/* </div>  */}
-     
-      <div className={styles.horizontalLine}></div>
-      <div className={styles.wrapper}>
-      <div className={styles.sentenceBox}>
-         <div className={styles.verticaliconsContainer}>
-          <h1  className={styles.verticalicon2} >{quizData.rank}</h1>
-        <img
-    src={rankimage} 
-    alt="Icon 1"
-    className={styles.verticalicon1}
-  />
-  <h1 className={styles.rank1}>Your Rank</h1>
-      </div>
-      <div className={styles.sentencesContainer}>
-         <div className={styles.sentence}>
-        <img
-    src={dateIcon} 
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span>Taken on {quizData.quiz_start_date}</span>
-        </div>
-        </div>
-        <div className={styles.sentencesContainer}>
-        <div className={styles.sentence}>
-        <img
-    src={timeIcon} 
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span>Spent {quizData.attempt_duration}</span>
-        </div>
-       
-        
-      </div>
-      <div className={styles.sentencesContainer}>
-        <div className={styles.sentence}>
-        <img
-    src={current}
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span>Attempted {quizData.attempted_questions} Questions</span>
-        </div>
-        </div>
-        
-        <div className={styles.sentence1}>
-        <img
-    src={vector} 
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span className={styles.correct_answers} >{quizData.correct_answers} correct answer</span>
-        </div>
-      <div className={styles.sentencesContainer}>
-        <div className={styles.sentence}>
-        <img
-    src={percentIcon} 
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span className={styles.sentence3}>You have scored {quizData.attained_score_percentage}%, {quizData.quiz_grade} Grade,<span className={`${quizData.pass_flag ? styles.pass : styles.fail}`}>{quizData.pass_flag ? 'Pass' : 'Fail'}</span></span>
-        </div>
-       
-        
-      </div>
-     
-     
-
-      {/* <div className={styles.sentencesContainer}>
-        {/* <div className={styles.sentence}>
-        <img
-    src={categoryIcon} 
-    alt="Category Icon"
-    className={styles.icon2}
-  />
-          <span>1st attempt, You have 2 more attempts</span>
-        </div> */}
-       
-        
-      {/* </div>  */}
-      
-      {/* <div className={styles.sentencesContainer}>
-        <div className={styles.sentence}>
-        <img
-    src={current}
-    alt="Calendar Icon"
-    className={styles.icon2}
-  />
-          <span>Attempted {quizData.attempted_questions} Questions</span>
-        </div>
-        </div> */}
-        {/* <div className={styles.sentence}>
-        <img
-        src={dateIcon} 
-        alt="Calendar Icon"
-        className={styles.icon2}
-        />
-        <span>{quizData.attained_score} attained score</span>
-        </div> */}
-       
-       
-        </div>
-        {/* <div className={styles.verticalLine}></div> */}
-       
-
-        <div className={styles.boxContainer1}>
-          <div className={styles.titles}>
-        <p className={styles.title}>Leaderboard </p>
-
-
-        </div>
-        <div className={styles.lines}>
-          <div className={styles.lines1}></div>
-          <div className={styles.lines2}> Top 10 Rankers</div>
-          <div className={styles.lines3}></div>
-        </div>
-        {/* <div className={styles.fistrank}>
-          <img src={fistrank} alt="" style={{width:"60px",height:"52px"}} />
-        </div> */}
-        <div className={styles.ranksiconsContainer}>
-        <img
-    src={rank2Icon} 
-    alt="" 
-    className={styles.rankicon1}
-  />
-        <img
-    src={rank1Icon} 
-    alt="Icon 1"
-    className={styles.rankicon2}
-  />
-         
-      
-           <img
-    src={rank3Icon} 
-    alt="Rank 3 Icon"
-    className={styles.rankicon3}
-  />
-        </div>
-        <div className={styles.ranksiconsContainer1}>
-        <p className={styles.second}>1<span  className={styles.st}>st</span></p> 
-     <p className={styles.fist}>2<span  className={styles.st}>nd</span></p>
-      
-        <p className={styles.thired}>3<span  className={styles.st}>rd</span></p>
-        </div>
-         <div className={styles.innerBoxes1}>
-        <div className={styles.innerBox1} style={{width:"122px", height:"93px",}}>
-        {/* <img
-    src={greybox1Image} 
-    alt="img 1"
-  /> */}
-            {/* <span className={styles.textOverImage} style={{marginTop:"-40px", marginLeft:"50px"}}>Username<br></br>99.5</span> */}
-            
-           </div>
-          <div className={styles.innerBox2} style={{width:"122px", height:"118px", marginbottom:"23px"}}>
-          {/* <img
-    src={greybox2Image} 
-    alt="img 1"
-  /> */}
-            {/* <span className={styles.textOverImage1}>Username<br></br>100</span> */}
-           </div>
-          <div className={styles.innerBox3} style={{width:"122px", height:"93px",}}>
-          {/* <img
-    src={greybox3Image} 
-    alt="img 1"
-  /> */}
-            {/* <span className={styles.textOverImage2}>Username<br></br>99</span> */}
-          </div>
-        </div>    
-        {/* <div className={styles.tables}>
-          <div className={styles.table1}> 
-            <h1 className={styles.heading}>QuI</h1>
-          </div>
-          <div className={styles.table2}>2</div>
-          <div className={styles.table3}>3</div>
-        </div> */}
-        
-        
-        {/* <div  className={styles.columns1}>
-        {/* <div className={styles.columns}>
-    <span className={styles.column}>Rank</span>
-    <span className={styles.column}>User Name</span>
-    <span className={styles.column}>Score</span>
-    <span className={styles.column}>Attempts</span>
-    <span className={styles.column}>Duration</span>
-  </div> */}
- 
-  {/* <div>
-      {leaderboardData.map((entry, index) => (
-        <div key={index} className={styles.values}>
-          <div className={styles.value}>{entry.rank}</div>
-          <div className={styles.value}>{entry.user_name}</div>
-          <div className={styles.value}>{entry.score}</div>
-          <div className={styles.value}>{entry.attempts}</div>
-          <div className={styles.value}>{entry.duration}</div>
-        </div>
-      ))}
-    </div> */}
-    {/* </div>  */}
-    <div>
-      <div className={styles.innerBoxes}>
-        {topThree.map((entry, index) => {
-          // const boxStyles = [
-          //   { width: "122px", height: "93px",  },
-          //   { width: "122px", height: "118px", marginbottom:"23px"},
-          //   { width: "122px", height: "93px", }
-          // ];
-          
-          // const textStyles = [
-          //   {},
-          //   {},
-          //   {}
-          // ];
-
-          // const images = [greybox1Image, greybox2Image, greybox3Image];
-
-          return (
-            <div key={entry.rank}  >
-              {/* <img src={images[index]} alt={`img ${index + 1}`} /> */}
-              <span className={styles[`textOverImage${index + 1}`]} >
-                {entry.user_name} <br /> <span style={{color:'#e20000'}}>{entry.attained_percentage}%</span>
-              </span>
-              {/* <span className={styles[`textOvernumber${index + 1}`]} >
-                 {entry.attained_percentage}
-              </span> */}
-            </div>
-          );
-        })}
-      </div>
-      <div className={styles.columns}>
-    <span className={styles.column}>Rank</span>
-    <span className={`${styles.column} ${styles.userName}`}>User Name</span>
-    <span className={styles.column}>Percentage</span>
-    <span className={styles.column}>Attempts</span>
-    <span className={styles.column}>Duration</span>
-  </div>
-  {leaderboardData.slice(0, 10).map((entry) => (
-  <div key={entry.rank} className={styles.values}>
-    <div className={`${styles.value} ${styles.rank}`}>{entry.rank}</div>
-    <div className={`${styles.value} ${styles.userName}`}>{entry.user_name}</div>
-    <div className={`${styles.value} ${styles.percentage}`}>{entry.attained_percentage}</div>
-    <div className={`${styles.value} ${styles.attempts}`}>{entry.attempts_count}</div>
-    <div className={`${styles.value} ${styles.duration}`}>{entry.attempt_duration_mins}</div>
-  </div>
-))}
-    </div>
-    </div>
-    </div>
-    <div className={styles.horizontalLine} style={{marginTop:"0px"}}></div>
-   
-    <div className={styles.boxContainer}>
-      <div className={styles.parentContainer}>
-      {questions.map((question, index) => (
-        <div className={styles.sentencesContainer1} style={{ marginLeft: "0px", marginTop: "40px", height:"220px" }} key={index}>
-          <div className={styles.sentence}>
-            {/* <img
-              src={one1Image} // Replace with dynamic image selection if needed
-              alt="Calendar Icon"
-              className={styles.icon2}
-            /> */}
-             <span style={{ color: "#F4774B" }}>{index + 1}. {question.question_text}</span>
-            {/* <span className={styles.iconContainer}>
-              <img
-                src={question.selected_option === question.correct_option ? rightIcon : wrongIcon}
-                alt="Result Icon"
-                className={styles.righticon}
-              />
-            </span> */}
-          </div>
-
-          {Object.keys(question.options).map((optionKey, idx) => {
-            const optionText = question.options[optionKey];
-            const isSelected = optionText === question.selected_option;
-            const isCorrect = optionText === question.correct_option;
-
             return (
-              <div className={styles.box} key={idx} style={{ backgroundColor: isCorrect ? '#A9FFB7' : isSelected ? '#FFB7B7' : 'white' }}>
-                <div className={styles.iconA}>
-                  {/* <img
-                    src={optionKey === 'optionA' ? iconA : optionKey === 'optionB' ? iconB : optionKey === 'optionC' ? iconC : iconD}
-                    alt={`Icon ${idx + 1}`}
-                    width={15}
-                    height={15}
-                  /> */}
-                  <span className={styles.iconText}>{optionLabels[optionKey]}. {optionText}</span>
-                </div>
+              <div
+                key={index}
+                onClick={() => setCurrentQuestionIndex(index)} // Set selected question index
+                className={`cursor-pointer w-8 h-8 flex items-center justify-center border-[1px] text-sm font-medium ${
+                  index === currentQuestionIndex
+                    ? 'bg-green-100 text-white' // Highlight selected question
+                    : isCorrect
+                    ? 'bg-[#c9e4ca] text-black' // Correct answer (green)
+                    : isWrong
+                    ? 'bg-[#FFB7B7] text-red-600' // Wrong answer (red)
+                    : 'bg-green-100 text-black' // Default
+                }`}
+              >
+                {index + 1}
               </div>
             );
           })}
+        </div>
+    
+        <div className="flex flex-col items-start">
+          {/* Render Selected Question */}
+          {questions.map((question, index) =>
+            index === currentQuestionIndex ? (
+              <div className="w-full mt-8" key={index}>
+                {/* Question Text */}
+                <div className="mb-2">
+                  <span className="text-[#214082] text-lg font-semibold">
+                    {index + 1}. {question.question_text}
+                  </span>
+                </div>
+    
+                {/* Options */}
+                <div className="flex flex-col mb-6">
+                  {Object.keys(question.options).map((optionKey, IDXx) => {
+                    const optionText = question.options[optionKey];
+                    const isSelected = optionText === question.selected_option;
+                    const isCorrect = optionText === question.correct_option;
+    
+                    return (
+                      <div
+                        key={IDXx}
+                        className={` mt-3 flex items-center px-4 `}
+                      >
+                         <div
+                      className={`mr-2 font-normal font-[lato] w-[40px] rounded-[5px] h-[37px] p-[8px] bg-[#E8E9E8] border-[1px] border-solid border-[#D3D3D3] flex justify-center text-center items-center text-[14px]  ${
+                          isCorrect
+                            ? 'bg-[#c9e4ca] border-green-500'
+                            : isSelected
+                            ? 'bg-[#FFB7B7] border-red-500'
+                            : 'border-[#D3D3D3] bg-[#E8E9E8] rounded-[5px] border-solid border-[1.8px] '
+                        }`}
+                    >
+                      {optionLabels[optionKey]}
+                    </div>
+                    <div
+                      className={`w-[100%] font-[lato] h-[37px] rounded-[5px] border-solid border-[#D3D3D3] bg-[#E8E9E8] border-[1.8px] p-[5px] text-[14px] text-[#000]  ${
+                          isCorrect
+                            ? 'bg-[#c9e4ca] border-green-500'
+                            : isSelected
+                            ? 'bg-[#FFB7B7] border-red-500'
+                            : 'border-[#D3D3D3] bg-[#E8E9E8] rounded-[5px] border-solid border-[1.8px] '
+                        }`}
+                    >
+                       {optionText}
+                    </div>
+                       
+                      </div>
+                    );
+                  })}
+                </div>
+    
+                {/* Answer Feedback */}
+                <div className="flex items-center mt-6 ml-6">
+                  <img
+                    src={
+                      question.selected_option === question.correct_option
+                        ? rightIcon1
+                        : wrongIcon1
+                    }
+                    alt="Answer Icon"
+                    className="w-6 h-6 mr-2"
+                  />
+                  <span
+                    className={`text-sm font-medium ${
+                      question.selected_option === question.correct_option
+                        ? 'text-green-600'
+                        : 'text-red-600'
+                    }`}
+                  >
+                    {question.selected_option === question.correct_option
+                      ? 'Correct Answer'
+                      : 'Wrong Answer'}
+                  </span>
+                </div>
+    
+                {/* Correct Answer Description */}
+                <div className="correct-answer-description mt-4 ml-6">
+                  <span className="description-text">
+                 <span className=' font-semibold text-[#000085]'>Answer Description :</span>  {question.correct_answer_description}
+                  </span>
+                </div>
+              </div>
+            ) : null
+          )}
+        </div>
+      </div>)}
+ 
 
-<span className={styles.newContainer}>
-            <span className={styles.iconContainer}>
-              {/* <img
-                src={answerTimerIcon}
-                alt="Answer Timer Icon"
-                className={styles.icon5}
-              /> */}
-              <img
-                src={question.selected_option === question.correct_option ? rightIcon1 : wrongIcon1}
-                alt="Answer Icon"
-                className={styles.icon6}
-              />
-            </span>
-            <span className={styles.textContainer}>
-              {/* <p>Answered in 53 Sec</p> */}
-              <p>{question.selected_option === question.correct_option ? 'Correct Answer' : 'Wrong Answer'}</p>
-            </span>
-          </span>
-        </div>
-      ))}
-      </div>
+<div className='flex flex-col justify-end px-2 items-center'>
+<div className=' w-[10px] rounded-full bg-[#00008b] h-[10px]'></div>
+<div className='h-[85%] w-[1px] bg-[#00008b]'></div>
+<div className=' w-[10px] rounded-full bg-[#00008b] h-[10px]'></div>
+
+</div>
+<div className=' w-full flex p-4  flex-col justify-between'>
+<div className="max-w-4xl rounded-md">
+<div class="">
+  <div class="flex items-center justify-center  ">
+    <span class="inline-block h-[1px] bg-blue-900 w-full mr-[5px]"></span>
+    <label class="text-[#d98b19] flex w-[60%] font-lato text-[18px] items-center justify-center font-semibold">Top Performers</label>
+    <span class="inline-block h-[1px] bg-blue-900 w-full ml-[5px]"></span>
+  </div>
+</div>
+
+    <div className="overflow-x-auto py-2">
+      <table className="table-auto w-full border-collapse border border-gray-300">
+        <thead className="bg-gray-100 font-bold text-[#00008b]">
+          <tr>
+          <th className="border-b border-gray-300 px-4 py-2 text-left">Rank</th>
+            <th className="border-b border-gray-300 px-4 py-2 text-left">Name</th>
+            <th className="border-b border-gray-300 px-4 py-2 text-center">Attempts</th>
+            <th className="border-b border-gray-300 px-4 py-2 text-left">Score</th>
+            <th className="border-b border-gray-300 px-4 py-2 text-left">Duration</th>
+            {/* <th className="border-b border-gray-300 px-4 py-2 text-center">Version</th> */}
+            <th className="border-b border-gray-300 px-4 py-2 text-left">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {leaderboardData.slice(0, 10).map((entry, index) => (
+            <tr
+            key={entry.rank}
+              className={`${
+                entry.current ? "bg-green-100" : ""
+              } hover:bg-gray-50 text-[#00008b]`}
+            >
+              <td className="border-b px-4 py-2">{entry.rank}</td>
+              <td className="border-b px-4 py-2">{entry.user_name}</td>
+              <td className="border-b px-4 py-2 text-center">{entry.attempts_count}</td>
+              <td className="border-b px-4 py-2">{entry.total_score}</td>
+              <td className="border-b px-4 py-2">{entry.attempt_duration_mins}</td>
+              {/* <td className="border-b px-4 py-2 text-center">{entry.version}</td> */}
+              <td className="border-b px-4 py-2">
+                {entry.created_date}
+               
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
-        </div>
-         {/* <LogoutBar/> */}
-      </div>
+    
+  </div>
+  <div className=" text-right flex justify-end">
+      {/* <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
+        Leader Board
+      </button> */}
+      <button
+    // onClick={handleOnAnswer}
+    className="text-blue-900 text-sm bg-blue-200 border border-blue-900 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
+  >
+     Leader Board
+    <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" />
+  </button>
+    </div>
+</div>
+  </div>
+ 
+
+
+     
+
+    </div>
+    {/* <LogoutBar /> */}
+  </div>
       
     
   );

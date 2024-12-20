@@ -543,7 +543,7 @@ const handleglobal =()=> {
         Quizzes Overview 
       </button>
       <button
-         onClick={handlemyhistory}
+        //  onClick={handlemyhistory}
         className={`w-full px-4 py-2  bg-[#ffe5d9]
       rounded-lg  text-[#214082] 
         `}
@@ -677,7 +677,7 @@ const handleglobal =()=> {
                     </div>
                     </div>
                 </div>
-                <div   onClick={handlemyhistory} className="flex flex-col cursor-pointer items-center justify-center relative  border shadow-lg rounded-sm p-2 bg-white">
+                <div   className="flex flex-col cursor-pointer items-center justify-center relative  border shadow-lg rounded-sm p-2 bg-white">
            <ProgressIndicator />
            
         </div>

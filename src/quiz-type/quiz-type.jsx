@@ -842,8 +842,14 @@ const handleToLayout4 = () =>{
   // }
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-
+  const closeModal = () => {
+    setShowModal(false);
+  };
+  
   const handleNext = async () => {
     try {
       setIsSubmitting(true); // Disable the button while the request is ongoing
@@ -970,6 +976,9 @@ for (const question of questions) {
 
       if (response.ok && responseData.response === "success") {
       console.log('response',responseData);
+      setModalMessage("Quiz created successfully!");
+      setIsError(false);
+      setShowModal(true);
        setQuizId(responseData.data.quiz_id)
        setQuizName(responseData.data.quiz_name)
         console.log('id',quizid);
@@ -983,8 +992,9 @@ for (const question of questions) {
         }
         // Assuming router and state setter are defined properly
         // navigate("/quizcreated", { state: { quizData: responseData } });
-        setStep(5);
-      } else {
+  
+      } 
+      else {
         if (responseData.detail) {
           const errorDetails = responseData.detail;
 
@@ -1006,7 +1016,6 @@ for (const question of questions) {
         }
         setIsSubmitting(false);
       }
-
     } catch (error) {
       console.error("Type-Quiz failed:", error);
       setErrorMessage("An error occurred while choosing the type of the quiz");
@@ -2454,6 +2463,13 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                 >
                   {isSubmitting ? "Creating..." : "Create"}
                 </button>
+                <button
+            onClick={handleNextpage3}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Next
+            </button>
                 </div>
               </div>
             </div>
@@ -3079,6 +3095,30 @@ isMulti
     </div>
     </> 
        )}
+         {showModal && (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div
+          className={`bg-white rounded-lg shadow-lg p-6 w-96 text-center ${
+            isError ? "border-red-500" : "border-green-500"
+          } border-t-4`}
+        >
+          <h2
+            className={`text-xl font-semibold ${
+              isError ? "text-red-500" : "text-green-500"
+            }`}
+          >
+            {isError ? "Error" : "Success"}
+          </h2>
+          <p className="mt-2 text-gray-700">{modalMessage}</p>
+          <button
+            onClick={closeModal}
+            className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    )}
  </main>
 )}
       </div>

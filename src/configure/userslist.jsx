@@ -146,7 +146,7 @@ const [loading, setLoading] = useState(true);
             <div className="">
       <h1 className="text-center text-[24px] font-bold text-[#F17530]">Users List</h1>
     </div>
-    {userRole === 'Admin' && (
+    {/* {userRole === 'Admin' && ( */}
       <div className="flex justify-between gap-2 mb-2 items-center">
         <div className="flex items-center gap-2 justify-center">
         <div
@@ -163,15 +163,19 @@ const [loading, setLoading] = useState(true);
                 </div>
 
                 <div className=" font-bold text-[#214082]">
-                  <span className="text-[15px]">Welcome </span>
-                  <span className="text-[15px]">
+                  <span className="text-[14px]">Welcome </span>
+                  <span className="text-[14px]">
                     {username1.charAt(0).toUpperCase() + username1.slice(1)}
                   </span>
                   <br />
-                  <span className="text-[15px]">User ID : </span>
+                  <span className="text-[14px]">User ID : </span>
                   <span className=" font-normal text-[12px]">{userId}</span>
-                  {/* <span className="text-[15px] ml-1">A ID : </span>
-                  <span className=" font-normal text-[12px]">{userId}</span> */}
+                  <br />
+                  <span className="text-[14px] ">Organization ID : </span>
+                  <span className=" font-normal text-[12px]">{orgId}</span>
+                  <br />
+                  <span className="text-[14px]">Organization Name : </span>
+                  <span className=" font-normal text-[12px]">{}</span>
                 </div>
         </div>
         <div>
@@ -192,13 +196,13 @@ const [loading, setLoading] = useState(true);
         </div>
                
                 </div>
-    )}
+    {/* )} */}
     
 
 
       {error && <div className="text-red-500 mb-4">{error}</div>}
 
-      <div className="flex gap-3 border-2 px-2 py-2 bg-[#DCFCE7] text-[#214082] w-full">
+      {/* <div className="flex gap-3 border-2 px-2 py-2 bg-[#DCFCE7] text-[#214082] w-full">
               <div>
                   <div>
                     <span>Organization ID  </span>
@@ -210,24 +214,24 @@ const [loading, setLoading] = useState(true);
                     <span className="pl-[45px] font-normal">
                       <span className="font-bold">:</span> {orgName}
                     </span>
-                  </div>
+                   </div>
 
-                  {/* <div className="text-nowrap">
+                  <div className="text-nowrap">
                     <span>Organization description </span>
                     <span className="pl-[8px] font-normal">
                       <span className="font-bold">:</span> Narmtech
                     </span>
-                  </div> */}
+                  </div> 
 
-                  {/* <div>
+                  <div>
                     <span>Admin Name </span>
                     <span className="pl-[91px] font-normal">
                       <span className="font-bold">:</span> {username1}
                     </span>
-                  </div> */}
+                  </div>
                 </div>
 
-              </div>
+              </div> */}
       <table className="min-w-full bg-white border border-gray-300 shadow mt-4 rounded-lg">
         <thead className="bg-[#CBF2FB]">
           <tr className="bg-[#CBF2FB] text-left">

@@ -140,7 +140,7 @@ const statusreport = () => {
               filteredData.map((entry, index) => (
                 <tr
                   key={index}
-                  className={index % 2 === 0 ? "bg-white hover:bg-gray-100 text-[#00084]" : "bg-gray-50 hover:bg-green-200 "}
+                  className={index % 2 === 0 ? "bg-white hover:bg-gray-100 text-[#00084] text-[12px]" : "bg-gray-50 hover:bg-green-200 text-[12px]"}
                 >
                   <td className="border-b  px-4 py-2 text-center">{entry.rank}</td>
                   <td className="border-b px-4 py-2 text-cente">{entry.user_name}</td>

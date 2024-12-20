@@ -47,7 +47,7 @@ function quizcreated() {
     if (location.state && location.state.quizData) {
       // Access the quizData from the location state
       const quizData = location.state.quizData;
-      setQuizData(quizData.data[0])
+      setQuizData(quizData.data)
 
       // Show quizData in the console
       console.log(quizData);

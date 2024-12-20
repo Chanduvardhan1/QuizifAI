@@ -146,7 +146,7 @@ const [loading, setLoading] = useState(true);
             <div className="">
       <h1 className="text-center text-[24px] font-bold text-[#F17530]">Users List</h1>
     </div>
-    {/* {userRole === 'Admin' && ( */}
+    {userRole === 'Admin' && (
       <div className="flex justify-between gap-2 mb-2 items-center">
         <div className="flex items-center gap-2 justify-center">
         <div
@@ -196,7 +196,7 @@ const [loading, setLoading] = useState(true);
         </div>
                
                 </div>
-    {/* )} */}
+    )}
     
 
 

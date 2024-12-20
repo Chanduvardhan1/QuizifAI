@@ -218,7 +218,7 @@ const fetchOrganizationDetails = async () => {
       throw new Error("No authentication token found");
     }
     const response = await fetch(
-      `https://dev.quizifai.com:8010/get_organization_dtls?org_id=${orgId}`,
+      `https://dev.quizifai.com:8010/get_organization_dtls?org_id=${52}`,
       {
         method: 'POST',
         headers: {
@@ -309,7 +309,7 @@ const handleSubmit = async (e) => {
 
   const payload = {
     updated_by: userId,
-    org_id: orgId,
+    org_id: 52,
     org_name: orgName,
     org_description:orgdescription,
     org_admin_id: userId,

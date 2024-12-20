@@ -230,7 +230,6 @@ const handleRoleChange = (e) => {
           .then((data) => {
             if  (data.success) {
               setResponseMessage("User created successfully!");
-            
               reset('');
               
             } else {
@@ -254,7 +253,11 @@ const handleRoleChange = (e) => {
       }
     // integrating user create end //
       
+const handleclose = ()=> {
+  setResponseMessage('');
+  window.location.reload();
 
+}
 
     // user type list//
 const [userTypes, setUserTypes] = useState([]);
@@ -606,7 +609,7 @@ const handleBack = () => {
     </h2>
     <p className="mt-2 text-gray-700">{responseMessage}</p>
     <button
-      onClick={() => setResponseMessage('')} // Close the popup
+      onClick={handleclose} // Close the popup
       className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
     >
       Close

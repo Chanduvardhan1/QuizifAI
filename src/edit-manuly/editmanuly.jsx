@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import Switch from "react-switch";
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch'
 import Navigation from "../navbar/navbar";
 import { useNavigate } from "react-router-dom";
 // import { useHistory } from 'react-router-dom';
@@ -1439,11 +1440,13 @@ export default function editmanuly() {
             </div> */}
 
             <div className="w-[36px] h-5 absolute top-[458px] left-[1020px]">
-              <Switch
-                onChange={toggler1}
-                checked={multiAnswer}
-                className="react-switch"
-              />
+            <FormControlLabel
+        control={<Switch />} 
+        // label="Required"
+          onChange={toggler1}
+          checked={multiAnswer}
+          className="react-switch"
+        />
             </div>
           </div>
 
@@ -1619,7 +1622,13 @@ export default function editmanuly() {
             </div>
 
             <div className="w-[36px] h-5 absolute top-[458px] left-[505px]">
-              <Switch onChange={toggler2} checked={isRetakeOn} />
+              <FormControlLabel
+        control={<Switch />} 
+        // label="Required"
+          onChange={toggler2}
+          checked={isRetakeOn}
+          className="react-switch"
+        />
             </div>
             <div className="">
               {isRetakeOn ? (
@@ -1764,7 +1773,16 @@ export default function editmanuly() {
             </div>
 
             <div className="w-[36px] h-5 absolute top-[660px] left-[504px]">
-              <Switch onChange={toggler3} checked={publicAccess} />
+               <FormControlLabel
+      control={
+        <Switch 
+          onChange={toggler3} 
+          checked={publicAccess} 
+          className="react-switch" 
+        />
+      }
+      // label="Required"
+    />
             </div>
 
             {/* <div className="w-[174px] h-[30px] absolute top-[660px] left-[568px]">

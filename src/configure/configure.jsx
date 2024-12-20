@@ -18,6 +18,7 @@ import notification from "../../src/assets/Images/dashboard/image (9).png"
 import ball from "../../src/assets/Images/dashboard/image (10).png"
 import { AuthContext } from "../Authcontext/AuthContext.jsx";
 import report from "../../src/assets/Images/dashboard/image (14).png"
+import close1 from "../../src/assets/Images/images/dashboard/cancel.png"
 
 const configure = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -95,6 +96,7 @@ const configure = () => {
   const handleCreateOrganization = () => handleRestrictedClick2('/creatorganization')
   const handleQuizMasterReport = () => handleRestrictedClick1('/quizmasterleaderboard')
   const handleAddUsersBulk = () => handleRestrictedClick('/excelcreat')
+  const handleGlobalLeaderboard1 =() => handleRestrictedClick('/globalleaderboard')
 
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -173,7 +175,7 @@ const configure = () => {
       image:report,
       title: "Reports",
       content:
-        "Global Leaderboard, Quiz-wise Leaderboard, Quiz Status Report, Quiz Master Report, (Other Possible Reports)",
+        "Global Leaderboard, Quiz Status Report, (Other Possible Reports)",
     },
     {
       id: 6,
@@ -214,6 +216,10 @@ const configure = () => {
       </span>
     );
   };
+
+  const handleBack = () => {
+    navigate("/dashboard")
+  }
   const handleBackToLogin = () => {
     const authToken = localStorage.getItem('authToken') || null;
   
@@ -254,7 +260,7 @@ const configure = () => {
     <div className="flex font-Poppins">
       <Navigation />
       <div className="flex-1 flex flex-col bg-[#F5F5F5]">
-        <div className="flex justify-between p-[20px] text-[20px] font-medium leading-7 text-left ml-[20px] mt-[10px] text-[#002366]">
+        <div className="flex justify-between p-[20px] pr-[80px] text-[20px] font-medium leading-7 text-left ml-[20px] mt-[10px] text-[#002366]">
           {/* Header content */}
           <p className="-mt-[5px]">
             Welcome {userName.charAt(0).toUpperCase() + userName.slice(1)}
@@ -278,10 +284,10 @@ const configure = () => {
               title="close settings"
               src={cancel}
             /> */}
-                <div className="flex flex-col justify-center items-center">
+                <div className=" absolute right-3 top-3">
   <img
-    src={LogoutIcon}
-    onClick={handleBackToLogin}
+    src={close1}
+    onClick={handleBack}
     alt="Logout Icon"
     className="w-5 h-5 cursor-pointer "
   />
@@ -412,8 +418,11 @@ const configure = () => {
                     item.title === "User & Roles"
                   ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                     : contentItem === "Quiz Status Report" &&
-                      item.title === "Reports"
+                      item.title === "Reports" 
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
+                    : contentItem === "Global Leaderboard" &&
+                    item.title === "Reports"
+                  ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                     : contentItem === "Quiz Master Report" &&
                     item.title === "Reports"
                   ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
@@ -466,7 +475,8 @@ const configure = () => {
                       ? handleAddUsersBulk
                       : contentItem === "Create Organization"
                       ? handleCreateOrganization
-                      
+                      : contentItem === "Global Leaderboard"
+                      ? handleGlobalLeaderboard1
 
                       : null
                   }

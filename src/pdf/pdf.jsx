@@ -5,6 +5,8 @@ import { Line } from "rc-progress";
 import { useNavigate } from "react-router-dom";
 import Navigation from "../navbar/navbar";
 import { FiAlertCircle } from "react-icons/fi";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { MdOutlineCancel } from "react-icons/md";
 import { FaXmark } from "react-icons/fa6";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -35,11 +37,11 @@ import comment from "../../src/assets/Images/quiz-type/comment.png"
 import editicon from "../../src/assets/Images/quiz-type/edit.png"
 import Quiztype from "../quiz-type/quiz-type";
 import Textboook from "../textbook/textbook";
-import Csv from "../csv/csv"
+import Csv from "../csv/csv";
 import GreaterThan from "../assets/Images/images/dashboard/greaterthan.png";
 import QuestionPaper from "../assets/Images/Assets/questionPaper.png";
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch'
+import Switch from '@mui/material/Switch';
 
 const options1 = [{ label: "Numbers" }];
 
@@ -170,7 +172,7 @@ export default function quiztype() {
   const [availablefrom, setavailablefrom] = useState("");
   const [disabledon, setdisabledon] = useState("");
 
-  const [publicAccess, setPublicAccess] = useState("Public");
+  const [publicAccess, setPublicAccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isRetakeOn, setIsRetakeOn] = useState(false);
@@ -394,6 +396,126 @@ useEffect(() =>{
 //----------------***quiz print end***-----------------
 
 
+//-----------------**AssignQuiz**-----------------//
+const [shareWithGroupOrOrg, setShareWithGroupOrOrg] = useState(false); // Initialize toggle state
+const [groupName, setGroupName] = useState('');
+const [file1, setFile1] = useState(null);
+const [quizid, setQuizId] = useState(null);
+const [quizName, setQuizName] = useState('');
+
+const handleToggle = (event) => {
+  setShareWithGroupOrOrg(event.target.checked); // Update state based on toggle
+}; 
+const customOption = ({ data, innerRef, innerProps, isSelected }) => (
+  <div
+    ref={innerRef}
+    {...innerProps}
+    className={`flex items-center p-2 cursor-pointer ${
+      isSelected ? 'bg-blue-50' : 'hover:bg-gray-100'
+    }`}
+  >
+    <input
+      type="checkbox"
+      checked={isSelected}
+      onChange={() => {}}
+      className="mr-2"
+    />
+    <span>{data.label}</span>
+  </div>
+);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const selectedUserIds = selectedUsers.map((user) => user.value); // Extract IDs
+
+  // Prepare FormData
+  const formData = new FormData();
+  formData.append('quiz_id', quizid);
+  formData.append('org_id', orgId);
+  formData.append('share_with_group_or_org', shareWithGroupOrOrg);
+  formData.append('group_name', groupName);
+  formData.append('user_ids',selectedUserIds ); // Pass user IDs as a comma-separated string
+  if (file1) formData.append('files', file1);
+
+  try {
+    const response = await fetch(
+      'https://dev.quizifai.com:8010/assign-quiz-to-group-organization-or-users/',
+      {
+        method: 'POST',
+        body: formData,
+        headers: {
+          accept: 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    alert('Quiz assigned successfully!');
+    console.log('Response:', result);
+  } catch (error) {
+    console.error('Error assigning quiz:', error.message);
+    alert('Failed to assign quiz. Please try again.');
+  }
+};
+
+//-----------------**AssignQuiz END**-----------------//
+
+//-----------------**users dropdown**-----------------//
+const [users, setUsers] = useState([]); // Store dropdown options
+const [selectedUsers, setSelectedUsers] = useState([]); // Store selected user IDs
+// const [quizId, setQuizId] = useState('');
+
+useEffect(() => {
+  const fetchUsers = async () => {
+    try {
+      const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
+
+      if (!authToken) {
+        throw new Error('No authentication token found');
+      }
+      const response = await fetch(
+        `https://dev.quizifai.com:8010/get_organization_nrml_usrs?org_id=${orgId}`,
+        {
+          method: 'POST',
+          headers: {
+            accept: 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result.response === 'success' && result.data) {
+        // Map response data to react-select options
+        const options = result.data.map((user) => ({
+          value: user.user_id,
+          label: user.user_name,
+        }));
+        setUsers(options);
+      } else {
+        console.error('Failed to fetch users:', result.response_message);
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error.message);
+    }
+  };
+
+  fetchUsers();
+}, []);
+//-----------------**users dropdown END**-----------------//
+
+
+
+
+
 const [username1, setUsername1] = useState("");
 
 useEffect(() => {
@@ -424,13 +546,82 @@ useEffect(() => {
   };
 
   const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleNextpage = () => {
+    // Validation checks
+  
+    if (!title || title.trim() === "") {
+      toast.error("Quiz title is required.");
+      setIsSubmitting(false);
+      return;
+    }
+
+
+
+    if (!description || description.trim() === "") {
+      toast.error("Quiz description is required.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!selectedCategory) {
+      toast.error("Please select a quiz category.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!selectedClass) {
+      toast.error("Please select a class.");
+      setIsSubmitting(false);
+      return;
+    }
+  
+    // If all validations pass, move to the next step
     setStep(2);
   };
   const handleNextpage1 = () => {
+    if (!numQuestions || numQuestions <= 0) {
+      toast.error("Number of questions must be greater than zero.");
+      setIsSubmitting(false);
+      return;
+    }
+    if (!percentage || percentage <= 0 || percentage > 100) {
+      toast.error("Pass percentage must be between 1 and 100.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!duration || duration <= 0) {
+      toast.error("Quiz duration must be greater than zero.");
+      setIsSubmitting(false);
+      return;
+    }
+    if (!availablefrom) {
+      toast.error("Available from date is required.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!disabledon) {
+      toast.error("Disabled on date is required.");
+      setIsSubmitting(false);
+      return;
+    }
+    if (!selectedComplexity) {
+      toast.error(" Complexity is required.");
+      setIsSubmitting(false);
+      return;
+    }
+    
+    if (!quiztotalmarks || quiztotalmarks <= 0) {
+      toast.error("Quiz total marks must be greater than zero.");
+      setIsSubmitting(false);
+      return;
+    }
     setStep(3);
   };
+
   const handleNextpage2 = () => {
     setStep(4);
     // setShowRegistrationSuccess(true);
@@ -1260,11 +1451,13 @@ const handleNext = async (file) => {
 
   const handleNext4 = async () => {
     try {
+      setIsSubmitting(true);
       const user_id = localStorage.getItem('user_id');
   
       // Check if user_id is retrieved successfully
       if (!user_id) {
         setErrorMessage("User ID not found. Please log in again.");
+        setIsSubmitting(false); 
         return;
       }
       const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
@@ -1273,6 +1466,45 @@ const handleNext = async (file) => {
         setErrorMessage('No authentication token found. Please log in again.');
         clearInterval(interval);
         return;
+      }
+
+      if (!pdfUrl || pdfUrl.trim() === "") {
+        toast.error("PDF URL is required.");
+        setIsSubmitting(false);
+        return;
+      }
+  
+      if (!questions || questions.length === 0) {
+        toast.error("At least one question is required.");
+        setIsSubmitting(false);
+        return;
+      }
+  
+      for (const [index, question] of questions.entries()) {
+        if (!question.question_text || question.question_text.trim() === "") {
+          toast.error(`Question ${index + 1} text is required.`);
+          setIsSubmitting(false);
+          return;
+        }
+  
+        if (!question.question_weightage || question.question_weightage <= 0) {
+          toast.error(`Weightage for question ${index + 1} must be greater than zero.`);
+          setIsSubmitting(false);
+          return;
+        }
+  
+        if (!question.options || question.options.length < 2) {
+          toast.error(`Question ${index + 1} must have at least two options.`);
+          setIsSubmitting(false);
+          return;
+        }
+  
+        const hasCorrectOption = question.options.some(option => option.correct_answer_flag);
+        if (!hasCorrectOption) {
+          toast.error(`Question ${index + 1} must have at least one correct answer.`);
+          setIsSubmitting(false);
+          return;
+        }
       }
       const response = await fetch(
         `https://dev.quizifai.com:8010/crt_qz_from_pdf`,
@@ -1296,7 +1528,7 @@ const handleNext = async (file) => {
             quiz_duration: duration,
             course_name: selectedCourse,
             quiz_time_bounded_questions: timings,
-            quiz_public_access: publicAccess,
+            quiz_public_access: publicAccess ? 'on' : 'off',
             available_from: availablefrom,
             disabled_on: disabledon,
             quiz_total_marks: quiztotalmarks,
@@ -1324,6 +1556,8 @@ const handleNext = async (file) => {
       console.log(responseData, "data");
   
       if (response.ok) {
+        setQuizId(responseData.data.quiz_id)
+        setQuizName(responseData.data.quiz_name)
         // Assuming router and state setter are defined properly
         // navigate("/quizcreated", { state: { quizData: responseData } });
         setStep(5);
@@ -1343,6 +1577,7 @@ const handleNext = async (file) => {
         } else {
           setErrorMessage("An unexpected error occurred.");
         }
+        setIsSubmitting(false);
       }
     } catch (error) {
       console.error("Type-Quiz failed:", error);
@@ -1402,8 +1637,8 @@ useEffect(() => {
     updatedQuestions[index] = value;
     setQuestions(updatedQuestions);
   };
-  const toggler1 = (checked) => {
-    setMultiAnswer(checked);
+  const toggler1 = (event) => {
+    setMultiAnswer(event.target.checked);
   };
 
   const toggler2 = () => {
@@ -1421,9 +1656,10 @@ useEffect(() => {
     setSelectedValue(e.target.value);
   };
 
-  const toggler3 = (checked) => {
-    setPublicAccess(checked);
+  const toggler3 = (event) => {
+    setPublicAccess(event.target.checked);
   };
+
 
   function handleSelect1(event) {
     setNumber(event.target.value);
@@ -1516,11 +1752,13 @@ const handleTabClick = (tab) => {
 };
   return (
     <>
+
     <div className="flex flex-row w-full bg-[#f5f5f5] ">
       <div className="]">
       <Navigation />      
 
       </div>
+   
 <div className="w-full  px-5 pt-1">
 {/* <div className="flex justify-end py-2 cursor-pointer text-[#eeb600f0]" onClick={Back}><MdOutlineCancel /></div> */}
 
@@ -1568,6 +1806,7 @@ const handleTabClick = (tab) => {
     )}
 {activeTab === 'Pdf' && (
  <>
+     <ToastContainer />
   {!showRegistrationSuccess && (
   <main className="container mx-auto mt-5">
  
@@ -1971,7 +2210,7 @@ const handleTabClick = (tab) => {
       {/* Complexity */}
       <div className="flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[65%] text-blue-800 font-semibold mb-2 mr-[72px] ">Complexity<span className="text-red-500">*</span></label>
+        <label className="w-[65%] text-blue-800 font-semibold mb-2 mr-[72px] ">Complexity<span className="text-red-500"></span></label>
 
         <select
                   className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -2049,7 +2288,7 @@ const handleTabClick = (tab) => {
       {/* Question Type */}
       <div className="flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[75px] ">Question Type<span className="text-red-500">*</span></label>
+        <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[75px] ">Question Type<span className="text-red-500"></span></label>
 
         <select
                   className={ ` w-[80%]  border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -2359,7 +2598,7 @@ const handleTabClick = (tab) => {
  {/* Multiple Answers */}
  <div className="flex items-center md:col-span-2">
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[55px]">
-        Learning Material <span className="text-red-500">*</span>
+        Learning Material <span className="text-red-500"></span>
         </label>
         <FormControlLabel
          control={<Switch />} 
@@ -2787,10 +3026,12 @@ const handleTabClick = (tab) => {
                 </button>
 
                 <button
+                 disabled={isSubmitting} 
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
-                  onClick={handleNext4}
+              onClick={handleNext4}
+             
                 >
-                  Create
+                 {isSubmitting ? "Creating..." : "Create"}
                 </button>
                 </div>
               </div>
@@ -2804,31 +3045,168 @@ const handleTabClick = (tab) => {
 {step === 5 && (
          <>
        <div className=" bg-white my-4 p-5">
-    <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-6 bg-white ">
+       <div className="flex flex-col gap-6 bg-white ">
     
-    <div className="md:col-span-2">
+    <div className="flex items-start">
         <h1 className=" font-semibold text-[20px] text-[#214082]">Assign Quizzes</h1>
       </div>
      
-      <div className="flex flex-col w-full">
+      {/* <div className="flex flex-col w-full">
   <div className="w-full flex flex-row">
-    <label className="w-[40%] text-blue-800 font-semibold mb-2 ">
+    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
       Oragnization<span className="text-red-500">*</span>
     </label>
     <input
                              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-
+value={orgId}
                   placeholder="Oragnization"
-                  // value={quiztotalmarks}
-                  // onChange={(e) => setquiztotalmarks(e.target.value)}
+                
+                ></input>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div> */}
+<div className="flex gap-6 w-full">
+
+<div className="flex flex-col  gap-6 w-full">
+<div className="flex flex-col w-full">
+  <div className="w-full flex flex-row">
+    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+      Quiz Id<span className="text-red-500">*</span>
+    </label>
+    <input
+                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                             value={`${quizName}(ID: ${quizid})`} 
+                  placeholder="Oragnization"
+                
                 ></input>
   </div>
   <hr className="h-[1px] w-full" />
 </div>
+
+
+
+<div className="flex items-center">
+        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[72px]">
+        Sharing with Group/Organization
+        <span className="text-red-500">*</span>
+        </label>
+        <FormControlLabel
+        control={<Switch />} 
+        checked={shareWithGroupOrOrg} // Controlled state
+        onChange={handleToggle} // Update state on toggle
+          className="react-switch"
+        />
+        
+      </div>
+    
+    {!shareWithGroupOrOrg && (
+        <div className="flex flex-col w-full">
+  <div className="w-full flex flex-row">
+    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+      Deparment<span className="text-red-500"></span>
+    </label>
+    <select
+      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+      // value={selectedCourse}
+      // onChange={handleSelectCourse}
+    >
+      <option value="" disabled>Select a Deparment</option>
+      <option value="">None</option>
+      {/* {courses.map((course) => (
+        <option key={course.course_id} value={course.course_name}>
+          {course.course_name}
+        </option>
+      ))} */}
+    </select>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+ )}
+  {!shareWithGroupOrOrg &&(
 <div className="flex flex-col w-full">
   <div className="w-full flex flex-row">
-    <label className="w-[40%] text-blue-800 font-semibold mb-2 ">
-      School<span className="text-red-500">*</span>
+    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+      User ID<span className="text-red-500">*</span>
+    </label>
+    {/* <Select
+  options={users} // Dynamically populated options
+isMulti
+  value={selectedUsers} // Selected values
+  onChange={setSelectedUsers} // Update state on selection
+  className="basic-multi-select w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+  classNamePrefix="select"
+/> */}
+ <Select
+        options={users}
+        isMulti
+        value={selectedUsers}
+        onChange={setSelectedUsers}
+        className="basic-multi-select w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+        classNamePrefix="select"
+        placeholder="Search and select users..."
+        closeMenuOnSelect={false}
+        components={{ Option: customOption }}
+        isSearchable={true}
+        styles={{
+          control: (base, state) => ({
+            ...base,
+            borderColor: state.isFocused ? '#2563EB' : '#D1D5DB',
+            boxShadow: state.isFocused ? '0 0 0 2px rgba(59, 130, 246, 0.5)' : base.boxShadow,
+            '&:hover': { borderColor: '#2563EB' },
+          }),
+          option: (base, state) => ({
+            ...base,
+            padding: '8px 12px',
+            display: 'flex',
+            alignItems: 'center',
+          }),
+          multiValue: (base) => ({
+            ...base,
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            color: '#2563EB',
+          }),
+          multiValueLabel: (base) => ({
+            ...base,
+            color: '#2563EB',
+          }),
+          multiValueRemove: (base) => ({
+            ...base,
+            color: '#2563EB',
+            ':hover': {
+              backgroundColor: 'rgba(59, 130, 246, 0.3)',
+              color: 'white',
+            },
+          }),
+        }}
+      />
+
+  </div>
+  {/* <hr className="h-[1px] w-full" /> */}
+</div>
+   
+)}
+<div className="flex flex-col w-full">
+  <div className="w-full flex flex-row">
+    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+    File <span className="text-red-500"></span>
+    </label>
+    <input
+                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                  placeholder="File"
+                  type="file"
+          onChange={(e) => setFile1(e.target.files[0])}
+                ></input>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+</div>
+
+<div className="flex flex-col  gap-6 w-full">
+<div className="flex flex-col w-full">
+  <div className="w-full flex flex-row">
+    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+      School<span className="text-red-500"></span>
     </label>
     <input
                              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -2840,108 +3218,108 @@ const handleTabClick = (tab) => {
   </div>
   <hr className="h-[1px] w-full" />
 </div>
-<div className="flex flex-col w-full">
+      <div className="w-full flex flex-col">
   <div className="w-full flex flex-row">
-    <label className="w-[40%] text-blue-800 font-semibold mb-2 ">
-      Deparment<span className="text-red-500">*</span>
+    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+      Class<span className="text-red-500"></span>
     </label>
     <select
       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-      value={selectedCourse}
-      onChange={handleSelectCourse}
+      // value={selectedCourse}
+      // onChange={handleSelectCourse}
     >
-      <option value="" disabled>Select a Deparment</option>
+      <option value="" disabled>Select a Class</option>
       <option value="">None</option>
-      {courses.map((course) => (
+      {/* {courses.map((course) => (
         <option key={course.course_id} value={course.course_name}>
           {course.course_name}
         </option>
-      ))}
+      ))} */}
     </select>
   </div>
   <hr className="h-[1px] w-full" />
 </div>
 <div className="w-full flex flex-col">
   <div className="w-full flex flex-row">
-    <label className="w-[40%] text-blue-800 font-semibold mb-2 ">
-      Class<span className="text-red-500">*</span>
+    <label className=" w-[20%] text-blue-800 font-semibold mb-2">
+    Section<span className="text-red-500"></span>
     </label>
     <select
       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-      value={selectedCourse}
-      onChange={handleSelectCourse}
+      // value={selectedClass}
+      // onChange={handleSelectClass}
+      // disabled={classes.length === 0}
     >
-      <option value="" disabled>Select a Class</option>
-      <option value="">None</option>
-      {courses.map((course) => (
-        <option key={course.course_id} value={course.course_name}>
-          {course.course_name}
+      <option value="" disabled>Select a Section</option>
+      {/* {classes.map((className, index) => (
+        <option key={index} value={className}>
+          {className}
         </option>
-      ))}
+      ))} */}
     </select>
   </div>
   <hr className="h-[1px] w-full" />
 </div>
 
-
-
-{/* Multiple Answers */}
 <div className="flex items-center">
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[72px]">
-        Email Alert <span className="text-red-500">*</span>
+        Email Alert <span className="text-red-500"></span>
         </label>
         <FormControlLabel
-         control={<Switch />} 
+        control={<Switch />} 
         // label="Required"
           onChange={toggler1}
-          checked={multiAnswer}
+        //   checked={multiAnswer}
           className="react-switch"
         />
         
       </div>
 
 {/* Section */}
-<div className="w-full flex flex-col">
-  <div className="w-full flex flex-row">
-    <label className=" w-[40%] text-blue-800 font-semibold mb-2">
-    Section<span className="text-red-500">*</span>
-    </label>
-    <select
-      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-      value={selectedClass}
-      onChange={handleSelectClass}
-      disabled={classes.length === 0}
-    >
-      <option value="" disabled>Select a Section</option>
-      {classes.map((className, index) => (
-        <option key={index} value={className}>
-          {className}
-        </option>
-      ))}
-    </select>
-  </div>
-  <hr className="h-[1px] w-full" />
+
+
+
+</div>
+
 </div>
 
 
     </div>
   
     <div className="flex justify-between md:col-span-2 py-5">
-            <button
-              onClick={() => setStep(4)}
-              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+    
 
-            >
-              Back
-            </button>
-            <button
-              onClick={handleNextpage4}
-              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+    <button
+      onClick={() => setStep(4)}
+      className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
 
-            >
-              Next
-            </button>
-          </div>
+    >
+      Back
+    </button>
+    <div className="flex gap-2">
+    <button onClick={handleNextpage4} className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-sm text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
+Skip
+</button>
+
+    <button
+    onClick={handleSubmit}
+      // onClick={handleNextpage4}
+      className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+    >
+      Assign
+    </button>
+    
+    <button
+    onClick={handleNextpage4}
+      className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+    >
+      Next
+    </button>
+    </div>
+  
+  </div>
     </div>
     </> 
        )}
@@ -3236,7 +3614,9 @@ const handleTabClick = (tab) => {
   {/* Multiple Answers */}
   <div className="flex justify-end md:col-span-2">
 
-
+  <button onClick={handleback} className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-sm text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
+  Skip
+</button>
   <button
            
               className="px-[40px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"

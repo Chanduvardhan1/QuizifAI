@@ -42,6 +42,7 @@ import view1 from "../../src/assets/Images/dashboard/view1.png"
 import leader from "../../src/assets/Images/dashboard/Leader.png"
 import print1 from "../../src/assets/Images/dashboard/print.png"
 import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
+import assign from "../../src/assets/Images/dashboard/assign.png"
 
 // Modal.setAppElement(el);
 const Quiz = () => {
@@ -102,6 +103,7 @@ const Quiz = () => {
   const [deleteDisabled, SetDeleteDisabled] = useState(false);
   const [enableModel, setEnableModel] = useState(false);
   // const [cardStatus, setCardStatus] = useState({});
+  const orgId = localStorage.getItem('org_id');
 
   const [quizId, setQuizId] = useState(0); // Ensure quizId is properly initialized
 
@@ -543,7 +545,12 @@ const Quiz = () => {
     localStorage.setItem("quiz_level_attempt_id", attemptId); // Store attempt_id in local storage
     navigate(`/quizview_results`);
   };
-
+  const Assign = (quizId, quizName) => {
+    // navigate(`/quizaccess/${quizId}`);
+    localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
+    localStorage.setItem("quiz_name", quizName);
+    navigate(`/assignquiz`);
+  };
   const handleStartQuiz = (quizId, activeFlag) => {
     // Prevent navigation if active_flag is "I"
     if (activeFlag === "i") {
@@ -1217,6 +1224,22 @@ const Quiz = () => {
                                  Start
                                </span>
                              </div> */}
+                              {(userRole === "Super Admin" || (userRole === "Quiz Master" && orgId)) && (
+  <div className="flex items-center">
+    <img
+      className="w-2 h-2 mr-1"
+      src={assign}
+      alt="Edit icon"
+    />
+    <span
+      className="text-[12px] text-[#00008b] cursor-pointer hover:underline"
+      onClick={() => Assign(quizItem.quiz_id, quizItem.quiz_name)}
+    >
+      Assign
+    </span>
+  </div>
+)}
+
                              {(userRole === "Quiz Master" || userRole === "Super Admin") && (
                                <div className="flex items-center ">
                                  <img
@@ -2123,6 +2146,23 @@ const Quiz = () => {
                                  Start
                                </span>
                              </div> */}
+                             {(userRole === "Super Admin" || (userRole === "Quiz Master" && orgId)) && (
+  <div className="flex items-center">
+    <img
+      className="w-2 h-2 mr-1"
+      src={assign}
+      alt="Edit icon"
+    />
+    <span
+      className="text-[12px] text-[#00008b] cursor-pointer hover:underline"
+      onClick={() => Assign(quizItem.quiz_id, quizItem.quiz_name)}
+
+    >
+      Assign
+    </span>
+  </div>
+)}
+
                              {(userRole === "Quiz Master" || userRole === "Super Admin") && (
                                <div className="flex items-center ">
                                  <img

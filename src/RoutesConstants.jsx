@@ -102,6 +102,7 @@ import Userslist from "./configure/userslist.jsx";
 import QuizAccess1 from "./quizaccess1/quizaccess1.jsx";
 import Creatorganization from "./configure/creatorganization.jsx";
 import Quizmasterleaderboard from "./Quiz_master_leaderboard/quizleaderboard.jsx";
+import Assignquiz from "./assignquiz/assignquiz.jsx";
 
 export default () => {
     return [
@@ -196,11 +197,19 @@ export default () => {
             path:'contactus',
             component: Contactus
         },
+
+        
         {
             path:'history',
             component: History,
             isPrivate: true
         },
+        {
+            path:'assignquiz',
+            component: Assignquiz,
+            isPrivate: true
+        },
+        
         {
             path:'course',
             component: Course,

@@ -45,6 +45,7 @@ const myhistory = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 25;
 
+  
     useEffect(() => {
       const fetchQuizData = async () => {
         try {

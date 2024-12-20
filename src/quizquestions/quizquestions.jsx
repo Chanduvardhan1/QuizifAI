@@ -26,7 +26,7 @@ import Badge from "../../src/assets/Images/dashboard/badge 1.png"
 // import useBlocker from '../useBlocker/useBlocker.jsx';
 
 //------------------**import images**------------------//
-import physics from "../../src/assets/Images/quiz-type/quizcover.jpg"
+import physics from "../../src/assets/Images/dashboard/quiz12.png"
 import startIcon from "../../src/assets/Images/images/quiz-Access/start.png";
 import username from "../../src/assets/Images/quiz-type/username.png"
 import calander from "../../src/assets/Images/quiz-type/calander.png"
@@ -1097,7 +1097,12 @@ const QuizQuestions = () => {
                               textAlign: "center",
                               border: "1px solid #ccc",
                               borderRadius: "5px",
-                              backgroundColor: "#E8E9E8",
+                              border: isSelected
+                                ? "1px solid #22c55e"
+                                : "1px solid #ccc",
+                              backgroundColor: isSelected
+                              ? "#c9e4ca"
+                              : "#E8E9E8",
                             }}
                           >
                             {optionLabel}
@@ -1108,16 +1113,16 @@ const QuizQuestions = () => {
                               alignItems: "center",
                               fontWeight: isSelected ? "bold" : "normal",
                               backgroundColor: isSelected
-                                ? "lightyellow"
+                                ? "#c9e4ca"
                                 : "#E8E9E8",
                               width: "550px", // Ensure the button takes full width
                               padding: "10px", // Adds padding for better click area
                               border: isSelected
-                                ? "2px solid #FEBB42"
+                                ? "1px solid #22c55e"
                                 : "1px solid #ccc", // Highlights selected option
                               borderRadius: "5px", // Rounds corners of buttons
                               textAlign: "left", // Align text to the left for better readability
-                              fontSize: "12px",
+                              fontSize: "14px",
                             }}
                           >
                             {currentQuestion[key]}
@@ -1136,7 +1141,7 @@ const QuizQuestions = () => {
      
         <div className='flex flex-col justify-end px-2 items-center'>
   <div className=' w-[10px] rounded-full bg-[#00008b] h-[10px]'></div>
-  <div className='h-[80%] w-[1px] bg-[#00008b]'></div>
+  <div className='h-[100%] w-[1px] bg-[#00008b]'></div>
   <div className=' w-[10px] rounded-full bg-[#00008b] h-[10px]'></div>
 
 </div>
@@ -1148,7 +1153,7 @@ const QuizQuestions = () => {
           {/* {`${currentQuestionIndex + 1} out of ${filteredQuizData.length}`} */}
         </div>
         <div className={styles.sentence2}>
-          <span> Total timer:</span>{" "}
+          <span> Total timer :</span>{" "}
           <span className={styles.sentence3}>{formatTime(elapsedTime)}</span>
         </div>
         <div className={styles.questionNumbersContainer}>
@@ -1208,8 +1213,9 @@ const QuizQuestions = () => {
         {/* {formatTime(elapsedTime)} */}
       </div>
       </div>
-      <div className={styles.buttonsContainer} style={{ display: "flex", justifyContent: "center", width: "100%", gap:"10px",paddingRight:"50px" }}>
-  {currentQuestionIndex > 0 ? (
+      <div className={styles.buttonsContainer} style={{ display: "flex", justifyContent: "center", width: "100%", gap:"50px"}}>
+        <div className="flex gap-2 w-full justify-end ">
+        {currentQuestionIndex > 0 ? (
     <div className=" mr-[10px]">
       {/* <button
         className={styles.button}
@@ -1268,6 +1274,11 @@ const QuizQuestions = () => {
       </div>
     }
   </div>
+        </div>
+       
+ <div className="w-[90%] flex justify-start ">
+  
+ 
   <div className={styles.button3}>
             {/* <button
               className={styles.button}
@@ -1288,11 +1299,12 @@ const QuizQuestions = () => {
             </button> */}
             <div 
                    onClick={handleSubmit}
-       className="flex cursor-pointer items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px]"
+       className="flex cursor-pointer items-center px-[10px] p-[5px] border-[2px] border-solid border-[#18c91e] bg-[#8cd18e] text-[#000085] font-semibold rounded-[10px]"
       >
           <p>Submit</p>
-          <img src={Playbutton} alt="" className="w-[20px] h-[20px]" />
+          {/* <img src={Playbutton} alt="" className="w-[20px] h-[20px]" /> */}
       </div>
+          </div>
           </div>
 </div>
       </div>

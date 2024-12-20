@@ -12,6 +12,8 @@ const statusreport = () => {
     // const [quizNames, setQuizNames] = useState([]);
     // const [selectedQuiz, setSelectedQuiz] = useState('');
     const orgId = localStorage.getItem('org_id');
+    const userRole = localStorage.getItem("user_role");
+
     const [leaderboardData, setLeaderboardData] = useState([]); // Data for table
     const [filteredData, setFilteredData] = useState([]); // Filtered data
     const [quizNameFilter, setQuizNameFilter] = useState(""); // Quiz Name filter
@@ -66,6 +68,7 @@ const statusreport = () => {
     <h1 className=' text-[20px] text-[#214082] font-semibold underline'>Status Report leaderboard</h1>
    </div> */}
    <div className='flex gap-[10px] w-[40%] h-10'>
+   {(userRole === "Admin" || userRole === "Super Admin" ) && (
    <select
    placeholder="Select Quizzes"
         className="w-full border-[1px]"
@@ -79,6 +82,8 @@ const statusreport = () => {
           </option>
         ))}
       </select>
+   )}
+      {(userRole === "Admin" || userRole === "Super Admin" ||  userRole === "Quiz Master" ) && (
 
       <select
    placeholder="Select Quizzes"
@@ -93,7 +98,7 @@ const statusreport = () => {
           </option>
         ))}
       </select>
-     
+      )}
    </div>
    {/* <div className='flex justify-center gap-[15px]'>
     <div className='flex flex-col justify-center items-center pt-[30px]'>

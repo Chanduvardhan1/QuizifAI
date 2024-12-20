@@ -207,7 +207,7 @@ export default function quiztype() {
   const [disabledon, setdisabledon] = useState("");
   const [correctanswerdescription, setcorrectanswerdescription] = useState("");
 
-  const [publicAccess, setPublicAccess] = useState(true);
+  const [publicAccess, setPublicAccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isRetakeOn, setIsRetakeOn] = useState(false);
@@ -462,9 +462,61 @@ useEffect(() =>{
   const [step, setStep] = useState(1);
 
   const handleNextpage = () => {
+    // Validation checks
+    if (!title.trim()) {
+      toast.error("Quiz title is required.");
+      setIsSubmitting(false);
+      return;
+    }
+  
+  
+    if (!description.trim()) {
+      toast.error("Quiz description is required.");
+      setIsSubmitting(false);
+      return;
+    }
+  
+    if (!selectedCategory) {
+      toast.error("Quiz category is required.");
+      setIsSubmitting(false);
+      return;
+    }
+  
+    // If all validations pass, move to the next step
     setStep(2);
   };
+  
   const handleNextpage1 = () => {
+    if (!numQuestions || isNaN(numQuestions) || numQuestions <= 0) {
+      toast.error("Please provide a valid number of questions.");
+      setIsSubmitting(false);
+      return;
+    }
+    if (!percentage || isNaN(percentage) || percentage <= 0 || percentage > 100) {
+      toast.error("Pass percentage must be a valid number between 1 and 100.");
+      setIsSubmitting(false);
+      return;
+    }
+    if (!duration || isNaN(duration) || duration <= 0) {
+      toast.error("Quiz duration is required and must be a valid number.");
+      setIsSubmitting(false);
+      return;
+    }
+    if (!quiztotalmarks || isNaN(quiztotalmarks) || quiztotalmarks <= 0) {
+      toast.error("Total quiz marks must be a valid number.");
+      setIsSubmitting(false);
+      return;
+    }
+    if (!availablefrom || !disabledon || new Date(availablefrom) >= new Date(disabledon)) {
+      toast.error("Please provide valid start and end dates for the quiz.");
+      setIsSubmitting(false);
+      return;
+    }
+    if (!selectedComplexity) {
+  toast.error("complexity name is required.");
+  setIsSubmitting(false);
+  return;
+}
     setStep(3);
   };
   const handleNextpage2 = () => {
@@ -810,51 +862,32 @@ const handleToLayout4 = () =>{
         throw new Error('No authentication token found');
       }
  // Validate required fields
- if (!title.trim()) {
-  toast.error("Quiz title is required.");
-  setIsSubmitting(false);
-  return;
-}
-if (!numQuestions || isNaN(numQuestions) || numQuestions <= 0) {
-  toast.error("Please provide a valid number of questions.");
-  setIsSubmitting(false);
-  return;
-}
-if (!description.trim()) {
-  toast.error("Quiz description is required.");
-  setIsSubmitting(false);
-  return;
-}
-if (!selectedCategory) {
-  toast.error("Quiz category is required.");
-  setIsSubmitting(false);
-  return;
-}
+//  if (!title.trim()) {
+//   toast.error("Quiz title is required.");
+//   setIsSubmitting(false);
+//   return;
+// }
+// if (!numQuestions || isNaN(numQuestions) || numQuestions <= 0) {
+//   toast.error("Please provide a valid number of questions.");
+//   setIsSubmitting(false);
+//   return;
+// }
+// if (!description.trim()) {
+//   toast.error("Quiz description is required.");
+//   setIsSubmitting(false);
+//   return;
+// }
+// if (!selectedCategory) {
+//   toast.error("Quiz category is required.");
+//   setIsSubmitting(false);
+//   return;
+// }
 // if (!selectedClass) {
 //   toast.error("Class name is required.");
 //   setIsSubmitting(false);
 //   return;
 // }
-if (!percentage || isNaN(percentage) || percentage <= 0 || percentage > 100) {
-  toast.error("Pass percentage must be a valid number between 1 and 100.");
-  setIsSubmitting(false);
-  return;
-}
-if (!duration || isNaN(duration) || duration <= 0) {
-  toast.error("Quiz duration is required and must be a valid number.");
-  setIsSubmitting(false);
-  return;
-}
-if (!quiztotalmarks || isNaN(quiztotalmarks) || quiztotalmarks <= 0) {
-  toast.error("Total quiz marks must be a valid number.");
-  setIsSubmitting(false);
-  return;
-}
-// if (!availablefrom || !disabledon || new Date(availablefrom) >= new Date(disabledon)) {
-//   toast.error("Please provide valid start and end dates for the quiz.");
-//   setIsSubmitting(false);
-//   return;
-// }
+
 if (!questions || questions.length < numQuestions) {
   toast.error("Please add all questions before proceeding.");
   setIsSubmitting(false);
@@ -917,7 +950,7 @@ for (const question of questions) {
           quiz_total_marks: quiztotalmarks,
           user_id: user_id,
           quiz_instructions: instructions,
-          // org_id: orgId,
+          org_id: orgId,
           questions: questions.map((question) => ({
             question_text: question.question_text,
             correct_answer_description:question.correct_answer_description,
@@ -938,6 +971,7 @@ for (const question of questions) {
       if (response.ok && responseData.response === "success") {
       console.log('response',responseData);
        setQuizId(responseData.data.quiz_id)
+       setQuizName(responseData.data.quiz_name)
         console.log('id',quizid);
         try {
           const response = await api().uploadFile(uploadImage, files, null, { quiz_id: quizid });
@@ -1033,6 +1067,7 @@ const [shareWithGroupOrOrg, setShareWithGroupOrOrg] = useState(false); // Initia
 const [groupName, setGroupName] = useState('');
 const [file, setFile] = useState(null);
 const [quizid, setQuizId] = useState(null);
+const [quizName, setQuizName] = useState('');
 
 const handleToggle = (event) => {
   setShareWithGroupOrOrg(event.target.checked); // Update state based on toggle
@@ -1127,6 +1162,23 @@ useEffect(() => {
 }, []);
 //-----------------**users dropdown END**-----------------//
 
+const customOption = ({ data, innerRef, innerProps, isSelected }) => (
+  <div
+    ref={innerRef}
+    {...innerProps}
+    className={`flex items-center p-2 cursor-pointer ${
+      isSelected ? 'bg-blue-50' : 'hover:bg-gray-100'
+    }`}
+  >
+    <input
+      type="checkbox"
+      checked={isSelected}
+      onChange={() => {}}
+      className="mr-2"
+    />
+    <span>{data.label}</span>
+  </div>
+);
 
   const handleAvailableFromChange = (e) => {
     setavailablefrom(e.target.value);
@@ -1433,7 +1485,7 @@ useEffect(() => {
                 required
                 value={instructions}
                 onChange={(e) => setininstructions(e.target.value)}
-                disabled={!isEditing}
+                
 
               />
             </div>
@@ -1551,7 +1603,7 @@ useEffect(() => {
            {/*  Public access */}
   <div className=" w-[50%] flex flex-col">
         <div className="w-[100%] flex flex-row">
-        <label className="w-[100%] inline-flex items-center cursor-pointer text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500">*</span>
+        <label className="w-[100%] inline-flex items-center cursor-pointer text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500 mr-2">*</span>
         <FormControlLabel
       control={
         <Switch 
@@ -1600,7 +1652,7 @@ useEffect(() => {
 <div className="w-[30%] flex flex-col">
             <div className="w-full flex flex-row items-center">
               <label className="w-full text-blue-800 font-semibold mb-2 ">
-                You want to contribute the Question Bank <span className="text-red-500">*</span>
+                You want to contribute the Question Bank <span className="text-red-500"></span>
               </label>
              
 
@@ -1754,7 +1806,7 @@ useEffect(() => {
       {/* Complexity */}
       <div className="flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[65%] text-blue-800 font-semibold mb-2 mr-[131px] ">Complexity<span className="text-red-500">*</span></label>
+        <label className="w-[65%] text-blue-800 font-semibold mb-2 mr-[131px] ">Complexity<span className="text-red-500"></span></label>
 
         <select
                   className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -1832,7 +1884,7 @@ useEffect(() => {
       {/* Question Type */}
       <div className="flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[75px] ">Question Type<span className="text-red-500">*</span></label>
+        <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[75px] ">Question Type<span className="text-red-500"></span></label>
 
         <select
                   className={ ` w-[80%]  border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -2016,7 +2068,7 @@ useEffect(() => {
    {/* Retake Option */}
    <div className="flex items-center">
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[105px]">
-          Retake Option <span className="text-red-500">*</span>
+          Retake Option <span className="text-red-500"></span>
         </label>
         <FormControlLabel
         control={<Switch />} 
@@ -2141,7 +2193,7 @@ useEffect(() => {
  {/* Multiple Answers */}
  <div className="flex items-center">
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[55px]">
-        Learning Material <span className="text-red-500">*</span>
+        Learning Material <span className="text-red-500"></span>
         </label>
         <FormControlLabel
         control={<Switch />} 
@@ -2397,7 +2449,8 @@ useEffect(() => {
                 <button
                  disabled={isSubmitting} 
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
-                  onClick={handleNext}
+              onClick={handleNext}
+             
                 >
                   {isSubmitting ? "Creating..." : "Create"}
                 </button>
@@ -2413,15 +2466,15 @@ useEffect(() => {
 {step === 5 && (
          <>
           <div className=" bg-white my-4 p-5">
-    <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-6 bg-white ">
+          <div className="flex flex-col gap-6 bg-white ">
     
-    <div className="md:col-span-2">
+    <div className="flex items-start">
         <h1 className=" font-semibold text-[20px] text-[#214082]">Assign Quizzes</h1>
       </div>
      
-      <div className="flex flex-col w-full">
+      {/* <div className="flex flex-col w-full">
   <div className="w-full flex flex-row">
-    <label className="w-[40%] text-blue-800 font-semibold mb-2 ">
+    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
       Oragnization<span className="text-red-500">*</span>
     </label>
     <input
@@ -2432,11 +2485,149 @@ value={orgId}
                 ></input>
   </div>
   <hr className="h-[1px] w-full" />
-</div>
+</div> */}
+<div className="flex gap-6 w-full">
+
+<div className="flex flex-col  gap-6 w-full">
 <div className="flex flex-col w-full">
   <div className="w-full flex flex-row">
-    <label className="w-[40%] text-blue-800 font-semibold mb-2 ">
-      School<span className="text-red-500">*</span>
+    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+      Quiz Id<span className="text-red-500">*</span>
+    </label>
+    <input
+                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                             value={`${quizName}(ID: ${quizid})`} 
+                  placeholder="Oragnization"
+                
+                ></input>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+
+
+
+<div className="flex items-center">
+        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[72px]">
+        Sharing with Group/Organization
+        <span className="text-red-500">*</span>
+        </label>
+        <FormControlLabel
+        control={<Switch />} 
+        checked={shareWithGroupOrOrg} // Controlled state
+        onChange={handleToggle} // Update state on toggle
+          className="react-switch"
+        />
+        
+      </div>
+    
+    {!shareWithGroupOrOrg && (
+        <div className="flex flex-col w-full">
+  <div className="w-full flex flex-row">
+    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+      Deparment<span className="text-red-500"></span>
+    </label>
+    <select
+      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+      // value={selectedCourse}
+      // onChange={handleSelectCourse}
+    >
+      <option value="" disabled>Select a Deparment</option>
+      <option value="">None</option>
+      {/* {courses.map((course) => (
+        <option key={course.course_id} value={course.course_name}>
+          {course.course_name}
+        </option>
+      ))} */}
+    </select>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+ )}
+  {!shareWithGroupOrOrg &&(
+<div className="flex flex-col w-full">
+  <div className="w-full flex flex-row">
+    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+      User ID<span className="text-red-500">*</span>
+    </label>
+    {/* <Select
+  options={users} // Dynamically populated options
+isMulti
+  value={selectedUsers} // Selected values
+  onChange={setSelectedUsers} // Update state on selection
+  className="basic-multi-select w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+  classNamePrefix="select"
+/> */}
+ <Select
+        options={users}
+        isMulti
+        value={selectedUsers}
+        onChange={setSelectedUsers}
+        className="basic-multi-select w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+        classNamePrefix="select"
+        placeholder="Search and select users..."
+        closeMenuOnSelect={false}
+        components={{ Option: customOption }}
+        isSearchable={true}
+        styles={{
+          control: (base, state) => ({
+            ...base,
+            borderColor: state.isFocused ? '#2563EB' : '#D1D5DB',
+            boxShadow: state.isFocused ? '0 0 0 2px rgba(59, 130, 246, 0.5)' : base.boxShadow,
+            '&:hover': { borderColor: '#2563EB' },
+          }),
+          option: (base, state) => ({
+            ...base,
+            padding: '8px 12px',
+            display: 'flex',
+            alignItems: 'center',
+          }),
+          multiValue: (base) => ({
+            ...base,
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            color: '#2563EB',
+          }),
+          multiValueLabel: (base) => ({
+            ...base,
+            color: '#2563EB',
+          }),
+          multiValueRemove: (base) => ({
+            ...base,
+            color: '#2563EB',
+            ':hover': {
+              backgroundColor: 'rgba(59, 130, 246, 0.3)',
+              color: 'white',
+            },
+          }),
+        }}
+      />
+
+  </div>
+  {/* <hr className="h-[1px] w-full" /> */}
+</div>
+   
+)}
+<div className="flex flex-col w-full">
+  <div className="w-full flex flex-row">
+    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+    File <span className="text-red-500"></span>
+    </label>
+    <input
+                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                  placeholder="File"
+                  type="file"
+          onChange={(e) => setFile(e.target.files[0])}
+                ></input>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+</div>
+
+<div className="flex flex-col  gap-6 w-full">
+<div className="flex flex-col w-full">
+  <div className="w-full flex flex-row">
+    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+      School<span className="text-red-500"></span>
     </label>
     <input
                              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -2448,79 +2639,44 @@ value={orgId}
   </div>
   <hr className="h-[1px] w-full" />
 </div>
-
-
-<div className="flex flex-col w-full">
+      <div className="w-full flex flex-col">
   <div className="w-full flex flex-row">
-    <label className="w-[40%] text-blue-800 font-semibold mb-2 ">
-      Quiz Id<span className="text-red-500">*</span>
-    </label>
-    <input
-                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-value={quizid}
-                  placeholder="Oragnization"
-                
-                ></input>
-  </div>
-  <hr className="h-[1px] w-full" />
-</div>
-<div className="flex flex-col w-full">
-  <div className="w-full flex flex-row">
-    <label className="w-[40%] text-blue-800 font-semibold mb-2 ">
-      User ID<span className="text-red-500">*</span>
-    </label>
-    <Select
-  options={users} // Dynamically populated options
-  isMulti // Enable multi-select
-  value={selectedUsers} // Selected values
-  onChange={setSelectedUsers} // Update state on selection
-  className="basic-multi-select w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-  classNamePrefix="select"
-/>
-
-  </div>
-  {/* <hr className="h-[1px] w-full" /> */}
-</div>
-
-
-<div className="flex flex-col w-full">
-  <div className="w-full flex flex-row">
-    <label className="w-[40%] text-blue-800 font-semibold mb-2 ">
-      Deparment<span className="text-red-500">*</span>
+    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+      Class<span className="text-red-500"></span>
     </label>
     <select
       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-      value={selectedCourse}
-      onChange={handleSelectCourse}
+      // value={selectedCourse}
+      // onChange={handleSelectCourse}
     >
-      <option value="" disabled>Select a Deparment</option>
+      <option value="" disabled>Select a Class</option>
       <option value="">None</option>
-      {courses.map((course) => (
+      {/* {courses.map((course) => (
         <option key={course.course_id} value={course.course_name}>
           {course.course_name}
         </option>
-      ))}
+      ))} */}
     </select>
   </div>
   <hr className="h-[1px] w-full" />
 </div>
 <div className="w-full flex flex-col">
   <div className="w-full flex flex-row">
-    <label className="w-[40%] text-blue-800 font-semibold mb-2 ">
-      Class<span className="text-red-500">*</span>
+    <label className=" w-[20%] text-blue-800 font-semibold mb-2">
+    Section<span className="text-red-500"></span>
     </label>
     <select
       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-      value={selectedCourse}
-      onChange={handleSelectCourse}
+      // value={selectedClass}
+      // onChange={handleSelectClass}
+      // disabled={classes.length === 0}
     >
-      <option value="" disabled>Select a Class</option>
-      <option value="">None</option>
-      {courses.map((course) => (
-        <option key={course.course_id} value={course.course_name}>
-          {course.course_name}
+      <option value="" disabled>Select a Section</option>
+      {/* {classes.map((className, index) => (
+        <option key={index} value={className}>
+          {className}
         </option>
-      ))}
+      ))} */}
     </select>
   </div>
   <hr className="h-[1px] w-full" />
@@ -2528,54 +2684,24 @@ value={quizid}
 
 <div className="flex items-center">
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[72px]">
-        {shareWithGroupOrOrg ? "Sharing with Group/Organization" : "Not Sharing"}
-        <span className="text-red-500">*</span>
-        </label>
-        <FormControlLabel
-        control={<Switch />} 
-        checked={shareWithGroupOrOrg} // Controlled state
-        onChange={handleToggle} // Update state on toggle
-          className="react-switch"
-        />
-        
-      </div>
-
-{/* Multiple Answers */}
-<div className="flex items-center">
-        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[72px]">
-        Email Alert <span className="text-red-500">*</span>
+        Email Alert <span className="text-red-500"></span>
         </label>
         <FormControlLabel
         control={<Switch />} 
         // label="Required"
           onChange={toggler1}
-          checked={multiAnswer}
+        //   checked={multiAnswer}
           className="react-switch"
         />
         
       </div>
 
 {/* Section */}
-<div className="w-full flex flex-col">
-  <div className="w-full flex flex-row">
-    <label className=" w-[40%] text-blue-800 font-semibold mb-2">
-    Section<span className="text-red-500">*</span>
-    </label>
-    <select
-      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-      value={selectedClass}
-      onChange={handleSelectClass}
-      disabled={classes.length === 0}
-    >
-      <option value="" disabled>Select a Section</option>
-      {classes.map((className, index) => (
-        <option key={index} value={className}>
-          {className}
-        </option>
-      ))}
-    </select>
-  </div>
-  <hr className="h-[1px] w-full" />
+
+
+
+</div>
+
 </div>
 
 
@@ -2603,6 +2729,14 @@ value={quizid}
 
             >
               Assign
+            </button>
+            
+            <button
+            onClick={handleNextpage4}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Next
             </button>
             </div>
           

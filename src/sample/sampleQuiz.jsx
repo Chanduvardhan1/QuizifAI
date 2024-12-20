@@ -22,7 +22,8 @@ import HeaderSection from "../HeaderSection/HeaderSection";
 
 
 //------------------**import images**------------------//
-import physics from "../../src/assets/Images/quiz-type/quizcover.jpg"
+import physics from "../../src/assets/Images/dashboard/quiz12.png"
+
 import startIcon from "../../src/assets/Images/images/quiz-Access/start.png";
 import username from "../../src/assets/Images/quiz-type/username.png"
 import calander from "../../src/assets/Images/quiz-type/calander.png"
@@ -184,7 +185,7 @@ const Samplequiz = () => {
                 alt="User"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">John Doe</span>
+              <span className="ml-1 text-sm">Samantha S</span>
             </div>
             <div className="flex items-center">
               <img

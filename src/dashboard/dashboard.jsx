@@ -54,6 +54,7 @@ import view1 from "../../src/assets/Images/dashboard/view1.png"
 import leader from "../../src/assets/Images/dashboard/Leader.png"
 import print1 from "../../src/assets/Images/dashboard/print.png"
 import back from "../../src/assets/Images/dashboard/quiz12.png"
+import assign from "../../src/assets/Images/dashboard/assign.png"
 
 const Dashboard = () => {
   const getFormattedDate = () => {
@@ -105,6 +106,7 @@ const Dashboard = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
   const [enableModel, setEnableModel] = useState(false);
+  const orgId = localStorage.getItem('org_id');
 
   const handleClosePopup = () => {
     setShowPopup(false);
@@ -512,6 +514,12 @@ const Dashboard = () => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     navigate(`/editmanuly`);
   };
+  const Assign = (quizId, quizName) => {
+    // navigate(`/quizaccess/${quizId}`);
+    localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
+    localStorage.setItem("quiz_name", quizName);
+    navigate(`/assignquiz`);
+  };
   const quizresults = (quizId, attemptId) => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     localStorage.setItem("quiz_level_attempt_id", attemptId); // Store attempt_id in local storage
@@ -783,7 +791,7 @@ const Dashboard = () => {
           <DashBoardNavBar />
           
         </div>
-        <div className="mx-auto">
+        <div className="mx-[10px]">
           <div
             className="flex justify-between mr-[10px]"
             style={{ marginBottom: "20px" }}
@@ -808,7 +816,7 @@ const Dashboard = () => {
     
 
 
-          <div className="flex flex-wrap mx-auto gap-[10px]">
+          <div className="w-full flex flex-wrap mx-auto gap-[24px]">
             {allquizzes
               .filter((quizItem) => {
                 const quizCreateDate = new Date(quizItem.quiz_start_date);
@@ -904,6 +912,22 @@ const Dashboard = () => {
                                     Start
                                   </span>
                                 </div> */}
+                                {(userRole === "Super Admin" || (userRole === "Quiz Master" && orgId)) && (
+  <div className="flex items-center">
+    <img
+      className="w-2 h-2 mr-1"
+      src={assign}
+      alt="Edit icon"
+    />
+    <span
+      className="text-[12px] text-[#00008b] cursor-pointer hover:underline"
+      onClick={() => Assign(quizItem.quiz_id,quizItem.quiz_name)}
+    >
+      Assign
+    </span>
+  </div>
+)}
+
                                 {(userRole === "Quiz Master" || userRole === "Super Admin")&& (
                                   <div className="flex items-center ">
                                     <img
@@ -919,6 +943,7 @@ const Dashboard = () => {
                                     </span>
                                   </div>
                                 )}
+
                                 {(userRole === "Quiz Master" || userRole === "Super Admin") && (
   <div className="flex items-center">
     <img
@@ -1643,6 +1668,22 @@ src={quizItem.photo1 || back}
          Start
        </span>
      </div> */}
+      {(userRole === "Super Admin" || (userRole === "Quiz Master" && orgId)) && (
+  <div className="flex items-center">
+    <img
+      className="w-2 h-2 mr-1"
+      src={assign}
+      alt="Edit icon"
+    />
+    <span
+      className="text-[12px] text-[#00008b] cursor-pointer hover:underline"
+      onClick={() => Assign(quizItem.quiz_id, quizItem.quiz_name)}
+    >
+      Assign
+    </span>
+  </div>
+)}
+
      {(userRole === "Quiz Master" || userRole === "Super Admin") && (
        <div className="flex items-center ">
          <img
@@ -2320,7 +2361,7 @@ alt="Disable icon"
             </span>
           </div>
 
-          <div className="flex flex-wrap mx-auto gap-[10px]">
+          <div className="w-full flex flex-wrap mx-auto gap-[24px]">
             {allquizzes
               .filter((quizItem) => {
                 const quizCreateDate = new Date(quizItem.quiz_start_date);
@@ -2422,6 +2463,22 @@ alt="Disable icon"
                                     Retake
                                   </span>
                                 </div> */}
+                               {(userRole === "Super Admin" || (userRole === "Quiz Master" && orgId)) && (
+  <div className="flex items-center">
+    <img
+      className="w-2 h-2 mr-1"
+      src={assign}
+      alt="Edit icon"
+    />
+    <span
+      className="text-[12px] text-[#00008b] cursor-pointer hover:underline"
+      onClick={() => Assign(quizItem.quiz_id, quizItem.quiz_name)}
+    >
+      Assign
+    </span>
+  </div>
+)}
+
                                 {(userRole === "Quiz Master" || userRole === "Super Admin")  && (
                                   <div className="flex items-center ">
                                     <img
@@ -3095,6 +3152,22 @@ src={quizItem.photo1 || back}
          Start
        </span>
      </div> */}
+   {(userRole === "Super Admin" || (userRole === "Quiz Master" && orgId)) && (
+  <div className="flex items-center">
+    <img
+      className="w-2 h-2 mr-1"
+      src={assign}
+      alt="Edit icon"
+    />
+    <span
+      className="text-[12px] text-[#00008b] cursor-pointer hover:underline"
+      onClick={() => Assign(quizItem.quiz_id, quizItem.quiz_name)}
+    >
+      Assign
+    </span>
+  </div>
+)}
+
      {(userRole === "Quiz Master" || userRole === "Super Admin")  && (
        <div className="flex items-center ">
          <img

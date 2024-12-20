@@ -45,7 +45,7 @@ import rankimage from "../../src/assets/Images/images/quizresults/rank.jpg"
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
-import physics from "../../src/assets/Images/quiz-type/quizcover.jpg"
+import physics from "../../src/assets/Images/dashboard/quiz12.png"
 import startIcon from "../../src/assets/Images/images/quiz-Access/start.png";
 import username from "../../src/assets/Images/quiz-type/username.png"
 import calander from "../../src/assets/Images/quiz-type/calander.png"
@@ -79,13 +79,20 @@ const quizresults = () => {
   const [leaderboardData, setLeaderboardData] = useState([]);
   const navigate = useNavigate();
   const [isQuizSubmitted, setIsQuizSubmitted] = useState(false);
+  const [showAnswers, setShowAnswers] = useState(false);
+
   const resultRef = useRef();
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   const optionLabels = {
     option1: 'A',
     option2: 'B',
     option3: 'C',
     option4: 'D'
+  };
+
+  const handleToggleAnswers = () => {
+    setShowAnswers(!showAnswers);
   };
 
   useEffect(() => {
@@ -269,9 +276,9 @@ const quizresults = () => {
 
       <Navigation />
 
-      <div className="w-full p-5" ref={resultRef}>
+      <div className="w-full p-5 pt-[60px]" ref={resultRef}>
         {/* <div className={styles.back1} onClick={Back}><MdOutlineCancel /></div> */}
-        <div onClick={handleBack} className=" absolute top-0 right-0 cursor-pointer">
+        <div onClick={handleBack} className=" absolute top-5 right-5 cursor-pointer">
           <img src={close} alt="" className="w-[25px] h-[25px]" />
         </div>
         <div className="flex w-full border-[#8cd18e] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-2 bg-white">
@@ -415,80 +422,208 @@ const quizresults = () => {
     </div>
        
         <div className='flex w-full' >
-    <div class="w-[50%] text-center mt-4">
-  <div class="">
-    <div class="flex items-center justify-center">
-      <span class="inline-block h-[1px] bg-blue-900 w-[80px] mr-[5px]"></span>
-      <label class="text-[#d98b19] font-lato text-[18px] font-semibold">Your Attempt Details</label>
-      <span class="inline-block h-[1px] bg-blue-900 w-[80px] ml-[5px]"></span>
-    </div>
-  </div>
+        {!showAnswers ? (
+           <div class="w-[50%] text-center p-4">
+           <div class="">
+         
+             <div class="flex items-center justify-center">
+               <span class="inline-block h-[1px] bg-blue-900 w-[80px] mr-[5px]"></span>
+               <label class="text-[#d98b19] font-lato text-[18px] font-semibold">Your Attempt Details</label>
+               <span class="inline-block h-[1px] bg-blue-900 w-[80px] ml-[5px]"></span>
+             </div>
+           </div>
+         
+           <div class="relative flex justify-center flex-col items-center">
+             <label class="absolute top-[40%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 text-[50px] text-blue-900 font-bold font-lato">{quizData.rank}</label>
+             <img class="h-[108.62px] w-[130.01px] flex justify-center" src={rankimage} alt="Icon 1" />
+             <span class="text-blue-900 font-medium font-lato text-[17px]">Your Rank</span>
+           </div>
+         
+           <div class="w-full flex items-center">
+           <div class="w-full flex justify-center items-center flex-col gap-4 sm:w-[50%]">
+           <div class="w-[210px] h-[7vh] flex items-center">
+             <img class="h-[30px] w-[30px]" src={dateIcon} alt="Calendar Icon" />
+             <span class="ml-2 font-lato text-blue-900">{quizData.quiz_start_date}</span>
+           </div>
+           <div class="w-[210px] h-[7vh] flex items-center">
+             <img class="h-[30px] w-[30px]" src={timeIcon} alt="Clock Icon" />
+             <span class="ml-2 font-lato text-blue-900">{quizData.attempt_duration} Minutes</span>
+           </div>
+           <div class="w-[210px] h-[7vh] flex items-center">
+             <img class="h-[30px] w-[30px]" src={vector} alt="Check Icon" />
+             <span class="ml-2 font-lato text-blue-900">{quizData.correct_answers} Correct answers</span>
+           </div>
+           <div class="w-[210px] h-[7vh] flex items-center">
+             <img class="h-[30px] w-[30px]" src={current} alt="Question Icon" />
+             <span class="ml-2 font-lato text-blue-900">Attempted {quizData.attempted_questions} questions</span>
+           </div>
+         </div>
+         <div className='w-full flex justify-center items-center sm:w-[50%]'>
+         <div class="flex  w-[70%] flex-col p-2 px-6 rounded-2xl bg-green-300 items-center">
+         
+               <div class=" text-green-700 font-medium text-center">{quizData.attained_score_percentage}%</div>
+               <div class=" text-[#fa5967]  text-center">{quizData.quiz_grade}, {quizData.pass_flag ? 'Pass' : 'Fail'}</div>
+             </div>
+         </div>
+         
+             
+           </div>
+           <div className="flex flex-wrap justify-end gap-2">
+           <div className="flex items-center gap-1 justify-center ">
+             <button
+               onClick={handleToggleAnswers}
+               className="text-blue-900 text-sm bg-blue-200 border border-blue-900 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
+             >
+               Answers
+               <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" />
+             </button>
+           </div>
+           <div className="flex items-center justify-center">
+           <button
+               // onClick={handleOnAnswer}
+               className="text-blue-900 text-sm bg-blue-200 border border-blue-900 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
+             >
+               Print
+               <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" />
+             </button>
+           </div>
+         </div>
+         
+         </div>
+        ):(
+        <div className="w-[45%] rounded-2xl bg-white">
+          <div className="flex py-1 items-end justify-end ">
+             <button
+               onClick={handleToggleAnswers}
+               className="text-red-500 text-sm bg-[#FFB7B7] border border-red-500 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
+             >
+               Close
+               {/* <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" /> */}
+             </button>
+           </div>
+          <div className="flex flex-row">
+            {/* Question Numbers */}
+            {questions.map((question, index) => {
+              const isCorrect = question.selected_option === question.correct_option;
+              const isWrong = question.selected_option !== null && !isCorrect;
+      
+              return (
+                <div
+                  key={index}
+                  onClick={() => setCurrentQuestionIndex(index)} // Set selected question index
+                  className={`cursor-pointer w-8 h-8 flex items-center justify-center border-[1px] text-sm font-medium ${
+                    index === currentQuestionIndex
+                      ? 'bg-green-100 text-white' // Highlight selected question
+                      : isCorrect
+                      ? 'bg-[#c9e4ca] text-black' // Correct answer (green)
+                      : isWrong
+                      ? 'bg-[#FFB7B7] text-red-600' // Wrong answer (red)
+                      : 'bg-green-100 text-black' // Default
+                  }`}
+                >
+                  {index + 1}
+                </div>
+              );
+            })}
+          </div>
+      
+          <div className="flex flex-col items-start">
+            {/* Render Selected Question */}
+            {questions.map((question, index) =>
+              index === currentQuestionIndex ? (
+                <div className="w-full mt-8" key={index}>
+                  {/* Question Text */}
+                  <div className="mb-2">
+                    <span className="text-[#214082] text-lg font-semibold">
+                      {index + 1}. {question.question_text}
+                    </span>
+                  </div>
+      
+                  {/* Options */}
+                  <div className="flex flex-col mb-6">
+                    {Object.keys(question.options).map((optionKey, IDXx) => {
+                      const optionText = question.options[optionKey];
+                      const isSelected = optionText === question.selected_option;
+                      const isCorrect = optionText === question.correct_option;
+      
+                      return (
+                        <div
+                          key={IDXx}
+                          className={` mt-3 flex items-center px-4 `}
+                        >
+                           <div
+                        className={`mr-2 font-normal font-[lato] w-[40px] rounded-[5px] h-[37px] p-[8px] bg-[#E8E9E8] border-[1px] border-solid border-[#D3D3D3] flex justify-center text-center items-center text-[14px]  ${
+                            isCorrect
+                              ? 'bg-[#c9e4ca] border-green-500'
+                              : isSelected
+                              ? 'bg-[#FFB7B7] border-red-500'
+                              : 'border-[#D3D3D3] bg-[#E8E9E8] rounded-[5px] border-solid border-[1.8px] '
+                          }`}
+                      >
+                        {optionLabels[optionKey]}
+                      </div>
+                      <div
+                        className={`w-[100%] font-[lato] h-[37px] rounded-[5px] border-solid border-[#D3D3D3] bg-[#E8E9E8] border-[1.8px] p-[5px] text-[14px] text-[#000]  ${
+                            isCorrect
+                              ? 'bg-[#c9e4ca] border-green-500'
+                              : isSelected
+                              ? 'bg-[#FFB7B7] border-red-500'
+                              : 'border-[#D3D3D3] bg-[#E8E9E8] rounded-[5px] border-solid border-[1.8px] '
+                          }`}
+                      >
+                         {optionText}
+                      </div>
+                         
+                        </div>
+                      );
+                    })}
+                  </div>
+      
+                  {/* Answer Feedback */}
+                  <div className="flex items-center mt-6 ml-6">
+                    <img
+                      src={
+                        question.selected_option === question.correct_option
+                          ? rightIcon1
+                          : wrongIcon1
+                      }
+                      alt="Answer Icon"
+                      className="w-6 h-6 mr-2"
+                    />
+                    <span
+                      className={`text-sm font-medium ${
+                        question.selected_option === question.correct_option
+                          ? 'text-green-600'
+                          : 'text-red-600'
+                      }`}
+                    >
+                      {question.selected_option === question.correct_option
+                        ? 'Correct Answer'
+                        : 'Wrong Answer'}
+                    </span>
+                  </div>
+      
+                  {/* Correct Answer Description */}
+                  <div className="correct-answer-description mt-4 ml-6">
+                    <span className="description-text">
+                   <span className=' font-semibold text-[#000085]'>Answer Description :</span>  {question.correct_answer_description}
+                    </span>
+                  </div>
+                </div>
+              ) : null
+            )}
+          </div>
+        </div>)}
+   
 
-  <div class="relative flex justify-center flex-col items-center">
-    <label class="absolute top-[40%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 text-[50px] text-blue-900 font-bold font-lato">{quizData.rank}</label>
-    <img class="h-[108.62px] w-[130.01px] flex justify-center" src={rankimage} alt="Icon 1" />
-    <span class="text-blue-900 font-medium font-lato text-[17px]">Your Rank</span>
-  </div>
-
-  <div class="w-full flex items-center">
-  <div class="w-full flex justify-center items-center flex-col gap-4 sm:w-[50%]">
-  <div class="w-[210px] h-[7vh] flex items-center">
-    <img class="h-[30px] w-[30px]" src={dateIcon} alt="Calendar Icon" />
-    <span class="ml-2 font-lato text-blue-900">{quizData.quiz_start_date}</span>
-  </div>
-  <div class="w-[210px] h-[7vh] flex items-center">
-    <img class="h-[30px] w-[30px]" src={timeIcon} alt="Clock Icon" />
-    <span class="ml-2 font-lato text-blue-900">{quizData.attempt_duration} Minutes</span>
-  </div>
-  <div class="w-[210px] h-[7vh] flex items-center">
-    <img class="h-[30px] w-[30px]" src={vector} alt="Check Icon" />
-    <span class="ml-2 font-lato text-blue-900">{quizData.correct_answers} Correct answers</span>
-  </div>
-  <div class="w-[210px] h-[7vh] flex items-center">
-    <img class="h-[30px] w-[30px]" src={current} alt="Question Icon" />
-    <span class="ml-2 font-lato text-blue-900">Attempted {quizData.attempted_questions} questions</span>
-  </div>
-</div>
-<div className='w-full flex justify-center items-center sm:w-[50%]'>
-<div class="flex  w-[70%] flex-col p-2 px-6 rounded-2xl bg-green-300 items-center">
-
-      <div class=" text-green-700 font-medium text-center">{quizData.attained_score_percentage}%</div>
-      <div class=" text-[#fa5967]  text-center">{quizData.quiz_grade}, {quizData.pass_flag ? 'Pass' : 'Fail'}</div>
-    </div>
-</div>
-
-    
-  </div>
-  <div className="flex flex-wrap justify-end gap-2">
-  <div className="flex items-center justify-center ">
-    <button
-      // onClick={handleOnAnswer}
-      className="text-blue-900 text-sm bg-blue-200 border border-blue-900 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
-    >
-      Answers
-      <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" />
-    </button>
-  </div>
-  <div className="flex items-center justify-center">
-  <button
-      // onClick={handleOnAnswer}
-      className="text-blue-900 text-sm bg-blue-200 border border-blue-900 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
-    >
-      Print
-      <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" />
-    </button>
-  </div>
-</div>
-
-</div>
 <div className='flex flex-col justify-end px-2 items-center'>
   <div className=' w-[10px] rounded-full bg-[#00008b] h-[10px]'></div>
   <div className='h-[85%] w-[1px] bg-[#00008b]'></div>
   <div className=' w-[10px] rounded-full bg-[#00008b] h-[10px]'></div>
 
 </div>
-<div className=' w-full'>
-<div className="max-w-4xl mx-auto p-4  rounded-md">
+<div className=' w-full flex p-4  flex-col justify-between'>
+<div className="max-w-4xl rounded-md">
 <div class="">
     <div class="flex items-center justify-center  ">
       <span class="inline-block h-[1px] bg-blue-900 w-full mr-[5px]"></span>
@@ -533,7 +668,9 @@ const quizresults = () => {
           </tbody>
         </table>
       </div>
-      <div className="mt-8 text-right flex justify-end">
+      
+    </div>
+    <div className=" text-right flex justify-end">
         {/* <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
           Leader Board
         </button> */}
@@ -545,81 +682,9 @@ const quizresults = () => {
       <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" />
     </button>
       </div>
-    </div>
 </div>
     </div>
-    <div className="w-[850px] ml-5 rounded-2xl bg-white shadow-lg">
-  <div className="flex flex-col items-start p-5">
-    {questions.map((question, index) => (
-      <div className="w-full mt-8" key={index}>
-        {/* Question Text */}
-        <div className="mb-4">
-          <span className="text-[#F4774B] text-lg font-semibold">
-            {index + 1}. {question.question_text}
-          </span>
-        </div>
-
-        {/* Options */}
-        <div className="flex flex-col mb-6">
-          {Object.keys(question.options).map((optionKey, IDXx) => {
-            const optionText = question.options[optionKey];
-            const isSelected = optionText === question.selected_option;
-            const isCorrect = optionText === question.correct_option;
-
-            return (
-              <div
-                key={IDXx}
-                className={`w-[586px] h-[35px] rounded-lg border mt-3 ml-6 flex items-center px-4 ${
-                  isCorrect
-                    ? 'bg-[#A9FFB7] border-green-500'
-                    : isSelected
-                    ? 'bg-[#FFB7B7] border-red-500'
-                    : 'bg-white border-gray-300'
-                }`}
-              >
-                <span className="text-sm font-normal">
-                  {optionLabels[optionKey]}. {optionText}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Answer Feedback */}
-        <div className="flex items-center mt-6 ml-6">
-          <img
-            src={
-              question.selected_option === question.correct_option
-                ? rightIcon1
-                : wrongIcon1
-            }
-            alt="Answer Icon"
-            className="w-6 h-6 mr-2"
-          />
-          <span
-            className={`text-sm font-medium ${
-              question.selected_option === question.correct_option
-                ? 'text-green-600'
-                : 'text-red-600'
-            }`}
-          >
-            {question.selected_option === question.correct_option
-              ? 'Correct Answer'
-              : 'Wrong Answer'}
-          </span>
-
-         
-        </div>
-        <div className="correct-answer-description">
-          <span className="description-text">
-            {question.correct_answer_description}
-          </span>
-          </div>
-      </div>
-    ))}
-  </div>
-</div>
-
+   
 
 
        

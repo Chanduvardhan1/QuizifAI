@@ -59,6 +59,8 @@ const LoginPage = () => {
   };
   const handleLoginMethodChange = (method) => {
     setLoginMethod(method);
+    setErrorMessage('')
+    setPassword('')
     setShowPassword(false);
     setIsContentSelected(true);
     if (method === "gmail") {
@@ -127,9 +129,19 @@ const LoginPage = () => {
       });
   
       if (!tokenResponse.ok) {
-        throw new Error('Failed to retrieve access token');
-      }
+        const errorData = await tokenResponse.json();
+        const backendMessage = errorData.detail || "Failed to retrieve access token";
   
+        // Show specific error message based on login option
+        const errorMessage =
+          loginOption === "email"
+            ? "Incorrect email or password. Please try again."
+            : "Incorrect mobile number or password. Please try again.";
+        
+        // If backend provides a specific error detail, use that
+        setErrorMessage(backendMessage.includes("Incorrect") ? errorMessage : backendMessage);
+        return; // Stop further execution
+      }
       const tokenData = await tokenResponse.json();
       const accessToken = tokenData.access_token;
   

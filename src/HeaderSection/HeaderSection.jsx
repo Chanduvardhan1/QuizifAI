@@ -52,7 +52,7 @@ const HeaderSection = () => {
                   <img className='h-[17px]' src = {signUpIcon}/>
                 </button> */}
 
-                  <button className={`w-20 h-[30px] rounded-full font-Poppins font-[lato]  bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center gap-1 hover:bg-[#EF512F] transition-transform transform hover:scale-110 ${currentPath === '/signup' ? 'font-bold' : ''}`}>
+                  <button className={`w-20 h-[30px] rounded-full bg-[#3B61C8] text-white text-[13px] leading-7 font-semibold flex items-center justify-center gap-1 hover:bg-[#EF512F] transition-transform transform hover:scale-110 ${currentPath === '/signup' ? 'font-bold' : ''}`}>
                     Sign Up
                     {/* <img className='h-[17px]' src={signUpIcon} alt="Sign Up Icon" /> */}
                   </button>

@@ -93,7 +93,7 @@ text-align: left;
     left: 0px; */
     white-space: nowrap;
     font-family: Poppins;
-font-size: 14px;
+font-size: 15px;
 font-weight: 700;
 line-height: 27px;
 letter-spacing: 0em;
@@ -236,7 +236,7 @@ width: 152px;
 .sentence2{
     font-family: Poppins;
 font-size: 14px;
-font-weight: 500;
+font-weight: 800;
 line-height: 30px;
 letter-spacing: 0em;
 text-align: left;
@@ -265,7 +265,7 @@ font-weight: 500;
 line-height: 45px;
 letter-spacing: 0em;
 text-align: left;
-color:black;
+color:#214082;
 
 
 }
@@ -374,11 +374,13 @@ margin-left: -130px;
     align-items: center;
     justify-content: center;
     margin: 5px;
-    border: 1px solid #ccc;
+    color: #214082;
+    border: 1px solid #214082;
     border-radius: 5px;
     cursor: pointer;
     background-color: #f9f9f9;
     font-size: 12px;
+    color: #214082;
   }
   
   .questionNumber.selected {
@@ -429,7 +431,7 @@ margin-left: -130px;
   font-weight: bold;
   border-color: red;
   font-size: 10px;
-  color: #214082;;
+  color: #214082;
 }
 
 .skipped{

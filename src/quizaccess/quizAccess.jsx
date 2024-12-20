@@ -34,7 +34,8 @@ import { MdOutlineCancel } from "react-icons/md";
 
 
 //------------------**import images**------------------//
-import physics from "../../src/assets/Images/quiz-type/quizcover.jpg"
+import physics from "../../src/assets/Images/dashboard/quiz12.png"
+
 import startIcon from "../../src/assets/Images/images/quiz-Access/start.png";
 import username from "../../src/assets/Images/quiz-type/username.png"
 import calander from "../../src/assets/Images/quiz-type/calander.png"

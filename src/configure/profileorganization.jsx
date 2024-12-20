@@ -218,7 +218,7 @@ const fetchOrganizationDetails = async () => {
       throw new Error("No authentication token found");
     }
     const response = await fetch(
-      `https://dev.quizifai.com:8010/get_organization_dtls?org_id=${52}`,
+      `https://dev.quizifai.com:8010/get_organization_dtls?org_id=${orgId}`,
       {
         method: 'POST',
         headers: {
@@ -309,20 +309,20 @@ const handleSubmit = async (e) => {
 
   const payload = {
     updated_by: userId,
-    org_id: 52,
+    org_id: orgId,
     org_name: orgName,
     org_description:orgdescription,
     org_admin_id: userId,
     org_location_id: locationId,
-    org_subscription_key: orgSubscriptionKey,
+    // org_subscription_key: orgSubscriptionKey,
     org_point_of_contact_id:  userId ,
     org_address_line1: orgAddressLine1,
     org_address_line2: orgAddressLine2,
     org_type: selectedOrgTypeId,
     website_url:websiteurl,
-    org_public_quizzes_access_flag: false,
-    org_create_public_quizzes_flag: false,
-    print_flag: false,
+    // org_public_quizzes_access_flag: false,
+    // org_create_public_quizzes_flag: false,
+    // print_flag: false,
   };
 
   try {
@@ -417,7 +417,7 @@ const handleSelectChange = (event) => {
 //---------**AddOrganizationProfile User Type end**------------//
 
 //---------**AddOrganizationProfile Image **------------//
-const [photo, setPhoto] = useState(''); // State to store the image URL
+    const [photo, setPhoto] = useState(''); // State to store the image URL
     const [loading, setLoading] = useState(true); // State to manage loading status
     const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
 

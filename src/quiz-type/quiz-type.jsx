@@ -849,7 +849,7 @@ const handleToLayout4 = () =>{
   const closeModal = () => {
     setShowModal(false);
   };
-  
+
   const handleNext = async () => {
     try {
       setIsSubmitting(true); // Disable the button while the request is ongoing
@@ -2452,7 +2452,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
                   // onClick={() => setStep(3)}
                 >
-                  Save as Driaft
+                  Save as Drafts
                 </button>
 
                 <button
@@ -2461,7 +2461,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
               onClick={handleNext}
              
                 >
-                  {isSubmitting ? "Creating..." : "Create"}
+                  {isSubmitting ? "Created" : "Create"}
                 </button>
                 <button
             onClick={handleNextpage3}
@@ -2508,7 +2508,7 @@ value={orgId}
 <div className="flex flex-col w-full">
   <div className="w-full flex flex-row">
     <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
-      Quiz Id<span className="text-red-500">*</span>
+      Quiz ID<span className="text-red-500">*</span>
     </label>
     <input
                              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -2638,7 +2638,7 @@ isMulti
   <hr className="h-[1px] w-full" />
 </div>
 </div>
-
+{/* 
 <div className="flex flex-col  gap-6 w-full">
 <div className="flex flex-col w-full">
   <div className="w-full flex flex-row">
@@ -2649,8 +2649,7 @@ isMulti
                              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
 
                   placeholder="School"
-                  // value={quiztotalmarks}
-                  // onChange={(e) => setquiztotalmarks(e.target.value)}
+                
                 ></input>
   </div>
   <hr className="h-[1px] w-full" />
@@ -2662,16 +2661,11 @@ isMulti
     </label>
     <select
       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-      // value={selectedCourse}
-      // onChange={handleSelectCourse}
+   
     >
       <option value="" disabled>Select a Class</option>
       <option value="">None</option>
-      {/* {courses.map((course) => (
-        <option key={course.course_id} value={course.course_name}>
-          {course.course_name}
-        </option>
-      ))} */}
+      
     </select>
   </div>
   <hr className="h-[1px] w-full" />
@@ -2683,16 +2677,10 @@ isMulti
     </label>
     <select
       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-      // value={selectedClass}
-      // onChange={handleSelectClass}
-      // disabled={classes.length === 0}
+      
     >
       <option value="" disabled>Select a Section</option>
-      {/* {classes.map((className, index) => (
-        <option key={index} value={className}>
-          {className}
-        </option>
-      ))} */}
+      
     </select>
   </div>
   <hr className="h-[1px] w-full" />
@@ -2704,19 +2692,17 @@ isMulti
         </label>
         <FormControlLabel
         control={<Switch />} 
-        // label="Required"
           onChange={toggler1}
-        //   checked={multiAnswer}
           className="react-switch"
         />
         
       </div>
 
-{/* Section */}
 
 
 
-</div>
+
+</div> */}
 
 </div>
 

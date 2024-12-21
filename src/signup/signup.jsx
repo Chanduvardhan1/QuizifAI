@@ -166,9 +166,10 @@ const Signup = () => {
     const nameRegex = /^[A-Za-z\s]+$/; // Only alphabetic characters and spaces
     return nameRegex.test(name);
   };
+ 
   const handleSignUp1 = () => {
     let hasError = false;
-
+   
     setResponseMessage("");
     setResponseMessage1("");
     setTerms("");
@@ -181,20 +182,20 @@ const Signup = () => {
     } else {
       setResponseMessage1("");
     }
-
-    if (!hasError) {
-      if (!termsChecked) {
+  
+  if (!hasError) {
+    if (!termsChecked) {
         setTerms("Please agree to the terms and conditions");
         hasError = true;
-      } else {
+    } else {
         setTerms("");
-      }
     }
+}
 
-    if (hasError) {
-      return;
-    }
-    // localStorage.setItem('emailOrMobile', emailOrMobile);
+if (hasError) {
+    return;
+}
+// localStorage.setItem('emailOrMobile', emailOrMobile);
     setResendAvailable(false); // Disable resend button after sending OTP
     setResendTime(10 * 60);
     const userData = {
@@ -220,7 +221,7 @@ const Signup = () => {
       .then((data) => {
         // console.log('Sign-up successful:', data);
 
-        if (loginMethod === 'email' && data.response === 'success' && data.response_message === 'Please verify your email to proceed') {
+        if (loginMethod === 'email' && data.response === 'success' &&  data.response_message === 'Please verify your email to proceed' ) {
           setResponseMessage(data.response_message);
           setShowOtpField(true);
           setShowVerifyButton(true);
@@ -231,32 +232,32 @@ const Signup = () => {
           setResponseMessage(data.response_message);
           setShowOtpField(true);
           setShowVerifyButton(true);
-        } else if (
+        }  else if (
           data.response === 'success' &&
           data.response_message === 'Account created successfully. Please check your email to verify your account.'
         ) {
           setResponseMessage(data.response_message);
           setShowOtpField(true);
           setShowVerifyButton(true);
-        }
+        } 
         else if (
           data.response === 'fail' &&
           data.response_message === 'Email is already registered. Please log in or use a different email.'
         ) {
           setResponseMessage("Email is already registered. Please login or use a different email.");
-        } else if (
+        }  else if (
           data.response === 'fail' &&
           data.response_message === 'Please provide a valid email address to proceed with your account.'
         ) {
           setTerms(data.response_message);
-        } else if (
+        }  else if (
           data.response === 'fail' &&
-          data.response_message === 'Please verify otp to complete your registration and activate your account.'
+          data.response_message ==='Please verify otp to complete your registration and activate your account.'
         ) {
           setResponseMessage(data.response_message);
           setShowOtpField(true);
           setShowVerifyButton(true);
-        }
+        } 
         else if (
           data.response === 'fail' &&
           data.response_message === 'Error while creating an account'
@@ -281,6 +282,7 @@ const Signup = () => {
         }
       });
   };
+ 
 
   const sendOTP = () => {
     setShowOtpField(true);
@@ -338,7 +340,7 @@ const Signup = () => {
   //   return valid;
   // };
   const handleSignUp2 = () => {
-
+  
     let hasError = false;
     setResponseMessage("");
     setResponseMessage1("");
@@ -352,27 +354,27 @@ const Signup = () => {
     } else {
       setResponseMessage1("");
     }
-
-    if (!hasError) {
-      if (!termsChecked) {
+  
+  if (!hasError) {
+    if (!termsChecked) {
         setTerms("Please agree to the terms and conditions");
         hasError = true;
-      } else {
+    } else {
         setTerms("");
-      }
     }
+}
 
-    if (hasError) {
-      return;
-    }
-    // localStorage.setItem('mobile', mobile);
+if (hasError) {
+    return;
+}
+// localStorage.setItem('mobile', mobile);
     setResendAvailable1(false); // Disable resend button after sending OTP
     setResendTime1(10 * 60);
     const userData = {
       signup_option: loginMethod,
       user_name: name1,
       email_or_mobile: mobile,
-
+      
     };
 
     fetch("https://dev.quizifai.com:8010/signup", {
@@ -390,37 +392,44 @@ const Signup = () => {
         return response.json();
       })
       .then((data) => {
-        // console.log("Sign-up successful:", data);
-
-        // const { response, output } = data;
+        console.log("API Response:", data);
         if (
+          data.response === "success" &&
+          data.response_message === "Account created successfully. Please check your mobile to verify your account."
+        
+        ) {
+          setResponseMessage(data.response_message);
+          setShowOtpField1(true);
+          setShowVerifyButton1(true); 
+        }else if (
+          data.response === "success" &&
+          data.response_message ==="Please verify your mobile to proceed"
+        ) {
+          
+          setResponseMessage("Please verify your mobile to proceed");
+
+          setShowOtpField1(true);
+          setShowVerifyButton1(true);
+        }else if (
           data.response === "fail" &&
           data.output ===
           "Mobile Number is already registered.Please verify your"
         ) {
+          
           setResponseMessage("Mobile Number is registered. Please verify your OTP");
+
           setShowOtpField1(true);
           setShowVerifyButton1(true);
-        } else if (
-          data.response === "success"
-        ) {
-          // const sanitizedOutput = data.output.replace(/\d{6}\s?/, ""); // Removes the OTP (6 digits followed by optional space)
-          // setResponseMessage(sanitizedOutput);
-          setRespon
-          seMessage(data.response_message)
-          // setGreen("Account Has Been Created OTP Successfully Sent Please verify your OTP")
-          setShowOtpField1(true);
-          setShowVerifyButton1(true);
-        } else if (
+        }  else if (
           data.response === "fail" &&
           data.response_message === "Mobile number is invalid to proceed with your account."
         ) {
           setResponseMessage(data.response_message);
         } else if (
-          data.response === "fail" &&
+          data.response === "success" &&
           data.response_message ===
           "Mobile is already registered. Please log in or use a different mobile number."
-
+          
         ) {
           setResponseMessage("Mobile is already registered. Please login or use a different mobile number.");
           // navigate("/Register");
@@ -429,36 +438,29 @@ const Signup = () => {
           // });
         } else if (
           data.response === "fail" &&
-          data.response_message === "Please click here to complete your registration and activate your account."
+          data.response_message === "Kindly verify the OTP you received before completing your registration."
         ) {
+          
           setResponseMessage(data.response_message);
-          navigate("/Register");
+          setShowOtpField1(true);
+          setShowVerifyButton1(true); 
         }
         else if (
           data.response === "fail" &&
           data.data ===
-          "Mobile Number is Invalid."
-
+            "Mobile Number is Invalid."
+          
         ) {
-
-          setTerms(data.data);
+       
+          setTerms(data.response_message);
         }
-        else {
-          setTerms(data.data);
+         else {
+          setTerms(data.response_message);
         }
       })
       .catch((error) => {
-        console.error('Error signing up:', error);
-        if (error.detail && Array.isArray(error.detail) && error.detail.length > 0) {
-          const detail = error.detail[0];
-          if (detail.type === 'value_error' && detail.loc.includes('user_name')) {
-            setResponseMessage(detail.msg);
-          } else {
-            setResponseMessage('');
-          }
-        } else {
-          setResponseMessage('Error signing up');
-        }
+        console.error("Error signing up:", error); // Log error details
+        setResponseMessage("Error signing up. Please try again later.");
       });
   };
   const handleInputChange1 = (field, value) => {
@@ -517,15 +519,20 @@ const Signup = () => {
       } else if (
         data.response === "fail" &&
         data.response_message ===
-        "Invalid or incorrect OTP."
-
+          "Invalid or incorrect OTP."
+        
       ) {
-
+     
         setTerms(data.response_message);
-      } else {
-        // console.log("Response other than success:", data.response);
+      }else {
+        data.response === "fail" &&
+        data.response_message ===
+          "Invalid otp please try again"
       }
-
+      {
+     
+        setTerms(data.response_message);
+      }
     } catch (error) {
       // console.error("Error:", error);
       // Optionally show an error message to the user
@@ -533,7 +540,7 @@ const Signup = () => {
     }
   };
   const handleVerification1 = async () => {
-    setResponseMessage("");
+    setResponseMessage(""); 
     setResponseMessage1("");
     setTerms("");
     if (!termsChecked) {
@@ -568,30 +575,30 @@ const Signup = () => {
       }
       const data = await response.json();
 
-      if (data.response === "success" && data.response_message === "Email is Verified, you can proceed with registration.") {
-
+      if (data.response === "success") {
+     
         setShowRegistrationSuccess(true);
-      } else if (
+      }  else if (
         data.response === "fail" &&
         data.response_message ===
-        "Invalid or incorrect OTP."
-
+          "Invalid or incorrect OTP."
+        
       ) {
-
+     
         setTerms(data.response_message);
-      } else if (
+      }else if (
         data.response === "fail" &&
         data.response_message ===
-        "Please click here to complete your registration and activate your account."
-
+          "Please click here to complete your registration and activate your account."
+        
       ) {
-
+     
         setTerms(data.response_message);
       }
       else {
         // console.log("Response other than success:", data.response);
       }
-
+  
     } catch (error) {
       // console.error("Error:", error);
       // Optionally show an error message to the user
@@ -692,6 +699,9 @@ const Signup = () => {
   const handleLoginMethodChange = (method) => {
     setLoginMethod(method);
     setIsContentSelected(true);
+    setResponseMessage("");
+    setResponseMessage1("");
+    setTerms("");
   };
 
   const togglePasswordVisibility = () => {

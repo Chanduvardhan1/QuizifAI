@@ -41,7 +41,7 @@ const configure = () => {
   };
   const userRole = localStorage.getItem("user_role");
   const allowedRoles = ["Super Admin","Admin"]; // Roles allowed to access the pages
-  const allowedRoles1 = ["Quiz Master"];
+  const allowedRoles1 = ["Quiz Master","Admin"];
   const allowedRoles2 = ["Super Admin"];
 
   const handleRestrictedClick = (navigateTo) => {
@@ -92,7 +92,7 @@ const configure = () => {
   const handleQuestionBank = () => handleRestrictedClick("/questionbank");
   const handleUserList = () => handleRestrictedClick("/userslist");
 
-  const handleGlobalLeaderboard = () => handleRestrictedClick("/leaderboardall");
+  const handleGlobalLeaderboard = () => handleRestrictedClick1("/leaderboardall");
   const handleCreateOrganization = () => handleRestrictedClick2('/creatorganization')
   const handleQuizMasterReport = () => handleRestrictedClick1('/quizmasterleaderboard')
   const handleAddUsersBulk = () => handleRestrictedClick('/excelcreat')

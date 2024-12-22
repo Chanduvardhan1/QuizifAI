@@ -512,7 +512,7 @@ if (hasError) {
       }
       const data = await response.json();
 
-      if (data.response === "success" && data.response_message === "Mobile is verified you can proceed with registration.") {
+      if (data.response === "success") {
         // setShowSecondButton(true);
         setShowRegistrationSuccess(true);
         // handleOpenGmail(mobile, emailOrMobile);

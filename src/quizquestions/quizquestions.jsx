@@ -957,7 +957,7 @@ const QuizQuestions = () => {
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">30 Attemts</span>
+              <span className="ml-1 text-sm">0 Attemts</span>
             </div>
             <div className="flex items-center">
               <img
@@ -965,7 +965,7 @@ const QuizQuestions = () => {
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">90% High Score</span>
+              <span className="ml-1 text-sm">0% High Score</span>
             </div>
             <div className="flex items-center">
               <img
@@ -973,7 +973,7 @@ const QuizQuestions = () => {
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">2:02 Mins Quickest</span>
+              <span className="ml-1 text-sm">0 Mins Quickest</span>
             </div>
           </div>
         </div>

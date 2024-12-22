@@ -129,8 +129,8 @@ const statusreport = () => {
             <tr className="bg-[#CBF2FB]">
               <th className="border-b px-4 py-2">Rank</th>
               <th className="border-b px-4 py-2">Name</th>
-              <th className="border-b px-4 py-2">Score</th>
               <th className="border-b px-4 py-2">Quiz Name</th>
+              <th className="border-b px-4 py-2">Percentage</th>
               <th className="border-b px-4 py-2">Grade</th>
               <th className="border-b px-4 py-2">Pass/Fail</th>
             </tr>
@@ -144,8 +144,8 @@ const statusreport = () => {
                 >
                   <td className="border-b  px-4 py-2 text-center">{entry.rank}</td>
                   <td className="border-b px-4 py-2 text-cente">{entry.user_name}</td>
-                  <td className="border-b  px-4 py-2 text-center">{entry.total_score}</td>
-                  <td className="border-b  px-4 py-2 text-cente">{entry.quiz_name}</td>
+                  <td className="border-b  px-4 py-2 text-center">{entry.quiz_name}</td>
+                  <td className="border-b  px-4 py-2 text-center">{entry.attained_percentage}%</td>
                   <td className="border-b  px-4 py-2 text-center">{entry.quiz_grade}</td>
                   <td
                     className={`border-b px-4 py-2 text-center ${

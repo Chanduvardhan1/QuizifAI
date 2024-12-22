@@ -423,7 +423,7 @@ export default () => {
         {
             path:'Register',
             component: Register,
-            isPrivate: true
+            // isPrivate: true
         },
         {
             path:'navbar',

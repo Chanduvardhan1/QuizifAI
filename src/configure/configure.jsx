@@ -396,7 +396,7 @@ const configure = () => {
 
               <img src={item.image} alt="" className="w-[40px] h-[40px]" />
               </div>
-              <h1 className="text-[12px] font-semibold text-[#EF5130] text-center pt-4">
+              <h1 className="text-[14px] font-semibold text-[#EF5130] text-center pt-4">
                 {highlightText(item.title, searchQuery)}
               </h1>
               {item.content.split(", ").map((contentItem, index) => (

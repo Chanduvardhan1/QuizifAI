@@ -398,7 +398,7 @@ const quizresults = () => {
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">30 Attemts</span>
+              <span className="ml-1 text-sm">0 Attemts</span>
             </div>
             <div className="flex items-center">
               <img
@@ -406,7 +406,7 @@ const quizresults = () => {
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">90% High Score</span>
+              <span className="ml-1 text-sm">0% High Score</span>
             </div>
             <div className="flex items-center">
               <img
@@ -414,7 +414,7 @@ const quizresults = () => {
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">2:02 Mins Quickest</span>
+              <span className="ml-1 text-sm">0 Mins Quickest</span>
             </div>
           </div>
         </div>
@@ -639,7 +639,7 @@ const quizresults = () => {
             <th className="border-b border-gray-300 px-4 py-2 text-left">Rank</th>
               <th className="border-b border-gray-300 px-4 py-2 text-left">Name</th>
               <th className="border-b border-gray-300 px-4 py-2 text-center">Attempts</th>
-              <th className="border-b border-gray-300 px-4 py-2 text-left">Score</th>
+              <th className="border-b border-gray-300 px-4 py-2 text-left">Percentage</th>
               <th className="border-b border-gray-300 px-4 py-2 text-left">Duration</th>
               {/* <th className="border-b border-gray-300 px-4 py-2 text-center">Version</th> */}
               <th className="border-b border-gray-300 px-4 py-2 text-left">Date</th>
@@ -656,7 +656,7 @@ const quizresults = () => {
                 <td className="border-b px-4 py-2">{entry.rank}</td>
                 <td className="border-b px-4 py-2">{entry.user_name}</td>
                 <td className="border-b px-4 py-2 text-center">{entry.attempts_count}</td>
-                <td className="border-b px-4 py-2">{entry.total_score}</td>
+                <td className="border-b px-4 py-2">{entry.attained_percentage}%</td>
                 <td className="border-b px-4 py-2">{entry.attempt_duration_mins}</td>
                 {/* <td className="border-b px-4 py-2 text-center">{entry.version}</td> */}
                 <td className="border-b px-4 py-2">

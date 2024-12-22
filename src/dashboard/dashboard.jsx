@@ -1627,7 +1627,7 @@ const Dashboard = () => {
 <img onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)}
 src={quizItem.photo1 || back}
  alt="Quiz Cover"
- className="w-[140px] h-[140px] rounded-md mr-2"
+ className="w-[140px] h-[140px] rounded-md mr-2 cursor-pointer"
 />
 </div>
 
@@ -1635,7 +1635,7 @@ src={quizItem.photo1 || back}
 {/* Title and Version */}
 <div className="relative group flex justify-between items-center gap-[3px]">
  {/* Truncated text container */}
- <h2 onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)} className="text-[15px] font-semibold text-[#00008b] w-[170px] sm:w-[215px] truncate">
+ <h2 onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)} className="text-[15px] font-semibold text-[#00008b] w-[170px] sm:w-[215px] truncate cursor-pointer">
  {quizItem.quiz_name}
  </h2>
 
@@ -1907,7 +1907,7 @@ alt="Disable icon"
 </div>
 
 {/* Meta Information */}
-<div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)} className="text-[#00008b] text-[12px] truncate max-w-[230px] max-h-4 justify-start mt-1">
+<div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)} className="text-[#00008b] text-[12px] truncate max-w-[230px] max-h-4 justify-start mt-1 cursor-pointer">
  <span>{quizItem.category}</span>
  <span className="mx-1">.</span>
  <span>{quizItem.sub_category}</span>
@@ -1942,7 +1942,7 @@ alt="Disable icon"
  </div>
 
  {/* Attempt Info */}
- <div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)} className="flex items-center space-x-4 text-xs sm:text-sm">
+ <div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)} className="flex items-center space-x-4 text-xs sm:text-sm cursor-pointer">
    <div className="flex items-center">
      <img src={Attemts} className="w-[18px] h-[18px] mr-1" />
      <span className="ml-1 text-[12px]">{quizItem.quiz_attempts} Attempt</span>

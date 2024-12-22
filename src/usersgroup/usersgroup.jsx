@@ -363,7 +363,7 @@ const handleBack = () => {
     {/*  Fist Name*/}
     <div className="flex flex-col">
       <div className="w-full flex flex-row">
-      <label className="w-[20%] text-blue-800 font-semibold mb-2">Fist Name<span className="text-red-500">*</span></label>
+      <label className="w-[20%] text-blue-800 font-semibold mb-2">First Name<span className="text-red-500">*</span></label>
     
       <input
         className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[15px] focus:outline-none `}
@@ -414,7 +414,7 @@ const handleBack = () => {
     
 <div className="flex flex-col ">
       <div className="w-full flex flex-row">
-      <label className="w-[20%] text-blue-800 font-semibold mb-2">last Name<span className="text-red-500">*</span></label>
+      <label className="w-[20%] text-blue-800 font-semibold mb-2">Last Name<span className="text-red-500">*</span></label>
  
       <input
         className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[15px] focus:outline-none `}

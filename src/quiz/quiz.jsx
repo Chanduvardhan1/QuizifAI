@@ -1176,7 +1176,7 @@ const Quiz = () => {
                           }
                          src={quizItem.photo1 || back}
                          alt="Quiz Cover"
-                         className="w-[140px] h-[140px] rounded-md mr-2"
+                         className="w-[140px] h-[140px] rounded-md mr-2 cursor-pointer"
                        />
                      </div>
                    
@@ -1192,7 +1192,7 @@ const Quiz = () => {
                                 quizItem.active_flag
                               )
                             }
-                            className="text-[15px] font-semibold text-[#00008b] w-[170px] sm:w-[215px] truncate">
+                            className="text-[15px] font-semibold text-[#00008b] w-[170px] sm:w-[215px] truncate cursor-pointer">
                          {quizItem.quiz_name}
                          </h2>
                    
@@ -1471,7 +1471,7 @@ const Quiz = () => {
                                 quizItem.active_flag
                               )
                             }
-                             className="text-[#00008b] text-[10px] truncate max-w-[230px] max-h-4 justify-start mt-1">
+                             className="text-[#00008b] text-[10px] truncate max-w-[230px] max-h-4 justify-start mt-1 cursor-pointer">
                          <span>{quizItem.category}</span>
                          <span className="mx-1">.</span>
                          <span>{quizItem.sub_category}</span>
@@ -1489,7 +1489,7 @@ const Quiz = () => {
                                 quizItem.retake_flag,
                                 quizItem.active_flag
                               )
-                            } className="flex items-center justify-between text-[12px] sm:text-[10px]">
+                            } className="flex items-center justify-between text-[12px] sm:text-[10px] cursor-pointer">
                            <div className="flex items-center">
                              <img src={username1} className="w-[20px] h-[20px] mr-1" />
                              <span className="ml-1 text-[12px]  ">{quizItem.created_by}</span>
@@ -1509,7 +1509,7 @@ const Quiz = () => {
                                 quizItem.active_flag
                               )
                             }
-                            className="flex items-center justify-between pr-1 text-xs sm:text-sm">
+                            className="flex items-center justify-between pr-1 text-xs sm:text-sm cursor-pointer">
                            <div className="flex items-center">
                              <img src={comment} className="w-[20px]   h-[20px] mr-1" />
                              <span className="ml-1 text-[12px] ">{quizItem.number_of_questions} Questions</span>
@@ -1534,7 +1534,10 @@ const Quiz = () => {
                                          quizItem.quiz_id,
                                       quizItem.quiz_level_attempt_id
                     )
-                                    } src={view1} className="w-[18px] h-[18px] mr-1" />
+                                    } src={view1} 
+                                    alt="Quiz Results"
+                                    title="Quiz Results"
+                                    className="w-[18px] h-[18px] mr-1" />
                              <img   onClick={() =>
                         
                                                   leaderboard1(
@@ -1545,7 +1548,11 @@ const Quiz = () => {
                                                     quizItem.pass_percentage
                                                   )
                                                 }
-                             src={leader} className="w-[18px] h-[18px] mr-1" />
+                             src={leader}
+                             style={{ cursor: "pointer" }}
+  className="w-[18px] h-[18px] mr-1"
+  alt="Leaderboard"
+  title="View Leaderboard" />
                              <img src={print1} className="w-[18px] h-[18px] mr-1" />
                    
                            </div>
@@ -2105,7 +2112,7 @@ const Quiz = () => {
                        onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)}
                          src={quizItem.photo1 || back}
                          alt="Quiz Cover"
-                         className="w-[140px] h-[140px] rounded-md mr-2"
+                         className="w-[140px] h-[140px] rounded-md mr-2 cursor-pointer"
                        />
                      </div>
                    
@@ -2114,7 +2121,7 @@ const Quiz = () => {
                        <div className="relative group flex justify-between items-center gap-[3px]">
                          {/* Truncated text container */}
                          <h2 onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)}
-                         className="text-[15px] font-semibold text-[#00008b] w-[170px] sm:w-[215px] truncate">
+                         className="text-[15px] font-semibold text-[#00008b] w-[170px] sm:w-[215px] truncate cursor-pointer">
                          {quizItem.quiz_name}
                          </h2>
                    
@@ -2386,7 +2393,7 @@ const Quiz = () => {
                       
                        {/* Meta Information */}
                        <div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)} 
-                        className="text-[#00008b] text-[10px] truncate max-w-[230px] max-h-4 justify-start mt-1">
+                        className="text-[#00008b] text-[10px] truncate max-w-[230px] max-h-4 justify-start mt-1 cursor-pointer">
                          <span>{quizItem.category}</span>
                          <span className="mx-1">.</span>
                          <span>{quizItem.sub_category}</span>
@@ -2397,7 +2404,7 @@ const Quiz = () => {
                        {/* Icons Row */}
                        <div className="flex-col items-center text-[10px] space-y-1 mt-2 text-[#00008b]">
                          {/* Author and Date */}
-                         <div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)}  className="flex items-center justify-between text-[12px] sm:text-[10px]">
+                         <div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)}  className="flex items-center justify-between text-[12px] sm:text-[10px] cursor-pointer">
                            <div className="flex items-center">
                              <img src={username1} className="w-[20px] h-[20px] mr-1" />
                              <span className="ml-1 text-[12px]  ">{quizItem.created_by}</span>
@@ -2409,7 +2416,7 @@ const Quiz = () => {
                          </div>
                    
                          {/* Quiz Info */}
-                         <div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)}  className="flex items-center justify-between pr-1 text-xs sm:text-sm">
+                         <div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)}  className="flex items-center justify-between pr-1 text-xs sm:text-sm cursor-pointer">
                            <div className="flex items-center">
                              <img src={comment} className="w-[20px]   h-[20px] mr-1" />
                              <span className="ml-1 text-[12px] ">{quizItem.number_of_questions} Questions</span>
@@ -2421,7 +2428,7 @@ const Quiz = () => {
                          </div>
                    
                          {/* Attempt Info */}
-                         <div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)}  className="flex items-center space-x-4 text-xs sm:text-sm">
+                         <div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)}  className="flex items-center space-x-4 text-xs sm:text-sm cursor-pointer">
                            <div className="flex items-center">
                              <img src={Attemts} className="w-[18px] h-[18px] mr-1" />
                              <span className="ml-1 text-[12px]">{quizItem.quiz_attempts} Attempts</span>
@@ -2434,7 +2441,10 @@ const Quiz = () => {
                                          quizItem.quiz_id,
                                       quizItem.quiz_level_attempt_id
                     )
-                                    } src={view1} className="w-[18px] h-[18px] mr-1" />
+                                    } src={view1}
+                                    alt="Quiz Results"
+                             title="Quiz Results"
+                              className="w-[18px] h-[18px] mr-1" />
                              <img      onClick={() =>
                                                   leaderboard(
                                                     quizItem.quiz_id,
@@ -2452,7 +2462,12 @@ const Quiz = () => {
                                                     quizItem.max_percentage
                                                   )
                                                 }
-                             src={leader} className="w-[18px] h-[18px] mr-1" />
+                             src={leader}
+                             style={{ cursor: "pointer" }}
+                             className="w-[18px] h-[18px] mr-1"
+                             alt="Leaderboard"
+                             title="View Leaderboard" />
+                      
                              <img src={print1} className="w-[18px] h-[18px] mr-1" />
                    
                            </div>

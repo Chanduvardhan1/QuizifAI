@@ -589,7 +589,7 @@ const handleSubmit1 = async (e) => {
 
       <div className="w-full flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">Organization Name<span className="text-red-500"></span></label>
+        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">Organization Name<span className="text-red-500">*</span></label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -604,7 +604,7 @@ const handleSubmit1 = async (e) => {
       </div>
       <div className="w-full flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">Organization Description<span className="text-red-500"></span></label>
+        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">Organization Description<span className="text-red-500">*</span></label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -624,7 +624,7 @@ const handleSubmit1 = async (e) => {
 
 <div className="flex flex-col w-full">
         <div className="w-full flex gap-[50px] flex-row">
-        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">Admin<span className="text-red-500"></span></label>
+        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">Admin<span className="text-red-500">*</span></label>
  
         <button
                      onClick={handleAdminopen}
@@ -657,7 +657,7 @@ onChange={handleSelectChange2}
   
       <div className="w-full flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">Admin Name<span className="text-red-500"></span></label>
+        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[9px] ">Admin Name<span className="text-red-500">*</span></label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}

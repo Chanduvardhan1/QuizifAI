@@ -359,7 +359,7 @@ onClick={handleSubmit}
      
 
    
-    <LogoutBar />
+    {/* <LogoutBar /> */}
     </div>
     </>
     

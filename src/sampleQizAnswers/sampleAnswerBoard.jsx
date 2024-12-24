@@ -38,7 +38,7 @@ function sampleAnswerBoard(props) {
             onClick={() => setCurrentQuestionIndex(index)} // Set selected question index
             className={`cursor-pointer w-8 h-8 flex items-center justify-center border-[1px] border-green-300  text-sm font-medium ${
               index === currentQuestionIndex
-                ? "bg-[#c9e4ca] text-white" // Highlight selected question
+                ? "bg-[#85b4e9] text-white" // Highlight selected question
                 : "bg-green-100"
             }`}
           >

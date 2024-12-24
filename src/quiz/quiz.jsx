@@ -1130,11 +1130,15 @@ const Quiz = () => {
                   const quizEndDate = quizItem.quiz_end_date
                     ? new Date(quizItem.quiz_end_date)
                     : null;
+                    const isQuizMaster = userRole === "quiz_master";
+    const isActiveForOthers =
+      quizItem.active_flag?.toLowerCase() === "true" ||
+      quizItem.active_flag?.toLowerCase() === "y";
+
                   return (
-                    // quizItem.active_flag === "true" &&
-                    // currentDate >= quizCreateDate &&
-                    // (quizEndDate === null || currentDate <= quizEndDate)
-                    quizItem
+                    (isQuizMaster || isActiveForOthers) &&
+                    currentDate >= quizCreateDate &&
+                    (quizEndDate === null || currentDate <= quizEndDate)
                   );
                 })
                 .map((quizItem, index) => (
@@ -2436,7 +2440,7 @@ const Quiz = () => {
                          </div>
                          <div className="flex items-end justify-end ">
                            <div className="flex items-end">
-                             <img      onClick={() =>
+                             {/* <img      onClick={() =>
                                        quizresults(
                                          quizItem.quiz_id,
                                       quizItem.quiz_level_attempt_id
@@ -2444,7 +2448,7 @@ const Quiz = () => {
                                     } src={view1}
                                     alt="Quiz Results"
                              title="Quiz Results"
-                              className="w-[18px] h-[18px] mr-1" />
+                              className="w-[18px] h-[18px] mr-1" /> */}
                              <img      onClick={() =>
                                                   leaderboard(
                                                     quizItem.quiz_id,

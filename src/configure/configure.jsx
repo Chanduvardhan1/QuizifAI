@@ -94,6 +94,7 @@ const configure = () => {
 
   const handleGlobalLeaderboard = () => handleRestrictedClick1("/leaderboardall");
   const handleCreateOrganization = () => handleRestrictedClick2('/creatorganization')
+  const handleCreateOrganizationDepartment =()=> handleRestrictedClick2('/creatorganizationdeparment')
   const handleQuizMasterReport = () => handleRestrictedClick1('/quizmasterleaderboard')
   const handleAddUsersBulk = () => handleRestrictedClick('/excelcreat')
   const handleGlobalLeaderboard1 =() => handleRestrictedClick('/globalleaderboard')
@@ -161,7 +162,7 @@ const configure = () => {
       image:software,
       title: "Organization",
       content:
-        "Create Organization, Organization Profile, Organization Preferences, Settings",
+        "Create Organization, Create Organization Department, Organization Profile, Organization Preferences",
     },
     {
       id: 4,
@@ -432,7 +433,10 @@ const configure = () => {
                       : contentItem === "Create Organization" &&
                       item.title === "Organization"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
-                      : contentItem ==="Settings" &&
+                    : contentItem === "Create Organization Department" &&
+                    item.title === "Organization"
+                  ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
+                      : contentItem ==="Organization Preferences" &&
                       item.title === "Organization"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : ["Configuration", "Quizzes"].includes(item.title)
@@ -461,7 +465,7 @@ const configure = () => {
                       ? handleUsercrat
                       : contentItem === "Organization Profile"
                       ? handleProfile
-                      : contentItem === "Settings"
+                      : contentItem === "Organization Preferences"
                       ? handleSettings
                       : contentItem === "Question Bank"
                       ? handleQuestionBank
@@ -475,9 +479,10 @@ const configure = () => {
                       ? handleAddUsersBulk
                       : contentItem === "Create Organization"
                       ? handleCreateOrganization
+                      : contentItem === "Create Organization Department"
+                      ? handleCreateOrganizationDepartment
                       : contentItem === "Global Leaderboard"
                       ? handleGlobalLeaderboard1
-
                       : null
                   }
                 >

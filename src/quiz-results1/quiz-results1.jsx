@@ -1,7 +1,7 @@
 //import Head from 'next/head';
 //import img from "next/image";
 import styles from './quizresults1.module.css';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState ,useRef} from 'react';
 import ranksIcon from "../assets/Images/images/quizresults/ranks.png"; 
 import rank1Icon from "../assets/Images/images/quizresults/rank1.png";
 import rank2Icon from "../assets/Images/images/quizresults/rank2.png";
@@ -17,7 +17,7 @@ import iconA from "../assets/Images/images/questions/IconA.png";
 import iconB from "../assets/Images/images/questions/IconB.png";
 import iconC from "../assets/Images/images/questions/IconC.png";
 import iconD from "../assets/Images/images/questions/IconD.png";
-import dateIcon from "../assets/Images/images/quizview/date.png";
+// import dateIcon from "../assets/Images/images/quizview/date.png";
 import answerTimerIcon from "../assets/Images/images/quizresults/answerTimer.png"; 
 import rightIcon1 from "../assets/Images/images/quizresults/righticon.png"; 
 import wrongIcon from "../assets/Images/images/quizresults/wrong.png";
@@ -35,7 +35,7 @@ import saveIcon from "../assets/Images/images/quizview/save.png";
 import retakeIcon from "../assets/Images/images/quizview/retake.png"; 
 import optionsIcon from "../assets/Images/images/quizview/options.png";
 import categoryIcon from "../assets/Images/images/quiz-Access/category.png";
-import timeIcon from "../assets/Images/images/quiz-Access/time.png"; 
+// import timeIcon from "../assets/Images/images/quiz-Access/time.png"; 
 import botIcon from "../assets/Images/images/quizview/bot.png";
 import publicIcon from "../assets/Images/images/quizview/public.png";
 import startIcon from "../assets/Images/images/quiz-Access/start.png";
@@ -55,10 +55,28 @@ import fast from "../../src/assets/Images/images/quizresults/fast.png"
 
 import percentIcon1 from "../../src/assets/Images/images/quizresults/discount.png"; 
 import timeIcon1 from "../../src/assets/Images/images/quizresults/stopwatch1.png";
-import dateIcon1 from "../../src/assets/Images/images/quizresults/schedule.png";
+// import dateIcon1 from "../../src/assets/Images/images/quizresults/schedule.png";
 import current from "../../src/assets/Images/images/quizresults/faq.png"
 import average1 from "../../src/assets/Images/images/quizresults/average1.png"
 import questions from "../../src/assets/Images/images/quizresults/question-mark.png"
+import physics from "../../src/assets/Images/dashboard/quiz12.png"
+
+import close from "../../src/assets/Images/images/dashboard/cancel.png"
+import print1 from "../../src/assets/Images/dashboard/print.png"
+import trophy from "../../src/assets/Images/dashboard/trophy.png"
+import dateIcon from "../../src/assets/Images/images/quizresults/schedule.png";
+// import vector from "../../src/assets/Images/images/quizresults/icon-park_check-correct.png";
+// import current from "../../src/assets/Images/images/quizresults/faq.png";
+import timeIcon from "../../src/assets/Images/images/quizresults/stopwatch1.png";
+import correction from "../../public/correcticon.png";
+import Attemts from "../../src/assets/Images/dashboard/Attemts.png"
+import Quickest from "../../src/assets/Images/dashboard/image (15).png"
+import Badge from "../../src/assets/Images/dashboard/badge 1.png"
+import stars from "../../src/assets/Images/quiz-type/star.png"
+import timer from "../../src/assets/Images/quiz-type/Timer.png"
+import calander from "../../src/assets/Images/quiz-type/calander.png"
+import username from "../../src/assets/Images/quiz-type/username.png"
+import comment from "../../src/assets/Images/quiz-type/comment.png"
 
 const Questions = () => {
   const location = useLocation();
@@ -69,6 +87,7 @@ const Questions = () => {
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [quizData, setQuizData] = useState({});
   const [quizMetrics, setQuizMetrics] = useState({})
+  const resultRef = useRef();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -77,7 +96,7 @@ const Questions = () => {
         if (!authToken) {
           throw new Error('No authentication token found');
         }
-        const response = await fetch('https://dev.quizifai.com:8010/leaderboard_result', {
+        const response = await fetch('https://dev.quizifai.com:8010/leaderboard_result_for_user', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -119,203 +138,290 @@ const Questions = () => {
       fetchData();
     }
   }, [quizId]);
+
+  const handleBack = () => {
+    navigate("/dashboard")
+  };
+
 const topThree = leaderboardData.slice(0, 3);
   const remaining = leaderboardData.slice(0,10);
 
   return (
-    <div className={styles.container}>
-      
-      <Navigation/>
-      <div className={styles.mainContent}>
-       <div className={styles.mainContent1}>
-      
-        <div className={styles.titleContainer1}>
-      
-          <span className={styles.quizname}>{quizname}</span>
-          <p className={styles.quizdescription}>{quizdescription}</p>
-          
-        <div className={styles.flexrow}>
-          <div className={styles.Createdbyupdated}>
-          <div className={styles.Questions}>
+    <div className="flex w-full" >
 
-        <span className={styles.Question} >Questions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>{" "}
-        <span className={styles.username1} >{quizduration}</span>
-</div>
-<div>
+    <Navigation />
 
-<span className={styles.Question} >Total Marks&nbsp;&nbsp;: </span>{" "}
-  <span className={styles.username1} >{quizTotalMarks}</span>
-</div>
-        <div className={styles.Created}>
-
-        <span className={styles.Createdby} >Created By&nbsp;&nbsp;&nbsp;&nbsp;: </span>{" "}
-          <span className={styles.username} >{createdby}</span>
-        </div>
-        
-        <div>
-
-        <span className={styles.Createdby} >Created On&nbsp;&nbsp;&nbsp;&nbsp;: </span>{" "}
-          <span className={styles.username} >{quizcreatedate}</span>
-        </div>
-        </div>
-        <div className={styles.Questionslines }>
-      
-        <div>
-
-        <span className={styles.Question} >Duration: </span>{" "}
-          <span className={styles.username1} >{quizduration} min</span>
-        </div>
-       
-<div>
-
-<span className={styles.Question } >Pass Percentage : </span>{" "}
-  <span className={styles.username1} >{passPercentage}</span>
-</div>
-
-        </div>
-        <div className={styles.Questionslines }>
-      
-    
-
-<div>
-
-<span className={styles.Question } >Complexity :</span>{" "}
-  <span className={styles.username1} >{numberofquestions} </span>
-</div>
-        </div>
-        </div>
-        </div>
-        <div className={styles.horizontalLine}></div>
-
-        
-    <div className={styles.flexcontent} >
-      <div className={styles.flexcolumnecontent}>
-      <div className={styles.verticaliconsContainer}>
-          <img  className={styles.verticalicon4} style={{width:"80px" , height:"65px"}}
-         src={questions} />
-        <img
-    src={rankimage} 
-    alt="Icon 1"
-    className={styles.verticalicon1}
-  />
-  <h1 className={styles.rank1}>Your Rank</h1>
-      </div>
-<div className={styles.alldetails}>
-  <img className={styles.Allimg} src={sucess} alt="" />
-  <span  className={styles.Question}>Total Attempts1231234567 : </span>
-  <span className={styles.username1} >{quizattempts}</span>
-
-</div>
-
-<div className={styles.alldetails}>
-<img className={styles.Allimg}  src={timeIcon1} alt="" />
-<span  className={styles.Question}>Average Completion Time : </span>
-<span className={styles.username1} >{mincompletiontime} Min</span>
-
-</div>
-
-<div className={styles.alldetails}>
-  <img className={styles.Allimg} src={Top1} alt="" style={{ width:"42px", height:"44px",marginRight:"-10px",position:"relative",right:"5px"}}/>
-  <span  className={styles.Question}>Top Score : </span>
-  <span className={styles.username1} >{quizMetrics.highest_score}</span>
-
-</div>
-<div className={styles.alldetails}>
-<img className={styles.Allimg}  src={average1} a alt="" />
-<span  className={styles.Question}>Average Score : </span>
-<span className={styles.username1} >{avgscore}</span>
-
-</div>
-
-
-      </div>
-        <div className={styles.boxContainer1}>
-
-        <div className={styles.titles}>
-        <p className={styles.title}>Leaderboard </p>
-        </div>
-        <div className={styles.lines}>
-          <div className={styles.lines1}></div>
-          <div className={styles.lines2}> Top 10 Rankers</div>
-          <div className={styles.lines3}></div>
-        </div>
-        
-        <div className={styles.ranksiconsContainer}>
-          <img src={rank1Icon} alt="Icon 1" className={styles.rankicon2} />
-      
-          <img src={rank2Icon} alt="" className={styles.rankicon1} />
-          <img src={rank3Icon} alt="Rank 3 Icon" className={styles.rankicon3} />
-        </div>
-        <div className={styles.ranksiconsContainer1}>
-     <p className={styles.second}>1<span  className={styles.st}>st</span></p>
-        <p className={styles.fist}>2<span  className={styles.st}>nd</span></p> 
-      
-        <p className={styles.thired}>3<span  className={styles.st}>rd</span></p>
-        </div>
-        <div className={styles.innerBoxes1}>
-        <div className={styles.innerBox1} >
-        
-            
-            
-          </div>
-          <div className={styles.innerBox3}>
-          
-            
-          </div>
-        </div> 
-        <div className={styles.innerBoxes}>
-        {topThree.map((item, index) => (
-            <div
-              key={index}
-              className={styles[`innerBox${index + 1}`]}
-              style={{
-                width: "122px",
-                height: "93px",
-      
-              }}
-            >
-              
-              <span
-                className={styles[`textOverImage${index + 1}`]}
-                style={{ width: "100px" }}
-              >
-                {item.user_name}<br />
-                <span style={{ color: index === 0 ? "#e20000" : index === 1 ? "#e20000" : "#e20000" }}>{item.attained_percentage}%</span>
-              </span>
-            </div>
-          ))}
-        </div>
-       
-        
-      
-        <div className={styles.columns}>
-    <span className={styles.column}>Rank</span>
-    <span className={`${styles.column} ${styles.userName}`}>User Name</span>
-    <span className={styles.column}>Percentage</span>
-    <span className={styles.column}>Attempts</span>
-    <span className={styles.column}>Duration</span>
+    <div className="w-full p-5 pt-[60px]" ref={resultRef}>
+    {/* <div className={styles.back1} onClick={Back}><MdOutlineCancel /></div> */}
+    <div onClick={handleBack} className=" absolute top-5 right-5 cursor-pointer">
+      <img src={close} alt="" className="w-[25px] h-[25px]" />
+    </div>
+    <div className="flex w-full border-[#8cd18e] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-2 bg-white">
+  {/* Quiz Image */}
+  <div className="relative mr-2">
+    <img
+      src={physics}
+      alt="Quiz Cover"
+      className="w-[120px] h-[165px] rounded-md mr-4 cursor-pointer"
+    />
   </div>
-        
-  {remaining.map((item, index) => (
-         <div key={entry.rank} className={styles.values}>
-         <div className={`${styles.value} ${styles.rank}`}>{entry.rank}</div>
-         <div className={`${styles.value} ${styles.userName}`}>{entry.user_name}</div>
-         <div className={`${styles.value} ${styles.percentage}`}>{entry.attained_percentage}</div>
-         <div className={`${styles.value} ${styles.attempts}`}>{entry.attempts_count}</div>
-         <div className={`${styles.value} ${styles.duration}`}>{entry.attempt_duration_mins}</div>
+
+  {/* Quiz Details */}
+  <div className="flex flex-col w-full">
+    {/* Title */}
+    <div className="flex justify-between items-center">
+        <div>
+
+      <h2 className="text-lg font-semibold text-[#00008b]">{quizname}</h2>
+        </div>
+        <div className="flex gap-3">
+            <div className="flex gap-2">
+            <img src={trophy}
+             alt="" 
+            className="w-[18px] h-[18px] "   
+               />
+            <img src={print1}
+             alt="" 
+            className="w-[18px] h-[18px] "  />
+            </div>
+            <div className="flex">
+                <img src={stars}
+             alt="" 
+            className="w-[18px] h-[18px] "  
+             /> <img src={stars}
+             alt="" 
+            className="w-[18px] h-[18px]"  
+             />
+              <img src={stars}
+             alt="" 
+            className="w-[18px] h-[18px] "  
+             />
+              <img src={stars}
+             alt="" 
+            className="w-[18px] h-[18px]"  
+             />
+              <img src={stars}
+             alt="" 
+            className="w-[18px] h-[18px]"  
+             />
+              
+            </div>
+        </div>
+    </div>
+
+    {/* Description */}
+    <p className="text-[#00008b] w-[80%] line-clamp-2 text-sm mt-1">
+    {quizdescription}
+    </p>
+
+    {/* Meta Information */}
+    <div className="text-[#00008b] text-sm flex flex-wrap mt-3">
+      <span>Science</span>
+      <span className="mx-1">.</span>
+      <span>Physics</span>
+      <span className="mx-1">.</span>
+      <span>Class 10</span>
+      <span className="mx-1">.</span>
+      <span>CBSE</span>
+      <span className="mx-1">.</span>
+      <span>{numberofquestions}</span>
+    </div>
+
+    {/* Icons and Additional Info */}
+    <div className="flex-col items-center space-y-4 mt-3 text-[#00008b]">
+      {/* Author and Date */}
+      <div className="flex items-center space-x-10">
+        <div className="flex items-center">
+          <img
+           src={username}
+            alt="User"
+            className="w-[18px] h-[18px] mr-1"
+          />
+          <span className="ml-1 text-sm">{createdby}</span>
+        </div>
+        <div className="flex items-center">
+          <img
+            src={calander} 
+            alt="Calendar"
+            className="w-[18px] h-[18px] mr-1"
+          />
+          <span className="ml-1 text-sm">{quizcreatedate}</span>
+        </div>
+      </div>
+
+      {/* Quiz Info */}
+      <div className="flex items-center space-x-4">
+        <div className="flex items-center">
+          <img
+            src={comment}
+            alt="Questions"
+            className="w-[18px] h-[18px] mr-1"
+          />
+          <span className="ml-1 text-sm">{quizduration} Questions</span>
+        </div>
+        <div className="flex items-center">
+          <img
+            src={timer}
+            alt="Timer"
+            className="w-[18px] h-[18px] mr-1"
+          />
+          <span className="ml-1 text-sm">{quizduration} Minutes</span>
+        </div>
+        <div className="flex items-center">
+          <img
+            src={Attemts}
+            alt="Timer"
+            className="w-[18px] h-[18px] mr-1"
+          />
+          <span className="ml-1 text-sm">{quizattempts} Attemts</span>
+        </div>
+        <div className="flex items-center">
+          <img
+            src={Badge}
+            alt="Timer"
+            className="w-[18px] h-[18px] mr-1"
+          />
+          <span className="ml-1 text-sm">0% High Score</span>
+        </div>
+        <div className="flex items-center">
+          <img
+            src={Quickest}
+            alt="Timer"
+            className="w-[18px] h-[18px] mr-1"
+          />
+          <span className="ml-1 text-sm">0 Mins Quickest</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+   
+    <div className='flex w-full' >
+       <div class="w-[50%] text-center p-4">
+       <div class="">
+     
+         <div class="flex items-center justify-center">
+           <span class="inline-block h-[1px] bg-blue-900 w-[80px] mr-[5px]"></span>
+           <label class="text-[#d98b19] font-lato text-[18px] font-semibold">Your Attempt Details</label>
+           <span class="inline-block h-[1px] bg-blue-900 w-[80px] ml-[5px]"></span>
+         </div>
        </div>
-      ))}
-          </div>
-          </div>
-          
+     
+       <div class="relative flex justify-center flex-col items-center">
+         <img class="absolute h-[50.62px] w-[80.01px] top-[40%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 text-[50px] text-blue-900 font-bold font-lato" src={questions} />
+         <img class="h-[108.62px] w-[130.01px] flex justify-center" src={rankimage} alt="Icon 1" />
+         <span class="text-blue-900 font-medium font-lato text-[17px]">Your Rank</span>
+       </div>
+     
+       <div class="w-full flex items-center">
+       <div class="w-full flex justify-center items-center flex-col gap-4 sm:w-[100%]">
+       <div class="w-full flex items-center">
+         <img class="h-[30px] w-[30px]" src={sucess} alt="Calendar Icon" />
+         <span class="ml-2 font-lato text-blue-900">Total Attempts : </span>
+         <span class="ml-2 font-lato text-blue-500">{quizattempts}</span>
+       </div>
+       <div class="w-full flex items-center">
+         <img class="h-[30px] w-[30px]" src={timeIcon} alt="Clock Icon" />
+         <span class="ml-2 font-lato text-blue-900">Average Completion Time :  </span>
+         <span class="ml-2 font-lato text-blue-500">{mincompletiontime} Min</span>
+       </div>
+       <div class="w-full flex items-center">
+         <img class="h-[30px] w-[30px]" src={Top1} alt="Check Icon" />
+         <span class="ml-2 font-lato text-blue-900">Top Score :  </span>
+         <span class="ml-2 font-lato text-blue-500">{quizMetrics.highest_score}</span>
+       </div>
+       <div class="w-full flex items-center">
+         <img class="h-[30px] w-[30px]" src={current} alt="Question Icon" />
+         <span class="ml-2 font-lato text-blue-900">Average Score :   </span>
+         <span class="ml-2 font-lato text-blue-500">{avgscore}</span>
+       </div>
+     </div>
+    
+     
+         
+       </div>
+    
+     
+     </div>
+  
+
+
+<div className='flex flex-col justify-end px-2 items-center'>
+<div className=' w-[10px] rounded-full bg-[#00008b] h-[10px]'></div>
+<div className='h-[85%] w-[1px] bg-[#00008b]'></div>
+<div className=' w-[10px] rounded-full bg-[#00008b] h-[10px]'></div>
+
+</div>
+<div className=' w-full flex p-4  flex-col justify-between'>
+<div className="max-w-4xl rounded-md">
+<div class="">
+<div class="flex items-center justify-center  ">
+  <span class="inline-block h-[1px] bg-blue-900 w-full mr-[5px]"></span>
+  <label class="text-[#d98b19] flex w-[60%] font-lato text-[18px] items-center justify-center font-semibold">Top Performers</label>
+  <span class="inline-block h-[1px] bg-blue-900 w-full ml-[5px]"></span>
+</div>
+</div>
+
+  <div className="overflow-x-auto py-2">
+    <table className="table-auto w-full border-collapse border border-gray-300">
+      <thead className="bg-gray-100 font-bold text-[#00008b]">
+        <tr>
+        <th className="border-b border-gray-300 px-4 py-2 text-left">Rank</th>
+          <th className="border-b border-gray-300 px-4 py-2 text-left">Name</th>
+          <th className="border-b border-gray-300 px-4 py-2 text-center">Attempts</th>
+          <th className="border-b border-gray-300 px-4 py-2 text-left">Percentage</th>
+          <th className="border-b border-gray-300 px-4 py-2 text-left">Duration</th>
+          {/* <th className="border-b border-gray-300 px-4 py-2 text-center">Version</th> */}
+          <th className="border-b border-gray-300 px-4 py-2 text-left">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {leaderboardData.slice(0, 10).map((entry, index) => (
+          <tr
+          key={entry.rank}
+            className={`${
+              entry.current ? "bg-green-100" : ""
+            } hover:bg-gray-50 text-[#00008b]`}
+          >
+            <td className="border-b px-4 py-2">{entry.rank}</td>
+            <td className="border-b px-4 py-2">{entry.user_name}</td>
+            <td className="border-b px-4 py-2 text-center">{entry.attempts_count}</td>
+            <td className="border-b px-4 py-2">{entry.attained_percentage}%</td>
+            <td className="border-b px-4 py-2">{entry.attempt_duration_mins}</td>
+            {/* <td className="border-b px-4 py-2 text-center">{entry.version}</td> */}
+            <td className="border-b px-4 py-2">
+              {entry.created_date}
+             
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   </div>
   
-        </div>
-        <LogoutBar/>
-         
-      </div>
+</div>
+<div className=" text-right flex justify-end">
+    {/* <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
+      Leader Board
+    </button> */}
+    <button
+  // onClick={handleOnAnswer}
+  className="text-blue-900 text-sm bg-blue-200 border border-blue-900 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
+>
+   Leader Board
+  <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" />
+</button>
+  </div>
+</div>
+</div>
+
+
+
+   
+
+  </div>
       
-    
+      </div>
   );
 };
 

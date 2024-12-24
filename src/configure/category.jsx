@@ -506,7 +506,7 @@ const category = () => {
      
 
    
-    <LogoutBar />
+    {/* <LogoutBar /> */}
     </div>
     </>
     

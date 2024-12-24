@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect,useRef } from "react";
 import { Line } from "rc-progress";
+import Select from 'react-select';
 // import Switch from "react-switch";
 import { useNavigate } from "react-router-dom";
 import Navigation from "../navbar/navbar";
@@ -242,6 +243,15 @@ const [ isEditing ,setisEditing] = useState(false);
  const [instructions,setininstructions] = useState('Carefully read each question before selecting your answer. Answer all questions, even if you are not sure. If available, use the skip or review feature to mark questions you want to revisit later. Make sure to submit your answers before the timer ends. Quizzes may auto-submit, but it is best to double-check.')
   // Handle the upload of front or back 
   
+
+  const [modalMessage, setModalMessage] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
 //-------------****print quiz****-----------//
 const pdfRef1 = useRef(null);
 const inputReff = useRef(null);
@@ -635,6 +645,9 @@ useEffect(() => {
     setStep(6);
 
   };
+  const handleback =() =>{
+    navigate('/dashboard')
+  }
  const handeledit =()=> {
   setisEditing(true);
  }
@@ -1556,11 +1569,11 @@ const handleNext = async (file) => {
       console.log(responseData, "data");
   
       if (response.ok) {
-        setQuizId(responseData.data.quiz_id)
-        setQuizName(responseData.data.quiz_name)
-        // Assuming router and state setter are defined properly
-        // navigate("/quizcreated", { state: { quizData: responseData } });
-        setStep(5);
+        setModalMessage("Quiz created successfully!");
+      setIsError(false);
+      setShowModal(true);
+       setQuizId(responseData.data.quiz_id)
+       setQuizName(responseData.data.quiz_name)
       } else {
         if (responseData.detail) {
           if (
@@ -3033,6 +3046,13 @@ const handleTabClick = (tab) => {
                 >
                  {isSubmitting ? "Creating..." : "Create"}
                 </button>
+                <button
+            onClick={handleNextpage3}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Next
+            </button>
                 </div>
               </div>
             </div>
@@ -3202,7 +3222,7 @@ isMulti
 </div>
 </div>
 
-<div className="flex flex-col  gap-6 w-full">
+{/* <div className="flex flex-col  gap-6 w-full">
 <div className="flex flex-col w-full">
   <div className="w-full flex flex-row">
     <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
@@ -3212,8 +3232,7 @@ isMulti
                              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
 
                   placeholder="School"
-                  // value={quiztotalmarks}
-                  // onChange={(e) => setquiztotalmarks(e.target.value)}
+               
                 ></input>
   </div>
   <hr className="h-[1px] w-full" />
@@ -3225,16 +3244,11 @@ isMulti
     </label>
     <select
       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-      // value={selectedCourse}
-      // onChange={handleSelectCourse}
+
     >
       <option value="" disabled>Select a Class</option>
       <option value="">None</option>
-      {/* {courses.map((course) => (
-        <option key={course.course_id} value={course.course_name}>
-          {course.course_name}
-        </option>
-      ))} */}
+  
     </select>
   </div>
   <hr className="h-[1px] w-full" />
@@ -3246,16 +3260,10 @@ isMulti
     </label>
     <select
       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-      // value={selectedClass}
-      // onChange={handleSelectClass}
-      // disabled={classes.length === 0}
+
     >
       <option value="" disabled>Select a Section</option>
-      {/* {classes.map((className, index) => (
-        <option key={index} value={className}>
-          {className}
-        </option>
-      ))} */}
+  
     </select>
   </div>
   <hr className="h-[1px] w-full" />
@@ -3267,19 +3275,16 @@ isMulti
         </label>
         <FormControlLabel
         control={<Switch />} 
-        // label="Required"
           onChange={toggler1}
-        //   checked={multiAnswer}
           className="react-switch"
         />
         
       </div>
 
-{/* Section */}
 
 
 
-</div>
+</div> */}
 
 </div>
 
@@ -3619,7 +3624,7 @@ Skip
 </button>
   <button
            
-              className="px-[40px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+              className="px-[40px] ml-2 p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
 
             >
               Print
@@ -3649,6 +3654,30 @@ Skip
     </div>
     </> 
        )}
+          {showModal && (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div
+          className={`bg-white rounded-lg shadow-lg p-6 w-96 text-center ${
+            isError ? "border-red-500" : "border-green-500"
+          } border-t-4`}
+        >
+          <h2
+            className={`text-xl font-semibold ${
+              isError ? "text-red-500" : "text-green-500"
+            }`}
+          >
+            {isError ? "Error" : "Success"}
+          </h2>
+          <p className="mt-2 text-gray-700">{modalMessage}</p>
+          <button
+            onClick={closeModal}
+            className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    )}
  </main>
 )}
  </> 

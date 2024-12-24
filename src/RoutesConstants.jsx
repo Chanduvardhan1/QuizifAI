@@ -101,6 +101,7 @@ import Userslist from "./configure/userslist.jsx";
 // import Resetpassword from "./reset-password/restpassword.jsx";
 import QuizAccess1 from "./quizaccess1/quizaccess1.jsx";
 import Creatorganization from "./configure/creatorganization.jsx";
+import Creatorganizationdeparment from "./configure/Createorznizationdepartment.jsx";
 import Quizmasterleaderboard from "./Quiz_master_leaderboard/quizleaderboard.jsx";
 import Assignquiz from "./assignquiz/assignquiz.jsx";
 
@@ -157,6 +158,11 @@ export default () => {
         {
             path:'creatorganization',
             component:Creatorganization,
+            isPrivate: true
+        },
+        {
+            path:'creatorganizationdeparment',
+            component:Creatorganizationdeparment,
             isPrivate: true
         },
         {

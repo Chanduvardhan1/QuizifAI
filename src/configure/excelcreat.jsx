@@ -64,7 +64,7 @@ const excelcreat = () => {
           <img src={close} alt="" className="w-[25px] h-[25px]" />
         </div>
     <div className="flex"> 
-      <h1 className=" font-semibold text-[20px] text-[#214082]">Creat Users</h1>
+      <h1 className=" font-semibold text-[20px] text-[#214082]">Create Users</h1>
     </div>
   
     <div className="flex  justify-center p-1"> 

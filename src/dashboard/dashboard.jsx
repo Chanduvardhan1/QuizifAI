@@ -1236,15 +1236,18 @@ const Dashboard = () => {
                                                       )
                                                     } src={view1} className="w-[18px] cursor-pointer h-[18px] mr-1" />
                                 <img src={leader}
-                                  onClick={() =>
-                                                      leaderboard1(
-                                                        quizItem.quiz_id,
-                                                        quizItem.quiz_level_attempt_id,
-                                                        quizItem.complexity,
-                                                        quizItem.quiz_duration,
-                                                        quizItem.pass_percentage
-                                                      )
-                                                    } className="w-[18px] cursor-pointer h-[18px] mr-1" />
+                                     onClick={() =>
+                                                        leaderboard1(
+                                                          quizItem.quiz_id,
+                                                          quizItem.quiz_level_attempt_id,
+                                                          quizItem.complexity,
+                                                          quizItem.quiz_duration,
+                                                          quizItem.pass_percentage
+                                                        )
+                                                      }
+                                
+                               
+                               className="w-[18px] cursor-pointer h-[18px] mr-1" />
                                 <img src={print1} className="w-[18px] h-[18px] mr-1" />
                       
                               </div>
@@ -1950,13 +1953,13 @@ alt="Disable icon"
  </div>
  <div className="flex items-end justify-end ">
    <div className="flex items-end">
-     <img
+     {/* <img
        onClick={() =>
                            quizresults(
                              quizItem.quiz_id,
                              quizItem.quiz_level_attempt_id
                            )
-                         } src={view1} className="w-[18px] cursor-pointer h-[18px] mr-1" />
+                         } src={view1} className="w-[18px] cursor-pointer h-[18px] mr-1" /> */}
      <img src={leader}
              onClick={() =>
                               leaderboard(
@@ -2368,8 +2371,12 @@ alt="Disable icon"
                 const quizEndDate = quizItem.quiz_end_date
                   ? new Date(quizItem.quiz_end_date)
                   : null;
+                  const isQuizMaster = userRole === "Quiz Master";
+                  const isActiveForOthers =
+                    quizItem.active_flag?.toLowerCase() === "true" ||
+                    quizItem.active_flag?.toLowerCase() === "y";
                 return (
-                  (quizItem.active_flag?.toLowerCase() === "i" || quizItem.active_flag?.toLowerCase() === "true") &&
+                  (isQuizMaster || isActiveForOthers) && 
                   // quizItem.active_flag === "true" &&
                   quizItem.popularity_flag === "Y" &&
                   currentDate >= quizCreateDate &&
@@ -2780,22 +2787,23 @@ alt="Disable icon"
                             <div className="flex items-end justify-end ">
                               <div className="flex items-end">
                                 <img
-                                  onClick={() =>
-                                                      quizresults(
-                                                        quizItem.quiz_id,
-                                                        quizItem.quiz_level_attempt_id
-                                                      )
-                                                    } src={view1} className="w-[18px] h-[18px] mr-1" />
+                                //  onClick={() =>
+                                //                       quizresults(
+                                //                         quizItem.quiz_id,
+                                //                         quizItem.quiz_level_attempt_id
+                                //                       )
+                                //                     } 
+                                 src={view1} className="w-[18px] h-[18px] mr-1" />
                                 <img src={leader}
-                                  onClick={() =>
-                                                      leaderboard1(
-                                                        quizItem.quiz_id,
-                                                        quizItem.quiz_level_attempt_id,
-                                                        quizItem.complexity,
-                                                        quizItem.quiz_duration,
-                                                        quizItem.pass_percentage
-                                                      )
-                                                    } className="w-[18px] h-[18px] mr-1" />
+                                onClick={() =>
+                                  leaderboard1(
+                                    quizItem.quiz_id,
+                                    quizItem.quiz_level_attempt_id,
+                                    quizItem.complexity,
+                                    quizItem.quiz_duration,
+                                    quizItem.pass_percentage
+                                  )
+                                } className="w-[18px] h-[18px] mr-1" />
                                 <img src={print1} className="w-[18px] h-[18px] mr-1" />
                       
                               </div>
@@ -3436,13 +3444,13 @@ src={quizItem.photo1 || back}
  </div>
  <div className="flex items-end justify-end ">
    <div className="flex items-end">
-     <img
+     {/* <img
        onClick={() =>
                            quizresults(
                              quizItem.quiz_id,
                              quizItem.quiz_level_attempt_id
                            )
-                         } src={view1} className="w-[18px] cursor-pointer h-[18px] mr-1" />
+                         } src={view1} className="w-[18px] cursor-pointer h-[18px] mr-1" /> */}
      <img src={leader}
              onClick={() =>
                               leaderboard(

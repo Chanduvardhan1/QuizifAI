@@ -1094,54 +1094,54 @@ export default function editmanuly() {
   };
 
 
-  // const handleNumQuestionsChange = (e) => {
-  //   const value = parseInt(e.target.value, 10);
-  //   setNumQuestions(value);
-  //   updateQuestionWeightage(quiztotalmarks, value);
+  const handleNumQuestionsChange = (e) => {
+    const value = parseInt(e.target.value, 10);
+    setNumQuestions(value);
+    updateQuestionWeightage(quiztotalmarks, value);
 
-  //   if (value >= quizData.questions.length) {
-  //     // If increasing or equal to the originally fetched number of questions
-  //     const newQuestions = quizData.questions.slice(0, quizData.questions.length).map(question => ({
-  //       ...question,
-  //       options: [
-  //         { answer_option_text: question.quiz_ans_option_1_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_1_text },
-  //         { answer_option_text: question.quiz_ans_option_2_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_2_text },
-  //         { answer_option_text: question.quiz_ans_option_3_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_3_text },
-  //         { answer_option_text: question.quiz_ans_option_4_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_4_text }
-  //       ],
-  //       question_duration: question.question_duration || 0, // Provide default value if missing
-  //     }));
+    if (value >= quizData.questions.length) {
+      // If increasing or equal to the originally fetched number of questions
+      const newQuestions = quizData.questions.slice(0, quizData.questions.length).map(question => ({
+        ...question,
+        options: [
+          { answer_option_text: question.quiz_ans_option_1_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_1_text },
+          { answer_option_text: question.quiz_ans_option_2_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_2_text },
+          { answer_option_text: question.quiz_ans_option_3_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_3_text },
+          { answer_option_text: question.quiz_ans_option_4_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_4_text }
+        ],
+        question_duration: question.question_duration || 0, // Provide default value if missing
+      }));
 
-  //     for (let i = quizData.questions.length; i < value; i++) {
-  //       // Add empty question structure for new questions
-  //       newQuestions.push({
-  //         quiz_question_id: `new_question_${i + 1}`,
-  //         quiz_question_text: '',
-  //         question_duration: 0, // Default value for new questions
-  //         options: [
-  //           { answer_option_text: '', correct_answer_flag: false },
-  //           { answer_option_text: '', correct_answer_flag: false },
-  //           { answer_option_text: '', correct_answer_flag: false },
-  //           { answer_option_text: '', correct_answer_flag: false }
-  //         ]
-  //       });
-  //     }
-  //     setQuestions(newQuestions);
-  //   } else {
-  //     // If decreasing, retain the originally fetched questions up to the new value
-  //     const updatedQuestions = quizData.questions.slice(0, value).map(question => ({
-  //       ...question,
-  //       options: [
-  //         { answer_option_text: question.quiz_ans_option_1_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_1_text },
-  //         { answer_option_text: question.quiz_ans_option_2_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_2_text },
-  //         { answer_option_text: question.quiz_ans_option_3_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_3_text },
-  //         { answer_option_text: question.quiz_ans_option_4_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_4_text }
-  //       ],
-  //       question_duration: question.question_duration || 0, // Provide default value if missing
-  //     }));
-  //     setQuestions(updatedQuestions);
-  //   }
-  // };
+      for (let i = quizData.questions.length; i < value; i++) {
+        // Add empty question structure for new questions
+        newQuestions.push({
+          quiz_question_id: `new_question_${i + 1}`,
+          quiz_question_text: '',
+          question_duration: 0, // Default value for new questions
+          options: [
+            { answer_option_text: '', correct_answer_flag: false },
+            { answer_option_text: '', correct_answer_flag: false },
+            { answer_option_text: '', correct_answer_flag: false },
+            { answer_option_text: '', correct_answer_flag: false }
+          ]
+        });
+      }
+      setQuestions(newQuestions);
+    } else {
+      // If decreasing, retain the originally fetched questions up to the new value
+      const updatedQuestions = quizData.questions.slice(0, value).map(question => ({
+        ...question,
+        options: [
+          { answer_option_text: question.quiz_ans_option_1_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_1_text },
+          { answer_option_text: question.quiz_ans_option_2_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_2_text },
+          { answer_option_text: question.quiz_ans_option_3_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_3_text },
+          { answer_option_text: question.quiz_ans_option_4_text || '', correct_answer_flag: question.correct_option_text === question.quiz_ans_option_4_text }
+        ],
+        question_duration: question.question_duration || 0, // Provide default value if missing
+      }));
+      setQuestions(updatedQuestions);
+    }
+  };
 
 
   // const handleNumQuestionsChange = (e) => {
@@ -1159,15 +1159,15 @@ export default function editmanuly() {
   //   }
   // };
 
-  const handleNumQuestionsChange = (e) => {
-    const value = parseInt(e.target.value, 10);
-    if (value > questions.length) {
-      setErrorMessage('The number of questions cannot exceed the fetched questions.');
-    } else {
-      setNumQuestions(value);
-      setErrorMessage('');
-    }
-  };
+  // const handleNumQuestionsChange = (e) => {
+  //   const value = parseInt(e.target.value, 10);
+  //   if (value > questions.length) {
+  //     setErrorMessage('The number of questions cannot exceed the fetched questions.');
+  //   } else {
+  //     setNumQuestions(value);
+  //     setErrorMessage('');
+  //   }
+  // };
   const toggleQuestionSelection = (index) => {
     setSelectedQuestions(prevSelected => {
       if (prevSelected.includes(index)) {

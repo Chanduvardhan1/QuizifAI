@@ -201,7 +201,7 @@ const leaderboard = () => {
       console.error('No authentication token found. Please log in again.');
       return;
     }
-        const response = await fetch('https://dev.quizifai.com:8010/leaderboard_result', {
+        const response = await fetch('https://dev.quizifai.com:8010/leaderboard_result_for_user', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -514,7 +514,7 @@ const handleBack = () => {
                 onClick={() => setCurrentQuestionIndex(index)} // Set selected question index
                 className={`cursor-pointer w-8 h-8 flex items-center justify-center border-[1px] text-sm font-medium ${
                   index === currentQuestionIndex
-                    ? 'bg-green-100 text-white' // Highlight selected question
+                    ? 'bg-[#85b4e9] text-white' // Highlight selected question
                     : isCorrect
                     ? 'bg-[#c9e4ca] text-black' // Correct answer (green)
                     : isWrong
@@ -692,6 +692,10 @@ const handleBack = () => {
 
     </div>
     {/* <LogoutBar /> */}
+
+
+
+ 
   </div>
       
     

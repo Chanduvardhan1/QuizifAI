@@ -52,7 +52,7 @@ const fetchOrganizationUsers = async () => {
       }
 
       const response = await fetch(
-        `https://dev.quizifai.com:8010/get_organization_nrml_usrs?org_id=${orgId}`,
+        `https://dev.quizifai.com:8010/get_organization_nrml_usrs?org_id=${52}`,
         {
           method: "POST",
           headers: {
@@ -87,6 +87,88 @@ const fetchOrganizationUsers = async () => {
   }, []);
 
   
+    // --------------***Edit users*** -------------- //
+    const [isEditing, setIsEditing] = useState(false);
+    const [firstName, setFirstName] = useState('');
+    const [middleName, setMiddleName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [userEmail, setUserEmail] = useState('');
+    const [selectedRole, setSelectedRole] = useState('');
+    
+    const handleEdit = (user) => {
+      setFirstName(user.user_name || '');
+      setMiddleName(user.middle_name || '');
+      setLastName(user.last_name || '');
+      setUserEmail(user.user_email || '');
+      setSelectedRole(user.role_name); // Preselect the role based on user data
+
+      
+      // setSelectedRoleId(user.user_role_id); // Preselect the role based on user data
+      setIsEditing(true);
+    };
+
+    const handleSave = () => {
+      const updatedUser = {
+        firstName,
+        middleName,
+        lastName,
+        userEmail,
+        selectedRole,
+      };
+      console.log(updatedUser);
+      setIsEditing(false);
+    };
+    
+
+
+    // roles linst fetch //
+
+const [roles, setRoles] = useState([]); // To store roles from API
+const [selectedRoleId, setSelectedRoleId] = useState(null); 
+
+useEffect(() => {
+  const fetchRoles = async () => {
+    try {
+      const authToken = localStorage.getItem("authToken");
+
+      if (!authToken) {
+        console.error("No authentication token found");
+        return;
+      }
+      const response = await fetch('https://dev.quizifai.com:8010/roles/', {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+        },
+      });
+      const result = await response.json();
+      if (result.response === 'success') {
+        setRoles(result.data); // Store roles in state
+      } else {
+        console.error('Failed to fetch roles:', result.response_message);
+      }
+    } catch (error) {
+      console.error('Error fetching roles:', error);
+    }
+  };
+
+  fetchRoles();
+}, []);
+
+const handleRoleChange = (e) => {
+  const selectedId = e.target.value;
+  setSelectedRoleId(selectedId);
+  // console.log('Selected Role ID:', selectedId);
+};
+
+// roles linst fetch end //
+
+
+    // --------------***Edit users END*** -------------- //
+
+
+
 
     // --------------***view image*** -------------- //
 const [photo, setPhoto] = useState(''); // State to store the image URL
@@ -266,7 +348,7 @@ const [loading, setLoading] = useState(true);
                       className="h-[13px] w-[13px] mr-1 cursor-pointer"
                       src={Edit}
                       alt="Edit"
-                      onClick={() => handleEdit(group)}
+                      onClick={() => handleEdit(user)}
                     />
                     <button className="flex text-orange-500 w-[30px] h-[30px]">
                       <RiDeleteBinLine />
@@ -277,7 +359,97 @@ const [loading, setLoading] = useState(true);
           ))}
         </tbody>
       </table>
+   
+
     </div>
+    {isEditing && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+ <div className="flex flex-col bg-white p-6 shadow-lg rounded-lg w-[50%]">
+ <button
+        className="flex justify-end text-gray-900 hover:text-gray-800"
+        onClick={() => setIsEditing(false)}
+        aria-label="Close"
+      >
+        ✕
+      </button>
+ <h2 className="text-xl font-semibold text-blue-800 mb-4">Edit User Details</h2>
+
+    {/* First Name */}
+    <div className="flex flex-row mb-4">
+      <label className="w-1/4 text-blue-800 font-semibold">First Name<span className="text-red-500">*</span></label>
+      <input
+        className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+        type="text"
+        value={firstName}
+        onChange={(e) => setFirstName(e.target.value)}
+      />
+    </div>
+
+    {/* Middle Name */}
+    <div className="flex flex-row mb-4">
+      <label className="w-1/4 text-blue-800 font-semibold">Middle Name</label>
+      <input
+        className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+        type="text"
+        value={middleName}
+        onChange={(e) => setMiddleName(e.target.value)}
+      />
+    </div>
+
+    {/* Last Name */}
+    <div className="flex flex-row mb-4">
+      <label className="w-1/4 text-blue-800 font-semibold">Last Name<span className="text-red-500">*</span></label>
+      <input
+        className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+        type="text"
+        value={lastName}
+        onChange={(e) => setLastName(e.target.value)}
+      />
+    </div>
+
+    {/* Email */}
+    <div className="flex flex-row mb-4">
+      <label className="w-1/4 text-blue-800 font-semibold">Email<span className="text-red-500">*</span></label>
+      <input
+        className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+        type="email"
+        value={userEmail}
+        onChange={(e) => setUserEmail(e.target.value)}
+      />
+    </div>
+
+    {/* Role */}
+    <div className="flex flex-row mb-4">
+  <label className="w-1/4 text-blue-800 font-semibold">
+    Role<span className="text-red-500">*</span>
+  </label>
+  <select
+    className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+    value={selectedRole || ""} // Ensure the selected role name is displayed
+    onChange={(e) => setSelectedRole(e.target.value)} // Update state with selected role
+  >
+    <option value="" disabled>Select a Role</option>
+    {roles
+      .filter((role) => role.role_name !== "Super Admin" && role.role_name !== "Admin") // Filter out restricted roles
+      .map((role, index) => (
+        <option key={index} value={role.role_name}> {/* Use role_name as the value */}
+          {role.role_name}
+        </option>
+      ))}
+  </select>
+</div>
+
+
+    {/* Submit Button */}
+    <button
+      className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+      onClick={handleSave}
+    >
+      Save Changes
+    </button>
+  </div>
+    </div>
+)}
 {/* 
         <LogoutBar /> */}
       </div>

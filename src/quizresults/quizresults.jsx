@@ -513,7 +513,7 @@ const quizresults = () => {
                   onClick={() => setCurrentQuestionIndex(index)} // Set selected question index
                   className={`cursor-pointer w-8 h-8 flex items-center justify-center border-[1px] text-sm font-medium ${
                     index === currentQuestionIndex
-                      ? 'bg-green-100 text-white' // Highlight selected question
+                      ? 'bg-[#85b4e9] text-white' // Highlight selected question
                       : isCorrect
                       ? 'bg-[#c9e4ca] text-black' // Correct answer (green)
                       : isWrong

@@ -2628,18 +2628,16 @@ isMulti
     File <span className="text-red-500"></span>
     </label>
     <input
-                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-
-                  placeholder="File"
-                  type="file"
-          onChange={(e) => setFile(e.target.files[0])}
-                ></input>
+      className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+      placeholder="File"
+      type="file"
+      onChange={(e) => setFile(e.target.files[0])}>
+      </input>
   </div>
   <hr className="h-[1px] w-full" />
 </div>
 </div>
-{/* 
-<div className="flex flex-col  gap-6 w-full">
+{/* <div className="flex flex-col  gap-6 w-full">
 <div className="flex flex-col w-full">
   <div className="w-full flex flex-row">
     <label className="w-[20%] text-blue-800 font-semibold mb-2 ">

@@ -39,6 +39,9 @@ import dateIcon from "../../src/assets/Images/images/quizresults/schedule.png";
 import vector from "../../src/assets/Images/images/quizresults/icon-park_check-correct.png";
 import current from "../../src/assets/Images/images/quizresults/faq.png";
 import timeIcon from "../../src/assets/Images/images/quizresults/stopwatch1.png";
+import Attemts from "../../src/assets/Images/dashboard/Attemts.png"
+import Quickest from "../../src/assets/Images/dashboard/image (15).png"
+import Badge from "../../src/assets/Images/dashboard/badge 1.png"
 
 const performers = [
   { id: 1, name: "Ram M Reddy", attempts: 2, score: "94.34 %", duration: "01:03:30", version: "03", date: "03-Sep-2024" },
@@ -120,7 +123,7 @@ const Samplequiz = () => {
         <div className="flex justify-between items-center">
             <div>
 
-          <h2 className="text-lg font-semibold text-[#00008b]">Quiz Title-- NCERT Class 10, Physics Quiz</h2>
+          <h2 className="text-lg font-semibold text-[#00008b]">Current Affairs</h2>
             </div>
             <div className="flex gap-3">
                 <div className="flex gap-2">
@@ -159,20 +162,20 @@ const Samplequiz = () => {
 
         {/* Description */}
         <p className="text-[#00008b] w-[80%] line-clamp-2 text-sm mt-1">
-        The definition of physics is the study of the physical plane of matter, motion, force, and energy.
+        Test your knowledge with QuizifAI Current Affairs quiz stay updated on global events and trends!
         </p>
 
         {/* Meta Information */}
         <div className="text-[#00008b] text-sm flex flex-wrap mt-3">
-          <span>Science</span>
+          <span>General</span>
           <span className="mx-1">.</span>
-          <span>Physics</span>
+          <span>General</span>
           <span className="mx-1">.</span>
-          <span>Class 10</span>
+          <span>General</span>
           <span className="mx-1">.</span>
-          <span>CBSE</span>
+          <span>General</span>
           <span className="mx-1">.</span>
-          <span>Intermediate</span>
+          <span>Simple</span>
         </div>
 
         {/* Icons and Additional Info */}
@@ -198,14 +201,14 @@ const Samplequiz = () => {
           </div>
 
           {/* Quiz Info */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-10">
             <div className="flex items-center">
               <img
                 src={comment}
                 alt="Questions"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">20 Questions</span>
+              <span className="ml-1 text-sm">5 Questions</span>
             </div>
             <div className="flex items-center">
               <img
@@ -213,19 +216,19 @@ const Samplequiz = () => {
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">30 Minutes</span>
+              <span className="ml-1 text-sm">5 Minutes</span>
             </div>
             <div className="flex items-center">
               <img
-                src={Playbutton}
+                src={Attemts}
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">30 Attemts</span>
+              <span className="ml-1 text-sm">1 Attemts</span>
             </div>
             <div className="flex items-center">
               <img
-                src={timer}
+                src={Badge}
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />

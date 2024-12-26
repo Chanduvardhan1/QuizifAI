@@ -210,102 +210,103 @@ const classes = () => {
   };
   return (
     <>
-    <div className='flex w-full font-Poppins'>
-    <Navigation/> 
-    <div className='flex w-full flex-col'>
-    <div className='flex justify-end mt-[30px]'>
-        <div className='w-[137px] h-[30px] rounded-[10px] bg-[#F7E0E3] mr-[10px]'>
-          <div className="flex"onClick={toggleNavbar} >
-            <img className="w-[20px] h-[20px] ml-2 mt-1" src={Plus} alt="Plus Icon" />
-            <a className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-1.5">
-            Class
-            </a>
-          </div>
-        </div>
-        <img onClick={handleBanckToDashbaord} className='h-4 w-4 cursor-pointer mt-[6px] mr-6' title='close settings' src={cancel} />
+
+    <div className='flex w-full flex-col gap-2'>
+    <div className='flex justify-end pt-2'>
+    
+        <div className="flex items-center pr-[20px] py-1 rounded-[10px] bg-[#F7E0E3] cursor-pointer" onClick={toggleNavbar}>
+    <img className="w-[20px] h-[20px] ml-2" src={Plus} alt="Plus Icon" />
+    <span className="hover:underline underline-offset-2 font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2">
+    Class
+    </span>
+  </div>
       </div>
       {isNavbarOpen && (
-        <div className='text-[10px] mx-[10px] text-[#214082] h-[50px] mt-[30px] rounded-md bg-[#CBF2FB] flex flex-row justify-around p-4'>
-          <input
-            type='text'
-            placeholder='Class ID'
-            value={classId}
-            onChange={(e) => setClassId(e.target.value)}
-            className=' w-[100px] -mt-[10px] text-center rounded-3xl py-[14px] pl-1 text-[#214082] placeholder:text-[#214082] outline-[#214082]'
-            style={{ '::placeholder': { color: '#214082' } }}
-            readOnly
-          />
-          <input
-            type='text'
-            placeholder='Class Name'
-            value={className}
-            onChange={(e) => setClassName(e.target.value)}
-            className=' w-[120px] rounded-3xl text-center -mt-[10px]  py-[14px] text-[#214082] placeholder:text-[#214082] outline-[#214082]'
-          />
-     
-  
-        
-     <select
-      className="rounded-3xl text-center -mt-[10px] w-[150px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
-      value={specializationId}
-      onChange={handleSpecializationChange}
-    >
-      <option value="">Select a specialization</option>
-      {courses.map(course => 
-        course.specializations.map(specialization => (
-          <option key={specialization.specialization_id} value={specialization.specialization_id}>
-            {specialization.specialization_name}
+      <div className="bg-[#CBF2FB] text-[#214082] rounded-md text-[14px] p-4 flex flex-col md:flex-row items-center gap-4">
+      <input
+        type="text"
+        placeholder="Class ID"
+        value={classId}
+        onChange={(e) => setClassId(e.target.value)}
+        className="rounded-3xl w-[7%] py-1 px-4 text-center placeholder:text-[#214082] outline-[#214082]"
+        style={{ '::placeholder': { color: '#214082' } }}
+        readOnly
+      />
+      <input
+        type="text"
+        placeholder="Class"
+        value={className}
+        onChange={(e) => setClassName(e.target.value)}
+        className="rounded-3xl w-[15%] py-1 px-4 text-center placeholder:text-[#214082] outline-[#214082]"
+      />
+       <input
+        type="text"
+        placeholder="Section"
+        value={className}
+        onChange={(e) => setClassName(e.target.value)}
+        className="rounded-3xl w-[15%] py-1 px-4 text-center placeholder:text-[#214082] outline-[#214082]"
+      />
+         <select
+        className="rounded-3xl w-[25%] py-1 px-4 text-center placeholder:text-[#214082] outline-[#214082]"
+        value={courseId}
+        onChange={handleCourseChange}
+      >
+        <option value="">Select a course</option>
+        {courses.map((course) => (
+          <option key={course.course_id} value={course.course_id}>
+            {course.course_name}
           </option>
-        ))
-      )}
-    </select>
+        ))}
+      </select>
+      <select
+        className="rounded-3xl w-[25%] py-1 px-4 text-center placeholder:text-[#214082] outline-[#214082]"
+        value={specializationId}
+        onChange={handleSpecializationChange}
+      >
+        <option value="">Select a specialization</option>
+        {courses.map((course) =>
+          course.specializations.map((specialization) => (
+            <option key={specialization.specialization_id} value={specialization.specialization_id}>
+              {specialization.specialization_name}
+            </option>
+          ))
+        )}
+      </select>
+   
+      <button
+        onClick={handleSubmit}
+        className="bg-[#214082] text-white py-1 px-6 rounded-3xl flex items-center justify-center"
+      >
+        {isEditing ? 'Update' : 'Add'}
+      </button>
+    </div>
     
-    
-        
-       <select
-  className="rounded-3xl text-center -mt-[10px] w-[150px] text-[#214082] placeholder:text-[#214082] outline-[#214082]"
-  value={courseId}
-  onChange={handleCourseChange}
-
->
-  <option value="">Select a course</option>
-  {courses.map((course) => (
-    <option key={course.course_id} value={course.course_id}>
-      {course.course_name}
-    </option>
-  ))}
-</select>
-         
-         <button
-onClick={handleSubmit}
-  className='bg-[#214082] w-[80px] -mt-[10px] ml-[20px] py-[14px] rounded-3xl text-white flex items-center justify-center'
->
-  {isEditing ? 'Update' : 'Add'}
-</button>
-        </div>
       )}
       
 
-      <table className='h-[20px] table-auto mt-[30px] mx-[20px] rounded text-left bg-[#F7E0E3] text-[#2b51a1] text-[13px] font-light'>
+      <table className='h-[20px] table-auto  rounded text-left bg-[#F7E0E3] text-[#2b51a1] text-[14px] font-light'>
         <thead>
           <tr className='h-[50px]'>
             <th className='px-4 py-2 text-nowrap'>Class ID</th>
-            <th className='pl-[10px] ml-[15px] py-2'>Class Name</th>
+            <th className='px-4  py-2'>Class Name</th>
+            <th className='px-4  py-2'>Section</th>
             <th className='px-4 py-2 text-nowrap'>Specialization</th>
             <th className='px-2 py-2 text-wrap'>Courses</th>
-            <div className='flex -mt-[5px]'>
+            <th className='px-4 py-2 text-nowrap'>
+            <div className='flex justify-center items-center '>
             <input
-                className='mt-[15px] text-[10px] pl-[30px] pr-[10px] rounded-[20px] h-[28px] mr-[10px] w-fit bg-[#FFFFFF] text-left placeholder-[#214082] border-none focus:border-none outline-none'
+                className=' text-[10px] pl-[30px] pr-[10px] rounded-[20px] h-[28px] mr-[10px] w-fit bg-[#FFFFFF] text-left placeholder-[#214082] border-none focus:border-none outline-none'
                 type='text'
                 placeholder='Search'
                 value={searchInput}
               onChange={e => setSearchInput(e.target.value)}
             />
             <img
-                className='h-[12px] w-[12px] relative top-[25px] right-[160px]'
+                className='h-[12px] w-[12px] relative top-[2px] right-[155px]'
                 src={searchIcon}
                />
           </div>
+          </th>
           </tr>
         </thead>
         <tbody  className='bg-white border-gray-500 '>
@@ -325,6 +326,15 @@ onClick={handleSubmit}
       ))}
 
               </td>
+              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
+             
+             {course.classes.map((cls) => (
+       <div key={cls.class_id}>
+         {cls.class_name}
+       </div>
+     ))}
+
+             </td>
               <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>  {course.specializations.map((specialization) => (
         <div key={specialization.specialization_id}>
           {specialization.specialization_name}
@@ -359,8 +369,7 @@ onClick={handleSubmit}
      
 
    
-    {/* <LogoutBar /> */}
-    </div>
+
     </>
     
     

@@ -105,6 +105,8 @@ import Creatorganizationdeparment from "./configure/Createorznizationdepartment.
 import Quizmasterleaderboard from "./Quiz_master_leaderboard/quizleaderboard.jsx";
 import Assignquiz from "./assignquiz/assignquiz.jsx";
 
+import Education from "./configure/education.jsx";
+
 export default () => {
     return [
         {
@@ -118,6 +120,11 @@ export default () => {
         {
             path:'institution',
             component:Institution,
+            isPrivate: true
+        },
+        {
+            path:'education',
+            component:Education,
             isPrivate: true
         },
         {

@@ -479,7 +479,7 @@ const handleSubmit1 = async (e) => {
       department_description: orgdescription,
       active_flag: true,
       organization_id: orgId, // Replace with actual value
-      department_head_id: userId,
+      department_head_id: selectedUsers1,
       users_for_deartments: selectedUsers.map((user) => user.value),
     };
   
@@ -540,12 +540,23 @@ const handleEdit = (dept) => {
     // Preselect users for this department
     const preselectedUsers = dept.users.map((user) => ({
       value: user.user_id,
-      label: user.user_name || `User ID: ${user.user_id}`,
+      label:  `${user.user_name} (ID: ${user.user_id})`,
     }));
   
     setSelectedUsers(preselectedUsers);
+    setSelectedUsers1(dept.department_head?.user_id || "");
+
+
+    // const preselectedUsers1 = [
+    //   {
+    //     value: dept.department_head?.user_id || "",
+    //     label: dept.department_head?.user_name || "No Head Assigned",
+    //   },
+    // ];
+  
+    // setSelectedUsers1(preselectedUsers1);
+
     setSelectedUsers2(preselectedUsers);
-    setSelectedUsers1(dept.department_head_id); // Set the department head
   };
   
   
@@ -565,7 +576,7 @@ const handleSubmit = async () => {
         organization_id: orgId, // Provide actual organization ID
         department_head_id: selectedUsers1, // Head user ID
         users_for_deartments: selectedUsers.map((user) => user.value), // Selected employees
-        remove_users: selectedUsers.map((user) => user.value), // Add logic for users to remove if needed
+        remove_users: selectedUsers2.map((user) => user.value), // Add logic for users to remove if needed
       };
 
       const response = await fetch('https://dev.quizifai.com:8010/edit_departments/', {
@@ -583,7 +594,8 @@ const handleSubmit = async () => {
 
       if (result.response === 'success') {
         setResponseMessage1('Department updated successfully!');
-        setedit(true);
+        setedit(false);
+        fetchDepartments();
         reset1('');
       } else {
         setResponseMessage1(`Failed to update department: ${result.response_message}`);
@@ -594,6 +606,12 @@ const handleSubmit = async () => {
     }
   };
 
+
+  const handlecancel = () => {
+    setedit(false);
+        fetchDepartments();
+        reset1('');
+  }
 //-----------------**create orginaization Department edit end**-----------------//
 
 
@@ -783,6 +801,28 @@ useEffect(() => {
           value: user.user_id,
           label:  `${user.user_name} (ID: ${user.user_id})`,
         }));
+      // if (result.response === 'success' && result.data) {
+      //   // Map users to react-select format
+      //   const options = result.data.flatMap((dept) => {
+      //     const deptUsers = dept.users.map((user) => ({
+      //       value: user.user_id,
+      //       label: user.user_name || `User ID: ${user.user_id}`,
+      //     }));
+
+      //     // Include department head
+      //     if (dept.department_head) {
+      //       const head = {
+      //         value: dept.department_head.dept_head_id,
+      //         label: dept.department_head.dept_head_name,
+      //       };
+
+      //       if (!deptUsers.some((user) => user.value === head.value)) {
+      //         deptUsers.push(head);
+      //       }
+      //     }
+
+      //     return deptUsers;
+      //   });
         setEmloyesusers(options);
       } else {
         console.error('Failed to fetch users:', result.response_message);
@@ -814,6 +854,23 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
     </div>
   );
 
+  const customOption1 = ({ data, innerRef, innerProps, isSelected }) => (
+    <div
+      ref={innerRef}
+      {...innerProps}
+      className={`flex items-center p-2 cursor-pointer ${
+        isSelected ? 'bg-blue-50' : 'hover:bg-gray-100'
+      }`}
+    >
+      <input
+        type="checkbox"
+        checked={isSelected}
+        onChange={() => {}}
+        className="mr-2"
+      />
+      <span>{data.label}</span>
+    </div>
+  );
   const handleChange1 = (e) => {
     setSelectedUsers1(e.target.value); // Update selected user ID
   };
@@ -925,12 +982,24 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
       <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
         <label className="w-[40%] text-blue-800 font-semibold mb-2 mr-[9px] ">Department Head<span className="text-red-500">*</span></label>
-        <input
-              type="text"
-              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-                placeholder="Admin Name"
-                value={username1}
-              ></input>
+        <select
+  className="w-full border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+  value={selectedUsers1}  // Use the user_id value from the department head
+  onChange={(e) => {
+    setSelectedUsers1(e.target.value);  // Set the selected department head ID
+  }}
+>
+  <option value="" disabled>
+    Select a Head
+  </option>
+  {Emloyesusers.map((user) => (
+    <option key={user.value} value={user.value}>
+      {user.label}  {/* This now shows the name and ID */}
+    </option>
+  ))}
+</select>
+
+
 
         </div>
       
@@ -1081,7 +1150,7 @@ onChange={handleSelectChange2}
       {edit && (
           <div className="w-full flex flex-col">
           <div className="w-full flex flex-row">
-          <label className="w-[60%] text-blue-800 font-semibold mb-2 mr-[9px] ">Remove Employes<span className="text-red-500">*</span></label>
+          <label className="w-[23%] text-blue-800 font-semibold mb-2 mr-[7px] ">Remove Employes<span className="text-red-500">*</span></label>
           <Select
     // options={Emloyesusers} // All users
     isMulti
@@ -1091,7 +1160,7 @@ onChange={handleSelectChange2}
     classNamePrefix="select"
     placeholder="Search and select Employees..."
     closeMenuOnSelect={false}
-    components={{ Option: customOption }}
+    components={{ Option: customOption1 }}
     isSearchable={true}
     styles={{
       control: (base, state) => ({
@@ -1134,6 +1203,14 @@ onChange={handleSelectChange2}
       )}
                    <div className="flex justify-end md:col-span-2 mt-2">
 {edit ? (
+  <div className=" flex gap-2">
+    <button
+    onClick={handlecancel}
+     className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+   >
+     Cancel
+   </button>
     <button
     onClick={handleSubmit}
      className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
@@ -1141,6 +1218,7 @@ onChange={handleSelectChange2}
    >
      Save
    </button>
+   </div>
 ):(
     <button
                      onClick={handleSubmit1}
@@ -1177,7 +1255,7 @@ onChange={handleSelectChange2}
             <td className="py-2 px-4 border-b text-start">{dept.department_name}</td>
             <td className="py-2 px-4 border-b text-center">{dept.department_description}</td>
             <td className="py-2 px-4 border-b text-start">
-            {dept.department_head?.dept_head_name || "N/A"}
+            {dept.department_head?.user_name || "N/A"}
             </td>
             <td className="py-2 px-4 border-b text-start">
               {dept.users.map((user) => (

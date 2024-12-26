@@ -41,7 +41,7 @@ const configure = () => {
   };
   const userRole = localStorage.getItem("user_role");
   const allowedRoles = ["Super Admin","Admin"]; // Roles allowed to access the pages
-  const allowedRoles1 = ["Quiz Master","Admin"];
+  const allowedRoles1 = ["Quiz Master","Admin","Super Admin"];
   const allowedRoles2 = ["Super Admin"];
 
   const handleRestrictedClick = (navigateTo) => {
@@ -91,7 +91,7 @@ const configure = () => {
   const handleSettings = () => handleRestrictedClick("/Profilesettings");
   const handleQuestionBank = () => handleRestrictedClick("/questionbank");
   const handleUserList = () => handleRestrictedClick("/userslist");
-
+  const handleInstitution = ()=>  handleRestrictedClick("/education");
   const handleGlobalLeaderboard = () => handleRestrictedClick1("/leaderboardall");
   const handleCreateOrganization = () => handleRestrictedClick2('/creatorganization')
   const handleCreateOrganizationDepartment =()=> handleRestrictedClick2('/creatorganizationdeparment')
@@ -162,7 +162,7 @@ const configure = () => {
       image:software,
       title: "Organization",
       content:
-        "Create Organization, Create Organization Department, Organization Profile, Organization Preferences",
+        "Create Organization, Create Organization Department, Organization Profile, Institution, Organization Preferences",
     },
     {
       id: 4,
@@ -314,7 +314,7 @@ const configure = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
             <p className="text-lg font-semibold mb-4">
-              You do not have permission to access this page. Only for Quiz Master.
+              You do not have permission to access this page. Only for Quiz Master and Admin.
             </p>
             <button
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
@@ -415,28 +415,31 @@ const configure = () => {
                       : contentItem === "Add User" &&
                       item.title === "User & Roles"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
-                    : contentItem === "Add Users Bulk" &&
-                    item.title === "User & Roles"
-                  ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
-                    : contentItem === "Quiz Status Report" &&
+                      : contentItem === "Add Users Bulk" &&
+                      item.title === "User & Roles"
+                    ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
+                      : contentItem === "Quiz Status Report" &&
                       item.title === "Reports" 
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
-                    : contentItem === "Global Leaderboard" &&
-                    item.title === "Reports"
-                  ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
-                    : contentItem === "Quiz Master Report" &&
-                    item.title === "Reports"
-                  ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
+                      : contentItem === "Global Leaderboard" &&
+                      item.title === "Reports"
+                    ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
+                      : contentItem === "Quiz Master Report" &&
+                      item.title === "Reports"
+                    ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : contentItem === "Organization Profile" &&
                         item.title === "Organization"
                       ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : contentItem === "Create Organization" &&
                       item.title === "Organization"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
-                    : contentItem === "Create Organization Department" &&
-                    item.title === "Organization"
-                  ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
+                      : contentItem === "Create Organization Department" &&
+                      item.title === "Organization"
+                    ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : contentItem ==="Organization Preferences" &&
+                      item.title === "Organization"
+                    ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
+                      : contentItem ==="Institution" &&
                       item.title === "Organization"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : ["Configuration", "Quizzes"].includes(item.title)
@@ -467,6 +470,8 @@ const configure = () => {
                       ? handleProfile
                       : contentItem === "Organization Preferences"
                       ? handleSettings
+                      : contentItem === "Institution"
+                      ? handleInstitution
                       : contentItem === "Question Bank"
                       ? handleQuestionBank
                       : contentItem === "User List"
@@ -483,6 +488,7 @@ const configure = () => {
                       ? handleCreateOrganizationDepartment
                       : contentItem === "Global Leaderboard"
                       ? handleGlobalLeaderboard1
+
                       : null
                   }
                 >

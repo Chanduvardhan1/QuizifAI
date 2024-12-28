@@ -52,7 +52,7 @@ const fetchOrganizationUsers = async () => {
       }
 
       const response = await fetch(
-        `https://dev.quizifai.com:8010/get_organization_nrml_usrs?org_id=${52}`,
+        `https://dev.quizifai.com:8010/get_organization_nrml_usrs?org_id=${orgId}`,
         {
           method: "POST",
           headers: {

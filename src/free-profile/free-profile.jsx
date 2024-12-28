@@ -1165,7 +1165,7 @@ const FreeProfile = () => {
       </div>
       <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
-        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">Middle Name<span className="text-red-500">*</span></label>
+        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">Middle Name<span className="text-red-500"></span></label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -1263,7 +1263,7 @@ const FreeProfile = () => {
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-                placeholder="Last Name"
+                placeholder="User Address1"
                 value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     disabled={!isEditing}
@@ -1283,7 +1283,7 @@ const FreeProfile = () => {
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-                placeholder="Last Name"
+                placeholder="User Address2"
                 value={address1}
                 onChange={(e) => setAddress1(e.target.value)}
                 disabled={!isEditing}

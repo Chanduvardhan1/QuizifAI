@@ -481,7 +481,11 @@ useEffect(() =>{
       setIsSubmitting(false);
       return;
     }
-  
+    if (!selectedComplexity) {
+      toast.error("complexity name is required.");
+      setIsSubmitting(false);
+      return;
+    }
     // If all validations pass, move to the next step
     setStep(2);
   };
@@ -512,11 +516,7 @@ useEffect(() =>{
       setIsSubmitting(false);
       return;
     }
-    if (!selectedComplexity) {
-  toast.error("complexity name is required.");
-  setIsSubmitting(false);
-  return;
-}
+ 
     setStep(3);
   };
   const handleNextpage2 = () => {
@@ -843,13 +843,23 @@ const handleToLayout4 = () =>{
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [modalMessage1, setModalMessage1] = useState("");
+
   const [isError, setIsError] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showModal1, setShowModal1] = useState(false);
 
   const closeModal = () => {
     setShowModal(false);
+    if (publicAccess === "off") {
+    } else if (publicAccess === "on") {
+      navigate("/dashboard");
+    }
   };
-
+  const closeModal1 = () => {
+    setShowModal(false);
+   
+  };
   const handleNext = async () => {
     try {
       setIsSubmitting(true); // Disable the button while the request is ongoing
@@ -867,32 +877,32 @@ const handleToLayout4 = () =>{
       if (!authToken) {
         throw new Error('No authentication token found');
       }
- // Validate required fields
-//  if (!title.trim()) {
-//   toast.error("Quiz title is required.");
-//   setIsSubmitting(false);
-//   return;
-// }
-// if (!numQuestions || isNaN(numQuestions) || numQuestions <= 0) {
-//   toast.error("Please provide a valid number of questions.");
-//   setIsSubmitting(false);
-//   return;
-// }
-// if (!description.trim()) {
-//   toast.error("Quiz description is required.");
-//   setIsSubmitting(false);
-//   return;
-// }
-// if (!selectedCategory) {
-//   toast.error("Quiz category is required.");
-//   setIsSubmitting(false);
-//   return;
-// }
-// if (!selectedClass) {
-//   toast.error("Class name is required.");
-//   setIsSubmitting(false);
-//   return;
-// }
+//  Validate required fields
+ if (!title.trim()) {
+  toast.error("Quiz title is required.");
+  setIsSubmitting(false);
+  return;
+}
+if (!numQuestions || isNaN(numQuestions) || numQuestions <= 0) {
+  toast.error("Please provide a valid number of questions.");
+  setIsSubmitting(false);
+  return;
+}
+if (!description.trim()) {
+  toast.error("Quiz description is required.");
+  setIsSubmitting(false);
+  return;
+}
+if (!selectedCategory) {
+  toast.error("Quiz category is required.");
+  setIsSubmitting(false);
+  return;
+}
+if (!selectedClass) {
+  toast.error("Class name is required.");
+  setIsSubmitting(false);
+  return;
+}
 
 if (!questions || questions.length < numQuestions) {
   toast.error("Please add all questions before proceeding.");
@@ -922,9 +932,9 @@ for (const question of questions) {
     }
   }
 }
-      //   const id = responseData.data.quid_id;
-      //  dispatch(getUploadImage({quid_id}));
-      //  console.log('quid_id',quid_id);
+        const id = responseData.data.quid_id;
+       dispatch(getUploadImage({quid_id}));
+       console.log('quid_id',quid_id);
 
 
       const questionDuration = calculateQuizDuration();
@@ -981,6 +991,7 @@ for (const question of questions) {
       setShowModal(true);
        setQuizId(responseData.data.quiz_id)
        setQuizName(responseData.data.quiz_name)
+       setPublicAccess(responseData.data.public_access_flag === "off");
         console.log('id',quizid);
         try {
           const response = await api().uploadFile(uploadImage, files, null, { quiz_id: quizid });
@@ -1298,6 +1309,15 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
   const handleComplexquestions = (event) => {
     setComplexquestions(event.target.value);
   };
+
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  const handleClick = () => {
+    setIsDisabled(true);
+    setModalMessage1("This feature will come soon!");
+    setIsError(false);
+    setShowModal1(true);
+  };
   return (
     <>
     <div className="flex flex-row w-full bg-[#f5f5f5] ">
@@ -1576,7 +1596,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                 onChange={handleSelectCourse}
               >
                 <option value="" disabled>Select a course</option>
-                <option value="">None</option>
+                <option value="None">None</option>
                 {courses.map((course) => (
                   <option key={course.course_id} value={course.course_name}>
                     {course.course_name}
@@ -1600,6 +1620,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                 disabled={classes.length === 0}
               >
                 <option value="" disabled>Select a class</option>
+                <option value="None">None</option>
                 {classes.map((className, index) => (
                   <option key={index} value={className}>
                     {className}
@@ -1635,8 +1656,29 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
 
       <div className="md:col-span-2">
 
-<div className="flex gap-6">
-<div className="w-[40%] flex flex-col">
+<div className="w-full flex gap-6">
+      {/* Complexity */}
+      <div className="w-full flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[23%] text-blue-800 font-semibold mb-2">Complexity<span className="text-red-500">*</span></label>
+        
+        <select
+                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          value={selectedComplexity}
+          onChange={handleSelectComplexity}
+        >
+          <option value="" disabled>Complex</option>
+          {complexities.map((complexity, index) => (
+            <option key={index} value={complexity}>
+              {complexity}
+            </option>
+          ))}
+        </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+<div className="w-full flex flex-col">
   <div className="w-full flex flex-row">
     <label className="w-[30%] text-blue-800 font-semibold mb-2 ">
       Subject<span className="text-red-500">*</span>
@@ -1658,6 +1700,13 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
   <hr className="h-[1px] w-full" />
 </div>
 
+
+</div>
+
+</div>
+<div className="md:col-span-2">
+
+<div className="w-full flex justify-between gap-6">
 <div className="w-[30%] flex flex-col">
             <div className="w-full flex flex-row items-center">
               <label className="w-full text-blue-800 font-semibold mb-2 ">
@@ -1678,9 +1727,9 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
           </div>
  {/* isCheckboxChecked */}
  {isCheckboxChecked && (
-   <div className="w-[30%] flex flex-col">
+   <div className="w-[50%] flex flex-col">
             <div className="w-full flex flex-row">
-              <label className="w-full text-blue-800 font-semibold mb-2">
+              <label className="w-[50%] text-blue-800 font-semibold mb-2">
                 Question Bank<span className="text-red-500">*</span>
               </label>
               <select
@@ -1701,7 +1750,6 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
    )}
 </div>
 </div>
-
 
 
 
@@ -2033,27 +2081,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
       
         <hr className={`h-[1px] w-full`} />
       </div>
-       {/* Complexity */}
-       <div className="flex flex-col">
-        <div className="w-full flex flex-row">
-        <label className="w-[65%] text-blue-800 font-semibold mb-2">Complexity<span className="text-red-500">*</span></label>
-        
-        <select
-                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-          value={selectedComplexity}
-          onChange={handleSelectComplexity}
-        >
-          <option value="" disabled>Complex</option>
-          {complexities.map((complexity, index) => (
-            <option key={index} value={complexity}>
-              {complexity}
-            </option>
-          ))}
-        </select>
-        </div>
-      
-        <hr className={`h-[1px] w-full`} />
-      </div>
+   
  {/*  Time bounded Questions */}
  <div className="flex flex-col">
         <div className="w-full flex flex-row">
@@ -2207,8 +2235,9 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
         <FormControlLabel
         control={<Switch />} 
         // label="Required"
-          onChange={toggler1}
-          checked={multiAnswer}
+        disabled
+          // onChange={toggler1}
+          // checked={multiAnswer}
           className="react-switch"
         />
         
@@ -2448,12 +2477,15 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                 </button>
                 </div>
                 <div className="flex gap-[5px]">
-                                  <button
-                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
-                  // onClick={() => setStep(3)}
-                >
-                  Save as Drafts
-                </button>
+                <button
+      className={`w-[123px] h-[32px] rounded-[10px] ${
+        isDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-[#1E4DE9] hover:bg-[rgb(239,81,48)]"
+      } text-white transform hover:scale-105 transition duration-200`}
+      disabled={isDisabled}
+      onClick={handleClick}
+    >
+      Save as Drafts
+    </button>
 
                 <button
                  disabled={isSubmitting} 
@@ -2463,6 +2495,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                 >
                   {isSubmitting ? "Created" : "Create"}
                 </button>
+                {publicAccess && (
                 <button
             onClick={handleNextpage3}
               className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
@@ -2470,6 +2503,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
             >
               Next
             </button>
+                )}
                 </div>
               </div>
             </div>
@@ -3103,12 +3137,45 @@ isMulti
         </div>
       </div>
     )}
+       {showModal1 && (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div
+          className={`bg-white rounded-lg shadow-lg p-6 w-96 text-center ${
+            isError ? "border-red-500" : "border-green-500"
+          } border-t-4`}
+        >
+          {/* <h2
+            className={`text-xl font-semibold ${
+              isError ? "text-red-500" : "text-green-500"
+            }`}
+          >
+            {isError ? "Error" : "Success"}
+          </h2> */}
+          <p className="mt-2 text-gray-700">{modalMessage1}</p>
+          <button
+            onClick={closeModal1}
+            className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    )}
  </main>
 )}
+
+
+
+
+
       </div>
 
 </div>
    
+
+
+
+
     </>
   );
 }

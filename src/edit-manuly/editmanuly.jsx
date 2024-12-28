@@ -40,6 +40,7 @@ import RefreshOptions from "../assets/Images/quiz-type/Refresh-options.png";
 import { Alert } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import editicon from "../../src/assets/Images/quiz-type/edit.png"
 
 // const options1 =[
 //   {label: "Numbers"},
@@ -239,7 +240,21 @@ export default function editmanuly() {
   const [quizcreation, setQuizcreation] = useState('')
 
   const [instructions, setinstructions] = useState("Carefully read each question before selecting your answer. Answer all questions, even if you are not sure. If available, use the skip or review feature to mark questions you want to revisit later. Make sure to submit your answers before the timer ends. Quizzes may auto-submit, but it is best to double-check.Good Luck!")
+  const [ isEditing ,setisEditing] = useState(false);
 
+  const handeledit =()=> {
+    setisEditing(true);
+   }
+   const [isDisabled, setIsDisabled] = useState(false);
+   const [modalMessage1, setModalMessage1] = useState("");
+
+   const [isError, setIsError] = useState(false);
+   const handleClick = () => {
+     setIsDisabled(true);
+     setModalMessage1("This feature will come soon!");
+     setIsError(false);
+     setShowModal1(true);
+   };
 
   useEffect(() => {
     fetchCategories();
@@ -711,7 +726,7 @@ export default function editmanuly() {
           quiz_duration: duration,
           course_name: selectedCourse,
           quiz_time_bounded_questions: timings,
-          quiz_public_access: publicAccess,
+          quiz_public_access: publicAccess ? 'on' : 'off',
           available_from: availablefrom,
           quiz_creation_method: quizcreation,
           disabled_on: disabledon,
@@ -969,8 +984,8 @@ export default function editmanuly() {
     setQuestions(updatedQuestions);
     setIsModified(true);
   };
-  const toggler1 = (checked) => {
-    setMultiAnswer(checked);
+  const toggler1 = (event) => {
+    setMultiAnswer(event.target.checked);
   };
 
   const toggler2 = () => {
@@ -993,8 +1008,11 @@ export default function editmanuly() {
     setSelectedValue(e.target.value);
   };
 
-  const toggler3 = (checked) => {
-    setPublicAccess(checked);
+ 
+  const toggler3 = (event) => {
+    setPublicAccess(event.target.checked);
+
+
   };
 
   function handleSelect1(event) {
@@ -1208,276 +1226,145 @@ export default function editmanuly() {
   // }, [numQuestions])
   return (
     <>
-      <div>
-        {/* Navigation-Section */}
-        <header className="w-[219px] h-[1000px] absolute top-[-19px] left-[-9px] rounded-tl-[20px] rounded-bl-[20px] bg-[#F5F5FB] z-10 shadow-lg shadow-gray-400/60">
-          {/* <div className="h-[300px] w-[270px] absolute top-[20px] -left-[20px]">
-            <img src={QuizifAilogo} alt="QuizifAi Logo Icon" />
-          </div> */}
+        <div className="flex flex-row w-full bg-[#f5f5f5] ">
+      {/* <div className="w-[16%]">
+      <Navigation />
+      </div> */}
+      <div className="">
+      <Navigation />      
+      <ToastContainer/>
 
-          {/* Navigation-icons */}
-          {/* <div className="flex w-[15px] h-[15px] absolute top-[231px] left-[51px]">
-            <img src={Dashboard} alt="Dashborad img" />
-            <a
-              className="ml-5 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              Dashboard
-            </a>
-          </div>
+      </div>
 
-          <div className="flex w-[16px] h-[15px] absolute top-[285px] left-[51px]">
-            <img src={Quiz} alt="Quiz's img" />
-            <a
-              className="ml-5 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              Quiz
-            </a>
-          </div>
+      <div className="w-full ">
+{/* <div className="flex justify-end py-2 cursor-pointer text-[#eeb600f0]" onClick={Back}><MdOutlineCancel /></div> */}
 
-          <div className="flex w-[13.87px] h-[15.41px] absolute top-[338px] left-[51px]">
-            <img src={History} alt="History img" />
-            <a
-              className="ml-5 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              History
-            </a>
-          </div>
 
-          <div className="flex w-[17px] h-4 absolute top-[394px] left-[51px]">
-            <img src={Schedule} alt="Schedule img" />
-            <a
-              className="ml-4 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              Schedule
-            </a>
-          </div>
 
-          <div className="flex w-4 h-[15px] absolute top-[453px] left-[51px]">
-            <img src={Notification} alt="Notification img" />
-            <a
-              className="ml-4 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              Notification
-            </a>
-          </div>
+    {!showRegistrationSuccess && (
+  <main className="container mx-auto mt-5">
+ 
+   {/* <div className="bg-[#eedbe5] rounded-[10px] p-4 mb-8 ">
+      <h1 className="font-Poppins font-normal text-[20px] text-[#214082]">
+        Finalize the configuration and click 'Next' to proceed with adding your quiz questions.
+      </h1>
+    </div> */}
 
-          <div className="flex w-[25.46px] h-[27.87px] absolute top-[508px] left-[51px]">
-            <img className="-ml-2.5" src={QuizAdmin} alt="QuizAdmin img" />
-            <a
-              className="ml-4 text-Poppins font-medium text-[15px] leading-[15px] text-nowrap text-[#30304F]"
-              for=""
-            >
-              Quiz Admin
-            </a>
-          </div>
-
-          <div className="flex w-[17px] h-[17px] absolute top-[581px] left-[51px]">
-            <img src={Profile} alt="Profile img" />
-            <a
-              className="ml-4 -mt-0.5 text-Poppins font-medium text-[15px] leading-[22.5px] text-[#9696BB]"
-              for=""
-            >
-              Profile
-            </a>
-          </div> */}
-          <Navigation />
-          <ToastContainer />
-        </header>
-        <div className="absolute top-[30px] left-[1260px] cursor-pointer text-[#eeb600f0] " onClick={Back}><MdOutlineCancel /></div>
-
-        <main className="w-max-auto">
-          <div className="w-[719px] h-[48px] absolute top-[30px] left-[200px] rounded-[10px] bg-[#E0FFE8] z-0">
-            <h className="font-Poppins text-[#214082]  font-semibold text-[25px] leading-[37.5px] flex justify-center items-center mt-1l">
-              Configure and click next to type in your Quiz 
-            </h>
-          </div>
-
-          <div className="flex">
-            {/* <div className="w-[51px] h-[37px] absolute top-[102px] left-[284px]">
-              {/* <img src={QuizTitle} alt="QuizTitle icon" /> */}
-            {/* </div>  */}
-
-            <div className="w-[201px] h-[22px] absolute top-[111px] left-[284px]">
-              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                Quiz Title<span className="required ml-[1px] text-red-500">*</span>
-              </h1>
-            </div>
-
-            <div className="">
+  
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white my-4 p-5">
+    
+      <div className="md:col-span-2"> 
+        <h1 className=" font-semibold text-[20px] text-[#214082]">Generic Fields</h1>
+      </div>
+      {/* Show Quiz Title and Description in Step 1 */}
+       
+          {/* Quiz Title */}
+          <div className="flex flex-col md:col-span-2">
+            <div className="w-full flex flex-row">
+              <label className="w-[10%] text-blue-800 font-semibold mb-2 ">
+                Title <span className="text-red-500">*</span>
+              </label>
               <input
-                className="w-[420px] h-[43px] absolute top-[99px] left-[498px] rounded-[10px] border bg-[#F4F4F4] p-3"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              ></input>
-            </div>
+  className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+  type="text"
+  required
+  value={title}
+  onChange={(e) => setTitle(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1))}
+/>
 
-            <div className="w-[210px] h-[23px] absolute top-[110px] left-[941px] mb-10 justify-center items-center grid">
-              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                Number of Questions<span className="required ml-[1px] text-red-500">*</span>
-              </h1>
-              {/* <h1 className="font-Poppins text-[#214082]  font-semibold text-[15px] ml-5 leading-[22.5px]">
-                  of
-                </h1>
-                <h1 className="font-Poppins text-[#214082]  font-semibold text-[15px] leading-[22.5px]">
-                  Question
-                </h1> */}
             </div>
+            <hr className="h-[1px] w-full" />
+          </div>
 
-            <div className=" rounded-lg absolute top-[99px] left-[1144px]">
-              {/* <input
-                  type="number"
-                  className="w-[135px] border-solid border-[#B8BBC2] border-[1.8px] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer "
-                  placeholder="No of question "
-                  value={numQuestions}
-                  onChange={(e) => {
-                    const value = parseInt(e.target.value);
-                    setNumQuestions(value);
-                    setQuestions(
-                      Array.from({ length: value }, () => ({
-                        question_text: "",
-                        question_weightage: 0, // Initialize with a default weightage
-                        multi_answer_flag: false, // Initialize with a default value
-                        question_duration: 0,
-                        options: [
-                          { answer_option_text: "" },
-                          { answer_option_text: "" },
-                          { answer_option_text: "" },
-                          { answer_option_text: "" },
-                        ],
-                      }))
-                    );
-                  }}
-                /> */}
-              <input
-                type="number"
-                className="w-[135px] border-solid border-[#B8BBC2] border-[1.8px] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer"
-                placeholder="No of questions"
-                value={numQuestions}
-                onChange={handleNumQuestionsChange}
-              // onChange={(e) => setNumQuestions(e.target.value)}
-              // onChange={handleNumQuestionsChange}
+          {/* Quiz Description */}
+          <div className="w-full flex flex-col ">
+            <div className="w-full flex flex-row">
+              <label className="w-[23%] text-blue-800 font-semibold mb-2 ">
+               Description <span className="text-red-500">*</span>
+              </label>
+              <textarea
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                type=""
+                rows="4" 
+                cols="50"
+                required
+                value={description}
+                onChange={(e) => setDescription(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1))}
               />
             </div>
-            {/* <div className=" rounded-lg absolute top-[99px] left-[1200px]">
-              <select className="w-[135px] border-solid border-[#B8BBC2] border-[1.8px] px-3 py-3 rounded-md text-[12px] font-medium leading-[18px] cursor-pointer" 
-              onChange={handleSelect1} value={number}>
-                {options1.map(options1 =>(
-                <option className="border-grey-400 leading-[18px] text-[12px] font-medium"
-                 >{options1.label}</option>
-                  ))}
-              </select>
-              </div> */}
+            <hr className="h-[1px] w-full" />
           </div>
+ {/* Quiz instructions */}
+ <div className="w-full flex items-center ">
+ <div className=" w-full flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className=" w-[25%] text-blue-800 font-semibold mb-2 mr-[10px]">
+               Instructions <span className="text-red-500">*</span>
+              </label>
+              <textarea
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                 rows="4" 
+                cols="50"
+                required
+                value={instructions}
+                onChange={(e) => setininstructions(e.target.value)}
+                
 
-          <div className="flex">
-            {/* <div className="w-[43px] h-[43px] absolute top-[166px] left-[283px]">
-              <img src={QuizDiscription} alt="QuizDiscription icon" />
-            </div> */}
-
-            <div className="w-[201px] h-[22px] absolute top-[174px] left-[284px]">
-              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                Quiz Description<span className="required ml-[1px] text-red-500">*</span>
-              </h1>
+              />
             </div>
+            <hr className="h-[1px] w-full" />
 
-            <div className="">
-              <input
-                className="w-[780px] h-[45px] absolute top-[163px] left-[498px] rounded-[10px] border bg-[#F4F4F4] p-3"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              ></input>
-            </div>
           </div>
+             <div className="  m-2">
+              <img src={editicon} onClick={handeledit} className=" w-[18px] h-[18px] cursor-pointer "/>
+            {/* <button
+              // onClick={handleNextpage}
+              className="px-2 py-[4px] bg-[#3b61c8] text-white font-semibold rounded-xl hover:bg-blue-700"
+            >
+              Edit
+            </button> */}
+          </div>
+          </div>
+       
+         
+       
 
-          <div className="flex">
-            <div className="w-[201px] h-[27px] absolute top-[248px] left-[284px]">
-              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                Quiz Category<span className="required ml-[1px] text-red-500">*</span>
-              </h1>
-            </div>
-
-            <div className="  absolute top-[240px] left-[498px]">
-              {/* <select
-                  className="w-[260px] h-[41.6px] border-solid border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer text-[12px]"
-                  value={quizCategory}
-                  onChange={handleSelectCategory}
-                >
-                  <option value="" disabled>Select a category</option>
-  {/* Populate options with categories sorted alphabetically */}
-              {/* {categoryOptions.sort().map((category, index) => (
-    <option key={index} value={category}>
-      {category}
-    </option>
-  ))}
-                </select>  */}
+   
+     
+          {/* Quiz Category */}
+          <div className="flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className=" w-[23%] text-blue-800 font-semibold mb-2 ">
+                Category<span className="text-red-500">*</span>
+              </label>
               <select
-                className="w-[260px] h-[41.6px] border-solid border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer text-[12px]"
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
                 value={selectedCategory}
                 onChange={handleSelectCategory}
               >
-                <option value="" disabled>Select a category</option>
+                  <option value="" disabled>Select a category</option>
                 {categories.map(category => (
                   <option key={category.category_id} value={category.category_name}>
                     {category.category_name}
                   </option>
                 ))}
               </select>
-
             </div>
-
-            <div className="w-[164px] h-[30px] absolute top-[458px] left-[820px]">
-              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                Multiple Answers<span className="required ml-[1px] text-red-500">*</span>
-              </h1>
-            </div>
-
-            {/* <div className="w-[36px] h-5 absolute top-[251px] left-[935px]">
-              <img src={Toggle} />
-            </div> */}
-
-            <div className="w-[36px] h-5 absolute top-[458px] left-[1020px]">
-            <FormControlLabel
-        control={<Switch />} 
-        // label="Required"
-          onChange={toggler1}
-          checked={multiAnswer}
-          className="react-switch"
-        />
-            </div>
+            <hr className="h-[1px] w-full" />
           </div>
 
-          <div className="flex">
-            <div className="w-[201px] h-[27px] absolute top-[248px] left-[820px]">
-              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                Sub Category<span className="required ml-[1px] text-red-500">*</span>
-              </h1>
-            </div>
-
-            <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] text-[12px]  leading-[18px] absolute top-[240px] left-[1020px]">
-              {/* <select
-                  className="w-[260px] text-[12px]  border-solid border-[#B8BBC2] px-3 py-3 rounded-md cursor-pointer"
-                  onChange={handleSelectSubCategory}
-                  value={subCategory}
-                >
-                  <option value="" disabled>Select a subcategory</option>
-                  {/* Populate options with subcategories */}
-              {/* {subCategoryOptions.map((subCategory, index) => (
-                    <option key={index} value={subCategory}>
-                      {subCategory}
-                    </option>
-                  ))}
-                </select>  */}
+          {/* Sub Category */}
+          <div className="flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className="w-[26%] text-blue-800 font-semibold mb-2">
+                Sub Category<span className="text-red-500">*</span>
+              </label>
               <select
-                className="w-[260px] text-[12px]  border-solid border-[#B8BBC2] px-3 py-3 rounded-md cursor-pointer"
-                onChange={handleSelectSubCategory}
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
                 value={selectedSubCategory}
+                onChange={handleSelectSubCategory}
               >
-                <option value="" disabled>Select a subcategory</option>
+               <option value="" disabled>Select a subcategory</option>
                 {subCategories.map((subCategory, index) => (
                   <option key={index} value={subCategory}>
                     {subCategory}
@@ -1485,296 +1372,62 @@ export default function editmanuly() {
                 ))}
               </select>
             </div>
+            <hr className="h-[1px] w-full" />
           </div>
 
-          <div className="w-[164px] h-[30px] absolute top-[314px] left-[284px]">
-            <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-              Course{" "}
-            </h1>
-          </div>
+          {/* Course */}
+          <div className="md:col-span-2">
 
-          {/* <div className="w-[36px] h-5 absolute top-[251px] left-[935px]">
-              <img src={Toggle} />
-            </div> */}
-
-          <div className="w-[260px]  absolute top-[309px] left-[500px]">
-            {/* <select
-                className="w-[260px] h-[41.6px] border-solid p-2  text-[12px] border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer"
-                value={coursename}
+          <div className="flex gap-6">
+          <div className="w-full flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className="w-[31%] text-blue-800 font-semibold mb-2 ">
+                Course<span className="text-red-500">*</span>
+              </label>
+              <select
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                value={selectedCourse}
                 onChange={handleSelectCourse}
               >
-                <option value="" disabled>Select a course</option>
-                {/* Populate options with courses */}
-            {/* {courseOptions.map((course, index) => (
-                  <option key={index} value={course}>
-                    {course}
-                  </option>
-                ))}
-              </select>  */}
-            <select
-              className="w-[260px] h-[41.6px] border-solid  text-[12px] border-[2px] border-[#B8BBC2] p-2 rounded-md cursor-pointer"
-              value={selectedCourse}
-              onChange={handleSelectCourse}
-            >
-              <option value="" disabled>Select a course</option>
+                 <option value="" disabled>Select a course</option>
               <option value="">None</option>
               {courses.map(course => (
                 <option key={course.course_id} value={course.course_name}>
                   {course.course_name}
                 </option>
               ))}
-            </select>
-
+              </select>
+            </div>
+            <hr className="h-[1px] w-full" />
           </div>
 
-          <div className="w-[109px] h-[27px] absolute top-[320px] left-[820px]">
-            <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-              Classes
-            </h1>
-          </div>
-
-          <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] text-[12px]  leading-[18px] absolute top-[306px] left-[1020px]">
-            {/* <select
-                className="w-[260px] border-solid border-[#B8BBC2] px-3 py-3  text-[12px] rounded-md cursor-pointer"
+          {/* Class */}
+          <div className="w-full flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className=" w-[20%] text-blue-800 font-semibold mb-2">
+                Class<span className="text-red-500">*</span>
+              </label>
+              <select
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                value={selectedClass}
                 onChange={handleSelectClass}
-                value={classes}
+                disabled={classes.length === 0}
               >
-                <option value="" disabled>Select a class</option>
-                {classOptions.map((classOption, index) => (
-                  <option key={index} value={classOption}>
-                    {classOption}
-                  </option>
-                ))}
-              </select> */}
-            <select
-              className="w-[260px] border-solid border-[#B8BBC2] px-3 py-3 text-[12px] rounded-md cursor-pointer"
-              onChange={handleSelectClass}
-              value={selectedClass}
-            >
               <option value="" disabled>Select a class</option>
               {classes.map((className, index) => (
                 <option key={index} value={className}>
                   {className}
                 </option>
               ))}
-            </select>
-          </div>
-
-          <div className="flex">
-            <div className="w-[164px] h-[30px] absolute top-[383px] left-[284px]">
-              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                Pass percentage<span className="required ml-[1px] text-red-500">*</span>
-              </h1>
-            </div>
-
-            <div className=" rounded-lg w-[129px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[376px] left-[498px]">
-              <select
-                className="w-[264px] p-2 rounded-md cursor-pointer text-[12px]"
-                onChange={handleSelect5}
-                value={percentage}
-              >
-                {options5.map((options5) => (
-                  <option className="border-grey-400 leading-[18px] font-medium rounded">
-                    {options5.label}
-                  </option>
-                ))}
               </select>
             </div>
-
-            <div className="w-[164px] h-[30px] absolute top-[383px] left-[820px]">
-              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                Complexity<span className="required ml-[1px] text-red-500">*</span>
-              </h1>
-            </div>
-
-            <div className=" rounded-lg w-[129px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[376px] left-[1020px]">
-              {/* <select
-                  className="w-[264px] p-2 rounded-md cursor-pointer text-[12px]"
-                  onChange={handleSelect6}
-                  value={selectedComplexity}
-                >
-                    <option value="" disabled>Complexities</option>
-                  {complexities.map((complexity, index) => (
-                    <option key={index} value={complexity}>
-                      {complexity}
-                    </option>
-                  ))}
-                </select> */}
-              <select
-                className="w-[264px] p-2 rounded-md cursor-pointer text-[12px]"
-                onChange={handleSelectComplexity}
-                value={selectedComplexity}
-              >
-                <option value="" disabled>Complexities</option>
-                {complexities.map((complexity, index) => (
-                  <option key={index} value={complexity}>
-                    {complexity}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <hr className="h-[1px] w-full" />
           </div>
-
-          <div className="flex">
-            <div className="w-[164px] h-[30px] absolute top-[458px] left-[284px]">
-              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                Retake Option<span className="required ml-[1px] text-red-500">*</span>
-              </h1>
-            </div>
-
-            <div className="w-[36px] h-5 absolute top-[458px] left-[505px]">
-              <FormControlLabel
-        control={<Switch />} 
-        // label="Required"
-          onChange={toggler2}
-          checked={isRetakeOn}
-          className="react-switch"
-        />
-            </div>
-            <div className="">
-              {isRetakeOn ? (
-                <select
-                  className="w-[48px] h-[35px] absolute top-[455px] left-[568px] rounded-[10px] border-[1.8px] bg-[#F4F4F4]"
-                  value={selectedValue}
-                  onChange={handleDropdownChange}
-                >
-                  <option value="" disabled>select</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                </select>
-              ) : (
-                <input
-                  className="w-[48px] h-[35px] absolute top-[455px] p-2 pl-4 left-[568px] rounded-[10px] border-[1.8px] bg-[#F4F4F4]"
-                  value={selectedValue}
-                  readOnly
-                />
-              )}
-            </div>
-          </div>
-
-          <div className="flex">
-            <div className="w-[166px] h-[30px] absolute top-[527px] left-[284px]">
-              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                Quiz Duration<span className="required ml-[1px] text-red-500">*</span>
-              </h1>
-
-            </div>
-
-            <div className=" rounded-lg w-[166px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[520px] left-[498px]">
-              <select
-                className="w-[166px] px-3 py-3 rounded-md cursor-pointer text-[12px]"
-                onChange={handleSelect7}
-                value={duration}
-              >
-                {options7.map((option, index) => (
-                  <option
-                    key={index}
-                    className="border-grey-400 leading-[18px] font-medium rounded"
-                  >
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              {/* <input type="text"className="w-[166px] px-3 py-3 rounded-md  text-[12px]" onChange={handleSelect7} value={duration} 
-              placeholder="Duration"/> */}
-              {/* <TiEyeOutline  className=" absolute left-[165px] top-[15px] " /> */}
-              <div className="relative">
-                <button
-                  onClick={() => setIsOpen(true)}
-                  className="absolute left-[10px] top-[15px]"
-                >
-                  <FiAlertCircle />
-                </button>
-                {isOpen && (
-                  <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-white border border-gray-300 p-4 rounded shadow-md w-[350px] ">
-                    <p>The maximum duration time is 180 mints.</p>
-                    <button
-                      onClick={() => setIsOpen(false)}
-                      className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="w-[238px] h-[30px] absolute top-[527px] left-[820px]">
-              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                Time bounded Questions<span className="required ml-[1px] text-red-500">*</span>
-              </h1>
-            </div>
-
-            <div className=" rounded-lg w-[260px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[520px] left-[1020px]">
-              <select
-                className="w-[260px] px-3 py-3 rounded-md cursor-pointer text-[12px]"
-                onChange={handleSelect8}
-                value={timings}
-              >
-                {options8.map((options8, index) => (
-                  <option key={index}>{options8.label}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="w-[253px] h-[30px] absolute top-[590px] left-[284px]">
-            <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-              Quiz will be available from<span className="required ml-[1px] text-red-500">*</span>
-            </h1>
-          </div>
-
-          <div className="absolute top-[584px] left-[498px]">
-            <input
-              type="date"
-              className="rounded-lg w-[166px] h-[43px]  border-solid border-[#B8BBC2] border-[1.8px]
-              text-[#9696BB] leading-[22.5px] text-[15px] font-medium bg-[#F4F4F4] px-4"
-              placeholder="YYYY-MM-DD"
-              value={availablefrom}
-              onChange={handleAvailableFromChange}
-            ></input>
-          </div>
-
-          <div className="w-[233px] h-[30px] absolute top-[590px] left-[820px]">
-            <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-              Quiz must be disable on
-              {/* <span className="required ml-[1px] text-red-500">*</span> */}
-            </h1>
-          </div>
-
-          <div className=" absolute top-[584px] left-[1020px]">
-            <input
-              type="date"
-              className="rounded-lg w-[156px] h-[43px]  border-solid border-[#B8BBC2] border-[1.8px]
-              text-[#9696BB] leading-[22.5px] text-[15px] font-medium bg-[#F4F4F4] px-4"
-              placeholder="YYYY-MM-DD"
-              value={disabledon}
-              onChange={handleDisabledOnChange}
-            ></input>
-          </div>
-
-          <div className="flex">
-            <div className="w-[156px] h-[30px] absolute top-[660px] left-[284px]">
-              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                Public access<span className="required ml-[1px] text-red-500">*</span>
-              </h1>
-            </div>
-
-            <div className="w-[36px] h-5 absolute top-[660px] left-[504px]">
-               <FormControlLabel
+           {/*  Public access */}
+  <div className=" w-[50%] flex flex-col">
+        <div className="w-[100%] flex flex-row">
+        <label className="w-[100%] inline-flex items-center cursor-pointer text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500 mr-2">*</span>
+        <FormControlLabel
       control={
         <Switch 
           onChange={toggler3} 
@@ -1784,70 +1437,429 @@ export default function editmanuly() {
       }
       // label="Required"
     />
-            </div>
+  {/* <input type="checkbox" value="" class="sr-only peer"/> */}
+  {/* <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div> */}
+</label>
+        </div>
+      
+      </div>
+      </div>
+      </div>
 
-            {/* <div className="w-[174px] h-[30px] absolute top-[660px] left-[568px]">
-              <h1 className="font-Poppins text-[#214082]  font-semibold text-[15px] leading-[22.5px]">
-                Time per question{" "}
-              </h1>
-            </div>
 
-            <div className=" rounded-lg w-[110px] flex border-solid border-[#B8BBC2] border-[1.8px] absolute top-[653px] left-[754px]">
-            <select className="w-[110px] px-3 py-3 rounded-md cursor-pointer text-[12px]" onChange={handleSelect9} value={minutes}>
-                {options9.map(options9 =>(
-                <option className="border-grey-400 leading-[18px] font-medium rounded"
-                 >{options9.label}</option>
-                 
+      <div className="md:col-span-2">
+
+<div className="w-full flex gap-6">
+      {/* Complexity */}
+      <div className="w-full flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[23%] text-blue-800 font-semibold mb-2">Complexity<span className="text-red-500">*</span></label>
+        
+        <select
+                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          value={selectedComplexity}
+          onChange={handleSelectComplexity}
+        >
+      <option value="" disabled>Complexities</option>
+                {complexities.map((complexity, index) => (
+                  <option key={index} value={complexity}>
+                    {complexity}
+                  </option>
+                ))}
+        </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+
+
+
+</div>
+
+</div>
+
+
+
+
+
+
+
+  
+{/* <div className="w-full flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className=" w-[20%] text-blue-800 font-semibold mb-2">
+                organizations<span className="text-red-500">*</span>
+              </label>
+             
+
+               {organizations.length > 0 ? (
+        <select 
+         className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+        onChange={(e) => handleOrgSelect(e.target.value)} value={selectedOrg}>
+          <option value="">Select an organization</option>
+          {organizations.map((org) => (
+            <option key={org.org_id} value={org.org_id}>
+              {org.org_name}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <p>Loading organizations...</p>
+      )}
+            </div>
+            <hr className="h-[1px] w-full" />
+          </div> */}
+
+          {/* <div className="flex justify-start md:col-span-2">
+            <button
+              onClick={() => setStep(1)}
+              className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-700"
+            >
+              Back
+            </button>
+          </div> */}
+         
+    </div>
+       
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white my-4 p-5">
+  
+    <div className="md:col-span-2">
+        <h1 className=" font-semibold text-[20px] text-[#214082]">Quiz Metrics</h1>
+      </div>
+
+      {/* Number of Questions */}
+     
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[65%] text-blue-800 font-semibold mb-2  ">Number of Questions<span className="text-red-500">*</span></label>
+      
+        <input
+                 type="number"
+                 className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                 placeholder="No of question"
+                 value={numQuestions}
+                 onChange={handleNumQuestionsChange}
+                
+               />
+
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+    
+     
+      {/*  Quiz total marks*/}
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[59%] text-blue-800 font-semibold mb-2"> Quiz total marks<span className="text-red-500">*</span></label>
+      
+     <input
+                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                  placeholder="Total marks"
+                  value={quiztotalmarks}
+                  onChange={handleQuizTotalMarksChange}
+                ></input>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+     
+      {/* Complexity */}
+    
+       {/* Pass Percentage */}
+      
+ <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[59%] text-blue-800 font-semibold mb-2">Pass Percentage<span className="text-red-500">*</span></label>
+   
+        <select
+         className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          value={percentage}
+          onChange={handleSelect5}
+        >
+           {options5.map((options5) => (
+                  <option className="border-grey-400 leading-[18px] font-medium rounded">
+                    {options5.label}
+                  </option>
+                ))}
+        </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+    
+     
+
+      
+{/* Quiz Duration */}
+      <div className="flex items-center">
+      <div className="w-full flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[59%] text-blue-800 font-semibold mb-2 mr-[10px] ">Duration<span className="text-red-500">*</span></label>
+   
+        <select
+                          className={ `w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                  onChange={handleSelect7}
+                  value={duration}
+                >
+                  {options7.map((option, index) => (
+                    <option
+                      key={index}
+                      className="border-grey-400 leading-[18px] font-medium rounded"
+                    >
+                      {option.label}
+                    </option>
                   ))}
-              </select>
-            </div> */}
-            <div className="w-[174px] h-[30px] absolute top-[660px] left-[820px]">
-              <h1 className="font-Poppins text-[#214082]  font-medium text-[15px] leading-[22.5px]">
-                Quiz total marks<span className="required ml-[1px] text-red-500">*</span>
+                </select>
+               
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      <div className="relative mt-2 ">
+                  <button
+                    onClick={() => setIsOpen(true)}
+                    className=""
+                  >
+                    <FiAlertCircle />
+                  </button>
+                  {isOpen && (
+                    <div className="absolute bottom-10 left-1/2 transform -translate-x-80 bg-white border border-gray-300 p-4 rounded shadow-md w-[350px] ">
+                      <p>The maximum duration time is 180 mints.</p>
+                      <button
+                        onClick={() => setIsOpen(false)}
+                        className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  )}
+                </div>
+      </div>
+
+     
+      {/* Quiz will be available from */}
+      
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[63%] text-blue-800 font-semibold mb-2 mr-[9px] ">Quiz will be available from<span className="text-red-500">*</span></label>
+        <input
+              type="date"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="YYYY-MM-DD"
+                value={availablefrom}
+                onChange={handleAvailableFromChange}
+              ></input>
+  
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      {/* Quiz must be disable on */}
+      <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[60%] text-blue-800 font-semibold mb-2  ">Quiz must be disable on<span className="text-red-500">*</span></label>
+        <input
+              type="date"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                placeholder="YYYY-MM-DD"
+                value={disabledon}
+                o onChange={handleDisabledOnChange}
+              ></input>
+  
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+   
+ {/*  Time bounded Questions */}
+ <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[50%] text-blue-800 font-semibold mb-2 "> Time bounded Questions<span className="text-red-500">*</span></label>
+
+        <select
+         className={ ` w-[75%] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                  onChange={handleSelect8}
+                  value={timings}
+                >
+                  {options8.map((options8) => (
+                    <option className="border-grey-400 leading-[18px] font-medium rounded">
+                      {options8.label}
+                    </option>
+                  ))}
+                </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+   {/* Retake Option */}
+   <div className="flex items-center">
+        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[105px]">
+          Retake Option <span className="text-red-500"></span>
+        </label>
+        <FormControlLabel
+        control={<Switch />} 
+        // label="Required"
+          onChange={toggler2}
+          checked={isRetakeOn}
+          className="react-switch"
+        />
+         <div className=" ml-2">
+                {isRetakeOn ? (
+                  <select
+                    className="w-[48px] h-[35px]  rounded-[10px] border-[1.8px] bg-[#F4F4F4]"
+                    value={selectedValue}
+                    onChange={handleDropdownChange}
+                  >
+                    <option value="" disabled>
+                      select
+                    </option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </select>
+                ) : (
+                  <input
+                    className="w-[48px] h-[35px]  rounded-[10px] border-[1.8px] bg-[#F4F4F4]"
+                    value={selectedValue}
+                    readOnly
+                  />
+                )}
+              </div>
+      </div>
+  
+
+    
+      </div>
+   
+ 
+    <div className=" bg-white my-4 p-5">
+    <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-6 bg-white ">
+    
+    <div className="md:col-span-2">
+        <h1 className=" font-semibold text-[20px] text-[#214082]">AI Inputs</h1>
+      </div>
+     
+     
+
+ 
+       {/*  Time bounded Questions */}
+       {/* <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[57%] text-blue-800 font-semibold mb-2 mr-[10px] "> Subject<span className="text-red-500">*</span></label>
+
+        <select
+         className={ ` w-[75%] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                  onChange={handleSelect8}
+                  value={timings}
+                >
+                  {options8.map((options8) => (
+                    <option className="border-grey-400 leading-[18px] font-medium rounded">
+                      {options8.label}
+                    </option>
+                  ))}
+                </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div> */}
+     
+
+  {/*  Public access */}
+  {/* <div className="flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[50%] text-blue-800 font-semibold mb-2 mr-[10px] ">Chapters<span className="text-red-500">*</span></label>
+
+        <select
+          className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+                  value={publicAccess}
+                  onChange={toggler3}
+                >
+                  <option value="Public">Public</option>
+                  <option value="Subscribed">Subscribed</option>
+                  <option value="Organization">Organization</option>
+                </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div> */}
+
+  {/* Multiple Answers */}
+  <div className="flex items-center md:col-span-2">
+        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[59px]">
+        Multiple Answers <span className="text-red-500">*</span>
+        </label>
+        <FormControlLabel
+        control={<Switch />} 
+        // label="Required"
+          onChange={toggler1}
+          checked={multiAnswer}
+          className="react-switch"
+        />
+        
+      </div>
+     
+
+    </div>
+  
+   
+    {/* {next && (
+  <div className="flex justify-end items-end">
+
+   
+  <div className="w-[98px] h-[37px]  rounded-[10px] bg-[#1E4DE9]">
+            <button
+              // href="./enter-quiz"
+              onClick={handleNext1}
+              className="font-Poppins font-medium text-[15px] leading-[29.5px] flex justify-start px-4 py-1 text-white"
+            >
+              Next
+              <img
+                className="w-[24px] h-[24px] ml-4"
+                alt="next icon"
+                src={Next}
+              />
+            </button>
+          </div>
+          </div>
+    )} */}
+   
+    </div>
+  
+   
+
+
+        {/* {showRegistrationSuccess && ( */}
+          <main className="w-max-auto bg-white p-[10px] mt-[10px]">
+          
+            <div className="w-full">
+              <h1 className="font-Poppins font-bold text-[30px] leading-[45px] text-orange-400">
+                Create / Edit your Quiz
+              </h1>
+              <h1 className="font-Poppins font-medium text-[12px] leading-[18px] text-[#214082]">
+                Enter all your questions, options, and answers
               </h1>
             </div>
 
-            <div className="absolute top-[653px] left-[1020px]">
-              <input
-                type="number"
-                className="rounded-lg w-[156px] h-[43px] flex border-solid border-[#B8BBC2] border-[1.8px]
-               text-[12px]  px-3 py-3 cursor-pointer "
-                placeholder="Total marks"
-                value={quiztotalmarks}
-                onChange={handleQuizTotalMarksChange}
-              ></input>
-            </div>
-          </div>
-
-          {/* <div className="w-[98px] h-[32px] absolute top-[734px] left-[1182px] rounded-[10px] bg-[#1E4DE9]">
-              <button
-                href="./enter-quiz"
-                onClick={handleNext1}
-                className="font-Poppins font-medium text-[15px] leading-[22.5px] flex justify-start px-4 py-1 text-white"
-              >
-                Next
-                <img
-                  className="w-[24px] h-[24px] ml-4"
-                  alt="next icon"
-                  src={Next}
-                />
-              </button>
-            </div> */}
-        </main>
-
-
-        <main className="w-max-auto relative top-[630px]">
-          <div className="w-[848px] h-[44px] absolute top-[90px] left-[284px]">
-            <h1 className="font-Poppins font-bold text-[30px] leading-[45px] text-orange-400">
-              Create / Edit your Quiz 
-            </h1>
-            <h1 className="font-Poppins font-medium text-[12px] leading-[18px] text-[#214082]">
-              Enter all your questions, options, and answers
-            </h1>
-          </div>
-
-          {/* Questions and options */}
-          <div className="absolute top-[210px] left-[284px] ">
+            {/* Questions and options */}
+            <div className="w-full ">
             <div className=" flex  items-center mb-[10px] pr-[40px] ">
               {/* <div className="ml-[-20px] mr-[5px]" >
         <input 
@@ -1996,9 +2008,25 @@ export default function editmanuly() {
                 Cancel
               </button>
             </div>
-          </div>
-        </main>
+         
+            </div>
+
+            {/* Submit button */}
+          </main>
+        {/* // )} */}
+      
+
+
+ </main>
+)}
+
+
+
+
+
       </div>
+
+</div>
     </>
   );
 }

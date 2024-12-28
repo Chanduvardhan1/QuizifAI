@@ -439,7 +439,7 @@ const handleSelectChange = (event) => {
         if (response.ok) {
           const data = await response.json();
           if (data.response === 'success') {
-            setPhoto(data.data); // Set the image URL from the response
+            setPhoto(data.photo); // Set the image URL from the response
           } else {
             setPhoto(defaultPhoto);
           }

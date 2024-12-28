@@ -440,11 +440,16 @@ const handleSubmit1 = async (e) => {
     // Fetch users from the API
     const fetchUsers = async () => {
       try {
+        const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+
+        if (!authToken) {
+          throw new Error("No authentication token found");
+        }
         const response = await fetch("https://dev.quizifai.com:8010/admin-users/", {
           method: "GET",
           headers: {
             Accept: "application/json",
-            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjaGFuZHUgdmFyZGhhbiBrIiwiZXhwIjoyNTM0MDIzMDA3OTl9.9gCqjDdJvlOzvV-Bqpian_CpYAen9Uh739KAZ5qEYr8",
+            'Authorization': `Bearer ${authToken}`,
           },
         });
         const data = await response.json();

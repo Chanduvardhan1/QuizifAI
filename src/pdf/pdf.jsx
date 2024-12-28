@@ -580,12 +580,17 @@ useEffect(() => {
       setIsSubmitting(false);
       return;
     }
-
-    if (!selectedClass) {
-      toast.error("Please select a class.");
+    if (!selectedComplexity) {
+      toast.error(" Complexity is required.");
       setIsSubmitting(false);
       return;
     }
+
+    // if (!selectedClass) {
+    //   toast.error("Please select a class.");
+    //   setIsSubmitting(false);
+    //   return;
+    // }
   
     // If all validations pass, move to the next step
     setStep(2);
@@ -618,11 +623,7 @@ useEffect(() => {
       setIsSubmitting(false);
       return;
     }
-    if (!selectedComplexity) {
-      toast.error(" Complexity is required.");
-      setIsSubmitting(false);
-      return;
-    }
+  
     
     if (!quiztotalmarks || quiztotalmarks <= 0) {
       toast.error("Quiz total marks must be greater than zero.");
@@ -1767,7 +1768,7 @@ const handleTabClick = (tab) => {
     <>
 
     <div className="flex flex-row w-full bg-[#f5f5f5] ">
-      <div className="]">
+      <div className="">
       <Navigation />      
 
       </div>
@@ -2134,6 +2135,55 @@ const handleTabClick = (tab) => {
       </div>
      
       </div>
+      <div className="md:col-span-2">
+
+<div className="w-full flex gap-6">
+      {/* Complexity */}
+      <div className="w-full flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[23%] text-blue-800 font-semibold mb-2">Complexity<span className="text-red-500">*</span></label>
+        
+        <select
+                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          value={selectedComplexity}
+          onChange={handleSelectComplexity}
+        >
+          <option value="" disabled>Complex</option>
+          {complexities.map((complexity, index) => (
+            <option key={index} value={complexity}>
+              {complexity}
+            </option>
+          ))}
+        </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+<div className="w-full flex flex-col">
+  <div className="w-full flex flex-row">
+    <label className="w-[30%] text-blue-800 font-semibold mb-2 ">
+      Subject<span className="text-red-500">*</span>
+    </label>
+    <select
+      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+      value={selectedCourse}
+      onChange={handleSelectCourse}
+    >
+      <option value="" disabled>Select a Subject</option>
+      <option value="">None</option>
+      {courses.map((course) => (
+        <option key={course.course_id} value={course.course_name}>
+          {course.course_name}
+        </option>
+      ))}
+    </select>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+
+
+</div>
+</div>
       {/* <div className="w-full flex flex-col">
             <div className="w-full flex flex-row">
               <label className=" w-[20%] text-blue-800 font-semibold mb-2">
@@ -2442,7 +2492,7 @@ const handleTabClick = (tab) => {
         <hr className={`h-[1px] w-full`} />
       </div>
        {/* Complexity */}
-       <div className="flex flex-col">
+       {/* <div className="flex flex-col">
         <div className="w-full flex flex-row">
         <label className="w-[65%] text-blue-800 font-semibold mb-2">Complexity<span className="text-red-500">*</span></label>
         
@@ -2461,7 +2511,7 @@ const handleTabClick = (tab) => {
         </div>
       
         <hr className={`h-[1px] w-full`} />
-      </div>
+      </div> */}
  {/*  Time bounded Questions */}
  <div className="flex flex-col">
         <div className="w-full flex flex-row">
@@ -2616,8 +2666,9 @@ const handleTabClick = (tab) => {
         <FormControlLabel
          control={<Switch />} 
         // label="Required"
-          onChange={toggler1}
-          checked={multiAnswer}
+          // onChange={toggler1}
+          disabled
+          // checked={multiAnswer}
           className="react-switch"
         />
         

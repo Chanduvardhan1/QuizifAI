@@ -331,14 +331,16 @@ const subjects = () => {
         {courses.map((course) => (
             <tr key={course.course_id}>
               <td className="px-4 py-2 border">
-                {course.subjects.length > 0 && course.subjects[0].subject_id
-                  ? course.subjects[0].subject_id
-                  : 'N/A'}</td>
+              {
+  course.specializations && course.specializations.length > 0
+    ? course.specializations[0].specialization_id
+    : 'N/A'
+}</td>
               <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
              
-              {course.subjects.length > 0 && course.subjects[0].subject_name
-                  ? course.subjects[0].subject_name
-                  : 'N/A'}
+              {course.classes && course.classes.length > 0 && course.classes[0].class_name
+  ? course.classes[0].class_name
+  : 'N/A'}
 
               </td>
               <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>  {course.specializations.map((specialization) => (

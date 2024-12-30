@@ -301,7 +301,7 @@ isMulti
 </div>
 </div>
 
-<div className="flex flex-col  gap-6 w-full">
+{/* <div className="flex flex-col  gap-6 w-full">
 <div className="flex flex-col w-full">
   <div className="w-full flex flex-row">
     <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
@@ -311,8 +311,7 @@ isMulti
                              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
 
                   placeholder="School"
-                  // value={quiztotalmarks}
-                  // onChange={(e) => setquiztotalmarks(e.target.value)}
+                 
                 ></input>
   </div>
   <hr className="h-[1px] w-full" />
@@ -324,16 +323,11 @@ isMulti
     </label>
     <select
       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-      // value={selectedCourse}
-      // onChange={handleSelectCourse}
+
     >
       <option value="" disabled>Select a Class</option>
       <option value="">None</option>
-      {/* {courses.map((course) => (
-        <option key={course.course_id} value={course.course_name}>
-          {course.course_name}
-        </option>
-      ))} */}
+  
     </select>
   </div>
   <hr className="h-[1px] w-full" />
@@ -345,16 +339,10 @@ isMulti
     </label>
     <select
       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-      // value={selectedClass}
-      // onChange={handleSelectClass}
-      // disabled={classes.length === 0}
+
     >
       <option value="" disabled>Select a Section</option>
-      {/* {classes.map((className, index) => (
-        <option key={index} value={className}>
-          {className}
-        </option>
-      ))} */}
+    
     </select>
   </div>
   <hr className="h-[1px] w-full" />
@@ -366,19 +354,16 @@ isMulti
         </label>
         <FormControlLabel
         control={<Switch />} 
-        // label="Required"
           onChange={toggler1}
-        //   checked={multiAnswer}
           className="react-switch"
         />
         
       </div>
 
-{/* Section */}
 
 
 
-</div>
+</div> */}
 
 </div>
 

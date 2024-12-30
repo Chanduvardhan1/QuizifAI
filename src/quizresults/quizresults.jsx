@@ -341,13 +341,13 @@ const quizresults = () => {
 
         {/* Meta Information */}
         <div className="text-[#00008b] text-sm flex flex-wrap mt-3">
-          <span>Science</span>
+          <span>General</span>
           <span className="mx-1">.</span>
-          <span>Physics</span>
+          <span>General</span>
           <span className="mx-1">.</span>
-          <span>Class 10</span>
+          <span>General</span>
           <span className="mx-1">.</span>
-          <span>CBSE</span>
+          <span>General</span>
           <span className="mx-1">.</span>
           <span>{`${quizData.complexity}`}</span>
         </div>
@@ -390,7 +390,7 @@ const quizresults = () => {
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">{`${quizData.quiz_duration}`} Minutes</span>
+              <span className="ml-1 text-sm">{`${quizData.quiz_duration}`} Min</span>
             </div>
             <div className="flex items-center">
               <img

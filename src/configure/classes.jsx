@@ -40,6 +40,14 @@ const classes = () => {
   const [courseId, setCourseId] = useState(0);
   const [specializationId, setSpecializationId] = useState(0);
   const userId = localStorage.getItem("user_id");
+  const orgId = localStorage.getItem('org_id');
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [isError, setIsError] = useState(false);
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   const navigate = useNavigate();
   const handleBanckToDashbaord = () =>{
@@ -48,43 +56,63 @@ const classes = () => {
 
   const handleAddClass = async () => {
     try {
-      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+      const authToken = localStorage.getItem("authToken");
   
       if (!authToken) {
-        console.error('No authentication token found');
+        console.error("No authentication token found");
+        setModalMessage("Authentication token not found.");
+        setIsError(true);
+        setShowModal(true);
         return;
       }
-      const response = await fetch('https://dev.quizifai.com:8010/adding_classes/', {
-        method: 'POST',
+  
+      const response = await fetch("https://dev.quizifai.com:8010/adding_classes/", {
+        method: "POST",
         headers: {
-          'accept': 'application/json',
-          'Authorization': `Bearer ${authToken}`,
-          'Content-Type': 'application/json'
+          accept: "application/json",
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           class_name: className,
           course_id: courseId,
           Specialization_id: specializationId,
-          created_by: userId
-        })
+          org_id: orgId,
+          department_id: selectedDepartmentId,
+          created_by: userId,
+        }),
       });
-
-      if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
+  
+      const result = await response.json();
+  
+      if (response.ok && result.response === "success") {
+        console.log("Class added successfully:", result);
+        setModalMessage(result.response_message || "Class added successfully!");
+        setIsError(false);
+        setShowModal(true);
+  
+        // Reset form fields
+        setClassName("");
+        setCourseId("");
+        setSpecializationId("");
+  
+        // Fetch updated data
+        fetchCourses();
+        setIsNavbarOpen(false);
+      } else {
+        console.error("Failed to add class:", result);
+        setModalMessage(result.response_message || "An error occurred.");
+        setIsError(true);
+        setShowModal(true);
       }
-
-      const data = await response.json();
-      console.log('Class added successfully:', data);
-      fetchCourses();
-      setIsNavbarOpen(false);
-      setClassName('');
-      setCourseId('');
-      setSpecializationId('');
-
     } catch (error) {
-      console.error('Error adding class:', error);
+      console.error("Error adding class:", error);
+      setModalMessage("An error occurred while adding the class.");
+      setIsError(true);
+      setShowModal(true);
     }
   };
+  
   const handleUpdateClass = async () => {
 
     try {
@@ -134,6 +162,63 @@ const classes = () => {
     }
   };
   
+
+  //---------------**Department Selector**----------------//
+
+  const [departments, setDepartments] = useState([]);
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken"); // Replace with actual token retrieval logic
+
+        if (!authToken) {
+          console.error("No authentication token found");
+          setError("Authentication token not found.");
+          return;
+        }
+
+        const response = await fetch(
+          "https://dev.quizifai.com:8010/view_departments_created_by_admin/?admin_id=1037",
+          {
+            method: "GET",
+            headers: {
+              accept: "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+
+        const result = await response.json();
+
+        if (response.ok && result.response === "success") {
+          setDepartments(result.data);
+        } else {
+          console.error("Failed to fetch departments:", result);
+          setError("Failed to fetch departments.");
+        }
+      } catch (error) {
+        console.error("Error fetching departments:", error);
+        setError("An error occurred while fetching departments.");
+      }
+    };
+
+    fetchDepartments();
+  }, []);
+
+  const handleDepartmentChange = (e) => {
+    const selectedId = e.target.value;
+    setSelectedDepartmentId(selectedId);
+
+    // Pass department_id to the backend or handle it as needed
+    console.log("Selected department_id:", selectedId);
+  };
+
+    //---------------**Department Selector end**----------------//
+
+
   const fetchCourses = async () => {
     try {
       const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
@@ -272,7 +357,18 @@ const classes = () => {
           ))
         )}
       </select>
-   
+      <select
+     className="rounded-3xl py-1 px-2 text-center placeholder:text-[#214082] outline-[#214082]"
+     value={selectedDepartmentId}
+     onChange={handleDepartmentChange}
+   >
+     <option value="">Select a department </option>
+     {departments.map((dept) => (
+          <option key={dept.department_id} value={dept.department_id}>
+            {dept.department_name}
+          </option>
+        ))}
+   </select>
       <button
         onClick={handleSubmit}
         className="bg-[#214082] text-white py-1 px-6 rounded-3xl flex items-center justify-center"
@@ -362,7 +458,30 @@ const classes = () => {
           ))}
         </tbody>
       </table>
-    
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div
+            className={`bg-white rounded-lg shadow-lg p-6 w-96 text-center ${
+              isError ? "border-red-500" : "border-green-500"
+            } border-t-4`}
+          >
+            <h2
+              className={`text-xl font-semibold ${
+                isError ? "text-red-500" : "text-green-500"
+              }`}
+            >
+              {isError ? "Error" : "Success"}
+            </h2>
+            <p className="mt-2 text-gray-700">{modalMessage}</p>
+            <button
+              onClick={closeModal}
+              className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
      
     </div>
     

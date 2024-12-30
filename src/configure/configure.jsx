@@ -91,7 +91,7 @@ const configure = () => {
   const handleSettings = () => handleRestrictedClick("/Profilesettings");
   const handleQuestionBank = () => handleRestrictedClick("/questionbank");
   const handleUserList = () => handleRestrictedClick("/userslist");
-  const handleInstitution = ()=>  handleRestrictedClick("/education");
+  const handleInstitution = ()=>  handleRestrictedClick1("/education");
   const handleGlobalLeaderboard = () => handleRestrictedClick1("/leaderboardall");
   const handleCreateOrganization = () => handleRestrictedClick2('/creatorganization')
   const handleCreateOrganizationDepartment =()=> handleRestrictedClick('/creatorganizationdeparment')

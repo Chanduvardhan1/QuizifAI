@@ -171,7 +171,7 @@ export default function quiztype() {
   const [availablefrom, setavailablefrom] = useState("");
   const [disabledon, setdisabledon] = useState("");
 
-  const [publicAccess, setPublicAccess] = useState(true);
+  const [publicAccess, setPublicAccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isRetakeOn, setIsRetakeOn] = useState(false);
@@ -252,12 +252,24 @@ export default function quiztype() {
 
  const orgId = localStorage.getItem('org_id');
 
- const [modalMessage, setModalMessage] = useState("");
+const [modalMessage, setModalMessage] = useState("");
+const [modalMessage1, setModalMessage1] = useState("");
+  
   const [isError, setIsError] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showModal1, setShowModal1] = useState(false);
+  const [shownext, setnext] = useState(false);
 
   const closeModal = () => {
     setShowModal(false);
+    if (publicAccess === "off") {
+    } else if (publicAccess === "on") {
+      navigate("/dashboard");
+    }
+  }; 
+
+  const closeModal1 = () => {
+    setShowModal1(false);
   };
 
  //-------------****print quiz****-----------//
@@ -443,12 +455,81 @@ useEffect(() => {
  // Handle the upload of front or back image
  const [step, setStep] = useState(1);
 
- const handleNextpage = () => {
-  setStep(2);
-};
-const handleNextpage1 = () => {
-  setStep(3);
-};
+  const handleNextpage = () => {
+    // Validation checks
+  
+    if (!title || title.trim() === "") {
+      toast.error("Quiz title is required.");
+      setIsSubmitting(false);
+      return;
+    }
+
+
+
+    if (!description || description.trim() === "") {
+      toast.error("Quiz description is required.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!selectedCategory) {
+      toast.error("Please select a quiz category.");
+      setIsSubmitting(false);
+      return;
+    }
+    if (!selectedComplexity) {
+      toast.error(" Complexity is required.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    // if (!selectedClass) {
+    //   toast.error("Please select a class.");
+    //   setIsSubmitting(false);
+    //   return;
+    // }
+  
+    // If all validations pass, move to the next step
+    setStep(2);
+  };
+  const handleNextpage1 = () => {
+    if (!numQuestions || numQuestions <= 0) {
+      toast.error("Number of questions must be greater than zero.");
+      setIsSubmitting(false);
+      return;
+    }
+    if (!percentage || percentage <= 0 || percentage > 100) {
+      toast.error("Pass percentage must be between 1 and 100.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!duration || duration <= 0) {
+      toast.error("Quiz duration must be greater than zero.");
+      setIsSubmitting(false);
+      return;
+    }
+    if (!availablefrom) {
+      toast.error("Available from date is required.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!disabledon) {
+      toast.error("Disabled on date is required.");
+      setIsSubmitting(false);
+      return;
+    }
+  
+    
+    if (!quiztotalmarks || quiztotalmarks <= 0) {
+      toast.error("Quiz total marks must be greater than zero.");
+      setIsSubmitting(false);
+      return;
+    }
+    setStep(3);
+  };
+
 const handleNextpage2 = () => {
   setStep(4);
   // setShowRegistrationSuccess(true);
@@ -480,11 +561,11 @@ const handleToLayout4 = () =>{
   navigate('/pdf1');
 }
 
- useEffect(() => {
-   if (frontImage && backImage) {
-     handleUpload();
-   }
- }, [frontImage, backImage]);
+//  useEffect(() => {
+//    if (frontImage && backImage) {
+//      handleUpload();
+//    }
+//  }, [frontImage, backImage]);
 
 
  const handleImageChange = (e, type) => {
@@ -517,7 +598,7 @@ const handleToLayout4 = () =>{
    try {
      const user_id = localStorage.getItem('user_id');
 
-     const response = await fetch(`https://dev.quizifai.com:8010/upload-qz_image?quiz_id=${user_id}`, {
+     const response = await fetch(`https://dev.quizifai.com:8010/upload-qz_image?quiz_id=${quizid}`, {
        method: 'POST',
        headers: {
          'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Replace with your actual token
@@ -535,6 +616,11 @@ const handleToLayout4 = () =>{
      alert('An error occurred while uploading images');
    }
  };
+ const handleDeleteImage1 = () => {
+  setFrontImage(null);
+  setBackImage(null);
+  setIsFlipped(false);
+};
 
   useEffect(() => {
     fetchCategories();
@@ -1318,8 +1404,11 @@ const [isSubmitting, setIsSubmitting] = useState(false);
       setModalMessage("Quiz created successfully!");
       setIsError(false);
       setShowModal(true);
+      setnext(true);
       setQuizId(responseData.data.quiz_id)
       setQuizName(responseData.data.quiz_name)
+      setPublicAccess(responseData.data.public_access_flag === "off");
+      handleUpload();
       } else {
         if (
           responseData.detail &&
@@ -1339,7 +1428,20 @@ const [isSubmitting, setIsSubmitting] = useState(false);
       console.error("Type-Quiz failed:", error);
       setErrorMessage("An error occurred while choosing the type of the quiz");
     }
+
   };
+
+
+   const [isDisabled, setIsDisabled] = useState(false);
+  
+    const handleClick = () => {
+      setIsDisabled(true);
+      setModalMessage1("This feature will come soon!");
+      setIsError(false);
+      setShowModal1(true);
+    };
+  
+
   const [organizations, setOrganizations] = useState([]);
   const [selectedOrg, setSelectedOrg] = useState('');
   
@@ -1510,8 +1612,8 @@ useEffect(() => {
     updatedQuestions[index] = value;
     setQuestions(updatedQuestions);
   };
-  const toggler1 = (checked) => {
-    setMultiAnswer(checked);
+  const toggler1 = (event) => {
+    setMultiAnswer(event.target.checked);
   };
 
   const toggler2 = () => {
@@ -1532,8 +1634,8 @@ useEffect(() => {
     setSelectedValue(e.target.value);
   };
 
-  const toggler3 = (checked) => {
-    setPublicAccess(checked);
+  const toggler3 = (event) => {
+    setPublicAccess(event.target.checked);
   };
 
   function handleSelect1(event) {
@@ -1657,6 +1759,9 @@ const handleComplexquestions = (event) => {
             <FaSyncAlt size={18} />
           </button>
         )}
+          <button onClick={handleDeleteImage1}  className="absolute bottom-1 right-1 text-white bg-red-500 bg-opacity-75 rounded-full p-1">
+                        <RiDeleteBinLine className="w-[12px] h-[12px]" />
+                      </button>
       </div>
       <div className="flex flex-col  w-full">
         {/* Title and Version */}
@@ -2814,11 +2919,14 @@ className="react-switch"
                   Back
                 </button>
                 <button
-                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
-                  onClick={() => setStep(3)}
-                >
-                  Save as Driaft
-                </button>
+      className={`w-[123px] h-[32px] rounded-[10px] ${
+        isDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-[#1E4DE9] hover:bg-[rgb(239,81,48)]"
+      } text-white transform hover:scale-105 transition duration-200`}
+      disabled={isDisabled}
+      onClick={handleClick}
+    >
+      Save as Drafts
+    </button>
                 <button
                  disabled={isSubmitting} 
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
@@ -2827,12 +2935,15 @@ className="react-switch"
                 >
                  {isSubmitting ? "Creating..." : "Create"}
                 </button>
+                {shownext && (
                 <button
-                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
-                  onClick={handleNextpage3}
-                >
-                  Next
-                </button>
+            onClick={handleNextpage3}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Next
+            </button>
+            )}
               </div>
             </div>
 
@@ -3451,6 +3562,30 @@ Skip
           <p className="mt-2 text-gray-700">{modalMessage}</p>
           <button
             onClick={closeModal}
+            className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    )}
+     {showModal1 && (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div
+          className={`bg-white rounded-lg shadow-lg p-6 w-96 text-center ${
+            isError ? "border-red-500" : "border-green-500"
+          } border-t-4`}
+        >
+          {/* <h2
+            className={`text-xl font-semibold ${
+              isError ? "text-red-500" : "text-green-500"
+            }`}
+          >
+            {isError ? "Error" : "Success"}
+          </h2> */}
+          <p className="mt-2 text-gray-700">{modalMessage1}</p>
+          <button
+            onClick={closeModal1}
             className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
           >
             Close

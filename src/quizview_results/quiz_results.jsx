@@ -393,13 +393,13 @@ const quiz_results = () => {
 
       {/* Meta Information */}
       <div className="text-[#00008b] text-sm flex flex-wrap mt-3">
-        <span>Science</span>
+        <span>General</span>
         <span className="mx-1">.</span>
-        <span>Physics</span>
+        <span>General</span>
         <span className="mx-1">.</span>
-        <span>Class 10</span>
+        <span>General</span>
         <span className="mx-1">.</span>
-        <span>CBSE</span>
+        <span>General</span>
         <span className="mx-1">.</span>
         <span>{`${quizData.complexity}`}</span>
       </div>
@@ -450,7 +450,7 @@ const quiz_results = () => {
               alt="Timer"
               className="w-[18px] h-[18px] mr-1"
             />
-            <span className="ml-1 text-sm">30 Attemts</span>
+            <span className="ml-1 text-sm">0 Attemts</span>
           </div>
           <div className="flex items-center">
             <img
@@ -458,7 +458,7 @@ const quiz_results = () => {
               alt="Timer"
               className="w-[18px] h-[18px] mr-1"
             />
-            <span className="ml-1 text-sm">90% High Score</span>
+            <span className="ml-1 text-sm">0% High Score</span>
           </div>
           <div className="flex items-center">
             <img
@@ -466,7 +466,7 @@ const quiz_results = () => {
               alt="Timer"
               className="w-[18px] h-[18px] mr-1"
             />
-            <span className="ml-1 text-sm">2:02 Mins Quickest</span>
+            <span className="ml-1 text-sm">0 Mins Quickest</span>
           </div>
         </div>
       </div>
@@ -499,7 +499,7 @@ const quiz_results = () => {
          </div>
          <div class="w-[210px] h-[7vh] flex items-center">
            <img class="h-[30px] w-[30px]" src={timeIcon} alt="Clock Icon" />
-           <span class="ml-2 font-lato text-blue-900">{quizData.attempt_duration} Minutes</span>
+           <span class="ml-2 font-lato text-blue-900">{quizData.attempt_duration}</span>
          </div>
          <div class="w-[210px] h-[7vh] flex items-center">
            <img class="h-[30px] w-[30px]" src={vector} alt="Check Icon" />

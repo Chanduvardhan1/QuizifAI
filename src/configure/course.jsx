@@ -25,7 +25,11 @@ const course = () => {
   const [courseDuration, setCourseDuration] = useState('');
 
   const [courseName, setCourseName] = useState('');
+  const [courseCode, setCourseCode] = useState('');
+
   const [courseShortName, setCourseShortName] = useState('');
+  const [coursePattern, setCoursePattern] = useState('');
+
   const [parentCategories, setParentCategories] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
@@ -37,55 +41,97 @@ const course = () => {
   const [selectedSpecialization, setSelectedSpecialization] = useState('');
   const userId = localStorage.getItem("user_id");
   const [courseId, setCourseId] = useState(0);
+  const orgId = localStorage.getItem('org_id');
+
+  const [showModal , setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [isError  , setIsError] = useState(false);
+
+
+
 
   const navigate = useNavigate();
   const handleBanckToDashbaord = () =>{
     navigate('/configure');
   }
   const addCourse = async () => {
-  
     const data = {
+      org_id: orgId,
       course_name: courseName,
+      course_code: courseCode,
       course_short_name: courseShortName,
       course_duration: courseDuration,
       course_duration_unit: courseDurationUnit,
-      created_by: userId
+      course_pattern: coursePattern,
+      created_by: userId,
     };
   
     try {
-      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+      const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
   
       if (!authToken) {
-        console.error('No authentication token found');
+        console.error("No authentication token found");
+        setModalMessage("Authentication token not found.");
+        setIsError(true);
+        setShowModal(true);
         return;
       }
-      const response = await fetch('https://dev.quizifai.com:8010/adding_courses/', {
-        method: 'POST',
-        headers: {
-          'accept': 'application/json',
-          'Authorization': `Bearer ${authToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
   
-      if (response.ok) {
-        const result = await response.json();
-        console.log('Course added successfully:', result);
+      const response = await fetch(
+        "https://dev.quizifai.com:8010/adding_courses/",
+        {
+          method: "POST",
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+  
+      const result = await response.json();
+  
+      if (response.ok && result.response === "success") {
+        console.log("Course added successfully:", result);
+  
+        // Show success modal
+        setModalMessage("Course added successfully.");
+        setIsError(false);
+        setShowModal(true);
+  
+        // Fetch updated courses
         fetchCourses();
+  
+        // Reset form fields
+        setCourseName("");
+        setCourseShortName("");
+        setCourseDuration("");
+        setCourseDurationUnit("");
         setIsNavbarOpen(false);
-        setCourseName('');
-        setCourseShortName('');
-        setCourseDuration('');
-        setCourseDurationUnit('');
       } else {
-        console.error('Failed to add course:', response.status, response.statusText);
+        // Handle server-side failure
+        console.error("Failed to add course:", result.response_message);
+  
+        // Show error modal
+        setModalMessage(`Failed to add course: ${result.response_message}`);
+        setIsError(true);
+        setShowModal(true);
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
+  
+      // Show error modal
+      setModalMessage(`An unexpected error occurred: ${error.message}`);
+      setIsError(true);
+      setShowModal(true);
     }
   };
   
+  
+  const closeModal = () => {
+    setShowModal(false);
+  }; 
 
   const handleCourseDurationUnitChange = (event) => {
     setCourseDurationUnit(event.target.value);
@@ -230,6 +276,13 @@ const course = () => {
         onChange={(e) => setCourseName(e.target.value)}
         className="rounded-3xl py-1 px-4 text-center placeholder:text-[#214082] outline-[#214082]"
       />
+        {/* <input
+        type="text"
+        placeholder="Course Name"
+        value={courseCode}
+        onChange={(e) => setCourseCode(e.target.value)}
+        className="rounded-3xl py-1 px-4 text-center placeholder:text-[#214082] outline-[#214082]"
+      /> */}
       <input
         type="text"
         placeholder="Course Short Name"
@@ -240,8 +293,8 @@ const course = () => {
        <input
         type="text"
         placeholder="Course Pattern"
-        value={courseShortName}
-        onChange={(e) => setCourseShortName(e.target.value)}
+        value={coursePattern}
+        onChange={(e) => setCoursePattern(e.target.value)}
         className="rounded-3xl py-1 px-4 text-center placeholder:text-[#214082] outline-[#214082]"
       />
       <input
@@ -334,7 +387,30 @@ const course = () => {
           ))}
         </tbody>
       </table>
-    
+      {showModal && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div
+      className={`bg-white rounded-lg shadow-lg p-6 w-96 text-center ${
+        isError ? "border-red-500" : "border-green-500"
+      } border-t-4`}
+    >
+      <h2
+        className={`text-xl font-semibold ${
+          isError ? "text-red-500" : "text-green-500"
+        }`}
+      >
+        {isError ? "Error" : "Success"}
+      </h2>
+      <p className="mt-2 text-gray-700">{modalMessage}</p>
+      <button
+        onClick={closeModal}
+        className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
      
     </div>
     

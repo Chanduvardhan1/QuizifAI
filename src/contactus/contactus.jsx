@@ -348,410 +348,214 @@ function contact() {
               Karnataka 560049
             </p> */}
             </div>
-            <div className="outerBox1">
-            <h1
-              style={{
-                // position: "absolute",
-                // left: "813px",
-                // top: "80px",
-                color: "#0B3A55",
-                fontFamily: "Open Sans",
-                fontWeight: 600,
-                fontSize: "30px",
-              }}
-            >
-              Get in Touch With Us
-            </h1>
+            <div className="flex flex-col justify-center items-center">
+  <h1 className="text-[#0B3A55] font-semibold text-2xl font-open-sans">
+    Get in Touch With Us
+  </h1>
 
-            <div className="outerBox" >
-              <div className="innerBox">
-                <div className="contactForm">
-                  <div className="formRow">
-                    <div
-                      className="icon"
-                      style={{
-                        backgroundImage: `url('/images/email/mail.png')`,
-                      }}
-                    ></div>
-                    {/* <TextField
-                      id="First Name"
-                      label="First Name"
-                      variant="outlined"
-                      required
-                      error={submitted && firstName.trim() === ""}
-                       helperText={
-                         submitted && firstName.trim() === ""
-                           ? "First Name is required"
-                           : ""
-                       }
-                      className="inputField"
-                      InputProps={{
-                        style: {
-                          backgroundImage: `url('/images/contact/first.png')`,
-                        // backgroundSize: "23px 20px",
-                        backgroundPosition: "145px",
-                        backgroundRepeat: "no-repeat",
-                        width: "180px",
-                        height: "50px",
-                        top: "0px",
-                        marginRight: "30px",
-                        border: "none",
-                        fontSize:"10px",
-                        fontFamily: "poppins",
-                        borderRadius: "10px",
-                        color: "#D7D7D7"
-                        },
-                        autoComplete: "off",
-                      }}
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                    /> */}
-                    <TextField
-                    id="FirstName"
-                    label="First Name"
-                    variant="outlined"
-                    type="text"
-                    error={submitted && firstName.trim() === ""}
-                    helperText={
-                      submitted && firstName.trim() === ""
-                        ? "Name is required"
-                        : ""
-                    }
-                    
-                    style={{ width: "150px", height: "44px" }}
-                    InputLabelProps={{
-                      style: { fontFamily: "poppins" },
-                    }}
-                    InputProps={{
-                      style: {
-                        // backgroundImage: `url('/images/contact/first.png')`,
-                        //backgroundSize: "19px 16px",
-                        backgroundPosition: "120px center",
-                        backgroundRepeat: "no-repeat",
-                        width: "160px",
-                        height: "50px",
-                        border: "none",
-                        fontFamily: "poppins",
-                        fontSize: "15px",
-                        borderRadius: "10px",
-                        backgroundColor:"white",
-                        
-                      },
-                      autoComplete: "off",
-                    }}
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                  />
-                    <div
-                      className="icon"
-                      style={{ backgroundImage: `url(${LastNameIcon})` }}
-                    ></div>
-                    {/* <TextField
-                       id="Last Name"
-                       label="Last Name"
-                       variant="outlined"
-                       required
-                       error={submitted && lastName.trim() === ""}
-                        helperText={
-                          submitted && lastName.trim() === ""
-                            ? "Last Name is required"
-                            : ""
-                        }
-                      className="inputField"
-                      style={{
-                        backgroundImage: `url('/images/contact/last.png')`,
-                        backgroundSize: "23px 20px",
-                        backgroundPosition: "120px",
-                        backgroundRepeat: "no-repeat",
-                        width: 180,
-                        height: "50px",
-                        top: "0px",
-                        border: "none",
-                        fontFamily: "poppins",
-                        borderRadius: "10px",
-                      }}
-                      value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
-                    /> */}
-                  
-                  <TextField
-                    id="LastName"
-                    label="Last Name"
-                    variant="outlined"
-                    type="text"
-                    error={submitted && lastName.trim() === ""}
-                    helperText={
-                      submitted && lastName.trim() === ""
-                        ? "Name is required"
-                        : ""
-                    }
-                    
-                    style={{ width: "150px", height: "44px" }}
-                    InputLabelProps={{
-                      style: { fontFamily: "poppins",
-                                paddingLeft: "27px"},
-                              
-                    }}
-                    InputProps={{
-                      style: {
-                        // backgroundImage: `url('/images/contact/first.png')`,
-                        //backgroundSize: "19px 16px",
-                        backgroundPosition: "120px center",
-                        backgroundRepeat: "no-repeat",
-                        width: "170px",
-                        height: "50px",
-                        border: "none",
-                        fontFamily: "poppins",
-                        fontSize: "15px",
-                        borderRadius: "10px",
-                        marginLeft: "20px",
-                        // paddingLeft:"30px",
-                       backgroundColor:"white",
-                      },
-                      autoComplete: "off",
-                    }}
-                    value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
-                  />
-                    
-                  </div>
-                  <div className="formRow">
-                    <div
-                      className="icon"
-                      style={{ backgroundImage: `url(${PhoneIcon})` }}
-                    ></div>
-                    {/* <TextField
-                     id="Number"
-                     label="Number"
-                     variant="outlined"
-                     required
-                     error={submitted && phoneNumber.trim() === ""}
-                      helperText={
-                        submitted && phoneNumber.trim() === ""
-                          ? "Number is required"
-                          : "" 
-                      }
-                      className="inputField"
-                      style={{
-                        backgroundImage: `url('/images/contact/mobile.png')`,
-                        backgroundSize: "26px 30px",
-                        backgroundPosition: "310px",
-                        backgroundRepeat: "no-repeat",
-                        width: 350,
-                        height: 65,
-                        border: "none",
-                        fontFamily: "poppins",
-                        borderRadius: "10px",
-                      }}
-                      value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                    /> */}
+  <div className="w-[390px] h-[360px] bg-[#F1F1FF] rounded-lg">
+    <div className="p-5 mb-5">
+      <div className="mt-0">
+        <div className="flex gap-2 mb-7">
+          {/* <div className="bg-no-repeat bg-left w-5 h-5" style={{ backgroundImage: `url('/images/email/mail.png')` }}></div> */}
 
-                  <TextField
-                   id="MobileNumber"
-                   type="tel"
-                   label="Mobile Number"
-                   variant="outlined"
-                    error={submitted && phoneNumber.trim() === ""}
-                    helperText={
-                      submitted && phoneNumber.trim() === ""
-                        ? "Number is required"
-                        : ""
-                    }
-                    style={{ width: "160px", height: "44px" }}
-                    InputLabelProps={{
-                      style: { fontFamily: "poppins" },
-                    }}
-                    InputProps={{
-                      style: {
-                        // backgroundImage: `url('/images/contact/first.png')`,
-                        //backgroundSize: "19px 16px",
-                        backgroundPosition: "120px center",
-                        backgroundRepeat: "no-repeat",
-                        width: "340px",
-                        height: "50px",
-                        border: "none",
-                        fontFamily: "poppins",
-                        fontSize: "15px",
-                        borderRadius: "10px",
-                        // paddingLeft:"30px",
-                        backgroundColor:"white",
-                      },
-                      autoComplete: "off",
-                    }}
-                    value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                  />
-                  </div>
-                  <div className="formRow">
-                    <div
-                      className="icon"
-                      style={{ backgroundImage: `url(${EmailIcon})` }}
-                    ></div>
-                    {/* <TextField
-                      id="Email Address"
-                      label="Email Address"
-                      variant="outlined"
-                      required
-                      error={submitted && userEmail.trim() === ""}
-                       helperText={
-                         submitted && userEmail.trim() === ""
-                           ? "Email Address required"
-                           : "" 
-                       }
-                      className="inputField"
-                      style={{
-                        backgroundImage: `url('/images/contact/mailImg.png')`,
-                        backgroundSize: "19px 16px",
-                        backgroundPosition: "310px",
-                        backgroundRepeat: "no-repeat",
-                        width: 350,
-                        height: 65,
-                        // border: "none",
-                        fontFamily: "poppins",
-                        borderRadius: "10px",
-                        outline: "none",
-                        border: "none",
-                      }}
-                      value={userEmail}
-                      onChange={(e) => setUserEmail(e.target.value)}
-                    /> */}
-
-                   <TextField
-                    id="Email"
-                    label="Email"
-                    variant="outlined"
-                    error={submitted && userEmail.trim() === ""}
-                    helperText={
-                      submitted && userEmail.trim() === ""
-                        ? "Mail is required"
-                        : ""
-                    }
-                    style={{ width: "150px", height: "44px" }}
-                    InputLabelProps={{
-                      style: { fontFamily: "poppins" },
-                    }}
-                    InputProps={{
-                      style: {
-                        // backgroundImage: `url('/images/contact/first.png')`,
-                        //backgroundSize: "19px 16px",
-                        backgroundPosition: "120px center",
-                        backgroundRepeat: "no-repeat",
-                        width: "340px",
-                        height: "50px",
-                        border: "none",
-                        fontFamily: "poppins",
-                        fontSize: "15px",
-                        borderRadius: "10px",
-                        // paddingLeft:"30px",
-                        backgroundColor:"white",
-                      },
-                      autoComplete: "off",
-                    }}
-                    value={userEmail}
-                    onChange={(e) => setUserEmail(e.target.value)}
-                  />
-                  </div>
-                  <div className="formRow">
-                    <div
-                      className="icon"
-                      style={{ backgroundImage: `url(${MessageIcon})` }}
-                    ></div>
-                    {/* <TextField
-                     id="Your Message"
-                     label="Your Message"
-                     variant="outlined"
-                     required
-                      error={submitted && message.trim() === ""}
-                       helperText={
-                         submitted && message.trim() === ""
-                           ? "Your message required"
-                           : "" 
-                       }
-                      className="inputField"
-                      style={{
-                        display: "flex",
-                        backgroundImage: `url('/images/contact/msg.png')`,
-                        backgroundSize: "19px 16px",
-                        backgroundPosition: "310px",
-                        backgroundRepeat: "no-repeat",
-                        width: 350,
-                        height: 50,
-                        // border: "none",
-                        fontFamily: "poppins",
-                        borderRadius: "10px",
-                        outline: "none",
-                        border: "none",
-                      }}
-                      rows={8}
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                    /> */}
-
-                  <TextField
-                    id="yourmessage"
-                    label="Your Message"
-                    variant="outlined"
-                    error={submitted && message.trim() === ""}
-                    helperText={
-                      submitted && message.trim() === ""
-                        ? "message is required"
-                        : ""
-                    }
-                    style={{ width: "150px", height: "44px" }}
-                    InputLabelProps={{
-                      style: { fontFamily: "poppins" },
-                    }}
-                    InputProps={{
-                      style: {
-                        // backgroundImage: `url('/images/contact/first.png')`,
-                        //backgroundSize: "19px 16px",
-                        backgroundPosition: "120px center",
-                        backgroundRepeat: "no-repeat",
-                        width: "340px",
-                        height: "70px",
-                        border: "none",
-                        fontFamily: "poppins",
-                        fontSize: "15px",
-                        borderRadius: "10px",
-                        // paddingLeft:"30px",
-                        backgroundColor:"white",
-                      },
-                      autoComplete: "off",
-                    }}
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                  />
-                  </div>
-                  {/* <Navigate to={"/contact"}> */}
-                  <div className="sendbutton1">
-                  <button 
-                    className="sendbutton"
-                      style={{
-                      width: "80px",
-                      height: "29.8px",
-                      // position: "absolute",
-                      // top: "315.2px",
-                      // left: "280.9px",
-                      backgroundColor: "#223F80",
-                      color: "#ffffff",
-                      border: "none",
-                      borderRadius: "20px",
-                      fontFamily: "poppins",
-                      fontSize: "13px",
-                      fontWeight: "700px",
-                      cursor: "pointer",
-                    }}
-                    onClick={submitContactForm}
-                  >
-                    Send
-                  </button>
-                  </div>
-                  {/* </Navigate> */}
-                  </div>
+          <TextField
+            id="FirstName"
+            label="First Name"
+            variant="outlined"
+            type="text"
+            error={submitted && firstName.trim() === ""}
+            helperText={submitted && firstName.trim() === "" ? "Name is required" : ""}
+            className="w-[160px] h-[50px] rounded-xl bg-white border-none font-poppins text-[15px]"
+            InputProps={{
+              style: {
+                backgroundPosition: "120px center",
+                backgroundRepeat: "no-repeat",
+                height: "50px",
+                border: "none",
+                fontFamily: "poppins",
+                fontSize: "15px",
+                borderRadius: "10px",
+                backgroundColor: "white",
+              },
+              endAdornment: (
+                <div
+                  // className={styles.passwordToggleIcon}
+                 
+                  style={{ color: "#A7A3FF",cursor:"pointer",position:"relative",left:"10px" }}
+                >
+                  <img src={LastNameIcon} alt="" />
                 </div>
-              </div>
-            </div>
+              ),
+              autoComplete: "off",
+            }}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+          {/* <div className="bg-no-repeat bg-left w-5 h-5" style={{ backgroundImage: `url(${LastNameIcon})` }}></div> */}
+
+          <TextField
+            id="LastName"
+            label="Last Name"
+            variant="outlined"
+            type="text"
+            error={submitted && lastName.trim() === ""}
+            helperText={submitted && lastName.trim() === "" ? "Name is required" : ""}
+            className="w-[170px] h-[50px] rounded-xl bg-white border-none font-poppins text-[15px] ml-[20px]"
+            InputProps={{
+              style: {
+                backgroundPosition: "120px center",
+                backgroundRepeat: "no-repeat",
+                height: "50px",
+                border: "none",
+                fontFamily: "poppins",
+                fontSize: "15px",
+                borderRadius: "10px",
+                backgroundColor: "white",
+              },
+              endAdornment: (
+                <div
+                  // className={styles.passwordToggleIcon}
+                 
+                  style={{ color: "#A7A3FF",cursor:"pointer",position:"relative",left:"10px" }}
+                >
+                  <img src={LastNameIcon} alt="" />
+                </div>
+              ),
+              autoComplete: "off",
+            }}
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+        </div>
+
+        <div className="flex items-center mb-7">
+          {/* <div className="bg-no-repeat bg-left w-5 h-5" style={{ backgroundImage: `url(${PhoneIcon})` }}></div> */}
+
+          <TextField
+            id="MobileNumber"
+            type="tel"
+            label="Mobile Number"
+            variant="outlined"
+            error={submitted && phoneNumber.trim() === ""}
+            helperText={submitted && phoneNumber.trim() === "" ? "Number is required" : ""}
+            className="w-[340px] h-[50px] rounded-xl bg-white border-none font-poppins text-[15px]"
+            InputProps={{
+              style: {
+                backgroundPosition: "120px center",
+                backgroundRepeat: "no-repeat",
+                height: "50px",
+                border: "none",
+                fontFamily: "poppins",
+                fontSize: "15px",
+                borderRadius: "10px",
+                backgroundColor: "white",
+              },
+              endAdornment: (
+                <div
+                  // className={styles.passwordToggleIcon}
+                 
+                  style={{ color: "#A7A3FF",cursor:"pointer",position:"relative",left:"10px" }}
+                >
+                  <img src={PhoneIcon} alt="" />
+                </div>
+              ),
+              autoComplete: "off",
+            }}
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+          />
+        </div>
+
+        <div className="flex items-center mb-7">
+          {/* <div className="bg-no-repeat bg-left w-5 h-5 z-50" style={{ backgroundImage: `url(${EmailIcon})`,backgroundPosition: "10px center", zIndex:"1" }}></div> */}
+
+          <TextField
+            id="Email"
+            label="Email"
+            variant="outlined"
+            error={submitted && userEmail.trim() === ""}
+            helperText={submitted && userEmail.trim() === "" ? "Mail is required" : ""}
+            className="w-[340px] h-[50px] rounded-xl bg-white border-none font-poppins text-[15px]"
+            InputProps={{
+              style: {
+                // backgroundImage: `url(${EmailIcon})`,
+                backgroundPosition: "10px center",
+                backgroundRepeat: "no-repeat",
+                height: "50px",
+                border: "none",
+                fontFamily: "poppins",
+                fontSize: "15px",
+                borderRadius: "10px",
+                backgroundColor: "white",
+              },
+                endAdornment: (
+                              <div
+                                // className={styles.passwordToggleIcon}
+                               
+                                style={{ color: "#A7A3FF",cursor:"pointer",position:"relative",left:"10px" }}
+                              >
+                                <img src={EmailIcon} alt="" />
+                              </div>
+                            ),
+              autoComplete: "off",
+            }}
+            value={userEmail}
+            onChange={(e) => setUserEmail(e.target.value)}
+          />
+        </div>
+
+        <div className="flex items-center mb-7">
+          {/* <div className="bg-no-repeat bg-left w-5 h-5" style={{ backgroundImage: `url(${MessageIcon})` }}></div> */}
+
+          <TextField
+            id="yourmessage"
+            label="Your Message"
+            variant="outlined"
+            error={submitted && message.trim() === ""}
+            helperText={submitted && message.trim() === "" ? "Message is required" : ""}
+            className="w-[340px] h-[70px] rounded-xl bg-white border-none font-poppins text-[15px]"
+            InputLabelProps={{ className: "font-poppins" }}
+            InputProps={{
+              style: {
+                backgroundPosition: "120px center",
+                backgroundRepeat: "no-repeat",
+                height: "70px",
+                border: "none",
+                fontFamily: "poppins",
+                fontSize: "15px",
+                borderRadius: "10px",
+                backgroundColor: "white",
+              },
+              endAdornment: (
+                <div
+                  // className={styles.passwordToggleIcon}
+                 
+                  style={{ color: "#A7A3FF",cursor:"pointer",position:"relative",left:"10px" }}
+                >
+                  <img src={MessageIcon} alt="" />
+                </div>
+              ),
+              autoComplete: "off",
+            }}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+        </div>
+
+        <div className="flex justify-end pr-2">
+          <button
+            className="w-[80px] h-[30px] bg-[#223F80] text-white rounded-[20px] font-poppins text-[13px] font-semibold cursor-pointer"
+            onClick={submitContactForm}
+          >
+            Send
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
           </div>
       
       </div>

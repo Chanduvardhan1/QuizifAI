@@ -448,7 +448,7 @@ const handleBack = () => {
          </div>
          <div class="w-[210px] h-[7vh] flex items-center">
            <img class="h-[30px] w-[30px]" src={timeIcon} alt="Clock Icon" />
-           <span class="ml-2 font-lato text-blue-900">{quizData.attempt_duration} Minutes</span>
+           <span class="ml-2 font-lato text-blue-900">{quizData.attempt_duration}</span>
          </div>
          <div class="w-[210px] h-[7vh] flex items-center">
            <img class="h-[30px] w-[30px]" src={vector} alt="Check Icon" />

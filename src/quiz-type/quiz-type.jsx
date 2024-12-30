@@ -3,7 +3,7 @@ import React, { useState, useEffect,useRef } from "react";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import Select from 'react-select';
-
+import { RiDeleteBinLine } from "react-icons/ri";
 // import Switch from "react-switch";
 import Navigation from "../navbar/navbar";
 import { useNavigate } from "react-router-dom";
@@ -551,11 +551,11 @@ const handleToLayout3 = () =>{
 const handleToLayout4 = () =>{
     navigate('/pdf1');
 }
-  useEffect(() => {
-    if (frontImage && backImage) {
-      handleUpload();
-    }
-  }, [frontImage, backImage]);
+  // useEffect(() => {
+  //   if (frontImage && backImage) {
+  //     handleUpload();
+  //   }
+  // }, [frontImage, backImage]);
 
  
   const handleImageChange = (e, type) => {
@@ -588,7 +588,7 @@ const handleToLayout4 = () =>{
     try {
       const user_id = localStorage.getItem('user_id');
 
-      const response = await fetch(`https://dev.quizifai.com:8010/upload-qz_image?quiz_id=${user_id}`, {
+      const response = await fetch(`https://dev.quizifai.com:8010/upload-qz_image?quiz_id=${quizid}`, {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Replace with your actual token
@@ -606,7 +606,11 @@ const handleToLayout4 = () =>{
       alert('An error occurred while uploading images');
     }
   };
-
+  const handleDeleteImage1 = () => {
+    setFrontImage(null);
+    setBackImage(null);
+    setIsFlipped(false);
+  };
 
   useEffect(() => {
     fetchCategories();
@@ -848,6 +852,7 @@ const handleToLayout4 = () =>{
   const [isError, setIsError] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showModal1, setShowModal1] = useState(false);
+  const [shownext, setnext] = useState(false);
 
   const closeModal = () => {
     setShowModal(false);
@@ -857,7 +862,7 @@ const handleToLayout4 = () =>{
     }
   };
   const closeModal1 = () => {
-    setShowModal(false);
+    setShowModal1(false);
    
   };
   const handleNext = async () => {
@@ -898,11 +903,11 @@ if (!selectedCategory) {
   setIsSubmitting(false);
   return;
 }
-if (!selectedClass) {
-  toast.error("Class name is required.");
-  setIsSubmitting(false);
-  return;
-}
+// if (!selectedClass) {
+//   toast.error("Class name is required.");
+//   setIsSubmitting(false);
+//   return;
+// }
 
 if (!questions || questions.length < numQuestions) {
   toast.error("Please add all questions before proceeding.");
@@ -932,10 +937,7 @@ for (const question of questions) {
     }
   }
 }
-        const id = responseData.data.quid_id;
-       dispatch(getUploadImage({quid_id}));
-       console.log('quid_id',quid_id);
-
+        
 
       const questionDuration = calculateQuizDuration();
       console.log('publicAccess',publicAccess);
@@ -989,10 +991,16 @@ for (const question of questions) {
       setModalMessage("Quiz created successfully!");
       setIsError(false);
       setShowModal(true);
+      setnext(true);
        setQuizId(responseData.data.quiz_id)
        setQuizName(responseData.data.quiz_name)
        setPublicAccess(responseData.data.public_access_flag === "off");
+       handleUpload();
         console.log('id',quizid);
+      //   const id = responseData.data.quid_id;
+      //  dispatch(getUploadImage({quid_id}));
+      //  console.log('quid_id',quid_id);
+
         try {
           const response = await api().uploadFile(uploadImage, files, null, { quiz_id: quizid });
           console.log('response', response);
@@ -1033,7 +1041,7 @@ for (const question of questions) {
     }
   };
 
-
+  
   const [organizations, setOrganizations] = useState([]);
   const [selectedOrg, setSelectedOrg] = useState('');
   
@@ -1380,6 +1388,9 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
             <FaSyncAlt size={18} />
           </button>
         )}
+          <button onClick={handleDeleteImage1}  className="absolute bottom-1 right-1 text-white bg-red-500 bg-opacity-75 rounded-full p-1">
+              <RiDeleteBinLine className="w-[12px] h-[12px]" />
+            </button>
       </div>
       <div className="flex flex-col  w-full">
         {/* Title and Version */}
@@ -2495,7 +2506,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                 >
                   {isSubmitting ? "Created" : "Create"}
                 </button>
-                {publicAccess && (
+                {shownext && (
                 <button
             onClick={handleNextpage3}
               className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"

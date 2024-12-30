@@ -8,9 +8,11 @@ import { MdOutlineCancel } from "react-icons/md";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Select from 'react-select';
-
+import { ToastContainer, toast } from 'react-toastify';
+import { RiDeleteBinLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 // import ToggleButton from 'react-toggle-button'
+import { FaSyncAlt } from 'react-icons/fa';
 
 // Navbar-icons
 import QuizifAilogo from "../assets/Images/quiz-type/Quizifai 1.png";
@@ -230,8 +232,12 @@ export default function quiztype() {
   const [pdfUrl, setPdfUrl] = useState("");
 
   const [modalMessage, setModalMessage] = useState("");
+    const [modalMessage1, setModalMessage1] = useState("");
+  
   const [isError, setIsError] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showModal1, setShowModal1] = useState(false);
+  const [shownext, setnext] = useState(false);
 
   //-------------****print quiz****-----------//
 const pdfRef1 = useRef(null);
@@ -418,12 +424,43 @@ const handlePrevious = () => {
 
 const closeModal = () => {
   setShowModal(false);
+  if (publicAccess === "off") {
+  } else if (publicAccess === "on") {
+    navigate("/dashboard");
+  }
+}; 
+
+const closeModal1 = () => {
+  setShowModal1(false);
 };
+
 
   // Handle the upload of front or back image
   const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleNextpage = () => {
+    if (!file) {
+      toast.error("Please select a file to upload.");
+      setIsSubmitting(false);
+      return;
+    }
+  
+    // Validation: Check file type
+    const allowedFileTypes = ["application/vnd.ms-excel", "text/csv"];
+    if (!allowedFileTypes.includes(file.type)) {
+      toast.error("Invalid file type. Please upload a CSV file.");
+      setIsSubmitting(false);
+      return;
+    }
+  
+    // Validation: Check file size (example: limit to 5MB)
+    const maxFileSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxFileSize) {
+      toast.error("File size exceeds the 5MB limit. Please upload a smaller file.");
+      setIsSubmitting(false);
+      return;
+    }
     setStep(2);
   };
   const handleNextpage1 = () => {
@@ -466,11 +503,11 @@ const handleModeratequestions = (event) => {
 const handleComplexquestions = (event) => {
   setComplexquestions(event.target.value);
 };
-  useEffect(() => {
-    if (frontImage && backImage) {
-      handleUpload();
-    }
-  }, [frontImage, backImage]);
+  // useEffect(() => {
+  //   if (frontImage && backImage) {
+  //     handleUpload();
+  //   }
+  // }, [frontImage, backImage]);
 
  
   const handleImageChange = (e, type) => {
@@ -503,7 +540,7 @@ const handleComplexquestions = (event) => {
     try {
       const user_id = localStorage.getItem('user_id');
 
-      const response = await fetch(`https://dev.quizifai.com:8010/upload-qz_image?quiz_id=${user_id}`, {
+      const response = await fetch(`https://dev.quizifai.com:8010/upload-qz_image?quiz_id=${quizid}`, {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Replace with your actual token
@@ -522,6 +559,11 @@ const handleComplexquestions = (event) => {
     }
   };
 
+  const handleDeleteImage1 = () => {
+    setFrontImage(null);
+    setBackImage(null);
+    setIsFlipped(false);
+  };
 
   // useEffect(() => {
   //   fetchData();
@@ -719,6 +761,7 @@ const handleComplexquestions = (event) => {
   const handleNext  = async () => {
     const user_id = localStorage.getItem('user_id');
     try {
+      setIsSubmitting(true);
       const response = await fetch(
         `https://dev.quizifai.com:8010/crt_qz_from_exl_csv`,
         {
@@ -780,8 +823,12 @@ const handleComplexquestions = (event) => {
         setModalMessage("Quiz created successfully!");
         setIsError(false);
         setShowModal(true);
+        setnext(true);
          setQuizId(responseData.data.quiz_id)
          setQuizName(responseData.data.quiz_name)
+         setPublicAccess(responseData.data.public_access_flag === "off");
+         handleUpload();
+
       } else {
         if (
           responseData.detail &&
@@ -795,12 +842,24 @@ const handleComplexquestions = (event) => {
         } else {
           setErrorMessage(responseData.detail);
         }
+        setIsSubmitting(false);
       }
     } catch (error) {
       console.error("Type-Quiz failed:", error);
       setErrorMessage("An error occurred while choosing the type of the quiz");
     }
   };
+
+
+ const [isDisabled, setIsDisabled] = useState(false);
+
+  const handleClick = () => {
+    setIsDisabled(true);
+    setModalMessage1("This feature will come soon!");
+    setIsError(false);
+    setShowModal1(true);
+  };
+
 
 //-----------------**AssignQuiz**-----------------//
 const [shareWithGroupOrOrg, setShareWithGroupOrOrg] = useState(false); // Initialize toggle state
@@ -1243,8 +1302,7 @@ const handleback =() =>{
   return (
     <>
      <div className="flex flex-row w-full bg-[#f5f5f5] ">
-     
-
+          <ToastContainer />
       <div className="w-full">
 {/* <div className="flex justify-end py-2 cursor-pointer text-[#eeb600f0]" onClick={Back}><MdOutlineCancel /></div> */}
 
@@ -1299,6 +1357,9 @@ const handleback =() =>{
             <FaSyncAlt size={18} />
           </button>
         )}
+          <button onClick={handleDeleteImage1}  className="absolute bottom-1 right-1 text-white bg-red-500 bg-opacity-75 rounded-full p-1">
+                        <RiDeleteBinLine className="w-[12px] h-[12px]" />
+                      </button>
       </div>
       <div className="flex flex-col  w-full">
         {/* Title and Version */}
@@ -2327,18 +2388,31 @@ const handleback =() =>{
                   Back
                 </button>
                 <button
+      className={`w-[123px] h-[32px] rounded-[10px] ${
+        isDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-[#1E4DE9] hover:bg-[rgb(239,81,48)]"
+      } text-white transform hover:scale-105 transition duration-200`}
+      disabled={isDisabled}
+      onClick={handleClick}
+    >
+      Save as Drafts
+    </button>
+    <button
+                 disabled={isSubmitting} 
                   className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
-                  onClick={() => setStep(3)}
+              onClick={handleNext}
+             
                 >
-                  Save as Driaft
+                 {isSubmitting ? "Creating..." : "Create"}
                 </button>
-
+                {shownext && (
                 <button
-                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
-                  onClick={handleNextpage3}
-                >
-                  Next
-                </button>
+            onClick={handleNextpage3}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Next
+            </button>
+            )}
               </div>
             </div>
 

@@ -94,7 +94,7 @@ const configure = () => {
   const handleInstitution = ()=>  handleRestrictedClick("/education");
   const handleGlobalLeaderboard = () => handleRestrictedClick1("/leaderboardall");
   const handleCreateOrganization = () => handleRestrictedClick2('/creatorganization')
-  const handleCreateOrganizationDepartment =()=> handleRestrictedClick2('/creatorganizationdeparment')
+  const handleCreateOrganizationDepartment =()=> handleRestrictedClick('/creatorganizationdeparment')
   const handleQuizMasterReport = () => handleRestrictedClick1('/quizmasterleaderboard')
   const handleAddUsersBulk = () => handleRestrictedClick('/excelcreat')
   const handleGlobalLeaderboard1 =() => handleRestrictedClick('/globalleaderboard')

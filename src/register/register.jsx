@@ -29,6 +29,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import MenuItem from "@mui/material/MenuItem";
 import Navbarhome from "../navbarhome/navbarhome";
+import chartbots1 from "../../public/chatbots1.png";
 
 const register = () => {
   const [loginMethod, setLoginMethod] = useState(null);
@@ -915,8 +916,13 @@ const register = () => {
       <div className={styles.mainContent}>
         <div className={styles.leftSection}>
           <div className={styles1.logo4}>
-            <img src={quizifailogo} alt="Logo" width={1000} height={1000}
-             style={{ marginTop: "-15px" }} />
+          <img className="h-[400px] w-full max-w-[641px]"
+              src={chartbots1}
+              alt="Logo"
+              // width={1000}
+              // height={1000}
+              style={{ marginTop: "20px" }}
+            />
           </div>
         </div>
         <div className={styles.rightSection1}>

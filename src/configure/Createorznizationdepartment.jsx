@@ -1082,7 +1082,7 @@ onChange={handleSelectChange2}
             
       <div className="w-full flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[60%] text-blue-800 font-semibold mb-2 mr-[9px] ">Department Employes<span className="text-red-500">*</span></label>
+        <label className="w-[60%] text-blue-800 font-semibold mb-2 mr-[9px] ">Department Employees<span className="text-red-500">*</span></label>
         <Select
   options={Emloyesusers} // All users
   isMulti

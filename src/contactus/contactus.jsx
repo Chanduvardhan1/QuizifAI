@@ -10,6 +10,8 @@ import EmailIcon from "../../src/assets/Images/images/contact/mailImg.png";
 import MessageIcon from "../../src/assets/Images/images/contact/msg.png";
 import { useNavigate } from "react-router-dom";
 import Navigation from "../navbar/navbar.jsx"
+import chartbots1 from "../../public/chatbots1.png";
+
 
 
 function contact() {
@@ -252,18 +254,12 @@ function contact() {
       <div className="content4">
           <div className="contactContent">
           <div className="contactContent1">
-            <img
-              src={Lady}
-              alt="Image Description"
-              width={400}
-              height={400}
-              layout="fixed"
-              objectFit="cover"
-              // style={{
-              //   position: "absolute",
-              //   top: "102px",
-              //   left: "220px",
-              // }}
+          <img className="h-[400px] w-full max-w-[641px]"
+              src={chartbots1}
+              alt="Logo"
+              // width={1000}
+              // height={1000}
+              style={{ marginTop: "20px" }}
             />
             {/* <img
               src="/images/contact/whatsapp.png"

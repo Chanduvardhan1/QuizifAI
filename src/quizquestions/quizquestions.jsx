@@ -1,6 +1,6 @@
 //import Head from 'next/head';
 //import img from 'next/image';
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef  } from "react";
 import styles from "./quizquestions.module.css";
 import numberIcon from "../assets/Images/images/questions/numberIcon.png";
 import iconA from "../assets/Images/images/questions/IconA.png";
@@ -87,6 +87,40 @@ const QuizQuestions = () => {
   const [validationMessage, setValidationMessage] = useState("");
   const initialRender = useRef(true);
 
+
+  useEffect(() => {
+    const handleRightClick = (event) => {
+      event.preventDefault(); // Prevent right-click menu
+    };
+
+    const handleKeyDown = (event) => {
+      if (event.key === "PrintScreen") {
+        event.preventDefault(); // Block the print screen key
+        alert("Screenshots are disabled on this page.");
+      }
+    };
+
+    const disableCopy = (event) => {
+      event.preventDefault(); // Prevent copy action
+    };
+
+    document.addEventListener("contextmenu", handleRightClick);
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("copy", disableCopy);
+
+    // Cleanup listeners on component unmount
+    return () => {
+      document.removeEventListener("contextmenu", handleRightClick);
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("copy", disableCopy);
+    };
+  }, []);
+
+
+
+ 
+  
+  
   const markPreviousQuestionsAsSkipped = (targetIndex) => {
     const newSkippedQuestions = [];
     for (let i = 0; i < targetIndex; i++) {
@@ -417,27 +451,30 @@ const QuizQuestions = () => {
       lastVisitedQuestionRef.current = prevIndex;
     }
   };
+  const [showPopup, setShowPopup] = useState(false);
+  const [unansweredQuestions, setUnansweredQuestions] = useState([]);
+  const [answeredQuestions, setAnsweredQuestions] = useState([]);
 
   const handleSubmit = () => {
-    clearInterval(timerRef.current);
-    if (!quizData || !quizData.questions || quizData.questions.length === 0) {
-      console.error("No quiz data available to submit");
-      return;
-    }
-
-    const unansweredQuestions = quizData.questions
+    const unanswered = quizData.questions
       .map((question, index) =>
         selectedOptions[index] === undefined ? index + 1 : null
       )
       .filter((questionNumber) => questionNumber !== null);
 
-    // if (unansweredQuestions.length > 0) {
-    //   toast.error(`Please answer all questions before submitting. You have skipped questions: ${unansweredQuestions.join(', ')}`);
-    //   setSkippedQuestionsDisplay(unansweredQuestions);
-    //   return;
-    // }
+    const answered = quizData.questions
+      .map((question, index) =>
+        selectedOptions[index] !== undefined ? index + 1 : null
+      )
+      .filter((questionNumber) => questionNumber !== null);
 
-    setValidationMessage("");
+    setUnansweredQuestions(unanswered);
+    setAnsweredQuestions(answered);
+
+    setShowPopup(true); // Show the popup
+  };
+
+  const submitQuiz = () => {
     const answers = Object.keys(selectedOptions).map((questionIndex) => ({
       question_id: quizData.questions[questionIndex].question_id,
       options: {
@@ -455,12 +492,7 @@ const QuizQuestions = () => {
           quizData.questions[questionIndex].quiz_ans_option_4_id,
       },
     }));
-    const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
-
-    if (!authToken) {
-      console.error("No authentication token found");
-      return;
-    }
+    const authToken = localStorage.getItem("authToken");
     const quizId = localStorage.getItem("quiz_id");
 
     fetch("https://dev.quizifai.com:8010/submit", {
@@ -491,6 +523,80 @@ const QuizQuestions = () => {
         console.error("There was a problem with your fetch operation:", error);
       });
   };
+
+  // const handleSubmit = () => {
+  //   clearInterval(timerRef.current);
+  //   if (!quizData || !quizData.questions || quizData.questions.length === 0) {
+  //     console.error("No quiz data available to submit");
+  //     return;
+  //   }
+
+  //   const unansweredQuestions = quizData.questions
+  //     .map((question, index) =>
+  //       selectedOptions[index] === undefined ? index + 1 : null
+  //     )
+  //     .filter((questionNumber) => questionNumber !== null);
+
+  //   // if (unansweredQuestions.length > 0) {
+  //   //   toast.error(`Please answer all questions before submitting. You have skipped questions: ${unansweredQuestions.join(', ')}`);
+  //   //   setSkippedQuestionsDisplay(unansweredQuestions);
+  //   //   return;
+  //   // }
+
+  //   setValidationMessage("");
+  //   const answers = Object.keys(selectedOptions).map((questionIndex) => ({
+  //     question_id: quizData.questions[questionIndex].question_id,
+  //     options: {
+  //       option_1:
+  //         selectedOptions[questionIndex] ===
+  //         quizData.questions[questionIndex].quiz_ans_option_1_id,
+  //       option_2:
+  //         selectedOptions[questionIndex] ===
+  //         quizData.questions[questionIndex].quiz_ans_option_2_id,
+  //       option_3:
+  //         selectedOptions[questionIndex] ===
+  //         quizData.questions[questionIndex].quiz_ans_option_3_id,
+  //       option_4:
+  //         selectedOptions[questionIndex] ===
+  //         quizData.questions[questionIndex].quiz_ans_option_4_id,
+  //     },
+  //   }));
+  //   const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
+
+  //   if (!authToken) {
+  //     console.error("No authentication token found");
+  //     return;
+  //   }
+  //   const quizId = localStorage.getItem("quiz_id");
+
+  //   fetch("https://dev.quizifai.com:8010/submit", {
+  //     method: "POST",
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${authToken}`,
+  //     },
+  //     body: JSON.stringify({
+  //       user_id: userId,
+  //       quiz_id: quizId,
+  //       attempt_no: attemptNo,
+  //       answers: answers,
+  //     }),
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok");
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       console.log(data);
+  //       navigate(`/quizresults`, { state: { quizId, attemptNo } });
+  //     })
+  //     .catch((error) => {
+  //       console.error("There was a problem with your fetch operation:", error);
+  //     });
+  // };
 
   const handleSubmit1 = (isAutoSubmit = false) => {
     clearInterval(timerRef.current);
@@ -823,7 +929,8 @@ const QuizQuestions = () => {
   console.log('quizData)', quizData);
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} no-select`}>
+
       {/*<Head>
         <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600;700&display=swap"
@@ -1238,8 +1345,8 @@ const QuizQuestions = () => {
       disabled={currentQuestionIndex === 0}
        className="flex  cursor-pointer items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px]"
       >
+          <img src={Playbutton} alt="" className="w-[20px] h-[20px] rotate-180" />
           <p>Previous</p>
-          <img src={Playbutton} alt="" className="w-[20px] h-[20px]" />
       </div>
     </div>
   ) : (
@@ -1304,6 +1411,45 @@ const QuizQuestions = () => {
           <p>Submit</p>
           {/* <img src={Playbutton} alt="" className="w-[20px] h-[20px]" /> */}
       </div>
+      {showPopup && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg p-5 max-w-md w-full">
+            <h2 className="text-lg font-bold mb-4">Quiz Summary</h2>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {quizData.questions.map((_, index) => (
+                <div
+                  key={index}
+                  className={`flex items-center justify-center w-5 h-5 rounded border  text-xs font-medium ${
+                    answeredQuestions.includes(index + 1)
+                      ? "bg-[#8cd18e] text-blue-900 border-[#18c91e]"
+                      : "bg-red-300 text-red-900 border-[#c91862]"
+                  }`}
+                >
+                  {index + 1}
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-1 justify-end">
+              <button
+                       className="flex  cursor-pointer items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px]"
+                onClick={() => setShowPopup(false)}
+              >
+                Cancel
+              </button>
+              <button
+                       className="flex cursor-pointer items-center px-[10px] p-[5px] border-[2px] border-solid border-[#18c91e] bg-[#8cd18e] text-[#000085] font-semibold rounded-[10px]"
+
+                onClick={() => {
+                  setShowPopup(false);
+                  submitQuiz();
+                }}
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
           </div>
           </div>
 </div>

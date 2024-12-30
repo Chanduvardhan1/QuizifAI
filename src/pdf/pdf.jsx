@@ -245,11 +245,23 @@ const [ isEditing ,setisEditing] = useState(false);
   
 
   const [modalMessage, setModalMessage] = useState("");
+    const [modalMessage1, setModalMessage1] = useState("");
+  
   const [isError, setIsError] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showModal1, setShowModal1] = useState(false);
+  const [shownext, setnext] = useState(false);
 
   const closeModal = () => {
     setShowModal(false);
+    if (publicAccess === "off") {
+    } else if (publicAccess === "on") {
+      navigate("/dashboard");
+    }
+  }; 
+
+  const closeModal1 = () => {
+    setShowModal1(false);
   };
 
 //-------------****print quiz****-----------//
@@ -652,11 +664,11 @@ useEffect(() => {
  const handeledit =()=> {
   setisEditing(true);
  }
-  useEffect(() => {
-    if (frontImage && backImage) {
-      handleUpload();
-    }
-  }, [frontImage, backImage]);
+  // useEffect(() => {
+  //   if (frontImage && backImage) {
+  //     handleUpload();
+  //   }
+  // }, [frontImage, backImage]);
 
  
   const handleImageChange = (e, type) => {
@@ -676,7 +688,7 @@ useEffect(() => {
     if (frontImage && backImage) setIsFlipped(!isFlipped); // Only allow flipping if both images are uploaded
   };
 
-  const handleUpload = async () => {
+  const handleUpload = async (quiz_id) => {
     if (!frontImage || !backImage) {
       alert('Please select both front and back images');
       return;
@@ -688,11 +700,16 @@ useEffect(() => {
 
     try {
       const user_id = localStorage.getItem('user_id');
+      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
 
-      const response = await fetch(`https://dev.quizifai.com:8010/upload-qz_image?quiz_id=${user_id}`, {
+      if (!authToken) {
+        console.error('No authentication token found. Please log in again.');
+        return;
+      }
+      const response = await fetch(`https://dev.quizifai.com:8010/upload-qz_image?quiz_id=${quiz_id}`, {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Replace with your actual token
+          'Authorization': `Bearer ${authToken}`, // Include the auth token in the Authorization header
         },
         body: formData,
       });
@@ -707,7 +724,42 @@ useEffect(() => {
       alert('An error occurred while uploading images');
     }
   };
+  // const handleQuizSelection = (id) => {
+  //   setQuizId(id);
+  // };
 
+  // const handleDeleteImage1 = async () => {
+  //   if (!quizid) {
+  //     console.error('No quiz ID set');
+  //     return;
+  //   }
+  
+  //   try {
+  //     const response = await fetch(`https://dev.quizifai.com:8010/remove-qz_image?quiz_id=${quizId}`, {
+  //       method: 'DELETE',
+  //       headers: {
+  //         'accept': 'application/json',
+  //       },
+  //     });
+  
+  //     if (!response.ok) {
+  //       throw new Error('Failed to delete the image');
+  //     }
+  
+  //     const data = await response.json();
+  //     console.log('Image deleted successfully', data);
+  //     // Handle successful deletion (e.g., update the UI)
+  //   } catch (error) {
+  //     console.error('Error deleting the image:', error);
+  //     // Handle error
+  //   }
+  // };
+  
+  const handleDeleteImage1 = () => {
+    setFrontImage(null);
+    setBackImage(null);
+    setIsFlipped(false);
+  };
 
   useEffect(() => {
     fetchCategories();
@@ -1573,8 +1625,15 @@ const handleNext = async (file) => {
         setModalMessage("Quiz created successfully!");
       setIsError(false);
       setShowModal(true);
+      setnext(true);
        setQuizId(responseData.data.quiz_id)
        setQuizName(responseData.data.quiz_name)
+       setPublicAccess(responseData.data.public_access_flag === "off");
+       const newQuizId = responseData.data.quiz_id;
+      setQuizId(newQuizId);
+      if (newQuizId) {
+        await handleUpload(newQuizId); // Pass quiz ID as a parameter
+      }
       } else {
         if (responseData.detail) {
           if (
@@ -1599,6 +1658,14 @@ const handleNext = async (file) => {
     }
   };
   
+ const [isDisabled, setIsDisabled] = useState(false);
+
+  const handleClick = () => {
+    setIsDisabled(true);
+    setModalMessage1("This feature will come soon!");
+    setIsError(false);
+    setShowModal1(true);
+  };
 
   const [organizations, setOrganizations] = useState([]);
 const [selectedOrg, setSelectedOrg] = useState('');
@@ -1866,6 +1933,10 @@ const handleTabClick = (tab) => {
             <FaSyncAlt size={18} />
           </button>
         )}
+   <button onClick={handleDeleteImage1}  className="absolute bottom-1 right-1 text-white bg-red-500 bg-opacity-75 rounded-full p-1">
+                 <RiDeleteBinLine className="w-[12px] h-[12px]" />
+               </button>
+  
       </div>
       <div className="flex flex-col  w-full">
         {/* Title and Version */}
@@ -3082,12 +3153,15 @@ const handleTabClick = (tab) => {
                 </button>
                 </div>
                 <div className="flex gap-[5px]">
-                                  <button
-                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
-                  onClick={() => setStep(3)}
-                >
-                  Save as Driaft
-                </button>
+                <button
+      className={`w-[123px] h-[32px] rounded-[10px] ${
+        isDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-[#1E4DE9] hover:bg-[rgb(239,81,48)]"
+      } text-white transform hover:scale-105 transition duration-200`}
+      disabled={isDisabled}
+      onClick={handleClick}
+    >
+      Save as Drafts
+    </button>
 
                 <button
                  disabled={isSubmitting} 
@@ -3097,6 +3171,7 @@ const handleTabClick = (tab) => {
                 >
                  {isSubmitting ? "Creating..." : "Create"}
                 </button>
+                {shownext && (
                 <button
             onClick={handleNextpage3}
               className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
@@ -3104,6 +3179,7 @@ const handleTabClick = (tab) => {
             >
               Next
             </button>
+            )}
                 </div>
               </div>
             </div>
@@ -3722,6 +3798,30 @@ Skip
           <p className="mt-2 text-gray-700">{modalMessage}</p>
           <button
             onClick={closeModal}
+            className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    )}
+       {showModal1 && (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div
+          className={`bg-white rounded-lg shadow-lg p-6 w-96 text-center ${
+            isError ? "border-red-500" : "border-green-500"
+          } border-t-4`}
+        >
+          {/* <h2
+            className={`text-xl font-semibold ${
+              isError ? "text-red-500" : "text-green-500"
+            }`}
+          >
+            {isError ? "Error" : "Success"}
+          </h2> */}
+          <p className="mt-2 text-gray-700">{modalMessage1}</p>
+          <button
+            onClick={closeModal1}
             className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
           >
             Close

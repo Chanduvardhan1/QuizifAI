@@ -277,7 +277,7 @@ const FreeProfile = () => {
         setDistrict(userProfileDetails.district_name);
         setEmail(userProfileDetails.user_email);
         setMobileNumber(userProfileDetails.user_phone_number);
-        setAddress(userProfileDetails.user_address_line_1);
+        // setAddress(userProfileDetails.user_address_line_1);
         setCountry(userProfileDetails.country_name);
         setState(userProfileDetails.state_name);
         setCity(userProfileDetails.location_name);
@@ -328,6 +328,21 @@ const FreeProfile = () => {
   };
   // save after edit
   const handleSaveClick = async () => {
+
+
+  // Validation logic
+  const errors = [];
+  if (!dob) errors.push("Date of birth is required.");
+  if (!gender) errors.push("Gender is required.");
+  if (!locationId) errors.push("Pincode is required.");
+  if (!occupation) errors.push("Occupation is required.");
+  if (occupation === "Other" && !otheroccupation)
+    errors.push("Please specify your other occupation.");
+  if (errors.length > 0) {
+    errors.forEach((error) => toast.error(error)); // Display each error as a toast
+    return;
+  }
+
     const payload = {
       user_id: userId,
       first_name: firstName,
@@ -339,7 +354,7 @@ const FreeProfile = () => {
       otp: otp,
       user_role: rolename, // Example value, adjust as needed
       user_type: "Public",
-      // user_org_id: orgId,
+      user_org_id: orgId,
       gender: gender,
       display_name: " ",
       date_of_birth: dob,
@@ -391,7 +406,7 @@ const FreeProfile = () => {
         setIsEmailOtpSent(false);
         setIsMobileOtpSent(false);
         setIsEditing(false);
-        window.location.reload();
+        // window.location.reload();
         // const response = await fetch(
         //   `https://dev.quizifai.com:8010/dashboard`,
         //   {
@@ -1209,15 +1224,17 @@ const FreeProfile = () => {
         <div className="w-full flex flex-row">
         <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">Gender<span className="text-red-500">*</span></label>
         <select
-                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-                  value={gender}
-                  onChange={(e) => setGender(e.target.value)}
-                  disabled={!isEditing}
-        >
-                   <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-        </select>
+  className={`w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none`}
+  value={gender}
+  onChange={(e) => setGender(e.target.value)}
+  disabled={!isEditing}
+>
+  <option value="">Select a gender</option>
+  <option value="Male">Male</option>
+  <option value="Female">Female</option>
+  <option value="Other">Other</option>
+</select>
+
   
         </div>
       
@@ -1306,6 +1323,7 @@ const FreeProfile = () => {
                   onChange={handleOccupationChange}
                   disabled={!isEditing}
         >
+            <option value="">Selet a Occupation</option>
            {occupations.map((occ) => (
                       <option
                         key={occ.occupation_id}

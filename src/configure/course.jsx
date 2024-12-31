@@ -59,7 +59,7 @@ const course = () => {
       org_id: orgId,
       course_name: courseName,
       course_code: courseCode,
-      course_short_name: courseShortName,
+      // course_short_name: courseShortName,
       course_duration: courseDuration,
       course_duration_unit: courseDurationUnit,
       course_pattern: coursePattern,
@@ -105,9 +105,10 @@ const course = () => {
   
         // Reset form fields
         setCourseName("");
-        setCourseShortName("");
+        setCourseCode("");
         setCourseDuration("");
         setCourseDurationUnit("");
+        setCoursePattern("");
         setIsNavbarOpen(false);
       } else {
         // Handle server-side failure
@@ -136,14 +137,21 @@ const course = () => {
   const handleCourseDurationUnitChange = (event) => {
     setCourseDurationUnit(event.target.value);
   };
+
+  const handleCoursePatternUnitChange = (event) => {
+    setCoursePattern(event.target.value);
+  };
   const updateCourse = async () => {
      // Replace with the actual token or retrieve it from local storage
   
     const courseData = {
+      org_id: orgId,
       course_name: courseName,
-      course_short_name: courseShortName,
-      course_duration: "2",
-      course_duration_unit: "years",
+      course_code: courseCode,
+      // course_short_name: courseShortName,
+      course_duration: courseDuration,
+      course_duration_unit: courseDurationUnit,
+      course_pattern: coursePattern,
       course_id: courseId,
       updated_by: userId
     };
@@ -155,7 +163,7 @@ const course = () => {
         console.error('No authentication token found');
         return;
       }
-      const response = await fetch('https://dev.quizifai.com:8010/update_courses/', {
+      const response = await fetch('https://dev.quizifai.com:8010/edit_courses/', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -171,14 +179,28 @@ const course = () => {
   
       const result = await response.json();
       console.log('Success:', result);
-      fetchCourses();
+      if (response.ok && result.response === "success") {
+        console.log("Course Updated successfully:", result);
+  
+        // Show success modal
+        setModalMessage("Course Updated  successfully.");
+        setIsError(false);
+        setShowModal(true);
+  
+        fetchCourses();
         setIsNavbarOpen(false);
         setCourseName('');
-        setCourseShortName('');
+        setCourseCode('');
+        setCoursePattern("");
         setCourseDuration('');
         setCourseDurationUnit('');
+      }
+     
     } catch (error) {
       console.error('Error:', error);
+      setModalMessage(`An unexpected error occurred: ${error.message}`);
+      setIsError(true);
+      setShowModal(true);
     }
   };
   
@@ -237,9 +259,10 @@ const course = () => {
       // Set state with the course details
       setCourseId(course.course_id);
       setCourseName(course.course_name);
-      setCourseShortName(course.course_short_name);
-      setCourseDuration(course.course_duration);
-      setCourseDurationUnit(course.course_duration_unit);
+      setCourseCode(course.course_code);
+      setCourseDuration(course.duration);
+      setCoursePattern(course.course_pattern);
+      setCourseDurationUnit(course.duration_unit);
       setIsNavbarOpen(true);
       setIsEditing(true);
       setSelectedCategoryId(course.course_id);
@@ -286,17 +309,21 @@ const course = () => {
       <input
         type="text"
         placeholder="Course Short Name"
-        value={courseShortName}
-        onChange={(e) => setCourseShortName(e.target.value)}
+        value={courseCode}
+        onChange={(e) => setCourseCode(e.target.value)}
         className="rounded-3xl py-1 px-4 text-center placeholder:text-[#214082] outline-[#214082]"
       />
-       <input
-        type="text"
-        placeholder="Course Pattern"
+       <select
+        className="rounded-3xl py-1 px-4 text-center placeholder:text-[#214082] outline-[#214082]"
         value={coursePattern}
-        onChange={(e) => setCoursePattern(e.target.value)}
-        className="rounded-3xl py-1 px-4 text-center placeholder:text-[#214082] outline-[#214082]"
-      />
+        onChange={handleCoursePatternUnitChange}
+      >
+        <option value="">Select Course Pattern</option>
+        <option value="ALL_SEM">ALL_SEM</option>
+        <option value="ALL_YR">ALL_YR</option>
+
+        
+      </select>
       <input
         type="text"
         placeholder="Course Duration"
@@ -312,6 +339,9 @@ const course = () => {
         <option value="">Select Duration Unit</option>
         <option value="months">Months</option>
         <option value="years">Years</option>
+        <option value="Semester">Semester</option>
+
+        
       </select>
       <button
         onClick={handleSubmit}
@@ -355,22 +385,22 @@ const course = () => {
           {courses.map((course) => (
             <tr key={course.course_id}>
               <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>{course.course_id}</td>
-              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>{course.course_name}</td>
-              {/* <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
+              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'>{course.course_name}</td>
+              {/* <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'>
               {course.specializations.map((spec) => (
                   <div key={spec.specialization_id}>
                     {spec.specialization_name}
                   </div>
                 ))}
               </td> */}
-              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
-              {course.course_short_name}
+              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'>
+              {course.course_code}
+              </td>
+              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'>
+              {course.course_pattern}
               </td>
               <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
-              {course.course_short_name}
-              </td>
-              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
-              {course.course_short_name}
+              {course.duration}
               </td>
               <td className='h-full border text-[#214082] flex gap-2 pl-[40px] pt-2 text-[12px] cursor-pointer hover:font-medium hover:underline'>         
               <img

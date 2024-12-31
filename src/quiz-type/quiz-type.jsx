@@ -575,7 +575,7 @@ const handleToLayout4 = () =>{
     if (frontImage && backImage) setIsFlipped(!isFlipped); // Only allow flipping if both images are uploaded
   };
 
-  const handleUpload = async () => {
+  const handleUpload = async (quiz_id) => {
     if (!frontImage || !backImage) {
       alert('Please select both front and back images');
       return;
@@ -588,7 +588,7 @@ const handleToLayout4 = () =>{
     try {
       const user_id = localStorage.getItem('user_id');
 
-      const response = await fetch(`https://dev.quizifai.com:8010/upload-qz_image?quiz_id=${quizid}`, {
+      const response = await fetch(`https://dev.quizifai.com:8010/upload-qz_image?quiz_id=${quiz_id}`, {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Replace with your actual token
@@ -995,8 +995,12 @@ for (const question of questions) {
        setQuizId(responseData.data.quiz_id)
        setQuizName(responseData.data.quiz_name)
        setPublicAccess(responseData.data.public_access_flag === "off");
-       handleUpload();
         console.log('id',quizid);
+        const newQuizId = responseData.data.quiz_id;
+        setQuizId(newQuizId);
+        if (newQuizId) {
+          await handleUpload(newQuizId); // Pass quiz ID as a parameter
+        }
       //   const id = responseData.data.quid_id;
       //  dispatch(getUploadImage({quid_id}));
       //  console.log('quid_id',quid_id);

@@ -241,6 +241,7 @@ export default function editmanuly() {
 
   const [instructions, setinstructions] = useState("Carefully read each question before selecting your answer. Answer all questions, even if you are not sure. If available, use the skip or review feature to mark questions you want to revisit later. Make sure to submit your answers before the timer ends. Quizzes may auto-submit, but it is best to double-check.Good Luck!")
   const [ isEditing ,setisEditing] = useState(false);
+  const orgId = localStorage.getItem('org_id');
 
   const handeledit =()=> {
     setisEditing(true);
@@ -713,6 +714,7 @@ export default function editmanuly() {
         body: JSON.stringify({
           user_id: user_id,
           quiz_id: quiz_id,
+          org_id: orgId,
           quiz_title: title,
           num_questions: numQuestions,
           quiz_description: description,

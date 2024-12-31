@@ -387,21 +387,21 @@ const specialisations = () => {
                     {spec.specialization_id}
                   </div>
                 ))}</td>
-              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
+              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'>
               {course.specializations.map((spec) => (
                   <div key={spec.specialization_id}>
                     {spec.specialization_name}
                   </div>
                 ))}
               </td>
-              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>{course.specializations.map((spec) => (
+              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'>{course.specializations.map((spec) => (
                   <div key={spec.specialization_id}>
                     {spec.specialization_short_name}
                   </div>
                 ))}</td>
 
-                <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>{course.course_name}</td>
-              {/* <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
+                <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'>{course.course_name}</td>
+              {/* <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'>
               {course.classes.map((cls) => (
                   <div key={cls.class_id}>{cls.class_name}</div>
                 ))}

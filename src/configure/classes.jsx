@@ -38,12 +38,20 @@ const classes = () => {
   const [selectedSpecializationId, setSelectedSpecializationId] = useState('');
   const [className, setClassName] = useState('');
   const [courseId, setCourseId] = useState(0);
+
   const [specializationId, setSpecializationId] = useState(0);
   const userId = localStorage.getItem("user_id");
   const orgId = localStorage.getItem('org_id');
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [isError, setIsError] = useState(false);
+  const [sectionName, setSectionName] = useState('');
+  const [SectionId, setSectionId] = useState('');
+
+    
+  const [sectionCode, setSectionCode] = useState('');
+  const [createdBy, setCreatedBy] = useState('');
+  const [updatedBy, setUpdatedBy] = useState('');
 
   const closeModal = () => {
     setShowModal(false);
@@ -53,6 +61,9 @@ const classes = () => {
   const handleBanckToDashbaord = () =>{
     navigate('/configure');
   }
+
+  
+
 
   const handleAddClass = async () => {
     try {
@@ -66,10 +77,10 @@ const classes = () => {
         return;
       }
   
-      const response = await fetch("https://dev.quizifai.com:8010/adding_classes/", {
+      const response = await fetch("https://dev.quizifai.com:8010/add_class_and_section/", {
         method: "POST",
         headers: {
-          accept: "application/json",
+          // accept: "application/json",
           Authorization: `Bearer ${authToken}`,
           "Content-Type": "application/json",
         },
@@ -80,6 +91,20 @@ const classes = () => {
           org_id: orgId,
           department_id: selectedDepartmentId,
           created_by: userId,
+          updated_by: userId,
+          sections: [
+            {
+              section_name: sectionName,
+              section_code: sectionCode,
+              created_by: userId,
+              updated_by: userId,
+              created_date: new Date().toISOString(),
+              updated_date: new Date().toISOString(),
+            },
+          ],
+          created_timestamp: new Date().toISOString(),
+          updated_timestamp: new Date().toISOString(),
+      
         }),
       });
   
@@ -122,7 +147,7 @@ const classes = () => {
         console.error('No authentication token found');
         return;
       }
-      const response = await fetch('https://dev.quizifai.com:8010/update_classes/', {
+      const response = await fetch('https://dev.quizifai.com:8010/edit_class_and_section/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${authToken}`,
@@ -130,10 +155,29 @@ const classes = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          class_id: classId,
           class_name: className,
           course_id: courseId,
           Specialization_id: specializationId,
-          updated_by: userId
+          org_id: orgId,
+          department_id: selectedDepartmentId,
+          created_by: userId,
+          updated_by: userId,
+          sections: [
+            {
+              section_id:SectionId,
+              section_name: sectionName,
+              section_code: sectionCode,
+              created_by: userId,
+              updated_by: userId,
+              created_date: new Date().toISOString(),
+              updated_date: new Date().toISOString(),
+            },
+          ],
+          created_timestamp: new Date().toISOString(),
+          updated_timestamp: new Date().toISOString(),
+      
+        
         })
       });
 
@@ -141,16 +185,32 @@ const classes = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
-      console.log('Class updated successfully:', data);
-      fetchCourses();
-      setIsNavbarOpen(false);
-      setClassName('');
-      setCourseId('');
-      setSpecializationId('');
+      const result = await response.json();
+      if (response.ok && result.response === "success") {
+        console.log("Class added successfully:", result);
+        setModalMessage(result.response_message || "Class added successfully!");
+        setIsError(false);
+        setShowModal(true);
+  
+        // Reset form fields
+        fetchCourses();
+        setIsNavbarOpen(false);
+        setClassName('');
+        setCourseId('');
+        setSpecializationId('');
+      } else {
+        console.error("Failed to add class:", result);
+        setModalMessage(result.response_message || "An error occurred.");
+        setIsError(true);
+        setShowModal(true);
+      }
+     
       // Handle success (e.g., show a success message, reset form, etc.)
     } catch (error) {
       console.error('Error updating class:', error);
+      setModalMessage("An error occurred while adding the class.");
+      setIsError(true);
+      setShowModal(true);
       // Handle error (e.g., show an error message)
     }
   };
@@ -275,6 +335,12 @@ const classes = () => {
         const classData = course.classes[0]; // Assuming you want the first class
         setClassName(classData.class_name); // Set the class_name in state
         setClassId(classData.class_id); // Set the class_id in state
+        if (classData.sections && classData.sections.length > 0) {
+          const section = classData.sections[0]; // Assuming you want the first section
+          setSectionName(section.section_name);
+          setSectionId(section.section_id);
+          setSectionCode(section.section_code);
+        }
       } else {
         setClassName(''); // Reset if no class is found
         setClassId('');
@@ -315,7 +381,7 @@ const classes = () => {
         onChange={(e) => setClassId(e.target.value)}
         className="rounded-3xl w-[7%] py-1 px-4 text-center placeholder:text-[#214082] outline-[#214082]"
         style={{ '::placeholder': { color: '#214082' } }}
-        readOnly
+        // readOnly
       />
       <input
         type="text"
@@ -324,11 +390,18 @@ const classes = () => {
         onChange={(e) => setClassName(e.target.value)}
         className="rounded-3xl w-[15%] py-1 px-4 text-center placeholder:text-[#214082] outline-[#214082]"
       />
-       <input
+         <input
         type="text"
-        placeholder="Section"
-        value={className}
-        onChange={(e) => setClassName(e.target.value)}
+        placeholder="Section Name"
+        value={sectionName}
+        onChange={(e) => setSectionName(e.target.value)}
+        className="rounded-3xl w-[15%] py-1 px-4 text-center placeholder:text-[#214082] outline-[#214082]"
+      />
+      <input
+        type="text"
+        placeholder="Section Code"
+        value={sectionCode}
+        onChange={(e) => setSectionCode(e.target.value)}
         className="rounded-3xl w-[15%] py-1 px-4 text-center placeholder:text-[#214082] outline-[#214082]"
       />
          <select
@@ -422,23 +495,29 @@ const classes = () => {
       ))}
 
               </td>
-              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
+              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'>
              
-             {course.classes.map((cls) => (
-       <div key={cls.class_id}>
-         {cls.class_name}
-       </div>
-     ))}
+              {course.classes.map((cls) => (
+      <div key={cls.class_id}>
+        {cls.sections.length > 0 ? (
+          cls.sections.map((section) => (
+            <div key={section.section_id}>{section.section_name}</div>
+          ))
+        ) : (
+          <div>No Sections</div>
+        )}
+      </div>
+    ))}
 
              </td>
-              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>  {course.specializations.map((specialization) => (
+              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'>  {course.specializations.map((specialization) => (
         <div key={specialization.specialization_id}>
           {specialization.specialization_name}
         </div>
       ))}</td>
 
-                <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>{course.course_name}</td>
-              {/* <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
+                <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'>{course.course_name}</td>
+              {/* <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'>
               {course.classes.map((cls) => (
                   <div key={cls.class_id}>{cls.class_name}</div>
                 ))}

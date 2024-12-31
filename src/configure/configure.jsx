@@ -91,7 +91,7 @@ const configure = () => {
   const handleSettings = () => handleRestrictedClick("/Profilesettings");
   const handleQuestionBank = () => handleRestrictedClick("/questionbank");
   const handleUserList = () => handleRestrictedClick("/userslist");
-  const handleInstitution = ()=>  handleRestrictedClick1("/education");
+  const handleInstitution = ()=>  handleRestrictedClick("/education");
   const handleGlobalLeaderboard = () => handleRestrictedClick1("/leaderboardall");
   const handleCreateOrganization = () => handleRestrictedClick2('/creatorganization')
   const handleCreateOrganizationDepartment =()=> handleRestrictedClick('/creatorganizationdeparment')
@@ -162,7 +162,7 @@ const configure = () => {
       image:software,
       title: "Organization",
       content:
-        "Create Organization, Create Organization Department, Organization Profile, Institution, Organization Preferences",
+        "Create Organization, Create Organization Department, Organization Profile, Institution Educations, Organization Preferences",
     },
     {
       id: 4,
@@ -439,7 +439,7 @@ const configure = () => {
                       : contentItem ==="Organization Preferences" &&
                       item.title === "Organization"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
-                      : contentItem ==="Institution" &&
+                      : contentItem ==="Institution Educations" &&
                       item.title === "Organization"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : ["Configuration", "Quizzes"].includes(item.title)
@@ -470,7 +470,7 @@ const configure = () => {
                       ? handleProfile
                       : contentItem === "Organization Preferences"
                       ? handleSettings
-                      : contentItem === "Institution"
+                      : contentItem === "Institution Educations"
                       ? handleInstitution
                       : contentItem === "Question Bank"
                       ? handleQuestionBank

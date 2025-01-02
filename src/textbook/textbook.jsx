@@ -233,8 +233,23 @@ export default function quiztype() {
   const [documentType, setDocumentType] = useState("");
 
   const [ isEditing ,setisEditing] = useState(false);
-  const [instructions,setininstructions] = useState('Carefully read each question before selecting your answer. Answer all questions, even if you are not sure. If available, use the skip or review feature to mark questions you want to revisit later. Make sure to submit your answers before the timer ends. Quizzes may auto-submit, but it is best to double-check.')
-
+   const [instructions, setInstructions] = useState([
+     "Read all the instructions carefully before starting the quiz.",
+     "Ensure you have a stable internet connection throughout the quiz duration.",
+     "Use a compatible device (e.g., laptop, tablet, or mobile) as specified for the quiz.",
+     "Check the allotted time for the quiz and plan accordingly.",
+     "Make sure you are in a quiet, distraction-free environment.",
+     "Review the total number of questions in the quiz.",
+     "Understand the marking scheme, including negative marking (if applicable).",
+     "Note whether the quiz allows multiple attempts or is a one-time attempt.",
+     "Ensure your device’s battery is fully charged or connected to a power source.",
+     "Keep necessary materials ready if allowed (e.g., calculator, pen, paper).",
+     "Do not open other tabs, windows, or applications during the quiz unless permitted.",
+     "Follow any specific rules set by the instructor or platform.",
+     "Avoid any forms of cheating or academic dishonesty.",
+     "Be aware that the quiz might automatically submit at the end of the allotted time.",
+     "Contact support or your instructor immediately if you face technical issues.",
+   ]);
   const [simplequestions, setSimplequestions] = useState('')
   const [moderatequestions, setModeratequestions] = useState('')
   const [complexquestions, setComplexquestions] = useState('')
@@ -270,6 +285,11 @@ const [modalMessage1, setModalMessage1] = useState("");
 
   const closeModal1 = () => {
     setShowModal1(false);
+  };
+  const handleInstructionChange = (index, value) => {
+    const updatedInstructions = [...instructions];
+    updatedInstructions[index] = value;
+    setInstructions(updatedInstructions);
   };
 
  //-------------****print quiz****-----------//
@@ -453,7 +473,14 @@ useEffect(() => {
  };
 
  // Handle the upload of front or back image
- const [step, setStep] = useState(1);
+ const [step, setStep] = useState(0);
+
+
+ const handleNextpage0 = () => {
+
+  setStep(1);
+};
+
 
   const handleNextpage = () => {
     // Validation checks
@@ -1126,7 +1153,7 @@ if (!authToken) {
       formData.append("available_from", availablefrom);
       formData.append("disabled_on", disabledon);
       formData.append("org_id", selectedOrg);
-      formData.append("quiz_instructions", instructions);
+      formData.append("quiz_instructions", instructionsString);
       formData.append("subject_name", subject);
       formData.append("quiz_total_marks", quiztotalmarks);
       formData.append("file", file);
@@ -1333,7 +1360,8 @@ if (!authToken) {
 const [isSubmitting, setIsSubmitting] = useState(false);
 
 
-  
+const instructionsString = instructions.join("\n");
+
   const handleNext4 = async () => {
     try {
       setIsSubmitting(true);
@@ -1350,6 +1378,11 @@ const [isSubmitting, setIsSubmitting] = useState(false);
         setErrorMessage("User ID not found. Please log in again.");
         return;
       }
+      if (!frontImage || !backImage) {
+                  toast.error('Please select both front and back images');
+                  setIsSubmitting(false);
+                  return;
+                }
       const response = await fetch(
         `https://dev.quizifai.com:8010/crt_qz_from_txtbook`,
         {
@@ -1384,7 +1417,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
             document_type: document,
             subject_name: subject,
             user_id:user_id,
-            quiz_instructions: instructions,
+            quiz_instructions: instructionsString,
             org_id: orgId,
             pdf_url:pdfUrl,
             questions: questions.map((question) => ({
@@ -1411,7 +1444,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
       setShowModal(true);
       setnext(true);
       setQuizId(responseData.data.quiz_id)
-      setQuizName(responseData.data.quiz_name)
+      setQuizName(responseData.data.quiz_title)
       setPublicAccess(responseData.data.public_access_flag === "off");
       const newQuizId = responseData.data.quiz_id;
       setQuizId(newQuizId);
@@ -1486,6 +1519,13 @@ const [groupName, setGroupName] = useState('');
 const [file1, setFile1] = useState(null);
 const [quizid, setQuizId] = useState(null);
 const [quizName, setQuizName] = useState('');
+const [showassign, setShowassign] = useState(false);
+const [isError1, setIsError1] = useState(false);
+const [modalMessage2, setModalMessage2] = useState('');
+
+const closeModal2 = () => {
+  setShowassign(false);
+};
 
 const handleToggle = (event) => {
   setShareWithGroupOrOrg(event.target.checked); // Update state based on toggle
@@ -1518,7 +1558,7 @@ const handleSubmit = async (e) => {
   formData.append('share_with_group_or_org', shareWithGroupOrOrg);
   formData.append('group_name', groupName);
   formData.append('user_ids',selectedUserIds ); // Pass user IDs as a comma-separated string
-  if (file1) formData.append('files', file1);
+  if (file) formData.append('files', file);
 
   try {
     const response = await fetch(
@@ -1535,13 +1575,24 @@ const handleSubmit = async (e) => {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-
     const result = await response.json();
-    alert('Quiz assigned successfully!');
+
+    if (result && result.response === "success") {
+      // Check if response indicates success
+      setModalMessage2('Quiz assigned successfully!');
+      setIsError1(false);
+    } else {
+      setModalMessage2('Failed to assign quiz. Please try again.');
+      setIsError1(true);
+    }
+
+    setShowassign(true);
     console.log('Response:', result);
   } catch (error) {
     console.error('Error assigning quiz:', error.message);
-    alert('Failed to assign quiz. Please try again.');
+    setModalMessage2('Failed to assign quiz. Please try again.');
+    setIsError1(true);
+    setShowassign(true);
   }
 };
 
@@ -1846,6 +1897,38 @@ const handleComplexquestions = (event) => {
         </div> */}
       </div>
     </div>
+    {step === 0 && (
+         <>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-white my-4 p-5">
+  <div className="md:col-span-2">
+    <h1 className="font-semibold text-[20px] text-[#214082]">Quiz Instructions</h1>
+  </div>
+
+  {instructions.map((instruction, index) => (
+    <div key={index} className="flex items-start">
+      {/* Number Display */}
+      <div className="w-4 text-[14px] font-semibold text-right mr-2">{index + 1}.</div>
+      {/* Input for Editing */}
+      <input
+        value={instruction}
+        onChange={(e) => handleInstructionChange(index, e.target.value)}
+        className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[14px] focus:outline-none"
+      />
+    </div>
+  ))}
+
+  <div className="flex justify-end md:col-span-2">
+    <button
+      onClick={handleNextpage0}
+      className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+    >
+      Next
+    </button>
+  </div>
+</div>
+
+        </> 
+       )}
     {step === 1 && (
          <>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white my-4 p-5">
@@ -1874,16 +1957,14 @@ const handleComplexquestions = (event) => {
           </div>
 
           {/* Quiz Description */}
-          <div className="w-full flex flex-col ">
+          <div className="flex flex-col md:col-span-2">
             <div className="w-full flex flex-row">
-              <label className="w-[23%] text-blue-800 font-semibold mb-2 ">
+              <label className="w-[10%] text-blue-800 font-semibold mb-2 ">
                Description <span className="text-red-500">*</span>
               </label>
-              <textarea
+              <input
                 className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-                type=""
-                rows="4" 
-                cols="50"
+                type="text"
                 required
                 value={description}
                 onChange={(e) => setDescription(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1))}
@@ -1892,36 +1973,7 @@ const handleComplexquestions = (event) => {
             <hr className="h-[1px] w-full" />
           </div>
  {/* Quiz instructions */}
- <div className="w-full flex items-center ">
- <div className=" w-full flex flex-col">
-            <div className="w-full flex flex-row">
-              <label className=" w-[23%] text-blue-800 font-semibold mb-2 mr-[10px]">
-               Instructions <span className="text-red-500">*</span>
-              </label>
-              <textarea
-                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-                 rows="4" 
-                cols="50"
-                required
-                value={instructions}
-                onChange={(e) => setininstructions(e.target.value)}
-                disabled={!isEditing}
 
-              />
-            </div>
-            <hr className="h-[1px] w-full" />
-
-          </div>
-             <div className="  m-2">
-              <img src={editicon} onClick={handeledit} className=" w-[18px] h-[18px] cursor-pointer "/>
-            {/* <button
-              // onClick={handleNextpage}
-              className="px-2 py-[4px] bg-[#3b61c8] text-white font-semibold rounded-xl hover:bg-blue-700"
-            >
-              Edit
-            </button> */}
-          </div>
-          </div>
        
          
        
@@ -1979,7 +2031,7 @@ const handleComplexquestions = (event) => {
 <div className="w-full flex flex-col">
   <div className="w-full flex flex-row">
     <label className="w-[31%] text-blue-800 font-semibold mb-2 ">
-      Course<span className="text-red-500">*</span>
+      Course<span className="text-red-500"></span>
     </label>
     <select
       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
@@ -2002,7 +2054,7 @@ const handleComplexquestions = (event) => {
 <div className="w-full flex flex-col">
   <div className="w-full flex flex-row">
     <label className=" w-[20%] text-blue-800 font-semibold mb-2">
-      Class<span className="text-red-500">*</span>
+      Class<span className="text-red-500"></span>
     </label>
     <select
       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
@@ -2038,6 +2090,56 @@ className="react-switch"
 </div>
 
 </div>
+<div className="md:col-span-2">
+
+<div className="w-full flex gap-6">
+      {/* Complexity */}
+      <div className="w-full flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[23%] text-blue-800 font-semibold mb-2">Complexity<span className="text-red-500">*</span></label>
+        
+        <select
+                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          value={selectedComplexity}
+          onChange={handleSelectComplexity}
+        >
+          <option value="" disabled>Complex</option>
+          {complexities.map((complexity, index) => (
+            <option key={index} value={complexity}>
+              {complexity}
+            </option>
+          ))}
+        </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+<div className="w-full flex flex-col">
+  <div className="w-full flex flex-row">
+    <label className="w-[30%] text-blue-800 font-semibold mb-2 ">
+      Subject<span className="text-red-500"></span>
+    </label>
+    <select
+      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+      value={selectedCourse}
+      onChange={handleSelectCourse}
+    >
+      <option value="" disabled>Select a Subject</option>
+      <option value="">None</option>
+      {/* {courses.map((course) => (
+        <option key={course.course_id} value={course.course_name}>
+          {course.course_name}
+        </option>
+      ))} */}
+    </select>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+
+
+</div>
+
+</div>
 {/* <div className="w-full flex flex-col">
             <div className="w-full flex flex-row">
               <label className=" w-[20%] text-blue-800 font-semibold mb-2">
@@ -2070,7 +2172,14 @@ className="react-switch"
               Back
             </button>
           </div> */}
-           <div className="flex justify-end md:col-span-2">
+           <div className="flex justify-between md:col-span-2">
+            <button
+              onClick={() => setStep(0)}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Back
+            </button>
             <button
               onClick={handleNextpage}
               className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
@@ -2125,7 +2234,7 @@ className="react-switch"
       </div>
      
       {/* Complexity */}
-      <div className="flex flex-col">
+      {/* <div className="flex flex-col">
         <div className="w-full flex flex-row">
         <label className="w-[65%] text-blue-800 font-semibold mb-2 mr-[132px] ">Complexity<span className="text-red-500">*</span></label>
 
@@ -2165,27 +2274,16 @@ className="react-switch"
           </option>
         ))}
         </select>
-        {/* <select
-                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-          value={selectedComplexity}
-          onChange={handleSelectComplexity}
-        >
-          <option value="" disabled>Complex</option>
-          {complexities.map((complexity, index) => (
-            <option key={index} value={complexity}>
-              {complexity}
-            </option>
-          ))}
-        </select> */}
+      
         </div>
       
         <hr className={`h-[1px] w-full`} />
-      </div>
+      </div> */}
        {/* Pass Percentage */}
       
  <div className="flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[59%] text-blue-800 font-semibold mb-2">Pass Percentage<span className="text-red-500">*</span></label>
+        <label className="w-[65%] text-blue-800 font-semibold mb-2">Pass Percentage<span className="text-red-500">*</span></label>
    
         <select
          className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -2203,7 +2301,7 @@ className="react-switch"
         <hr className={`h-[1px] w-full`} />
       </div>
       {/* Question Type */}
-      <div className="flex flex-col">
+      {/* <div className="flex flex-col">
         <div className="w-full flex flex-row">
         <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[75px] ">Question Type<span className="text-red-500">*</span></label>
 
@@ -2246,7 +2344,7 @@ className="react-switch"
         </div>
       
         <hr className={`h-[1px] w-full`} />
-      </div>
+      </div> */}
      
 
       
@@ -2331,7 +2429,7 @@ className="react-switch"
       {/* Quiz must be disable on */}
       <div className="flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[60%] text-blue-800 font-semibold mb-2  ">Quiz must be disable on<span className="text-red-500">*</span></label>
+        <label className="w-[65%] text-blue-800 font-semibold mb-2  ">Quiz must be disable on<span className="text-red-500">*</span></label>
         <input
               type="date"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -2994,7 +3092,7 @@ value={orgId}
     </label>
     <input
                              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-                             value={`${quizName}(ID: ${quizid})`} 
+                             value={`${quizName}`} 
                   placeholder="Oragnization"
                 
                 ></input>
@@ -3602,6 +3700,30 @@ Skip
         </div>
       </div>
     )}
+      {showassign && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div
+      className={`bg-white rounded-lg shadow-lg p-6 w-96 text-center ${
+        isError1 ? "border-red-500" : "border-green-500"
+      } border-t-4`}
+    >
+      <h2
+        className={`text-xl font-semibold ${
+          isError1 ? "text-red-500" : "text-green-500"
+        }`}
+      >
+        {isError1 ? "Error" : "Success"}
+      </h2>
+      <p className="mt-2 text-gray-700">{modalMessage2}</p>
+      <button
+        onClick={closeModal2}
+        className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
  </main>
 )}
       </div>

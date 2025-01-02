@@ -206,6 +206,7 @@ const quizAccess = () => {
             </div> */}
     </div>
     {quizData && (
+      <div>
 <div className="flex w-[90%] border-[#8cd18e] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-2 bg-white">
       {/* Quiz Image */}
       <div className="relative mr-2">
@@ -345,18 +346,26 @@ const quizAccess = () => {
         </div>
       </div>
     </div>
-     )}
+   
     <div className="flex py-4 text-[#F17530] text-[16px] font-bold">
         <p >Read the below instructions before starting the quiz</p>
     </div>
     <div className="text-[#214082]">
-      <p><span>1 . </span> Carefully read each question before selecting your answer.</p>
-      <p><span>2 . </span> Answer all questions, even if you are not sure.</p>
-      <p><span>3 . </span> Make sure to submit your answers before the timer ends.</p>
-      <p><span>4 . </span> If available, use the skip or review feature to mark questions you want to revisit later.</p>
-      <p><span>5 . </span> Quizzes may auto-submit, but it is best to double-check.</p>
-      <p><span>6 . </span> Contact <span className="text-[#F17530] underline" href="">Support@quizifai.com</span> in case you face any challanges</p>
+    {quizData.quiz_instructions
+            ? quizData.quiz_instructions
+                .split('\n')
+                .map((instruction, index) =>
+                  instruction.trim() ? (
+                    <p key={index} className="text-[#214082]">
+                      <span className="font-semibold">{index + 1}.</span> {instruction.trim()}
+                    </p>
+                  ) : null
+                )
+            : 'No instructions available'}
+      {/* <p><span className="font-semibold">16 . </span> Contact <span className="text-[#F17530] underline" href="">Support@quizifai.com</span> in case you face any challanges</p> */}
     </div>
+    </div>
+      )}
     <div className="flex justify-center py-10">
             <div onClick={handleStartQuiz} className="flex items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px] cursor-pointer"
             >

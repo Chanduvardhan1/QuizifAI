@@ -653,13 +653,13 @@ const quizresults = () => {
                   entry.current ? "bg-green-100" : ""
                 } hover:bg-gray-50 text-[#00008b]`}
               >
-                <td className="border-b px-4 py-2">{entry.rank}</td>
-                <td className="border-b px-4 py-2">{entry.user_name}</td>
+                <td className="border-b px-4 py-2 text-center">{entry.rank}</td>
+                <td className="border-b px-4 py-2 text-left">{entry.user_name}</td>
                 <td className="border-b px-4 py-2 text-center">{entry.attempts_count}</td>
-                <td className="border-b px-4 py-2">{entry.attained_percentage}%</td>
-                <td className="border-b px-4 py-2">{entry.attempt_duration_mins}</td>
+                <td className="border-b px-4 py-2 text-center">{entry.attained_percentage}%</td>
+                <td className="border-b px-4 py-2 text-center">{entry.attempt_duration_mins}</td>
                 {/* <td className="border-b px-4 py-2 text-center">{entry.version}</td> */}
-                <td className="border-b px-4 py-2">
+                <td className="border-b px-4 py-2 text-center">
                   {entry.created_date}
                  
                 </td>

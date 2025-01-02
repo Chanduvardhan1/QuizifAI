@@ -163,7 +163,7 @@ function contact() {
         // if (Array.isArray(responseData.message) && responseData.message.length > 0) {
         //   // Assuming you want to display the first message in the array
         //   console.log(responseData.message[0]);
-        navigate("/contact1");
+        navigate("/contact-1");
         }
       else {
         // Handle other response scenarios
@@ -353,7 +353,7 @@ function contact() {
     Get in Touch With Us
   </h1>
 
-  <div className="w-[390px] h-[360px] bg-[#F1F1FF] rounded-lg">
+  <div className="w-[380px] h-[400px] bg-[#F1F1FF] rounded-lg">
     <div className="p-5 mb-5">
       <div className="mt-0">
         <div className="flex gap-2 mb-7">

@@ -198,7 +198,73 @@ const excelcreat = () => {
   </div>
 </div>
     )}
+{activeTab === 'Preview' && (
+  <div className='w-full p-2'>
+ <table className='w-full table-auto rounded text-left bg-[#F7E0E3] text-[#2b51a1] text-[14px] font-light'>
+ <thead>
+   <tr className='h-[50px]'>
+     <th className='px-4 py-2 text-nowrap'>ID</th>
+     <th className='pl-[10px] ml-[15px] py-2'>Name</th>
+     <th className='px-4 py-2 text-nowrap'>Email</th>
+     <th className='px-4 py-2 text-nowrap'>Orginzation Type</th>
+     <th className='px-4 py-2 text-nowrap'>Role</th>
 
+     {/* <th className='px-2 py-2 text-wrap'>Classes</th> */}
+     <th className='px-4 py-2 text-nowrap'>
+     <div className='flex justify-center items-center '>
+     <input
+         className=' text-[10px] pl-[30px] pr-[10px] rounded-[20px] h-[28px] mr-[10px] w-fit bg-[#FFFFFF] text-left placeholder-[#214082] border-none focus:border-none outline-none'
+         type='text'
+         placeholder='Search'
+         value={searchInput}
+       onChange={e => setSearchInput(e.target.value)}
+     />
+     <img
+         className='h-[12px] w-[12px] relative top-[2px] right-[155px]'
+         src={searchIcon}
+        />
+   </div>
+   </th>
+   </tr>
+ </thead>
+ <tbody  className='bg-white border-gray-500 '>
+
+     <tr>
+       <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'></td>
+       <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'></td>
+       {/* <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'>
+       {course.specializations.map((spec) => (
+           <div key={spec.specialization_id}>
+             {spec.specialization_name}
+           </div>
+         ))}
+       </td> */}
+       <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'>
+       {/* {course.course_code} */}
+       </td>
+       <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'>
+       {/* {course.course_pattern} */}
+       </td>
+       <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
+       {/* {course.duration} */}
+       </td>
+       <td className='h-full border text-[#214082] flex gap-2 pl-[40px] pt-2 text-[12px] cursor-pointer hover:font-medium hover:underline'>         
+       <img
+         className='h-[13px] w-[13px] mr-1 cursor-pointer'
+         src={Edit}
+         alt="Edit"
+        //  onClick={() => handleEdit(course)}
+
+       />
+      <button className='flex text-orange-500 w-[30px] h-[30px]' ><RiDeleteBinLine/></button>
+
+     </td>
+     </tr>
+  
+ </tbody>
+</table>
+</div>
+)}
       
       {/* </div> */}
     </div>

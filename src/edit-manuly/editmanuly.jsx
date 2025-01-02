@@ -238,8 +238,24 @@ export default function editmanuly() {
   const [isAllSelected, setIsAllSelected] = useState(false);
 
   const [quizcreation, setQuizcreation] = useState('')
+const [instructions, setInstructions] = useState([
+      "Read all the instructions carefully before starting the quiz.",
+      "Ensure you have a stable internet connection throughout the quiz duration.",
+      "Use a compatible device (e.g., laptop, tablet, or mobile) as specified for the quiz.",
+      "Check the allotted time for the quiz and plan accordingly.",
+      "Make sure you are in a quiet, distraction-free environment.",
+      "Review the total number of questions in the quiz.",
+      "Understand the marking scheme, including negative marking (if applicable).",
+      "Note whether the quiz allows multiple attempts or is a one-time attempt.",
+      "Ensure your device’s battery is fully charged or connected to a power source.",
+      "Keep necessary materials ready if allowed (e.g., calculator, pen, paper).",
+      "Do not open other tabs, windows, or applications during the quiz unless permitted.",
+      "Follow any specific rules set by the instructor or platform.",
+      "Avoid any forms of cheating or academic dishonesty.",
+      "Be aware that the quiz might automatically submit at the end of the allotted time.",
+      "Contact support or your instructor immediately if you face technical issues.",
+    ]);
 
-  const [instructions, setinstructions] = useState("Carefully read each question before selecting your answer. Answer all questions, even if you are not sure. If available, use the skip or review feature to mark questions you want to revisit later. Make sure to submit your answers before the timer ends. Quizzes may auto-submit, but it is best to double-check.Good Luck!")
   const [ isEditing ,setisEditing] = useState(false);
   const orgId = localStorage.getItem('org_id');
 
@@ -642,6 +658,8 @@ export default function editmanuly() {
     setQuestions(newQuestions);
     setIsModified(true);
   };
+  const instructionsString = instructions.join("\n");
+
   const handleNext = async () => {
     const requiredFields = [
       numQuestions,
@@ -733,7 +751,7 @@ export default function editmanuly() {
           quiz_creation_method: quizcreation,
           disabled_on: disabledon,
           quiz_total_marks: quiztotalmarks,
-          quiz_instructions:instructions,
+          quiz_instructions:instructionsString,
           questions: questions.map((question) => ({
             question_text: question.question_text,
             correct_answer_description: question.correct_answer_description,
@@ -922,7 +940,7 @@ export default function editmanuly() {
         setSelectedSubCategory(data.data.quiz_sub_category_name);
         setPercentage(data.data.pass_percentage);
         setSelectedValue(data.data.retake_flag);
-        setPublicAccess(data.data.quiz_public_access);
+        setPublicAccess(data.data.quiz_public_access === "on");
         setDuration(data.data.quiz_duration);
         setIsRetakeOn(data.data.retake_flag > 0);
         setTimings(data.data.quiz_time_bounded_questions);
@@ -1309,7 +1327,7 @@ export default function editmanuly() {
                 cols="50"
                 required
                 value={instructions}
-                onChange={(e) => setininstructions(e.target.value)}
+                onChange={(e) => setInstructions(e.target.value)}
                 
 
               />

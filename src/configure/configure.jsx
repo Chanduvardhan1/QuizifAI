@@ -43,9 +43,17 @@ const configure = () => {
   const allowedRoles = ["Super Admin","Admin"]; // Roles allowed to access the pages
   const allowedRoles1 = ["Quiz Master","Admin","Super Admin"];
   const allowedRoles2 = ["Super Admin"];
+  const allowedRoles3 = ["Quiz Master","Admin","Super Admin","Quiz User"];
 
   const handleRestrictedClick = (navigateTo) => {
     if (allowedRoles.includes(userRole)) {
+      navigate(navigateTo);
+    } else {
+      setIsModalOpen(true);
+    }
+  };
+  const handleRestrictedClickAll = (navigateTo) => {
+    if (allowedRoles3.includes(userRole)) {
       navigate(navigateTo);
     } else {
       setIsModalOpen(true);
@@ -97,7 +105,8 @@ const configure = () => {
   const handleCreateOrganizationDepartment =()=> handleRestrictedClick('/creatorganizationdeparment')
   const handleQuizMasterReport = () => handleRestrictedClick1('/quizmasterleaderboard')
   const handleAddUsersBulk = () => handleRestrictedClick('/excelcreat')
-  const handleGlobalLeaderboard1 =() => handleRestrictedClick('/globalleaderboard')
+  const handleGlobalLeaderboard1 =() => handleRestrictedClickAll('/globalleaderboard')
+  const handleMyHistory=() => handleRestrictedClickAll('/myhistory')
 
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -176,7 +185,7 @@ const configure = () => {
       image:report,
       title: "Reports",
       content:
-        "Global Leaderboard, Quiz Status Report, (Other Possible Reports)",
+        "Global Leaderboard, My History, Quiz Status Report, (Other Possible Reports)",
     },
     {
       id: 6,
@@ -424,6 +433,9 @@ const configure = () => {
                       : contentItem === "Global Leaderboard" &&
                       item.title === "Reports"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
+                    : contentItem === "My History" &&
+                    item.title === "Reports"
+                  ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : contentItem === "Quiz Master Report" &&
                       item.title === "Reports"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
@@ -488,7 +500,8 @@ const configure = () => {
                       ? handleCreateOrganizationDepartment
                       : contentItem === "Global Leaderboard"
                       ? handleGlobalLeaderboard1
-
+                      : contentItem === "My History"
+                      ? handleMyHistory
                       : null
                   }
                 >

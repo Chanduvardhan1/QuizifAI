@@ -3521,7 +3521,7 @@ Skip
                 cols="50"
                 required
                 value={instructions}
-                onChange={(e) => setininstructions(e.target.value)}
+                onChange={(e) => setInstructions(e.target.value)}
                 disabled={!isEditing}
 
               />

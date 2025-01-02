@@ -318,8 +318,8 @@ const [loading, setLoading] = useState(true);
         <thead className="bg-[#CBF2FB]">
           <tr className="bg-[#CBF2FB] text-left">
             <th className="py-2 px-4 border-b text-[#214082]">User ID</th>
-            <th className="py-2 px-4 border-b text-[#214082] text-center">Name</th>
-            <th className="py-2 px-4 border-b text-[#214082] text-center">Email</th>
+            <th className="py-2 px-4 border-b text-[#214082] text-left">Name</th>
+            <th className="py-2 px-4 border-b text-[#214082] text-left">Email</th>
             <th className="py-2 px-4 border-b text-[#214082]">Active Status</th>
             <th className="py-2 px-4 border-b text-[#214082]">Role Name</th>
             <th className="py-2 px-4 border-b text-[#214082]">Organization Name</th>
@@ -331,18 +331,18 @@ const [loading, setLoading] = useState(true);
           {users.map((user) => (
             <tr key={user.user_id} className="bg-white hover:bg-gray-100 active:bg-green-200 text-[12px]">
               <td className="py-2 px-4 border-b text-[#214082]">{user.user_id}</td>
-              <td className="py-2 px-4 border-b text-[#214082] text-center">{user.user_name}</td>
-              <td className="py-2 px-4 border-b text-[#214082] text-center">{user.user_email}</td>
+              <td className="py-2 px-4 border-b text-[#214082] text-left">{user.user_name}</td>
+              <td className="py-2 px-4 border-b text-[#214082] text-left">{user.user_email}</td>
 
-              <td className="py-2 px-4 border-b text-[#214082] text-center">
+              <td className="py-2 px-4 border-b text-[#214082] text-left">
                 {user.active_status ? (
                   <span className="text-green-500">Active</span>
                 ) : (
                   <span className="text-red-500">Inactive</span>
                 )}
               </td>
-              <td className="py-2 px-4 border-b text-[#214082]">{user.role_name}</td>
-              <td className="py-2 px-4 border-b text-[#214082]">{user.org_name}</td>
+              <td className="py-2 px-4 border-b text-[#214082] text-left">{user.role_name}</td>
+              <td className="py-2 px-4 border-b text-[#214082] text-left">{user.org_name}</td>
               <td className="h-full border-b text-[#214082] flex gap-2 pl-[40px] pt-2 text-[12px] cursor-pointer hover:font-medium hover:underline">
                     <img
                       className="h-[13px] w-[13px] mr-1 cursor-pointer"

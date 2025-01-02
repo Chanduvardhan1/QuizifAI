@@ -326,6 +326,9 @@ const FreeProfile = () => {
     fetchDetailsByPincode(postalCode); // Call fetchDetailsByPincode here
     handlePostalCodeChange(postalCode);
   };
+
+  const userlocationid = locationId ? String(locationId) : "";
+
   // save after edit
   const handleSaveClick = async () => {
 
@@ -360,7 +363,7 @@ const FreeProfile = () => {
       date_of_birth: dob,
       preferred_login_method: preferredLoginMethod,
       user_address_id: null,
-      user_location_id: locationId,
+      user_location_id: userlocationid,
       user_address_line_1: address,
       user_address_line_2: address1,
       occupation: occupation,

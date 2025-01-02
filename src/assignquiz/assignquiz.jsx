@@ -25,13 +25,20 @@ const [file, setFile] = useState(null);
 const [quizid, setQuizId] = useState(localStorage.getItem('quiz_id'));
 const [quizName, setQuizName] = useState(localStorage.getItem("quiz_name"));
 
+const [showassign, setShowassign] = useState(false);
+const [isError1, setIsError1] = useState(false);
+const [modalMessage2, setModalMessage2] = useState('');
+
+const closeModal2 = () => {
+  setShowassign(false);
+};
+
 const handleToggle = (event) => {
   setShareWithGroupOrOrg(event.target.checked); // Update state based on toggle
 }; 
 
 const handleSubmit = async (e) => {
- e.preventDefault();
-
+  e.preventDefault();
   const selectedUserIds = selectedUsers.map((user) => user.value); // Extract IDs
 
   // Prepare FormData
@@ -58,16 +65,26 @@ const handleSubmit = async (e) => {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-
     const result = await response.json();
-    alert('Quiz assigned successfully!');
+
+    if (result && result.response === "success") {
+      // Check if response indicates success
+      setModalMessage2('Quiz assigned successfully!');
+      setIsError1(false);
+    } else {
+      setModalMessage2('Failed to assign quiz. Please try again.');
+      setIsError1(true);
+    }
+
+    setShowassign(true);
     console.log('Response:', result);
   } catch (error) {
     console.error('Error assigning quiz:', error.message);
-    alert('Failed to assign quiz. Please try again.');
+    setModalMessage2('Failed to assign quiz. Please try again.');
+    setIsError1(true);
+    setShowassign(true);
   }
 };
-
 //-----------------**AssignQuiz END**-----------------//
 
  //-----------------**users dropdown**-----------------//
@@ -398,7 +415,30 @@ isMulti
           
           </div>
    
- 
+          {showassign && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div
+      className={`bg-white rounded-lg shadow-lg p-6 w-96 text-center ${
+        isError1 ? "border-red-500" : "border-green-500"
+      } border-t-4`}
+    >
+      <h2
+        className={`text-xl font-semibold ${
+          isError1 ? "text-red-500" : "text-green-500"
+        }`}
+      >
+        {isError1 ? "Error" : "Success"}
+      </h2>
+      <p className="mt-2 text-gray-700">{modalMessage2}</p>
+      <button
+        onClick={closeModal2}
+        className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
    
     </div>
         {/* <LogoutBar /> */}

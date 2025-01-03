@@ -11,6 +11,8 @@ import Edit from "../../src/assets/Images/Assets/Edit.png"
 import Delete from "../../src/assets/Images/Assets/Delete.png"
 import Line from "../../src/assets/Images/Assets/Line.png"
 import { RiDeleteBinLine } from "react-icons/ri";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const classes = () => {
   const [categories, setCategories] = useState([]);
@@ -66,6 +68,7 @@ const classes = () => {
 
 
   const handleAddClass = async () => {
+
     try {
       const authToken = localStorage.getItem("authToken");
   
@@ -76,7 +79,39 @@ const classes = () => {
         setShowModal(true);
         return;
       }
-  
+ 
+  if (!className.trim()) {
+    toast.error("Class Name is required.");
+    return;
+  }
+  if (!courseId) {
+    toast.error("Course ID is required.");
+    return;
+  }
+  if (!specializationId) {
+    toast.error("Specialization ID is required.");
+    return;
+  }
+  if (!orgId) {
+    toast.error("Organization ID is required.");
+    return;
+  }
+  if (!selectedDepartmentId) {
+    toast.error("Department ID is required.");
+    return;
+  }
+  if (!userId) {
+    toast.error("User ID is required.");
+    return;
+  }
+  if (!sectionName.trim()) {
+    toast.error("Section Name is required.");
+    return;
+  }
+  if (!sectionCode.trim()) {
+    toast.error("Section Code is required.");
+    return;
+  }
       const response = await fetch("https://dev.quizifai.com:8010/add_class_and_section/", {
         method: "POST",
         headers: {
@@ -145,6 +180,46 @@ const classes = () => {
   
       if (!authToken) {
         console.error('No authentication token found');
+        return;
+      }
+      if (!classId) {
+        toast.error("Class ID is required.");
+        return;
+      }
+      if (!className.trim()) {
+        toast.error("Class Name is required.");
+        return;
+      }
+      if (!courseId) {
+        toast.error("Course ID is required.");
+        return;
+      }
+      if (!specializationId) {
+        toast.error("Specialization ID is required.");
+        return;
+      }
+      if (!orgId) {
+        toast.error("Organization ID is required.");
+        return;
+      }
+      if (!selectedDepartmentId) {
+        toast.error("Department ID is required.");
+        return;
+      }
+      if (!userId) {
+        toast.error("User ID is required.");
+        return;
+      }
+      if (!sectionName.trim()) {
+        toast.error("Section Name is required.");
+        return;
+      }
+      if (!sectionCode.trim()) {
+        toast.error("Section Code is required.");
+        return;
+      }
+      if (!SectionId.trim()) {
+        toast.error("Section Id is required.");
         return;
       }
       const response = await fetch('https://dev.quizifai.com:8010/edit_class_and_section/', {
@@ -363,6 +438,7 @@ const classes = () => {
     <>
 
     <div className='flex w-full flex-col gap-2'>
+      <ToastContainer/>
     <div className='flex justify-end pt-2'>
     
         <div className="flex items-center pr-[20px] py-1 rounded-[10px] bg-[#F7E0E3] cursor-pointer" onClick={toggleNavbar}>
@@ -486,7 +562,7 @@ const classes = () => {
           {cls.class_id}
         </div>
       ))}</td>
-              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
+              <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-left'>
              
               {course.classes.map((cls) => (
         <div key={cls.class_id}>

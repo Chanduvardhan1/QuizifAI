@@ -239,7 +239,9 @@ const [ isEditing ,setisEditing] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
   const [layout1 , setlayout1] = useState(false)
   const [pdfUrl, setPdfUrl] = useState("");
+  const [showDownloadButton, setShowDownloadButton] = useState(false);
 
+  const [downloadPromptMessage,setDownloadPromptMessage] =useState("");
    const [instructions, setInstructions] = useState([
      "Read all the instructions carefully before starting the quiz.",
      "Ensure you have a stable internet connection throughout the quiz duration.",
@@ -278,6 +280,18 @@ const [ isEditing ,setisEditing] = useState(false);
     setShowModal1(false);
   };
 
+  const handleToLayout1 = () =>{
+    navigate('/pdf1');
+}
+const handleToLayout2 = () =>{
+    navigate('/pdf2');
+}
+const handleToLayout3 = () =>{
+    navigate('/pdf3');
+}
+const handleToLayout4 = () =>{
+    navigate('/pdf1');
+}
   const handleInstructionChange = (index, value) => {
     const updatedInstructions = [...instructions];
     updatedInstructions[index] = value;
@@ -442,6 +456,8 @@ const [shareWithGroupOrOrg, setShareWithGroupOrOrg] = useState(false); // Initia
 const [groupName, setGroupName] = useState('');
 const [file1, setFile1] = useState(null);
 const [quizid, setQuizId] = useState(null);
+const [quizid1, setQuizId1] = useState(null);
+
 const [quizName, setQuizName] = useState('');
 const [showassign, setShowassign] = useState(false);
 const [isError1, setIsError1] = useState(false);
@@ -703,9 +719,9 @@ useEffect(() => {
   const handleback =() =>{
     navigate('/dashboard')
   }
- const handeledit =()=> {
-  setisEditing(true);
- }
+  const handeledit =()=> {
+    setisEditing((prevState) => !prevState);
+   }
   // useEffect(() => {
   //   if (frontImage && backImage) {
   //     handleUpload();
@@ -1218,6 +1234,7 @@ useEffect(() => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setUploadedFile(file);
+    setErrorMessage('');
     if (file) {
       handleNext(file);
     }
@@ -1522,7 +1539,7 @@ const handleNext = async (file) => {
     };
 
     const responseText = await uploadFileWithSimulatedProgress(
-      "https://dev.quizifai.com:8010/Upload quiz with PDF/",
+      "https://dev.quizifai.com:8010/generate_with_pdf/",
       options
     );
 
@@ -1535,10 +1552,17 @@ const handleNext = async (file) => {
       setPdfUrl(pdfUrl); // Save PDF URL to state
       console.log("File uploaded successfully. PDF URL:", pdfUrl);
     }
-
+    if (responseData.response === "success" && responseData.response_message.includes("The PDF already exists")) {
+      const quizId = responseData.quiz_id; // Extract quiz ID
+      console.log("PDF already exists for Quiz ID:", quizId);
+      setDownloadPromptMessage(responseData.response_message); // Set the response message
+      setQuizId1(quizId); // Store the quiz ID
+      setShowDownloadButton(true); // Display the download button
+    }
       if (responseData.data && responseData.data.questions) {
         setQuestions(responseData.data.questions);
         setNext(true);
+        setErrorMessage('');
       } else {
         setErrorMessage(responseData.response_message);
       }
@@ -1556,6 +1580,52 @@ const handleNext = async (file) => {
     setErrorMessage("An error occurred while choosing the type of the quiz");
   }
 };
+const handleDownloadPDF = async (quizId) => {
+  try {
+    const authToken = localStorage.getItem("authToken"); // Assuming you use authentication tokens
+
+    if (!authToken) {
+      alert("No authentication token found. Please log in.");
+      return;
+    }
+
+    const response = await fetch(
+      `https://dev.quizifai.com:8010/download_quizpdf?quiz_id=${quizId}`,
+      {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
+    );
+
+    const result = await response.json();
+
+    if (response.ok && result.response === "success") {
+      // Extract the PDF URL from response
+      const pdfUrl = result.data;
+
+      // Trigger the PDF download
+      const link = document.createElement("a");
+      link.href = pdfUrl;
+      link.download = "quiz.pdf"; // Name of the file to be downloaded
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Optionally, show success message
+      alert(result.response_message);
+    } else {
+      console.error("Failed to fetch PDF:", result);
+      alert(result.response_message || "An error occurred while downloading the PDF.");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("An error occurred while fetching the PDF.");
+  }
+};
+
 const instructionsString = instructions.join("\n");
 
   const handleNext4 = async () => {
@@ -1577,11 +1647,11 @@ const instructionsString = instructions.join("\n");
         clearInterval(interval);
         return;
       }
- if (!frontImage || !backImage) {
-        toast.error('Please select both front and back images');
-        setIsSubmitting(false);
-        return;
-      }
+//  if (!frontImage || !backImage) {
+//         toast.error('Please select both front and back images');
+//         setIsSubmitting(false);
+//         return;
+//       }
       if (!pdfUrl || pdfUrl.trim() === "") {
         toast.error("PDF URL is required.");
         setIsSubmitting(false);
@@ -1944,6 +2014,7 @@ const handleTabClick = (tab) => {
         Finalize the configuration and click 'Next' to proceed with adding your quiz questions.
       </h1>
     </div> */}
+         {step !== 0 && (
 <div className="flex w-full h-[15%] border-[#d9afc4] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-2 bg-white ">
      
           <div className="relative mr-2">
@@ -2060,6 +2131,7 @@ const handleTabClick = (tab) => {
         </div> */}
       </div>
     </div>
+         )}
     {step === 0 && (
          <>
   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-white my-4 p-5">
@@ -2073,20 +2145,33 @@ const handleTabClick = (tab) => {
       <div className="w-4 text-[14px] font-semibold text-right mr-2">{index + 1}.</div>
       {/* Input for Editing */}
       <input
+        disabled={!isEditing}
         value={instruction}
         onChange={(e) => handleInstructionChange(index, e.target.value)}
-        className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[14px] focus:outline-none"
+        className={`w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[14px] focus:outline-none ${
+          !isEditing ? 'text-gray-700 cursor-not-allowed' : 'text-black'
+        }`}
       />
     </div>
   ))}
 
   <div className="flex justify-end md:col-span-2">
-    <button
-      onClick={handleNextpage0}
-      className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
-    >
-      Next
-    </button>
+  <div className="flex gap-1">
+
+<button
+    onClick={handeledit} 
+    className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+  >
+    Edit
+  </button>
+  <button
+    onClick={handleNextpage0}
+    className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+  >
+    Next
+  </button>
+  
+  </div>
   </div>
 </div>
 
@@ -2839,7 +2924,7 @@ const handleTabClick = (tab) => {
               <div className="flex flex-col items-center justify-center mt-10">
                 <div className=" p-2 border-[1px] bg-gray-300 rounded-lg flex flex-col justify-center">
                   <div className="flex">
-                    <img className="w-[24px] h-[24px] ml-4 -rotate-90" src={Next}/>
+                    <img className="w-[24px] h-[24px] mt-[8px] -rotate-90" src={Next}/>
                
                 <label
         htmlFor="fileInput"
@@ -2927,6 +3012,14 @@ const handleTabClick = (tab) => {
 
    
 {errorMessage && <p className=" flex text-red-500">{errorMessage}</p> }
+{showDownloadButton && (
+  <div className="flex justify-center">
+    <p>{downloadPromptMessage}</p>
+    <button onClick={(e) =>  handleDownloadPDF(quizid1)} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+      Download PDF
+    </button>
+  </div>
+)}
 </div>
     </div>
             <div className="w-full">
@@ -3153,6 +3246,18 @@ const handleTabClick = (tab) => {
               </button>
             </div>
           ))}
+                      <input
+      type="text"
+      placeholder="Enter correct answer description"
+      className="w-[75%] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] p-[10px] text-[14px] "
+      value={question.correct_answer_description || ''}
+      onChange={(e) => {
+        const newQuestions = [...questions];
+        newQuestions[startIndex + questionIndex].correct_answer_description =
+          e.target.value;
+        setQuestions(newQuestions);
+      }}
+    />
         </div>
       ))}
 

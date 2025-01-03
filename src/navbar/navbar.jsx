@@ -167,7 +167,7 @@ const Navigation = () => {
           </NavLink>
        
           
-          <NavLink
+          {/* <NavLink
             to="/myhistory"
             className={`${styles.pageItem} ${activePage === '/myhistory' ? styles.bold : ''}`}
             onClick={() => handleNavigation('/myhistory')}
@@ -178,8 +178,8 @@ const Navigation = () => {
               className={`${styles.pageIcon} ${activePage === '/myhistory' ? styles.activeIcon : ''}`}
             />
             <span className={styles.pageLink}>My History</span>
-          </NavLink>
-          <NavLink
+          </NavLink> */}
+          {/* <NavLink
             to="/globalleaderboard"
             className={`${styles.pageItem} ${activePage === '/globalleaderboard' ? styles.bold : ''}`}
             onClick={() => handleNavigation('/globalleaderboard')}
@@ -190,7 +190,7 @@ const Navigation = () => {
               className={`${styles.pageIcon} ${activePage === '/globalleaderboard' ? styles.activeIcon : ''}`}
             />
             <span className={styles.pageLink}>Global Rank</span>
-          </NavLink>
+          </NavLink> */}
           <NavLink
             to="/contact"
             className={`${styles.pageItem} ${activePage === '/contact' ? styles.bold : ''}`}

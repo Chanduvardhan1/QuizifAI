@@ -119,11 +119,17 @@ const [password, setPassword] = useState('');
 
     // Generate a random password whenever the email changes
     if (email) {
-      const password = generateRandomPassword();
-      setRandomPassword(password);
+      const generatedPassword = generateRandomPassword();
+      setRandomPassword(generatedPassword);
+      setPassword(generatedPassword); // Update both randomPassword and password
     } else {
-      setRandomPassword(''); // Clear password if email is empty
+      setRandomPassword('');
+      setPassword(''); // Clear password if email is empty
     }
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
   };
 
 // Randompassword generate end //
@@ -203,7 +209,7 @@ const handleRoleChange = (e) => {
           last_name: lastName,
           user_email: userEmail,
           user_type_id: 3,
-          password: randomPassword,
+          password: password,
           user_role_id: selectedRoleId,
           user_email: userEmail,
           org_id:orgId,
@@ -248,6 +254,7 @@ const handleRoleChange = (e) => {
         setMiddleName('');
         setLastName('');
         setUserEmail('');
+        setPassword('');
         setRandomPassword('');
         setSelectedRoleId('');
       }
@@ -497,7 +504,8 @@ const handleBack = () => {
       <input
         className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[15px] focus:outline-none `}
         type={showPassword ? 'text' : 'password'}
-        value={randomPassword}
+        value={password}
+        onChange={handlePasswordChange} 
         required
       />
         <div

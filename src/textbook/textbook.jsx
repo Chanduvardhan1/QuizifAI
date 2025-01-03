@@ -571,9 +571,8 @@ const handleNextpage4 = () => {
 
 };
 const handeledit =()=> {
-  setisEditing(true);
+  setisEditing((prevState) => !prevState);
  }
-
 
  const handleToLayout1 = () =>{
   navigate('/pdf1');
@@ -1378,11 +1377,11 @@ const instructionsString = instructions.join("\n");
         setErrorMessage("User ID not found. Please log in again.");
         return;
       }
-      if (!frontImage || !backImage) {
-                  toast.error('Please select both front and back images');
-                  setIsSubmitting(false);
-                  return;
-                }
+      // if (!frontImage || !backImage) {
+      //             toast.error('Please select both front and back images');
+      //             setIsSubmitting(false);
+      //             return;
+      //           }
       const response = await fetch(
         `https://dev.quizifai.com:8010/crt_qz_from_txtbook`,
         {
@@ -1778,6 +1777,7 @@ const handleComplexquestions = (event) => {
         Finalize the configuration and click 'Next' to proceed with adding your quiz questions.
       </h1>
     </div> */}
+      {step !== 0 && (
 <div className="flex w-full h-[15%] border-[#d9afc4] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-2 bg-white ">
       {/* <img
         src={physics}
@@ -1897,6 +1897,7 @@ const handleComplexquestions = (event) => {
         </div> */}
       </div>
     </div>
+      )}
     {step === 0 && (
          <>
   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-white my-4 p-5">
@@ -1910,20 +1911,33 @@ const handleComplexquestions = (event) => {
       <div className="w-4 text-[14px] font-semibold text-right mr-2">{index + 1}.</div>
       {/* Input for Editing */}
       <input
+         disabled={!isEditing}
         value={instruction}
         onChange={(e) => handleInstructionChange(index, e.target.value)}
-        className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[14px] focus:outline-none"
+        className={`w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[14px] focus:outline-none ${
+          !isEditing ? 'text-gray-700 cursor-not-allowed' : 'text-black'
+        }`}
       />
     </div>
   ))}
 
   <div className="flex justify-end md:col-span-2">
-    <button
-      onClick={handleNextpage0}
-      className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
-    >
-      Next
-    </button>
+  <div className="flex gap-1">
+
+<button
+    onClick={handeledit} 
+    className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+  >
+    Edit
+  </button>
+  <button
+    onClick={handleNextpage0}
+    className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+  >
+    Next
+  </button>
+  
+  </div>
   </div>
 </div>
 

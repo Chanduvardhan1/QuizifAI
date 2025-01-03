@@ -1615,7 +1615,7 @@ const handleDownloadPDF = async (quizId) => {
       document.body.removeChild(link);
 
       // Optionally, show success message
-      alert(result.response_message);
+      // alert(result.response_message);
     } else {
       console.error("Failed to fetch PDF:", result);
       alert(result.response_message || "An error occurred while downloading the PDF.");
@@ -3014,8 +3014,9 @@ const handleTabClick = (tab) => {
 {errorMessage && <p className=" flex text-red-500">{errorMessage}</p> }
 {showDownloadButton && (
   <div className="flex justify-center">
-    <p>{downloadPromptMessage}</p>
-    <button onClick={(e) =>  handleDownloadPDF(quizid1)} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+    {/* <p>{downloadPromptMessage}</p> */}
+    <button onClick={(e) =>  handleDownloadPDF(quizid1)}
+     className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]">
       Download PDF
     </button>
   </div>

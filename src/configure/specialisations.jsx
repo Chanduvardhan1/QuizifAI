@@ -11,6 +11,8 @@ import Edit from "../../src/assets/Images/Assets/Edit.png"
 import Delete from "../../src/assets/Images/Assets/Delete.png"
 import Line from "../../src/assets/Images/Assets/Line.png"
 import { RiDeleteBinLine } from "react-icons/ri";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const specialisations = () => {
   const [categories, setCategories] = useState([]);
@@ -52,6 +54,31 @@ const specialisations = () => {
   };
 
   const handleSubmit1 = async () => {
+    if (!specializationName.trim()) {
+      toast.error("Specialization Name is required.");
+      return;
+    }
+    if (!specializationShortName.trim()) {
+      toast.error("Specialization Short Name is required.");
+      return;
+    }
+    if (!courseId) {
+      toast.error("Course Name is required.");
+      return;
+    }
+    if (!userId) {
+      toast.error("User Name is required.");
+      return;
+    }
+    if (!orgId) {
+      toast.error("Organization ID is required.");
+      return;
+    }
+    if (!selectedDepartmentId) {
+      toast.error("Department Name is required.");
+      return;
+    }
+
     const data = {
       specialization_name: specializationName,
       specialization_short_name: specializationShortName,
@@ -115,13 +142,38 @@ const specialisations = () => {
   };
 
   const updateSpecialization = async () => {
-  
+    if (!specializationName.trim()) {
+      toast.error("Specialization Name is required.");
+      return;
+    }
+    if (!specializationShortName.trim()) {
+      toast.error("Specialization Short Name is required.");
+      return;
+    }
+    if (!courseId) {
+      toast.error("Course Name is required.");
+      return;
+    }
+    if (!userId) {
+      toast.error("User Name is required.");
+      return;
+    }
+    if (!orgId) {
+      toast.error("Organization ID is required.");
+      return;
+    }
+    if (!selectedDepartmentId) {
+      toast.error("Department Name is required.");
+      return;
+    }
     const specializationData = {
       specialization_name:specializationName,
       specialization_short_name: specializationShortName,
       course_id: courseId,
       specialization_id: specializationId,
-      updated_by: userId
+      updated_by: userId,
+      org_id:orgId,
+      department_id:selectedDepartmentId,
     };
   
     try {
@@ -131,7 +183,7 @@ const specialisations = () => {
         console.error('No authentication token found');
         return;
       }
-      const response = await fetch('https://dev.quizifai.com:8010/update_specialization/', {
+      const response = await fetch('https://dev.quizifai.com:8010/editing_specialization/', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -146,9 +198,30 @@ const specialisations = () => {
       }
   
       const result = await response.json();
-      console.log('Specialization updated successfully:', result);
+      if (response.ok && result.response === "success") {
+        setModalMessage(result.response_message);
+        setIsError(false);
+        setShowModal(true);
+
+        // Reset form fields
+        setSpecializationName("");
+        setSpecializationShortName("");
+        setCourseId("");
+
+        // Call any additional functions, e.g., fetchCourses
+        fetchCourses();
+        setIsNavbarOpen(false);
+      } else {
+        console.error("Failed to Editing specialization:", result);
+        setModalMessage(result.response_message || "An error occurred.");
+        setIsError(true);
+        setShowModal(true);
+      }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
+      setModalMessage("An error occurred while Editing specialization.");
+      setIsError(true);
+      setShowModal(true);
     }
   };
   
@@ -287,6 +360,7 @@ const specialisations = () => {
     <>
 
     <div className='flex w-full flex-col gap-2'>
+      <ToastContainer/>
     <div className='flex justify-end pt-2'>
      
         <div className="flex items-center pr-[20px] py-1 rounded-[10px] bg-[#F7E0E3] cursor-pointer" onClick={toggleNavbar}>

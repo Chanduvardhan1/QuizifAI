@@ -157,7 +157,8 @@ const configure = () => {
       id: 1,
       image:congiguration,
       title: "Configuration",
-      content: "Categories, Courses, Specialisations, Classes, Subjects",
+      content: "Categories",
+      //  Courses, Specialisations, Classes, Subjects",
     },
     {
       id: 2,
@@ -171,7 +172,7 @@ const configure = () => {
       image:software,
       title: "Organization",
       content:
-        "Create Organization, Create Organization Department, Organization Profile, Institution Educations, Organization Preferences",
+        "Create Organization, Create Organization Department, Organization Profile, Institution Quizs, Organization Preferences",
     },
     {
       id: 4,
@@ -451,7 +452,7 @@ const configure = () => {
                       : contentItem ==="Organization Preferences" &&
                       item.title === "Organization"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
-                      : contentItem ==="Institution Educations" &&
+                      : contentItem ==="Institution Quizs" &&
                       item.title === "Organization"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : ["Configuration", "Quizzes"].includes(item.title)
@@ -482,7 +483,7 @@ const configure = () => {
                       ? handleProfile
                       : contentItem === "Organization Preferences"
                       ? handleSettings
-                      : contentItem === "Institution Educations"
+                      : contentItem === "Institution Quizs"
                       ? handleInstitution
                       : contentItem === "Question Bank"
                       ? handleQuestionBank

@@ -11,6 +11,8 @@ import Edit from "../../src/assets/Images/Assets/Edit.png"
 import Delete from "../../src/assets/Images/Assets/Delete.png"
 import Line from "../../src/assets/Images/Assets/Line.png"
 import { RiDeleteBinLine } from "react-icons/ri";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const course = () => {
   const [categories, setCategories] = useState([]);
@@ -55,6 +57,34 @@ const course = () => {
     navigate('/configure');
   }
   const addCourse = async () => {
+    if (!orgId) {
+      toast.error("Organization ID is required.");
+      return;
+    }
+    if (!courseName.trim()) {
+      toast.error("Course Name is required.");
+      return;
+    }
+    if (!courseCode.trim()) {
+      toast.error("Course Code is required.");
+      return;
+    }
+    if (!courseDuration) {
+      toast.error("Course Duration is required.");
+      return;
+    }
+    if (!courseDurationUnit.trim()) {
+      toast.error("Course Duration Unit is required.");
+      return;
+    }
+    if (!coursePattern.trim()) {
+      toast.error("Course Pattern is required.");
+      return;
+    }
+    if (!userId) {
+      toast.error("Updated By (User ID) is required.");
+      return;
+    }
     const data = {
       org_id: orgId,
       course_name: courseName,
@@ -143,7 +173,38 @@ const course = () => {
   };
   const updateCourse = async () => {
      // Replace with the actual token or retrieve it from local storage
-  
+     if (!orgId) {
+      toast.error("Organization ID is required.");
+      return;
+    }
+    if (!courseName.trim()) {
+      toast.error("Course Name is required.");
+      return;
+    }
+    if (!courseCode.trim()) {
+      toast.error("Course Code is required.");
+      return;
+    }
+    if (!courseDuration) {
+      toast.error("Course Duration is required.");
+      return;
+    }
+    if (!courseDurationUnit.trim()) {
+      toast.error("Course Duration Unit is required.");
+      return;
+    }
+    if (!coursePattern.trim()) {
+      toast.error("Course Pattern is required.");
+      return;
+    }
+    if (!courseId) {
+      toast.error("Course ID is required.");
+      return;
+    }
+    if (!userId) {
+      toast.error("Updated By (User ID) is required.");
+      return;
+    }
     const courseData = {
       org_id: orgId,
       course_name: courseName,
@@ -273,6 +334,7 @@ const course = () => {
     <>
 
     <div className='flex w-full flex-col gap-2 '>
+      <ToastContainer/>
     <div className='flex justify-end pt-2'>
     <div className="flex items-center pr-[20px] py-1 rounded-[10px] bg-[#F7E0E3] cursor-pointer" onClick={toggleNavbar}>
     <img className="w-[20px] h-[20px] ml-2" src={Plus} alt="Plus Icon" />

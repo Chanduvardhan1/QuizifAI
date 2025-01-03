@@ -318,7 +318,7 @@ isMulti
 </div>
 </div>
 
-{/* <div className="flex flex-col  gap-6 w-full">
+<div className="flex flex-col  gap-6 w-full">
 <div className="flex flex-col w-full">
   <div className="w-full flex flex-row">
     <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
@@ -380,7 +380,7 @@ isMulti
 
 
 
-</div> */}
+</div>
 
 </div>
 

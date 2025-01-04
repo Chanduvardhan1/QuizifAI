@@ -90,6 +90,105 @@ const [error, setError] = useState(null);
       }, []);
 // --------------***view image end*** -------------- //
 
+// --------------***class and sections *** -------------- //
+const [classes, setClasses] = useState([]);
+const [sections, setSections] = useState([]);
+const [selectedClass, setSelectedClass] = useState('');
+const [selectedSection, setSelectedSection] = useState('');
+
+useEffect(() => {
+  // Fetch organization-related details
+  const fetchDetails = async () => {
+    try {
+      const response = await fetch(
+        'https://dev.quizifai.com:8010/get_organization_related_dept_cls_sec_details?org_id=48',
+        {
+          method: 'POST',
+          headers: {
+            accept: 'application/json',
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDaGFuZHUgVmFyZGhhbiBLIiwiZXhwIjoyNTM0MDIzMDA3OTl9.htDL_NJkg15_MKckMOe5UXioQxm1gcZ64FP1f8-BqUk`,
+          },
+          body: '', // Empty body for POST request
+        }
+      );
+      const data = await response.json();
+      setClasses(data.data.classes || []);
+      setSections(data.data.sections || []);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  fetchDetails();
+}, []);
+
+const handleClassChange = (e) => {
+  setSelectedClass(e.target.value);
+};
+
+const handleSectionChange = (e) => {
+  setSelectedSection(e.target.value);
+};
+
+
+
+// --------------***class and sections end*** -------------- //
+
+
+  //---------------**Department Selector**----------------//
+
+  const [departments, setDepartments] = useState([]);
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
+
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken"); // Replace with actual token retrieval logic
+
+        if (!authToken) {
+          console.error("No authentication token found");
+          setError("Authentication token not found.");
+          return;
+        }
+
+        const response = await fetch(
+          "https://dev.quizifai.com:8010/view_departments_created_by_admin/?admin_id=1037",
+          {
+            method: "GET",
+            headers: {
+              accept: "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+
+        const result = await response.json();
+
+        if (response.ok && result.response === "success") {
+          setDepartments(result.data);
+        } else {
+          console.error("Failed to fetch departments:", result);
+          setError("Failed to fetch departments.");
+        }
+      } catch (error) {
+        console.error("Error fetching departments:", error);
+        setError("An error occurred while fetching departments.");
+      }
+    };
+
+    fetchDepartments();
+  }, []);
+
+  const handleDepartmentChange = (e) => {
+    const selectedId = e.target.value;
+    setSelectedDepartmentId(selectedId);
+
+    // Pass department_id to the backend or handle it as needed
+    console.log("Selected department_id:", selectedId);
+  };
+
+    //---------------**Department Selector end**----------------//
+
 
 // Randompassword generate //
 const [randomPassword, setRandomPassword] = useState('');
@@ -215,6 +314,9 @@ const handleRoleChange = (e) => {
           org_id:orgId,
           created_by: userId,
           updated_by: userId,
+          department_id: selectedDepartmentId,
+          class_id: selectedClass,
+          section_id: selectedSection,
         };
         const authToken = localStorage.getItem("authToken");
 
@@ -370,7 +472,7 @@ const handleBack = () => {
     {/*  Fist Name*/}
     <div className="flex flex-col">
       <div className="w-full flex flex-row">
-      <label className="w-[20%] text-blue-800 font-semibold mb-2">First Name<span className="text-red-500">*</span></label>
+      <label className="w-[25%] text-blue-800 font-semibold mb-2">First Name<span className="text-red-500">*</span></label>
     
       <input
         className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[15px] focus:outline-none `}
@@ -421,7 +523,7 @@ const handleBack = () => {
     
 <div className="flex flex-col ">
       <div className="w-full flex flex-row">
-      <label className="w-[20%] text-blue-800 font-semibold mb-2">Last Name<span className="text-red-500">*</span></label>
+      <label className="w-[25%] text-blue-800 font-semibold mb-2">Last Name<span className="text-red-500">*</span></label>
  
       <input
         className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[15px] focus:outline-none `}
@@ -459,6 +561,83 @@ const handleBack = () => {
     
       <hr className={`h-[1px] w-full`} />
     </div>
+
+    <div className="flex flex-col">
+      <div className="w-full flex flex-row">
+      <label className="w-[25%] text-blue-800 font-semibold mb-2">Departments<span className="text-red-500">*</span></label>
+      <select
+        id="roles"
+        name="roles"
+        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[15px] focus:outline-none `}
+        value={selectedDepartmentId}
+        onChange={handleDepartmentChange}
+      >
+        <option value="" disabled selected>
+        Select a department
+        </option>
+        {departments.map((dept) => (
+          <option key={dept.department_id} value={dept.department_id}>
+            {dept.department_name}
+          </option>
+        ))}
+      </select>
+     
+      </div>
+    
+      <hr className={`h-[1px] w-full`} />
+    </div>
+
+    <div className="flex flex-col">
+      <div className="w-full flex flex-row">
+      <label className="w-[25%] text-blue-800 font-semibold mb-2">Class<span className="text-red-500">*</span></label>
+      <select
+        id="roles"
+        name="roles"
+        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[15px] focus:outline-none `}
+        value={selectedClass}
+        onChange={handleClassChange}
+      >
+        <option value="" disabled selected>
+        Select a class
+        </option>
+        {classes.map((cls) => (
+            <option key={cls.class_id} value={cls.class_id}>
+              {cls.class_name}
+            </option>
+          ))}
+      </select>
+     
+      </div>
+    
+      <hr className={`h-[1px] w-full`} />
+    </div>
+
+    <div className="flex flex-col">
+      <div className="w-full flex flex-row">
+      <label className="w-[25%] text-blue-800 font-semibold mb-2">Section<span className="text-red-500">*</span></label>
+      <select
+        id="roles"
+        name="roles"
+        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[15px] focus:outline-none `}
+        value={selectedSection}
+        onChange={handleSectionChange}
+      >
+        <option value="" disabled selected>
+        Select a Section
+        </option>
+        {sections
+            .filter((sec) => sec.class_id === parseInt(selectedClass))
+            .map((sec) => (
+              <option key={sec.section_id} value={sec.section_id}>
+                {sec.section_name}
+              </option>
+            ))}      
+      </select>
+     
+      </div>
+    
+      <hr className={`h-[1px] w-full`} />
+    </div>
     {/* Address 2 */}
     {/* <div className="flex flex-col">
       <div className="w-full flex flex-row">
@@ -483,7 +662,7 @@ const handleBack = () => {
    {/* email */}
 <div className="flex flex-col ">
       <div className="w-full flex flex-row">
-      <label className="w-[20%] text-blue-800 font-semibold mb-2 ">Email<span className="text-red-500">*</span></label>
+      <label className="w-[25%] text-blue-800 font-semibold mb-2 ">Email<span className="text-red-500">*</span></label>
 
       <input
         className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[15px] focus:outline-none `}
@@ -509,7 +688,7 @@ const handleBack = () => {
         required
       />
         <div
-        className="absolute  right-5 mt-2 mr-1 text-lg text-[#A7A3FF] cursor-pointer"
+        className="absolute  left-[695px] mt-2 mr-1 text-lg text-[#A7A3FF] cursor-pointer"
         onClick={togglePasswordVisibility}
       >
         {showPassword ? <FaEye /> : <FaEyeSlash />}
@@ -546,7 +725,7 @@ const handleBack = () => {
 
            
             {/* <button
-              className={`border-b-2 w-[20%] text-[14px] pl-[10px] focus:outline-none ${
+              className={`border-b-2 w-[25%] text-[14px] pl-[10px] focus:outline-none ${
                 preferredLoginMethod === "Mobile"
                   ? "border-blue-200"
                   : "border-transparent"
@@ -565,7 +744,7 @@ const handleBack = () => {
          
           <div className="flex w-full flex-col">
       <div className="w-[56%] flex flex-row">
-      <label className="w-[20%] text-blue-800 font-semibold mb-2 ">Email<span className="text-red-500">*</span></label>
+      <label className="w-[25%] text-blue-800 font-semibold mb-2 ">Email<span className="text-red-500">*</span></label>
 
       <input
         className={ `  w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[15px] focus:outline-none `}

@@ -1132,6 +1132,108 @@ for (const question of questions) {
         .catch((error) => console.error('Error sending org_id:', error));
     };
   
+// --------------***class and sections *** -------------- //
+const [classes1, setClasses1] = useState([]);
+const [sections, setSections] = useState([]);
+const [selectedClass1, setSelectedClass1] = useState('');
+const [selectedSection, setSelectedSection] = useState('');
+
+useEffect(() => {
+  // Fetch organization-related details
+  const fetchDetails = async () => {
+    try {
+      const response = await fetch(
+        'https://dev.quizifai.com:8010/get_organization_related_dept_cls_sec_details?org_id=48',
+        {
+          method: 'POST',
+          headers: {
+            accept: 'application/json',
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDaGFuZHUgVmFyZGhhbiBLIiwiZXhwIjoyNTM0MDIzMDA3OTl9.htDL_NJkg15_MKckMOe5UXioQxm1gcZ64FP1f8-BqUk`,
+          },
+          body: '', // Empty body for POST request
+        }
+      );
+      const data = await response.json();
+      setClasses1(data.data.classes || []);
+      setSections(data.data.sections || []);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  fetchDetails();
+}, []);
+
+const handleClassChange = (e) => {
+  setSelectedClass1(e.target.value);
+};
+
+const handleSectionChange = (e) => {
+  setSelectedSection(e.target.value);
+};
+
+
+
+// --------------***class and sections end*** -------------- //
+
+
+  //---------------**Department Selector**----------------//
+
+  const [departments, setDepartments] = useState([]);
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
+
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken"); // Replace with actual token retrieval logic
+
+        if (!authToken) {
+          console.error("No authentication token found");
+          setErrorMessage("Authentication token not found.");
+          return;
+        }
+
+        const response = await fetch(
+          "https://dev.quizifai.com:8010/view_departments_created_by_admin/?admin_id=1037",
+          {
+            method: "GET",
+            headers: {
+              accept: "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+
+        const result = await response.json();
+
+        if (response.ok && result.response === "success") {
+          setDepartments(result.data);
+        } else {
+          console.error("Failed to fetch departments:", result);
+          setErrorMessage("Failed to fetch departments.");
+        }
+      } catch (error) {
+        console.error("Error fetching departments:", error);
+        setErrorMessage("An error occurred while fetching departments.");
+      }
+    };
+
+    fetchDepartments();
+  }, []);
+
+  const handleDepartmentChange = (e) => {
+    const selectedId = e.target.value;
+    setSelectedDepartmentId(selectedId);
+
+    // Pass department_id to the backend or handle it as needed
+    console.log("Selected department_id:", selectedId);
+  };
+
+    //---------------**Department Selector end**----------------//
+
+
+
+
 
 
 //-----------------**AssignQuiz**-----------------//
@@ -1162,6 +1264,9 @@ const handleSubmit = async (e) => {
   formData.append('org_id', orgId);
   formData.append('share_with_group_or_org', shareWithGroupOrOrg);
   formData.append('group_name', groupName);
+  formData.append('department_id', selectedDepartmentId);
+  formData.append('section_id', selectedSection);
+  formData.append('class_id', selectedClass1);
   formData.append('user_ids',selectedUserIds ); // Pass user IDs as a comma-separated string
   if (file) formData.append('files', file);
 
@@ -2690,16 +2795,16 @@ value={orgId}
     </label>
     <select
       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-      // value={selectedCourse}
-      // onChange={handleSelectCourse}
+      value={selectedDepartmentId}
+      onChange={handleDepartmentChange}
     >
       <option value="" disabled>Select a Deparment</option>
       <option value="">None</option>
-      {/* {courses.map((course) => (
-        <option key={course.course_id} value={course.course_name}>
-          {course.course_name}
-        </option>
-      ))} */}
+      {departments.map((dept) => (
+          <option key={dept.department_id} value={dept.department_id}>
+            {dept.department_name}
+          </option>
+        ))}
     </select>
   </div>
   <hr className="h-[1px] w-full" />
@@ -2783,21 +2888,8 @@ isMulti
   <hr className="h-[1px] w-full" />
 </div>
 </div>
-{/* <div className="flex flex-col  gap-6 w-full">
-<div className="flex flex-col w-full">
-  <div className="w-full flex flex-row">
-    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
-      School<span className="text-red-500"></span>
-    </label>
-    <input
-                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+<div className="flex flex-col  gap-6 w-full">
 
-                  placeholder="School"
-                
-                ></input>
-  </div>
-  <hr className="h-[1px] w-full" />
-</div>
       <div className="w-full flex flex-col">
   <div className="w-full flex flex-row">
     <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
@@ -2805,11 +2897,16 @@ isMulti
     </label>
     <select
       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-   
+      value={selectedClass1}
+      onChange={handleClassChange}
     >
       <option value="" disabled>Select a Class</option>
       <option value="">None</option>
-      
+      {classes1.map((cls) => (
+            <option key={cls.class_id} value={cls.class_id}>
+              {cls.class_name}
+            </option>
+          ))}
     </select>
   </div>
   <hr className="h-[1px] w-full" />
@@ -2821,32 +2918,29 @@ isMulti
     </label>
     <select
       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-      
+      value={selectedSection}
+      onChange={handleSectionChange}
     >
       <option value="" disabled>Select a Section</option>
-      
+      {sections
+            .filter((sec) => sec.class_id === parseInt(selectedClass1))
+            .map((sec) => (
+              <option key={sec.section_id} value={sec.section_id}>
+                {sec.section_name}
+              </option>
+            ))} 
     </select>
   </div>
   <hr className="h-[1px] w-full" />
 </div>
 
-<div className="flex items-center">
-        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[72px]">
-        Email Alert <span className="text-red-500"></span>
-        </label>
-        <FormControlLabel
-        control={<Switch />} 
-          onChange={toggler1}
-          className="react-switch"
-        />
-        
-      </div>
 
 
 
 
 
-</div> */}
+
+</div>
 
 </div>
 

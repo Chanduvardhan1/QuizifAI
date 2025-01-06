@@ -23,6 +23,8 @@ const course = () => {
   const [parentCategoryId, setParentCategoryId] = useState('');
   const [isToggleEnabled, setIsToggleEnabled] = useState(false);
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+  const [isNavbarOpen1, setIsNavbarOpen1] = useState(false);
+
   const [isEditing, setIsEditing] = useState(false);
   const [courseDuration, setCourseDuration] = useState('');
 
@@ -140,6 +142,7 @@ const course = () => {
         setCourseDurationUnit("");
         setCoursePattern("");
         setIsNavbarOpen(false);
+        setIsNavbarOpen1(false);
       } else {
         // Handle server-side failure
         console.error("Failed to add course:", result.response_message);
@@ -250,6 +253,7 @@ const course = () => {
   
         fetchCourses();
         setIsNavbarOpen(false);
+        setIsNavbarOpen1(false);
         setCourseName('');
         setCourseCode('');
         setCoursePattern("");
@@ -308,15 +312,23 @@ const course = () => {
     fetchCourses();
   }, []);
   const toggleNavbar = () => {
-    setIsNavbarOpen(!isNavbarOpen);
+    setIsNavbarOpen1(!isNavbarOpen);
   };
 
-  const handleEdit = (course) => {
-    if (selectedCategoryId === course.course_id) {
-      // Toggle the form visibility if the same category ID is clicked
-      setIsNavbarOpen(!isNavbarOpen);
+ const close =()=> {
+  setCourseName('');
+  setCourseCode('');
+  setCoursePattern("");
+  setCourseDuration('');
+  setCourseDurationUnit('');
+  setCourseId('');
+  setSelectedCategoryId('');
+  setIsNavbarOpen(false);
+ }
 
-    } else {
+  const handleEdit = (course) => {
+      // Toggle the form visibility if the same category ID is clicked
+      setIsNavbarOpen(true);
       // Set state with the course details
       setCourseId(course.course_id);
       setCourseName(course.course_name);
@@ -324,10 +336,10 @@ const course = () => {
       setCourseDuration(course.duration);
       setCoursePattern(course.course_pattern);
       setCourseDurationUnit(course.duration_unit);
-      setIsNavbarOpen(true);
+
       setIsEditing(true);
       setSelectedCategoryId(course.course_id);
-    }
+
   };
 
   return (
@@ -343,7 +355,7 @@ const course = () => {
     </span>
   </div>
       </div>
-      {isNavbarOpen && (
+      {/* {isNavbarOpen && (
       <div className="bg-[#CBF2FB] text-[#214082] rounded-md py-2 text-[14px] p-2 flex flex-col md:flex-row items-center justify-between">
       <input
         type="text"
@@ -361,13 +373,7 @@ const course = () => {
         onChange={(e) => setCourseName(e.target.value)}
         className="rounded-3xl py-1 px-4 text-center placeholder:text-[#214082] outline-[#214082]"
       />
-        {/* <input
-        type="text"
-        placeholder="Course Name"
-        value={courseCode}
-        onChange={(e) => setCourseCode(e.target.value)}
-        className="rounded-3xl py-1 px-4 text-center placeholder:text-[#214082] outline-[#214082]"
-      /> */}
+       
       <input
         type="text"
         placeholder="Course Short Name"
@@ -413,7 +419,7 @@ const course = () => {
       </button>
     </div>
     
-      )}
+      )} */}
       
 
       <table className=' table-auto rounded text-left bg-[#F7E0E3] text-[#2b51a1] text-[14px] font-light'>
@@ -504,6 +510,214 @@ const course = () => {
   </div>
 )}
      
+
+     {isNavbarOpen1 && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+ <div className="flex flex-col bg-white p-6 shadow-lg rounded-lg w-[50%]">
+ <button
+        className="flex justify-end text-gray-900 hover:text-gray-800"
+        onClick={()=> setIsNavbarOpen1(false)}
+        aria-label="Close"
+      >
+        ✕
+      </button>
+ <h2 className="text-xl font-semibold text-blue-800 mb-4">Create Course</h2>
+
+    {/* First Name */}
+    {/* <div className="flex flex-row mb-4">
+      <label className="w-1/4 text-blue-800 font-semibold">Course ID<span className="text-red-500">*</span></label>
+      <input
+        type="text"
+        placeholder="Course ID"
+        value={courseId}
+        onChange={(e) => setCourseId(e.target.value)}
+        className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+        style={{ '::placeholder': { color: '#214082' } }}
+        readOnly
+      />
+    </div> */}
+
+    {/* Middle Name */}
+    <div className="flex flex-row mb-4">
+      <label className="w-1/4 text-blue-800 font-semibold">Course Name<span className="text-red-500">*</span></label>
+      <input
+        className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+        type="text"
+        placeholder="Course Name"
+        value={courseName}
+        onChange={(e) => setCourseName(e.target.value)}
+      />
+    </div>
+
+    {/* Last Name */}
+    <div className="flex flex-row mb-4">
+      <label className="w-1/4 text-blue-800 font-semibold">Course Short Name<span className="text-red-500">*</span></label>
+      <input
+        className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+        type="text"
+        placeholder="Course Short Name"
+        value={courseCode}
+        onChange={(e) => setCourseCode(e.target.value)}
+      />
+    </div>
+
+
+    {/* Role */}
+    <div className="flex flex-row mb-4">
+  <label className="w-1/4 text-blue-800 font-semibold">
+  Course Pattern<span className="text-red-500">*</span>
+  </label>
+  <select
+    className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+    value={coursePattern}
+    onChange={handleCoursePatternUnitChange}
+     >
+     <option value="">Select Course Pattern</option>
+        <option value="ALL_SEM">ALL_SEM</option>
+        <option value="ALL_YR">ALL_YR</option>
+  </select>
+</div>
+   <div className="flex flex-row mb-4">
+      <label className="w-1/4 text-blue-800 font-semibold">Course Duration<span className="text-red-500">*</span></label>
+      <input
+        className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+        type="text"
+        value={courseDuration}
+        onChange={(e) => setCourseDuration(e.target.value)}
+      />
+    </div>
+    <div className="flex flex-row mb-4">
+  <label className="w-1/4 text-blue-800 font-semibold">
+  Duration Unit<span className="text-red-500">*</span>
+  </label>
+  <select
+    className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+    value={courseDurationUnit}
+        onChange={handleCourseDurationUnitChange}
+     >
+      <option value="">Select Duration Unit</option>
+        <option value="months">Months</option>
+        <option value="years">Years</option>
+        <option value="Semester">Semester</option>
+  </select>
+</div>
+    {/* Submit Button */}
+    <div className='flex justify-end'>
+    <button
+     className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+      onClick={handleSubmit}
+    >
+     Add
+    </button>
+    </div>
+ 
+  </div>
+    </div>
+)}
+     {isNavbarOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+ <div className="flex flex-col bg-white p-6 shadow-lg rounded-lg w-[50%]">
+ <button
+        className="flex justify-end text-gray-900 hover:text-gray-800"
+        onClick={close}
+        aria-label="Close"
+      >
+        ✕
+      </button>
+ <h2 className="text-xl font-semibold text-blue-800 mb-4">{isEditing ? 'Edit Course' : 'Create Course'}</h2>
+
+    {/* First Name */}
+    <div className="flex flex-row mb-4">
+      <label className="w-1/4 text-blue-800 font-semibold">Course ID<span className="text-red-500">*</span></label>
+      <input
+        type="text"
+        placeholder="Course ID"
+        value={courseId}
+        onChange={(e) => setCourseId(e.target.value)}
+        className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+        style={{ '::placeholder': { color: '#214082' } }}
+        readOnly
+      />
+    </div>
+
+    {/* Middle Name */}
+    <div className="flex flex-row mb-4">
+      <label className="w-1/4 text-blue-800 font-semibold">Course Name<span className="text-red-500">*</span></label>
+      <input
+        className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+        type="text"
+        placeholder="Course Name"
+        value={courseName}
+        onChange={(e) => setCourseName(e.target.value)}
+      />
+    </div>
+
+    {/* Last Name */}
+    <div className="flex flex-row mb-4">
+      <label className="w-1/4 text-blue-800 font-semibold">Course Short Name<span className="text-red-500">*</span></label>
+      <input
+        className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+        type="text"
+        placeholder="Course Short Name"
+        value={courseCode}
+        onChange={(e) => setCourseCode(e.target.value)}
+      />
+    </div>
+
+
+    {/* Role */}
+    <div className="flex flex-row mb-4">
+  <label className="w-1/4 text-blue-800 font-semibold">
+  Course Pattern<span className="text-red-500">*</span>
+  </label>
+  <select
+    className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+    value={coursePattern}
+    onChange={handleCoursePatternUnitChange}
+     >
+     <option value="">Select Course Pattern</option>
+        <option value="ALL_SEM">ALL_SEM</option>
+        <option value="ALL_YR">ALL_YR</option>
+  </select>
+</div>
+   <div className="flex flex-row mb-4">
+      <label className="w-1/4 text-blue-800 font-semibold">Course Duration<span className="text-red-500">*</span></label>
+      <input
+        className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+        type="text"
+        value={courseDuration}
+        onChange={(e) => setCourseDuration(e.target.value)}
+      />
+    </div>
+    <div className="flex flex-row mb-4">
+  <label className="w-1/4 text-blue-800 font-semibold">
+  Duration Unit<span className="text-red-500">*</span>
+  </label>
+  <select
+    className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+    value={courseDurationUnit}
+        onChange={handleCourseDurationUnitChange}
+     >
+      <option value="">Select Duration Unit</option>
+        <option value="months">Months</option>
+        <option value="years">Years</option>
+        <option value="Semester">Semester</option>
+  </select>
+</div>
+    {/* Submit Button */}
+    <div className='flex justify-end'>
+
+    <button
+     className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+      onClick={handleSubmit}
+    >
+      Update
+    </button>
+    </div>
+
+  </div>
+    </div>
+)}
     </div>
     
      

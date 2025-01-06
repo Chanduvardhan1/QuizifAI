@@ -147,7 +147,7 @@ const handleSubmit = async (e) => {
   formData.append('quiz_id', quizid);
   formData.append('org_id', orgId);
   formData.append('share_with_group_or_org', shareWithGroupOrOrg);
-  formData.append('group_name', groupName);
+  // formData.append('group_name', groupName);
   formData.append('department_id', selectedDepartmentId);
   formData.append('section_id', selectedSection);
   formData.append('class_id', selectedClass1);

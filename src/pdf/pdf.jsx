@@ -450,6 +450,107 @@ useEffect(() =>{
 
 //----------------***quiz print end***-----------------
 
+// --------------***class and sections *** -------------- //
+const [classes1, setClasses1] = useState([]);
+const [sections, setSections] = useState([]);
+const [selectedClass1, setSelectedClass1] = useState('');
+const [selectedSection, setSelectedSection] = useState('');
+
+useEffect(() => {
+  // Fetch organization-related details
+  const fetchDetails = async () => {
+    try {
+      const response = await fetch(
+        'https://dev.quizifai.com:8010/get_organization_related_dept_cls_sec_details?org_id=48',
+        {
+          method: 'POST',
+          headers: {
+            accept: 'application/json',
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDaGFuZHUgVmFyZGhhbiBLIiwiZXhwIjoyNTM0MDIzMDA3OTl9.htDL_NJkg15_MKckMOe5UXioQxm1gcZ64FP1f8-BqUk`,
+          },
+          body: '', // Empty body for POST request
+        }
+      );
+      const data = await response.json();
+      setClasses1(data.data.classes || []);
+      setSections(data.data.sections || []);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  fetchDetails();
+}, []);
+
+const handleClassChange = (e) => {
+  setSelectedClass1(e.target.value);
+};
+
+const handleSectionChange = (e) => {
+  setSelectedSection(e.target.value);
+};
+
+
+
+// --------------***class and sections end*** -------------- //
+
+
+  //---------------**Department Selector**----------------//
+
+  const [departments, setDepartments] = useState([]);
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
+
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken"); // Replace with actual token retrieval logic
+
+        if (!authToken) {
+          console.error("No authentication token found");
+          setErrorMessage("Authentication token not found.");
+          return;
+        }
+
+        const response = await fetch(
+          "https://dev.quizifai.com:8010/view_departments_created_by_admin/?admin_id=1037",
+          {
+            method: "GET",
+            headers: {
+              accept: "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+
+        const result = await response.json();
+
+        if (response.ok && result.response === "success") {
+          setDepartments(result.data);
+        } else {
+          console.error("Failed to fetch departments:", result);
+          setErrorMessage("Failed to fetch departments.");
+        }
+      } catch (error) {
+        console.error("Error fetching departments:", error);
+        setErrorMessage("An error occurred while fetching departments.");
+      }
+    };
+
+    fetchDepartments();
+  }, []);
+
+  const handleDepartmentChange = (e) => {
+    const selectedId = e.target.value;
+    setSelectedDepartmentId(selectedId);
+
+    // Pass department_id to the backend or handle it as needed
+    console.log("Selected department_id:", selectedId);
+  };
+
+    //---------------**Department Selector end**----------------//
+
+
+
 
 //-----------------**AssignQuiz**-----------------//
 const [shareWithGroupOrOrg, setShareWithGroupOrOrg] = useState(false); // Initialize toggle state
@@ -496,7 +597,10 @@ const handleSubmit = async (e) => {
   formData.append('quiz_id', quizid);
   formData.append('org_id', orgId);
   formData.append('share_with_group_or_org', shareWithGroupOrOrg);
-  formData.append('group_name', groupName);
+  // formData.append('group_name', groupName);
+  formData.append('department_id', selectedDepartmentId);
+  formData.append('section_id', selectedSection);
+  formData.append('class_id', selectedClass1);
   formData.append('user_ids',selectedUserIds ); // Pass user IDs as a comma-separated string
   if (file) formData.append('files', file);
 
@@ -1628,153 +1732,154 @@ const handleDownloadPDF = async (quizId) => {
 
 const instructionsString = instructions.join("\n");
 
-  const handleNext4 = async () => {
+const handleNext4 = async () => {
+  try {
+    setIsSubmitting(true);
+    const user_id = localStorage.getItem('user_id');
 
-    try {
-      setIsSubmitting(true);
-      const user_id = localStorage.getItem('user_id');
-  
-      // Check if user_id is retrieved successfully
-      if (!user_id) {
-        setErrorMessage("User ID not found. Please log in again.");
-        setIsSubmitting(false); 
-        return;
-      }
-      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+    // Check if user_id is retrieved successfully
+    if (!user_id) {
+      setErrorMessage("User ID not found. Please log in again.");
+      setIsSubmitting(false);
+      return;
+    }
+    const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
 
-      if (!authToken) {
-        setErrorMessage('No authentication token found. Please log in again.');
-        clearInterval(interval);
-        return;
-      }
-//  if (!frontImage || !backImage) {
-//         toast.error('Please select both front and back images');
-//         setIsSubmitting(false);
-//         return;
-//       }
-      if (!pdfUrl || pdfUrl.trim() === "") {
-        toast.error("PDF URL is required.");
+    if (!authToken) {
+      setErrorMessage('No authentication token found. Please log in again.');
+      clearInterval(interval);
+      return;
+    }
+
+    if (!pdfUrl || pdfUrl.trim() === "") {
+      toast.error("PDF URL is required.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!questions || questions.length === 0) {
+      toast.error("At least one question is required.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    for (const [index, question] of questions.entries()) {
+      if (!question.question_text || question.question_text.trim() === "") {
+        toast.error(`Question ${index + 1} text is required.`);
         setIsSubmitting(false);
         return;
       }
-  
-      if (!questions || questions.length === 0) {
-        toast.error("At least one question is required.");
+
+      if (!question.question_weightage || question.question_weightage <= 0) {
+        toast.error(`Weightage for question ${index + 1} must be greater than zero.`);
         setIsSubmitting(false);
         return;
       }
-  
-      for (const [index, question] of questions.entries()) {
-        if (!question.question_text || question.question_text.trim() === "") {
-          toast.error(`Question ${index + 1} text is required.`);
-          setIsSubmitting(false);
-          return;
-        }
-  
-        if (!question.question_weightage || question.question_weightage <= 0) {
-          toast.error(`Weightage for question ${index + 1} must be greater than zero.`);
-          setIsSubmitting(false);
-          return;
-        }
-  
-        if (!question.options || question.options.length < 2) {
-          toast.error(`Question ${index + 1} must have at least two options.`);
-          setIsSubmitting(false);
-          return;
-        }
-  
-        const hasCorrectOption = question.options.some(option => option.correct_answer_flag);
-        if (!hasCorrectOption) {
-          toast.error(`Question ${index + 1} must have at least one correct answer.`);
-          setIsSubmitting(false);
-          return;
-        }
+
+      if (!question.options || question.options.length < 2) {
+        toast.error(`Question ${index + 1} must have at least two options.`);
+        setIsSubmitting(false);
+        return;
       }
-      const response = await fetch(
-        `https://dev.quizifai.com:8010/crt_qz_from_pdf`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            'Authorization': `Bearer ${authToken}`,
-          },
-          body: JSON.stringify({
-            quiz_title: title,
-            num_questions: numQuestions,
-            quiz_description: description,
-            quiz_category_name: selectedCategory,
-            multi_answer: multiAnswer,
-            quiz_sub_category_name: selectedSubCategory,
-            class_name: selectedClass,
-            pass_percentage: percentage,
-            quiz_complexity_name: selectedComplexity,
-            retake_flag: selectedValue,
-            quiz_duration: duration,
-            course_name: selectedCourse,
-            quiz_time_bounded_questions: timings,
-            quiz_public_access: publicAccess ? 'on' : 'off',
-            available_from: availablefrom,
-            disabled_on: disabledon,
-            quiz_total_marks: quiztotalmarks,
-            user_id: user_id,
-            quiz_instructions: instructionsString,
-            org_id: orgId,
-            pdf_url:pdfUrl,
-            questions: questions.map((question) => ({
-              question_text: question.question_text,
-              question_weightage: question.question_weightage,
-              multi_answer_flag: multiAnswer,
-              complexity:question.complexity,
-              correct_answer_description:question.correct_answer_description,
-              question_duration: question.question_duration,
-              options: question.options.map((option) => ({
-                answer_option_text: option.answer_option_text,
-                correct_answer_flag: option.correct_answer_flag,
-              })),
+
+      const hasCorrectOption = question.options.some(option => option.correct_answer_flag);
+      if (!hasCorrectOption) {
+        toast.error(`Question ${index + 1} must have at least one correct answer.`);
+        setIsSubmitting(false);
+        return;
+      }
+    }
+
+    const response = await fetch(
+      `https://dev.quizifai.com:8010/crt_qz_from_pdf`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+          quiz_title: title,
+          num_questions: numQuestions,
+          quiz_description: description,
+          quiz_category_name: selectedCategory,
+          multi_answer: multiAnswer,
+          quiz_sub_category_name: selectedSubCategory,
+          class_name: selectedClass,
+          pass_percentage: percentage,
+          quiz_complexity_name: selectedComplexity,
+          retake_flag: selectedValue,
+          quiz_duration: duration,
+          course_name: selectedCourse,
+          quiz_time_bounded_questions: timings,
+          quiz_public_access: publicAccess ? 'on' : 'off',
+          available_from: availablefrom,
+          disabled_on: disabledon,
+          quiz_total_marks: quiztotalmarks,
+          user_id: user_id,
+          quiz_instructions: instructionsString,
+          org_id: orgId,
+          pdf_url: pdfUrl,
+          questions: questions.map((question) => ({
+            question_text: question.question_text,
+            question_weightage: question.question_weightage,
+            multi_answer_flag: multiAnswer,
+            complexity: question.complexity,
+            correct_answer_description: question.correct_answer_description,
+            question_duration: question.question_duration,
+            options: question.options.map((option) => ({
+              answer_option_text: option.answer_option_text,
+              correct_answer_flag: option.correct_answer_flag,
             })),
-          }),
-        }
-      );
-  
-      const responseData = await response.json();
-      console.log(responseData, "data");
-  
-      if (response.ok) {
-        setModalMessage("Quiz created successfully!");
+          })),
+        }),
+      }
+    );
+
+    const responseData = await response.json();
+    console.log(responseData, "data");
+
+    if (response.ok) {
+      setModalMessage("Quiz created successfully!");
       setIsError(false);
       setShowModal(true);
       setnext(true);
-       setQuizId(responseData.data.quiz_id)
-       setQuizName(responseData.data.quiz_title)
-       setPublicAccess(responseData.data.public_access_flag === "off");
-       const newQuizId = responseData.data.quiz_id;
+      setQuizId(responseData.data.quiz_id);
+      setQuizName(responseData.data.quiz_title);
+      setPublicAccess(responseData.data.public_access_flag === "off");
+      const newQuizId = responseData.data.quiz_id;
       setQuizId(newQuizId);
       if (newQuizId) {
         await handleUpload(newQuizId); // Pass quiz ID as a parameter
       }
-      } else {
-        if (responseData.detail) {
-          if (
-            responseData.detail[0].type === "missing" &&
-            responseData.detail[0].loc[1] === "body" &&
-            responseData.detail[0].loc[2] === "num_questions"
-          ) {
-            setErrorMessage("Please provide the number of questions for the quiz.");
-          } else if (responseData.detail === "Option Text is missing.") {
-            setErrorMessage("Option Text is missing.");
-          } else {
-            setErrorMessage(responseData.detail);
-          }
+    } else {
+      // Handle failure response
+      if (responseData.response === "fail") {
+        toast.error(responseData.response_message || "An unexpected error occurred.");
+      } else if (responseData.detail) {
+        if (
+          responseData.detail[0]?.type === "missing" &&
+          responseData.detail[0]?.loc[1] === "body" &&
+          responseData.detail[0]?.loc[2] === "num_questions"
+        ) {
+          setErrorMessage("Please provide the number of questions for the quiz.");
+        } else if (responseData.detail === "Option Text is missing.") {
+          setErrorMessage("Option Text is missing.");
         } else {
-          setErrorMessage("An unexpected error occurred.");
+          setErrorMessage(responseData.detail);
         }
-        setIsSubmitting(false);
+      } else {
+        setErrorMessage("An unexpected error occurred.");
       }
-    } catch (error) {
-      console.error("Type-Quiz failed:", error);
-      setErrorMessage("An error occurred while choosing the type of the quiz");
+      setIsSubmitting(false);
     }
-  };
+  } catch (error) {
+    console.error("Type-Quiz failed:", error);
+    setErrorMessage("An error occurred while choosing the type of the quiz");
+    setIsSubmitting(false);
+  }
+};
+
   
  const [isDisabled, setIsDisabled] = useState(false);
 
@@ -3341,8 +3446,8 @@ const handleTabClick = (tab) => {
 )}
 {step === 5 && (
          <>
-       <div className=" bg-white my-4 p-5">
-       <div className="flex flex-col gap-6 bg-white ">
+        <div className=" bg-white my-4 p-5">
+          <div className="flex flex-col gap-6 bg-white ">
     
     <div className="flex items-start">
         <h1 className=" font-semibold text-[20px] text-[#214082]">Assign Quizzes</h1>
@@ -3368,7 +3473,7 @@ value={orgId}
 <div className="flex flex-col w-full">
   <div className="w-full flex flex-row">
     <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
-      Quiz Id<span className="text-red-500">*</span>
+      Quiz ID<span className="text-red-500">*</span>
     </label>
     <input
                              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -3404,16 +3509,16 @@ value={orgId}
     </label>
     <select
       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-      // value={selectedCourse}
-      // onChange={handleSelectCourse}
+      value={selectedDepartmentId}
+      onChange={handleDepartmentChange}
     >
       <option value="" disabled>Select a Deparment</option>
       <option value="">None</option>
-      {/* {courses.map((course) => (
-        <option key={course.course_id} value={course.course_name}>
-          {course.course_name}
-        </option>
-      ))} */}
+      {departments.map((dept) => (
+          <option key={dept.department_id} value={dept.department_id}>
+            {dept.department_name}
+          </option>
+        ))}
     </select>
   </div>
   <hr className="h-[1px] w-full" />
@@ -3488,32 +3593,17 @@ isMulti
     File <span className="text-red-500"></span>
     </label>
     <input
-                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-
-                  placeholder="File"
-                  type="file"
-          onChange={(e) => setFile1(e.target.files[0])}
-                ></input>
+      className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+      placeholder="File"
+      type="file"
+      onChange={(e) => setFile(e.target.files[0])}>
+      </input>
   </div>
   <hr className="h-[1px] w-full" />
 </div>
 </div>
+<div className="flex flex-col  gap-6 w-full">
 
-{/* <div className="flex flex-col  gap-6 w-full">
-<div className="flex flex-col w-full">
-  <div className="w-full flex flex-row">
-    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
-      School<span className="text-red-500"></span>
-    </label>
-    <input
-                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-
-                  placeholder="School"
-               
-                ></input>
-  </div>
-  <hr className="h-[1px] w-full" />
-</div>
       <div className="w-full flex flex-col">
   <div className="w-full flex flex-row">
     <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
@@ -3521,11 +3611,16 @@ isMulti
     </label>
     <select
       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-
+      value={selectedClass1}
+      onChange={handleClassChange}
     >
       <option value="" disabled>Select a Class</option>
       <option value="">None</option>
-  
+      {classes1.map((cls) => (
+            <option key={cls.class_id} value={cls.class_id}>
+              {cls.class_name}
+            </option>
+          ))}
     </select>
   </div>
   <hr className="h-[1px] w-full" />
@@ -3537,31 +3632,29 @@ isMulti
     </label>
     <select
       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-
+      value={selectedSection}
+      onChange={handleSectionChange}
     >
       <option value="" disabled>Select a Section</option>
-  
+      {sections
+            .filter((sec) => sec.class_id === parseInt(selectedClass1))
+            .map((sec) => (
+              <option key={sec.section_id} value={sec.section_id}>
+                {sec.section_name}
+              </option>
+            ))} 
     </select>
   </div>
   <hr className="h-[1px] w-full" />
 </div>
 
-<div className="flex items-center">
-        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[72px]">
-        Email Alert <span className="text-red-500"></span>
-        </label>
-        <FormControlLabel
-        control={<Switch />} 
-          onChange={toggler1}
-          className="react-switch"
-        />
-        
-      </div>
 
 
 
 
-</div> */}
+
+
+</div>
 
 </div>
 
@@ -3571,37 +3664,37 @@ isMulti
     <div className="flex justify-between md:col-span-2 py-5">
     
 
-    <button
-      onClick={() => setStep(4)}
-      className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+            <button
+              onClick={() => setStep(4)}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
 
-    >
-      Back
-    </button>
-    <div className="flex gap-2">
-    <button onClick={handleNextpage4} className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-sm text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
-Skip
+            >
+              Back
+            </button>
+            <div className="flex gap-2">
+            <button onClick={handleNextpage4} className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-sm text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
+  Skip
 </button>
 
-    <button
-    onClick={handleSubmit}
-      // onClick={handleNextpage4}
-      className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+            <button
+            onClick={handleSubmit}
+              // onClick={handleNextpage4}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
 
-    >
-      Assign
-    </button>
-    
-    <button
-    onClick={handleNextpage4}
-      className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+            >
+              Assign
+            </button>
+            
+            <button
+            onClick={handleNextpage4}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
 
-    >
-      Next
-    </button>
-    </div>
-  
-  </div>
+            >
+              Next
+            </button>
+            </div>
+          
+          </div>
     </div>
     </> 
        )}

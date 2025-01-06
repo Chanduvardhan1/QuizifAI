@@ -87,6 +87,7 @@ import Quizresults1 from "./quizview_results/quiz_results.jsx";
 
 import SampleLeaderBoard from "./sample/sampleLeaderBoard.jsx";
 import DashboardNavBar from "./dashboardNavBar/dashboardNavBar.jsx";
+import Expiryquiz from "./configure/expiryquiz.jsx";
 
 import useradmin from "./useradmin/useradmin.jsx";
 import Usersgroup from "./usersgroup/usersgroup.jsx";
@@ -104,8 +105,8 @@ import Creatorganization from "./configure/creatorganization.jsx";
 import Creatorganizationdeparment from "./configure/Createorznizationdepartment.jsx";
 import Quizmasterleaderboard from "./Quiz_master_leaderboard/quizleaderboard.jsx";
 import Assignquiz from "./assignquiz/assignquiz.jsx";
-
 import Education from "./configure/education.jsx";
+import Disablequiz from "./configure/disablequiz.jsx";
 
 export default () => {
     return [
@@ -135,6 +136,16 @@ export default () => {
         {
             path:'userslist',
             component:Userslist,
+            isPrivate: true
+        },
+        {
+            path:'Expiryquiz',
+            component:Expiryquiz,
+            isPrivate: true
+        },
+        {
+            path:'Disablequiz',
+            component:Disablequiz,
             isPrivate: true
         },
         {

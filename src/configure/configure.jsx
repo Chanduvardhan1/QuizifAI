@@ -98,6 +98,7 @@ const configure = () => {
   const handleProfile = () => handleRestrictedClick("/profileorganization");
   const handleSettings = () => handleRestrictedClick("/Profilesettings");
   const handleQuestionBank = () => handleRestrictedClick("/questionbank");
+  const handleExpiryQuiz = () => handleRestrictedClick1("/Expiryquiz");
   const handleUserList = () => handleRestrictedClick("/userslist");
   const handleInstitution = ()=>  handleRestrictedClick("/education");
   const handleGlobalLeaderboard = () => handleRestrictedClick1("/leaderboardall");
@@ -107,7 +108,8 @@ const configure = () => {
   const handleAddUsersBulk = () => handleRestrictedClick('/excelcreat')
   const handleGlobalLeaderboard1 =() => handleRestrictedClickAll('/globalleaderboard')
   const handleMyHistory=() => handleRestrictedClickAll('/myhistory')
-
+  const handleDisableQuizs = () => handleRestrictedClick1("/Disablequiz");
+  
   useEffect(() => {
     const fetchQuizData = async () => {
       try {
@@ -193,7 +195,7 @@ const configure = () => {
       image:Q,
       title: "Quizzes",
       content:
-        "Question Bank, Quiz Print Templates",
+        "Question Bank, Quiz Print Templates, Disable Quizs, Expiry Quiz",
     },
     {
       id: 7,
@@ -485,6 +487,10 @@ const configure = () => {
                       ? handleSettings
                       : contentItem === "Institution Quizs"
                       ? handleInstitution
+                      : contentItem === "Expiry Quiz"
+                      ? handleExpiryQuiz
+                      : contentItem === "Disable Quizs"
+                      ? handleDisableQuizs
                       : contentItem === "Question Bank"
                       ? handleQuestionBank
                       : contentItem === "User List"

@@ -23,6 +23,8 @@ const specialisations = () => {
   const [parentCategoryId, setParentCategoryId] = useState('');
   const [isToggleEnabled, setIsToggleEnabled] = useState(false);
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+  const [isNavbarOpen1, setIsNavbarOpen1] = useState(false);
+
   const [isEditing, setIsEditing] = useState(false);
 
   const [courseName, setCourseName] = useState('');
@@ -127,6 +129,7 @@ const specialisations = () => {
         // Call any additional functions, e.g., fetchCourses
         fetchCourses();
         setIsNavbarOpen(false);
+        setIsNavbarOpen1(false);
       } else {
         console.error("Failed to add specialization:", result);
         setModalMessage(result.response_message || "An error occurred.");
@@ -211,6 +214,7 @@ const specialisations = () => {
         // Call any additional functions, e.g., fetchCourses
         fetchCourses();
         setIsNavbarOpen(false);
+        setIsNavbarOpen1(false);
       } else {
         console.error("Failed to Editing specialization:", result);
         setModalMessage(result.response_message || "An error occurred.");
@@ -267,11 +271,17 @@ const specialisations = () => {
   }, []);
 
   const toggleNavbar = () => {
-    setIsNavbarOpen(!isNavbarOpen);
+    setIsNavbarOpen1(!isNavbarOpen);
   };
 
-
-
+const close =()=> {
+  setSpecializationName("");
+  setSpecializationShortName("");
+  setCourseId("");
+  setSelectedDepartmentId('');
+  setIsNavbarOpen(false);
+  
+}
 
   //---------------**Department Selector**----------------//
 
@@ -329,10 +339,9 @@ const specialisations = () => {
     //---------------**Department Selector end**----------------//
 
   const handleEdit = (course) => {
-    if (selectedCategoryId === course.course_id) {
+   
       // Toggle the form visibility if the same course ID is clicked
-      setIsNavbarOpen(!isNavbarOpen);
-    } else {
+    
       // Set state with the course details to edit
       setCourseId(course.course_id);
       setCourseName(course.course_name);
@@ -353,7 +362,7 @@ const specialisations = () => {
       setIsNavbarOpen(true); // Open the form
       setIsEditing(true); // Mark the form as being in edit mode
       setSelectedCategoryId(course.course_id); // Update the selected course ID
-    }
+    
   };
   
   return (
@@ -519,6 +528,194 @@ const specialisations = () => {
           </div>
         </div>
       )}
+              {isNavbarOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+ <div className="flex flex-col bg-white p-6 shadow-lg rounded-lg w-[50%]">
+ <button
+        className="flex justify-end text-gray-900 hover:text-gray-800"
+        onClick={close}
+        aria-label="Close"
+      >
+        ✕
+      </button>
+ <h2 className="text-xl font-semibold text-blue-800 mb-4">{isEditing ? 'Edit Course' : 'Create Course'}</h2>
+
+
+ <div className="flex flex-row mb-4">
+      <label className="w-[35%] text-blue-800 font-semibold">Specialization ID<span className="text-red-500">*</span></label>
+      <input
+        type="text"
+        placeholder="Course ID"
+        value={specializationId}
+        onChange={(e) => setSpecializationId(e.target.value)}
+        className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+        readOnly
+      />
+    </div>
+    <div className="flex flex-row mb-4">
+  <label className="w-[35%] text-blue-800 font-semibold">
+  Department<span className="text-red-500">*</span>
+  </label>
+  <select
+    className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+    value={selectedDepartmentId}
+    onChange={handleDepartmentChange}
+     >
+     <option value="">Select a department </option>
+     {departments.map((dept) => (
+          <option key={dept.department_id} value={dept.department_id}>
+            {dept.department_name}
+          </option>
+        ))}
+  </select>
+</div>
+<div className="flex flex-row mb-4">
+  <label className="w-[35%] text-blue-800 font-semibold">
+  Course<span className="text-red-500">*</span>
+  </label>
+  <select
+    className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+    value={courseId}
+    onChange={(e) => setCourseId(e.target.value)}
+     >
+    <option value="">Select a course</option>
+     {courses.map((course) => (
+       <option key={course.course_id} value={course.course_id}>
+         {course.course_name}
+       </option>
+     ))}
+  </select>
+</div>
+    <div className="flex flex-row mb-4">
+      <label className="w-[35%] text-blue-800 font-semibold">Specialization Name<span className="text-red-500">*</span></label>
+      <input
+        className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+        type="text"
+        placeholder="Course Name"
+        value={specializationName}
+     onChange={(e) => setSpecializationName(e.target.value)}
+      />
+    </div>
+
+    {/* Last Name */}
+    <div className="flex flex-row mb-4">
+      <label className="w-[35%] text-blue-800 font-semibold">Specialization Short Name<span className="text-red-500">*</span></label>
+      <input
+        className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+        type="text"
+        placeholder="Course Short Name"
+        value={specializationShortName}
+        onChange={(e) => setSpecializationShortName(e.target.value)}
+      />
+    </div>
+
+
+    {/* Role */}
+   
+  
+    {/* Submit Button */}
+    <div className='flex justify-end'>
+
+    <button
+     className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+      onClick={handleSubmit}
+    >
+    Update
+    </button>
+    </div>
+
+  </div>
+    </div>
+)}
+        {isNavbarOpen1 && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+ <div className="flex flex-col bg-white p-6 shadow-lg rounded-lg w-[50%]">
+ <button
+        className="flex justify-end text-gray-900 hover:text-gray-800"
+        onClick={() => setIsNavbarOpen1(false)}
+        aria-label="Close"
+      >
+        ✕
+      </button>
+ <h2 className="text-xl font-semibold text-blue-800 mb-4">{isEditing ? 'Edit Course' : 'Create Course'}</h2>
+
+
+
+    <div className="flex flex-row mb-4">
+  <label className="w-[35%] text-blue-800 font-semibold">
+  Department<span className="text-red-500">*</span>
+  </label>
+  <select
+    className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+    value={selectedDepartmentId}
+    onChange={handleDepartmentChange}
+     >
+     <option value="">Select a department </option>
+     {departments.map((dept) => (
+          <option key={dept.department_id} value={dept.department_id}>
+            {dept.department_name}
+          </option>
+        ))}
+  </select>
+</div>
+<div className="flex flex-row mb-4">
+  <label className="w-[35%] text-blue-800 font-semibold">
+  Course<span className="text-red-500">*</span>
+  </label>
+  <select
+    className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+    value={courseId}
+    onChange={(e) => setCourseId(e.target.value)}
+     >
+    <option value="">Select a course</option>
+     {courses.map((course) => (
+       <option key={course.course_id} value={course.course_id}>
+         {course.course_name}
+       </option>
+     ))}
+  </select>
+</div>
+    <div className="flex flex-row mb-4">
+      <label className="w-[35%] text-blue-800 font-semibold">Specialization Name<span className="text-red-500">*</span></label>
+      <input
+        className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+        type="text"
+        placeholder="Course Name"
+        value={specializationName}
+     onChange={(e) => setSpecializationName(e.target.value)}
+      />
+    </div>
+
+    {/* Last Name */}
+    <div className="flex flex-row mb-4">
+      <label className="w-[35%] text-blue-800 font-semibold">Specialization Short Name<span className="text-red-500">*</span></label>
+      <input
+        className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+        type="text"
+        placeholder="Course Short Name"
+        value={specializationShortName}
+        onChange={(e) => setSpecializationShortName(e.target.value)}
+      />
+    </div>
+
+
+    {/* Role */}
+   
+  
+    {/* Submit Button */}
+    <div className='flex justify-end'>
+
+    <button
+     className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+      onClick={handleSubmit}
+    >
+      Add
+    </button>
+    </div>
+
+  </div>
+    </div>
+)}
     </div>
 
     </>

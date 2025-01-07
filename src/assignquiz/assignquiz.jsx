@@ -23,18 +23,27 @@ const [classes1, setClasses1] = useState([]);
 const [sections, setSections] = useState([]);
 const [selectedClass1, setSelectedClass1] = useState('');
 const [selectedSection, setSelectedSection] = useState('');
+const [departments, setDepartments] = useState([]);
+const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
+
 
 useEffect(() => {
   // Fetch organization-related details
   const fetchDetails = async () => {
     try {
+      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+      if (!authToken) {
+        console.error('No authentication token found');
+        return;
+      }
       const response = await fetch(
-        'https://dev.quizifai.com:8010/get_organization_related_dept_cls_sec_details?org_id=48',
+        `https://dev.quizifai.com:8010/get_organization_related_dept_cls_sec_details?org_id=${orgId}`,
         {
           method: 'POST',
           headers: {
             accept: 'application/json',
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDaGFuZHUgVmFyZGhhbiBLIiwiZXhwIjoyNTM0MDIzMDA3OTl9.htDL_NJkg15_MKckMOe5UXioQxm1gcZ64FP1f8-BqUk`,
+            'Authorization': `Bearer ${authToken}`,
           },
           body: '', // Empty body for POST request
         }
@@ -42,6 +51,8 @@ useEffect(() => {
       const data = await response.json();
       setClasses1(data.data.classes || []);
       setSections(data.data.sections || []);
+      setDepartments(data.data.departments || []);
+
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -65,47 +76,45 @@ const handleSectionChange = (e) => {
 
   //---------------**Department Selector**----------------//
 
-  const [departments, setDepartments] = useState([]);
-  const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
+ 
+  // useEffect(() => {
+  //   const fetchDepartments = async () => {
+  //     try {
+  //       const authToken = localStorage.getItem("authToken"); // Replace with actual token retrieval logic
 
-  useEffect(() => {
-    const fetchDepartments = async () => {
-      try {
-        const authToken = localStorage.getItem("authToken"); // Replace with actual token retrieval logic
+  //       if (!authToken) {
+  //         console.error("No authentication token found");
+  //         setErrorMessage("Authentication token not found.");
+  //         return;
+  //       }
 
-        if (!authToken) {
-          console.error("No authentication token found");
-          setErrorMessage("Authentication token not found.");
-          return;
-        }
+  //       const response = await fetch(
+  //         "https://dev.quizifai.com:8010/view_departments_created_by_admin/?admin_id=1037",
+  //         {
+  //           method: "GET",
+  //           headers: {
+  //             accept: "application/json",
+  //             Authorization: `Bearer ${authToken}`,
+  //           },
+  //         }
+  //       );
 
-        const response = await fetch(
-          "https://dev.quizifai.com:8010/view_departments_created_by_admin/?admin_id=1037",
-          {
-            method: "GET",
-            headers: {
-              accept: "application/json",
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
-        );
+  //       const result = await response.json();
 
-        const result = await response.json();
+  //       if (response.ok && result.response === "success") {
+  //         setDepartments(result.data);
+  //       } else {
+  //         console.error("Failed to fetch departments:", result);
+  //         setErrorMessage("Failed to fetch departments.");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching departments:", error);
+  //       setErrorMessage("An error occurred while fetching departments.");
+  //     }
+  //   };
 
-        if (response.ok && result.response === "success") {
-          setDepartments(result.data);
-        } else {
-          console.error("Failed to fetch departments:", result);
-          setErrorMessage("Failed to fetch departments.");
-        }
-      } catch (error) {
-        console.error("Error fetching departments:", error);
-        setErrorMessage("An error occurred while fetching departments.");
-      }
-    };
-
-    fetchDepartments();
-  }, []);
+  //   fetchDepartments();
+  // }, []);
 
   const handleDepartmentChange = (e) => {
     const selectedId = e.target.value;
@@ -147,7 +156,7 @@ const handleSubmit = async (e) => {
   formData.append('quiz_id', quizid);
   formData.append('org_id', orgId);
   formData.append('share_with_group_or_org', shareWithGroupOrOrg);
-  // formData.append('group_name', groupName);
+  formData.append('group_name', groupName);
   formData.append('department_id', selectedDepartmentId);
   formData.append('section_id', selectedSection);
   formData.append('class_id', selectedClass1);
@@ -319,7 +328,7 @@ value={orgId}
         
       </div>
     
-      {!shareWithGroupOrOrg && (
+      {/* {!shareWithGroupOrOrg && ( */}
         <div className="flex flex-col w-full">
   <div className="w-full flex flex-row">
     <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
@@ -341,7 +350,7 @@ value={orgId}
   </div>
   <hr className="h-[1px] w-full" />
 </div>
- )}
+ {/* )} */}
   {!shareWithGroupOrOrg &&(
 <div className="flex flex-col w-full">
   <div className="w-full flex flex-row">
@@ -456,6 +465,7 @@ isMulti
       onChange={handleSectionChange}
     >
       <option value="" disabled>Select a Section</option>
+      <option value="">None</option>
       {sections
             .filter((sec) => sec.class_id === parseInt(selectedClass1))
             .map((sec) => (

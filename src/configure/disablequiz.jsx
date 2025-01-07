@@ -648,7 +648,7 @@ const disablequiz = () => {
         <div onClick={handleBack} className=" absolute top-5 right-5 cursor-pointer">
                       <img src={close} alt="" className="w-[25px] h-[25px]" />
                     </div>
-      <div className="w-full flex flex-wrap mx-auto gap-[24px] p-2">
+      <div className="w-full flex flex-wrap mx-auto gap-[24px] p-2 pt-12">
       {allquizzes
  .filter((quizItem) => {
     // Convert active_flag to lowercase and check if it is 'i'

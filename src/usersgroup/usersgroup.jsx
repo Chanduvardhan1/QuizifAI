@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
 import close from "../../src/assets/Images/images/dashboard/cancel.png"
+import editicon from "../../src/assets/Images/quiz-type/edit.png"
 
 
 
@@ -95,18 +96,26 @@ const [classes, setClasses] = useState([]);
 const [sections, setSections] = useState([]);
 const [selectedClass, setSelectedClass] = useState('');
 const [selectedSection, setSelectedSection] = useState('');
+const [departments, setDepartments] = useState([]);
+const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
 
 useEffect(() => {
   // Fetch organization-related details
   const fetchDetails = async () => {
     try {
+      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+      if (!authToken) {
+        console.error('No authentication token found');
+        return;
+      }
       const response = await fetch(
-        'https://dev.quizifai.com:8010/get_organization_related_dept_cls_sec_details?org_id=48',
+        `https://dev.quizifai.com:8010/get_organization_related_dept_cls_sec_details?org_id=${orgId}`,
         {
           method: 'POST',
           headers: {
             accept: 'application/json',
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDaGFuZHUgVmFyZGhhbiBLIiwiZXhwIjoyNTM0MDIzMDA3OTl9.htDL_NJkg15_MKckMOe5UXioQxm1gcZ64FP1f8-BqUk`,
+            'Authorization': `Bearer ${authToken}`,
           },
           body: '', // Empty body for POST request
         }
@@ -114,6 +123,8 @@ useEffect(() => {
       const data = await response.json();
       setClasses(data.data.classes || []);
       setSections(data.data.sections || []);
+      setDepartments(data.data.departments || []);
+
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -137,47 +148,45 @@ const handleSectionChange = (e) => {
 
   //---------------**Department Selector**----------------//
 
-  const [departments, setDepartments] = useState([]);
-  const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
+ 
+  // useEffect(() => {
+  //   const fetchDepartments = async () => {
+  //     try {
+  //       const authToken = localStorage.getItem("authToken"); // Replace with actual token retrieval logic
 
-  useEffect(() => {
-    const fetchDepartments = async () => {
-      try {
-        const authToken = localStorage.getItem("authToken"); // Replace with actual token retrieval logic
+  //       if (!authToken) {
+  //         console.error("No authentication token found");
+  //         setError("Authentication token not found.");
+  //         return;
+  //       }
 
-        if (!authToken) {
-          console.error("No authentication token found");
-          setError("Authentication token not found.");
-          return;
-        }
+  //       const response = await fetch(
+  //         "https://dev.quizifai.com:8010/view_departments_created_by_admin/?admin_id=1037",
+  //         {
+  //           method: "GET",
+  //           headers: {
+  //             accept: "application/json",
+  //             Authorization: `Bearer ${authToken}`,
+  //           },
+  //         }
+  //       );
 
-        const response = await fetch(
-          "https://dev.quizifai.com:8010/view_departments_created_by_admin/?admin_id=1037",
-          {
-            method: "GET",
-            headers: {
-              accept: "application/json",
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
-        );
+  //       const result = await response.json();
 
-        const result = await response.json();
+  //       if (response.ok && result.response === "success") {
+  //         setDepartments(result.data);
+  //       } else {
+  //         console.error("Failed to fetch departments:", result);
+  //         setError("Failed to fetch departments.");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching departments:", error);
+  //       setError("An error occurred while fetching departments.");
+  //     }
+  //   };
 
-        if (response.ok && result.response === "success") {
-          setDepartments(result.data);
-        } else {
-          console.error("Failed to fetch departments:", result);
-          setError("Failed to fetch departments.");
-        }
-      } catch (error) {
-        console.error("Error fetching departments:", error);
-        setError("An error occurred while fetching departments.");
-      }
-    };
-
-    fetchDepartments();
-  }, []);
+  //   fetchDepartments();
+  // }, []);
 
   const handleDepartmentChange = (e) => {
     const selectedId = e.target.value;
@@ -404,6 +413,11 @@ const handleUserTypeChange = (e) => {
 const handleBack = () => {
   navigate("/configure")
 };
+  const [ isEditing ,setisEditing] = useState(false);
+
+const handeledit =()=> {
+  setisEditing((prevState) => !prevState);
+ }
 
   return (
     <>
@@ -675,20 +689,24 @@ const handleBack = () => {
     
       <hr className={`h-[1px] w-full`} />
     </div>
- 
-    <div className="flex flex-col">
+    <div className="w-full flex items-center ">
+
+    <div className=" w-full flex flex-col">
       <div className="w-full flex flex-row">
       <label className="w-[25%] text-blue-800 font-semibold mb-2 ">Password<span className="text-red-500">*</span></label>
 
       <input
-        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[15px] focus:outline-none `}
+        className={`w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[15px] focus:outline-none ${
+          !isEditing ? 'text-gray-700 cursor-not-allowed' : 'text-black'
+        }`}
         type={showPassword ? 'text' : 'password'}
         value={password}
-        onChange={handlePasswordChange} 
+        onChange={handlePasswordChange}
+        disabled={!isEditing} 
         required
       />
         <div
-        className="absolute  left-[695px] mt-2 mr-1 text-lg text-[#A7A3FF] cursor-pointer"
+        className="absolute  left-[670px] mt-2 mr-1 text-lg text-[#A7A3FF] cursor-pointer"
         onClick={togglePasswordVisibility}
       >
         {showPassword ? <FaEye /> : <FaEyeSlash />}
@@ -698,7 +716,11 @@ const handleBack = () => {
       <hr className={`h-[1px] w-full`} />
     </div>
 
-  
+    <div className="  m-2">
+                <img src={editicon} onClick={handeledit} className=" w-[18px] h-[18px] cursor-pointer "/>
+          
+            </div>
+            </div>
     
     </div>
     

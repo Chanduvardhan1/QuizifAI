@@ -604,6 +604,9 @@ const handleSelectChange = (event) => {
         style={{ display: 'none' }}
         onChange={handleFileChange}
       />
+      <div className='py-2'>
+      <span className='text-blue-800 font-semibold'>Org ID : </span><span>{orgId}</span>
+      </div>
                     </div>
                     {isModalOpen && (
         <div

@@ -265,7 +265,7 @@ const topThree = leaderboardData.slice(0, 3);
             alt="Timer"
             className="w-[18px] h-[18px] mr-1"
           />
-          <span className="ml-1 text-sm">{quizduration} Minutes</span>
+          <span className="ml-1 text-sm">{quizduration}</span>
         </div>
         <div className="flex items-center">
           <img

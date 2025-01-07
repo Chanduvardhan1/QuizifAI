@@ -167,7 +167,7 @@ const configure = () => {
       image:pepooles,
       title: "User & Roles",
       content:
-        "Add User, Add Users Bulk, Add/Edit User Groups, User List, Reset User Password",
+        "Add User, Add Bulk Users, Add/Edit User Groups, User List, Reset User Password",
     },
     {
       id: 3,
@@ -268,6 +268,7 @@ const configure = () => {
         console.error('Error logging out:', error);
       });
   };
+
   
   return (
     <div className="flex font-Poppins">
@@ -299,8 +300,8 @@ const configure = () => {
             /> */}
                 <div className=" absolute right-3 top-3">
   <img
-    src={close1}
-    onClick={handleBack}
+    src={LogoutIcon}
+    onClick={handleBackToLogin}
     alt="Logout Icon"
     className="w-5 h-5 cursor-pointer "
   />
@@ -427,7 +428,7 @@ const configure = () => {
                       : contentItem === "Add User" &&
                       item.title === "User & Roles"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
-                      : contentItem === "Add Users Bulk" &&
+                      : contentItem === "Add Bulk Users" &&
                       item.title === "User & Roles"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : contentItem === "Quiz Status Report" &&
@@ -499,7 +500,7 @@ const configure = () => {
                       ? handleGlobalLeaderboard
                       : contentItem === "Quiz Master Report"
                       ? handleQuizMasterReport
-                      : contentItem === "Add Users Bulk"
+                      : contentItem === "Add Bulk Users"
                       ? handleAddUsersBulk
                       : contentItem === "Create Organization"
                       ? handleCreateOrganization

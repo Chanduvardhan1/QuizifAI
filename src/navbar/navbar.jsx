@@ -12,6 +12,7 @@ import { AuthContext } from "../Authcontext/AuthContext.jsx"
  import contactUs from "../../public/contactus.png";
  import dashboard from "../../public/dashboardnew.png";
 import global1 from "../../src/assets/Images/dashboard/image (13).png";
+import report from "../../src/assets/Images/dashboard/image (14).png"
 
 
 const Navigation = () => {
@@ -127,7 +128,7 @@ const Navigation = () => {
   };
 
   return (
-    <div className={styles.navigation}>
+    <div class="w-[110px] min-h-screen bg-[#F5F5FB] font-medium flex flex-col relative">
       <div className={styles.navbar}>
         <img
           src={quizifailogo}
@@ -167,18 +168,19 @@ const Navigation = () => {
           </NavLink>
        
           
-          {/* <NavLink
-            to="/myhistory"
-            className={`${styles.pageItem} ${activePage === '/myhistory' ? styles.bold : ''}`}
-            onClick={() => handleNavigation('/myhistory')}
+          <NavLink
+            to="/repoarts"
+            className={`${styles.pageItem} ${activePage === '/repoarts' ? styles.bold : ''}`}
+            onClick={() => handleNavigation('/repoarts')}
           >
             <img
-              src={myHistoryIcon}
+              src={report}
               alt="Settings Icon"
-              className={`${styles.pageIcon} ${activePage === '/myhistory' ? styles.activeIcon : ''}`}
+              className={`${styles.pageIcon} ${activePage === '/repoarts' ? styles.activeIcon : ''}`}
             />
-            <span className={styles.pageLink}>My History</span>
-          </NavLink> */}
+            <span className={styles.pageLink}>Reports</span>
+          </NavLink>
+
           {/* <NavLink
             to="/globalleaderboard"
             className={`${styles.pageItem} ${activePage === '/globalleaderboard' ? styles.bold : ''}`}

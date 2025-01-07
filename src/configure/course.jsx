@@ -603,12 +603,22 @@ const course = () => {
 </div>
     {/* Submit Button */}
     <div className='flex justify-end'>
+      <div className='flex gap-1'>
+
+     
+    <button
+     className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+     onClick={()=> setIsNavbarOpen1(false)}
+    >
+      Cancel
+    </button>
     <button
      className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
       onClick={handleSubmit}
     >
-     Add
+     Create
     </button>
+    </div>
     </div>
  
   </div>
@@ -706,13 +716,20 @@ const course = () => {
 </div>
     {/* Submit Button */}
     <div className='flex justify-end'>
-
+      <div className='flex gap-1'>
+    <button
+     className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+     onClick={close}
+    >
+      Cancel
+    </button>
     <button
      className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
       onClick={handleSubmit}
     >
       Update
     </button>
+    </div>
     </div>
 
   </div>

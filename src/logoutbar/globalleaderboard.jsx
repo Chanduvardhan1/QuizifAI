@@ -10,6 +10,7 @@ import GreaterThan from "../assets/Images/images/dashboard/greaterthan.png";
 import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 import { useNavigate } from "react-router-dom";
 import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
+import close from "../../src/assets/Images/images/dashboard/cancel.png"
 
 const Globalleaderboard = () => {
   const inputReff = useRef(null);
@@ -276,25 +277,17 @@ useEffect(() => {
           fetchProfileImage();
         }, []);
   // --------------***view image end*** -------------- //
-  
+  const handleBack = () => {
+    navigate("/repoarts")
+  };
 
   return (
     <div className='flex font-Poppins'>
         <Navigation/>
         <div className='full mt-6'>
-        <div className=" absolute top-[5px] right-[5px]">
-            
-          
-            <div className="flex flex-col justify-center items-center">
-    <img
-      src={LogoutIcon}
-      onClick={handleBackToLogin}
-      alt="Logout Icon"
-      className="w-5 h-5 cursor-pointer "
-    />
-    {/* <p className="text-[#002366] text-[14px]">Logout</p> */}
-  </div>
-  </div>
+        <div onClick={handleBack} className=" absolute top-3 right-3 cursor-pointer">
+                 <img src={close} alt="" className="w-[25px] h-[25px]" />
+               </div>
         <h1 className='text-center text-lg text-[#E97132] font-bold text-[35px]'>Global Score Leader Board</h1>
 
         <h1 className='text-[20px] text-[#002366] font-medium ml-5 mt-10'>Welcome {userName.charAt(0).toUpperCase() + userName.slice(1)}</h1>

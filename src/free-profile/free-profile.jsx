@@ -409,7 +409,7 @@ const FreeProfile = () => {
         setIsEmailOtpSent(false);
         setIsMobileOtpSent(false);
         setIsEditing(false);
-        // window.location.reload();
+        window.location.reload();
         // const response = await fetch(
         //   `https://dev.quizifai.com:8010/dashboard`,
         //   {

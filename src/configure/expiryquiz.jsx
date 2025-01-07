@@ -54,6 +54,7 @@ import leader from "../../src/assets/Images/dashboard/Leader.png"
 import print1 from "../../src/assets/Images/dashboard/print.png"
 import back from "../../src/assets/Images/dashboard/quiz12.png"
 import assign from "../../src/assets/Images/dashboard/assign.png"
+import close from "../../src/assets/Images/images/dashboard/cancel.png"
 
 const Expiryquiz = () => {
   const getFormattedDate = () => {
@@ -636,19 +637,29 @@ const Expiryquiz = () => {
         console.error('Error logging out:', error);
       });
   };
-
+  const handleBack = () => {
+    navigate("/configure")
+  };
 
   return (
     <div className="flex">
       <Navigation />
       <ToastContainer />
+       <div onClick={handleBack} className=" absolute top-5 right-5 cursor-pointer">
+                <img src={close} alt="" className="w-[25px] h-[25px]" />
+              </div>
       <div className="w-full flex flex-wrap mx-auto gap-[24px] p-2">
-      {allquizzes
-  .filter((quizItem) => {
+      {allquizzes.filter((quizItem) => {
     const quizEndDate = new Date(quizItem.quiz_end_date);
     const today = new Date();
     return quizEndDate < today; // Only include quizzes with an expiry date
-  })
+  }).length > 0 ? (
+    allquizzes
+      .filter((quizItem) => {
+        const quizEndDate = new Date(quizItem.quiz_end_date);
+        const today = new Date();
+        return quizEndDate < today; // Only include quizzes with an expiry date
+      })
   .map((quizItem, index) => (
                
                  <div
@@ -1065,7 +1076,14 @@ const Expiryquiz = () => {
                         </div>
                       </div>
             
-              ))}
+              ))
+            ) : (
+                <div className="w-full flex items-center justify-center h-screen">
+                <div className="text-center text-gray-500 text-lg">
+                  No quizzes are available.
+                </div>
+              </div>
+              )}
           </div>
     
     </div>

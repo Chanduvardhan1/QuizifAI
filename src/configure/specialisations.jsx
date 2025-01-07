@@ -538,7 +538,7 @@ const close =()=> {
       >
         ✕
       </button>
- <h2 className="text-xl font-semibold text-blue-800 mb-4">{isEditing ? 'Edit Course' : 'Create Course'}</h2>
+ <h2 className="text-xl font-semibold text-blue-800 mb-4">Edit Specialization</h2>
 
 
  <div className="flex flex-row mb-4">
@@ -615,13 +615,23 @@ const close =()=> {
   
     {/* Submit Button */}
     <div className='flex justify-end'>
+    <div className='flex gap-1'>
 
-    <button
+     
+<button
+ className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+ onClick={close}
+>
+  Cancel
+</button>
+<button
      className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
       onClick={handleSubmit}
     >
     Update
     </button>
+</div>
+  
     </div>
 
   </div>
@@ -637,7 +647,7 @@ const close =()=> {
       >
         ✕
       </button>
- <h2 className="text-xl font-semibold text-blue-800 mb-4">{isEditing ? 'Edit Course' : 'Create Course'}</h2>
+ <h2 className="text-xl font-semibold text-blue-800 mb-4">Create Specialization</h2>
 
 
 
@@ -704,13 +714,23 @@ const close =()=> {
   
     {/* Submit Button */}
     <div className='flex justify-end'>
+    <div className='flex gap-1'>
 
-    <button
-     className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
-      onClick={handleSubmit}
-    >
-      Add
-    </button>
+     
+<button
+ className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+ onClick={()=> setIsNavbarOpen1(false)}
+>
+  Cancel
+</button>
+<button
+ className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+  onClick={handleSubmit}
+>
+ Create
+</button>
+</div>
+   
     </div>
 
   </div>

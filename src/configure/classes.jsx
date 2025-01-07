@@ -662,7 +662,7 @@ const classes = () => {
       >
         ✕
       </button>
- <h2 className="text-xl font-semibold text-blue-800 mb-4">{isEditing ? 'Edit Course' : 'Create Course'}</h2>
+ <h2 className="text-xl font-semibold text-blue-800 mb-4">Edit Class and Sections</h2>
 
 
  <div className="flex flex-row mb-4">
@@ -758,12 +758,23 @@ const classes = () => {
     {/* Submit Button */}
     <div className='flex justify-end'>
 
-    <button
+   
+    <div className='flex gap-1'>
+
+     
+<button
+ className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+ onClick={close}
+>
+  Cancel
+</button>
+<button
      className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
       onClick={handleSubmit}
     >
     Update
     </button>
+</div>
     </div>
 
   </div>
@@ -779,7 +790,7 @@ const classes = () => {
       >
         ✕
       </button>
- <h2 className="text-xl font-semibold text-blue-800 mb-4">{isEditing ? 'Edit Course' : 'Create Course'}</h2>
+ <h2 className="text-xl font-semibold text-blue-800 mb-4">Create Class and Sections</h2>
 
     <div className="flex flex-row mb-4">
   <label className="w-[35%] text-blue-800 font-semibold">
@@ -863,13 +874,23 @@ const classes = () => {
   
     {/* Submit Button */}
     <div className='flex justify-end'>
+    <div className='flex gap-1'>
 
-    <button
+     
+<button
+ className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+ onClick={()=> setIsNavbarOpen1(false)}
+>
+  Cancel
+</button>
+<button
      className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
       onClick={handleSubmit}
     >
-    Add
+    Create
     </button>
+</div>
+   
     </div>
 
   </div>

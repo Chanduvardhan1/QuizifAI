@@ -1,0 +1,110 @@
+"use client";
+import React, { useState } from "react";
+// import Image from "next/image";
+
+// Navbar-icons
+import QuizifAilogo from "../../src/assets/Images/quiz-type/Quizifai 1.png";
+import Dashboard from "../../src/assets/Images/quiz-type/Dashboard.png";
+import Quiz from "../../src/assets/Images/quiz-type/Quiz.png";
+import History from "../../src/assets/Images/quiz-type/History.png";
+import Schedule from "../../src/assets/Images/quiz-type/Schedule.png";
+import Notification from "../../src/assets/Images/quiz-type/Notification.png";
+import QuizAdmin from "../../src/assets/Images/quiz-type/Quiz-admin.png";
+import Profile from "../../src/assets/Images/quiz-type/Profile.png";
+import Navigation from "../navbar/navbar.jsx";
+
+// Main-Section-icons
+import QuizTitle from "../../src/assets/Images/quiz-type/Quiz-Title.png";
+import QuizCreatedBy from "../../src/assets/Images/quiz-type/Quiz-created-by.png";
+import QuizDiscription from "../../src/assets/Images/quiz-type/Quiz-discription.png";
+import HorizontalLine from "../../src/assets/Images/quiz-type/Horizontal-Line.png";
+import Percentage from "../../src/assets/Images/quiz-type/Percentage.png";
+import Easy from "../../src/assets/Images/quiz-type/Easy.png";
+import Medium from "../../src/assets/Images/quiz-type/Medium.png";
+import Complex from "../../src/assets/Images/quiz-type/Complex.png";
+import Hash from "../../src/assets/Images/quiz-type/Hash.png";
+import Camera from "../../src/assets/Images/quiz-type/Camera.png";
+import MultipleAns from "../../src/assets/Images/quiz-type/Multiple-Answer.png";
+import SubCategory from "../../src/assets/Images/quiz-type/Sub-Category.png";
+import Clock from "../../src/assets/Images/quiz-type/Clock.png";
+import Calender from "../../src/assets/Images/quiz-type/Calender.png";
+import AiBot from "../../src/assets/Images/quiz-type/Ai-bot.png";
+import Globe from "../../src/assets/Images/quiz-type/Globe.png";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import myHistoryIcon from "../../public/myhistory.png"
+import global1 from "../../src/assets/Images/dashboard/image (13).png";
+
+import { MdOutlineCancel } from "react-icons/md";
+
+
+const repoarts = () => {
+   const navigate = useNavigate();
+ 
+const  handleGlobalLeaderboard1 =() => {
+    navigate('/globalleaderboard');
+}
+
+const  handleMyHistory =() => {
+    navigate('/myhistory');
+}
+const  handleGlobalLeaderboard =() => {
+    navigate('/leaderboardall');
+}
+    return (
+        <>
+          <div className="flex">
+<Navigation/>
+<div className="w-full p-5 bg-[#F5F5F5]">
+    <div className="flex gap-5 h-[80%]">
+
+    
+    <div className="flex flex-col p-5 gap-2 shadow-md justify-start items-center w-[25%]  bg-white">
+        <div>
+            <img src={global1} alt="" className="w-[50px] h-[50px]" />
+        </div>
+        <div className=" text-[16px] font-semibold text-[#EF5130]">
+            <h1 className="text-[16px]">
+Global Leaderboard Reports
+            </h1>
+        </div>
+        <div onClick={handleGlobalLeaderboard1}>
+            <p className="text-[#00008b] cursor-pointer">Golbal Leaderboard</p>
+        </div>
+    </div>
+    <div className="flex flex-col p-5 gap-2 shadow-md justify-start items-center w-[25%]  bg-white">
+        <div>
+            <img src={myHistoryIcon} alt="" className="w-[50px] h-[50px]" />
+        </div>
+        <div className=" text-[16px] font-semibold text-[#EF5130]">
+            <h1 className="text-[16px]">
+My History Reports
+            </h1>
+        </div>
+        <div onClick={handleMyHistory}>
+            <p className="text-[#00008b] cursor-pointer">My History</p>
+        </div>
+    </div>
+    <div className="flex flex-col p-5 gap-2 shadow-md justify-start items-center w-[25%]  bg-white">
+        <div>
+            <img src={myHistoryIcon} alt="" className="w-[50px] h-[50px]" />
+        </div>
+        <div className=" text-[16px] font-semibold text-[#EF5130]">
+            <h1 className="text-[16px]">
+            Quiz Status Report Reports
+            </h1>
+        </div>
+        <div onClick={handleGlobalLeaderboard}>
+            <p className="text-[#00008b] cursor-pointer">Quiz Status Report</p>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+        </>
+   
+    );
+  };
+  
+  export default repoarts;

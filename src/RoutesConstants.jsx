@@ -107,6 +107,7 @@ import Quizmasterleaderboard from "./Quiz_master_leaderboard/quizleaderboard.jsx
 import Assignquiz from "./assignquiz/assignquiz.jsx";
 import Education from "./configure/education.jsx";
 import Disablequiz from "./configure/disablequiz.jsx";
+import Repoarts from "./reports/repoarts.jsx";
 
 export default () => {
     return [
@@ -128,6 +129,12 @@ export default () => {
             component:Education,
             isPrivate: true
         },
+        {
+            path:'repoarts',
+            component:Repoarts,
+            isPrivate: true
+        },
+        
         {
             path:'usersgroup',
             component:Usersgroup,

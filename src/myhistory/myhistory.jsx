@@ -14,6 +14,7 @@ import Complex from "../assets/Images/history/Complex.png";
 import DashBoardNavBar from "../../src/dashboardNavBar/dashboardNavBar.jsx";
 import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
+import close from "../../src/assets/Images/images/dashboard/cancel.png"
 
 
 const myhistory = () => {
@@ -328,28 +329,25 @@ const [error, setError] = useState(null);
         fetchProfileImage();
       }, []);
 // --------------***view image end*** -------------- //
-
+const handleBack = () => {
+  navigate("/repoarts")
+};
   
   return (
     <>
       <div className="flex w-full">
         <Navigation />
         <div className="w-full p-[10px] text-[14px] font-Poppins text-[#214082] font-bold">
+        <div onClick={handleBack} className=" absolute top-3 right-3 cursor-pointer">
+               <img src={close} alt="" className="w-[25px] h-[25px]" />
+             </div>
           <div className="flex justify-center p-[5px] text-[24px]">
             <h1 className="text-[#F17530]">My History</h1>
           </div>
           <div className=" absolute top-[5px] right-[5px]">
             
           
-          <div className="flex flex-col justify-center items-center">
-  <img
-    src={LogoutIcon}
-    onClick={handleBackToLogin}
-    alt="Logout Icon"
-    className="w-5 h-5 cursor-pointer "
-  />
-  {/* <p className="text-[#002366] text-[14px]">Logout</p> */}
-</div>
+      
 </div>
 {/* <div className="flex">
 <DashBoardNavBar/>

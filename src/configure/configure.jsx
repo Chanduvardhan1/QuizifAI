@@ -183,13 +183,13 @@ const configure = () => {
       content:
         "Order List, Subscription Details",
     },
-    {
-      id: 5,
-      image:report,
-      title: "Reports",
-      content:
-        "Global Leaderboard, My History, Quiz Status Report, (Other Possible Reports)",
-    },
+    // {
+    //   id: 5,
+    //   image:report,
+    //   title: "Reports",
+    //   content:
+    //     "Global Leaderboard, My History, Quiz Status Report, (Other Possible Reports)",
+    // },
     {
       id: 6,
       image:Q,

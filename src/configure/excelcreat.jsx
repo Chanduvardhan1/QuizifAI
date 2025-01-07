@@ -12,6 +12,8 @@ import Delete from "../../src/assets/Images/Assets/Delete.png"
 import Line from "../../src/assets/Images/Assets/Line.png"
 import { RiDeleteBinLine } from "react-icons/ri";
 import close from "../../src/assets/Images/images/dashboard/cancel.png"
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 const excelcreat = () => {
   const [categories, setCategories] = useState([]);
@@ -83,7 +85,7 @@ const excelcreat = () => {
           <img src={close} alt="" className="w-[25px] h-[25px]" />
         </div>
     <div className="flex"> 
-      <h1 className=" font-semibold text-[20px] text-[#214082]">Create Bulk Numbers of Users</h1>
+      <h1 className=" font-semibold text-[20px] text-[#214082]">Create Bulk Users</h1>
     </div>
   
 
@@ -119,9 +121,9 @@ const excelcreat = () => {
       </button>
     </div>
     {activeTab === 'Upload' && (
-  <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+  <div className=" bg-gray-50 flex items-center justify-center">
   <div className="container mx-auto p-8">
-  <div className="mt-6 text-left text-gray-600 space-y-2 text-sm">
+  <div className="mt-6 text-left text-gray-600 space-y-2 text-sm pb-6">
             <p>1. Download the template file and fill in the required data.</p>
             <p>2. Once completed, upload the file using the form provided and submit it.</p>
             <p>3. Use the correct IDs for users, teams, and sprints.</p>
@@ -265,7 +267,58 @@ const excelcreat = () => {
 </table>
 </div>
 )}
-      
+
+   {activeTab === 'Import' && (
+ <div className="flex items-center justify-center h-screen bg-white">
+ <div className="flex items-center space-x-16">
+   {/* Circular Progress */}
+   <div className="text-center">
+     <div className="w-32 h-32">
+       <CircularProgressbar
+         value={60}
+         text={`${60}%`}
+         styles={buildStyles({
+           pathColor: '#22c55e',
+           textColor: '#1f2937',
+           trailColor: '#e5e7eb',
+         })}
+       />
+     </div>
+     <p className="mt-4 text-gray-500">Import 60% completed</p>
+   </div>
+
+   {/* File Progress Bars */}
+   <div className="w-96 space-y-4">
+     {/* File 1 */}
+     <div>
+       <div className="flex justify-between text-sm text-gray-600">
+         <span>File_1234_csv</span>
+         <span>53% - 12 seconds left</span>
+       </div>
+       <div className="w-full h-2 mt-2 bg-gray-300 rounded">
+         <div className="h-2 bg-green-500 rounded" style={{ width: '53%' }}></div>
+       </div>
+     </div>
+
+     {/* File 2 */}
+     <div>
+       <div className="flex justify-between text-sm text-gray-600">
+         <span>File_6789_csv</span>
+         <span>100%</span>
+       </div>
+       <div className="w-full h-2 mt-2 bg-gray-300 rounded">
+         <div className="h-2 bg-green-500 rounded" style={{ width: '100%' }}></div>
+       </div>
+     </div>
+
+     {/* Done Button */}
+     {/* <button className="w-full px-4 py-2 mt-4 text-white bg-gray-800 rounded hover:bg-gray-700">
+       Done
+     </button> */}
+   </div>
+ </div>
+</div>
+)}   
       {/* </div> */}
     </div>
 

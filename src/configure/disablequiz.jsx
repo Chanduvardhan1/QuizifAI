@@ -54,6 +54,7 @@ import leader from "../../src/assets/Images/dashboard/Leader.png"
 import print1 from "../../src/assets/Images/dashboard/print.png"
 import back from "../../src/assets/Images/dashboard/quiz12.png"
 import assign from "../../src/assets/Images/dashboard/assign.png"
+import close from "../../src/assets/Images/images/dashboard/cancel.png"
 
 const disablequiz = () => {
   const getFormattedDate = () => {
@@ -636,12 +637,17 @@ const disablequiz = () => {
         console.error('Error logging out:', error);
       });
   };
-
+  const handleBack = () => {
+    navigate("/configure")
+  };
 
   return (
     <div className="flex">
       <Navigation />
       <ToastContainer />
+        <div onClick={handleBack} className=" absolute top-5 right-5 cursor-pointer">
+                      <img src={close} alt="" className="w-[25px] h-[25px]" />
+                    </div>
       <div className="w-full flex flex-wrap mx-auto gap-[24px] p-2">
       {allquizzes
  .filter((quizItem) => {
@@ -650,7 +656,12 @@ const disablequiz = () => {
 
     // Return quizzes with active_flag='i'
     return isActive;
-  })
+  }).length > 0 ? (
+    allquizzes
+      .filter((quizItem) => {
+        const isActive = quizItem.active_flag?.toLowerCase() === "i";
+        return isActive; // Return quizzes with active_flag='i'
+      })
   .map((quizItem, index) => (
                
                  <div
@@ -1067,7 +1078,13 @@ const disablequiz = () => {
                         </div>
                       </div>
             
-              ))}
+              ))) : (
+                <div className="w-full flex items-center justify-center h-screen">
+                  <div className="text-center text-gray-500 text-lg">
+                    No quizzes are available.
+                  </div>
+                </div>
+              )}
           </div>
     
     </div>

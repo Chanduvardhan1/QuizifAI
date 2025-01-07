@@ -33,7 +33,7 @@ const handleTabClick = (tab) => {
 
 };
 const handleBack = () => {
-  navigate("/configure")
+  navigate("/repoarts")
 };
 // Tab changes end //
 

@@ -823,8 +823,12 @@ const Dashboard = () => {
                 const quizEndDate = quizItem.quiz_end_date
                   ? new Date(quizItem.quiz_end_date)
                   : null;
+                  const isQuizMaster = userRole === "Quiz Master";
+                  const isActiveForOthers =
+                    quizItem.active_flag?.toLowerCase() === "true" ||
+                    quizItem.active_flag?.toLowerCase() === "Y";
                 return (
-                  (quizItem.active_flag?.toLowerCase() === "i" || quizItem.active_flag?.toLowerCase() === "true") &&
+                  (isQuizMaster || isActiveForOthers) && 
                   quizItem.latest_flag === "Y" &&
                   currentDate >= quizCreateDate &&
                   (quizEndDate === null || currentDate <= quizEndDate)
@@ -2374,7 +2378,7 @@ alt="Disable icon"
                   const isQuizMaster = userRole === "Quiz Master";
                   const isActiveForOthers =
                     quizItem.active_flag?.toLowerCase() === "true" ||
-                    quizItem.active_flag?.toLowerCase() === "y";
+                    quizItem.active_flag?.toLowerCase() === "Y";
                 return (
                   (isQuizMaster || isActiveForOthers) && 
                   // quizItem.active_flag === "true" &&

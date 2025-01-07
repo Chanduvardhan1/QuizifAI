@@ -12,6 +12,7 @@ import Notification from "../../src/assets/Images/quiz-type/Notification.png";
 import QuizAdmin from "../../src/assets/Images/quiz-type/Quiz-admin.png";
 import Profile from "../../src/assets/Images/quiz-type/Profile.png";
 import Navigation from "../navbar/navbar.jsx";
+import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 
 // Main-Section-icons
 import QuizTitle from "../../src/assets/Images/quiz-type/Quiz-Title.png";
@@ -40,8 +41,45 @@ import { MdOutlineCancel } from "react-icons/md";
 
 
 const repoarts = () => {
+      const [userId, setUserId] = useState(localStorage.getItem("user_id"));
+    
    const navigate = useNavigate();
- 
+   const handleBackToLogin = () => {
+    const authToken = localStorage.getItem('authToken') || null;
+  
+    if (!authToken) {
+      console.error('No authToken found in localStorage.');
+      return;
+    }
+  
+    fetch('https://dev.quizifai.com:8010/usr_logout/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authToken}`,
+      },
+      body: JSON.stringify({
+        user_id: userId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Logout response:', data);
+        if (data.response === 'success') {
+          localStorage.clear();
+          logout(); // Clear AuthContext
+          console.log('Navigating to login...');
+          navigate('/login'); // Navigate to login page
+        } else {
+          console.error('Logout failed:', data.response_message);
+        }
+      })
+      .catch((error) => {
+        console.error('Error logging out:', error);
+      });
+  };
+
 const  handleGlobalLeaderboard1 =() => {
     navigate('/globalleaderboard');
 }
@@ -52,11 +90,37 @@ const  handleMyHistory =() => {
 const  handleGlobalLeaderboard =() => {
     navigate('/leaderboardall');
 }
+  const [username, setUsername] = useState("");
+  
+ useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, []);
+
     return (
         <>
           <div className="flex">
 <Navigation/>
 <div className="w-full p-5 bg-[#F5F5F5]">
+       <div className="flex justify-between">
+            <div>
+            <p className="text-[#002366] text-[20px]">
+                    Welcome {username.charAt(0).toUpperCase() + username.slice(1)}
+                  </p>
+          
+            </div>
+              <div className="flex flex-col justify-center items-center">
+            <img
+              src={LogoutIcon}
+              onClick={handleBackToLogin}
+              alt="Logout Icon"
+              className="w-5 h-5 cursor-pointer "
+            />
+            {/* <p className="text-[#002366] text-[14px]">Logout</p> */}
+            </div>
+          </div>
     <div className="flex gap-5 h-[80%]">
 
     

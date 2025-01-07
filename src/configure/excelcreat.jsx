@@ -14,6 +14,8 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import close from "../../src/assets/Images/images/dashboard/cancel.png"
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+// import Template from "../../src/assets/Tamplate/bulk_user_upload_template.xlsx" 
+
 
 const excelcreat = () => {
   const [categories, setCategories] = useState([]);
@@ -49,7 +51,7 @@ const excelcreat = () => {
   const [files, setFiles] = useState([]);
   const [uploadProgress, setUploadProgress] = useState({});
 
-  const handleFileUpload = (event) => {
+  const handleFileUpload1 = (event) => {
     const newFiles = Array.from(event.target.files).map((file) => ({
       name: file.name,
       progress: Math.floor(Math.random() * 100), // Mocking upload progress
@@ -75,6 +77,65 @@ const excelcreat = () => {
     setActiveTab(tab);
   };
 
+
+  //------------------**File uploaded **----------------------//
+  const [file, setFile] = useState(null);
+  const [responseData, setResponseData] = useState(null);
+  const [message, setMessage] = useState("");
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleFileUpload = async () => {
+    if (!file) {
+      setMessage("Please select a file to upload.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("user_id",userId );
+
+    try {
+      const authToken = localStorage.getItem("authToken");
+
+      if (!authToken) {
+        console.error("No authentication token found");
+        return;
+      }
+      const response = await fetch("https://dev.quizifai.com:8010/import-bulk-users", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          Accept: "application/json",
+        },
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      setResponseData(result);
+      if (response.ok) {
+        setMessage("File uploaded successfully!");
+      } else {
+        setMessage(result.response_message || "File upload failed.");
+      }
+    } catch (error) {
+      console.error(error);
+      setMessage("An error occurred during file upload.");
+    }
+  };
+    //------------------**File uploaded End**----------------------//
+
+    const handleDownloadTemplate = () => {
+      const templateUrl = "/assets/templates/bulk_user_upload_template.xlsx";
+      const link = document.createElement("a");
+      link.href = templateUrl;
+      link.download = "bulk_user_upload_template.xlsx";
+      link.click();
+    };
+  
   return (
     <>
     <div className='flex w-full font-Poppins'>
@@ -95,7 +156,7 @@ const excelcreat = () => {
 
         {/* Progress Steps */}
 
-        <div className="flex w-full  font-semibold rounded-lg">
+        {/* <div className="flex w-full  font-semibold rounded-lg">
       <button
         onClick={() => handleTabClick('Upload')}
         className={`w-full px-4 py-2 ${
@@ -119,8 +180,104 @@ const excelcreat = () => {
       >
       Import
       </button>
-    </div>
-    {activeTab === 'Upload' && (
+    </div> */}
+    {/* {activeTab === 'Upload' && ( */}
+        <div className="p-6 bg-gray-100 min-h-screen">
+        <div className="bg-white shadow-md rounded-md p-6">
+          <h1 className="text-lg font-bold mb-4 text-[#214082]">
+            Import Data From Excel Sheet
+          </h1>
+  
+          {/* File Upload Section */}
+          <div className="mb-6 flex items-center space-x-4">
+          <button
+            onClick={handleDownloadTemplate}
+            className="text-blue-600 underline text-sm"
+          >
+            Download Template
+          </button>
+            <input
+              type="file"
+              accept=".xlsx"
+              onChange={handleFileChange}
+              className="border border-gray-300 rounded-md px-4 py-2 text-sm w-full sm:max-w-md"
+            />
+            <button
+              onClick={handleFileUpload}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+            >
+              Upload
+            </button>
+          </div>
+  
+          {/* Message */}
+          {message && (
+            <div
+              className={`mt-4 p-2 rounded-md ${
+                message.includes("successfully")
+                  ? "bg-green-100 text-green-700"
+                  : "bg-red-100 text-red-700"
+              }`}
+            >
+              {message}
+            </div>
+          )}
+  
+          {/* Success Table */}
+          {responseData && responseData.data?.successful_imports.length > 0 && (
+            <div className="mt-8">
+              <h2 className="text-green-600 font-bold mb-4">Successful Imports</h2>
+              <table className="table-auto w-full border-collapse border border-gray-200">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="border border-gray-300 px-4 py-2 text-left">First Name</th>
+                    <th className="border border-gray-300 px-4 py-2 text-left">Last Name</th>
+                    <th className="border border-gray-300 px-4 py-2 text-left">Email</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {responseData.data.successful_imports.map((user, index) => (
+                    <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
+                      <td className="border border-gray-300 px-4 py-2">{user.first_name}</td>
+                      <td className="border border-gray-300 px-4 py-2">{user.last_name}</td>
+                      <td className="border border-gray-300 px-4 py-2">{user.email}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+  
+          {/* Failed Table */}
+          {responseData && responseData.data?.failed_users.length > 0 && (
+            <div className="mt-8">
+              <h2 className="text-red-600 font-bold mb-4">Failed Imports</h2>
+              <table className="table-auto w-full border-collapse border border-gray-200">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="border border-gray-300 px-4 py-2 text-left">First Name</th>
+                    <th className="border border-gray-300 px-4 py-2 text-left">Last Name</th>
+                    <th className="border border-gray-300 px-4 py-2 text-left">Email</th>
+                    <th className="border border-gray-300 px-4 py-2 text-left">Error</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {responseData.data.failed_users.map((entry, index) => (
+                    <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
+                      <td className="border border-gray-300 px-4 py-2">{entry.user.first_name}</td>
+                      <td className="border border-gray-300 px-4 py-2">{entry.user.last_name}</td>
+                      <td className="border border-gray-300 px-4 py-2">{entry.user.email}</td>
+                      <td className="border border-gray-300 px-4 py-2">{entry.error}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      </div>
+    {/* )} */}
+    {/* {activeTab === 'Upload' && (
   <div className=" bg-gray-50 flex items-center justify-center">
   <div className="container mx-auto p-8">
   <div className="mt-6 text-left text-gray-600 space-y-2 text-sm pb-6">
@@ -130,7 +287,6 @@ const excelcreat = () => {
             <p>4. Separate multiple items with commas.</p>
           </div>
     <div className="bg-white shadow-md rounded-lg p-6 flex gap-6">
-      {/* Upload Section */}
       
       <div className="w-1/2 p-6 border-2 border-dashed border-blue-400 rounded-lg flex flex-col items-center">
    
@@ -156,7 +312,6 @@ const excelcreat = () => {
         </p>
       </div>
 
-      {/* Uploaded Files Section */}
       <div className="w-1/2">
         <h2 className="text-lg font-bold mb-4">Uploaded files</h2>
         <ul className="space-y-4">
@@ -199,9 +354,9 @@ const excelcreat = () => {
     </div>
   </div>
 </div>
-    )}
-{activeTab === 'Preview' && (
-  <div className='w-full p-2'>
+    )} */}
+{/* {activeTab === 'Preview' && ( */}
+  {/* <div className='w-full p-2'>
  <table className='w-full table-auto rounded text-left bg-[#F7E0E3] text-[#2b51a1] text-[14px] font-light'>
  <thead>
    <tr className='h-[50px]'>
@@ -211,7 +366,6 @@ const excelcreat = () => {
      <th className='px-4 py-2 text-nowrap'>Orginzation Type</th>
      <th className='px-4 py-2 text-nowrap'>Role</th>
 
-     {/* <th className='px-2 py-2 text-wrap'>Classes</th> */}
      <th className='px-4 py-2 text-nowrap'>
      <div className='flex justify-center items-center '>
      <input
@@ -234,28 +388,18 @@ const excelcreat = () => {
      <tr>
        <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'></td>
        <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'></td>
-       {/* <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'>
-       {course.specializations.map((spec) => (
-           <div key={spec.specialization_id}>
-             {spec.specialization_name}
-           </div>
-         ))}
-       </td> */}
+    
        <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'>
-       {/* {course.course_code} */}
        </td>
        <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'>
-       {/* {course.course_pattern} */}
        </td>
        <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-center'>
-       {/* {course.duration} */}
        </td>
        <td className='h-full border text-[#214082] flex gap-2 pl-[40px] pt-2 text-[12px] cursor-pointer hover:font-medium hover:underline'>         
        <img
          className='h-[13px] w-[13px] mr-1 cursor-pointer'
          src={Edit}
          alt="Edit"
-        //  onClick={() => handleEdit(course)}
 
        />
       <button className='flex text-orange-500 w-[30px] h-[30px]' ><RiDeleteBinLine/></button>
@@ -265,13 +409,12 @@ const excelcreat = () => {
   
  </tbody>
 </table>
-</div>
-)}
+</div> */}
+{/* )} */}
 
-   {activeTab === 'Import' && (
- <div className="flex items-center justify-center h-screen bg-white">
+   {/* {activeTab === 'Import' && ( */}
+ {/* <div className="flex items-center justify-center h-screen bg-white">
  <div className="flex items-center space-x-16">
-   {/* Circular Progress */}
    <div className="text-center">
      <div className="w-32 h-32">
        <CircularProgressbar
@@ -287,9 +430,7 @@ const excelcreat = () => {
      <p className="mt-4 text-gray-500">Import 60% completed</p>
    </div>
 
-   {/* File Progress Bars */}
    <div className="w-96 space-y-4">
-     {/* File 1 */}
      <div>
        <div className="flex justify-between text-sm text-gray-600">
          <span>File_1234_csv</span>
@@ -300,7 +441,6 @@ const excelcreat = () => {
        </div>
      </div>
 
-     {/* File 2 */}
      <div>
        <div className="flex justify-between text-sm text-gray-600">
          <span>File_6789_csv</span>
@@ -311,14 +451,11 @@ const excelcreat = () => {
        </div>
      </div>
 
-     {/* Done Button */}
-     {/* <button className="w-full px-4 py-2 mt-4 text-white bg-gray-800 rounded hover:bg-gray-700">
-       Done
-     </button> */}
+
    </div>
  </div>
-</div>
-)}   
+</div> */}
+{/* )}    */}
       {/* </div> */}
     </div>
 

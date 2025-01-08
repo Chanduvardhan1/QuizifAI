@@ -108,6 +108,7 @@ import Assignquiz from "./assignquiz/assignquiz.jsx";
 import Education from "./configure/education.jsx";
 import Disablequiz from "./configure/disablequiz.jsx";
 import Repoarts from "./reports/repoarts.jsx";
+import Multiassignquiz from "./multiquizassign/multiassignquiz.jsx";
 
 export default () => {
     return [
@@ -148,6 +149,11 @@ export default () => {
         {
             path:'Expiryquiz',
             component:Expiryquiz,
+            isPrivate: true
+        },
+        {
+            path:'multiassignquiz',
+            component:Multiassignquiz,
             isPrivate: true
         },
         {

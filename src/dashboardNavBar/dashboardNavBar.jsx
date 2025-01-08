@@ -462,11 +462,13 @@ export default function dashboardNavBar() {
       };
       
       const handleIconClick = () => {
+        // event.stopPropagation();
         document.getElementById('fileInput').click();
       };
       
       // Handle file selection
       const handleFileChange = (event) => {
+        // event.stopPropagation();
         const file = event.target.files[0];
         if (file) {
           uploadImage(file);
@@ -509,10 +511,12 @@ export default function dashboardNavBar() {
         }
       };
       const openModal = () => {
-        setIsModalOpen(true);
+        // event.stopPropagation(); // Prevent the click event from triggering handleprofile
+        setIsModalOpen(true); // Open modal logic here
       };
       const closeModal = () => {
-        setIsModalOpen(false);
+        // event.stopPropagation(); // Prevent click from propagating to handleprofile when closing modal
+        setIsModalOpen(false); // Close the modal
       };
       const handleprofile = () => {
        navigate("/free-profile")
@@ -566,27 +570,30 @@ const handleglobal =()=> {
       </button>
     </div>
             <div className="grid grid-cols-5 gap-4 mb-4">
-                <div onClick={handleprofile} className="flex flex-col cursor-pointer items-center justify-center relative  border shadow-lg rounded-md p-2 bg-white ">
-                    <div className="relative">
-                    {loading ? (
+            <div
+     // handleprofile will be triggered when clicking the profile container
+    className="flex z-10 flex-col cursor-pointer items-center justify-center relative border shadow-lg rounded-md p-2 bg-white"
+  >
+    <div className="relative z-50">
+      {loading ? (
         <p>Loading...</p>
       ) : error ? (
         <p>{error}</p>
       ) : (
-        <div className="relative w-full h-full">
-        <img
-          src={photo}
-          alt="Profile"
-          onClick={openModal}
-          className="w-[80px] h-[80px] rounded-2xl"
-        />
-        <div 
-          className="absolute bottom-0 right-0 rounded-full cursor-pointer"
-          onClick={openModal}
-        >
-         <img src={camera1} alt="" className="w-[20px] h-[20px]"/>
+        <div className="relative z-50 w-full h-full">
+          <img
+            src={photo}
+            alt="Profile"
+            onClick={openModal} // openModal is triggered here, stopping handleprofile
+            className="w-[80px] z-50 h-[80px] rounded-2xl"
+          />
+          <div
+            className="absolute bottom-0 right-0 z-50 rounded-full cursor-pointer"
+            onClick={openModal} // openModal is triggered here, stopping handleprofile
+          >
+            <img src={camera1} alt="" className="w-[20px] z-50 h-[20px]" />
+          </div>
         </div>
-      </div>
       )}
 
       {/* Hidden file input for selecting image */}
@@ -597,69 +604,72 @@ const handleglobal =()=> {
         style={{ display: 'none' }}
         onChange={handleFileChange}
       />
-                    </div>
-                    {isModalOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-          onClick={closeModal}
-        >
-         <div class="flex items-center justify-center min-h-screen ">
-  <div class="bg-gray-800 text-white rounded-lg p-6 shadow-lg max-w-xs">
-    <div class="relative">
-      <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-gray-200">
-        <img src={photo} alt="Profile" class="w-full h-full object-cover"/>
-      </div>
-      
-      <div class="absolute top-[-15px] right-[-15px] flex space-x-2">
-        <button class="bg-gray-600 p-2 rounded-full text-white hover:bg-gray-500">
-        
-          <img src={x} alt="" class="h-5 w-5" />
-        </button>
-      </div>
     </div>
-    
-    <h2 class="text-center text-xl  mt-4">Profile photo</h2>
-    
-    <div class="mt-4 flex justify-between">
-      <button class="bg-gray-700 px-4 py-2 rounded text-sm text-white hover:bg-gray-600"  onClick={handleIconClick}>Add photo</button>
-      {/* <button class="bg-gray-700 px-4 py-2 rounded text-sm text-white hover:bg-gray-600">Add photo</button> */}
-      {/* <button class="bg-gray-700 px-4 py-2 rounded text-sm text-white hover:bg-gray-600">Frames</button> */}
-      <button class="bg-red-600 px-4 py-2 rounded text-sm text-white hover:bg-red-500" onClick={deleteImage}>Delete</button>
+    {isModalOpen && (
+      <div
+        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+        onClick={closeModal}
+      >
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="bg-gray-800 text-white rounded-lg p-6 shadow-lg max-w-xs">
+            <div className="relative">
+              <div className="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-gray-200">
+                <img
+                  src={photo}
+                  alt="Profile"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              <div className="absolute top-[-15px] right-[-15px] flex space-x-2">
+                <button className="bg-gray-600 p-2 rounded-full text-white hover:bg-gray-500">
+                  <img src={x} alt="" className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+
+            <h2 className="text-center text-xl mt-4">Profile photo</h2>
+
+            <div className="mt-4 flex justify-between">
+              <button
+                className="bg-gray-700 px-4 py-2 rounded text-sm text-white hover:bg-gray-600"
+                onClick={handleIconClick}
+              >
+                Add photo
+              </button>
+              <button
+                className="bg-red-600 px-4 py-2 rounded text-sm text-white hover:bg-red-500"
+                onClick={deleteImage}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+    <div onClick={handleprofile} className="mt-2 text-center">
+      <h2 className="text-[14px] font-semibold text-[#214082] font-family-[lato]">
+        {userName}
+      </h2>
+      <div className="flex items-center justify-center gap-1">
+        <p className="text-[14px] text-[#002366]">User ID: {userId}</p>
+        <div className="relative group inline-block">
+          <img
+            src={questionmark}
+            alt="question mark icon"
+            className="h-[15px] w-[15px] cursor-pointer ml-[5px]"
+          />
+          <span className="hidden group-hover:inline-block absolute left-1/2 -translate-x-[65%] -top-[15px] h-[70px] w-[250px] z-10 bg-black text-white text-xs px-2 py-1 rounded">
+            This is your unique identification number. It will help our support team to identify your account when you need assistance through QuizifAI's support channels.
+          </span>
+        </div>
+      </div>
+      <p className="text-[14px] text-[#214082] font-400 font-family-[lato]">{occupation}</p>
+      <p className="text-[14px] text-[#002366]">{district}</p>
+      <p className="text-[14px] text-[#002366]">{country}</p>
     </div>
   </div>
-</div>
-
-        </div>
-      )}
-                    <div className="mt-2 text-center">
-                        <h2 className="text-[14px] font-semibold text-[#214082] font-family-[lato]">
-                        {userName}
-
-                        </h2>
-                        <div className="flex items-center justify-center gap-1">
-                        <p className="text-[14px] text-[#002366]">User ID: {userId}</p>
-
-                        <div className="relative group inline-block">
-  <img 
-    src={questionmark} 
-    alt="question mark icon"
-    className="h-[15px] w-[15px] cursor-pointer ml-[5px]" 
-  />
-  <span className="hidden group-hover:inline-block absolute left-1/2 -translate-x-[65%] -top-[15px] h-[70px] w-[250px] z-10 bg-black text-white text-xs px-2 py-1 rounded">
-    This is your unique identification number. It will help our support team to identify your account when you need assistance through QuizifAI's support channels.
-  </span>
-</div>
-
-                        </div>
-                        <p className="text-[14px] text-[#214082] font-400 font-family-[lato]">{occupation}</p>
-
-                        {/* <p className="text-[14px] text-[#002366]">{city}</p> */}
-
-
-                        <p className="text-[14px] text-[#002366]">{district}</p>
-                        <p className="text-[14px] text-[#002366]">{country}</p>
-                    </div>
-                </div>
 
                 <div   onClick={handlemyhistory} className="flex flex-col cursor-pointer justify-start items-start relative  border shadow-lg rounded-sm p-2 bg-white">
                   <div className=" space-y-2 flex flex-col items-start justify-center pl-[10px]">

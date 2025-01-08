@@ -600,6 +600,7 @@ const FreeProfile = () => {
   };
 
   const handleLoginCancelClick = () => {
+    setPreferredLoginMethod("Email");
     setEmail(initialFormData.email);
     setMobileNumber(initialFormData.mobileNumber);
     setIsEmailOtpSent(false);
@@ -1279,7 +1280,7 @@ const FreeProfile = () => {
 
 <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
-        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">User Address1<span className="text-red-500">*</span></label>
+        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">User Address1<span className="text-red-500"></span></label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -1299,7 +1300,7 @@ const FreeProfile = () => {
       </div>
       <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
-        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">User Address2<span className="text-red-500">*</span></label>
+        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">User Address2<span className="text-red-500"></span></label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -1670,10 +1671,11 @@ const FreeProfile = () => {
                 Password
               </label>
               <input
-                className="border-transparent border-b-2 hover:border-blue-200 mr-[40px] ml-[px] h-[30px] w-[173px] text-[11px] focus:outline-gray-300 pl-[5px]"
+                className="border-transparent border-b-2 hover:border-blue-200 mr-[40px] ml-[px] h-[30px] w-[173px] text-[11px] focus:outline-gray-300 pl-[5px] cursor-not-allowed"
                 type={oldPasswordVisible ? "text" : "password"}
                 placeholder="password"
                 value={oldPassword}
+                disabled
                 onChange={(e) => setOldPassword(e.target.value)}
               />
               <span

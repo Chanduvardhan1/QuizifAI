@@ -445,13 +445,28 @@ const handlePrevious = () => {
   }
 };
 
-const closeModal = () => {
-  setShowModal(false);
-  if (publicAccess === "off") {
-  } else if (publicAccess === "on") {
-    navigate("/dashboard");
-  }
-}; 
+  const closeModal = () => {
+    setShowModal(false); // Close the modal
+  
+    const orgId = localStorage.getItem('org_id'); // Check for orgId in localStorage
+  
+    if (!orgId) {
+      // If orgId is not present, navigate to the dashboard
+      navigate("/dashboard");
+      return; // Stop further execution
+    }
+  
+    if (publicAccess === "off") {
+      // Logic for publicAccess being "off" (optional action)
+    } else if (publicAccess === "on") {
+      navigate("/dashboard");
+    }
+  };
+
+  useEffect(() => {
+    const orgId = localStorage.getItem("org_id"); // Retrieve orgId from localStorage
+    setPublicAccess(!orgId); // If orgId is not there, set publicAccess to true
+  }, []);
 
 const closeModal1 = () => {
   setShowModal1(false);

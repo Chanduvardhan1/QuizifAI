@@ -29,6 +29,9 @@ const configure = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen1, setIsModalOpen1] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [isModalOpen3, setIsModalOpen3] = useState(false);
+  const orgId = localStorage.getItem("org_id");
+
   const {authToken, logout } = useContext(AuthContext);
 
   const handleInputChange = (event) => {
@@ -68,6 +71,15 @@ const configure = () => {
     }
   };
 
+  const handleRestrictedClick3 = (navigateTo) => {
+    // Check if the user role is "Quiz Master" and orgId exists
+    if (userRole === "Quiz Master" && orgId) {
+      navigate(navigateTo); // Allow navigation
+    } else {
+      setIsModalOpen3(true); // Show modal for restricted access
+    }
+  };
+
   const handleRestrictedClick2 = (navigateTo) => {
     if (allowedRoles2.includes(userRole)) {
       navigate(navigateTo);
@@ -83,6 +95,9 @@ const configure = () => {
   };
   const closeModal2 = () => {
     setIsModalOpen2(false);
+  };
+  const closeModal3 = () => {
+    setIsModalOpen3(false);
   };
 
   const handleCategoriesClick = () => handleRestrictedClick("/category");
@@ -109,6 +124,8 @@ const configure = () => {
   const handleGlobalLeaderboard1 =() => handleRestrictedClickAll('/globalleaderboard')
   const handleMyHistory=() => handleRestrictedClickAll('/myhistory')
   const handleDisableQuizs = () => handleRestrictedClick1("/Disablequiz");
+  const handleAssignQuiz = () => handleRestrictedClick3("/multiassignquiz");
+
   
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -195,7 +212,7 @@ const configure = () => {
       image:Q,
       title: "Quizzes",
       content:
-        "Question Bank, Quiz Print Templates, Disable Quizs, Expiry Quiz",
+        "Question Bank, Quiz Print Templates, Assign Quiz, Disable Quizs, Expiry Quiz",
     },
     {
       id: 7,
@@ -353,6 +370,21 @@ const configure = () => {
           </div>
         </div>
       )}
+       {isModalOpen3 && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+            <p className="text-lg font-semibold mb-4">
+            You must be a Quiz Master and belong to an organization to access this feature.
+            </p>
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              onClick={closeModal3}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
           {/* <div className={styles.headerRight}>
           <div className="w-[99px] h-[41px] absolute mr-[170px] -mt-2 rounded-[10px] bg-[#f3d0d5]">
             <div className="flex">
@@ -492,6 +524,8 @@ const configure = () => {
                       ? handleExpiryQuiz
                       : contentItem === "Disable Quizs"
                       ? handleDisableQuizs
+                      : contentItem === "Assign Quiz"
+                      ? handleAssignQuiz
                       : contentItem === "Question Bank"
                       ? handleQuestionBank
                       : contentItem === "User List"

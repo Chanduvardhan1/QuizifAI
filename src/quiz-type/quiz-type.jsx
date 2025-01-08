@@ -245,8 +245,8 @@ export default function quiztype() {
   const [complexquestions, setComplexquestions] = useState('')
   const [ isEditing ,setisEditing] = useState(false);
 
-  const questionsPerPage = 20; // Number of questions per tab
-  const [currentPage, setCurrentPage] = useState(1)
+  // const questionsPerPage = 20; // Number of questions per tab
+  // const [currentPage, setCurrentPage] = useState(1)
   const [questions, setQuestions] = useState(
     Array.from({ length: numQuestions }, () => ({
       question_text: "",
@@ -259,6 +259,23 @@ export default function quiztype() {
       ],
     }))
   );
+
+  useEffect(() => {
+    setQuestions(
+      Array.from({ length: numQuestions }, () => ({
+        question_text: "",
+        options: [
+          { answer_option_text: "", correct_answer_flag: false },
+          { answer_option_text: "", correct_answer_flag: false },
+          { answer_option_text: "", correct_answer_flag: false },
+          { answer_option_text: "", correct_answer_flag: false },
+        ],
+        correct_answer_description: "",
+        question_weightage: calculateWeightage(numQuestions, quiztotalmarks),
+      }))
+    );
+  }, [numQuestions, quiztotalmarks]);
+
   const [courseOptions, setCourseOptions] = useState([]);
   const [classOptions, setClassOptions] = useState([]);
   const [coursename, setcoursename] = useState("");
@@ -305,6 +322,7 @@ export default function quiztype() {
       setUsername1(storedUsername);
     }
   }, []);
+  const orgId = localStorage.getItem('org_id');
 
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 
@@ -312,13 +330,13 @@ export default function quiztype() {
     setIsCheckboxChecked((prev) => !prev);
   };
 
-  const totalPages = Math.ceil(questions.length / questionsPerPage); // Calculate total tabs
+  // const totalPages = Math.ceil(questions.length / questionsPerPage); // Calculate total tabs
 
   // Get the questions for the current tab
-  const currentQuestions = questions.slice(
-    (currentPage - 1) * questionsPerPage,
-    currentPage * questionsPerPage
-  );
+  // const currentQuestions = questions.slice(
+  //   (currentPage - 1) * questionsPerPage,
+  //   currentPage * questionsPerPage
+  // );
 
   const handleNext3 = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -327,7 +345,6 @@ export default function quiztype() {
   const handlePrevious = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
-  const orgId = localStorage.getItem('org_id');
 
 //-------------****print quiz****-----------//
 const pdfRef1 = useRef(null);
@@ -605,17 +622,16 @@ const handleToLayout4 = () =>{
   };
 
   const handleUpload = async (quiz_id) => {
-    if (!frontImage || !backImage) {
-      alert('Please select both front and back images');
-      return;
-    }
+    // if (!frontImage || !backImage) {
+    //   alert('Please select both front and back images');
+    //   return;
+    // }
 
     const formData = new FormData();
     formData.append('file1', frontImage);
     formData.append('file2', backImage);
 
     try {
-      const user_id = localStorage.getItem('user_id');
 
       const response = await fetch(`https://dev.quizifai.com:8010/upload-qz_image?quiz_id=${quiz_id}`, {
         method: 'POST',
@@ -887,16 +903,32 @@ const handleToLayout4 = () =>{
 
 
   const closeModal = () => {
-    setShowModal(false);
+    setShowModal(false); // Close the modal
+  
+    const orgId = localStorage.getItem('org_id'); // Check for orgId in localStorage
+  
+    if (!orgId) {
+      // If orgId is not present, navigate to the dashboard
+      navigate("/dashboard");
+      return; // Stop further execution
+    }
+  
     if (publicAccess === "off") {
+      // Logic for publicAccess being "off" (optional action)
     } else if (publicAccess === "on") {
       navigate("/dashboard");
     }
   };
+
+  useEffect(() => {
+    const orgId = localStorage.getItem("org_id"); // Retrieve orgId from localStorage
+    setPublicAccess(!orgId); // If orgId is not there, set publicAccess to true
+  }, []);
+
   const closeModal1 = () => {
     setShowModal1(false);
-   
   };
+  
   const instructionsString = instructions.join("\n");
   const handleNext = async () => {
     try {
@@ -1414,9 +1446,56 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
     return numQuestions > 0 ? Math.ceil(quiztotalmarks / numQuestions) : 0;
   };
 
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // Active question index
+
+  const handleNumQuestionsChange = (e) => {
+    const value = parseInt(e.target.value) || 1;
+    setNumQuestions(value);
+    const updatedQuestions = Array.from({ length: value }, (_, i) =>
+      questions[i] || {
+        question_text: "",
+        options: [
+          { answer_option_text: "", correct_answer_flag: false },
+          { answer_option_text: "", correct_answer_flag: false },
+          { answer_option_text: "", correct_answer_flag: false },
+          { answer_option_text: "", correct_answer_flag: false },
+        ],
+        correct_answer_description: "",
+      }
+    );
+    setQuestions(updatedQuestions);
+  };
+  const [currentPage, setCurrentPage] = useState(0);
+  const questionsPerPage = 10;
+  
+  // Slice the questions array to get the questions for the current page
+  const currentQuestions = questions.slice(
+    currentPage * questionsPerPage,
+    (currentPage + 1) * questionsPerPage
+  );
+
+  // Move to the next set of questions
+  const handleNext5 = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+  const handleBack = () => {
+    setCurrentPage((prevPage) => (prevPage > 0 ? prevPage - 1 : 0));
+  };
+
+  const handleQuestionClick = (index) => {
+    const globalIndex = index + currentPage * questionsPerPage; // Calculate global index based on currentPage
+    setCurrentQuestionIndex(globalIndex);
+  };
+
   const handleQuestionChange = (index, value) => {
     const updatedQuestions = [...questions];
     updatedQuestions[index] = value;
+    setQuestions(updatedQuestions);
+  };
+
+  const handleOptionChange = (questionIndex, optionIndex, value) => {
+    const updatedQuestions = [...questions];
+    updatedQuestions[questionIndex].options[optionIndex].answer_option_text = value;
     setQuestions(updatedQuestions);
   };
   const toggler1 = (event) => {
@@ -2065,20 +2144,24 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                  placeholder="No of question"
                  value={numQuestions}
                  onChange={(e) => {
-                   const value = parseInt(e.target.value);
-                   setNumQuestions(value);
-                   setQuestions(
-                     Array.from({ length: value }, () => ({
-                       question_text: "",
-                       options: [
-                         { answer_option_text: "" },
-                         { answer_option_text: "" },
-                         { answer_option_text: "" },
-                         { answer_option_text: "" },
-                       ],
-                     }))
-                   );
-                 }}
+                  const value = parseInt(e.target.value);
+                  setNumQuestions(value);
+                }}
+                //  onChange={(e) => {
+                //    const value = parseInt(e.target.value);
+                //    setNumQuestions(value);
+                //    setQuestions(
+                //      Array.from({ length: value }, () => ({
+                //        question_text: "",
+                //        options: [
+                //          { answer_option_text: "" },
+                //          { answer_option_text: "" },
+                //          { answer_option_text: "" },
+                //          { answer_option_text: "" },
+                //        ],
+                //      }))
+                //    );
+                //  }}
                />
 
         </div>
@@ -2535,26 +2618,73 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
 
             {/* Questions and options */}
             <div className="w-full ">
-            
-            {currentQuestions.map((question, questionIndex) => {
-              const globalIndex =
-              (currentPage - 1) * questionsPerPage + questionIndex;
-            return (
-              <div key={questionIndex} className="mb-8 ">
+            <div className="flex justify-center items-center gap-2 mt-4 mb-8">
+            {currentPage > 0 && (
+        <button
+          onClick={handleBack}
+          className="flex gap-1 items-center cursor-pointer"
+        >
+             <img
+                  className="h-3 w-3 rotate-180"
+                  src={GreaterThan}
+                  alt="Previous icon"
+                />
+                <h1 className="text-[#F17530]">Previous</h1>
+        </button>
+      )}
+        {currentQuestions.map((question, index) => {
+          const isIncomplete =
+            !question.question_text ||
+            question.options.some((option) => !option.answer_option_text) ||
+            !question.correct_answer_description;
+
+          return (
+            <div
+              key={index}
+              onClick={() => handleQuestionClick(index)}
+              className={`cursor-pointer w-8 h-8 flex items-center justify-center border-[1px] text-sm font-medium ${
+                isIncomplete
+                  ? "bg-red-200" // Red for incomplete questions
+                  : index === currentQuestionIndex % questionsPerPage
+                  ? "bg-blue-200" // Blue for the current question
+                  : "bg-gray-200" // Default gray
+              }`}
+            >
+              {index + 1 + currentPage * questionsPerPage}
+            </div>
+          );
+        })}
+         {currentQuestions.length === questionsPerPage && (
+        <button
+          onClick={handleNext5}
+          className="flex gap-1 items-center cursor-pointer"
+        >
+                 <h1 className="text-[#F17530]">Next</h1>
+                 <img className="h-3 w-3" src={GreaterThan} alt="Next icon" />
+        </button>
+      )}
+      </div>
+
+      {/* Next button to load the next set of questions */}
+     
+            {currentQuestionIndex !== null && questions[currentQuestionIndex] && (
+
+             <div className="mb-8 ">
 
               <div className="flex items-center mb-4">
                 <div className="mr-2 text-xl font-bold text-[#214082]">
-                  {questionIndex + 1}.
+                  {currentQuestionIndex  + 1}.
                 </div>
                 <input
                   type="text"
                   placeholder={`Question`}
                   className="w-[70%] h-[40px] text-[#214082] font-bold rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] p-[10px] text-[14px]"
-                  value={question.question_text}
+                  value={questions[currentQuestionIndex].question_text}
+
                   onChange={(e) => {
-                    const newQuestions = [...questions];
-                    newQuestions[questionIndex].question_text = e.target.value;
-                    setQuestions(newQuestions);
+                    const updatedQuestions = [...questions];
+                    updatedQuestions[currentQuestionIndex].question_text = e.target.value;
+                    setQuestions(updatedQuestions);
                   }}
                 />
 
@@ -2598,32 +2728,28 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                 ) : (
                   // Each question has different time
                   <select
-                    className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[2px] font-normal"
-                    value={questionDuration}
-                    onChange={(e) => {
-                      const newQuestionDuration = parseInt(e.target.value);
-                      setQuestionDuration(newQuestionDuration); // Update questionDuration state
-                      // Update the corresponding question's duration in the questions array
-                      const updatedQuestions = questions.map((question, index) => {
-                        if (index === questionIndex) {
-                          return { ...question, question_duration: newQuestionDuration };
-                        }
-                        return question;
-                      });
-                      setQuestions(updatedQuestions);
-                    }}
-                  >
-                    {[...Array(60)].map((_, index) => ( // Create options for 10 to 600 seconds
-                      <option key={index} value={(index + 1) * 5}>{(index + 1) * 5} seconds</option>
-                    ))}
-                  </select>
+                  className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[2px] font-normal"
+                  value={questions[currentQuestionIndex].question_duration || ""}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value);
+                    const updatedQuestions = [...questions];
+                    updatedQuestions[currentQuestionIndex].question_duration = value;
+                    setQuestions(updatedQuestions);
+                  }}
+                >
+                  {[...Array(60)].map((_, index) => (
+                    <option key={index} value={(index + 1) * 5}>
+                      {(index + 1) * 5} seconds
+                    </option>
+                  ))}
+                </select>
 
                 )}
               </div>
        
              
               {/* Input fields for options */}
-              {question.options.map((option, optionIndex) => (
+              {questions[currentQuestionIndex].options.map((option, optionIndex) => (
                 <div key={optionIndex} className="flex items-center mb-2 ">
                   <div className="mr-2 text-[14px] font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#B8BBC2] flex justify-center text-center  justify-items-center items-center">
                     {String.fromCharCode(97 + optionIndex).toUpperCase()}
@@ -2634,11 +2760,11 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                     className="w-[70%]  rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal text-[12px]"
                     value={option.answer_option_text}
                     onChange={(e) => {
-                      const newOptions = [...questions[questionIndex].options];
-                      newOptions[optionIndex].answer_option_text = e.target.value;
-                      const newQuestions = [...questions];
-                      newQuestions[questionIndex].options = newOptions;
-                      setQuestions(newQuestions);
+                      const updatedOptions = [...questions[currentQuestionIndex].options];
+                      updatedOptions[optionIndex].answer_option_text = e.target.value;
+                      const updatedQuestions = [...questions];
+                      updatedQuestions[currentQuestionIndex].options = updatedOptions;
+                      setQuestions(updatedQuestions);
                     }}
                   />
                   {/* Add correct answer flag input */}
@@ -2646,7 +2772,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                     className={`mr-2 ${option.correct_answer_flag ? "bg-green-500" : "bg-gray-300"
                       } rounded-full w-10 h-[20px] transition-colors duration-300 focus:outline-none`}
                     onClick={() =>
-                      handleToggleButton(questionIndex, optionIndex)
+                      handleToggleButton(currentQuestionIndex, optionIndex)
                     }
                   >
                     <span
@@ -2662,20 +2788,20 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                   type="text"
                   placeholder={`Answer Description`}
                   className="w-[73%] h-[40px] text-[#214082] font-bold rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] p-[10px] text-[14px]"
-                  value={question.correct_answer_description}
+                  value={questions[currentQuestionIndex].correct_answer_description}
                   onChange={(e) => {
-                    const newQuestions = [...questions];
-                    newQuestions[questionIndex].correct_answer_description = e.target.value;
-                    setQuestions(newQuestions);
+                    const updatedQuestions = [...questions];
+                    updatedQuestions[currentQuestionIndex].correct_answer_description = e.target.value;
+                    setQuestions(updatedQuestions);
                   }}
                 />
               </div>
             </div>
-             );
-            })}
+            
+            )}
              <div className="flex justify-between mt-4">
      
-        <button
+        {/* <button
                 className="flex gap-1 items-center cursor-pointer"
                 onClick={handlePrevious}
                 disabled={currentPage === 1}
@@ -2686,17 +2812,17 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                   alt="Previous icon"
                 />
                 <h1 className="text-[#F17530]">Previous</h1>
-              </button>
-        <div>Page {currentPage} of {totalPages}</div>
+              </button> */}
+        {/* <div>Page {currentPage} of {totalPages}</div> */}
 
-        <button
+        {/* <button
                 className="flex gap-1 items-center cursor-pointer"
                 onClick={handleNext3}
           disabled={currentPage === totalPages}
               >
                 <h1 className="text-[#F17530]">Next</h1>
                 <img className="h-3 w-3" src={GreaterThan} alt="Next icon" />
-              </button>
+              </button> */}
       </div>
              <div className=" flex justify-between items-center py-5 ">
                 <div>

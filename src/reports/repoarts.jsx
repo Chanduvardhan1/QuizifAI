@@ -98,13 +98,13 @@ const  handleGlobalLeaderboard =() => {
       setUsername(storedUsername);
     }
   }, []);
-
+  
     return (
         <>
           <div className="flex">
 <Navigation/>
 <div className="w-full p-5 bg-[#F5F5F5]">
-       <div className="flex justify-between">
+       <div className="flex justify-between ">
             <div>
             <p className="text-[#002366] text-[20px]">
                     Welcome {username.charAt(0).toUpperCase() + username.slice(1)}

@@ -126,7 +126,12 @@ const configure = () => {
   const handleDisableQuizs = () => handleRestrictedClick1("/Disablequiz");
   const handleAssignQuiz = () => handleRestrictedClick3("/multiassignquiz");
 
-  
+  const handleHelp = () =>{
+    navigate("/HelpDesk")
+  }
+  const handleMyTickets = () =>{
+    navigate("/MyTickets")
+  }
   useEffect(() => {
     const fetchQuizData = async () => {
       try {
@@ -220,6 +225,13 @@ const configure = () => {
       title: "Notification",
       content:
         "Notification Preferences, Notification List",
+    },
+    {
+      id: 8,
+      image:ball,
+      title: "Help",
+      content:
+        "My Tickets, Help",
     },
   ];
 
@@ -490,7 +502,7 @@ const configure = () => {
                       : contentItem ==="Institution Quizs" &&
                       item.title === "Organization"
                     ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
-                      : ["Configuration", "Quizzes"].includes(item.title)
+                      : ["Configuration", "Quizzes", "Help"].includes(item.title)
                       ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
                       : "text-gray-500"
                      
@@ -544,6 +556,10 @@ const configure = () => {
                       ? handleGlobalLeaderboard1
                       : contentItem === "My History"
                       ? handleMyHistory
+                      : contentItem === "My Tickets"
+                      ? handleMyTickets
+                      : contentItem === "Help"
+                      ? handleHelp
                       : null
                   }
                 >

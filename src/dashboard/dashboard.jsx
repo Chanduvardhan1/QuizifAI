@@ -844,7 +844,7 @@ const Dashboard = () => {
                         key={index}
                         className={`
                           ${
-                            quizItem.active_flag?.toLowerCase() === "i"
+                            quizItem.active_flag?.toLowerCase() === "i"  || quizItem.active_flag === "false"
                               ? "border-[#A7A7A7] border-[1px] border-b-[8px]"
                               : quizItem.attempts_count > 0 && quizItem.attempts_count >= quizItem.retake_flag
                               ? "border-[#81c784] border-[1px] border-b-[8px]"
@@ -1622,7 +1622,7 @@ const Dashboard = () => {
   key={index}
   className={`flex flex-row w-full max-w-[390px] h-[170px] rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4
     ${
-      quizItem.active_flag?.toLowerCase() === "i"
+      quizItem.active_flag?.toLowerCase() === "i" || quizItem.active_flag === "false"
         ? "border-gray-400 border-[1px] border-b-[8px]" // Gray border for inactive quizzes
         : "border-[#84acfa] border-[1px] border-b-[8px]" // Default blue border
     }
@@ -2397,7 +2397,7 @@ alt="Disable icon"
       key={index}
       className={`
         ${
-          quizItem.active_flag?.toLowerCase() === "i"
+          quizItem.active_flag?.toLowerCase() === "i" || quizItem.active_flag === "false"
             ? "border-[#A7A7A7] border-[1px] border-b-[8px]"
             : quizItem.attempts_count > 0 && quizItem.attempts_count >= quizItem.retake_flag
             ? "border-[#81c784] border-[1px] border-b-[8px]"
@@ -3108,7 +3108,7 @@ className={`flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-x
   key={index}
   className={`flex flex-row w-full max-w-[390px] h-[170px] rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4
     ${
-      quizItem.active_flag === "i"
+      quizItem.active_flag === "i" || quizItem.active_flag === "false"
         ? "border-gray-400 border-[1px] border-b-[8px]" // Gray border if active_flag is "i"
         : "border-[#84acfa] border-[1px] border-b-[8px]" // Default blue border
     }

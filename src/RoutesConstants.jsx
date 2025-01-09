@@ -109,7 +109,8 @@ import Education from "./configure/education.jsx";
 import Disablequiz from "./configure/disablequiz.jsx";
 import Repoarts from "./reports/repoarts.jsx";
 import Multiassignquiz from "./multiquizassign/multiassignquiz.jsx";
-
+import HelpDesk from "./help/help.jsx";
+import MyTickets from "./tickets/tickets.jsx";
 export default () => {
     return [
         {
@@ -119,6 +120,16 @@ export default () => {
             path: '/',
             component: Home,
             isIndex: true
+        },
+        {
+            path:'HelpDesk',
+            component:HelpDesk,
+            isPrivate: true
+        },
+        {
+            path:'MyTickets',
+            component:MyTickets,
+            isPrivate: true
         },
         {
             path:'institution',

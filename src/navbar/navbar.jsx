@@ -13,7 +13,7 @@ import { AuthContext } from "../Authcontext/AuthContext.jsx"
  import dashboard from "../../public/dashboardnew.png";
 import global1 from "../../src/assets/Images/dashboard/image (13).png";
 import report from "../../src/assets/Images/dashboard/image (14).png"
-
+import help from "../../src/assets/Images/dashboard/customer-support (1).png"
 
 const Navigation = () => {
   // Initialize activePage state to the current pathname
@@ -201,6 +201,15 @@ const Navigation = () => {
             <img src={contactUs} alt="Settings Icon"
               className={`${styles.pageIcon} ${activePage === '/contact' ? styles.activeIcon : ''}`} />
             <span className={styles.pageLink}>Contact US</span>
+          </NavLink>
+          <NavLink
+            to="/HelpDesk"
+            className={`${styles.pageItem} ${activePage === '/HelpDesk' ? styles.bold : ''}`}
+            onClick={() => handleNavigation('/HelpDesk')}
+          >
+            <img src={help} alt="help Icon"
+              className={`${styles.pageIcon} ${activePage === '/HelpDesk' ? styles.activeIcon : ''}`} />
+            <span className={styles.settingText}>Help</span>
           </NavLink>
           <NavLink
             to="/configure"

@@ -146,11 +146,9 @@ const [userId, setUserId] = useState(localStorage.getItem("user_id"));
   // };
 
   const handleTicketCreation = async () => {
-    const ownerId = sessionStorage.getItem('user_id');
     const ownerLawfirmId = sessionStorage.getItem('user_lawfirm_id');
     
     const formData = new FormData();
-    
     formData.append('ownerid', userId);
     formData.append('ownerlawfirm_id', ownerLawfirmId);
     formData.append('ticketcategoryid', getTicketCategory(selectedOption));
@@ -159,18 +157,19 @@ const [userId, setUserId] = useState(localStorage.getItem("user_id"));
     // Attach files if any
     if (files && files.length > 0) {
       Array.from(files).forEach((file) => {
-        formData.append('files', file); // FormData handles file attachment correctly
+        formData.append('files', file);
       });
     }
   
     try {
       setIsLoading(true);
       const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
-
+  
       if (!authToken) {
         console.error('No authentication token found. Please log in again.');
         return;
       }
+  
       const response = await fetch('https://dev.quizifai.com:8010/create_tkt', {
         method: 'POST',
         headers: {
@@ -185,7 +184,7 @@ const [userId, setUserId] = useState(localStorage.getItem("user_id"));
       }
   
       const data = await response.json();
-      const ticketId = data?.data?.ticketid; // Adjusted to parse response appropriately
+      const ticketId = data?.ticketid; // Correctly adjusted for the response structure
   
       if (ticketId) {
         setTicketNumber(ticketId);
@@ -212,6 +211,7 @@ const [userId, setUserId] = useState(localStorage.getItem("user_id"));
     }
   };
   
+  
 
   const resetState = () => {
     setStep(0);
@@ -232,6 +232,11 @@ const [userId, setUserId] = useState(localStorage.getItem("user_id"));
     ]);
   };
 
+
+
+const handleMytickets = ()=> {
+  navigate('/MyTickets')
+}
 
 
   const handleBackToLogin = () => {
@@ -371,7 +376,7 @@ const [userId, setUserId] = useState(localStorage.getItem("user_id"));
               >
                 <div
                   className={`${
-                    message.sender === 'assistant' ? 'bg-gray-200' : 'bg-blue-500 text-[#00008b]'
+                    message.sender === 'assistant' ? 'bg-gray-200' : 'bg-blue-500 text-white'
                   } px-4 py-2 rounded-lg max-w-[85%] break-words text-[#00008b]`}
                 >
                   {message.text}
@@ -447,7 +452,7 @@ const [userId, setUserId] = useState(localStorage.getItem("user_id"));
 
                 <button
                   onClick={handleTicketCreation}
-                  className="mt-4 bg-blue-500 text-[#00008b] px-6 py-3 rounded-md hover:bg-blue-600"
+                  className="mt-4 bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600"
                 >
                   Create Ticket
                 </button>
@@ -458,13 +463,13 @@ const [userId, setUserId] = useState(localStorage.getItem("user_id"));
               <div
                 className={`p-4 rounded-lg `}
               >
-                <p>Your ticket has been created successfully. Ticket Number: {ticketNumber}</p>
-                <a
-                  href="/tickets"
-                  className="text-[#00008b] underline mt-2 block"
+                <p className='text-[#00008b] font-bold'>Your ticket has been created successfully. Ticket Number: {ticketNumber}</p>
+                <p
+                  onClick={handleMytickets}
+                  className="text-[#00008b] cursor-pointer underline mt-2 block"
                 >
                   Go to My Tickets
-                </a>
+                </p>
               </div>
             )}
           </div>

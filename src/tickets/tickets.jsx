@@ -35,6 +35,7 @@ const [editComment, setEditComment] = useState('');
 const inputRef = useRef(null); // Ref for adding new comments
 const editInputRef = useRef(null); // Ref for editing comments
 const user_id = localStorage.getItem('user_id');
+const orgId = localStorage.getItem('org_id'); // Check for orgId in localStorage
 
 // Focus the add comment input box when the component mounts
 useEffect(() => {
@@ -55,6 +56,80 @@ useEffect(() => {
   }, []);
   
 
+
+const [categories, setCategories] = useState([]);
+const [priorities, setPriorities] = useState([]);
+const [statuses, setStatuses] = useState([]);
+const [admins, setAdmins] = useState([]);
+
+const [selectedStatus, setSelectedStatus] = useState();
+const [selectedPriorities, setSelectedPriorities] = useState();
+const [selectedcategories, setSelectedScategories] = useState();
+const [selectedAdmins, setSelectedAdmins] = useState();
+
+const handleStatusChange = (e) => {
+  const selectedStatusId = parseInt(e.target.value, 10);// Get the selected ID
+  setSelectedStatus(selectedStatusId); // Update the state with the selected status ID
+};
+
+const handleselectedPriorities = (e) => {
+  const selectedPrioritiesId = parseInt(e.target.value, 10); // Get the selected ID
+  setSelectedPriorities(selectedPrioritiesId); // Update the state with the selected status ID
+};
+const handleStatuscategories = (e) => {
+  const selectedcategoriesId = parseInt(e.target.value, 10); // Get the selected ID
+  setSelectedScategories(selectedcategoriesId); // Update the state with the selected status ID
+};
+// const handleStatusChange = (e) => {
+//   const selectedStatusId = e.target.value; // Get the selected ID
+//   setSelectedStatus(selectedStatusId); // Update the state with the selected status ID
+// };
+ useEffect(() => {
+    const fetchDropdowns = async () => {
+      try {
+        setIsLoading(true);
+        const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+        if (!authToken) {
+          console.error('No authentication token found. Please log in again.');
+          return;
+        }
+        // Replace the URL and token as needed
+        const response = await fetch(`https://dev.quizifai.com:8010/tkt_dropdowns?orgid=${orgId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({}),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch dropdown data');
+        }
+
+        const data = await response.json();
+
+        if (data.response === "success") {
+          // Populate state with the received data
+          setCategories(data.data.categories);
+          setPriorities(data.data.priorities);
+          setStatuses(data.data.statuses);
+          setAdmins(data.data.admins);
+        } else {
+          throw new Error('Invalid data format');
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchDropdowns();
+  }, []);
+
+
   const formatDate = (dateString) => {
   if (!dateString) return 'N/A'; 
   const date = new Date(dateString);
@@ -63,6 +138,7 @@ useEffect(() => {
 };
 
   
+
 useEffect(() => {
   const fetchTickets = async () => {
     try {
@@ -210,19 +286,20 @@ useEffect(() => {
   const handleSave = async () => {
     try {
       const authToken = localStorage.getItem('authToken');
-
+  
       if (!authToken) {
         console.error('No authentication token found. Please log in again.');
         return;
       }
+      
       // Ensure the payload contains only integer IDs
       const payload = {
         user_id: ticketDetails.owner_id,
         ticket_id: ticketDetails.ticket_id,
         assignee_id: ticketDetails.assignee_id,
-        ticketcategory_id: parseInt(ticketDetails.category_id, 10), // Convert to integer
-        ticketstatus_id: parseInt(ticketDetails.status_id, 10), // Convert to integer
-        ticketpriority_id: parseInt(ticketDetails.priority_id, 10), // Convert to integer
+        ticketcategory_id: selectedcategories, // Convert to integer
+        ticketstatus_id: selectedStatus, // Convert to integer
+        ticketpriority_id: selectedPriorities, // Convert to integer
       };
   
       const response = await fetch('https://dev.quizifai.com:8010/edit_tkt', {
@@ -241,7 +318,10 @@ useEffect(() => {
   
       const result = await response.json();
   
-      if (result.response === 'success') {
+      // Check if the response contains the "detail" field
+      if (result.detail === "This user id is not of admin type.") {
+        alert(result.detail); // Display specific error message in an alert
+      } else if (result.response === 'success') {
         alert('Ticket updated successfully!');
         setView('main'); // Navigate back to the main view
       } else {
@@ -252,6 +332,7 @@ useEffect(() => {
       alert('An error occurred while updating the ticket. Please try again.');
     }
   };
+  
   
   
   const handleAddComment = async (ticketId) => {
@@ -270,7 +351,7 @@ useEffect(() => {
           'Authorization': `Bearer ${authToken}`,
         },
         body: JSON.stringify({
-          commenter_id: parseInt(sessionStorage.getItem('user_id')),
+          commenter_id: user_id,
           ticket_id: ticketId,
           addcomment: newComment,
           editcomment_id: 0,
@@ -481,28 +562,32 @@ const SearchInput = ({ value, onChange }) => {
     
     
 
-const getStatusColor = (status) => {
-    const vividColors = {
-      'New': 'bg-blue-100 text-blue-800',
-      'In Progress': 'bg-yellow-100 text-yellow-800',
-      'On Hold': 'bg-orange-100 text-orange-800',
-      'Resolved': 'bg-green-100 text-green-800',
-      'Closed': 'bg-gray-100 text-gray-800',
-      'Cancelled': 'bg-red-100 text-red-800'
+    const getStatusColor = (status, isVivid = true) => {
+      const vividColors = {
+        'New': 'bg-blue-100 text-blue-800',
+        'In Progress': 'bg-yellow-100 text-yellow-800',
+        'On Hold': 'bg-orange-100 text-orange-800',
+        'Resolved': 'bg-green-100 text-green-800',
+        'Closed': 'bg-gray-100 text-gray-800',
+        'Cancelled': 'bg-red-100 text-red-800',
+      };
+    
+      const grayscaleColors = {
+        'New': 'bg-gray-300 text-gray-800',
+        'In Progress': 'bg-gray-400 text-gray-800',
+        'On Hold': 'bg-gray-500 text-gray-800',
+        'Resolved': 'bg-gray-600 text-gray-800',
+        'Closed': 'bg-gray-700 text-gray-800',
+        'Cancelled': 'bg-gray-800 text-gray-100',
+      };
+    
+      return isVivid
+        ? vividColors[status] || 'bg-gray-100 text-gray-800'
+        : grayscaleColors[status] || 'bg-gray-700 text-gray-100';
     };
+    
   
-    const grayscaleColors = {
-      'New': 'bg-gray-300 text-gray-800',
-      'In Progress': 'bg-gray-400 text-gray-800',
-      'On Hold': 'bg-gray-500 text-gray-800',
-      'Resolved': 'bg-gray-600 text-gray-800',
-      'Closed': 'bg-gray-700 text-gray-800',
-      'Cancelled': 'bg-gray-800 text-gray-100'
-    };
-  
-  };
-  
-  const getFeatureColor = (feature) => {
+  const getFeatureColor = (feature, isVivid = true) => {
     const vividColors = {
       'Case Management': 'bg-purple-100 text-purple-800',
       'Drafting': 'bg-blue-100 text-blue-800',
@@ -524,7 +609,9 @@ const getStatusColor = (status) => {
       'Access-Related Issues': 'bg-gray-900 text-gray-100',
       'Other': 'bg-gray-100 text-gray-800'
     };
-  
+    return isVivid
+    ? vividColors[feature] || 'bg-gray-100 text-gray-800'
+    : grayscaleColors[feature] || 'bg-gray-700 text-gray-100';
 
   };
 
@@ -889,17 +976,14 @@ const handleCreateTicket = () => {
               <label className="block text-sm font-medium mb-1">Status</label>
               <select 
                 className="w-full p-2 border rounded-lg"
-                value={ticketDetails?.status_id || ''}
-                onChange={(e) => setTicketDetails(prev => ({
-                  ...prev,
-                  status_id: e.target.value
-                }))}
+                value={selectedStatus}
+                onChange={handleStatusChange}
               >
-                <option value="New">New</option>
-                <option value="In Progress">In Progress</option>
-                <option value="On Hold">On Hold</option>
-                <option value="Resolved">Resolved</option>
-                <option value="Closed">Closed</option>
+              {statuses.map(([id, status]) => (
+            <option key={id} value={id}>
+              {status}
+            </option>
+          ))}
               </select>
             </div>
   
@@ -907,16 +991,14 @@ const handleCreateTicket = () => {
               <label className="block text-sm font-medium mb-1">Category</label>
               <select 
                 className="w-full p-2 border rounded-lg"
-                value={ticketDetails?.category_id || ''}
-                onChange={(e) => setTicketDetails(prev => ({
-                  ...prev,
-                  category_id: e.target.value
-                }))}
+                value={selectedcategories}
+                onChange={handleStatuscategories}
               >
-                <option value="Enquiry">Enquiry</option>
-                <option value="Bug">Bug</option>
-                <option value="Feature Request">Feature Request</option>
-                <option value="Other">Other</option>
+                {categories.map(([id, category]) => (
+            <option key={id} value={id}>
+              {category}
+            </option>
+          ))}
               </select>
             </div>
           </div>
@@ -956,15 +1038,14 @@ const handleCreateTicket = () => {
               <label className="block text-sm font-medium mb-1">Priority Level</label>
               <select 
                 className="w-full p-2 border rounded-lg"
-                value={ticketDetails?.priority_level || ''}
-                onChange={(e) => setTicketDetails(prev => ({
-                  ...prev,
-                  priority_level: e.target.value
-                }))}
+                value={selectedPriorities}
+                onChange={handleselectedPriorities}
               >
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
+                {priorities.map(([id, priority]) => (
+            <option key={id} value={id}>
+              {priority}
+            </option>
+          ))}
               </select>
             </div>
   

@@ -488,7 +488,6 @@ const SearchInput = ({ value, onChange }) => {
         <Search className="absolute left-3 top-2.5 text-gray-400" size={20} />
         <input
           type="text"
-          ref={inputRef} // Attach the ref to the input element
           placeholder="Search tickets..."
           className="pl-10 pr-4 py-2 border rounded-lg w-64"
           value={value}
@@ -846,6 +845,7 @@ const handleCreateTicket = () => {
                     }}>
                       <MoreVertical size={20} />
                     </button>
+                    
                   </div>
                   
                   <div className="flex flex-wrap gap-2 items-center">

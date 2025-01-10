@@ -130,7 +130,7 @@ const configure = () => {
     navigate("/HelpDesk")
   }
   const handleMyTickets = () =>{
-    navigate("/MyTickets")
+    navigate("/MyTickets1")
   }
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -158,7 +158,6 @@ const configure = () => {
           throw new Error("Failed to fetch header data");
         }
         const result = await response.json();
-        console.log("configure data - ", result);
 
         const data = result.data[0];
         setWeeklyQuizCount(data.weekly_quiz_count || 0);

@@ -75,7 +75,6 @@ const classes = () => {
       const authToken = localStorage.getItem("authToken");
   
       if (!authToken) {
-        console.error("No authentication token found");
         setModalMessage("Authentication token not found.");
         setIsError(true);
         setShowModal(true);
@@ -148,7 +147,6 @@ const classes = () => {
       const result = await response.json();
   
       if (response.ok && result.response === "success") {
-        console.log("Class added successfully:", result);
         setModalMessage(result.response_message || "Class added successfully!");
         setIsError(false);
         setShowModal(true);
@@ -163,13 +161,11 @@ const classes = () => {
         setIsNavbarOpen(false);
         setIsNavbarOpen1(false);
       } else {
-        console.error("Failed to add class:", result);
         setModalMessage(result.response_message || "An error occurred.");
         setIsError(true);
         setShowModal(true);
       }
     } catch (error) {
-      console.error("Error adding class:", error);
       setModalMessage("An error occurred while adding the class.");
       setIsError(true);
       setShowModal(true);
@@ -265,7 +261,6 @@ const classes = () => {
 
       const result = await response.json();
       if (response.ok && result.response === "success") {
-        console.log("Class added successfully:", result);
         setModalMessage(result.response_message || "Class added successfully!");
         setIsError(false);
         setShowModal(true);
@@ -278,7 +273,6 @@ const classes = () => {
         setCourseId('');
         setSpecializationId('');
       } else {
-        console.error("Failed to add class:", result);
         setModalMessage(result.response_message || "An error occurred.");
         setIsError(true);
         setShowModal(true);
@@ -286,7 +280,6 @@ const classes = () => {
      
       // Handle success (e.g., show a success message, reset form, etc.)
     } catch (error) {
-      console.error('Error updating class:', error);
       setModalMessage("An error occurred while adding the class.");
       setIsError(true);
       setShowModal(true);
@@ -335,11 +328,9 @@ const classes = () => {
         if (response.ok && result.response === "success") {
           setDepartments(result.data);
         } else {
-          console.error("Failed to fetch departments:", result);
           setError("Failed to fetch departments.");
         }
       } catch (error) {
-        console.error("Error fetching departments:", error);
         setError("An error occurred while fetching departments.");
       }
     };
@@ -352,7 +343,6 @@ const classes = () => {
     setSelectedDepartmentId(selectedId);
 
     // Pass department_id to the backend or handle it as needed
-    console.log("Selected department_id:", selectedId);
   };
 
     //---------------**Department Selector end**----------------//

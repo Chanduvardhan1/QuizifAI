@@ -117,7 +117,6 @@ const Dashboard = () => {
     setModalIsOpen1(true);
   };
   const confirmDisable = (quizItem) => {
-    console.log('confirmDisable');
     // setIsDisableConfirmed(true);
     handleDisableQuiz(quizItem);
   };
@@ -125,7 +124,6 @@ const Dashboard = () => {
     setEnableModel(true);
   }
   const confirmEnable = async (quizItem) => {
-    console.log('quizItem', quizItem);
     try {
       const authToken = localStorage.getItem("authToken");
 
@@ -151,7 +149,6 @@ const Dashboard = () => {
 
       if (response.ok) {
         const result = await response.json();
-        console.log("Disable response:", result);
         if (result.response === "fail") {
           // Show popup with message
           setPopupMessage(result.response_message);
@@ -205,7 +202,6 @@ const Dashboard = () => {
   
       if (response.ok) {
         const result = await response.json();
-        console.log("Disable response:", result);
   
         if (result.response === "fail") {
           // Show popup with message
@@ -282,7 +278,6 @@ const Dashboard = () => {
     setModalIsOpen(true);
   }
   const handleDeleteQuiz = async () => {
-    console.log("Deleting quiz with userId:", userId, "and quizId:", quizId);
     try {
       const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
 
@@ -311,7 +306,6 @@ const Dashboard = () => {
 
       if (response.ok) {
         const result = await response.json();
-        console.log("Delete response:", result);
         if (result.response === "fail") {
           // Show popup with message
           setPopupMessage(result.response_message);
@@ -334,7 +328,6 @@ const Dashboard = () => {
   }, [isDeleteConfirmed]);
   useEffect(() => {
     // Example: Checking authentication state on component mount
-    console.log("User is authenticated:", isAuthenticated);
     // You might not need to directly use setIsAuthenticated here
     // It's typically handled within the AuthContext
   }, [isAuthenticated]);
@@ -387,7 +380,6 @@ const Dashboard = () => {
           throw new Error("Failed to fetch quiz data");
         }
         const result = await response.json();
-        console.log("dashboard data - ", result); // Log the entire response data
 
         const data = result.data[0];
         setTimeData(data.time_spent || []);
@@ -496,7 +488,6 @@ const Dashboard = () => {
     quizduration,
     passpercentage
   ) => {
-    console.log('attemptId', attemptId);
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     navigate(`/leaderboard`, {
       state: {
@@ -601,7 +592,6 @@ const Dashboard = () => {
   const userRole = localStorage.getItem("user_role");
 
   const results = (latestResult || []).map((result, index) => {
-    console.log(' {result?.attempt_date}', result?.attempt_date);
 
     const percentColor = getColorPercentage(result?.quiz_percentage);
     const handleQuizClick = () => {
@@ -678,7 +668,6 @@ const Dashboard = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('Logout response:', data);
         if (data.response === 'success') {
           localStorage.clear();
           logout(); // Clear AuthContext

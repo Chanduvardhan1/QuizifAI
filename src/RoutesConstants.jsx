@@ -111,6 +111,9 @@ import Repoarts from "./reports/repoarts.jsx";
 import Multiassignquiz from "./multiquizassign/multiassignquiz.jsx";
 import HelpDesk from "./help/help.jsx";
 import MyTickets from "./tickets/tickets.jsx";
+
+import MyTickets1 from "./mytickets/mytickets.jsx";
+
 export default () => {
     return [
         {
@@ -129,6 +132,11 @@ export default () => {
         {
             path:'MyTickets',
             component:MyTickets,
+            isPrivate: true
+        },
+        {
+            path:'myTickets1',
+            component:MyTickets1,
             isPrivate: true
         },
         {

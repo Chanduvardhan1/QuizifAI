@@ -1,6 +1,7 @@
 import React, {useContext, useState, useEffect } from 'react';
 
 import { useLocation } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 import help from "../../public/closeimage.png";
 import helpVivid from "../../src/assets/Images/quiz-type/star.png"
@@ -147,7 +148,20 @@ const [userId, setUserId] = useState(localStorage.getItem("user_id"));
 
   const handleTicketCreation = async () => {
     const ownerLawfirmId = sessionStorage.getItem('user_lawfirm_id');
+    if (!userId) {
+      toast.error('User ID is required.');
+      return;
+    }
     
+    if (!selectedOption) {
+      toast.error('Please select a ticket category.');
+      return;
+    }
+    if (!userDescription) {
+      toast.error('Ticket description cannot be empty.');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('ownerid', userId);
     formData.append('ownerlawfirm_id', ownerLawfirmId);
@@ -275,7 +289,7 @@ const handleMytickets = ()=> {
       });
   };
   return (
-    <div className="flex min-h-screen bg-gray-50 overflow-hidden">
+    <div className="flex min-h-screen bg-[#f5f5f5] overflow-hidden">
       <style>{`
         body {
           background-color:#F5F5F5;
@@ -328,7 +342,7 @@ const handleMytickets = ()=> {
       <div className='flex w-full'>
         <Navigation/>
    
-        
+        <ToastContainer/>
 
         <div className="flex flex-col flex-1 p-4 pt-12 gap-2">
            <div className=" absolute top-3 right-3 cursor-pointer">
@@ -376,7 +390,7 @@ const handleMytickets = ()=> {
               >
                 <div
                   className={`${
-                    message.sender === 'assistant' ? 'bg-gray-200' : 'bg-blue-500 text-white'
+                    message.sender === 'assistant' ? ' bg-[#E8E9E8] border-[1px] border-[#ccc]' : 'bg-blue-500 text-white'
                   } px-4 py-2 rounded-lg max-w-[85%] break-words text-[#00008b]`}
                 >
                   {message.text}
@@ -394,7 +408,7 @@ const handleMytickets = ()=> {
                 {options.map((option, index) => (
                   <button
                     key={index}
-                    className={`px-4 py-2 rounded-md text-left bg-gray-100 hover:bg-gray-300 text-sm font-light transition-colors text-[#00008b] `}
+                    className={`px-4 py-2 rounded-[5px] font-semibold w-[58%] text-left bg-[#f5f5f5] border-[1px] border-[#ccc] hover:bg-gray-300 text-sm  transition-colors text-[#00008b] `}
                     onClick={() => option === 'Other' ? handleOtherOption() : handleOptionSelect(option)}
                   >
                     {option}
@@ -414,7 +428,7 @@ const handleMytickets = ()=> {
                     {features.map((feature, index) => (
                       <button
                         key={index}
-                        className={`px-4 py-3 rounded-md text-left text-[#00008b] bg-gray-100 hover:bg-gray-300 transition-colors `}
+                        className={`px-4 py-2 rounded-[5px] text-left text-[#00008b] bg-[#E8E9E8] border-[1px] border-[#ccc] hover:bg-gray-300 transition-colors `}
                         onClick={() => handleFeatureSelect(feature)}
                       >
                         {feature}
@@ -428,7 +442,7 @@ const handleMytickets = ()=> {
               <div className="flex flex-col space-y-2">
                 
                 <select
-              className="w-full p-3 border text-[#00008b] rounded-md focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-gray-100"
+              className="w-full p-3  text-[#00008b] bg-[#E8E9E8] rounded-[5px] border-[1px] border-[#ccc] focus:ring-1 focus:ring-blue-500 focus:border-blue-500 "
               // value={priority}
               // onChange={(e) => setPriority(e.target.value)}
             >
@@ -437,7 +451,7 @@ const handleMytickets = ()=> {
               <option value="high">High</option>
             </select>
                 <textarea
-                  className="w-full p-3  border rounded-md focus:ring-1 outline-none resize-none bg-gray-100"
+                  className="w-full p-3 bg-[#E8E9E8] border-[1px] border-[#ccc] focus:ring-1 outline-none resize-none"
                   rows={4}
                   placeholder="Ticket Description"
                   value={userDescription}

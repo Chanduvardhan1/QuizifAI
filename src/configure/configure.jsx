@@ -19,6 +19,7 @@ import ball from "../../src/assets/Images/dashboard/image (10).png"
 import { AuthContext } from "../Authcontext/AuthContext.jsx";
 import report from "../../src/assets/Images/dashboard/image (14).png"
 import close1 from "../../src/assets/Images/images/dashboard/cancel.png"
+import help from "../../src/assets/Images/dashboard/help.png"
 
 const configure = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -227,7 +228,7 @@ const configure = () => {
     },
     {
       id: 8,
-      image:ball,
+      image:help,
       title: "Help",
       content:
         "My Tickets, Help",

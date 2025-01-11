@@ -73,7 +73,15 @@ const QuizQuestions = () => {
     quiz_sub_category_name,
     course_name,
     class_name,
+    quiz_metrics,
   } = location.state || {};
+  const {
+    total_attempts,
+    your_attempts,
+    highest_score,
+    quickest_completion_time,
+  } = quiz_metrics || {};
+
   const [elapsedTime, setElapsedTime] = useState(quiz_duration * 60);
   // const isSubmitting = useRef(false);
   const submittedRef = useRef(false);
@@ -1064,7 +1072,7 @@ const QuizQuestions = () => {
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">0 Attemts</span>
+              <span className="ml-1 text-sm">{total_attempts} Attemts</span>
             </div>
             <div className="flex items-center">
               <img
@@ -1072,7 +1080,7 @@ const QuizQuestions = () => {
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">0% High Score</span>
+              <span className="ml-1 text-sm">{highest_score}% High Score</span>
             </div>
             <div className="flex items-center">
               <img
@@ -1080,7 +1088,7 @@ const QuizQuestions = () => {
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">0 Mins Quickest</span>
+              <span className="ml-1 text-sm">{quickest_completion_time} Mins Quickest</span>
             </div>
           </div>
         </div>

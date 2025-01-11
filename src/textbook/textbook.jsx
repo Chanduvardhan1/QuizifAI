@@ -234,22 +234,19 @@ export default function quiztype() {
 
   const [ isEditing ,setisEditing] = useState(false);
    const [instructions, setInstructions] = useState([
-     "Read all the instructions carefully before starting the quiz.",
-     "Ensure you have a stable internet connection throughout the quiz duration.",
-     "Use a compatible device (e.g., laptop, tablet, or mobile) as specified for the quiz.",
-     "Check the allotted time for the quiz and plan accordingly.",
-     "Make sure you are in a quiet, distraction-free environment.",
-     "Review the total number of questions in the quiz.",
-     "Understand the marking scheme, including negative marking (if applicable).",
-     "Note whether the quiz allows multiple attempts or is a one-time attempt.",
-     "Ensure your device’s battery is fully charged or connected to a power source.",
-     "Keep necessary materials ready if allowed (e.g., calculator, pen, paper).",
-     "Do not open other tabs, windows, or applications during the quiz unless permitted.",
-     "Follow any specific rules set by the instructor or platform.",
-     "Avoid any forms of cheating or academic dishonesty.",
-     "Be aware that the quiz might automatically submit at the end of the allotted time.",
-     "Contact support or your instructor immediately if you face technical issues.",
-   ]);
+        "Read all the instructions carefully before starting the quiz.",
+        "Ensure you have a stable internet connection throughout the quiz duration.",
+        "Use a compatible device (e.g., laptop, tablet, or mobile) as specified for the quiz.",
+        "Check the allotted time for the quiz and plan accordingly.",
+        "Make sure you are in a quiet, distraction-free environment.",
+        "Understand the marking scheme, including negative marking (if applicable).",
+    
+        "Ensure your device’s battery is fully charged or connected to a power source.",
+        "Do not open other tabs, windows, or applications during the quiz unless permitted.",
+    
+        "Be aware that the quiz might automatically submit at the end of the allotted time.",
+        "Contact support or your instructor immediately if you face technical issues.",
+      ]);
   const [simplequestions, setSimplequestions] = useState('')
   const [moderatequestions, setModeratequestions] = useState('')
   const [complexquestions, setComplexquestions] = useState('')
@@ -266,6 +263,7 @@ export default function quiztype() {
  const [pdfUrl, setPdfUrl] = useState("");
 
  const orgId = localStorage.getItem('org_id');
+  const [edit,setEdit] = useState(false)
 
 const [modalMessage, setModalMessage] = useState("");
 const [modalMessage1, setModalMessage1] = useState("");
@@ -302,12 +300,18 @@ const [modalMessage1, setModalMessage1] = useState("");
   const closeModal1 = () => {
     setShowModal1(false);
   };
-  const handleInstructionChange = (index, value) => {
-    const updatedInstructions = [...instructions];
-    updatedInstructions[index] = value;
-    setInstructions(updatedInstructions);
-  };
-
+   const [visibleInstructions, setVisibleInstructions] = useState(10);
+ 
+   const handleInstructionChange = (index, value) => {
+     const updatedInstructions = [...instructions];
+     updatedInstructions[index] = value;
+     setInstructions(updatedInstructions);
+   };
+ 
+   const handleAddLine = () => {
+     setInstructions((prev) => [...prev, ""]);
+     setVisibleInstructions((prev) => prev + 1);
+   };
  //-------------****print quiz****-----------//
  const pdfRef1 = useRef(null);
  const inputReff = useRef(null);
@@ -588,6 +592,13 @@ const handleNextpage4 = () => {
 };
 const handeledit =()=> {
   setisEditing((prevState) => !prevState);
+  setEdit(true);
+
+ }
+ const handelesave =()=> {
+  setEdit(false);
+  setisEditing((prevState) => !prevState);
+
  }
 
  const handleToLayout1 = () =>{
@@ -2031,31 +2042,54 @@ const handleComplexquestions = (event) => {
     <h1 className="font-semibold text-[20px] text-[#214082]">Quiz Instructions</h1>
   </div>
 
-  {instructions.map((instruction, index) => (
-    <div key={index} className="flex items-start">
-      {/* Number Display */}
-      <div className="w-4 text-[14px] font-semibold text-right mr-2">{index + 1}.</div>
-      {/* Input for Editing */}
-      <input
-         disabled={!isEditing}
-        value={instruction}
-        onChange={(e) => handleInstructionChange(index, e.target.value)}
-        className={`w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[14px] focus:outline-none ${
-          !isEditing ? 'text-gray-700 cursor-not-allowed' : 'text-black'
-        }`}
-      />
-    </div>
-  ))}
+  {instructions.slice(0, visibleInstructions).map((instruction, index) => (
+        <div key={index} className="flex items-start mb-2">
+          {/* Number Display */}
+          <div className="w-4 text-[14px] font-semibold text-right mr-2">{index + 1}.</div>
+          {/* Input for Editing */}
+          <input
+              disabled={!isEditing}
+            value={instruction}
+            onChange={(e) => handleInstructionChange(index, e.target.value)}
+            className={`w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[14px] focus:outline-none ${
+              !isEditing ? 'text-gray-700 cursor-not-allowed' : 'text-black'
+            }`}
+          />
+          {/* Remove Line Button */}
+       
+        </div>
+      ))}
+      {/* Add Line Button */}
+      <div>
+      <button
+          disabled={!isEditing}
+        onClick={handleAddLine}
+        className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+      >
+        + Add Line
+      </button>
+      </div>
 
   <div className="flex justify-end md:col-span-2">
   <div className="flex gap-1">
 
-<button
-    onClick={handeledit} 
-    className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
-  >
-    Edit
-  </button>
+
+  {edit ? (
+ <button
+ onClick={handelesave} 
+ className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+>
+ Save
+</button>
+):(
+  <button
+  onClick={handeledit} 
+  className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+>
+  Edit
+</button>
+)}
   <button
     onClick={handleNextpage0}
     className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
@@ -2165,71 +2199,88 @@ const handleComplexquestions = (event) => {
           </div>
 
           {/* Course */}
-          <div className="md:col-span-2">
-
-<div className="flex gap-6">
-<div className="w-full flex flex-col">
-  <div className="w-full flex flex-row">
-    <label className="w-[31%] text-blue-800 font-semibold mb-2 ">
-      Course<span className="text-red-500"></span>
-    </label>
-    <select
-      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-      value={selectedCourse}
-      onChange={handleSelectCourse}
-    >
-      <option value="" disabled>Select a course</option>
-      <option value="">None</option>
-      {courses.map((course) => (
-        <option key={course.course_id} value={course.course_name}>
-          {course.course_name}
-        </option>
-      ))}
-    </select>
-  </div>
-  <hr className="h-[1px] w-full" />
-</div>
-
-{/* Class */}
-<div className="w-full flex flex-col">
-  <div className="w-full flex flex-row">
-    <label className=" w-[20%] text-blue-800 font-semibold mb-2">
-      Class<span className="text-red-500"></span>
-    </label>
-    <select
-      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-      value={selectedClass}
-      onChange={handleSelectClass}
-      disabled={classes.length === 0}
-    >
-      <option value="" disabled>Select a class</option>
-      {classes.map((className, index) => (
-        <option key={index} value={className}>
-          {className}
-        </option>
-      ))}
-    </select>
-  </div>
-  <hr className="h-[1px] w-full" />
-</div>
- {/*  Public access */}
-<div className=" w-[50%] flex flex-col">
-<div className="w-[100%] flex flex-row">
-<label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500">*</span></label>
-<FormControlLabel
-  control={<Switch />}
-//  label="Required" 
-onChange={toggler3}
-checked={publicAccess}
-className="react-switch"
-/>
-
-</div>
-
-</div>
-</div>
-
-</div>
+        <div className="md:col-span-2">
+       
+                 <div className="flex gap-6">
+                 <div className="w-[50%] flex flex-col">
+                   <div className="w-full flex flex-row">
+                     <label className="w-[65%] text-blue-800 font-semibold mb-2 ">
+                       Course<span className="text-red-500"></span>
+                     </label>
+                     <select
+                       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                       value={selectedCourse}
+                       onChange={handleSelectCourse}
+                     >
+                       <option value="" disabled>Select a course</option>
+                       <option value="">None</option>
+                       {courses.map((course) => (
+                         <option key={course.course_id} value={course.course_name}>
+                           {course.course_name}
+                         </option>
+                       ))}
+                     </select>
+                   </div>
+                   <hr className="h-[1px] w-full" />
+                 </div>
+       
+                 {/* Class */}
+                 <div className="w-[50%] flex flex-col">
+                   <div className="w-full flex flex-row">
+                     <label className=" w-[20%] text-blue-800 font-semibold mb-2">
+                       Class<span className="text-red-500"></span>
+                     </label>
+                     <select
+                       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                       value={selectedClass}
+                       onChange={handleSelectClass}
+                       disabled={classes.length === 0}
+                     >
+                       <option value="" disabled>Select a class</option>
+                       {classes.map((className, index) => (
+                         <option key={index} value={className}>
+                           {className}
+                         </option>
+                       ))}
+                     </select>
+                   </div>
+                   <hr className="h-[1px] w-full" />
+                 </div>
+                  {/* Premium */}
+         <div className=" w-[50%] flex flex-col">
+               <div className="w-[100%] flex flex-row">
+               <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">Premium Quizzes<span className="text-red-500">*</span></label>
+               <FormControlLabel
+                control={<Switch />} 
+               // label="Required"
+                 // onChange={toggler3}
+                 // checked={publicAccess}
+                 className="react-switch"
+               />
+              
+               </div>
+             
+             </div>
+                  {/*  Public access */}
+         <div className=" w-[50%] flex flex-col">
+               <div className="w-[100%] flex flex-row">
+               <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500">*</span></label>
+               <FormControlLabel
+                control={<Switch />} 
+               // label="Required"
+                 onChange={toggler3}
+                 checked={publicAccess}
+                 className="react-switch"
+               />
+              
+               </div>
+             
+             </div>
+       
+            
+             </div>
+            
+             </div>
 <div className="md:col-span-2">
 
 <div className="w-full flex gap-6">

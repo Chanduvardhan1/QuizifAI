@@ -249,7 +249,7 @@ const [userId, setUserId] = useState(localStorage.getItem("user_id"));
 
 
 const handleMytickets = ()=> {
-  navigate('/MyTickets')
+  navigate('/MyTickets1')
 }
 
 

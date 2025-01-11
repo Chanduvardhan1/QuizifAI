@@ -55,6 +55,9 @@ import leader from "../../src/assets/Images/dashboard/Leader.png"
 import print1 from "../../src/assets/Images/dashboard/print.png"
 import back from "../../src/assets/Images/dashboard/quiz12.png"
 import assign from "../../src/assets/Images/dashboard/assign.png"
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import crown from "../../src/assets/Images/dashboard/image (16).png";
 
 const Dashboard = () => {
   const getFormattedDate = () => {
@@ -107,6 +110,12 @@ const Dashboard = () => {
   const [popupMessage, setPopupMessage] = useState("");
   const [enableModel, setEnableModel] = useState(false);
   const orgId = localStorage.getItem('org_id');
+ const [multiAnswer, setMultiAnswer] = useState(false);
+
+
+  const toggler1 = (event) => {
+    setMultiAnswer(event.target.checked);
+  };
 
   const handleClosePopup = () => {
     setShowPopup(false);
@@ -780,6 +789,18 @@ const Dashboard = () => {
           <DashBoardNavBar />
           
         </div>
+        <div className="flex justify-end items-center">
+        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[10px]">
+        Premium Quizs <span className="text-red-500"></span>
+        </label>
+        <FormControlLabel
+              control={<Switch />} 
+              // label="Required"
+                onChange={toggler1}
+                checked={multiAnswer}
+                className="react-switch"
+              />
+    </div>
         <div className="mx-[10px]">
           <div
             className="flex justify-between mr-[10px]"
@@ -802,7 +823,7 @@ const Dashboard = () => {
               />
             </span>
           </div>
-    
+   
 
 
           <div className="w-full flex flex-wrap mx-auto gap-[24px]">
@@ -816,7 +837,10 @@ const Dashboard = () => {
                   const isActiveForOthers =
                     quizItem.active_flag?.toLowerCase() === "true" ||
                     quizItem.active_flag?.toLowerCase() === "Y";
+
+                    const isPremiumQuiz = multiAnswer ? quizItem.is_premium === "Y" : true;
                 return (
+                  isPremiumQuiz &&
                   (isQuizMaster || isActiveForOthers) && 
                   quizItem.latest_flag === "Y" &&
                   currentDate >= quizCreateDate &&
@@ -881,9 +905,18 @@ const Dashboard = () => {
                             {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                               Physics,Physics,Physics,Physics
                             </span> */}
+                             {quizItem.is_premium === "Y" && (
+                            <img
+              src={crown}
+              alt="Premium"
+              className="w-6 h-6"
+            />
+                             )}
                             {(userRole === "Quiz Master" || userRole === "Super Admin") && (
                             <img src={more} alt="" onClick={() => toggleNavbar(index)} className=" w-[12px] h-[12px] hover:bg-gray-200   hover:rounded-full" />
                             )}
+            
+         
                             {cardStates[index]  && (
                               <div
                                 className="absolute rounded-md w-[150px]  flex flex-col p-1 bg-gray-200 mt-[43px] ml-[115px]"
@@ -1639,6 +1672,13 @@ src={quizItem.photo1 || back}
  {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
    Physics,Physics,Physics,Physics
  </span> */}
+  {quizItem.is_premium === "Y" && (
+                            <img
+              src={crown}
+              alt="Premium"
+              className="w-6 h-6"
+            />
+                             )}
  {(userRole === "Quiz Master" || userRole === "Super Admin") &&  (
   <img src={more} alt="" onClick={() => toggleNavbar(index)} className=" w-[12px] h-[12px] hover:bg-gray-200   hover:rounded-full" />
 
@@ -2368,7 +2408,10 @@ alt="Disable icon"
                   const isActiveForOthers =
                     quizItem.active_flag?.toLowerCase() === "true" ||
                     quizItem.active_flag?.toLowerCase() === "Y";
+                    const isPremiumQuiz = multiAnswer ? quizItem.is_premium === "Y" : true;
+
                 return (
+                  isPremiumQuiz &&
                   (isQuizMaster || isActiveForOthers) && 
                   // quizItem.active_flag === "true" &&
                   quizItem.popularity_flag === "Y" &&
@@ -2432,6 +2475,13 @@ alt="Disable icon"
                             {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                               Physics,Physics,Physics,Physics
                             </span> */}
+                             {quizItem.is_premium === "Y" && (
+                            <img
+              src={crown}
+              alt="Premium"
+              className="w-6 h-6"
+            />
+                             )}
                              {(userRole === "Quiz Master" || userRole === "Super Admin")  && (
                               
                             <img src={more} alt="" onClick={() => toggleNavbar1(index)} className=" w-[12px] h-[12px] hover:bg-gray-200 z-10 hover:rounded-full" />
@@ -3127,6 +3177,13 @@ src={quizItem.photo1 || back}
  {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
    Physics,Physics,Physics,Physics
  </span> */}
+  {quizItem.is_premium === "Y" && (
+                            <img
+              src={crown}
+              alt="Premium"
+              className="w-6 h-6"
+            />
+                             )}
       {(userRole === "Quiz Master" || userRole === "Super Admin") && (
 
  <img src={more} alt="" onClick={() => toggleNavbar1(index)} className=" w-[12px] h-[12px] hover:bg-gray-200 z-10  hover:rounded-full" />

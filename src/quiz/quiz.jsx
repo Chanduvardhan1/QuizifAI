@@ -43,6 +43,9 @@ import leader from "../../src/assets/Images/dashboard/Leader.png"
 import print1 from "../../src/assets/Images/dashboard/print.png"
 import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 import assign from "../../src/assets/Images/dashboard/assign.png"
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch'
+import crown from "../../src/assets/Images/dashboard/crown.png"
 
 // Modal.setAppElement(el);
 const Quiz = () => {
@@ -111,7 +114,12 @@ const Quiz = () => {
   const [cardStates1, setCardStates1] = React.useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
+const [multiAnswer, setMultiAnswer] = useState(false);
 
+
+  const toggler1 = (event) => {
+    setMultiAnswer(event.target.checked);
+  };
   const toggleNavbar1 = (index) => {
     setCardStates1((prevState) => {
       const updatedStates = [...prevState];
@@ -964,8 +972,20 @@ const Quiz = () => {
           {/* <div className={styles.latestQuizHeader}>
             <p className="text-[16px] font-Poppins -ml-[18.5px]">Sort by</p>
           </div> */}
-
+  <div className="flex justify-end items-center">
+                    <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[10px]">
+                    Premium Quizs <span className="text-red-500"></span>
+                    </label>
+                    <FormControlLabel
+                          control={<Switch />} 
+                          // label="Required"
+                            onChange={toggler1}
+                            checked={multiAnswer}
+                            className="react-switch"
+                          />
+                </div>
           <div className={styles.infoCards}>
+           
             <div className={styles.sortBy}>
               <div className="flex flex-wrap gap-[20px] mb-3  border-none px-2 ml-[7px] -mr-[20px] mx-auto mt-[10px] rounded-md">
                 <div className="flex-1 min-w-[10px]">
@@ -1134,8 +1154,10 @@ const Quiz = () => {
     const isActiveForOthers =
       quizItem.active_flag?.toLowerCase() === "true" ||
       quizItem.active_flag?.toLowerCase() === "y";
+      const isPremiumQuiz = multiAnswer ? quizItem.is_premium === "Y" : true;
 
                   return (
+                    isPremiumQuiz &&
                     (isQuizMaster || isActiveForOthers) &&
                     currentDate >= quizCreateDate &&
                     (quizEndDate === null || currentDate <= quizEndDate)
@@ -1204,6 +1226,13 @@ const Quiz = () => {
                          {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                            Physics,Physics,Physics,Physics
                          </span> */}
+                           {quizItem.is_premium === "Y" && (
+                                                     <img
+                                       src={crown}
+                                       alt="Premium"
+                                       className="w-6 h-6"
+                                     />
+                                                      )}
                           {(userRole === "Quiz Master" || userRole === "Super Admin")  && (
                          <img src={more} alt="" onClick={() => toggleNavbar1(index)} className=" w-[12px] h-[12px] hover:bg-gray-200   hover:rounded-full" />
                           )}
@@ -2133,6 +2162,13 @@ const Quiz = () => {
                          {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                            Physics,Physics,Physics,Physics
                          </span> */}
+                           {quizItem.is_premium === "Y" && (
+                                                     <img
+                                       src={crown}
+                                       alt="Premium"
+                                       className="w-6 h-6"
+                                     />
+                                                      )}
                             {(userRole === "Quiz Master" || userRole === "Super Admin")  && (
                          <img src={more} alt="" onClick={() => toggleNavbar(index)} className=" w-[12px] h-[12px] hover:bg-gray-200   hover:rounded-full" />
                             )}

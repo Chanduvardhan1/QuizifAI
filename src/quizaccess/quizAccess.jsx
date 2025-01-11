@@ -140,6 +140,12 @@ const quizAccess = () => {
           quiz_sub_category_name:quizData.quiz_sub_category_name,
           course_name:quizData.course_name,
           class_name:quizData.class_name,
+          quiz_metrics: {
+            total_attempts: quizData["quiz metrics"]?.total_attempts || 0,
+            your_attempts: quizData["quiz metrics"]?.your_attempts || 0,
+            highest_score: quizData["quiz metrics"]?.highest_score || null,
+            quickest_completion_time: quizData["quiz metrics"]?.quickest_completion_time || null,
+          },
         }
       });
     }

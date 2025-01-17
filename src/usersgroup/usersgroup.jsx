@@ -578,7 +578,7 @@ const handeledit =()=> {
 
     <div className="flex flex-col">
       <div className="w-full flex flex-row">
-      <label className="w-[25%] text-blue-800 font-semibold mb-2">Departments<span className="text-red-500">*</span></label>
+      <label className="w-[25%] text-blue-800 font-semibold mb-2">Departments<span className="text-red-500"></span></label>
       <select
         id="roles"
         name="roles"
@@ -603,7 +603,7 @@ const handeledit =()=> {
 
     <div className="flex flex-col">
       <div className="w-full flex flex-row">
-      <label className="w-[25%] text-blue-800 font-semibold mb-2">Class<span className="text-red-500">*</span></label>
+      <label className="w-[25%] text-blue-800 font-semibold mb-2">Class<span className="text-red-500"></span></label>
       <select
         id="roles"
         name="roles"
@@ -628,7 +628,7 @@ const handeledit =()=> {
 
     <div className="flex flex-col">
       <div className="w-full flex flex-row">
-      <label className="w-[25%] text-blue-800 font-semibold mb-2">Section<span className="text-red-500">*</span></label>
+      <label className="w-[25%] text-blue-800 font-semibold mb-2">Section<span className="text-red-500"></span></label>
       <select
         id="roles"
         name="roles"

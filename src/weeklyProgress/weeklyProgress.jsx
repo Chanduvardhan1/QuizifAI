@@ -39,38 +39,37 @@ export default function SegmentedProgressIndicator() {
 
     fetchQuizProgress();
   }, []);
-
-  // Progress value from API
   const progress =
-    quizProgress?.response === "success"
-      ? Math.round(
-          (quizProgress.data.total_attempted_quizzes /
-            quizProgress.data.total_assigned_quizzes) *
-            100
-        )
-      : 0;
+  quizProgress?.response === "success" &&
+  quizProgress.data.total_assigned_quizzes > 0
+    ? Math.round(
+        (quizProgress.data.total_attempted_quizzes /
+          quizProgress.data.total_assigned_quizzes) *
+          100
+      )
+    : 0; // Default to 0 if no quizzes are assigned
 
-  // Function to determine progress color
-  const getProgressColor = (progress) => {
-    if (progress <= 35) return "#ff2c2c"; // Red
-    if (progress <= 50) return "#ff7900"; // Yellow
-    if (progress <= 70) return "#FFFF00"; // Orange
-    if (progress <= 85) return "#90EE91"; // Light Green
-    return "#00ab00"; // Green
-  };
+// Function to determine progress color
+const getProgressColor = (progress) => {
+  if (progress <= 35) return "#ff2c2c"; // Red
+  if (progress <= 50) return "#ff7900"; // Yellow
+  if (progress <= 70) return "#FFFF00"; // Orange
+  if (progress <= 85) return "#90EE91"; // Light Green
+  return "#00ab00"; // Green
+};
 
-  // Function to determine progress label
-  const getProgressLabel = (progress) => {
-    if (progress <= 35) return "Very Poor";
-    if (progress <= 50) return "Poor";
-    if (progress <= 70) return "Average";
-    if (progress <= 85) return "Good";
-    return "Excellent";
-  };
+// Function to determine progress label
+const getProgressLabel = (progress) => {
+  if (progress <= 35) return "Very Poor";
+  if (progress <= 50) return "Poor";
+  if (progress <= 70) return "Average";
+  if (progress <= 85) return "Good";
+  return "Excellent";
+};
 
-  const progressColor = getProgressColor(progress);
-  const progressLabel = getProgressLabel(progress);
-
+// Get progress color and label
+const progressColor = getProgressColor(progress);
+const progressLabel = getProgressLabel(progress);
   return (
     <div className="relative flex flex-col items-center bg-white rounded-sm">
       {quizProgress?.response === "success" ? (

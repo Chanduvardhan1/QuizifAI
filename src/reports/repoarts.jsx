@@ -36,6 +36,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import myHistoryIcon from "../../public/myhistory.png"
 import global1 from "../../src/assets/Images/dashboard/image (13).png";
+import status from "../../src/assets/Images/dashboard/status (1).png"
 
 import { MdOutlineCancel } from "react-icons/md";
 
@@ -152,7 +153,7 @@ My History Reports
     </div>
     <div className="flex flex-col p-5 gap-2 shadow-md justify-start items-center w-[25%]  bg-white">
         <div>
-            <img src={myHistoryIcon} alt="" className="w-[50px] h-[50px]" />
+            <img src={status} alt="" className="w-[50px] h-[50px]" />
         </div>
         <div className=" text-[16px] font-semibold text-[#EF5130]">
             <h1 className="text-[16px]">

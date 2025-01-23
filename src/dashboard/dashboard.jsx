@@ -28,7 +28,6 @@ import "react-sweet-progress/lib/style.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../Authcontext/AuthContext";
-import Modal from "react-modal";
 import noOfAttampt from "../../public/noofattampt.png";
 import NoOfQuestion1 from "../../public/noofquestions.png";
 import clock1 from "../../public/clock1.png";
@@ -41,6 +40,7 @@ import username1 from "../../src/assets/Images/quiz-type/username.png"
 import calander from "../../src/assets/Images/quiz-type/calander.png"
 import timer from "../../src/assets/Images/quiz-type/Timer.png"
 import comment from "../../src/assets/Images/quiz-type/comment.png"
+import Modal from "react-modal";
 
 // import view1 from "../../public/view1.png";
 import newView from "../../public/newview.png";
@@ -99,6 +99,7 @@ const Dashboard = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
+  const [isPremiumModalOpen, setIsPremiumModalOpen] = useState(false);
 
   const [quizId, setQuizId] = useState(0);
   const [userid, setUserid] = useState(null);
@@ -431,7 +432,7 @@ const Dashboard = () => {
   //     setMessage(""); // Clear any previous messages
   //   }
   // };
-  const handleStartQuiz1 = (quizId, attemptsCount, retakeFlag, activeFlag) => {
+  const handleStartQuiz1 = (quizId, attemptsCount, retakeFlag, activeFlag,isPremium) => {
     // Check if the quiz is inactive
     if (activeFlag === "i") {
       toast.error("This quiz is inactive and cannot be started.");
@@ -445,13 +446,30 @@ const Dashboard = () => {
       );
       return;
     }
-  
+    if (isPremium) {
+      setIsPremiumModalOpen(true);
+      return;
+    }
     // Proceed with starting the quiz
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     navigate(`/quizaccess`);
     setMessage(""); // Clear any previous messages
   };
   
+  const open = () => {
+    setIsPremiumModalOpen(true);
+
+  }
+  const handlePremiumConfirmation = () => {
+    setIsPremiumModalOpen(false);
+    toast.success("You have confirmed your subscription!");
+    navigate(`/subscription`);
+  };
+
+  const closeModal = () => {
+    setIsPremiumModalOpen(false);
+  };
+
   const leaderboard = (
     quizId,
     quizTotalMarks,
@@ -791,7 +809,7 @@ const Dashboard = () => {
         </div>
         <div className="flex justify-end items-center">
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[10px]">
-        Premium Quizs <span className="text-red-500"></span>
+        Premium Quizzes <span className="text-red-500"></span>
         </label>
         <FormControlLabel
               control={<Switch />} 
@@ -813,7 +831,7 @@ const Dashboard = () => {
               <span
                 className="text-[#EF5130] text-[12px] mr-[20px] mt-1 cursor-pointer"
                 style={{ fontWeight: "600" }}
-                onClick={handleBackToQuizzes}
+                onClick={open}
               >
                 More{" "}
               </span>
@@ -823,7 +841,32 @@ const Dashboard = () => {
               />
             </span>
           </div>
-   
+          {isPremiumModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm">
+            <h2 className="text-xl font-semibold mb-4">
+              This is a premium quiz!
+            </h2>
+            <p className="mb-4">
+              Would you like to subscribe to access this quiz?
+            </p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={closeModal}
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              >
+                 No
+              </button>
+              <button
+               onClick={handlePremiumConfirmation}
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                          Yes
+              </button>
+            </div>
+          </div>
+        </div>
+       )}
 
 
           <div className="w-full flex flex-wrap mx-auto gap-[24px]">
@@ -915,7 +958,7 @@ const Dashboard = () => {
                             {(userRole === "Quiz Master" || userRole === "Super Admin") && (
                             <img src={more} alt="" onClick={() => toggleNavbar(index)} className=" w-[12px] h-[12px] hover:bg-gray-200   hover:rounded-full" />
                             )}
-            
+          
          
                             {cardStates[index]  && (
                               <div
@@ -3188,6 +3231,7 @@ src={quizItem.photo1 || back}
 
  <img src={more} alt="" onClick={() => toggleNavbar1(index)} className=" w-[12px] h-[12px] hover:bg-gray-200 z-10  hover:rounded-full" />
       )}
+
  {cardStates1[index]  && (
    <div
      className="absolute rounded-md w-[150px]  flex flex-col p-1 bg-gray-200 mt-[43px] ml-[115px]"

@@ -3,7 +3,7 @@ import React, {useContext, useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
-import help from "../../public/closeimage.png";
+// import help from "../../public/closeimage.png";
 import helpVivid from "../../src/assets/Images/quiz-type/star.png"
 import nyayahImage from "../../src/assets/Images/dashboard/print.png"
 import trophy from "../../src/assets/Images/dashboard/trophy.png"
@@ -11,6 +11,7 @@ import dateIcon from "../../src/assets/Images/images/quizresults/schedule.png";
 import Navigation from "../navbar/navbar";
 import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 import { useNavigate } from "react-router-dom";
+import help from "../../src/assets/Images/dashboard/communication.png"
 
 const HelpDesk = () => {
     const navigate = useNavigate();
@@ -153,10 +154,10 @@ const [userId, setUserId] = useState(localStorage.getItem("user_id"));
       return;
     }
     
-    if (!selectedOption) {
-      toast.error('Please select a ticket category.');
-      return;
-    }
+    // if (!selectedOption) {
+    //   toast.error('Please select a ticket category.');
+    //   return;
+    // }
     if (!userDescription) {
       toast.error('Ticket description cannot be empty.');
       return;
@@ -344,7 +345,7 @@ const handleMytickets = ()=> {
    
         <ToastContainer/>
 
-        <div className="flex flex-col flex-1 p-4 pt-12 gap-2">
+        <div className="flex flex-col  flex-1 p-4 pt-12 gap-2">
            <div className=" absolute top-3 right-3 cursor-pointer">
                     <img
                         src={LogoutIcon}
@@ -379,6 +380,13 @@ const handleMytickets = ()=> {
   <p size={20} />
   Start Over
 </button>
+</div>
+<div className='flex gap-2 w-full'>
+
+
+<div  className="w-1/3 bg-white shadow-md h-screen  rounded-lg flex flex-col items-center justify-center p-8 relative">
+<img src={help}  className="transition-all duration-500 w-64 h-62 mb-4"
+alt="" />
 </div>
           <div className="flex-1 bg-white shadow-md  rounded-lg p-6 overflow-hidden">
         <div className="chat-container space-y-4">
@@ -488,6 +496,7 @@ const handleMytickets = ()=> {
             )}
           </div>
         </div>
+      </div>
       </div>
     </div>
 

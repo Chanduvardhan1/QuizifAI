@@ -14,6 +14,7 @@ import { AuthContext } from "../Authcontext/AuthContext.jsx"
 import global1 from "../../src/assets/Images/dashboard/image (13).png";
 import report from "../../src/assets/Images/dashboard/image (14).png"
 import help from "../../src/assets/Images/dashboard/customer-support (1).png"
+import card from "../../src/assets/Images/dashboard/image (6).png"
 
 const Navigation = () => {
   // Initialize activePage state to the current pathname
@@ -193,7 +194,7 @@ const Navigation = () => {
             />
             <span className={styles.pageLink}>Global Rank</span>
           </NavLink> */}
-          <NavLink
+          {/* <NavLink
             to="/contact"
             className={`${styles.pageItem} ${activePage === '/contact' ? styles.bold : ''}`}
             onClick={() => handleNavigation('/contact')}
@@ -201,7 +202,7 @@ const Navigation = () => {
             <img src={contactUs} alt="Settings Icon"
               className={`${styles.pageIcon} ${activePage === '/contact' ? styles.activeIcon : ''}`} />
             <span className={styles.pageLink}>Contact US</span>
-          </NavLink>
+          </NavLink> */}
           <NavLink
             to="/HelpDesk"
             className={`${styles.pageItem} ${activePage === '/HelpDesk' ? styles.bold : ''}`}
@@ -210,6 +211,15 @@ const Navigation = () => {
             <img src={help} alt="help Icon"
               className={`${styles.pageIcon} ${activePage === '/HelpDesk' ? styles.activeIcon : ''}`} />
             <span className={styles.settingText}>Help</span>
+          </NavLink>
+          <NavLink
+            to="/subscription"
+            className={`${styles.pageItem} ${activePage === '/subscription' ? styles.bold : ''}`}
+            onClick={() => handleNavigation('/subscription')}
+          >
+            <img src={card} alt="Subscription Icon"
+              className={`${styles.pageIcon} ${activePage === '/subscription' ? styles.activeIcon : ''}`} />
+            <span className={styles.settingText}>Subscription</span>
           </NavLink>
           <NavLink
             to="/configure"

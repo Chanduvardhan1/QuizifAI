@@ -269,7 +269,14 @@ export default function dashboardNavBar() {
     const [loading, setLoading] = useState(true); // State to manage loading status
     const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
+    const [userType, setUserType] = useState(localStorage.getItem('user_type'));
 
+    useEffect(() => {
+      const storedUserType = localStorage.getItem('user_type');
+      setUserType(storedUserType);
+    }, []); // Run only once on component mount
+
+    
     useEffect(() => {
       // Detect if rank has increased or decreased
       if (globalRank > previousRank) {
@@ -572,15 +579,15 @@ const handleglobal =()=> {
             <div className="grid grid-cols-5 gap-4 mb-4">
             <div
      // handleprofile will be triggered when clicking the profile container
-    className="flex z-10 flex-col cursor-pointer items-center justify-center relative border shadow-lg rounded-md p-2 bg-white"
+    className="flex  flex-col cursor-pointer items-center justify-center relative border shadow-lg rounded-md p-2 bg-white"
   >
-    <div className="relative z-50">
+    <div className="relative">
       {loading ? (
         <p>Loading...</p>
       ) : error ? (
         <p>{error}</p>
       ) : (
-        <div className="relative z-50 w-full h-full">
+        <div className="relative  w-full h-full">
           <img
             src={photo}
             alt="Profile"
@@ -591,7 +598,7 @@ const handleglobal =()=> {
             className="absolute bottom-0 right-0 z-50 rounded-full cursor-pointer"
             onClick={openModal} // openModal is triggered here, stopping handleprofile
           >
-            <img src={camera1} alt="" className="w-[20px] z-50 h-[20px]" />
+            <img src={camera1} alt="" className="w-[20px] h-[20px]" />
           </div>
         </div>
       )}
@@ -749,11 +756,28 @@ const handleglobal =()=> {
                         <div className="flex justify-between">
                             <p className="text-[14px] text-[#214082] ">Type : </p>
                             <div>
-
-                            <p className="text-[14px] font-medium text-orange-500 ml-2"> Public/</p>
-                            <p className="text-[14px] font-medium text-[#8b8c8d] ml-2"> Subcribed/</p>
-                            <p className="text-[14px] font-medium text-[#8b8c8d] ml-2"> Organization</p>
-                            </div>
+  <p
+    className={`text-[14px] font-medium ml-2 ${
+      userType === "Public" ? 'text-orange-500' : 'text-[#8b8c8d]'
+    }`}
+  >
+    Public/
+  </p>
+  <p
+    className={`text-[14px] font-medium ml-2 ${
+      userType === "Subscribed" ? 'text-orange-500' : 'text-[#8b8c8d]'
+    }`}
+  >
+    Subscribed/
+  </p>
+  <p
+    className={`text-[14px] font-medium ml-2 ${
+      userType === "Organization" ? 'text-orange-500' : 'text-[#8b8c8d]'
+    }`}
+  >
+    Organization
+  </p>
+</div>
                         </div>
                         <div className="flex justify-between">
                             <p className="text-[14px] text-[#214082]">Date : </p>

@@ -406,6 +406,65 @@ useEffect(() =>{
 
 //----------------***quiz print end***-----------------
 
+  // --------------***Quiz Pakage and sections*** -------------- //
+  
+  const [quizPackages, setQuizPackages] = useState([]);
+  const [selectedPackageId, setSelectedPackageId] = useState("");
+  const [selectedPackageName, setSelectedPackageName] = useState("");
+  const [showPackageFields, setShowPackageFields] = useState(false);
+ 
+  const handleToggle5 = (event) => {
+    setShowPackageFields(event.target.checked);
+  }; 
+
+  useEffect(() => {
+    const fetchQuizPackages = async () => {
+      try {
+        const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+  
+        if (!authToken) {
+          console.error('No authentication token found');
+          return;
+        }
+        const response = await fetch("https://dev.quizifai.com:8010/quiz_packages/", {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            'Authorization': `Bearer ${authToken}`,
+          },
+        });
+  
+        const data = await response.json();
+  
+        if (data.response === "success") {
+          setQuizPackages(data.data);
+        } else {
+          console.error("Failed to fetch quiz packages:", data.response_message);
+        }
+      } catch (error) {
+        console.error("Error fetching quiz packages:", error);
+      }
+    };
+  
+    fetchQuizPackages();
+  }, []);
+  
+  const handlePackageChange = (event) => {
+    const selectedId = event.target.value;
+    setSelectedPackageId(selectedId);
+  
+    // Find the selected package name
+    const selectedPackage = quizPackages.find(
+      (pkg) => pkg.quiz_package_id.toString() === selectedId
+    );
+    setSelectedPackageName(selectedPackage?.quiz_package_name || "");
+  };
+  
+  // --------------***Quiz Pakage and sections end*** -------------- //
+  
+
+
+
   const [visibleInstructions, setVisibleInstructions] = useState(10);
 
   const handleInstructionChange = (index, value) => {
@@ -873,6 +932,9 @@ const handleComplexquestions = (event) => {
                quiz_instructions: instructionsString,
             org_id: selectedOrg,
             pdf_url:pdfUrl,
+            premium_quiz_flag: showPackageFields,
+            quiz_package_name: selectedPackageName,
+            quiz_package_id: selectedPackageId,
             questions: questions.map((question) => ({
               question_text: question.question_text,
               question_weightage: question.question_weightage,
@@ -1907,9 +1969,8 @@ const handleback =() =>{
                   <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">Premium Quizzes<span className="text-red-500">*</span></label>
                   <FormControlLabel
                    control={<Switch />} 
-                  // label="Required"
-                    // onChange={toggler3}
-                    // checked={publicAccess}
+                   checked={showPackageFields}
+         onChange={handleToggle5}
                     className="react-switch"
                   />
                  
@@ -1969,7 +2030,46 @@ const handleback =() =>{
           </div> */}
 
 
+{showPackageFields && (
+<>
 
+              <div className="flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className="w-[26%] text-blue-800 font-semibold mb-2">
+              Package Name<span className="text-red-500">*</span>
+              </label>
+              <select
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                value={selectedPackageId}
+                  onChange={handlePackageChange}
+              >
+               <option value="">Select a Package</option>
+          {quizPackages.map((pkg) => (
+            <option key={pkg.quiz_package_id} value={pkg.quiz_package_id}>
+              {pkg.quiz_package_name}
+            </option>
+          ))}
+              </select>
+            </div>
+            <hr className="h-[1px] w-full" />
+          </div>
+              <div className="flex flex-col ">
+            <div className="w-full flex flex-row">
+              <label className="w-[40%] text-blue-800 font-semibold mb-2 ">
+              Package Description <span className="text-red-500"></span>
+              </label>
+              <input
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                type="text"
+
+              />
+            </div>
+            <hr className="h-[1px] w-full" />
+         
+           
+                </div>
+                </>
+                )}
 <div className="md:col-span-2">
 
 <div className="w-full flex gap-6">

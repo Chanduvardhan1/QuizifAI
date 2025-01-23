@@ -106,16 +106,142 @@ const LoginPage = () => {
   };
   const navigate = useNavigate();
 
-  const handleLogin1 = async (loginOption, email, mobile, password) => {
+  // const handleLogin1 = async (loginOption, email, mobile, password) => {
 
+  //   if (!password) {
+  //     setErrorMessage("Please enter your password");
+  //     return;
+  //   }
+  //   try {
+  //     const platform = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+  //     ? "mobile" // If any of the identifiers are found, return 'Mobile'.
+  //     : "Web";
+  //     const tokenResponse = await fetch('https://dev.quizifai.com:8010/token', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/x-www-form-urlencoded',
+  //         accept: 'application/json',
+  //       },
+  //       body: new URLSearchParams({
+  //         username:  loginOption === "email" ? email : mobile, // Use the fixed username
+  //         password: password, // Use the fixed password
+  //       }),
+  //     });
+  
+  //     if (!tokenResponse.ok) {
+  //       const errorData = await tokenResponse.json();
+  //       const backendMessage = errorData.detail || "Failed to retrieve access token";
+  
+  //       // Show specific error message based on login option
+  //       const errorMessage =
+  //         loginOption === "email"
+  //           ? "Incorrect email or password. Please try again."
+  //           : "Incorrect mobile number or password. Please try again.";
+        
+  //       // If backend provides a specific error detail, use that
+  //       setErrorMessage(backendMessage.includes("Incorrect") ? errorMessage : backendMessage);
+  //       return; // Stop further execution
+  //     }
+  //     const tokenData = await tokenResponse.json();
+  //     const accessToken = tokenData.access_token;
+  
+  //     const response = await fetch(`https://dev.quizifai.com:8010/login`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //       body: JSON.stringify({
+  //         login_option: loginOption,
+  //         email_or_mobile: loginOption === "email" ? email : mobile,
+  //         password: password,
+  //         platform:platform,
+  //       }),
+  //     });
+  
+  //     const responseData = await response.json();
+  
+  //     if (response.ok) {
+  //       if (responseData.response === "success") {
+  //         const userId = responseData.data && responseData.data[0] && responseData.data[0].user_id;
+  //       const userRole = responseData.data && responseData.data[0] && responseData.data[0].user_role;
+  //       // const orgId = responseData.data?.[0]?.org_id;
+  //       // const orgId = responseData.data?.[0]?.org_id || 0; // Default to 0 if null or undefined
+  //       const orgId = responseData.data?.[0]?.org_id ?? "";
+        
+  //       if (userId && userRole) {
+  //         login(accessToken);
+  //         localStorage.setItem('user_id', userId);
+  //         localStorage.setItem('user_role', userRole);
+  //         localStorage.setItem('password', password);
+  //         localStorage.setItem('org_id', orgId);
+  //         localStorage.setItem('user_type', userType);
+  //         if (loginOption === "email") {
+  //           localStorage.setItem('email', email); // Store email in localStorage
+  //         }
+  //         setErrorMessage("");
+  //         if (userRole === "Admin" && orgId) {
+  //           navigate("/profileorganization");
+  //         } else {
+  //           navigate("/dashboard");
+  //         }
+  //           console.log("Login successful!");
+  //         } else {
+  //           setErrorMessage("An unknown error occurred while logging in.");
+  //         }
+  //       } else if (responseData.response === "fail") {
+  //         let errorMessage = responseData.response_message;
+  //         if (responseData.response_message === "Password is incorrect.Please try again.") {
+  //           errorMessage = "Password is incorrect. Please try again.";
+  //         } else if (responseData.response_message === "Email is not valid.Please check your email") {
+  //           errorMessage = "Email is not valid.Please check your email";
+  //         } else if (responseData.response_message === "Mobile Number is incorrect or account doesn't exist pls sinup.") {
+  //           errorMessage = "Mobile Number is not valid.Please check your number";
+  //         } else if (responseData.response_message === "Email is not verified, please verify your email") {
+  //           errorMessage = "Email is not verified, please verify your email";
+  //         } else if (responseData.response_message === "Registration is not yet completed.") {
+  //           errorMessage = "Registration is not yet completed.";
+  //         } else if (responseData.response_message === "Mobile Number is not valid.Please check your number") {
+  //           errorMessage = "Mobile Number is not valid.Please check your number";
+  //         } else if (responseData.response_message === "Email is incorrect or account doesn't exist.") {
+  //           errorMessage = "Email is incorrect or account doesn't exist.";
+  //         } else if (responseData.response_message === "Your login request is being processed. Please wait a moment while we verify your account details.") {
+  //           errorMessage = "Your login request is being processed. Please wait a moment while we verify your account details.";
+  //         }else if (responseData.response_message === "Please click here to complete your registration and activate your account.") {
+  //           errorMessage = "Please click here to complete your registration and activate your account.";
+  //         }else if (responseData.response_message === "Mobile Number is incorrect or account doesn't exist. Please sign up.") {
+  //           errorMessage = "Mobile Number is incorrect or account doesn't exist. Please sign up.";
+  //         }else if (responseData.response_message === "Mobile Number is not valid. Please check your number") {
+  //           errorMessage = "Mobile Number is not valid. Please check your number";
+  //         }else if (responseData.response_message === "Password is incorrect. Please try again.") {
+  //           errorMessage = "Password is incorrect. Please try again.";
+  //         }else if (responseData.response_message === "You've chosen mobile as your login method, so please log in using your mobile number.") {
+  //           errorMessage = "You've chosen mobile as your login method, So, please login by using your mobile number.";
+  //         }
+
+  //         setErrorMessage(errorMessage);
+  //       } else {
+  //         setErrorMessage("An unknown error occurred while logging in.");
+  //       }
+  //     } else {
+  //       setErrorMessage(responseData.message || "An unknown error occurred while logging in.");
+  //     }
+  //   } catch (error) {
+  //     setErrorMessage("An error occurred while logging in.");
+  //   }
+  // };
+  
+  const handleLogin1 = async (loginOption, email, mobile, password) => {
     if (!password) {
       setErrorMessage("Please enter your password");
       return;
     }
+  
     try {
       const platform = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-      ? "mobile" // If any of the identifiers are found, return 'Mobile'.
-      : "Web";
+        ? "mobile"
+        : "Web";
+  
       const tokenResponse = await fetch('https://dev.quizifai.com:8010/token', {
         method: 'POST',
         headers: {
@@ -123,8 +249,8 @@ const LoginPage = () => {
           accept: 'application/json',
         },
         body: new URLSearchParams({
-          username:  loginOption === "email" ? email : mobile, // Use the fixed username
-          password: password, // Use the fixed password
+          username: loginOption === "email" ? email : mobile,
+          password: password,
         }),
       });
   
@@ -132,16 +258,15 @@ const LoginPage = () => {
         const errorData = await tokenResponse.json();
         const backendMessage = errorData.detail || "Failed to retrieve access token";
   
-        // Show specific error message based on login option
         const errorMessage =
           loginOption === "email"
             ? "Incorrect email or password. Please try again."
             : "Incorrect mobile number or password. Please try again.";
-        
-        // If backend provides a specific error detail, use that
+  
         setErrorMessage(backendMessage.includes("Incorrect") ? errorMessage : backendMessage);
-        return; // Stop further execution
+        return;
       }
+  
       const tokenData = await tokenResponse.json();
       const accessToken = tokenData.access_token;
   
@@ -155,78 +280,48 @@ const LoginPage = () => {
           login_option: loginOption,
           email_or_mobile: loginOption === "email" ? email : mobile,
           password: password,
-          platform:platform,
+          platform: platform,
         }),
       });
   
       const responseData = await response.json();
   
-      if (response.ok) {
-        if (responseData.response === "success") {
-          const userId = responseData.data && responseData.data[0] && responseData.data[0].user_id;
-        const userRole = responseData.data && responseData.data[0] && responseData.data[0].user_role;
-        // const orgId = responseData.data?.[0]?.org_id;
-        // const orgId = responseData.data?.[0]?.org_id || 0; // Default to 0 if null or undefined
+      if (response.ok && responseData.response === "success") {
+        const userData = responseData.data?.[0];
+        if (userData?.user_id && userData?.user_role) {
+          const { user_id, user_role, org_id = "", user_type = "" } = userData;
+    //       // const orgId = responseData.data?.[0]?.org_id;
+  //       // const orgId = responseData.data?.[0]?.org_id || 0; // Default to 0 if null or undefined
         const orgId = responseData.data?.[0]?.org_id ?? "";
-        
-        if (userId && userRole) {
           login(accessToken);
-          localStorage.setItem('user_id', userId);
-          localStorage.setItem('user_role', userRole);
+          localStorage.setItem('user_id', user_id);
+          localStorage.setItem('user_role', user_role);
           localStorage.setItem('password', password);
           localStorage.setItem('org_id', orgId);
+          localStorage.setItem('user_type', user_type);
+  
           if (loginOption === "email") {
-            localStorage.setItem('email', email); // Store email in localStorage
+            localStorage.setItem('email', email);
           }
+  
           setErrorMessage("");
-          if (userRole === "Admin" && orgId) {
+          if (user_role === "Admin" && org_id) {
             navigate("/profileorganization");
           } else {
             navigate("/dashboard");
           }
-            console.log("Login successful!");
-          } else {
-            setErrorMessage("An unknown error occurred while logging in.");
-          }
-        } else if (responseData.response === "fail") {
-          let errorMessage = responseData.response_message;
-          if (responseData.response_message === "Password is incorrect.Please try again.") {
-            errorMessage = "Password is incorrect. Please try again.";
-          } else if (responseData.response_message === "Email is not valid.Please check your email") {
-            errorMessage = "Email is not valid.Please check your email";
-          } else if (responseData.response_message === "Mobile Number is incorrect or account doesn't exist pls sinup.") {
-            errorMessage = "Mobile Number is not valid.Please check your number";
-          } else if (responseData.response_message === "Email is not verified, please verify your email") {
-            errorMessage = "Email is not verified, please verify your email";
-          } else if (responseData.response_message === "Registration is not yet completed.") {
-            errorMessage = "Registration is not yet completed.";
-          } else if (responseData.response_message === "Mobile Number is not valid.Please check your number") {
-            errorMessage = "Mobile Number is not valid.Please check your number";
-          } else if (responseData.response_message === "Email is incorrect or account doesn't exist.") {
-            errorMessage = "Email is incorrect or account doesn't exist.";
-          } else if (responseData.response_message === "Your login request is being processed. Please wait a moment while we verify your account details.") {
-            errorMessage = "Your login request is being processed. Please wait a moment while we verify your account details.";
-          }else if (responseData.response_message === "Please click here to complete your registration and activate your account.") {
-            errorMessage = "Please click here to complete your registration and activate your account.";
-          }else if (responseData.response_message === "Mobile Number is incorrect or account doesn't exist. Please sign up.") {
-            errorMessage = "Mobile Number is incorrect or account doesn't exist. Please sign up.";
-          }else if (responseData.response_message === "Mobile Number is not valid. Please check your number") {
-            errorMessage = "Mobile Number is not valid. Please check your number";
-          }else if (responseData.response_message === "Password is incorrect. Please try again.") {
-            errorMessage = "Password is incorrect. Please try again.";
-          }else if (responseData.response_message === "You've chosen mobile as your login method, so please log in using your mobile number.") {
-            errorMessage = "You've chosen mobile as your login method, So, please login by using your mobile number.";
-          }
-
-          setErrorMessage(errorMessage);
+          console.log("Login successful!");
         } else {
           setErrorMessage("An unknown error occurred while logging in.");
         }
+      } else if (responseData.response === "fail") {
+        setErrorMessage(responseData.response_message || "An unknown error occurred.");
       } else {
-        setErrorMessage(responseData.message || "An unknown error occurred while logging in.");
+        setErrorMessage("An unknown error occurred while logging in.");
       }
     } catch (error) {
       setErrorMessage("An error occurred while logging in.");
+      console.error("Login error:", error);
     }
   };
   

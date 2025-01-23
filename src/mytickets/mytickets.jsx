@@ -916,6 +916,8 @@ const handleEditClick = (ticket) => {
                   value={selectedPriorities}
                   onChange={handleselectedPriorities}
         >
+          <option> Select Priority
+          </option>
           {/* <option value="" disabled> selete Priority </option> */}
           {priorities.map(([id, priority]) => (
            <option key={id} value={id}>
@@ -943,6 +945,8 @@ const handleEditClick = (ticket) => {
                onChange={handleStatuscategories}
         >
           {/* <option value="" disabled>Institations</option> */}
+          <option> Select category
+           </option>
           {categories.map(([id, category]) => (
            <option key={id} value={id}>
              {category}

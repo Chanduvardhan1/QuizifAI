@@ -109,10 +109,7 @@ const classes = () => {
     toast.error("Section Name is required.");
     return;
   }
-  if (!sectionCode) {
-    toast.error("Section Code is required.");
-    return;
-  }
+
       const response = await fetch("https://dev.quizifai.com:8010/add_class_and_section/", {
         method: "POST",
         headers: {
@@ -213,10 +210,7 @@ const classes = () => {
         toast.error("Section Name is required.");
         return;
       }
-      if (!sectionCode) {
-        toast.error("Section Code is required.");
-        return;
-      }
+    
       if (!SectionId) {
         toast.error("Section Id is required.");
         return;

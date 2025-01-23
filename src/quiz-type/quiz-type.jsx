@@ -307,6 +307,14 @@ export default function quiztype() {
   // Handle the upload of front or back image
   const [visibleInstructions, setVisibleInstructions] = useState(10);
 
+  const [showPackageFields, setShowPackageFields] = useState(false);
+  const [showPackageFields1, setShowPackageFields1] = useState(false);
+
+  const handleCheckboxChange1 = (event) => {
+    setShowPackageFields(event.target.checked);
+  };
+
+  
   const handleInstructionChange = (index, value) => {
     const updatedInstructions = [...instructions];
     updatedInstructions[index] = value;
@@ -508,6 +516,16 @@ useEffect(() =>{
     setlayout1(false)
   }
 
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const handleToggle1 = (event) => {
+    setIsPopupOpen(event.target.checked); 
+  };
+  const handleToggle2 = () => {
+    setShowPackageFields1(false); 
+  
+  };
+
 //----------------***quiz print end***-----------------
 
   const [step, setStep] = useState(0);
@@ -584,6 +602,12 @@ useEffect(() =>{
 
   };
   const handleNextpage4 = () => {
+  
+    setStep(6);
+
+
+  };
+  const handleNextpage5 = () => {
     setStep(6);
 
   };
@@ -923,7 +947,6 @@ const handleToLayout4 = () =>{
 
   const closeModal = () => {
     setShowModal(false); // Close the modal
-  
     const orgId = localStorage.getItem('org_id'); // Check for orgId in localStorage
   
     if (!orgId) {
@@ -937,6 +960,7 @@ const handleToLayout4 = () =>{
     } else if (publicAccess === "on") {
       navigate("/dashboard");
     }
+   
   };
 
   useEffect(() => {
@@ -1059,6 +1083,9 @@ for (const question of questions) {
           user_id: user_id,
           quiz_instructions: instructionsString,
           org_id: orgId,
+          premium_quiz_flag: showPackageFields,
+          quiz_package_name: selectedPackageName,
+          quiz_package_id: selectedPackageId,
           questions: questions.map((question) => ({
             question_text: question.question_text,
             correct_answer_description:question.correct_answer_description,
@@ -1190,6 +1217,59 @@ for (const question of questions) {
         .catch((error) => console.error('Error sending org_id:', error));
     };
   
+// --------------***Quiz Pakage and sections*** -------------- //
+
+const [quizPackages, setQuizPackages] = useState([]);
+const [selectedPackageId, setSelectedPackageId] = useState("");
+const [selectedPackageName, setSelectedPackageName] = useState("");
+
+useEffect(() => {
+  const fetchQuizPackages = async () => {
+    try {
+      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+      if (!authToken) {
+        console.error('No authentication token found');
+        return;
+      }
+      const response = await fetch("https://dev.quizifai.com:8010/quiz_packages/", {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          'Authorization': `Bearer ${authToken}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (data.response === "success") {
+        setQuizPackages(data.data);
+      } else {
+        console.error("Failed to fetch quiz packages:", data.response_message);
+      }
+    } catch (error) {
+      console.error("Error fetching quiz packages:", error);
+    }
+  };
+
+  fetchQuizPackages();
+}, []);
+
+const handlePackageChange = (event) => {
+  const selectedId = event.target.value;
+  setSelectedPackageId(selectedId);
+
+  // Find the selected package name
+  const selectedPackage = quizPackages.find(
+    (pkg) => pkg.quiz_package_id.toString() === selectedId
+  );
+  setSelectedPackageName(selectedPackage?.quiz_package_name || "");
+};
+
+// --------------***Quiz Pakage and sections end*** -------------- //
+
+
+
 // --------------***class and sections *** -------------- //
 const [classes1, setClasses1] = useState([]);
 const [sections, setSections] = useState([]);
@@ -1321,7 +1401,13 @@ const closeModal2 = () => {
 const handleToggle = (event) => {
   setShareWithGroupOrOrg(event.target.checked); // Update state based on toggle
 }; 
-
+const handleToggle4 = (event) => {
+  // setShowPackageFields(event.target.checked);
+  setShowPackageFields1(true); // Update state based on toggle
+}; 
+const handleToggle5 = (event) => {
+  setShowPackageFields(event.target.checked);
+}; 
 const handleSubmit = async (e) => {
   e.preventDefault();
   const selectedUserIds = selectedUsers.map((user) => user.value); // Extract IDs
@@ -1976,6 +2062,8 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                           disabled={classes.length === 0}
                         >
                           <option value="" disabled>Select a class</option>
+                          <option value="">None</option>
+
                           {classes.map((className, index) => (
                             <option key={index} value={className}>
                               {className}
@@ -1986,21 +2074,109 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                       <hr className="h-[1px] w-full" />
                     </div>
                      {/* Premium */}
-            <div className=" w-[50%] flex flex-col">
+                     <div className=" w-[50%] flex flex-col">
                   <div className="w-[100%] flex flex-row">
-                  <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">Premium Quizzes<span className="text-red-500">*</span></label>
+                  <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">Premium Quizes Create<span className="text-red-500"></span></label>
                   <FormControlLabel
                    control={<Switch />} 
-                  // label="Required"
-                    // onChange={toggler3}
-                    // checked={publicAccess}
+                   checked={showPackageFields}
+                   onChange={handleToggle5}
                     className="react-switch"
                   />
+                  {/* <button onClick={handleToggle4} className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]">+</button> */}
                  
                   </div>
                 
                 </div>
-                     {/*  Public access */}
+                {/* {showPackageFields1 && (
+               <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+               <div className="flex flex-col bg-white p-6 shadow-lg rounded-lg w-[50%]">
+               <button
+                      className="flex justify-end text-gray-900 hover:text-gray-800"
+                      onClick={handleToggle2}
+                      aria-label="Close"
+                    >
+                      ✕
+                    </button>
+               <h2 className="text-xl font-semibold text-blue-800 mb-4">Create Package</h2>
+               <div className="flex items-center gap-2 mb-4">
+                  <input 
+                  className="w-4 h-4" type="checkbox"
+                  onChange={handleCheckboxChange1}
+                  />
+                   <label className="w-[30%] text-blue-800 font-semibold">
+                Create New Package<span className="text-red-500"></span>
+                </label>
+                <select
+                  className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+
+                   >
+                   <option value="">Select New Package </option>
+                 
+                </select>
+                  </div>
+                  {showPackageFields && (
+        <>
+                  <div className="flex flex-row mb-4">
+                <label className="w-[35%] text-blue-800 font-semibold">
+                Package Name<span className="text-red-500"></span>
+                </label>
+                <select
+                  className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+                  value={selectedPackageId}
+                  onChange={handlePackageChange}
+                   >
+                    <option value="">Select a Package</option>
+          {quizPackages.map((pkg) => (
+            <option key={pkg.quiz_package_id} value={pkg.quiz_package_id}>
+              {pkg.quiz_package_name}
+            </option>
+          ))}
+                </select>
+              </div>
+            
+                  <div className="flex flex-row mb-4">
+                    <label className="w-[35%] text-blue-800 font-semibold">Package Description<span className="text-red-500"></span></label>
+                    <input
+                      className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+                      type="text"
+                      placeholder="Package Description"
+
+                    />
+                  </div>
+              
+                  </>
+      )}
+                 
+              
+              
+                
+                  <div className='flex justify-end'>
+              
+                 
+                  <div className='flex gap-1'>
+              
+                   
+              <button
+               className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+               onClick={handleToggle2}
+
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleToggle2}
+                   className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+                  >
+                  Create
+                  </button>
+              </div>
+                  </div>
+              
+                </div>
+                  </div>
+                     )} */}
+                          {/*  Public access */}
             <div className=" w-[50%] flex flex-col">
                   <div className="w-[100%] flex flex-row">
                   <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500">*</span></label>
@@ -2015,13 +2191,53 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                   </div>
                 
                 </div>
+              
+               
+                </div>
+               
+                </div>
+
           
-               
-                </div>
-               
-                </div>
+                {showPackageFields && (
+<>
 
+              <div className="flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className="w-[26%] text-blue-800 font-semibold mb-2">
+              Package Name<span className="text-red-500">*</span>
+              </label>
+              <select
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                value={selectedPackageId}
+                  onChange={handlePackageChange}
+              >
+               <option value="">Select a Package</option>
+          {quizPackages.map((pkg) => (
+            <option key={pkg.quiz_package_id} value={pkg.quiz_package_id}>
+              {pkg.quiz_package_name}
+            </option>
+          ))}
+              </select>
+            </div>
+            <hr className="h-[1px] w-full" />
+          </div>
+              <div className="flex flex-col ">
+            <div className="w-full flex flex-row">
+              <label className="w-[40%] text-blue-800 font-semibold mb-2 ">
+              Package Description <span className="text-red-500"></span>
+              </label>
+              <input
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                type="text"
 
+              />
+            </div>
+            <hr className="h-[1px] w-full" />
+         
+           
+                </div>
+                </>
+                )}
       <div className="md:col-span-2">
 
 <div className="w-full flex gap-6">
@@ -2926,6 +3142,118 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
         {/* // )} */}
         </>
 )}
+{/* {step === 5 && (
+         <>
+          <div className=" bg-white my-4 p-5">
+          <div className="flex flex-col gap-6 bg-white ">
+    
+    <div className="flex items-start">
+        <h1 className=" font-semibold text-[20px] text-[#214082]">Create Package</h1>
+      </div>
+
+<div className="flex gap-6 w-full">
+
+<div className="flex flex-col  gap-6 w-full">
+
+
+
+<div className="flex items-center">
+        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[25px]">
+        Create Quizes Premium 
+        <span className="text-red-500">*</span>
+        </label>
+        <FormControlLabel
+        control={<Switch />} 
+        checked={showPackageFields} // Controlled state
+        onChange={handleToggle4} // Update state on toggle
+          className="react-switch"
+        />
+        
+      </div>
+      {showPackageFields && (
+        <>
+                  <div className="flex flex-row mb-4">
+                <label className="w-[18%] text-blue-800 font-semibold">
+                Package Name<span className="text-red-500">*</span>
+                </label>
+                <select
+                  className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+                  value={selectedPackageId}
+                  onChange={handlePackageChange}
+                   >
+                   <option value="">Select a Package</option>
+          {quizPackages.map((pkg) => (
+            <option key={pkg.quiz_package_id} value={pkg.quiz_package_id}>
+              {pkg.quiz_package_name}
+            </option>
+          ))}
+                </select>
+              </div>
+            
+                  <div className="flex flex-row mb-4">
+                    <label className="w-[18%] text-blue-800 font-semibold">Package Description<span className="text-red-500">*</span></label>
+                    <input
+                      className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+                      type="text"
+                      placeholder="Package Description"
+
+                    />
+                  </div>
+              
+                  </>
+      )}
+      
+
+
+
+</div>
+
+
+</div>
+
+
+    </div>
+  
+    <div className="flex justify-between md:col-span-2 py-5">
+    
+
+            <button
+              onClick={() => setStep(4)}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Back
+            </button>
+            <div className="flex gap-2">
+            <button onClick={handleNextpage4} className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-sm text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
+  Skip
+</button>
+
+            <button
+            // onClick={handleSubmit}
+              // onClick={handleNextpage4}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Create
+            </button>
+            
+            <button
+            onClick={handleNextpage4}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Next
+            </button>
+            </div>
+          
+          </div>
+   
+ 
+   
+    </div>
+    </> 
+       )} */}
 {step === 5 && (
          <>
           <div className=" bg-white my-4 p-5">
@@ -2971,7 +3299,7 @@ value={orgId}
 
 <div className="flex items-center">
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[72px]">
-        Sharing with Group/Organization
+         Group/Organization
         <span className="text-red-500">*</span>
         </label>
         <FormControlLabel
@@ -3154,7 +3482,7 @@ isMulti
               Back
             </button>
             <div className="flex gap-2">
-            <button onClick={handleNextpage4} className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-sm text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
+            <button onClick={handleNextpage5} className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-sm text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
   Skip
 </button>
 
@@ -3168,7 +3496,7 @@ isMulti
             </button>
             
             <button
-            onClick={handleNextpage4}
+            onClick={handleNextpage5}
               className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
 
             >

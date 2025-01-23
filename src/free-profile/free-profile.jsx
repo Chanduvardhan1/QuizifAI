@@ -90,7 +90,7 @@ const FreeProfile = () => {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [message, setMessage] = useState("");
   const [userrole, setuserrole] = useState("quiz user");
-  const [usertype, setusertype] = useState("public");
+  const [usertype, setusertype] = useState("");
   const [displayname, setdisplayname] = useState(null);
   const [professions, setProfessions] = useState("student");
   const [emailOtp, setEmailOtp] = useState("");
@@ -268,6 +268,7 @@ const FreeProfile = () => {
           address: userProfileDetails.user_address_line_1,
           otheroccupation: userProfileDetails.other_occupation_name,
           rolename: userProfileDetails.role_name,
+          usertype: userProfileDetails.role_name,
         };
         setFirstName(userProfileDetails.first_name);
         setMiddleName(userProfileDetails.middle_name);
@@ -286,6 +287,7 @@ const FreeProfile = () => {
         setInitialLoginData(initialData);
         setPreferredLoginMethod(userProfileDetails.preferred_login_method);
         setOtherccupation(userProfileDetails.other_occupation_name);
+        setusertype(userProfileDetails.user_type);
         setShowOtherInput(userProfileDetails.occupation_name === "Other");
         setrolename(userProfileDetails.role_name);
         const userDetails = data.data[0].audit_details;
@@ -356,7 +358,7 @@ const FreeProfile = () => {
       // user_phone_number: mobileNumber,
       otp: otp,
       user_role: rolename, // Example value, adjust as needed
-      user_type: "Public",
+      user_type: usertype,
       user_org_id: orgId,
       gender: gender,
       display_name: " ",
@@ -1449,6 +1451,22 @@ const FreeProfile = () => {
                 placeholder="Country"
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
+                disabled={!isEditing}
+              ></input>
+  
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      <div className="flex flex-col w-full">
+        <div className="w-full flex flex-row">
+        <label className="w-[55%] text-blue-800 font-semibold mb-2">Mobile Number<span className="text-red-500"></span></label>
+        <input
+              type="text"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="mobileNumber"
+                value={mobileNumber}
+                onChange={(e) => setMobileNumber(e.target.value)}
                 disabled={!isEditing}
               ></input>
   

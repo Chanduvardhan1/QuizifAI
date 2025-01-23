@@ -20,36 +20,21 @@ import './App.css';
         };
     }, []);
     useEffect(() => {
-      const disablePrintScreen = (e) => {
-          if (e.key === 'PrintScreen') {
-              e.preventDefault();
-              alert('Screenshots are disabled on this page.');
-              // Optionally, you can clear the clipboard content
-              navigator.clipboard.writeText('');
-          }
+      const handleKeyDown = (event) => {
+        if (event.key === "PrintScreen") {
+          alert("Screenshots are not allowed!");
+          // Optionally, clear sensitive content
+          document.body.style.display = "none"; // Hide content temporarily
+          setTimeout(() => (document.body.style.display = "block"), 1000);
+        }
       };
-
-      // Attach the event listener
-      document.addEventListener('keydown', disablePrintScreen);
-
-      // Clean up the event listener on unmount
+  
+      window.addEventListener("keydown", handleKeyDown);
+  
       return () => {
-          document.removeEventListener('keydown', disablePrintScreen);
+        window.removeEventListener("keydown", handleKeyDown);
       };
-  }, []);
-  useEffect(() => {
-    const detectDevTools = () => {
-        const element = new Image();
-        Object.defineProperty(element, 'id', {
-            get: () => {
-                alert('Developer tools detected. Screenshots are disabled.');
-            },
-        });
-        console.log(element);
-    };
-
-    detectDevTools();
-}, []);
+    }, []);
 
       return (
         <>

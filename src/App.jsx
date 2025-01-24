@@ -19,6 +19,7 @@ import './App.css';
             document.removeEventListener('contextmenu', disableRightClick);
         };
     }, []);
+
     useEffect(() => {
       const handleKeyDown = (event) => {
         if (event.key === "PrintScreen") {

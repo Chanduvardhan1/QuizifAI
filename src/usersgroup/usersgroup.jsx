@@ -17,6 +17,7 @@ function usersgroup() {
     const [newPasswordVisible, setNewPasswordVisible] = useState(false);
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
     const [showNewPasswords, setShowNewPasswords] = useState(false);
+
     const navigate = useNavigate();
     const userId = localStorage.getItem("user_id");
   const userRole = localStorage.getItem("user_role");
@@ -235,9 +236,28 @@ const [password, setPassword] = useState('');
       setPassword(''); // Clear password if email is empty
     }
   };
+  const [validationMessages, setValidationMessages] = useState([]);
 
   const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+    const value = e.target.value;
+    setPassword(value);
+
+    // Validation conditions
+    const errors = [];
+    if (value.length < 8) {
+      errors.push("Password must be at least 8 characters long.");
+    }
+    if (!/[A-Z]/.test(value)) {
+      errors.push("Password must have at least 1 uppercase letter.");
+    }
+    if ((value.match(/[a-z]/g) || []).length < 3) {
+      errors.push("Password must have at least 3 lowercase letters.");
+    }
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
+      errors.push("Password must have at least 1 special symbol.");
+    }
+
+    setValidationMessages(errors);
   };
 
 // Randompassword generate end //
@@ -693,33 +713,59 @@ const handeledit =()=> {
 
     <div className=" w-full flex flex-col">
       <div className="w-full flex flex-row">
-      <label className="w-[25%] text-blue-800 font-semibold mb-2 ">Password<span className="text-red-500">*</span></label>
+      <label className="w-[26%] text-blue-800 font-semibold mb-2 ">Password<span className="text-red-500">*</span></label>
 
-      <input
-        className={`w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[15px] focus:outline-none ${
-          !isEditing ? 'text-gray-700 cursor-not-allowed' : 'text-black'
-        }`}
-        type={showPassword ? 'text' : 'password'}
-        value={password}
-        onChange={handlePasswordChange}
-        disabled={!isEditing} 
-        required
-      />
-        <div
-        className="absolute  left-[670px] mt-2 mr-1 text-lg text-[#A7A3FF] cursor-pointer"
-        onClick={togglePasswordVisibility}
-      >
-        {showPassword ? <FaEye /> : <FaEyeSlash />}
-      </div>
+      <div className="relative w-full">
+  <input
+     className={`w-full border-transparent h-8 border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[15px] focus:outline-none ${
+      !isEditing ? 'text-gray-700 cursor-not-allowed' : 'text-black'
+    }`}
+    type={showPassword ? 'text' : 'password'}
+    value={password}
+    onChange={handlePasswordChange}
+    disabled={!isEditing}
+    required
+  />
+  {/* Password visibility toggle */}
+  <div
+    onClick={togglePasswordVisibility}
+    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-[#A7A3FF] cursor-pointer"
+  >
+    {showPassword ? <FaEye /> : <FaEyeSlash />}
+  </div>
+</div>
+
       </div>
     
       <hr className={`h-[1px] w-full`} />
+      {validationMessages.length > 0 && (
+        <div className="mt-2">
+          {validationMessages.map((message, index) => (
+            <p key={index} className="text-red-500 text-sm">
+              {message}
+            </p>
+          ))}
+        </div>
+      )}
     </div>
 
-    <div className="  m-2">
-                <img src={editicon} onClick={handeledit} className=" w-[18px] h-[18px] cursor-pointer "/>
-          
-            </div>
+    <div className="ml-2">
+      {isEditing ? (
+        <button
+          onClick={handeledit} // Switch back to edit mode
+           className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+        >
+          Save
+        </button>
+      ) : (
+        <img
+          src={editicon}
+          onClick={handeledit} // Switch to save mode
+          className="w-[18px] h-[18px] cursor-pointer"
+          alt="Edit"
+        />
+      )}
+    </div>
             </div>
     
     </div>

@@ -42,6 +42,7 @@ const subscription = ()=> {
   const [amount, setAmount] = useState(900); // in rupees
   const [currency, setCurrency] = useState("INR");
   const [receipt, setReceipt] = useState("string");
+  const [responseMessage, setResponseMessage] = React.useState(null);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -254,10 +255,45 @@ const subscription = ()=> {
       description: "Test Transaction",
       image: "https://example.com/your_logo", // Replace with your logo URL
       order_id: order.id, // Razorpay order ID from API
-      handler: function (response) {
-        alert(`Payment ID: ${response.razorpay_payment_id}`);
-        alert(`Order ID: ${response.razorpay_order_id}`);
-        alert(`Signature: ${response.razorpay_signature}`);
+      handler: async function (response) {
+        // Successful payment response
+        // alert(`Payment ID: ${response.razorpay_payment_id}`);
+        // alert(`Order ID: ${response.razorpay_order_id}`);
+        // alert(`Signature: ${response.razorpay_signature}`);
+  
+        // Prepare data for the verification API
+        const paymentDetails = {
+          user_name: userName, // Replace with actual user name
+          email_id: emailId,   // Replace with actual email
+          plan_type: "",  // Replace with actual plan type
+          order_id: response.razorpay_order_id,
+          payment_id: response.razorpay_payment_id,
+          razorpay_signature: response.razorpay_signature,
+        };
+  
+        try {
+          const verifyPaymentResponse = await fetch('https://dev.quizifai.com:8010/verify_payment_signature/', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDaGFuZHUgVmFyZGhhbiBLIiwiZXhwIjoyNTM0MDIzMDA3OTl9.cieF0LLgjuCOq0di0ZQ-QpUpplNc1beM0BKXk8zQVXo',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(paymentDetails),
+          });
+  
+          const responseData = await verifyPaymentResponse.json();
+  
+          if (verifyPaymentResponse.ok) {
+            setResponseMessage("Payment verified successfully!");
+            // Handle the success response (e.g., redirect, show message)
+          } else {
+            setResponseMessage(`Payment verification failed: ${responseData.message}`);
+            // Handle the failure response (e.g., show error message)
+          }
+        } catch (error) {
+          setResponseMessage("Error verifying payment: " + error.message);
+        }
       },
       prefill: {
         name: userName,
@@ -272,18 +308,15 @@ const subscription = ()=> {
   
     const rzp1 = new window.Razorpay(options); // Create Razorpay instance
     rzp1.on("payment.failed", function (response) {
-      alert(`Code: ${response.error.code}`);
-      alert(`Description: ${response.error.description}`);
-      alert(`Source: ${response.error.source}`);
-      alert(`Step: ${response.error.step}`);
-      alert(`Reason: ${response.error.reason}`);
-      alert(`Order ID: ${response.error.metadata.order_id}`);
-      alert(`Payment ID: ${response.error.metadata.payment_id}`);
+      setResponseMessage(`Payment failed: ${response.error.description}`);
     });
   
     rzp1.open(); // Open the Razorpay payment modal
   };
   
+  const handleclose = () => {
+    setResponseMessage(null); // Close the modal
+  };
 
   const [currentPage, setCurrentPage] = useState("plans"); // To track the current step
   const [selectedPlan, setSelectedPlan] = useState(null); // To store the selected plan
@@ -762,7 +795,33 @@ const subscription = ()=> {
             Back to Plans
           </button>
           </div>
+          {responseMessage && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div
+              className={`bg-white rounded-lg shadow-lg p-6 w-96 text-center ${
+                responseMessage.includes("success") ? "border-green-500" : "border-red-500"
+              } border-t-4`}
+            >
+              <h2
+                className={`text-xl font-semibold ${
+                  responseMessage.includes("success") ? "text-green-500" : "text-red-500"
+                }`}
+              >
+                {responseMessage.includes("success") ? "Success" : "Error"}
+              </h2>
+              <p className="mt-2 text-gray-700">{responseMessage}</p>
+              <button
+                onClick={handleclose} // Close the popup
+                className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
         </div>
+      
+        
       )}
       {/* Confirmation Page */}
       {currentPage === "confirmation" && (

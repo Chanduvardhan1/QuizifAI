@@ -1069,7 +1069,7 @@ for (const question of questions) {
           quiz_category_name: selectedCategory,
           multi_answer: multiAnswer,
           quiz_sub_category_name: selectedSubCategory,
-          class_name: selectedClass,
+          // class_name: selectedClass,
           pass_percentage: percentage,
           quiz_complexity_name: selectedComplexity,
           retake_flag: selectedValue,
@@ -2050,7 +2050,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                     </div>
           
                     {/* Class */}
-                    <div className="w-[50%] flex flex-col">
+                    {/* <div className="w-[50%] flex flex-col">
                       <div className="w-full flex flex-row">
                         <label className=" w-[20%] text-blue-800 font-semibold mb-2">
                           Class<span className="text-red-500"></span>
@@ -2072,7 +2072,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                         </select>
                       </div>
                       <hr className="h-[1px] w-full" />
-                    </div>
+                    </div> */}
                      {/* Premium */}
                      <div className=" w-[50%] flex flex-col">
                   <div className="w-[100%] flex flex-row">
@@ -2204,7 +2204,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
               <div className="flex flex-col">
             <div className="w-full flex flex-row">
               <label className="w-[26%] text-blue-800 font-semibold mb-2">
-              Package Name<span className="text-red-500">*</span>
+              Package Name<span className="text-red-500"></span>
               </label>
               <select
                 className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
@@ -2212,6 +2212,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                   onChange={handlePackageChange}
               >
                <option value="">Select a Package</option>
+               <option value="">None</option>
           {quizPackages.map((pkg) => (
             <option key={pkg.quiz_package_id} value={pkg.quiz_package_id}>
               {pkg.quiz_package_name}

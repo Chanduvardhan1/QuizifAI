@@ -96,7 +96,7 @@ const progressLabel = getProgressLabel(progress);
               </h1>
             </div>
           </div>
-          <div className="flex flex-col items-center w-full mt-1 space-y-4">
+          <div className="flex flex-col items-center w-full mt-1 space-y-1">
             {/* Progress bar container */}
             <div className="w-full max-w-lg bg-gray-200 h-2 rounded-lg relative">
               <div
@@ -111,13 +111,13 @@ const progressLabel = getProgressLabel(progress);
             {/* Progress percentage and label */}
             <div className="text-center">
               <h1
-                className="text-lg font-bold"
+                className="text-[18px] font-bold"
                 style={{ color: progressColor }}
               >
                 {progress}%
               </h1>
               <h2
-                className="text-xl font-medium"
+                className="text-[18px] font-medium"
                 style={{ color: progressColor }}
               >
                 {progressLabel}

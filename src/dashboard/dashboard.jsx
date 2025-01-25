@@ -112,6 +112,7 @@ const Dashboard = () => {
   const [enableModel, setEnableModel] = useState(false);
   const orgId = localStorage.getItem('org_id');
   const subscriptionType = localStorage.getItem('subscription_type');
+  console.log("subscriptionType Data:", subscriptionType);
 
  const [multiAnswer, setMultiAnswer] = useState(false);
  const [Premium , setPremium ] = useState(false);
@@ -418,14 +419,55 @@ const Dashboard = () => {
     fetchQuizData();
   }, [authToken, isAuthenticated, navigate, userId]);
 
-  const handleStartQuiz = (quizId, activeFlag) => {
+  const handleStartQuiz = async (quizId, activeFlag, premiumQuizFlag) => {
+    // Check if the quiz is inactive
     if (activeFlag === "i") {
       toast.error("This quiz is inactive and cannot be started.");
       return;
     }
-    // navigate(`/quizaccess/${quizId}`);
-    localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
-    navigate(`/quizaccess`);
+
+    // Check if the quiz is premium and the user is not a premium subscriber
+    if (premiumQuizFlag && subscriptionType !== "Premium") {
+      setIsPremiumModalOpen(true); // Show modal for upgrading to premium
+      return;
+    }
+
+    try {
+      // Fetch user subscription limitations
+      const response = await fetch(
+        `https://dev.quizifai.com:8010/get_user_subscriptionlimitations?user_id=${userId}`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer <YOUR_ACCESS_TOKEN>`, // Replace with the actual token
+          },
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.response === "success") {
+        const { remaining_attempts } = result.data;
+
+        // Check if there are no remaining attempts
+        if (remaining_attempts === 0) {
+          toast.error("You have no remaining attempts to access this quiz.");
+          return;
+        }
+
+        // Proceed with starting the quiz
+        localStorage.setItem("quiz_id", quizId); // Store quiz_id in localStorage
+        navigate(`/quizaccess`); // Navigate to the quiz access page
+      } else {
+        toast.error(
+          "Failed to fetch subscription limitations. Please try again."
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching subscription limitations:", error);
+      toast.error("An error occurred while checking subscription limitations.");
+    }
   };
   // const handleStartQuiz1 = (quizId, attemptsCount, retakeFlag) => {
   //   if (attemptsCount >= retakeFlag) {
@@ -438,13 +480,19 @@ const Dashboard = () => {
   //     setMessage(""); // Clear any previous messages
   //   }
   // };
-  const handleStartQuiz1 = (quizId, attemptsCount, retakeFlag, activeFlag,premiumquizflag) => {
+  const handleStartQuiz1 = async (
+    quizId,
+    attemptsCount,
+    retakeFlag,
+    activeFlag,
+    premiumQuizFlag
+  ) => {
     // Check if the quiz is inactive
     if (activeFlag === "i") {
       toast.error("This quiz is inactive and cannot be started.");
       return;
     }
-  
+
     // Check if the user has reached the maximum number of attempts
     if (attemptsCount >= retakeFlag) {
       toast.error(
@@ -452,17 +500,50 @@ const Dashboard = () => {
       );
       return;
     }
-    if (premiumquizflag && subscriptionType !== "Premium") {
-      setIsPremiumModalOpen(true);
+
+    // Check if the quiz is premium and the user does not have a premium subscription
+    if (premiumQuizFlag && subscriptionType !== "Premium") {
+      setIsPremiumModalOpen(true); // Show modal for upgrading to premium
       return;
     }
-   
-    // Proceed with starting the quiz
-    localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
-    navigate(`/quizaccess`);
-    setMessage(""); // Clear any previous messages
+
+    try {
+      // Fetch user subscription limitations
+      const response = await fetch(
+        `https://dev.quizifai.com:8010/get_user_subscriptionlimitations?user_id=${userId}`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer <YOUR_ACCESS_TOKEN>`, // Replace with the actual token
+          },
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.response === "success") {
+        const { remaining_attempts } = result.data;
+
+        // Check if there are no remaining attempts
+        if (remaining_attempts === 0) {
+          toast.error("You have no remaining attempts to access this quiz.");
+          return;
+        }
+
+        // Proceed with starting the quiz
+        localStorage.setItem("quiz_id", quizId); // Store quiz_id in localStorage
+        navigate(`/quizaccess`); // Navigate to the quiz access page
+      } else {
+        toast.error(
+          "Failed to fetch subscription limitations. Please try again."
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching subscription limitations:", error);
+      toast.error("An error occurred while checking subscription limitations.");
+    }
   };
-  
   const open = () => {
     setIsPremiumModalOpen(true);
 
@@ -849,7 +930,7 @@ const Dashboard = () => {
             </span>
           </div>
           {isPremiumModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black z-10 bg-opacity-50">
           <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm">
             <h2 className="text-xl font-semibold mb-4">
               This is a premium quiz!
@@ -1712,7 +1793,7 @@ const Dashboard = () => {
 {/* Image Section */}
 <div       className="w-[140px] h-[127px]  rounded-md  mr-2"
 >
-<img onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)}
+<img onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag,quizItem.premium_quiz_flag)}
 src={quizItem.photo1 || back}
  alt="Quiz Cover"
  className="w-[140px] h-[140px] rounded-md mr-2 cursor-pointer"
@@ -1723,7 +1804,7 @@ src={quizItem.photo1 || back}
 {/* Title and Version */}
 <div className="relative group flex justify-between items-center gap-[3px]">
  {/* Truncated text container */}
- <h2 onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)} className="text-[15px] font-semibold text-[#00008b] w-[170px] sm:w-[215px] truncate cursor-pointer">
+ <h2 onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag,quizItem.premium_quiz_flag)} className="text-[15px] font-semibold text-[#00008b] w-[170px] sm:w-[215px] truncate cursor-pointer">
  {quizItem.quiz_name}
  </h2>
 
@@ -2002,7 +2083,7 @@ alt="Disable icon"
 </div>
 
 {/* Meta Information */}
-<div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)} className="text-[#00008b] text-[12px] truncate max-w-[230px] max-h-4 justify-start mt-1 cursor-pointer">
+<div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag,quizItem.premium_quiz_flag)} className="text-[#00008b] text-[12px] truncate max-w-[230px] max-h-4 justify-start mt-1 cursor-pointer">
  <span>{quizItem.category}</span>
  <span className="mx-1">.</span>
  <span>{quizItem.sub_category}</span>
@@ -2025,7 +2106,7 @@ alt="Disable icon"
  </div>
 
  {/* Quiz Info */}
- <div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)} className="flex items-center justify-between pr-1 text-xs sm:text-sm">
+ <div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag,quizItem.premium_quiz_flag)} className="flex items-center justify-between pr-1 text-xs sm:text-sm">
    <div className="flex items-center">
      <img src={comment} className="w-[20px]   h-[20px] mr-1" />
      <span className="ml-1 text-[12px] ">{quizItem.number_of_questions} Questions</span>
@@ -2037,7 +2118,7 @@ alt="Disable icon"
  </div>
 
  {/* Attempt Info */}
- <div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)} className="flex items-center space-x-4 text-xs sm:text-sm cursor-pointer">
+ <div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag,quizItem.premium_quiz_flag)} className="flex items-center space-x-4 text-xs sm:text-sm cursor-pointer">
    <div className="flex items-center">
      <img src={Attemts} className="w-[18px] h-[18px] mr-1" />
      <span className="ml-1 text-[12px]">{quizItem.quiz_attempts} Attempt</span>
@@ -3225,7 +3306,7 @@ className={`flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-x
 <div       className="w-[140px] h-[127px]  rounded-md  mr-2"
 >
 <img
-onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)}
+onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag,quizItem.premium_quiz_flag)}
 src={quizItem.photo1 || back}
  alt="Quiz Cover"
  className="w-[140px] h-[140px] rounded-md mr-2 cursor-pointer"
@@ -3236,7 +3317,7 @@ src={quizItem.photo1 || back}
 {/* Title and Version */}
 <div className="relative group flex justify-between items-center gap-[3px]">
  {/* Truncated text container */}
- <h2  onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)}
+ <h2  onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag,quizItem.premium_quiz_flag)}
  className="text-[15px] font-semibold text-[#00008b] w-[170px] sm:w-[215px] truncate cursor-pointer">
  {quizItem.quiz_name}
  </h2>
@@ -3518,7 +3599,7 @@ src={quizItem.photo1 || back}
 </div>
 
 {/* Meta Information */}
-<div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)}
+<div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag,quizItem.premium_quiz_flag)}
  className="text-[#00008b] text-[12px] truncate max-w-[230px] max-h-4 justify-start mt-1 cursor-pointer">
  <span>{quizItem.category}</span>
  <span className="mx-1">.</span>
@@ -3530,7 +3611,7 @@ src={quizItem.photo1 || back}
 {/* Icons Row */}
 <div className="flex-col items-center text-[10px] space-y-1 mt-2 text-[#00008b]">
  {/* Author and Date */}
- <div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)}
+ <div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag,quizItem.premium_quiz_flag)}
   className="flex items-center justify-between text-[12px] sm:text-[10px] cursor-pointer">
    <div className="flex items-center">
      <img src={username1} className="w-[20px] h-[20px] mr-1" />
@@ -3543,7 +3624,7 @@ src={quizItem.photo1 || back}
  </div>
 
  {/* Quiz Info */}
- <div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)} className="flex items-center justify-between pr-1 text-xs sm:text-sm cursor-pointer">
+ <div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag,quizItem.premium_quiz_flag)} className="flex items-center justify-between pr-1 text-xs sm:text-sm cursor-pointer">
    <div className="flex items-center">
      <img src={comment} className="w-[20px]   h-[20px] mr-1" />
      <span className="ml-1 text-[12px] ">{quizItem.number_of_questions} Questions</span>
@@ -3555,7 +3636,7 @@ src={quizItem.photo1 || back}
  </div>
 
  {/* Attempt Info */}
- <div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag)}  className="flex items-center space-x-4 text-xs sm:text-sm cursor-pointer">
+ <div onClick={() => handleStartQuiz(quizItem.quiz_id, quizItem.active_flag,quizItem.premium_quiz_flag)}  className="flex items-center space-x-4 text-xs sm:text-sm cursor-pointer">
    <div className="flex items-center">
      <img src={Attemts} className="w-[18px] h-[18px] mr-1" />
      <span className="ml-1 text-[12px]">{quizItem.quiz_attempts} Attempt</span>

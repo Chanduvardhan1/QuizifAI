@@ -296,11 +296,11 @@ const LoginPage = () => {
           const {
             user_id,
             user_role,
-            org_id = "",
+           
             user_type = "",
             subscription_details = {},
           } = userData;
-  
+          const orgId = responseData.data?.[0]?.org_id ?? "";
           const subscriptionType = subscription_details?.subscription_type || "Free";
   
           // Save user data to localStorage
@@ -308,7 +308,7 @@ const LoginPage = () => {
           localStorage.setItem('user_id', user_id);
           localStorage.setItem('user_role', user_role);
           localStorage.setItem('password', password);
-          localStorage.setItem('org_id', org_id);
+          localStorage.setItem('org_id', orgId);
           localStorage.setItem('user_type', user_type);
           localStorage.setItem('subscription_type', subscriptionType);
   

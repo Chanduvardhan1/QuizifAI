@@ -11,7 +11,8 @@ import dateIcon from "../../src/assets/Images/images/quizresults/schedule.png";
 import Navigation from "../navbar/navbar";
 import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 import { useNavigate } from "react-router-dom";
-import help from "../../src/assets/Images/dashboard/communication.png"
+// import help from "../../src/assets/Images/dashboard/communication.png"
+import help from "../../public/chatbots1.png";
 
 const HelpDesk = () => {
     const navigate = useNavigate();

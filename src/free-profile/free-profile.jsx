@@ -332,104 +332,201 @@ const FreeProfile = () => {
   const userlocationid = locationId ? String(locationId) : "";
 
   // save after edit
+  // const handleSaveClick = async () => {
+
+
+  // // Validation logic
+  // const errors = [];
+  // if (!dob) errors.push("Date of birth is required.");
+  // if (!gender) errors.push("Gender is required.");
+  // if (!locationId) errors.push("Pincode is required.");
+  // if (!occupation) errors.push("Occupation is required.");
+  // if (occupation === "Other" && !otheroccupation)
+  //   errors.push("Please specify your other occupation.");
+  // if (errors.length > 0) {
+  //   errors.forEach((error) => toast.error(error)); // Display each error as a toast
+  //   return;
+  // }
+
+  //   const payload = {
+  //     // user_id: userId,
+  //     // first_name: firstName,
+  //     // middle_name: middleName,
+  //     // last_name: lastName,
+  //     // user_email: email,
+  //     // email_otp: emailOtp,
+  //     // // user_phone_number: mobileNumber,
+  //     // otp: otp,
+  //     // user_role: rolename, // Example value, adjust as needed
+  //     // user_type: usertype,
+  //     // user_org_id: orgId,
+  //     // gender: gender,
+  //     // display_name: " ",
+  //     // date_of_birth: dob,
+  //     // preferred_login_method: preferredLoginMethod,
+  //     // user_address_id: null,
+  //     // user_location_id: userlocationid,
+  //     // user_address_line_1: address,
+  //     // user_address_line_2: address1,
+  //     // occupation: occupation,
+  //     // other_occupation: otheroccupation,
+  //     // user_phone_number: mobileNumber,
+
+
+  //     user_id: userId,
+  //     first_name: firstName,
+  //     middle_name: middleName,
+  //     last_name: lastName,
+  //     user_role: rolename, // Example value, adjust as needed
+  //     user_type: usertype,
+  //     user_org_id: orgId,
+  //     gender: gender,
+  //     display_name: "",
+  //     date_of_birth: dob,
+  //     user_address_id: null,
+  //     user_location_id: userlocationid,
+  //     user_address_line_1: address,
+  //     user_address_line_2: address1,
+  //     occupation: occupation,
+  //     other_occupation: otheroccupation,
+  //   };
+
+  //   console.log("Updating profile with payload:", payload);
+
+  //   try {
+  //     const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+
+  //     if (!authToken) {
+  //       throw new Error("No authentication token found");
+  //     }
+  //     const response = await fetch(
+  //       `https://dev.quizifai.com:8010/edit-profile`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${authToken}`,
+  //         },
+  //         body: JSON.stringify(payload),
+  //       }
+  //     );
+
+  //     if (!response.ok) {
+  //       const errorText = await response.text();
+  //       throw new Error(`Failed to update data: ${errorText}`);
+  //     }
+
+  //     const data = await response.json();
+  //     console.log("Updated Data:", data);
+  //     if (
+  //       data.detail &&
+  //       data.detail.response === "fail" &&
+  //       data.detail.response_message === "Invalid or incorrect OTP."
+  //     ) {
+  //       setResponseMessage("Invalid or incorrect OTP. Please try again.");
+  //     } else {
+  //       setResponseMessage("Profile Updated successfully...!");
+  //       setIsEmailOtpSent(false);
+  //       setIsMobileOtpSent(false);
+  //       setIsEditing(false);
+  //       window.location.reload();
+  //       // const response = await fetch(
+  //       //   `https://dev.quizifai.com:8010/dashboard`,
+  //       //   {
+  //       //     method: "POST",
+  //       //     headers: {
+  //       //       "Content-Type": "application/json",
+  //       //       "Authorization": `Bearer ${authToken}`,
+  //       //     },
+  //       //     body: JSON.stringify({
+  //       //        user_id: userId
+  //       //     }),
+  //       //   }
+  //       // );
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating profile:", error);
+  //   }
+  // };
+
   const handleSaveClick = async () => {
-
-
-  // Validation logic
-  const errors = [];
-  if (!dob) errors.push("Date of birth is required.");
-  if (!gender) errors.push("Gender is required.");
-  if (!locationId) errors.push("Pincode is required.");
-  if (!occupation) errors.push("Occupation is required.");
-  if (occupation === "Other" && !otheroccupation)
-    errors.push("Please specify your other occupation.");
-  if (errors.length > 0) {
-    errors.forEach((error) => toast.error(error)); // Display each error as a toast
-    return;
-  }
-
+    // Validation logic
+    const errors = [];
+    if (!dob) errors.push("Date of birth is required.");
+    if (!gender) errors.push("Gender is required.");
+    if (!locationId) errors.push("Pincode is required.");
+    if (!occupation) errors.push("Occupation is required.");
+    if (occupation === "Other" && !otheroccupation)
+      errors.push("Please specify your other occupation.");
+    if (!userId) errors.push("User ID is required.");
+    if (errors.length > 0) {
+      errors.forEach((error) => toast.error(error)); // Display each error as a toast
+      return;
+    }
+  
     const payload = {
-      user_id: userId,
-      first_name: firstName,
-      middle_name: middleName,
-      last_name: lastName,
-      user_email: email,
-      email_otp: emailOtp,
-      // user_phone_number: mobileNumber,
-      otp: otp,
-      user_role: rolename, // Example value, adjust as needed
-      user_type: usertype,
-      user_org_id: orgId,
-      gender: gender,
-      display_name: " ",
-      date_of_birth: dob,
-      preferred_login_method: preferredLoginMethod,
-      user_address_id: null,
-      user_location_id: userlocationid,
-      user_address_line_1: address,
-      user_address_line_2: address1,
-      occupation: occupation,
-      other_occupation: otheroccupation,
-      user_phone_number: mobileNumber,
+      user_id: userId || null, // Ensure user_id is a valid integer
+      first_name: firstName || null,
+      middle_name: middleName || null,
+      last_name: lastName || null,
+      user_role: "Quiz User",
+      user_type: "Public",
+      user_org_id: orgId || null,
+      gender: gender || null,
+      display_name: "" || "N/A",
+      date_of_birth: dob || null,
+      user_address_id: "" || null,
+      user_location_id: userlocationid || null,
+      user_address_line_1: address || null,
+      user_address_line_2: address1 || null,
+      occupation: occupation || null,
+      other_occupation: occupation === "Other" ? otheroccupation : null,
     };
-
+  
     console.log("Updating profile with payload:", payload);
-
+  
     try {
       const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
-
+  
       if (!authToken) {
         throw new Error("No authentication token found");
       }
+  
       const response = await fetch(
-        `https://dev.quizifai.com:8010/edt_prfl_dtls`,
+        `https://dev.quizifai.com:8010/edit-profile`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
+            Authorization: `Bearer ${authToken}`, // Bearer token for authentication
           },
           body: JSON.stringify(payload),
         }
       );
-
+  
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Failed to update data: ${errorText}`);
+        throw new Error(`Failed to update profile: ${errorText}`);
       }
-
+  
       const data = await response.json();
-      console.log("Updated Data:", data);
-      if (
-        data.detail &&
-        data.detail.response === "fail" &&
-        data.detail.response_message === "Invalid or incorrect OTP."
-      ) {
-        setResponseMessage("Invalid or incorrect OTP. Please try again.");
+      console.log("Profile Updated Response:", data);
+  
+      if (data.detail?.response === "fail") {
+        toast.error(data.detail.response_message || "Failed to update profile.");
       } else {
+        toast.success("Profile updated successfully!");
+        setIsEditing(false); // Close the editing mode
         setResponseMessage("Profile Updated successfully...!");
-        setIsEmailOtpSent(false);
-        setIsMobileOtpSent(false);
-        setIsEditing(false);
-        window.location.reload();
-        // const response = await fetch(
-        //   `https://dev.quizifai.com:8010/dashboard`,
-        //   {
-        //     method: "POST",
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //       "Authorization": `Bearer ${authToken}`,
-        //     },
-        //     body: JSON.stringify({
-        //        user_id: userId
-        //     }),
-        //   }
-        // );
+        window.location.reload(); // Reload the page or handle success
       }
     } catch (error) {
       console.error("Error updating profile:", error);
+      toast.error("An error occurred while updating the profile. Please try again.");
     }
   };
+  
+  
   const handleCancelClick = () => {
     setFirstName(initialFormData.firstName);
     setMiddleName(initialFormData.middleName);
@@ -493,11 +590,105 @@ const FreeProfile = () => {
     setOccupation(selectedOccupation);
     setShowOtherInput(selectedOccupation === "Other");
   };
+  // const handleLoginSaveClick = async () => {
+  //   const payload = {
+  //     user_id: userId,
+  //     email: email,
+  //     mobile: mobileNumber,
+  //   };
+  
+  //   console.log("Sending OTP with payload:", payload);
+  
+  //   try {
+  //     const authToken = localStorage.getItem("authToken");
+  
+  //     if (!authToken) {
+  //       throw new Error("No authentication token found");
+  //     }
+  
+  //     const response = await fetch(
+  //       `https://dev.quizifai.com:8010/chnge_email_mobile`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${authToken}`,
+  //         },
+  //         body: JSON.stringify(payload),
+  //       }
+  //     );
+  
+  //     if (!response.ok) {
+  //       const errorText = await response.text();
+  //       console.error(`Failed to send OTP: ${errorText}`);
+  //       throw new Error(`Failed to send OTP: ${errorText}`);
+  //     }
+  
+  //     const data = await response.json();
+  //     console.log("OTP Response Data:", data);
+  
+  //     // Handle success response
+  //     if (data.response === "success") {
+  //       const successMessage = data.response_message;
+  
+  //       // Show the appropriate OTP input box and success message
+  //       if (
+  //         successMessage ===
+  //         "Your email account is successfully created and verify your OTP on your email."
+  //       ) {
+  //         setIsEmailOtpSent(true);
+  //       } else if (
+  //         successMessage ===
+  //         "Your mobile account is successfully created and verify your OTP on your mobile."
+  //       ) {
+  //         setIsMobileOtpSent(true);
+  //       } else if (
+  //         successMessage ===
+  //         "Given email is already registered.but not verified,Please verify your OTP"
+  //       ) {
+  //         setIsEmailOtpSent(true);
+  //       } else if (
+  //         successMessage ===
+  //         "Given mobile is already registered.but not verified,Please verify your OTP"
+  //       ) {
+  //         setIsMobileOtpSent(true);
+  //       }
+  
+  //       toast.success(successMessage);
+  
+  //       // Perform additional actions for success
+  //       setIsEditingLogin(false);
+  //       setIsOtpSent(true);
+  //       handleEditClick();
+  //       fetchDetailsByPincode(postalCode);
+  //       handlePostalCodeChange(postalCode);
+  
+  //       return; // Exit after handling success
+  //     }
+  
+  //     // Handle failure response
+  //     if (data.response === "fail") {
+  //       const errorMessage = data.response_message;
+  
+  //       // Display the failure message
+  //       toast.error(errorMessage);
+  //       return; // Exit after handling failure
+  //     }
+  
+  //     // Handle unexpected response
+  //     throw new Error("Unexpected response format");
+  //   } catch (error) {
+  //     console.error("Error sending OTP:", error.message);
+  //     toast.error("Error sending OTP. Please try again.");
+  //   }
+  // };
+  
+  
   const handleLoginSaveClick = async () => {
     const payload = {
-      user_id: userId,
-      email: email,
-      mobile: mobileNumber,
+      preferred_login_method: email ? "email" : "mobile", // Determine the method based on input
+      identifier: email || mobileNumber, // Use email or mobile as the identifier
+      user_id: userId || 0, // Use userId or default to 0 if not provided
     };
   
     console.log("Sending OTP with payload:", payload);
@@ -506,85 +697,65 @@ const FreeProfile = () => {
       const authToken = localStorage.getItem("authToken");
   
       if (!authToken) {
-        throw new Error("No authentication token found");
+        toast.error("No authentication token found.");
+        return;
       }
   
-      const response = await fetch(
-        `https://dev.quizifai.com:8010/chnge_email_mobile`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+      const response = await fetch(`https://dev.quizifai.com:8010/send-otp/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(payload),
+      });
   
+      // If response is not OK, handle it here
       if (!response.ok) {
         const errorText = await response.text();
-        console.error(`Failed to send OTP: ${errorText}`);
-        throw new Error(`Failed to send OTP: ${errorText}`);
+        console.error("Failed to send OTP:", errorText);
+        throw new Error(errorText);
       }
   
       const data = await response.json();
       console.log("OTP Response Data:", data);
   
       // Handle success response
-      if (data.response === "success") {
-        const successMessage = data.response_message;
+      if (data.response === "success" && data.data.response === "success") {
+        const successMessage = data.data.response_message;
   
-        // Show the appropriate OTP input box and success message
-        if (
-          successMessage ===
-          "Your email account is successfully created and verify your OTP on your email."
-        ) {
-          setIsEmailOtpSent(true);
-        } else if (
-          successMessage ===
-          "Your mobile account is successfully created and verify your OTP on your mobile."
-        ) {
-          setIsMobileOtpSent(true);
-        } else if (
-          successMessage ===
-          "Given email is already registered.but not verified,Please verify your OTP"
-        ) {
-          setIsEmailOtpSent(true);
-        } else if (
-          successMessage ===
-          "Given mobile is already registered.but not verified,Please verify your OTP"
-        ) {
-          setIsMobileOtpSent(true);
+        // Show appropriate OTP input box
+        if (successMessage.includes("email")) {
+          setIsEmailOtpSent(true); // Show email OTP input box
+        } else if (successMessage.includes("mobile")) {
+          setIsMobileOtpSent(true); // Show mobile OTP input box
         }
   
+        // Show success toast
         toast.success(successMessage);
   
-        // Perform additional actions for success
+        // Additional actions for success
         setIsEditingLogin(false);
         setIsOtpSent(true);
-        handleEditClick();
-        fetchDetailsByPincode(postalCode);
-        handlePostalCodeChange(postalCode);
+        // handleEditClick();
+        // fetchDetailsByPincode(postalCode);
+        // handlePostalCodeChange(postalCode);
   
-        return; // Exit after handling success
+        return; // Exit the function to avoid further code execution
       }
   
-      // Handle failure response
-      if (data.response === "fail") {
-        const errorMessage = data.response_message;
-  
-        // Display the failure message
-        toast.error(errorMessage);
-        return; // Exit after handling failure
-      }
-  
-      // Handle unexpected response
-      throw new Error("Unexpected response format");
+      // Handle unexpected response format
+      console.error("Unexpected response format:", data);
+      toast.error("Unexpected response format. Please try again.");
     } catch (error) {
-      console.error("Error sending OTP:", error.message);
+      console.error("Error in handleLoginSaveClick:", error);
+  
+      // Show error message only when no success was processed
       toast.error("Error sending OTP. Please try again.");
     }
   };
+  
+  
   
   
   

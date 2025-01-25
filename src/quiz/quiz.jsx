@@ -45,7 +45,7 @@ import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 import assign from "../../src/assets/Images/dashboard/assign.png"
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch'
-import crown from "../../src/assets/Images/dashboard/crown.png"
+import crown from "../../src/assets/Images/dashboard/image (16).png";
 
 // Modal.setAppElement(el);
 const Quiz = () => {
@@ -116,6 +116,11 @@ const Quiz = () => {
   const [popupMessage, setPopupMessage] = useState("");
 const [multiAnswer, setMultiAnswer] = useState(false);
 
+ const [Premium , setPremium ] = useState(false);
+
+ const HandlePremium = (event) => {
+  setPremium(event.target.checked);
+};
 
   const toggler1 = (event) => {
     setMultiAnswer(event.target.checked);
@@ -979,8 +984,8 @@ const [multiAnswer, setMultiAnswer] = useState(false);
                     <FormControlLabel
                           control={<Switch />} 
                           // label="Required"
-                            onChange={toggler1}
-                            checked={multiAnswer}
+                          onChange={HandlePremium}
+                          checked={Premium}
                             className="react-switch"
                           />
                 </div>
@@ -1154,10 +1159,12 @@ const [multiAnswer, setMultiAnswer] = useState(false);
     const isActiveForOthers =
       quizItem.active_flag?.toLowerCase() === "true" ||
       quizItem.active_flag?.toLowerCase() === "y";
-      const isPremiumQuiz = multiAnswer ? quizItem.is_premium === "Y" : true;
+      const shouldShowQuiz = Premium
+      ? quizItem.premium_quiz_flag === true // Show only premium quizzes if toggle is on
+      : quizItem.premium_quiz_flag === null; // Show only non-premium quizzes if toggle is off
 
                   return (
-                    isPremiumQuiz &&
+                    shouldShowQuiz &&
                     (isQuizMaster || isActiveForOthers) &&
                     currentDate >= quizCreateDate &&
                     (quizEndDate === null || currentDate <= quizEndDate)
@@ -1226,7 +1233,7 @@ const [multiAnswer, setMultiAnswer] = useState(false);
                          {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                            Physics,Physics,Physics,Physics
                          </span> */}
-                           {quizItem.is_premium === "Y" && (
+                           {quizItem.premium_quiz_flag === true && (
                                                      <img
                                        src={crown}
                                        alt="Premium"
@@ -2162,7 +2169,7 @@ const [multiAnswer, setMultiAnswer] = useState(false);
                          {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                            Physics,Physics,Physics,Physics
                          </span> */}
-                           {quizItem.is_premium === "Y" && (
+                           {quizItem.premium_quiz_flag === true && (
                                                      <img
                                        src={crown}
                                        alt="Premium"

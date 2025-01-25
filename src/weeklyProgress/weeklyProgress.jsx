@@ -76,17 +76,18 @@ const progressLabel = getProgressLabel(progress);
         <div className="flex flex-col w-full px-5 items-center">
           <div className="flex w-full flex-col gap-1 justify-between mt-1">
             <div className="flex flex-col gap-2">
+            
+              <h1 className="text-[#002366] text-[14px]">
+                Total Attempted Quizzes :{" "}
+                <span className="text-[#FF6701]">
+                  {quizProgress.data.total_attempted_quizzes}
+                </span>
+              </h1>
               <h1 className="text-[#002366] text-[14px]">
                 Assigned Quizzes{" "}
                 <span className="ml-[21px]">:</span>{" "}
                 <span className="text-[#FF6701]">
                   {quizProgress.data.total_assigned_quizzes}
-                </span>
-              </h1>
-              <h1 className="text-[#002366] text-[14px]">
-                Incompleted Quizzes :{" "}
-                <span className="text-[#FF6701]">
-                  {quizProgress.data.total_attempted_quizzes}
                 </span>
               </h1>
               <h1 className="text-[#002366] text-[14px]">

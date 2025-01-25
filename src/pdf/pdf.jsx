@@ -23,7 +23,7 @@ import Notification from "../assets/Images/quiz-type/Notification.png";
 import QuizAdmin from "../assets/Images/quiz-type/Quiz-admin.png";
 import Profile from "../assets/Images/quiz-type/Profile.png";
 import physics from "../../src/assets/Images/quiz-type/quizcover.jpg"
-import back from "../../src/assets/Images/quiz-type/Q back image.webp"
+import back from "../../src/assets/Images/dashboard/quiz12.png"
 // Main-Section-icons
 import QuizTitle from "../assets/Images/quiz-type/Quiz-Title.png";
 import Dropdown from "../assets/Images/quiz-type/Dropdown.png";
@@ -1117,22 +1117,26 @@ useEffect(() => {
       console.error("Error fetching courses:", error);
     }
   };
-  useEffect(() => {
-    const generalCourse = courses.find(course => course.course_name === 'General');
-    if (generalCourse) {
-      setSelectedCourse(generalCourse.course_name);
-      setClasses(generalCourse.classes.map(cls => cls.class_name));
-    }
-  }, [courses]);
+  // useEffect(() => {
+  //   const generalCourse = courses.find(course => course.course_name === 'General');
+  //   if (generalCourse) {
+  //     setSelectedCourse(generalCourse.course_name);
+  //     setClasses(generalCourse.classes.map(cls => cls.class_name));
+  //   }
+  // }, [courses]);
 
-  useEffect(() => {
-    if (classes.length > 0) {
-      const generalClass = classes.find(className => className === 'General');
-      if (generalClass) {
-        setSelectedClass(generalClass);
-      }
-    }
-  }, [classes]);
+
+
+  // useEffect(() => {
+  //   if (classes.length > 0) {
+  //     const generalClass = classes.find(className => className === 'General');
+  //     if (generalClass) {
+  //       setSelectedClass(generalClass);
+  //     }
+  //   }
+  // }, [classes]);
+
+
   // Handle course selection
   // const handleSelectCourse = (event) => {
   //   const selectedCourse = event.target.value;
@@ -1145,6 +1149,7 @@ useEffect(() => {
   //     setClasses(course.classes.map((cls) => cls.class_name));
   //   }
   // };
+  
   const handleSelectCourse = (event) => {
     const selectedCourse = event.target.value;
     setSelectedCourse(selectedCourse);
@@ -1163,7 +1168,9 @@ useEffect(() => {
       }
     }
   };
+
   // Handle class selection
+
   const handleSelectClass = (event) => {
     const selectedClass = event.target.value;
     setSelectedClass(selectedClass);
@@ -1200,6 +1207,7 @@ useEffect(() => {
       console.error("Error fetching complexities:", error);
     }
   };
+
   const handleSimplequestions = (event) => {
     setSimplequestions(event.target.value);
   };
@@ -2216,7 +2224,7 @@ const handleTabClick = (tab) => {
      
           <div className="relative mr-2">
           <img
-  src={isFlipped ? (backImage ? URL.createObjectURL(backImage) : back): (frontImage ? URL.createObjectURL(frontImage) : physics)
+  src={isFlipped ? (backImage ? URL.createObjectURL(backImage) : back): (frontImage ? URL.createObjectURL(frontImage) : back)
   }
   alt="Quiz Cover"
   className="w-[120px] h-[140px] rounded-md mr-4 cursor-pointer"
@@ -2490,57 +2498,16 @@ const handleTabClick = (tab) => {
           </div>
 
           {/* Course */}
+        
           <div className="md:col-span-2">
 
           <div className="flex gap-6">
-          <div className="w-[50%] flex flex-col">
-            <div className="w-full flex flex-row">
-              <label className="w-[65%] text-blue-800 font-semibold mb-2 ">
-                Course<span className="text-red-500"></span>
-              </label>
-              <select
-                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-                value={selectedCourse}
-                onChange={handleSelectCourse}
-              >
-                <option value="" disabled>Select a course</option>
-                <option value="">None</option>
-                {courses.map((course) => (
-                  <option key={course.course_id} value={course.course_name}>
-                    {course.course_name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <hr className="h-[1px] w-full" />
-          </div>
-
-          {/* Class */}
-          <div className="w-[50%] flex flex-col">
-            <div className="w-full flex flex-row">
-              <label className=" w-[20%] text-blue-800 font-semibold mb-2">
-                Class<span className="text-red-500"></span>
-              </label>
-              <select
-                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-                value={selectedClass}
-                onChange={handleSelectClass}
-                disabled={classes.length === 0}
-              >
-                <option value="" disabled>Select a class</option>
-                {classes.map((className, index) => (
-                  <option key={index} value={className}>
-                    {className}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <hr className="h-[1px] w-full" />
-          </div>
+           
+        
            {/* Premium */}
   <div className=" w-[50%] flex flex-col">
         <div className="w-[100%] flex flex-row">
-        <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">Premium Quizzes<span className="text-red-500">*</span></label>
+        <label className="w-[23%] text-blue-800 font-semibold mb-2 mr-[10px] ">Premium Quizzes<span className="text-red-500"></span></label>
         <FormControlLabel
          control={<Switch />} 
          checked={showPackageFields}
@@ -2554,7 +2521,7 @@ const handleTabClick = (tab) => {
            {/*  Public access */}
   <div className=" w-[50%] flex flex-col">
         <div className="w-[100%] flex flex-row">
-        <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500">*</span></label>
+        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500"></span></label>
         <FormControlLabel
          control={<Switch />} 
         // label="Required"
@@ -2571,13 +2538,61 @@ const handleTabClick = (tab) => {
       </div>
      
       </div>
+      {publicAccess && (
+        <>
+  <div className="flex flex-col">
+  <div className="w-full flex flex-row">
+    <label className="w-[23%] text-blue-800 font-semibold mb-2 ">
+      Course<span className="text-red-500"></span>
+    </label>
+    <select
+      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+      value={selectedCourse}
+      onChange={handleSelectCourse}
+    >
+      <option value="" disabled>Select a course</option>
+      <option value="">None</option>
+      {courses.map((course) => (
+        <option key={course.course_id} value={course.course_name}>
+          {course.course_name}
+        </option>
+      ))}
+    </select>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+
+{/* Class */}
+<div className="flex flex-col">
+  <div className="w-full flex flex-row">
+    <label className=" w-[25%] text-blue-800 font-semibold mb-2">
+      Class<span className="text-red-500"></span>
+    </label>
+    <select
+      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+      value={selectedClass}
+      onChange={handleSelectClass}
+      disabled={classes.length === 0}
+    >
+      <option value="" disabled>Select a class</option>
+      {classes.map((className, index) => (
+        <option key={index} value={className}>
+          {className}
+        </option>
+      ))}
+    </select>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+</>
+            )}
       {showPackageFields && (
 <>
 
               <div className="flex flex-col">
             <div className="w-full flex flex-row">
               <label className="w-[26%] text-blue-800 font-semibold mb-2">
-              Package Name<span className="text-red-500">*</span>
+              Package Name<span className="text-red-500"></span>
               </label>
               <select
                 className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"

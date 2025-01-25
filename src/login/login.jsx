@@ -242,6 +242,7 @@ const LoginPage = () => {
         ? "mobile"
         : "Web";
   
+      // Step 1: Fetch the access token
       const tokenResponse = await fetch('https://dev.quizifai.com:8010/token', {
         method: 'POST',
         headers: {
@@ -270,6 +271,7 @@ const LoginPage = () => {
       const tokenData = await tokenResponse.json();
       const accessToken = tokenData.access_token;
   
+      // Step 2: Login request using the access token
       const response = await fetch(`https://dev.quizifai.com:8010/login`, {
         method: "POST",
         headers: {
@@ -288,42 +290,57 @@ const LoginPage = () => {
   
       if (response.ok && responseData.response === "success") {
         const userData = responseData.data?.[0];
-        if (userData?.user_id && userData?.user_role) {
-          const { user_id, user_role, org_id = "", user_type = "" } = userData;
-    //       // const orgId = responseData.data?.[0]?.org_id;
-  //       // const orgId = responseData.data?.[0]?.org_id || 0; // Default to 0 if null or undefined
-        const orgId = responseData.data?.[0]?.org_id ?? "";
+  
+        if (userData) {
+          // Destructure and set user data
+          const {
+            user_id,
+            user_role,
+            org_id = "",
+            user_type = "",
+            subscription_details = {},
+          } = userData;
+  
+          const subscriptionType = subscription_details?.subscription_type || "Free";
+  
+          // Save user data to localStorage
           login(accessToken);
           localStorage.setItem('user_id', user_id);
           localStorage.setItem('user_role', user_role);
           localStorage.setItem('password', password);
-          localStorage.setItem('org_id', orgId);
+          localStorage.setItem('org_id', org_id);
           localStorage.setItem('user_type', user_type);
+          localStorage.setItem('subscription_type', subscriptionType);
   
           if (loginOption === "email") {
             localStorage.setItem('email', email);
           }
   
           setErrorMessage("");
+  
+          // Navigate based on user_role and org_id
           if (user_role === "Admin" && org_id) {
             navigate("/profileorganization");
+          } else if (user_role === "Quiz Master") {
+            navigate("/dashboard");
           } else {
             navigate("/dashboard");
           }
+  
           console.log("Login successful!");
         } else {
-          setErrorMessage("An unknown error occurred while logging in.");
+          setErrorMessage("Failed to retrieve user data. Please try again.");
         }
-      } else if (responseData.response === "fail") {
-        setErrorMessage(responseData.response_message || "An unknown error occurred.");
       } else {
-        setErrorMessage("An unknown error occurred while logging in.");
+        const errorMsg = responseData.response_message || "An unknown error occurred.";
+        setErrorMessage(errorMsg);
       }
     } catch (error) {
       setErrorMessage("An error occurred while logging in.");
       console.error("Login error:", error);
     }
   };
+  
   
   const validateEmail1 = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

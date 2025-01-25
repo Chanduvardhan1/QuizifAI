@@ -579,7 +579,7 @@ const handleglobal =()=> {
             <div className="grid grid-cols-5 gap-4 mb-4">
             <div
      // handleprofile will be triggered when clicking the profile container
-    className="flex  flex-col cursor-pointer items-center justify-center relative border shadow-lg rounded-md p-2 bg-white"
+    className="flex  flex-col cursor-pointer items-center justify-center relative border shadow-lg rounded-md py-2 bg-white"
   >
     <div className="relative">
       {loading ? (
@@ -673,12 +673,12 @@ const handleglobal =()=> {
         </div>
       </div>
       <p className="text-[14px] text-[#214082] font-400 font-family-[lato]">{occupation}</p>
-      <p className="text-[14px] text-[#002366]">{district}</p>
+      {/* <p className="text-[14px] text-[#002366]">{district}</p> */}
       <p className="text-[14px] text-[#002366]">{country}</p>
     </div>
   </div>
 
-                <div   onClick={handlemyhistory} className="flex flex-col cursor-pointer justify-start items-start relative  border shadow-lg rounded-sm p-2 bg-white">
+                <div   onClick={handlemyhistory} className="flex flex-col cursor-pointer justify-center items-center relative  border shadow-lg rounded-sm py-2 bg-white">
                   <div className=" space-y-2 flex flex-col items-start justify-center pl-[10px]">
                     <div className=" flex justify-center items-center text-center mt-2">
                         <h3 className="text-[14px] font-[500] text-[#214082] ">Quizzes : </h3>
@@ -694,11 +694,11 @@ const handleglobal =()=> {
                     </div>
                     </div>
                 </div>
-                <div   className="flex flex-col cursor-pointer items-center justify-center relative  border shadow-lg rounded-sm p-2 bg-white">
+                <div   className="flex flex-col cursor-pointer items-center justify-center relative  border shadow-lg rounded-sm py-2 bg-white">
            <ProgressIndicator />
            
         </div>
-        <div onClick={handleglobal} className="flex flex-col items-center cursor-pointer justify-start relative border shadow-lg rounded-sm p-2 bg-white">
+        <div onClick={handleglobal} className="flex flex-col items-center cursor-pointer justify-start relative border shadow-lg rounded-sm py-2 bg-white">
         <div className="flex flex-col items-center">
       {/* Icons above the rank number */}
       <div className="flex justify-center items-center">
@@ -748,7 +748,7 @@ const handleglobal =()=> {
 
     </div>
 
-                <div className="flex flex-col items-center justify-start relative border shadow-lg rounded-sm p-2 py-[20px] bg-white">
+                <div className="flex flex-col items-center justify-start relative border shadow-lg rounded-sm py-2  bg-white">
                 {/* <h3 className="text-[14px] font-bold mb-5 text-[#214082]">Subscription</h3> */}
 
                     {/* <h3 className="text-sm font-bold mb-4 text-[#214082]"> <span>Public</span></h3> */}

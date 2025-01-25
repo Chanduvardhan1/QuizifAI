@@ -34,7 +34,8 @@ import Plus from "../assets/Images/quiz-type/Plus.png";
 import CSV from "../assets/Images/quiz-type/CSV.png";
 import CoverPage from "../coverPage/coverPage";
 import physics from "../../src/assets/Images/quiz-type/quizcover.jpg"
-import back from "../../src/assets/Images/quiz-type/Q back image.webp"
+import back from "../../src/assets/Images/dashboard/quiz12.png"
+
 import username from "../../src/assets/Images/quiz-type/username.png"
 import calander from "../../src/assets/Images/quiz-type/calander.png"
 import timer from "../../src/assets/Images/quiz-type/Timer.png"
@@ -1591,7 +1592,7 @@ const handleback =() =>{
       /> */}
           <div className="relative mr-2">
           <img
-  src={isFlipped ? (backImage ? URL.createObjectURL(backImage) : back): (frontImage ? URL.createObjectURL(frontImage) : physics)
+  src={isFlipped ? (backImage ? URL.createObjectURL(backImage) : back): (frontImage ? URL.createObjectURL(frontImage) : back)
   }
   alt="Quiz Cover"
   className="w-[120px] h-[140px] rounded-md mr-4 cursor-pointer"

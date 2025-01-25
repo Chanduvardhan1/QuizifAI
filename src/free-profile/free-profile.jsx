@@ -499,17 +499,16 @@ const FreeProfile = () => {
       email: email,
       mobile: mobileNumber,
     };
-
+  
     console.log("Sending OTP with payload:", payload);
-
-    let alertMessage = ""; // Initialize alertMessage
-
+  
     try {
-      const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
-
+      const authToken = localStorage.getItem("authToken");
+  
       if (!authToken) {
         throw new Error("No authentication token found");
       }
+  
       const response = await fetch(
         `https://dev.quizifai.com:8010/chnge_email_mobile`,
         {
@@ -521,85 +520,74 @@ const FreeProfile = () => {
           body: JSON.stringify(payload),
         }
       );
-
+  
       if (!response.ok) {
         const errorText = await response.text();
         console.error(`Failed to send OTP: ${errorText}`);
         throw new Error(`Failed to send OTP: ${errorText}`);
       }
-
+  
       const data = await response.json();
-      console.log("OTP Sent Data:", data);
-
-      // Check for detailed response message
-      if (data.detail && data.detail.response === "fail") {
+      console.log("OTP Response Data:", data);
+  
+      // Handle success response
+      if (data.response === "success") {
+        const successMessage = data.response_message;
+  
+        // Show the appropriate OTP input box and success message
         if (
-          data.detail.response_message.includes(
-            "Account already exists with the given email"
-          )
-        ) {
-          console.error("Account already exists with the given email");
-          alertMessage = data.detail.response_message; // Use the response message directly
-        } else if (
-          data.detail.response_message.includes(
-            "Account already exists with the given mobile number"
-          )
-        ) {
-          console.error("Account already exists with the given mobile number");
-          alertMessage = data.detail.response_message; // Use the response message directly
-        }
-      } else {
-        setIsEditingLogin(false);
-        setIsOtpSent(true);
-
-        // Check response message to determine which OTP input box to show
-        if (
-          data.response_message ===
+          successMessage ===
           "Your email account is successfully created and verify your OTP on your email."
         ) {
-          alertMessage =
-            "Your email account is successfully created and verify your OTP on your email.";
           setIsEmailOtpSent(true);
         } else if (
-          data.response_message ===
+          successMessage ===
+          "Your mobile account is successfully created and verify your OTP on your mobile."
+        ) {
+          setIsMobileOtpSent(true);
+        } else if (
+          successMessage ===
           "Given email is already registered.but not verified,Please verify your OTP"
         ) {
-          alertMessage =
-            "Given email is already registered but not verified. Please verify your OTP.";
           setIsEmailOtpSent(true);
         } else if (
-          data.response_message ===
+          successMessage ===
           "Given mobile is already registered.but not verified,Please verify your OTP"
         ) {
-          alertMessage =
-            "Given mobile is already registered but not verified. Please verify your OTP.";
           setIsMobileOtpSent(true);
-        } else if (isEmailSelected) {
-          setIsEmailOtpSent(true);
-          alertMessage = "OTP sent successfully!";
-        } else {
-          setIsMobileOtpSent(true);
-          alertMessage = "OTP sent successfully!";
         }
-      }
-
-      if (alertMessage) {
-        toast.error(alertMessage);
-      }
-
-      if (!alertMessage.includes("Error")) {
+  
+        toast.success(successMessage);
+  
+        // Perform additional actions for success
+        setIsEditingLogin(false);
+        setIsOtpSent(true);
         handleEditClick();
-        fetchDetailsByPincode(postalCode); // Call fetchDetailsByPincode here
+        fetchDetailsByPincode(postalCode);
         handlePostalCodeChange(postalCode);
+  
+        return; // Exit after handling success
       }
+  
+      // Handle failure response
+      if (data.response === "fail") {
+        const errorMessage = data.response_message;
+  
+        // Display the failure message
+        toast.error(errorMessage);
+        return; // Exit after handling failure
+      }
+  
+      // Handle unexpected response
+      throw new Error("Unexpected response format");
     } catch (error) {
       console.error("Error sending OTP:", error.message);
-      if (!alertMessage) {
-        alertMessage = "Error sending OTP. Please try again.";
-        toast.error(alertMessage);
-      }
+      toast.error("Error sending OTP. Please try again.");
     }
   };
+  
+  
+  
 
   const handleLoginCancelClick = () => {
     setPreferredLoginMethod("Email");

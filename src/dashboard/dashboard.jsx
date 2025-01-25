@@ -111,8 +111,14 @@ const Dashboard = () => {
   const [popupMessage, setPopupMessage] = useState("");
   const [enableModel, setEnableModel] = useState(false);
   const orgId = localStorage.getItem('org_id');
- const [multiAnswer, setMultiAnswer] = useState(false);
+  const subscriptionType = localStorage.getItem('subscription_type');
 
+ const [multiAnswer, setMultiAnswer] = useState(false);
+ const [Premium , setPremium ] = useState(false);
+
+ const HandlePremium = (event) => {
+  setPremium(event.target.checked);
+};
 
   const toggler1 = (event) => {
     setMultiAnswer(event.target.checked);
@@ -432,7 +438,7 @@ const Dashboard = () => {
   //     setMessage(""); // Clear any previous messages
   //   }
   // };
-  const handleStartQuiz1 = (quizId, attemptsCount, retakeFlag, activeFlag,isPremium) => {
+  const handleStartQuiz1 = (quizId, attemptsCount, retakeFlag, activeFlag,premiumquizflag) => {
     // Check if the quiz is inactive
     if (activeFlag === "i") {
       toast.error("This quiz is inactive and cannot be started.");
@@ -446,10 +452,11 @@ const Dashboard = () => {
       );
       return;
     }
-    if (isPremium) {
+    if (premiumquizflag && subscriptionType !== "Premium") {
       setIsPremiumModalOpen(true);
       return;
     }
+   
     // Proceed with starting the quiz
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     navigate(`/quizaccess`);
@@ -814,8 +821,8 @@ const Dashboard = () => {
         <FormControlLabel
               control={<Switch />} 
               // label="Required"
-                onChange={toggler1}
-                checked={multiAnswer}
+                onChange={HandlePremium}
+                checked={Premium}
                 className="react-switch"
               />
     </div>
@@ -881,9 +888,12 @@ const Dashboard = () => {
                     quizItem.active_flag?.toLowerCase() === "true" ||
                     quizItem.active_flag?.toLowerCase() === "Y";
 
-                    const isPremiumQuiz = multiAnswer ? quizItem.is_premium === "Y" : true;
+                    const shouldShowQuiz = Premium
+                    ? quizItem.premium_quiz_flag === true // Show only premium quizzes if toggle is on
+                    : quizItem.premium_quiz_flag === null; // Show only non-premium quizzes if toggle is off
+              
                 return (
-                  isPremiumQuiz &&
+                  shouldShowQuiz  &&
                   (isQuizMaster || isActiveForOthers) && 
                   quizItem.latest_flag === "Y" &&
                   currentDate >= quizCreateDate &&
@@ -918,7 +928,8 @@ const Dashboard = () => {
                                 quizItem.quiz_id,
                                 quizItem.attempts_count,
                                 quizItem.retake_flag,
-                                quizItem.active_flag
+                                quizItem.active_flag,
+                                quizItem.premium_quiz_flag
                               )
                             }
                           src={quizItem.photo1 || back}
@@ -937,7 +948,8 @@ const Dashboard = () => {
                                 quizItem.quiz_id,
                                 quizItem.attempts_count,
                                 quizItem.retake_flag,
-                                quizItem.active_flag
+                                quizItem.active_flag,
+                                quizItem.premium_quiz_flag
                               )
                             }
                                className="text-[15px] font-semibold text-[#00008b] w-[170px] cursor-pointer sm:w-[215px] truncate">
@@ -948,7 +960,7 @@ const Dashboard = () => {
                             {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                               Physics,Physics,Physics,Physics
                             </span> */}
-                             {quizItem.is_premium === "Y" && (
+                             {quizItem.premium_quiz_flag === true && (
                             <img
               src={crown}
               alt="Premium"
@@ -1226,7 +1238,8 @@ const Dashboard = () => {
                                 quizItem.quiz_id,
                                 quizItem.attempts_count,
                                 quizItem.retake_flag,
-                                quizItem.active_flag
+                                quizItem.active_flag,
+                                quizItem.premium_quiz_flag
                               )
                             } className="text-[#00008b] cursor-pointer text-[12px] truncate max-w-[230px] max-h-4 justify-start mt-1">
                             <span>{quizItem.category}</span>
@@ -1245,7 +1258,8 @@ const Dashboard = () => {
                                 quizItem.quiz_id,
                                 quizItem.attempts_count,
                                 quizItem.retake_flag,
-                                quizItem.active_flag
+                                quizItem.active_flag,
+                                quizItem.premium_quiz_flag
                               )
                             } className="flex items-center justify-between cursor-pointer text-[12px] sm:text-[10px]">
                               <div className="flex items-center">
@@ -1265,7 +1279,8 @@ const Dashboard = () => {
                                 quizItem.quiz_id,
                                 quizItem.attempts_count,
                                 quizItem.retake_flag,
-                                quizItem.active_flag
+                                quizItem.active_flag,
+                                quizItem.premium_quiz_flag
                               )
                             }
                              className="flex cursor-pointer items-center justify-between pr-1 text-xs sm:text-sm">
@@ -1286,7 +1301,8 @@ const Dashboard = () => {
                                 quizItem.quiz_id,
                                 quizItem.attempts_count,
                                 quizItem.retake_flag,
-                                quizItem.active_flag
+                                quizItem.active_flag,
+                                quizItem.premium_quiz_flag
                               )
                             } 
                             className="flex items-center cursor-pointer space-x-4 text-xs sm:text-sm">
@@ -1715,7 +1731,7 @@ src={quizItem.photo1 || back}
  {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
    Physics,Physics,Physics,Physics
  </span> */}
-  {quizItem.is_premium === "Y" && (
+  {quizItem.premium_quiz_flag === true && (
                             <img
               src={crown}
               alt="Premium"
@@ -2451,10 +2467,13 @@ alt="Disable icon"
                   const isActiveForOthers =
                     quizItem.active_flag?.toLowerCase() === "true" ||
                     quizItem.active_flag?.toLowerCase() === "Y";
-                    const isPremiumQuiz = multiAnswer ? quizItem.is_premium === "Y" : true;
-
+                    const shouldShowQuiz = Premium
+                    ? quizItem.premium_quiz_flag === true // Show only premium quizzes if toggle is on
+                    : quizItem.premium_quiz_flag === null; // Show only non-premium quizzes if toggle is off
+              
                 return (
-                  isPremiumQuiz &&
+
+                  shouldShowQuiz &&
                   (isQuizMaster || isActiveForOthers) && 
                   // quizItem.active_flag === "true" &&
                   quizItem.popularity_flag === "Y" &&
@@ -2490,7 +2509,8 @@ alt="Disable icon"
                                 quizItem.quiz_id,
                                 quizItem.attempts_count,
                                 quizItem.retake_flag,
-                                quizItem.active_flag
+                                quizItem.active_flag,
+                                quizItem.premium_quiz_flag
                               )
                             }
                           src={quizItem.photo1 || back}
@@ -2508,7 +2528,8 @@ alt="Disable icon"
                                 quizItem.quiz_id,
                                 quizItem.attempts_count,
                                 quizItem.retake_flag,
-                                quizItem.active_flag
+                                quizItem.active_flag,
+                                quizItem.premium_quiz_flag
                               )
                             } className="text-[15px] cursor-pointer font-semibold text-[#00008b] w-[170px] sm:w-[215px] truncate">
                             {quizItem.quiz_name}
@@ -2518,7 +2539,7 @@ alt="Disable icon"
                             {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                               Physics,Physics,Physics,Physics
                             </span> */}
-                             {quizItem.is_premium === "Y" && (
+                             {quizItem.premium_quiz_flag === true && (
                             <img
               src={crown}
               alt="Premium"
@@ -2803,7 +2824,8 @@ alt="Disable icon"
                                 quizItem.quiz_id,
                                 quizItem.attempts_count,
                                 quizItem.retake_flag,
-                                quizItem.active_flag
+                                quizItem.active_flag,
+                                quizItem.premium_quiz_flag
                               )
                             } className="text-[#00008b] cursor-pointer text-[12px] truncate max-w-[230px] max-h-4 justify-start mt-1">
                             <span>{quizItem.category}</span>
@@ -2822,7 +2844,8 @@ alt="Disable icon"
                                 quizItem.quiz_id,
                                 quizItem.attempts_count,
                                 quizItem.retake_flag,
-                                quizItem.active_flag
+                                quizItem.active_flag,
+                                quizItem.premium_quiz_flag
                               )
                             } className="flex items-center cursor-pointer justify-between text-[12px] sm:text-[10px]">
                               <div className="flex items-center">
@@ -2842,7 +2865,8 @@ alt="Disable icon"
                                 quizItem.quiz_id,
                                 quizItem.attempts_count,
                                 quizItem.retake_flag,
-                                quizItem.active_flag
+                                quizItem.active_flag,
+                                quizItem.premium_quiz_flag
                               )
                             } className="flex items-center cursor-pointer justify-between pr-1 text-xs sm:text-sm">
                               <div className="flex items-center">
@@ -2862,7 +2886,8 @@ alt="Disable icon"
                                 quizItem.quiz_id,
                                 quizItem.attempts_count,
                                 quizItem.retake_flag,
-                                quizItem.active_flag
+                                quizItem.active_flag,
+                                quizItem.premium_quiz_flag
                               )
                             } className="flex items-center cursor-pointer space-x-4 text-xs sm:text-sm">
                               <div className="flex items-center">
@@ -3220,7 +3245,7 @@ src={quizItem.photo1 || back}
  {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
    Physics,Physics,Physics,Physics
  </span> */}
-  {quizItem.is_premium === "Y" && (
+  {quizItem.premium_quiz_flag === true && (
                             <img
               src={crown}
               alt="Premium"

@@ -319,7 +319,7 @@ const LoginPage = () => {
           setErrorMessage("");
   
           // Navigate based on user_role and org_id
-          if (user_role === "Admin" && org_id) {
+          if (user_role === "Admin" && orgId) {
             navigate("/profileorganization");
           } else if (user_role === "Quiz Master") {
             navigate("/dashboard");

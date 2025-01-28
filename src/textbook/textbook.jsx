@@ -3392,7 +3392,7 @@ value={orgId}
 
 <div className="flex items-center">
         <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[72px]">
-        Sharing with Group/Organization
+         Group/Organization
         <span className="text-red-500">*</span>
         </label>
         <FormControlLabel

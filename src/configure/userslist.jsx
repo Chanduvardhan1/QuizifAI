@@ -42,6 +42,7 @@ useEffect(() => {
     setUsername1(storedUsername);
   }
 }, []);
+
 const [errorMessage, setErrorMessage] = useState("");
 
 const fetchOrganizationUsers = async () => {
@@ -94,34 +95,37 @@ const fetchOrganizationUsers = async () => {
     const [lastName, setLastName] = useState('');
     const [userEmail, setUserEmail] = useState('');
     const [selectedRole, setSelectedRole] = useState('');
-    
+    const [selecuserId, setselecUserId] = useState('');
+
     const handleEdit = (user) => {
       setFirstName(user.user_name || '');
       setMiddleName(user.middle_name || '');
       setLastName(user.last_name || '');
       setUserEmail(user.user_email || '');
       setSelectedRole(user.role_name); // Preselect the role based on user data
-
+      setselecUserId(user.user_id ); // Preselect the role based on user data
+      setSelectedRoleId(user.user_role_id); 
       
       // setSelectedRoleId(user.user_role_id); // Preselect the role based on user data
       setIsEditing(true);
     };
 
-    const handleSave = () => {
-      const updatedUser = {
-        firstName,
-        middleName,
-        lastName,
-        userEmail,
-        selectedRole,
-      };
-      console.log(updatedUser);
-      setIsEditing(false);
-    };
-    
+   
+    // const handleSave = () => {
+    //   const updatedUser = {
+    //     firstName,
+    //     middleName,
+    //     lastName,
+    //     userEmail,
+    //     selectedRole,
+    //   };
+    //   console.log(updatedUser);
+    //   setIsEditing(false);
+    // };
+   
 
 
-    // roles linst fetch //
+// roles linst fetch //
 
 const [roles, setRoles] = useState([]); // To store roles from API
 const [selectedRoleId, setSelectedRoleId] = useState(null); 
@@ -159,14 +163,113 @@ useEffect(() => {
 const handleRoleChange = (e) => {
   const selectedId = e.target.value;
   setSelectedRoleId(selectedId);
-  // console.log('Selected Role ID:', selectedId);
+  console.log('Selected Role ID:', selectedId);
 };
 
 // roles linst fetch end //
 
 
+
     // --------------***Edit users END*** -------------- //
 
+
+    // --------------***Edit users*** -------------- //
+
+    const updatedUser = {
+      user_id: selecuserId,
+    first_name: firstName,
+    middle_name: middleName,
+    last_name: lastName,
+    user_email: userEmail,
+    user_role_id: selectedRoleId,
+        };
+   
+    const handleSave = async (e) => {
+      e.preventDefault();
+  
+      const authToken = localStorage.getItem("authToken"); // Get the token from localStorage
+      if (!authToken) {
+        throw new Error("No authentication token found");
+      }  
+      try {
+        const response = await fetch("https://dev.quizifai.com:8010/users-edit-by-admin", {
+          method: "POST",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${authToken}`,
+          },
+          body: JSON.stringify(updatedUser),
+        });
+  
+        if (response.ok) {
+          const result = await response.json();
+          console.log("User updated successfully:", result);
+          alert("User updated successfully!");
+          
+          fetchOrganizationUsers();
+          setIsEditing(false);
+        } else {
+          const errorData = await response.json();
+          console.error("Error updating user:", errorData);
+          alert(`Error: ${errorData.message || "Failed to update user."}`);
+        }
+      } catch (error) {
+        console.error("Network error:", error);
+        alert("Network error occurred. Please try again.");
+      }
+    };
+
+    // --------------***Edit users END*** -------------- //
+
+
+    // --------------***Remove users*** -------------- //
+
+    const [message, setMessage] = useState(""); // State for displaying success/error messages
+  
+    const handleRemoveUser = async (userId) => {
+      const authToken = localStorage.getItem("authToken");
+  
+      if (!authToken) {
+        alert("No authentication token found. Please log in.");
+        return;
+      }
+  
+      setLoading(true);
+      setMessage("");
+  
+      try {
+        const response = await fetch(
+          `https://dev.quizifai.com:8010/user-remove-by-admin?user_id=${userId}`,
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+  
+        if (response.ok) {
+          const result = await response.json();
+          console.log("User removed successfully:", result);
+          
+          setMessage("User removed successfully!");
+          fetchOrganizationUsers();
+        } else {
+          const errorData = await response.json();
+          console.error("Error removing user:", errorData);
+          setMessage(`Error: ${errorData.message || "Failed to remove user."}`);
+        }
+      } catch (error) {
+        console.error("Network error:", error);
+        setMessage("Network error occurred. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // --------------***Remove users END*** -------------- //
 
 
 
@@ -256,8 +359,8 @@ const [loading, setLoading] = useState(true);
                   <span className="text-[14px] ">Organization ID : </span>
                   <span className=" font-normal text-[12px]">{orgId}</span>
                   <br />
-                  <span className="text-[14px]">Organization Name : </span>
-                  <span className=" font-normal text-[12px]">{}</span>
+                  {/* <span className="text-[14px]">Organization Name : </span>
+                  <span className=" font-normal text-[12px]">{}</span> */}
                 </div>
         </div>
         <div>
@@ -350,7 +453,7 @@ const [loading, setLoading] = useState(true);
                       alt="Edit"
                       onClick={() => handleEdit(user)}
                     />
-                    <button className="flex text-orange-500 w-[30px] h-[30px]">
+                    <button onClick={() => handleRemoveUser(user.user_id)} className="flex text-orange-500 w-[30px] h-[30px]">
                       <RiDeleteBinLine />
                     </button>
                   </td>
@@ -424,19 +527,23 @@ const [loading, setLoading] = useState(true);
     Role<span className="text-red-500">*</span>
   </label>
   <select
-    className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
-    value={selectedRole || ""} // Ensure the selected role name is displayed
-    onChange={(e) => setSelectedRole(e.target.value)} // Update state with selected role
-  >
-    <option value="" disabled>Select a Role</option>
-    {roles
-      .filter((role) => role.role_name !== "Super Admin" && role.role_name !== "Admin") // Filter out restricted roles
-      .map((role, index) => (
-        <option key={index} value={role.role_name}> {/* Use role_name as the value */}
-          {role.role_name}
+  className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+  value={selectedRoleId}
+  onChange={(e) => setSelectedRoleId(e.target.value)}
+
+>
+<option value="" disabled selected>
+         Select a Role
         </option>
-      ))}
-  </select>
+        {roles  
+          .filter((role) => role.role_name !== "Super Admin" && role.role_name !== "Admin") 
+           .map((role) => (
+          <option key={role.user_role_id} value={role.user_role_id}>
+            {role.role_name}
+          </option>
+        ))}
+</select>
+
 </div>
 
 

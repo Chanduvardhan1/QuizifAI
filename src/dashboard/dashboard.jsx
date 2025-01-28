@@ -919,7 +919,7 @@ const Dashboard = () => {
               <span
                 className="text-[#EF5130] text-[12px] mr-[20px] mt-1 cursor-pointer"
                 style={{ fontWeight: "600" }}
-                onClick={open}
+                onClick={handleBackToQuizzes}
               >
                 More{" "}
               </span>

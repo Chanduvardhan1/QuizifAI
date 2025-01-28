@@ -41,6 +41,7 @@ const FreeProfile = () => {
 
   const navigate = useNavigate();
 
+  const [loginMethod, setLoginMethod] = useState("Email");
   const [isFocused, setIsFocused] = useState(false);
   const [selectedButton, setSelectedButton] = useState("email");
   const [inputValue, setInputValue] = useState("");
@@ -123,7 +124,9 @@ const FreeProfile = () => {
    // State to manage modal visibility
  
   
-
+   const handleLoginMethodChange = (method) => {
+    setLoginMethod(method);
+  };
 
   const handleNextpage = () => {
     setStep(2);
@@ -264,7 +267,7 @@ const FreeProfile = () => {
           city: userProfileDetails.location_name,
           postalCode: userProfileDetails.pin_code,
           occupation: userProfileDetails.occupation_name,
-          preferredLoginMethod: userProfileDetails.preferred_login_method,
+          loginMethod: userProfileDetails.preferred_login_method,
           address: userProfileDetails.user_address_line_1,
           otheroccupation: userProfileDetails.other_occupation_name,
           rolename: userProfileDetails.role_name,
@@ -285,7 +288,7 @@ const FreeProfile = () => {
         setPostalCode(userProfileDetails.pin_code);
         setOccupation(userProfileDetails.occupation_name);
         setInitialLoginData(initialData);
-        setPreferredLoginMethod(userProfileDetails.preferred_login_method);
+        setLoginMethod(userProfileDetails.preferred_login_method);
         setOtherccupation(userProfileDetails.other_occupation_name);
         setusertype(userProfileDetails.user_type);
         setShowOtherInput(userProfileDetails.occupation_name === "Other");
@@ -322,7 +325,7 @@ const FreeProfile = () => {
       city,
       postalCode,
       occupation,
-      preferredLoginMethod,
+      loginMethod,
     }); // Save the current form data as the initial state
     setIsEditing(true);
     fetchDetailsByPincode(postalCode); // Call fetchDetailsByPincode here
@@ -469,8 +472,8 @@ const FreeProfile = () => {
       first_name: firstName || null,
       middle_name: middleName || null,
       last_name: lastName || null,
-      user_role: "Quiz User",
-      user_type: "Public",
+      user_role: rolename,
+      user_type: usertype,
       user_org_id: orgId || null,
       gender: gender || null,
       display_name: "" || "N/A",
@@ -686,8 +689,8 @@ const FreeProfile = () => {
   
   const handleLoginSaveClick = async () => {
     const payload = {
-      preferred_login_method: email ? "email" : "mobile", // Determine the method based on input
-      identifier: email || mobileNumber, // Use email or mobile as the identifier
+      preferred_login_method: loginMethod, // Determine the method based on input
+      identifier: loginMethod === "Email" ? email : mobileNumber, // Use email or mobile as the identifier
       user_id: userId || 0, // Use userId or default to 0 if not provided
     };
   
@@ -721,13 +724,13 @@ const FreeProfile = () => {
       console.log("OTP Response Data:", data);
   
       // Handle success response
-      if (data.response === "success" && data.data.response === "success") {
+      if (data.response === "success" && data.data.response_message) {
         const successMessage = data.data.response_message;
   
         // Show appropriate OTP input box
-        if (successMessage.includes("email")) {
+        if (successMessage.includes("Email")) {
           setIsEmailOtpSent(true); // Show email OTP input box
-        } else if (successMessage.includes("mobile")) {
+        } else if (successMessage.includes("Mobile")) {
           setIsMobileOtpSent(true); // Show mobile OTP input box
         }
   
@@ -737,6 +740,7 @@ const FreeProfile = () => {
         // Additional actions for success
         setIsEditingLogin(false);
         setIsOtpSent(true);
+        // Uncomment these if needed:
         // handleEditClick();
         // fetchDetailsByPincode(postalCode);
         // handlePostalCodeChange(postalCode);
@@ -757,11 +761,121 @@ const FreeProfile = () => {
   
   
   
+  const updatePreferredLoginMethod = async () => {
+    // Replace the placeholder values with actual data from your state or inputs
+    const payload = {
+      preferred_login_method: loginMethod, // or "Mobile"
+      identifier: mobileNumber, // User's identifier (email or mobile)
+      user_id: userId, // User's ID
+      email_otp: emailOtp, // Email OTP sent to the user
+      mobile_otp: "", // Mobile OTP sent to the user
+      new_email: email, // New email to be updated
+      new_mobile: "", // New mobile to be updated
+    };
   
+    try {
+      const authToken = localStorage.getItem("authToken"); // Fetch the auth token from localStorage
+      if (!authToken) {
+        throw new Error("No authentication token found.");
+      }
+  
+      const response = await fetch(
+        "https://dev.quizifai.com:8010/update-preferred-login-method",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+  
+      // Check for HTTP errors
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Failed to update login method:", errorText);
+        throw new Error("Failed to update login method.");
+      }
+  
+      // Parse the JSON response
+      const data = await response.json();
+      console.log("Update Preferred Login Method Response:", data);
+  
+      // Handle the success response
+      if (data.response === "success") {
+        toast.success(data.response_message || "Preferred login method updated successfully!");
+        window.location.reload();
+      } else if (data.response === "fail") {
+        toast.error(data.response_message || "Failed to update preferred login method.");
+      } else {
+        toast.error("Unexpected response from the server.");
+      }
+    } catch (error) {
+      console.error("Error in updatePreferredLoginMethod:", error.message);
+      toast.error("Error updating preferred login method. Please try again.");
+    }
+  };
+  
+  const updatePreferredLoginMethod1 = async () => {
+    // Replace the placeholder values with actual data from your state or inputs
+    const payload = {
+      preferred_login_method: loginMethod, // or "Mobile"
+      identifier:email, // User's identifier (email or mobile)
+      user_id: userId, // User's ID
+      email_otp: "", // Email OTP sent to the user
+      mobile_otp: otp, // Mobile OTP sent to the user
+      new_email: "", // New email to be updated
+      new_mobile: mobileNumber, // New mobile to be updated
+    };
+  
+    try {
+      const authToken = localStorage.getItem("authToken"); // Fetch the auth token from localStorage
+      if (!authToken) {
+        throw new Error("No authentication token found.");
+      }
+  
+      const response = await fetch(
+        "https://dev.quizifai.com:8010/update-preferred-login-method",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+  
+      // Check for HTTP errors
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Failed to update login method:", errorText);
+        throw new Error("Failed to update login method.");
+      }
+  
+      // Parse the JSON response
+      const data = await response.json();
+      console.log("Update Preferred Login Method Response:", data);
+  
+      // Handle the success response
+      if (data.response === "success") {
+        toast.success(data.response_message || "Preferred login method updated successfully!");
+        window.location.reload();
+      } else if (data.response === "fail") {
+        toast.error(data.response_message || "Failed to update preferred login method.");
+      } else {
+        toast.error("Unexpected response from the server.");
+      }
+    } catch (error) {
+      console.error("Error in updatePreferredLoginMethod:", error.message);
+      toast.error("Error updating preferred login method. Please try again.");
+    }
+  };
   
 
   const handleLoginCancelClick = () => {
-    setPreferredLoginMethod("Email");
+    setLoginMethod("Email");
     setEmail(initialFormData.email);
     setMobileNumber(initialFormData.mobileNumber);
     setIsEmailOtpSent(false);
@@ -1710,23 +1824,23 @@ const FreeProfile = () => {
             <label className="text-blue-800 font-semibold">Login Method</label>
             <button
               className={`border-b-2 w-[77.5px] text-[11px] pl-[10px] ml-[10px] focus:outline-none ${
-                preferredLoginMethod === "Email"
+                loginMethod === "Email"
                   ? "border-blue-200"
                   : "border-transparent"
               } ${!isEditingLogin && "cursor-not-allowed"}`}
-              onClick={() => isEditingLogin && setPreferredLoginMethod("Email")}
+              onClick={() => isEditingLogin && handleLoginMethodChange("Email")}
               disabled={!isEditingLogin}
             >
               Email
             </button>
             <button
               className={`border-b-2 w-[77.5px] text-[11px] pl-[10px] focus:outline-none ${
-                preferredLoginMethod === "Mobile"
+                loginMethod === "Mobile"
                   ? "border-blue-200"
                   : "border-transparent"
               } ${!isEditingLogin && "cursor-not-allowed"}`}
               onClick={() =>
-                isEditingLogin && setPreferredLoginMethod("Mobile")
+                isEditingLogin && handleLoginMethodChange("Mobile")
               }
               disabled={!isEditingLogin}
             >
@@ -1735,7 +1849,7 @@ const FreeProfile = () => {
             <hr className="h-[1px] w-[90px] bg-gray-200"></hr>
           </div>
           <div className="flex ml-[34%] mt-[20px]">
-            {preferredLoginMethod === "Email" && (
+            {loginMethod === "Email" && (
               <div
                 className={styles.inputGroup1}
                 style={{ marginLeft: "-60px" }}
@@ -1752,7 +1866,7 @@ const FreeProfile = () => {
                 />
               </div>
             )}
-            {preferredLoginMethod === "Mobile" && (
+            {loginMethod === "Mobile" && (
               <div
                 className={styles.inputGroup1}
                 style={{ marginLeft: "-60px" }}
@@ -1780,7 +1894,7 @@ const FreeProfile = () => {
                 />
                 <button
                   className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[90px] text-[13px] font-semibold rounded-[20px] ml-[10px] text-white"
-                  onClick={handleSaveClick}
+                  onClick={updatePreferredLoginMethod}
                 >
                   Verify OTP
                 </button>
@@ -1797,7 +1911,7 @@ const FreeProfile = () => {
                 />
                 <button
                   className="bg-[#3B61C8] hover:transform hover:scale-110 hover:bg-[rgb(239,81,48)] transition-transform duration-300 ease-in-out h-[30px] w-[90px] text-[13px] font-semibold rounded-[20px] ml-[10px] text-white"
-                  onClick={handleSaveClick}
+                  onClick={updatePreferredLoginMethod1}
                 >
                   Verify OTP
                 </button>

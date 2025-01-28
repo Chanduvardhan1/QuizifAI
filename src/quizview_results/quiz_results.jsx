@@ -333,7 +333,7 @@ const quiz_results = () => {
       <div onClick={handleBack} className=" absolute top-5 right-5 cursor-pointer">
         <img src={close} alt="" className="w-[25px] h-[25px]" />
       </div>
-      <div className="flex w-full border-[#8cd18e] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-2 bg-white">
+      <div className="flex w-[99%] border-[#8cd18e] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-2 bg-white">
     {/* Quiz Image */}
     <div className="relative mr-2">
       <img
@@ -632,7 +632,7 @@ const quiz_results = () => {
                 </div>
     
                 {/* Answer Feedback */}
-                <div className="flex items-center mt-6 ml-6">
+                {/* <div className="flex items-center mt-6 ml-6">
                   <img
                     src={
                       question.selected_option === question.correct_option
@@ -653,7 +653,7 @@ const quiz_results = () => {
                       ? 'Correct Answer'
                       : 'Wrong Answer'}
                   </span>
-                </div>
+                </div> */}
     
                 {/* Correct Answer Description */}
                 <div className="correct-answer-description mt-4 ml-6">

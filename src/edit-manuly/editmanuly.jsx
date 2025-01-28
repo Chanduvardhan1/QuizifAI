@@ -6,7 +6,6 @@ import Navigation from "../navbar/navbar";
 import { useNavigate } from "react-router-dom";
 // import { useHistory } from 'react-router-dom';
 import { MdOutlineCancel } from "react-icons/md";
-import { RiDeleteBinLine } from "react-icons/ri";
 
 // Navbar-icons
 import QuizifAilogo from "../assets/Images/images/home/Quizifai3.png";
@@ -24,6 +23,7 @@ import QuizDiscription from "../assets/Images/quiz-type/Quiz-discription.png";
 import Next from "../assets/Images/quiz-type/Next.png";
 import { FiAlertCircle } from "react-icons/fi";
 import { FaXmark } from "react-icons/fa6";
+import { RiDeleteBinLine } from "react-icons/ri";
 
 import CreateOrEdit from "../assets/Images/quiz-type/Create-Edit.png";
 import Line from "../assets/Images/quiz-type/Line.png";
@@ -41,6 +41,15 @@ import { Alert } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import editicon from "../../src/assets/Images/quiz-type/edit.png"
+import { FaSyncAlt } from 'react-icons/fa';
+import back from "../../src/assets/Images/dashboard/quiz12.png"
+
+import username from "../../src/assets/Images/quiz-type/username.png"
+import calander from "../../src/assets/Images/quiz-type/calander.png"
+import timer from "../../src/assets/Images/quiz-type/Timer.png"
+import comment from "../../src/assets/Images/quiz-type/comment.png"
+import QuestionPaper from "../assets/Images/Assets/questionPaper.png";
+import GreaterThan from "../assets/Images/images/dashboard/greaterthan.png";
 
 // const options1 =[
 //   {label: "Numbers"},
@@ -238,32 +247,105 @@ export default function editmanuly() {
   const [isAllSelected, setIsAllSelected] = useState(false);
 
   const [quizcreation, setQuizcreation] = useState('')
-const [instructions, setInstructions] = useState([
-      "Read all the instructions carefully before starting the quiz.",
-      "Ensure you have a stable internet connection throughout the quiz duration.",
-      "Use a compatible device (e.g., laptop, tablet, or mobile) as specified for the quiz.",
-      "Check the allotted time for the quiz and plan accordingly.",
-      "Make sure you are in a quiet, distraction-free environment.",
-      "Review the total number of questions in the quiz.",
-      "Understand the marking scheme, including negative marking (if applicable).",
-      "Note whether the quiz allows multiple attempts or is a one-time attempt.",
-      "Ensure your device’s battery is fully charged or connected to a power source.",
-      "Keep necessary materials ready if allowed (e.g., calculator, pen, paper).",
-      "Do not open other tabs, windows, or applications during the quiz unless permitted.",
-      "Follow any specific rules set by the instructor or platform.",
-      "Avoid any forms of cheating or academic dishonesty.",
-      "Be aware that the quiz might automatically submit at the end of the allotted time.",
-      "Contact support or your instructor immediately if you face technical issues.",
-    ]);
+ const [instructions, setInstructions] = useState([
+    "Read all the instructions carefully before starting the quiz.",
+    "Ensure you have a stable internet connection throughout the quiz duration.",
+    "Use a compatible device (e.g., laptop, tablet, or mobile) as specified for the quiz.",
+    "Check the allotted time for the quiz and plan accordingly.",
+    "Make sure you are in a quiet, distraction-free environment.",
+    "Understand the marking scheme, including negative marking (if applicable).",
+
+    "Ensure your device’s battery is fully charged or connected to a power source.",
+    "Do not open other tabs, windows, or applications during the quiz unless permitted.",
+
+    "Be aware that the quiz might automatically submit at the end of the allotted time.",
+    "Contact support or your instructor immediately if you face technical issues.",
+  ]);
 
   const [ isEditing ,setisEditing] = useState(false);
   const orgId = localStorage.getItem('org_id');
+const [quizid, setQuizId] = useState('');
 
+   const [username1, setUsername1] = useState("");
+  
+    useEffect(() => {
+      const storedUsername = localStorage.getItem("username");
+      if (storedUsername) {
+        setUsername1(storedUsername);
+      }
+    }, []);
+    
   const handeledit =()=> {
     setisEditing(true);
    }
    const [isDisabled, setIsDisabled] = useState(false);
    const [modalMessage1, setModalMessage1] = useState("");
+ const [frontImage, setFrontImage] = useState(null);
+  const [backImage, setBackImage] = useState(null);
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [layout1 , setlayout1] = useState(false)
+    const [edit,setEdit] = useState(false)
+
+
+
+  
+    // --------------***Quiz Pakage and sections*** -------------- //
+    const [showPackageFields, setShowPackageFields] = useState(false);
+  
+    const handleToggle5 = (event) => {
+      setShowPackageFields(event.target.checked);
+    }; 
+
+    const [quizPackages, setQuizPackages] = useState([]);
+    const [selectedPackageId, setSelectedPackageId] = useState("");
+    const [selectedPackageName, setSelectedPackageName] = useState("");
+    
+    useEffect(() => {
+      const fetchQuizPackages = async () => {
+        try {
+          const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+    
+          if (!authToken) {
+            console.error('No authentication token found');
+            return;
+          }
+          const response = await fetch("https://dev.quizifai.com:8010/quiz_packages/", {
+            method: "GET",
+            headers: {
+              accept: "application/json",
+              'Authorization': `Bearer ${authToken}`,
+            },
+          });
+    
+          const data = await response.json();
+    
+          if (data.response === "success") {
+            setQuizPackages(data.data);
+          } else {
+            console.error("Failed to fetch quiz packages:", data.response_message);
+          }
+        } catch (error) {
+          console.error("Error fetching quiz packages:", error);
+        }
+      };
+    
+      fetchQuizPackages();
+    }, []);
+    
+    const handlePackageChange = (event) => {
+      const selectedId = event.target.value;
+      setSelectedPackageId(selectedId);
+    
+      // Find the selected package name
+      const selectedPackage = quizPackages.find(
+        (pkg) => pkg.quiz_package_id.toString() === selectedId
+      );
+      setSelectedPackageName(selectedPackage?.quiz_package_name || "");
+    };
+    
+    // --------------***Quiz Pakage and sections end*** -------------- //
+    
+    
 
    const [isError, setIsError] = useState(false);
    const handleClick = () => {
@@ -277,7 +359,105 @@ const [instructions, setInstructions] = useState([
     fetchCategories();
   }, []);
 
+  function handleImageClick() {
+    if (inputReff.current && typeof inputReff.current.click === 'function') {
+      inputReff.current.click(); // Open file dialog
+    } else {
+      console.error('click method is not available on inputReff.current');
+    }
+  }
+  
+  function handleImageChange1(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const imageDataUrl = reader.result;
+        localStorage.setItem('savedImage', imageDataUrl);
+        setImage(imageDataUrl);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  
+    
+  function handleReplaceImage(event) {
+    event.stopPropagation(); // Prevent the click from triggering the parent div's click event
+    handleImageClick(); // Open file dialog
+  }
+  
+  function handleDeleteImage(event) {
+    event.stopPropagation(); // Prevent the click from triggering the parent div's click event
+    localStorage.removeItem('savedImage'); // Remove from local storage
+    setImage(""); // Reset to default image
+  }
+  
+  function handleViewImage(event) {
+    event.stopPropagation(); // Prevent the click from triggering the parent div's click event
+    if (image) {
+      // Create a temporary link element
+      const link = document.createElement('a');
+      link.href = image;
+      link.target = '_blank'; // Open in a new tab
+      link.click(); // Simulate click to open the image
+    } else {
+      console.error('No image available to view');
+    }
+  }
 
+
+  const handleImageChange = (e, type) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (type === 'front') {
+        setFrontImage(file);
+        setIsFlipped(true); // Automatically "flip" to show the back after uploading the front image
+      } else {
+        setBackImage(file);
+      }
+    }
+  };
+
+  // Toggle flip state to switch between front and back image
+  const handleFlip = () => {
+    if (frontImage && backImage) setIsFlipped(!isFlipped); // Only allow flipping if both images are uploaded
+  };
+
+  const handleUpload = async (quiz_id) => {
+    // if (!frontImage || !backImage) {
+    //   alert('Please select both front and back images');
+    //   return;
+    // }
+
+    const formData = new FormData();
+    formData.append('file1', frontImage);
+    formData.append('file2', backImage);
+
+    try {
+
+      const response = await fetch(`https://dev.quizifai.com:8010/upload-qz_image?quiz_id=${quiz_id}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Replace with your actual token
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        alert('Images uploaded successfully');
+      } else {
+        alert('Image upload failed');
+      }
+    } catch (error) {
+      console.error('Error uploading images:', error);
+      alert('An error occurred while uploading images');
+    }
+  };
+  const handleDeleteImage1 = () => {
+    setFrontImage(null);
+    setBackImage(null);
+    setIsFlipped(false);
+  };
 
   // const fetchCategories = async () => {
   //   try {
@@ -785,7 +965,8 @@ const [instructions, setInstructions] = useState([
       if (response.ok) {
         if (responseData.response === "success") {
           setIsModified(false);
-          // Navigate to quiz created page with the response data
+          setQuizId(responseData.data.quiz_id);
+          await handleUpload(responseData.data.quiz_id);
           navigate("/quizcreated", { state: { quizData: responseData } });
         } else if (responseData.data && responseData.data.length > 0) {
           // Handle the specific message about the inactive quiz
@@ -1270,7 +1451,124 @@ const [instructions, setInstructions] = useState([
       </h1>
     </div> */}
 
+  <div className="flex w-full h-[15%] border-[#d9afc4] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-2 bg-white ">
+        {/* <img
+          src={physics}
+          alt="Quiz Cover"
+          className="w-32 h-44 rounded-md mr-4"
+        /> */}
+            <div className="relative mr-2">
+            <img
+    src={isFlipped ? (backImage ? URL.createObjectURL(backImage) : back): (frontImage ? URL.createObjectURL(frontImage) : back)
+    }
+    alt="Quiz Cover"
+    className="w-[120px] h-[140px] rounded-md mr-4 cursor-pointer"
+    onClick={handleFlip}
+  />
+          
+          {/* File inputs for front and back images */}
+          {!frontImage && (
+            <input type="file" onChange={(e) => handleImageChange(e, 'front')} className="hidden" id="front-upload" />
+          )}
+          {!backImage && isFlipped && (
+            <input type="file" onChange={(e) => handleImageChange(e, 'back')} className="hidden" id="back-upload" />
+          )}
   
+          {/* Labels or flip icon for upload buttons */}
+          {!frontImage && (
+            <label htmlFor="front-upload" className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white cursor-pointer text-[12px] rounded-md">
+              Upload Front Cover
+            </label>
+          )}
+          {isFlipped && !backImage && (
+            <label htmlFor="back-upload" className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white cursor-pointer text-[12px] rounded-md">
+              Upload Back Cover
+            </label>
+          )}
+          
+          {/* Flip icon to toggle between front and back after both images are uploaded */}
+          {frontImage && backImage && (
+            <button onClick={handleFlip} className="absolute top-2 right-2 text-white hidden bg-black bg-opacity-75 rounded-full p-1">
+              <FaSyncAlt size={18} />
+            </button>
+          )}
+            <button onClick={handleDeleteImage1}  className="absolute bottom-1 right-1 text-white bg-red-500 bg-opacity-75 rounded-full p-1">
+                <RiDeleteBinLine className="w-[12px] h-[12px]" />
+              </button>
+        </div>
+        <div className="flex flex-col  w-full">
+          {/* Title and Version */}
+          <div className="flex items-center gap-[3px]">
+            <h2 className="text-lg font-semibold text-[#00008b]">
+            {title || "Enter the Title"}
+            </h2>
+            {/* <span className="text-xs text-red-500">v1.0</span> */}
+          </div>
+  
+          {/* Description */}
+          <p className="text-[#00008b] w-[80%] line-clamp-2 text-sm mt-1">
+          {description || "Enter the Description"}
+          </p>
+  
+          {/* Meta Information */}
+          <div className="text-[#00008b] text-sm flex flex-wrap mt-2">
+            <span>{selectedCategory}</span>
+            <span className="mx-1">.</span>
+            <span>{selectedSubCategory}</span>
+            <span className="mx-1">.</span>
+            <span>{selectedComplexity}</span>
+          </div>
+  
+          {/* Icons Row */}
+          <div className=" flex-col items-center space-y-2  mt-2 text-[#00008b]">
+            {/* Author and Date */}
+            <div className="flex items-center space-x-6">
+              <div className="flex items-center">
+                {/* <i className="fas fa-user"></i> */}
+                <img src={username}  className=" w-[18px] h-[18px] mr-1"/>
+                <span className="ml-1 text-sm">{username1}</span>
+              </div>
+              <div className="flex items-center">
+                {/* <i className="fas fa-calendar-alt"></i> */}
+                <img src={calander}  className=" w-[18px] h-[18px] mr-1"/>
+  
+                <span className="ml-1 text-sm">{availablefrom}</span>
+              </div>
+            </div>
+  
+            {/* Quiz Info */}
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center">
+                {/* <i className="fas fa-question-circle"></i> */}
+                <img src={comment}  className=" w-[18px] h-[18px] mr-1"/>
+  
+                <span className="ml-1 text-sm">{numQuestions} Questions</span>
+              </div>
+              <div className="flex items-center">
+                {/* <i className="fas fa-clock"></i> */}
+                <img src={timer}  className=" w-[18px] h-[18px] mr-1"/>
+  
+                <span className="ml-1 text-sm">{duration} Minutes</span>
+              </div>
+            </div>
+          </div>
+  
+          {/* Bottom Stats Row */}
+          {/* <div className="flex items-center justify-between mt-4">
+            <div className="text-sm text-gray-500">
+              <span>203 attempts</span> | <span>80% High Score</span> | <span>2:02 mins quickest</span>
+            </div>
+            <div className="flex items-center text-yellow-500">
+              <i className="fas fa-star"></i>
+              <i className="fas fa-star"></i>
+              <i className="fas fa-star"></i>
+              <i className="fas fa-star"></i>
+              <i className="fas fa-star-half-alt"></i>
+            </div>
+          </div> */}
+        </div>
+      </div>
+
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white my-4 p-5">
     
       <div className="md:col-span-2"> 
@@ -1297,16 +1595,14 @@ const [instructions, setInstructions] = useState([
           </div>
 
           {/* Quiz Description */}
-          <div className="w-full flex flex-col ">
+          <div className="flex flex-col md:col-span-2">
             <div className="w-full flex flex-row">
-              <label className="w-[23%] text-blue-800 font-semibold mb-2 ">
+              <label className="w-[10%] text-blue-800 font-semibold mb-2 ">
                Description <span className="text-red-500">*</span>
               </label>
-              <textarea
+              <input
                 className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-                type=""
-                rows="4" 
-                cols="50"
+                type="text"
                 required
                 value={description}
                 onChange={(e) => setDescription(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1))}
@@ -1315,7 +1611,7 @@ const [instructions, setInstructions] = useState([
             <hr className="h-[1px] w-full" />
           </div>
  {/* Quiz instructions */}
- <div className="w-full flex items-center ">
+ {/* <div className="w-full flex items-center ">
  <div className=" w-full flex flex-col">
             <div className="w-full flex flex-row">
               <label className=" w-[25%] text-blue-800 font-semibold mb-2 mr-[10px]">
@@ -1337,14 +1633,9 @@ const [instructions, setInstructions] = useState([
           </div>
              <div className="  m-2">
               <img src={editicon} onClick={handeledit} className=" w-[18px] h-[18px] cursor-pointer "/>
-            {/* <button
-              // onClick={handleNextpage}
-              className="px-2 py-[4px] bg-[#3b61c8] text-white font-semibold rounded-xl hover:bg-blue-700"
-            >
-              Edit
-            </button> */}
+           
           </div>
-          </div>
+          </div> */}
        
          
        
@@ -1399,7 +1690,7 @@ const [instructions, setInstructions] = useState([
           <div className="md:col-span-2">
 
           <div className="flex gap-6">
-          <div className="w-full flex flex-col">
+          {/* <div className="w-full flex flex-col">
             <div className="w-full flex flex-row">
               <label className="w-[31%] text-blue-800 font-semibold mb-2 ">
                 Course<span className="text-red-500">*</span>
@@ -1419,10 +1710,10 @@ const [instructions, setInstructions] = useState([
               </select>
             </div>
             <hr className="h-[1px] w-full" />
-          </div>
+          </div> */}
 
           {/* Class */}
-          <div className="w-full flex flex-col">
+          {/* <div className="w-full flex flex-col">
             <div className="w-full flex flex-row">
               <label className=" w-[20%] text-blue-800 font-semibold mb-2">
                 Class<span className="text-red-500">*</span>
@@ -1442,11 +1733,26 @@ const [instructions, setInstructions] = useState([
               </select>
             </div>
             <hr className="h-[1px] w-full" />
-          </div>
+          </div> */}
+            <div className=" w-[50%] flex flex-col">
+                                
+                            <div className="w-[100%] flex flex-row">
+                            <label className="w-[30%] text-blue-800 font-semibold mb-2 mr-[10px] ">Premium Quizes Create<span className="text-red-500"></span></label>
+                            <FormControlLabel
+                             control={<Switch />} 
+                             checked={showPackageFields}
+                             onChange={handleToggle5}
+                              className="react-switch"
+                            />
+                            {/* <button onClick={handleToggle4} className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]">+</button> */}
+                           
+                            </div>
+                          
+                          </div>
            {/*  Public access */}
   <div className=" w-[50%] flex flex-col">
         <div className="w-[100%] flex flex-row">
-        <label className="w-[100%] inline-flex items-center cursor-pointer text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500 mr-2">*</span>
+        <label className="w-[100%] inline-flex items-center cursor-pointer text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500 mr-2"></span>
         <FormControlLabel
       control={
         <Switch 
@@ -1465,9 +1771,98 @@ const [instructions, setInstructions] = useState([
       </div>
       </div>
       </div>
+      {publicAccess && (
+        <>
+  <div className="flex flex-col">
+  <div className="w-full flex flex-row">
+    <label className="w-[23%] text-blue-800 font-semibold mb-2 ">
+      Course<span className="text-red-500"></span>
+    </label>
+    <select
+      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+      value={selectedCourse}
+      onChange={handleSelectCourse}
+    >
+      <option value="" disabled>Select a course</option>
+      <option value="">None</option>
+      {courses.map((course) => (
+        <option key={course.course_id} value={course.course_name}>
+          {course.course_name}
+        </option>
+      ))}
+    </select>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
 
+{/* Class */}
+<div className="flex flex-col">
+  <div className="w-full flex flex-row">
+    <label className=" w-[25%] text-blue-800 font-semibold mb-2">
+      Class<span className="text-red-500"></span>
+    </label>
+    <select
+      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+      value={selectedClass}
+      onChange={handleSelectClass}
+      disabled={classes.length === 0}
+    >
+      <option value="" disabled>Select a class</option>
+      <option value="">None</option>
+      {classes.map((className, index) => (
+        <option key={index} value={className}>
+          {className}
+        </option>
+      ))}
+    </select>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+</>
+            )}
+                {showPackageFields && (
+<>
 
-      <div className="md:col-span-2">
+              <div className="flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className="w-[26%] text-blue-800 font-semibold mb-2">
+              Package Name<span className="text-red-500"></span>
+              </label>
+              <select
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                value={selectedPackageId}
+                  onChange={handlePackageChange}
+              >
+               <option value="">Select a Package</option>
+               <option value="">None</option>
+          {quizPackages.map((pkg) => (
+            <option key={pkg.quiz_package_id} value={pkg.quiz_package_id}>
+              {pkg.quiz_package_name}
+            </option>
+          ))}
+              </select>
+            </div>
+            <hr className="h-[1px] w-full" />
+          </div>
+              <div className="flex flex-col ">
+            <div className="w-full flex flex-row">
+              <label className="w-[40%] text-blue-800 font-semibold mb-2 ">
+              Package Description <span className="text-red-500"></span>
+              </label>
+              <input
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                type="text"
+
+              />
+            </div>
+            <hr className="h-[1px] w-full" />
+         
+           
+                </div>
+                </>
+                )}
+
+      <div className="=">
 
 <div className="w-full flex gap-6">
       {/* Complexity */}

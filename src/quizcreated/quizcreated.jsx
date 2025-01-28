@@ -200,11 +200,11 @@ const Back = () => {
                 /> */}
      
                 <img
-                  className="w-[885px] absolute top-[325px] left-[277px]"
+                  className="w-[885px] absolute top-[325px] left-[202px]"
                   src={HorizontalLine}
                 />
               </div>
-              <div className=" absolute top-[340px] left-[315px] flex gap-[55px]" >
+              <div className=" absolute top-[340px] left-[202px] flex gap-[55px]" >
                 <div  className=" w-[300px]">
                   <span className="font-Poppins text-[#214082] text-[15px] font-bold leading-[40px]  ">Category : </span>
                   <span>{quizData.quiz_category_name}</span>
@@ -358,7 +358,7 @@ const Back = () => {
                   </h1> */}
                 {/* </div>  */}
                 <img
-                  className="w-[885px] absolute top-[465px] left-[277px]"
+                  className="w-[885px] absolute top-[465px] left-[202px]"
                   src={HorizontalLine}
                 />
               {/* </div>  */}
@@ -398,7 +398,7 @@ const Back = () => {
                     {quizData.quiz_public_access ? "Yes" : "No"}
                   </h1> */}
                   <span className="font-Poppins text-[#214082] text-[15px] font-bold leading-[40px]  " >Public access :</span>
-                <span> {quizData.quiz_public_access ? "Yes" : "No"}</span>
+                <span> {quizData.quiz_public_access}</span>
                 </div>
               </div>
             </div>

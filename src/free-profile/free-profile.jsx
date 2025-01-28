@@ -79,6 +79,7 @@ const FreeProfile = () => {
   const [newPasswordError, setNewPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [locationId, setLocationId] = useState("");
+  const [addressId, setAddressId] = useState("");
 
   const [weeklyQuizCount, setWeeklyQuizCount] = useState(0);
   const [averageScorePercentage, setAverageScorePercentage] = useState(0);
@@ -211,48 +212,160 @@ const FreeProfile = () => {
     }
   };
   // Get profile details integration part******************
+  // useEffect(() => {
+  //   const fetchQuizData = async () => {
+  //     console.log("User ID:", userId);
+  //     try {
+  //       const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+
+  //       if (!authToken) {
+  //         throw new Error("No authentication token found");
+  //       }
+  //       const response = await fetch(
+  //         `https://dev.quizifai.com:8010/dashboard`,
+  //         {
+  //           method: "POST",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             Authorization: `Bearer ${authToken}`,
+  //           },
+  //           body: JSON.stringify({
+  //             user_id: userId,
+  //           }),
+  //         }
+  //       );
+
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch data");
+  //       }
+  //       const data = await response.json();
+  //       console.log("Data:", data);
+
+  //       const dashboardData = data.data[0];
+  //       if (dashboardData) {
+  //         setWeeklyQuizCount(dashboardData.weekly_quiz_count);
+  //         setAverageScorePercentage(dashboardData.average_score_percentage);
+  //       } else {
+  //         console.error("Dashboard data not found");
+  //       }
+
+  //       const userProfileDetails = data.data[0].user_profile_details;
+  //       if (!userProfileDetails) {
+  //         throw new Error("User profile details not found");
+  //       }
+
+  //       const initialData = {
+  //         firstName: userProfileDetails.first_name,
+  //         middleName: userProfileDetails.middle_name,
+  //         lastName: userProfileDetails.last_name,
+  //         gender: userProfileDetails.gender,
+  //         dob: userProfileDetails.date_of_birth,
+  //         district: userProfileDetails.district_name,
+  //         email: userProfileDetails.user_email,
+  //         mobileNumber: userProfileDetails.user_phone_number,
+  //         country: userProfileDetails.country_name,
+  //         state: userProfileDetails.state_name,
+  //         city: userProfileDetails.location_name,
+  //         postalCode: userProfileDetails.pin_code,
+  //         occupation: userProfileDetails.occupation_name,
+  //         loginMethod: userProfileDetails.preferred_login_method,
+  //         address: userProfileDetails.user_address_line_1,
+  //         otheroccupation: userProfileDetails.other_occupation_name,
+  //         rolename: userProfileDetails.role_name,
+  //         usertype: userProfileDetails.role_name,
+  //       };
+  //       setFirstName(userProfileDetails.first_name);
+  //       setMiddleName(userProfileDetails.middle_name);
+  //       setLastName(userProfileDetails.last_name);
+  //       setGender(userProfileDetails.gender);
+  //       setDob(userProfileDetails.date_of_birth);
+  //       setDistrict(userProfileDetails.district_name);
+  //       setEmail(userProfileDetails.user_email);
+  //       setMobileNumber(userProfileDetails.user_phone_number);
+  //       // setAddress(userProfileDetails.user_address_line_1);
+  //       setCountry(userProfileDetails.country_name);
+  //       setState(userProfileDetails.state_name);
+  //       setCity(userProfileDetails.location_name);
+  //       setPostalCode(userProfileDetails.pin_code);
+  //       setOccupation(userProfileDetails.occupation_name);
+  //       setInitialLoginData(initialData);
+  //       setLoginMethod(userProfileDetails.preferred_login_method);
+  //       setOtherccupation(userProfileDetails.other_occupation_name);
+  //       setusertype(userProfileDetails.user_type);
+  //       setShowOtherInput(userProfileDetails.occupation_name === "Other");
+  //       setrolename(userProfileDetails.role_name);
+  //       const userDetails = data.data[0].audit_details;
+  //       setUserName(userDetails.full_name);
+
+  //       console.log("Gender:", userProfileDetails.gender);
+  //       // const userDetails = data.user_details;
+  //       // setUserName(userDetails.full_name);
+  //     } catch (error) {
+  //       console.error("Error fetching quiz data:", error);
+  //     }
+  //   };
+
+  //   fetchQuizData();
+  // }, [userId]);
+
   useEffect(() => {
     const fetchQuizData = async () => {
       console.log("User ID:", userId);
+  
       try {
         const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
-
+  
         if (!authToken) {
           throw new Error("No authentication token found");
         }
-        const response = await fetch(
-          `https://dev.quizifai.com:8010/dashboard`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${authToken}`,
-            },
-            body: JSON.stringify({
-              user_id: userId,
-            }),
-          }
-        );
-
+  
+        // Fetch user profile details
+        const response = await fetch("https://dev.quizifai.com:8010/get_prfl_dtls", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({
+            user_id: userId, // Replace with dynamic user ID if required
+          }),
+        });
+  
         if (!response.ok) {
-          throw new Error("Failed to fetch data");
+          throw new Error("Failed to fetch user profile details");
         }
+  
         const data = await response.json();
-        console.log("Data:", data);
-
-        const dashboardData = data.data[0];
-        if (dashboardData) {
-          setWeeklyQuizCount(dashboardData.weekly_quiz_count);
-          setAverageScorePercentage(dashboardData.average_score_percentage);
-        } else {
-          console.error("Dashboard data not found");
+  
+        if (data.response !== "success") {
+          throw new Error("Error in API response");
         }
+  
+        const userProfileDetails = data.data;
+        console.log("User Profile Details:", userProfileDetails);
+  
+        // Set state with the fetched user profile details
+        setFirstName(userProfileDetails.first_name);
+        setMiddleName(userProfileDetails.middle_name || ""); // Handle null values
+        setLastName(userProfileDetails.last_name);
+        setGender(userProfileDetails.gender);
+        setDob(userProfileDetails.date_of_birth);
+        setDistrict(userProfileDetails.district_name);
+        setEmail(userProfileDetails.user_email);
+        setMobileNumber(userProfileDetails.user_phone_number);
+        setCountry(userProfileDetails.country_name);
+        setState(userProfileDetails.state_name);
+        setCity(userProfileDetails.location_name);
+        setPostalCode(userProfileDetails.pin_code);
+        setOccupation(userProfileDetails.occupation_name);
+        setOtherccupation(userProfileDetails.other_occupation_name);
+        setrolename(userProfileDetails.role_name);
+        setusertype(userProfileDetails.user_type);
+        setAddressId(userProfileDetails.user_address_id);
+        setAddress(userProfileDetails.user_address_line_1);
+        setAddress1(userProfileDetails.user_address_line_2);
 
-        const userProfileDetails = data.data[0].user_profile_details;
-        if (!userProfileDetails) {
-          throw new Error("User profile details not found");
-        }
-
+        // Update any other states as needed
         const initialData = {
           firstName: userProfileDetails.first_name,
           middleName: userProfileDetails.middle_name,
@@ -267,45 +380,25 @@ const FreeProfile = () => {
           city: userProfileDetails.location_name,
           postalCode: userProfileDetails.pin_code,
           occupation: userProfileDetails.occupation_name,
-          loginMethod: userProfileDetails.preferred_login_method,
+          otherOccupation: userProfileDetails.other_occupation_name,
+          roleName: userProfileDetails.role_name,
+          userType: userProfileDetails.user_type,
           address: userProfileDetails.user_address_line_1,
-          otheroccupation: userProfileDetails.other_occupation_name,
-          rolename: userProfileDetails.role_name,
-          usertype: userProfileDetails.role_name,
-        };
-        setFirstName(userProfileDetails.first_name);
-        setMiddleName(userProfileDetails.middle_name);
-        setLastName(userProfileDetails.last_name);
-        setGender(userProfileDetails.gender);
-        setDob(userProfileDetails.date_of_birth);
-        setDistrict(userProfileDetails.district_name);
-        setEmail(userProfileDetails.user_email);
-        setMobileNumber(userProfileDetails.user_phone_number);
-        // setAddress(userProfileDetails.user_address_line_1);
-        setCountry(userProfileDetails.country_name);
-        setState(userProfileDetails.state_name);
-        setCity(userProfileDetails.location_name);
-        setPostalCode(userProfileDetails.pin_code);
-        setOccupation(userProfileDetails.occupation_name);
-        setInitialLoginData(initialData);
-        setLoginMethod(userProfileDetails.preferred_login_method);
-        setOtherccupation(userProfileDetails.other_occupation_name);
-        setusertype(userProfileDetails.user_type);
-        setShowOtherInput(userProfileDetails.occupation_name === "Other");
-        setrolename(userProfileDetails.role_name);
-        const userDetails = data.data[0].audit_details;
-        setUserName(userDetails.full_name);
+          address1: userProfileDetails.user_address_line_2,
 
-        console.log("Gender:", userProfileDetails.gender);
-        // const userDetails = data.user_details;
-        // setUserName(userDetails.full_name);
+          addressId: userProfileDetails.user_address_id,
+        };
+        setInitialLoginData(initialData);
+  
+        console.log("User Data Initialized:", initialData);
       } catch (error) {
-        console.error("Error fetching quiz data:", error);
+        console.error("Error fetching user profile details:", error.message);
       }
     };
-
+  
     fetchQuizData();
   }, [userId]);
+  
   // console.log("Stored password:", storedPassword);
 
   // Edit profile details **********************
@@ -478,7 +571,7 @@ const FreeProfile = () => {
       gender: gender || null,
       display_name: "" || "N/A",
       date_of_birth: dob || null,
-      user_address_id: "" || null,
+      user_address_id: addressId ? String(addressId) : null,
       user_location_id: userlocationid || null,
       user_address_line_1: address || null,
       user_address_line_2: address1 || null,
@@ -521,7 +614,7 @@ const FreeProfile = () => {
         toast.success("Profile updated successfully!");
         setIsEditing(false); // Close the editing mode
         setResponseMessage("Profile Updated successfully...!");
-        window.location.reload(); // Reload the page or handle success
+        // window.location.reload(); // Reload the page or handle success
       }
     } catch (error) {
       console.error("Error updating profile:", error);

@@ -581,7 +581,7 @@ const handleBack = () => {
                 </div>
     
                 {/* Answer Feedback */}
-                <div className="flex items-center mt-6 ml-6">
+                {/* <div className="flex items-center mt-6 ml-6">
                   <img
                     src={
                       question.selected_option === question.correct_option
@@ -602,7 +602,7 @@ const handleBack = () => {
                       ? 'Correct Answer'
                       : 'Wrong Answer'}
                   </span>
-                </div>
+                </div> */}
     
                 {/* Correct Answer Description */}
                 <div className="correct-answer-description mt-4 ml-6">

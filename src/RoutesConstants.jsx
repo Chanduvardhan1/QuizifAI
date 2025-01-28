@@ -113,6 +113,8 @@ import HelpDesk from "./help/help.jsx";
 import MyTickets from "./tickets/tickets.jsx";
 
 import MyTickets1 from "./mytickets/mytickets.jsx";
+import Qizmasterquizess from "./quizmasterquizess/quizmasterquizess.jsx";
+
 
 export default () => {
     return [
@@ -132,6 +134,11 @@ export default () => {
         {
             path:'MyTickets',
             component:MyTickets,
+            isPrivate: true
+        },
+        {
+            path:'Qizmasterquizess',
+            component:Qizmasterquizess,
             isPrivate: true
         },
         {

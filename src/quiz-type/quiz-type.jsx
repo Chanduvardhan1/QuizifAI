@@ -2003,7 +2003,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
           </div>
 
           {/* Sub Category */}
-          <div className="flex flex-col">
+          {/* <div className="flex flex-col">
             <div className="w-full flex flex-row">
               <label className="w-[26%] text-blue-800 font-semibold mb-2">
                 Sub Category<span className="text-red-500">*</span>
@@ -2022,7 +2022,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
               </select>
             </div>
             <hr className="h-[1px] w-full" />
-          </div>
+          </div> */}
 
           {/* Course */}
            <div className="md:col-span-2">

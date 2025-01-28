@@ -323,6 +323,7 @@ const Dashboard = () => {
 
       if (response.ok) {
         const result = await response.json();
+        window.location.reload();
         if (result.response === "fail") {
           // Show popup with message
           setPopupMessage(result.response_message);
@@ -634,6 +635,10 @@ const Dashboard = () => {
   const createQuiz = () => {
     navigate(`/pdf`);
   };
+  const createQuizbyquizmaster = () => {
+    navigate(`/Qizmasterquizess`);
+  };
+  
   const createUser = () => {
     navigate(`/usersgroup`);
   };
@@ -812,6 +817,25 @@ const Dashboard = () => {
 
 <div>
           <div className="flex gap-[10px]">
+          {(userRole === "Quiz Master") && (
+
+<div className="w-[210px] h-[41px]  rounded-[10px] bg-[#fee2e2]">
+  <div className="flex cursor-pointer"  onClick={createQuizbyquizmaster}>
+    <img
+      className="w-[25px] h-[25px] ml-2 mt-2"
+      src={Plus}
+      alt="Plus Icon"
+    />
+    <a
+      onClick={createQuiz}
+      className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
+    >
+      Quiz Created by Quiz Uers
+    </a>
+  </div>
+</div>
+
+            )}  
             {(userRole === "Admin" || userRole === "Super Admin") && (
 
               <div className="w-[99px] h-[41px]  rounded-[10px] bg-[#fee2e2]">

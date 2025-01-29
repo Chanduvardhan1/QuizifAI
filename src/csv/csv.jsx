@@ -1270,8 +1270,10 @@ const handleback =() =>{
     setSelectedValue(e.target.value);
   };
 
-  const toggler3 = (checked) => {
-    setPublicAccess(checked);
+  const toggler3 = (event) => {
+    setPublicAccess(event.target.checked);
+
+
   };
 
   function handleSelect1(event) {
@@ -1924,7 +1926,7 @@ const handleback =() =>{
           <div className="md:col-span-2">
 
           <div className="flex gap-6">
-          <div className="w-[50%] flex flex-col">
+          {/* <div className="w-[50%] flex flex-col">
             <div className="w-full flex flex-row">
               <label className="w-[65%] text-blue-800 font-semibold mb-2 ">
                 Course<span className="text-red-500"></span>
@@ -1942,10 +1944,10 @@ const handleback =() =>{
                 </select>
             </div>
             <hr className="h-[1px] w-full" />
-          </div>
+          </div> */}
 
           {/* Class */}
-          <div className="w-[50%] flex flex-col">
+          {/* <div className="w-[50%] flex flex-col">
             <div className="w-full flex flex-row">
               <label className=" w-[20%] text-blue-800 font-semibold mb-2">
                 Class<span className="text-red-500"></span>
@@ -1963,11 +1965,11 @@ const handleback =() =>{
                 </select>
             </div>
             <hr className="h-[1px] w-full" />
-          </div>
+          </div> */}
            {/* Premium */}
             <div className=" w-[50%] flex flex-col">
                   <div className="w-[100%] flex flex-row">
-                  <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">Premium Quizzes<span className="text-red-500">*</span></label>
+                  <label className="w-[30%] text-blue-800 font-semibold  mr-[10px] ">Premium Quizes Create<span className="text-red-500"></span></label>
                   <FormControlLabel
                    control={<Switch />} 
                    checked={showPackageFields}
@@ -1981,7 +1983,7 @@ const handleback =() =>{
            {/*  Public access */}
   <div className=" w-[50%] flex flex-col">
         <div className="w-[100%] flex flex-row">
-        <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500">*</span></label>
+        <label className="w-[23%] text-blue-800 font-semibold  mr-[10px] ">  Public access <span className="text-red-500"></span></label>
         <FormControlLabel 
 
          
@@ -2030,14 +2032,57 @@ const handleback =() =>{
             </button>
           </div> */}
 
+{publicAccess && (
+        <>
+   <div className="w-full flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className="w-[23%] text-blue-800 font-semibold mb-2 ">
+                Course<span className="text-red-500"></span>
+              </label>
+              <select
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                  onChange={(e) => setcoursename(e.target.value)}
+                  value={quizData ? quizData.course_name : ""}
+                >
+                  {complexities.map((complexity, index) => (
+                    <option key={index} value={complexity}>
+                      {complexity}
+                    </option>
+                  ))}
+                </select>
+            </div>
+            <hr className="h-[1px] w-full" />
+          </div>
 
+{/* Class */}
+<div className="w-full flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className=" w-[23%] text-blue-800 font-semibold mb-2">
+                Class<span className="text-red-500"></span>
+              </label>
+              <select
+                  className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                  onChange={(e) => setClasses(e.target.value)}
+                  value={quizData ? quizData.class_name : ""}
+                >
+                  {classOptions.map((classOption, index) => (
+                    <option key={index} value={classOption}>
+                      {classOption}
+                    </option>
+                  ))}
+                </select>
+            </div>
+            <hr className="h-[1px] w-full" />
+          </div>
+</>
+            )}
 {showPackageFields && (
 <>
 
               <div className="flex flex-col">
             <div className="w-full flex flex-row">
               <label className="w-[26%] text-blue-800 font-semibold mb-2">
-              Package Name<span className="text-red-500">*</span>
+              Package Name<span className="text-red-500"></span>
               </label>
               <select
                 className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
@@ -2071,7 +2116,8 @@ const handleback =() =>{
                 </div>
                 </>
                 )}
-<div className="md:col-span-2">
+
+<div className="">
 
 <div className="w-full flex gap-6">
       {/* Complexity */}
@@ -2099,27 +2145,27 @@ const handleback =() =>{
       
         <hr className={`h-[1px] w-full`} />
       </div>
-<div className="w-full flex flex-col">
+{/* <div className="w-full flex flex-col">
   <div className="w-full flex flex-row">
     <label className="w-[30%] text-blue-800 font-semibold mb-2 ">
       Subject<span className="text-red-500"></span>
     </label>
     <select
       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-      // value={selectedCourse}
-      // onChange={handleSelectCourse}
+      value={selectedCourse}
+      onChange={handleSelectCourse}
     >
       <option value="" disabled>Select a Subject</option>
       <option value="">None</option>
-      {/* {courses.map((course) => (
+      {courses.map((course) => (
         <option key={course.course_id} value={course.course_name}>
           {course.course_name}
         </option>
-      ))} */}
+      ))}
     </select>
   </div>
   <hr className="h-[1px] w-full" />
-</div>
+</div> */}
 
 
 </div>

@@ -80,10 +80,32 @@ import comment from "../../src/assets/Images/quiz-type/comment.png"
 
 const Questions = () => {
   const location = useLocation();
-  const { quizId , quizTotalMarks, passPercentage,quizname,quizdescription,createdby,complexity,numberofquestions,quizduration,  mincompletiontime,
+  // const { quizId , quizTotalMarks, passPercentage,quizname,quizdescription,createdby,complexity,numberofquestions,quizduration,  mincompletiontime,
+  //   quizattempts,
+  //   avgscore,
+  //   max_percentage,quizcreatedate, subcategory,
+  //   category,
+  //   photo1} = location.state || {};
+ 
+  const {
+    quizId,
+    quizTotalMarks,
+    passPercentage,
+    quizname,
+    quizdescription,
+    createdby,
+    complexity,
+    quizduration,
+    numberofquestions,
+    mincompletiontime,
     quizattempts,
     avgscore,
-    max_percentage,quizcreatedate} = location.state || {};
+    max_percentage,
+    quizcreatedate,
+    subcategory,
+    category,
+    photo1
+  } = location.state || {};
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [quizData, setQuizData] = useState({});
   const [quizMetrics, setQuizMetrics] = useState({})
@@ -142,7 +164,7 @@ const Questions = () => {
   const handleBack = () => {
     navigate("/dashboard")
   };
-
+console.log("aa",photo1)
 const topThree = leaderboardData.slice(0, 3);
   const remaining = leaderboardData.slice(0,10);
 
@@ -160,7 +182,7 @@ const topThree = leaderboardData.slice(0, 3);
   {/* Quiz Image */}
   <div className="relative mr-2">
     <img
-      src={physics}
+      src={photo1}
       alt="Quiz Cover"
       className="w-[120px] h-[165px] rounded-md mr-4 cursor-pointer"
     />
@@ -216,15 +238,15 @@ const topThree = leaderboardData.slice(0, 3);
 
     {/* Meta Information */}
     <div className="text-[#00008b] text-sm flex flex-wrap mt-3">
-      <span>Science</span>
+      <span>{category}</span>
       <span className="mx-1">.</span>
-      <span>Physics</span>
+      <span>{subcategory}</span>
       <span className="mx-1">.</span>
-      <span>Class 10</span>
+      {/* <span>Class 10</span>
       <span className="mx-1">.</span>
       <span>CBSE</span>
-      <span className="mx-1">.</span>
-      <span>{numberofquestions}</span>
+      <span className="mx-1">.</span> */}
+      <span>{complexity}</span>
     </div>
 
     {/* Icons and Additional Info */}
@@ -265,7 +287,7 @@ const topThree = leaderboardData.slice(0, 3);
             alt="Timer"
             className="w-[18px] h-[18px] mr-1"
           />
-          <span className="ml-1 text-sm">{quizduration}</span>
+          <span className="ml-1 text-sm">{quizduration} Minutes</span>
         </div>
         <div className="flex items-center">
           <img
@@ -281,7 +303,7 @@ const topThree = leaderboardData.slice(0, 3);
             alt="Timer"
             className="w-[18px] h-[18px] mr-1"
           />
-          <span className="ml-1 text-sm">0% High Score</span>
+          <span className="ml-1 text-sm">{quizMetrics.highest_score}% High Score</span>
         </div>
         <div className="flex items-center">
           <img
@@ -289,7 +311,7 @@ const topThree = leaderboardData.slice(0, 3);
             alt="Timer"
             className="w-[18px] h-[18px] mr-1"
           />
-          <span className="ml-1 text-sm">0 Mins Quickest</span>
+          <span className="ml-1 text-sm">{mincompletiontime} Mins Quickest</span>
         </div>
       </div>
     </div>

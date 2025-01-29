@@ -197,46 +197,92 @@ const quiz_results = () => {
   //     sendQuizResult(); // Trigger the POST request only if quizId and attemptNo are available
   //   }
   // }, [quizId, attemptNo]);
+  // useEffect(() => {
+  //   const quizId = localStorage.getItem("quiz_id");
+  //   const attemptNo = localStorage.getItem("quiz_level_attempt_id");
+
+  //   const sendQuizResult = async () => {
+  //     try {
+  //       const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+  //       if (!authToken) {
+  //         console.error('No authentication token found');
+  //         return;
+  //       }
+  //       const response = await fetch('https://dev.quizifai.com:8010/quiz_result_view', {
+  //         method: 'POST',
+  //         headers: {
+  //           'Accept': 'application/json',
+  //           'Content-Type': 'application/json',
+  //           'Authorization': `Bearer ${authToken}`,
+  //         },
+  //         body: JSON.stringify({
+  //           user_id: userId,
+  //           quiz_id: quizId,
+  //           attempt_id: attemptNo
+  //         })
+  //       });
+  //       const result = await response.json();
+  //       const data = result.data[0];
+  //       setQuizData(data);
+  //       setIsQuizSubmitted(true); // Set the submission state to true after success
+  //     } catch (error) {
+  //       console.error('Error submitting quiz result:', error);
+  //       setIsQuizSubmitted(false); // Ensure it's false on error
+  //     }
+  //   };
+
+  //   if (quizId && attemptNo) {
+  //     sendQuizResult(); // Trigger the POST request only if quizId and attemptNo are available
+  //   }
+  // }, [userId]);
+
   useEffect(() => {
     const quizId = localStorage.getItem("quiz_id");
     const attemptNo = localStorage.getItem("quiz_level_attempt_id");
+    const userId = localStorage.getItem("user_id"); // Ensure userId is retrieved
 
     const sendQuizResult = async () => {
       try {
-        const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+        const authToken = localStorage.getItem("authToken"); // Retrieve auth token
 
-        if (!authToken) {
-          console.error('No authentication token found');
+        if (!authToken || !userId) {
+          console.error("Missing authentication token or user ID");
           return;
         }
-        const response = await fetch('https://dev.quizifai.com:8010/quiz_result_view', {
-          method: 'POST',
+
+        const response = await fetch("https://dev.quizifai.com:8010/quiz_result_view", {
+          method: "POST",
           headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${authToken}`,
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${authToken}`,
           },
           body: JSON.stringify({
             user_id: userId,
             quiz_id: quizId,
-            attempt_id: attemptNo
-          })
+            attempt_id: attemptNo,
+          }),
         });
+
         const result = await response.json();
-        const data = result.data[0];
-        setQuizData(data);
-        console.log('Quiz result submitted:', data);
-        setIsQuizSubmitted(true); // Set the submission state to true after success
+        if (result.response === "success") {
+          setQuizData(result.data[0]);
+          setIsQuizSubmitted(true);
+        } else {
+          setIsQuizSubmitted(false);
+          console.error("Failed to fetch quiz data:", result.response_message);
+        }
       } catch (error) {
-        console.error('Error submitting quiz result:', error);
-        setIsQuizSubmitted(false); // Ensure it's false on error
+        console.error("Error submitting quiz result:", error);
+        setIsQuizSubmitted(false);
       }
     };
 
     if (quizId && attemptNo) {
-      sendQuizResult(); // Trigger the POST request only if quizId and attemptNo are available
+      sendQuizResult();
     }
-  }, [userId]);
+  }, []);
 
   useEffect(() => {
     const quizId = localStorage.getItem("quiz_id");
@@ -337,7 +383,7 @@ const quiz_results = () => {
     {/* Quiz Image */}
     <div className="relative mr-2">
       <img
-        src={physics}
+        src={quizData.quiz_statistics?.photo1 || physics}
         alt="Quiz Cover"
         className="w-[120px] h-[165px] rounded-md mr-4 cursor-pointer"
       />
@@ -393,14 +439,14 @@ const quiz_results = () => {
 
       {/* Meta Information */}
       <div className="text-[#00008b] text-sm flex flex-wrap mt-3">
-        <span>General</span>
+        <span>{quizData.quiz_statistics?.category}</span>
         <span className="mx-1">.</span>
-        <span>General</span>
+        <span>{quizData.quiz_statistics?.sub_category}</span>
         <span className="mx-1">.</span>
-        <span>General</span>
+        {/* <span>{quizData.quiz_statistics?.course_name}</span>
         <span className="mx-1">.</span>
-        <span>General</span>
-        <span className="mx-1">.</span>
+        <span>{quizData.quiz_statistics?.class_name}</span> */}
+        {/* <span className="mx-1">.</span> */}
         <span>{`${quizData.complexity}`}</span>
       </div>
 
@@ -442,7 +488,7 @@ const quiz_results = () => {
               alt="Timer"
               className="w-[18px] h-[18px] mr-1"
             />
-            <span className="ml-1 text-sm">{`${quizData.quiz_duration}`}</span>
+            <span className="ml-1 text-sm">{`${quizData.quiz_duration}`} Minutes</span>
           </div>
           <div className="flex items-center">
             <img
@@ -450,7 +496,7 @@ const quiz_results = () => {
               alt="Timer"
               className="w-[18px] h-[18px] mr-1"
             />
-            <span className="ml-1 text-sm">0 Attemts</span>
+            <span className="ml-1 text-sm">{quizData.quiz_statistics?.total_attempts} Attemts</span>
           </div>
           <div className="flex items-center">
             <img
@@ -458,7 +504,7 @@ const quiz_results = () => {
               alt="Timer"
               className="w-[18px] h-[18px] mr-1"
             />
-            <span className="ml-1 text-sm">0% High Score</span>
+            <span className="ml-1 text-sm">{quizData.quiz_statistics?.highest_score}% High Score</span>
           </div>
           <div className="flex items-center">
             <img
@@ -466,7 +512,7 @@ const quiz_results = () => {
               alt="Timer"
               className="w-[18px] h-[18px] mr-1"
             />
-            <span className="ml-1 text-sm">0 Mins Quickest</span>
+            <span className="ml-1 text-sm">{quizData.quiz_statistics?.quickest_completion_time} Mins Quickest</span>
           </div>
         </div>
       </div>

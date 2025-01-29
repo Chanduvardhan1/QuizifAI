@@ -2260,7 +2260,7 @@ const handleComplexquestions = (event) => {
         <div className="md:col-span-2">
        
                  <div className="flex gap-6">
-                 <div className="w-[50%] flex flex-col">
+                 {/* <div className="w-[50%] flex flex-col">
                    <div className="w-full flex flex-row">
                      <label className="w-[65%] text-blue-800 font-semibold mb-2 ">
                        Course<span className="text-red-500"></span>
@@ -2281,9 +2281,9 @@ const handleComplexquestions = (event) => {
                    </div>
                    <hr className="h-[1px] w-full" />
                  </div>
-       
+        */}
                  {/* Class */}
-                 <div className="w-[50%] flex flex-col">
+                 {/* <div className="w-[50%] flex flex-col">
                    <div className="w-full flex flex-row">
                      <label className=" w-[20%] text-blue-800 font-semibold mb-2">
                        Class<span className="text-red-500"></span>
@@ -2303,11 +2303,11 @@ const handleComplexquestions = (event) => {
                      </select>
                    </div>
                    <hr className="h-[1px] w-full" />
-                 </div>
+                 </div> */}
                   {/* Premium */}
          <div className=" w-[50%] flex flex-col">
                <div className="w-[100%] flex flex-row">
-               <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">Premium Quizzes<span className="text-red-500">*</span></label>
+               <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">Premium Quizes Create<span className="text-red-500"></span></label>
                <FormControlLabel
                 control={<Switch />} 
                 checked={showPackageFields}
@@ -2321,7 +2321,7 @@ const handleComplexquestions = (event) => {
                   {/*  Public access */}
          <div className=" w-[50%] flex flex-col">
                <div className="w-[100%] flex flex-row">
-               <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500">*</span></label>
+               <label className="w-[100%] text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500"></span></label>
                <FormControlLabel
                 control={<Switch />} 
                // label="Required"
@@ -2338,6 +2338,54 @@ const handleComplexquestions = (event) => {
              </div>
             
              </div>
+             {publicAccess && (
+        <>
+  <div className="flex flex-col">
+  <div className="w-full flex flex-row">
+    <label className="w-[23%] text-blue-800 font-semibold mb-2 ">
+      Course<span className="text-red-500"></span>
+    </label>
+    <select
+      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+      value={selectedCourse}
+      onChange={handleSelectCourse}
+    >
+      <option value="" disabled>Select a course</option>
+      <option value="">None</option>
+      {courses.map((course) => (
+        <option key={course.course_id} value={course.course_name}>
+          {course.course_name}
+        </option>
+      ))}
+    </select>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+
+{/* Class */}
+<div className="flex flex-col">
+  <div className="w-full flex flex-row">
+    <label className=" w-[25%] text-blue-800 font-semibold mb-2">
+      Class<span className="text-red-500"></span>
+    </label>
+    <select
+      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+      value={selectedClass}
+      onChange={handleSelectClass}
+      disabled={classes.length === 0}
+    >
+      <option value="" disabled>Select a class</option>
+      {classes.map((className, index) => (
+        <option key={index} value={className}>
+          {className}
+        </option>
+      ))}
+    </select>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+</>
+            )}
              {showPackageFields && (
 <>
 
@@ -2378,7 +2426,7 @@ const handleComplexquestions = (event) => {
                 </div>
                 </>
                 )}
-<div className="md:col-span-2">
+<div className="">
 
 <div className="w-full flex gap-6">
       {/* Complexity */}
@@ -2402,7 +2450,7 @@ const handleComplexquestions = (event) => {
       
         <hr className={`h-[1px] w-full`} />
       </div>
-<div className="w-full flex flex-col">
+{/* <div className="w-full flex flex-col">
   <div className="w-full flex flex-row">
     <label className="w-[30%] text-blue-800 font-semibold mb-2 ">
       Subject<span className="text-red-500"></span>
@@ -2414,15 +2462,15 @@ const handleComplexquestions = (event) => {
     >
       <option value="" disabled>Select a Subject</option>
       <option value="">None</option>
-      {/* {courses.map((course) => (
+      {courses.map((course) => (
         <option key={course.course_id} value={course.course_name}>
           {course.course_name}
         </option>
-      ))} */}
+      ))}
     </select>
   </div>
   <hr className="h-[1px] w-full" />
-</div>
+</div> */}
 
 
 </div>

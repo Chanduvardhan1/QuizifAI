@@ -959,7 +959,7 @@ const QuizQuestions = () => {
       {/* Quiz Image */}
       <div className="relative mr-2">
         <img
-          src={physics}
+          src={quizData?.questions?.[0]?.quiz_statistics?.photo1 || physics}
           alt="Quiz Cover"
           className="w-[120px] h-[165px] rounded-md mr-4 cursor-pointer"
         />
@@ -1019,10 +1019,10 @@ const QuizQuestions = () => {
           <span className="mx-1">.</span>
           <span>{quiz_sub_category_name}</span>
           <span className="mx-1">.</span>
-          <span>{course_name}</span>
+          {/* <span>{course_name}</span>
           <span className="mx-1">.</span>
           <span>{class_name}</span>
-          <span className="mx-1">.</span>
+          <span className="mx-1">.</span> */}
           <span>{quiz_complexity_name}</span>
         </div>
 

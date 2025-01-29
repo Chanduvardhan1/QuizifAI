@@ -570,10 +570,10 @@ const [multiAnswer, setMultiAnswer] = useState(false);
   
  const handleStartQuiz = async (quizId, activeFlag, premiumQuizFlag) => {
     // Check if the quiz is inactive
-    if (activeFlag === "i") {
-      toast.error("This quiz is inactive and cannot be started.");
-      return;
-    }
+   if (activeFlag === "i" || activeFlag === "false") {
+        toast.error("This quiz is inactive and cannot be started.");
+        return;
+      }
 
     // Check if the quiz is premium and the user is not a premium subscriber
     if (premiumQuizFlag && subscriptionType !== "Premium") {
@@ -608,7 +608,10 @@ const [multiAnswer, setMultiAnswer] = useState(false);
         // Proceed with starting the quiz
         localStorage.setItem("quiz_id", quizId); // Store quiz_id in localStorage
         navigate(`/quizaccess`); // Navigate to the quiz access page
-      } else {
+      }  else if (result.response === "fail") {
+              // Show the failure message from the API response
+              toast.error(result.response_message || "Failed to start the quiz.");
+            } else {
         toast.error(
           "Failed to fetch subscription limitations. Please try again."
         );
@@ -626,11 +629,10 @@ const [multiAnswer, setMultiAnswer] = useState(false);
      activeFlag,
      premiumQuizFlag
    ) => {
-     // Check if the quiz is inactive
-     if (activeFlag === "i") {
-       toast.error("This quiz is inactive and cannot be started.");
-       return;
-     }
+     if (activeFlag === "i" || activeFlag === "false") {
+          toast.error("This quiz is inactive and cannot be started.");
+          return;
+        }
  
      // Check if the user has reached the maximum number of attempts
      if (attemptsCount >= retakeFlag) {
@@ -673,7 +675,10 @@ const [multiAnswer, setMultiAnswer] = useState(false);
          // Proceed with starting the quiz
          localStorage.setItem("quiz_id", quizId); // Store quiz_id in localStorage
          navigate(`/quizaccess`); // Navigate to the quiz access page
-       } else {
+       }  else if (result.response === "fail") {
+               // Show the failure message from the API response
+               toast.error(result.response_message || "Failed to start the quiz.");
+             } else {
          toast.error(
            "Failed to fetch subscription limitations. Please try again."
          );

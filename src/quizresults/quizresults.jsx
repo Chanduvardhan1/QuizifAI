@@ -165,11 +165,13 @@ const quizresults = () => {
           })
         });
         const result = await response.json();
-        const data = result.data[0];
-        setQuizData(data);
-        console.log('Quiz result submitted:', data);
-        setIsQuizSubmitted(true); // Set the submission state to true after success
-
+        if (result.response === "success") {
+          setQuizData(result.data[0]);
+          setIsQuizSubmitted(true);
+        } else {
+          setIsQuizSubmitted(false);
+          console.error("Failed to fetch quiz data:", result.response_message);
+        }
       } catch (error) {
         console.error('Error submitting quiz result:', error);
         setIsQuizSubmitted(false); // Ensure it's false on error
@@ -281,145 +283,145 @@ const quizresults = () => {
         <div onClick={handleBack} className=" absolute top-5 right-5 cursor-pointer">
           <img src={close} alt="" className="w-[25px] h-[25px]" />
         </div>
-        <div className="flex w-full border-[#8cd18e] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-2 bg-white">
-      {/* Quiz Image */}
-      <div className="relative mr-2">
-        <img
-          src={physics}
-          alt="Quiz Cover"
-          className="w-[120px] h-[165px] rounded-md mr-4 cursor-pointer"
-        />
-      </div>
-
-      {/* Quiz Details */}
-      <div className="flex flex-col w-full">
-        {/* Title */}
-        <div className="flex justify-between items-center">
-            <div>
-
-          <h2 className="text-lg font-semibold text-[#00008b]">{quizData.quiz_name}</h2>
-            </div>
-            <div className="flex gap-3">
-                <div className="flex gap-2">
-                <img src={trophy}
-                 alt="" 
-                className="w-[18px] h-[18px] "   
+         <div className="flex w-[99%] border-[#8cd18e] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-2 bg-white">
+           {/* Quiz Image */}
+           <div className="relative mr-2">
+             <img
+               src={quizData.quiz_statistics?.photo1 || physics}
+               alt="Quiz Cover"
+               className="w-[120px] h-[165px] rounded-md mr-4 cursor-pointer"
+             />
+           </div>
+       
+           {/* Quiz Details */}
+           <div className="flex flex-col w-full">
+             {/* Title */}
+             <div className="flex justify-between items-center">
+                 <div>
+       
+               <h2 className="text-lg font-semibold text-[#00008b]">{quizData.quiz_name}</h2>
+                 </div>
+                 <div className="flex gap-3">
+                     <div className="flex gap-2">
+                     <img src={trophy}
+                      alt="" 
+                     className="w-[18px] h-[18px] "   
+                        />
+                     <img src={print1}
+                      alt="" 
+                     className="w-[18px] h-[18px] "  />
+                     </div>
+                     <div className="flex">
+                         <img src={stars}
+                      alt="" 
+                     className="w-[18px] h-[18px] "  
+                      /> <img src={stars}
+                      alt="" 
+                     className="w-[18px] h-[18px]"  
+                      />
+                       <img src={stars}
+                      alt="" 
+                     className="w-[18px] h-[18px] "  
+                      />
+                       <img src={stars}
+                      alt="" 
+                     className="w-[18px] h-[18px]"  
+                      />
+                       <img src={stars}
+                      alt="" 
+                     className="w-[18px] h-[18px]"  
+                      />
+                       
+                     </div>
+                 </div>
+             </div>
+       
+             {/* Description */}
+             <p className="text-[#00008b] w-[80%] line-clamp-2 text-sm mt-1">
+             {quizData.quiz_description}
+             </p>
+       
+             {/* Meta Information */}
+             <div className="text-[#00008b] text-sm flex flex-wrap mt-3">
+               <span>{quizData.quiz_statistics?.category}</span>
+               <span className="mx-1">.</span>
+               <span>{quizData.quiz_statistics?.sub_category}</span>
+               <span className="mx-1">.</span>
+               {/* <span>{quizData.quiz_statistics?.course_name}</span>
+               <span className="mx-1">.</span>
+               <span>{quizData.quiz_statistics?.class_name}</span> */}
+               {/* <span className="mx-1">.</span> */}
+               <span>{`${quizData.complexity}`}</span>
+             </div>
+       
+             {/* Icons and Additional Info */}
+             <div className="flex-col items-center space-y-4 mt-3 text-[#00008b]">
+               {/* Author and Date */}
+               <div className="flex items-center space-x-10">
+                 <div className="flex items-center">
+                   <img
+                    src={username}
+                     alt="User"
+                     className="w-[18px] h-[18px] mr-1"
                    />
-                <img src={print1}
-                 alt="" 
-                className="w-[18px] h-[18px] "  />
-                </div>
-                <div className="flex">
-                    <img src={stars}
-                 alt="" 
-                className="w-[18px] h-[18px] "  
-                 /> <img src={stars}
-                 alt="" 
-                className="w-[18px] h-[18px]"  
-                 />
-                  <img src={stars}
-                 alt="" 
-                className="w-[18px] h-[18px] "  
-                 />
-                  <img src={stars}
-                 alt="" 
-                className="w-[18px] h-[18px]"  
-                 />
-                  <img src={stars}
-                 alt="" 
-                className="w-[18px] h-[18px]"  
-                 />
-                  
-                </div>
-            </div>
-        </div>
-
-        {/* Description */}
-        <p className="text-[#00008b] w-[80%] line-clamp-2 text-sm mt-1">
-        {quizData.quiz_description}
-        </p>
-
-        {/* Meta Information */}
-        <div className="text-[#00008b] text-sm flex flex-wrap mt-3">
-          <span>General</span>
-          <span className="mx-1">.</span>
-          <span>General</span>
-          <span className="mx-1">.</span>
-          <span>General</span>
-          <span className="mx-1">.</span>
-          <span>General</span>
-          <span className="mx-1">.</span>
-          <span>{`${quizData.complexity}`}</span>
-        </div>
-
-        {/* Icons and Additional Info */}
-        <div className="flex-col items-center space-y-4 mt-3 text-[#00008b]">
-          {/* Author and Date */}
-          <div className="flex items-center space-x-10">
-            <div className="flex items-center">
-              <img
-               src={username}
-                alt="User"
-                className="w-[18px] h-[18px] mr-1"
-              />
-              <span className="ml-1 text-sm">{`${quizData.created_by}`}</span>
-            </div>
-            <div className="flex items-center">
-              <img
-                src={calander} 
-                alt="Calendar"
-                className="w-[18px] h-[18px] mr-1"
-              />
-              <span className="ml-1 text-sm">{`${quizData.created_on}`}</span>
-            </div>
-          </div>
-
-          {/* Quiz Info */}
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center">
-              <img
-                src={comment}
-                alt="Questions"
-                className="w-[18px] h-[18px] mr-1"
-              />
-              <span className="ml-1 text-sm">{`${quizData.total_questions}`} Questions</span>
-            </div>
-            <div className="flex items-center">
-              <img
-                src={timer}
-                alt="Timer"
-                className="w-[18px] h-[18px] mr-1"
-              />
-              <span className="ml-1 text-sm">{`${quizData.quiz_duration}`} Min</span>
-            </div>
-            <div className="flex items-center">
-              <img
-                src={Attemts}
-                alt="Timer"
-                className="w-[18px] h-[18px] mr-1"
-              />
-              <span className="ml-1 text-sm">0 Attemts</span>
-            </div>
-            <div className="flex items-center">
-              <img
-                src={Badge}
-                alt="Timer"
-                className="w-[18px] h-[18px] mr-1"
-              />
-              <span className="ml-1 text-sm">0% High Score</span>
-            </div>
-            <div className="flex items-center">
-              <img
-                src={Quickest}
-                alt="Timer"
-                className="w-[18px] h-[18px] mr-1"
-              />
-              <span className="ml-1 text-sm">0 Mins Quickest</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+                   <span className="ml-1 text-sm">{`${quizData.created_by}`}</span>
+                 </div>
+                 <div className="flex items-center">
+                   <img
+                     src={calander} 
+                     alt="Calendar"
+                     className="w-[18px] h-[18px] mr-1"
+                   />
+                   <span className="ml-1 text-sm">{`${quizData.created_on}`}</span>
+                 </div>
+               </div>
+       
+               {/* Quiz Info */}
+               <div className="flex items-center space-x-4">
+                 <div className="flex items-center">
+                   <img
+                     src={comment}
+                     alt="Questions"
+                     className="w-[18px] h-[18px] mr-1"
+                   />
+                   <span className="ml-1 text-sm">{`${quizData.total_questions}`} Questions</span>
+                 </div>
+                 <div className="flex items-center">
+                   <img
+                     src={timer}
+                     alt="Timer"
+                     className="w-[18px] h-[18px] mr-1"
+                   />
+                   <span className="ml-1 text-sm">{`${quizData.quiz_duration}`} Minutes</span>
+                 </div>
+                 <div className="flex items-center">
+                   <img
+                     src={Attemts}
+                     alt="Timer"
+                     className="w-[18px] h-[18px] mr-1"
+                   />
+                   <span className="ml-1 text-sm">{quizData.quiz_statistics?.total_attempts} Attemts</span>
+                 </div>
+                 <div className="flex items-center">
+                   <img
+                     src={Badge}
+                     alt="Timer"
+                     className="w-[18px] h-[18px] mr-1"
+                   />
+                   <span className="ml-1 text-sm">{quizData.quiz_statistics?.highest_score}% High Score</span>
+                 </div>
+                 <div className="flex items-center">
+                   <img
+                     src={Quickest}
+                     alt="Timer"
+                     className="w-[18px] h-[18px] mr-1"
+                   />
+                   <span className="ml-1 text-sm">{quizData.quiz_statistics?.quickest_completion_time} Mins Quickest</span>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
        
         <div className='flex w-full' >
         {!showAnswers ? (

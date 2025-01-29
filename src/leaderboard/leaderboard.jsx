@@ -178,10 +178,13 @@ const leaderboard = () => {
           })
         });
         const result = await response.json();
-        const data = result.data[0];
-        setQuizData(data);
-        console.log('Quiz result submitted:', data);
-      } catch (error) {
+        if (result.response === "success") {
+          setQuizData(result.data[0]);
+        } else {
+          setIsQuizSubmitted(false);
+          console.error("Failed to fetch quiz data:", result.response_message);
+        }
+      }catch (error) {
         console.error('Error submitting quiz result:', error);
       }
     };
@@ -190,6 +193,9 @@ const leaderboard = () => {
       sendQuizResult(); // Trigger the POST request only if quizId and attemptNo are available
     }
   }, [quizId, attemptId]);
+
+
+
   useEffect(() => {
     const quizId = localStorage.getItem("quiz_id");
 
@@ -286,7 +292,8 @@ const handleBack = () => {
     {/* Quiz Image */}
     <div className="relative mr-2">
       <img
-        src={physics}
+               src={quizData.quiz_statistics?.photo1 || physics}
+
         alt="Quiz Cover"
         className="w-[120px] h-[165px] rounded-md mr-4 cursor-pointer"
       />
@@ -342,14 +349,14 @@ const handleBack = () => {
 
       {/* Meta Information */}
       <div className="text-[#00008b] text-sm flex flex-wrap mt-3">
-        <span>Science</span>
+        <span>{quizData.quiz_statistics?.category}</span>
         <span className="mx-1">.</span>
-        <span>Physics</span>
+        <span>{quizData.quiz_statistics?.sub_category}</span>
         <span className="mx-1">.</span>
-        <span>Class 10</span>
+        {/* <span>{quizData.quiz_statistics?.course_name}</span>
         <span className="mx-1">.</span>
-        <span>CBSE</span>
-        <span className="mx-1">.</span>
+        <span>{quizData.quiz_statistics?.class_name}</span> */}
+        {/* <span className="mx-1">.</span> */}
         <span>{`${quizData.complexity}`}</span>
       </div>
 
@@ -394,29 +401,29 @@ const handleBack = () => {
             <span className="ml-1 text-sm">{`${quizData.quiz_duration}`} Minutes</span>
           </div>
           <div className="flex items-center">
-            <img
-              src={Attemts}
-              alt="Timer"
-              className="w-[18px] h-[18px] mr-1"
-            />
-            <span className="ml-1 text-sm">0 Attemts</span>
-          </div>
-          <div className="flex items-center">
-            <img
-              src={Badge}
-              alt="Timer"
-              className="w-[18px] h-[18px] mr-1"
-            />
-            <span className="ml-1 text-sm">0% High Score</span>
-          </div>
-          <div className="flex items-center">
-            <img
-              src={Quickest}
-              alt="Timer"
-              className="w-[18px] h-[18px] mr-1"
-            />
-            <span className="ml-1 text-sm">0 Mins Quickest</span>
-          </div>
+                   <img
+                     src={Attemts}
+                     alt="Timer"
+                     className="w-[18px] h-[18px] mr-1"
+                   />
+                   <span className="ml-1 text-sm">{quizData.quiz_statistics?.total_attempts} Attemts</span>
+                 </div>
+                 <div className="flex items-center">
+                   <img
+                     src={Badge}
+                     alt="Timer"
+                     className="w-[18px] h-[18px] mr-1"
+                   />
+                   <span className="ml-1 text-sm">{quizData.quiz_statistics?.highest_score}% High Score</span>
+                 </div>
+                 <div className="flex items-center">
+                   <img
+                     src={Quickest}
+                     alt="Timer"
+                     className="w-[18px] h-[18px] mr-1"
+                   />
+                   <span className="ml-1 text-sm">{quizData.quiz_statistics?.quickest_completion_time} Mins Quickest</span>
+                 </div>
         </div>
       </div>
     </div>

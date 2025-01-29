@@ -555,13 +555,14 @@ const FreeProfile = () => {
     if (occupation === "Other" && !otheroccupation)
       errors.push("Please specify your other occupation.");
     if (!userId) errors.push("User ID is required.");
+  
     if (errors.length > 0) {
       errors.forEach((error) => toast.error(error)); // Display each error as a toast
       return;
     }
   
     const payload = {
-      user_id: userId || null, // Ensure user_id is a valid integer
+      user_id: userId || null,
       first_name: firstName || null,
       middle_name: middleName || null,
       last_name: lastName || null,
@@ -569,12 +570,12 @@ const FreeProfile = () => {
       user_type: usertype,
       user_org_id: orgId || null,
       gender: gender || null,
-      display_name: "" || "N/A",
+      display_name: "",
       date_of_birth: dob || null,
       user_address_id: addressId ? String(addressId) : null,
       user_location_id: userlocationid || null,
-      user_address_line_1: address || null,
-      user_address_line_2: address1 || null,
+      user_address_line_1: address,
+      user_address_line_2: address1,
       occupation: occupation || null,
       other_occupation: occupation === "Other" ? otheroccupation : null,
     };
@@ -588,21 +589,33 @@ const FreeProfile = () => {
         throw new Error("No authentication token found");
       }
   
-      const response = await fetch(
-        `https://dev.quizifai.com:8010/edit-profile`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`, // Bearer token for authentication
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+      const response = await fetch(`https://dev.quizifai.com:8010/edit-profile`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`, // Bearer token for authentication
+        },
+        body: JSON.stringify(payload),
+      });
   
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Failed to update profile: ${errorText}`);
+        const errorResponse = await response.json();
+  
+        // Check if response contains 'detail' and matches the specific validation error
+        if (errorResponse.detail) {
+          const ageError = errorResponse.detail.find(
+            (err) =>
+              err.loc?.includes("date_of_birth") &&
+              err.msg.includes("User must be at least 12 years old")
+          );
+  
+          if (ageError) {
+            toast.error(ageError.msg);
+            return;
+          }
+        }
+  
+        throw new Error(errorResponse.detail?.response_message || "Failed to update profile.");
       }
   
       const data = await response.json();
@@ -614,7 +627,7 @@ const FreeProfile = () => {
         toast.success("Profile updated successfully!");
         setIsEditing(false); // Close the editing mode
         setResponseMessage("Profile Updated successfully...!");
-        // window.location.reload(); // Reload the page or handle success
+        window.location.reload(); // Reload the page or handle success
       }
     } catch (error) {
       console.error("Error updating profile:", error);

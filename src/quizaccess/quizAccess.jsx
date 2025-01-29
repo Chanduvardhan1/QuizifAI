@@ -277,10 +277,10 @@ const quizAccess = () => {
           <span className="mx-1">.</span>
           <span>{`${quizData.quiz_sub_category_name}`}</span>
           <span className="mx-1">.</span>
-          <span>{`${quizData.course_name}`}</span>
+          {/* <span>{`${quizData.course_name}`}</span>
           <span className="mx-1">.</span>
           <span>{`${quizData.class_name}`}</span>
-          <span className="mx-1">.</span>
+          <span className="mx-1">.</span> */}
           <span>{`${quizData.quiz_complexity_name}`}</span>
         </div>
 

@@ -344,6 +344,7 @@ const Dashboard = () => {
       handleDeleteQuiz();
     }
   }, [isDeleteConfirmed]);
+
   useEffect(() => {
     // Example: Checking authentication state on component mount
     // You might not need to directly use setIsAuthenticated here
@@ -422,11 +423,10 @@ const Dashboard = () => {
 
   const handleStartQuiz = async (quizId, activeFlag, premiumQuizFlag) => {
     // Check if the quiz is inactive
-    if (activeFlag === "i") {
+    if (activeFlag === "i" || activeFlag === "false") {
       toast.error("This quiz is inactive and cannot be started.");
       return;
     }
-
     // Check if the quiz is premium and the user is not a premium subscriber
     if (premiumQuizFlag && subscriptionType !== "Premium") {
       setIsPremiumModalOpen(true); // Show modal for upgrading to premium
@@ -460,6 +460,9 @@ const Dashboard = () => {
         // Proceed with starting the quiz
         localStorage.setItem("quiz_id", quizId); // Store quiz_id in localStorage
         navigate(`/quizaccess`); // Navigate to the quiz access page
+      }  else if (result.response === "fail") {
+        // Show the failure message from the API response
+        toast.error(result.response_message || "Failed to start the quiz.");
       } else {
         toast.error(
           "Failed to fetch subscription limitations. Please try again."
@@ -489,11 +492,10 @@ const Dashboard = () => {
     premiumQuizFlag
   ) => {
     // Check if the quiz is inactive
-    if (activeFlag === "i") {
+    if (activeFlag === "i" || activeFlag === "false") {
       toast.error("This quiz is inactive and cannot be started.");
       return;
     }
-
     // Check if the user has reached the maximum number of attempts
     if (attemptsCount >= retakeFlag) {
       toast.error(
@@ -501,13 +503,13 @@ const Dashboard = () => {
       );
       return;
     }
-
+  
     // Check if the quiz is premium and the user does not have a premium subscription
     if (premiumQuizFlag && subscriptionType !== "Premium") {
       setIsPremiumModalOpen(true); // Show modal for upgrading to premium
       return;
     }
-
+  
     try {
       // Fetch user subscription limitations
       const response = await fetch(
@@ -516,25 +518,28 @@ const Dashboard = () => {
           method: "POST",
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer <YOUR_ACCESS_TOKEN>`, // Replace with the actual token
+            Authorization: `Bearer <YOUR_ACCESS_TOKEN>`, // Replace with actual token
           },
         }
       );
-
+  
       const result = await response.json();
-
+  
       if (result.response === "success") {
         const { remaining_attempts } = result.data;
-
+  
         // Check if there are no remaining attempts
         if (remaining_attempts === 0) {
           toast.error("You have no remaining attempts to access this quiz.");
           return;
         }
-
+  
         // Proceed with starting the quiz
         localStorage.setItem("quiz_id", quizId); // Store quiz_id in localStorage
         navigate(`/quizaccess`); // Navigate to the quiz access page
+      } else if (result.response === "fail") {
+        // Show the failure message from the API response
+        toast.error(result.response_message || "Failed to start the quiz.");
       } else {
         toast.error(
           "Failed to fetch subscription limitations. Please try again."
@@ -545,6 +550,7 @@ const Dashboard = () => {
       toast.error("An error occurred while checking subscription limitations.");
     }
   };
+  
   const open = () => {
     setIsPremiumModalOpen(true);
 
@@ -566,14 +572,17 @@ const Dashboard = () => {
     quizname,
     quizdescription,
     createdby,
-    numberofquestions,
-    quizduration,
     complexity,
+    quizduration,
+    numberofquestions,
     mincompletiontime,
     quizattempts,
     avgscore,
     max_percentage,
-    quizcreatedate
+    quizcreatedate,
+    subcategory,
+    category,
+    photo1
   ) => {
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
     navigate("/quiz-results1", {
@@ -584,18 +593,20 @@ const Dashboard = () => {
         quizname,
         quizdescription,
         createdby,
-        numberofquestions,
-        quizduration,
         complexity,
+        quizduration,
+        numberofquestions,
         mincompletiontime,
         quizattempts,
         avgscore,
         max_percentage,
         quizcreatedate,
+        subcategory,
+        category,
+        photo1
       },
     });
   };
-
 
   const leaderboard1 = (
     quizId,
@@ -2158,25 +2169,28 @@ alt="Disable icon"
                            )
                          } src={view1} className="w-[18px] cursor-pointer h-[18px] mr-1" /> */}
      <img src={leader}
-             onClick={() =>
-                              leaderboard(
-                                quizItem.quiz_id,
-                                quizItem.quiz_total_marks,
-                                quizItem.pass_percentage,
-                                quizItem.quiz_name,
-                                quizItem.quiz_description,
-                                quizItem.created_by,
-                                quizItem.complexity,
-                                quizItem.quiz_duration,
-                                quizItem.number_of_questions,
-
-                                quizItem.min_completion_time,
-                                quizItem.quiz_attempts,
-                                quizItem.avg_score,
-                                quizItem.max_percentage,
-                                quizItem.quiz_create_date
-                              )
-                            }
+            onClick={() =>
+              leaderboard(
+                quizItem.quiz_id,
+                quizItem.quiz_total_marks,
+                quizItem.pass_percentage,
+                quizItem.quiz_name,
+                quizItem.quiz_description,
+                quizItem.created_by,
+                quizItem.complexity,
+                quizItem.quiz_duration,
+                quizItem.number_of_questions,
+                quizItem.min_completion_time,
+                quizItem.quiz_attempts,
+                quizItem.avg_score,
+                quizItem.max_percentage,
+                quizItem.quiz_create_date,
+                quizItem.sub_category,
+                quizItem.category,
+                quizItem.photo1
+              )
+            }
+            
                         className="w-[18px] cursor-pointer h-[18px] mr-1" />
      <img src={print1} className="w-[18px] h-[18px] mr-1" />
 
@@ -3320,7 +3334,7 @@ className={`flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-x
   key={index}
   className={`flex flex-row w-full max-w-[390px] h-[170px] rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4
     ${
-      quizItem.active_flag === "i" || quizItem.active_flag === "false"
+     quizItem.active_flag?.toLowerCase() === "i" || quizItem.active_flag === "false"
         ? "border-gray-400 border-[1px] border-b-[8px]" // Gray border if active_flag is "i"
         : "border-[#84acfa] border-[1px] border-b-[8px]" // Default blue border
     }
@@ -3677,24 +3691,26 @@ src={quizItem.photo1 || back}
                          } src={view1} className="w-[18px] cursor-pointer h-[18px] mr-1" /> */}
      <img src={leader}
              onClick={() =>
-                              leaderboard(
-                                quizItem.quiz_id,
-                                quizItem.quiz_total_marks,
-                                quizItem.pass_percentage,
-                                quizItem.quiz_name,
-                                quizItem.quiz_description,
-                                quizItem.created_by,
-                                quizItem.complexity,
-                                quizItem.quiz_duration,
-                                quizItem.number_of_questions,
-
-                                quizItem.min_completion_time,
-                                quizItem.quiz_attempts,
-                                quizItem.avg_score,
-                                quizItem.max_percentage,
-                                quizItem.quiz_create_date
-                              )
-                            }
+              leaderboard(
+                quizItem.quiz_id,
+                quizItem.quiz_total_marks,
+                quizItem.pass_percentage,
+                quizItem.quiz_name,
+                quizItem.quiz_description,
+                quizItem.created_by,
+                quizItem.complexity,
+                quizItem.quiz_duration,
+                quizItem.number_of_questions,
+                quizItem.min_completion_time,
+                quizItem.quiz_attempts,
+                quizItem.avg_score,
+                quizItem.max_percentage,
+                quizItem.quiz_create_date,
+                quizItem.sub_category,
+                quizItem.category,
+                quizItem.photo1
+              )
+            }
                         className="w-[18px] cursor-pointer h-[18px] mr-1" />
      <img src={print1} className="w-[18px] h-[18px] mr-1" />
 

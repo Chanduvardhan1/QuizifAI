@@ -2507,7 +2507,7 @@ const handleTabClick = (tab) => {
            {/* Premium */}
   <div className=" w-[50%] flex flex-col">
         <div className="w-[100%] flex flex-row">
-        <label className="w-[23%] text-blue-800 font-semibold mb-2 mr-[10px] ">Premium Quizzes<span className="text-red-500"></span></label>
+        <label className="w-[30%] text-blue-800 font-semibold mb-2 mr-[10px] ">Premium Quizes Create<span className="text-red-500"></span></label>
         <FormControlLabel
          control={<Switch />} 
          checked={showPackageFields}
@@ -2626,7 +2626,7 @@ const handleTabClick = (tab) => {
                 </div>
                 </>
                 )}
-      <div className="md:col-span-2">
+      <div className="">
 
 <div className="w-full flex gap-6">
       {/* Complexity */}
@@ -2650,7 +2650,7 @@ const handleTabClick = (tab) => {
       
         <hr className={`h-[1px] w-full`} />
       </div>
-<div className="w-full flex flex-col">
+{/* <div className="w-full flex flex-col">
   <div className="w-full flex flex-row">
     <label className="w-[30%] text-blue-800 font-semibold mb-2 ">
       Subject<span className="text-red-500"></span>
@@ -2662,15 +2662,15 @@ const handleTabClick = (tab) => {
     >
       <option value="" disabled>Select a Subject</option>
       <option value="">None</option>
-      {/* {courses.map((course) => (
+      {courses.map((course) => (
         <option key={course.course_id} value={course.course_name}>
           {course.course_name}
         </option>
-      ))} */}
+      ))}
     </select>
   </div>
   <hr className="h-[1px] w-full" />
-</div>
+</div> */}
 
 
 </div>

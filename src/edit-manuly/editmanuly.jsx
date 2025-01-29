@@ -932,6 +932,9 @@ const [quizid, setQuizId] = useState('');
           disabled_on: disabledon,
           quiz_total_marks: quiztotalmarks,
           quiz_instructions:instructionsString,
+          premium_quiz_flag: showPackageFields,
+          quiz_package_name: selectedPackageName,
+          quiz_package_id: selectedPackageId,
           questions: questions.map((question) => ({
             question_text: question.question_text,
             correct_answer_description: question.correct_answer_description,

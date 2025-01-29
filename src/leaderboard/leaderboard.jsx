@@ -391,7 +391,7 @@ const handleBack = () => {
               alt="Timer"
               className="w-[18px] h-[18px] mr-1"
             />
-            <span className="ml-1 text-sm">{`${quizData.quiz_duration}`}</span>
+            <span className="ml-1 text-sm">{`${quizData.quiz_duration}`} Minutes</span>
           </div>
           <div className="flex items-center">
             <img

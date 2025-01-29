@@ -869,7 +869,7 @@ const QuizQuestions = () => {
   };
 
   if (!quizData || !quizData.questions) {
-    return <div>Loading aaaa...</div>;
+    return <div>Loading ...</div>;
   }
   if (isLoading) {
     return <div>Loading bbbb...</div>;

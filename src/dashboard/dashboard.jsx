@@ -819,7 +819,7 @@ const Dashboard = () => {
           <div className="flex gap-[10px]">
           {(userRole === "Quiz Master") && (
 
-<div className="w-[210px] h-[41px]  rounded-[10px] bg-[#fee2e2]">
+<div className="w-[220px] h-[41px]  rounded-[10px] bg-[#fee2e2]">
   <div className="flex cursor-pointer"  onClick={createQuizbyquizmaster}>
     <img
       className="w-[25px] h-[25px] ml-2 mt-2"
@@ -830,7 +830,7 @@ const Dashboard = () => {
       onClick={createQuiz}
       className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
     >
-      Quiz Created by Quiz Uers
+      Quiz Created by Quiz Master
     </a>
   </div>
 </div>

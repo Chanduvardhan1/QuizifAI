@@ -222,6 +222,11 @@ import x from "../../src/assets/Images/quiz-type/cross-button.png"
 import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
 import { useNavigate } from "react-router-dom";
 import questionmark from "../assets/Images/images/dashboard/questionmark.png";
+import card from "../../src/assets/Images/dashboard/image (6).png"
+import profileIcon from "../../public/profilepage.png";
+import global1 from "../../src/assets/Images/dashboard/image (13).png";
+import myHistoryIcon from "../../public/myhistory.png"
+import weekly from "../../src/assets/Images/dashboard/image (18).png";
 
 export default function dashboardNavBar() {
     // const [userData, setUserData] = useState({
@@ -260,6 +265,8 @@ export default function dashboardNavBar() {
     const [globalscore, setGlobalscore] = useState("");
     const [totalQuizzes, setTotalQuizzes] = useState("");
     const [totalMinutes, setTotalMinutes] = useState("");
+    const [lastquiz, setlastquiz] = useState("");
+
     const [userName, setUserName] = useState('');
     const [averageScorePercentage, setAverageScorePercentage] = useState("");
     const [remainingDays, setRemainingDays] = useState('');
@@ -380,7 +387,7 @@ export default function dashboardNavBar() {
 
             const userMetrics = data.data[0]?.user_metrics || {};
             setTotalMinutes(userMetrics.total_minutes || 0);
-
+            setlastquiz(userMetrics.last_quiz_attempt_time || 0);
             setTotalQuizzes(userMetrics.countofquizes || 0);
             setAverageScorePercentage(userMetrics.average_total_percentage || 0);
             // console.log("Quizzes:", userMetrics.countofquizes);
@@ -489,7 +496,18 @@ export default function dashboardNavBar() {
     //   useEffect(() => {
     //     fetchUserProfile();
     //   }, []);
-      
+      const [subscriptionDetails1, setSubscriptionDetails1] = useState(null);
+    
+      useEffect(() => {
+        // Retrieve subscription details from localStorage
+        const storedDetails = JSON.parse(localStorage.getItem("subscription_details"));
+        setSubscriptionDetails1(storedDetails);
+      }, []);
+    
+      // if (!subscriptionDetails) {
+      //   return <p>Loading subscription details...</p>;
+      // }
+
       const deleteImage = async () => {
         try {
           const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
@@ -534,47 +552,72 @@ export default function dashboardNavBar() {
 const handleglobal =()=> {
   navigate("/globalleaderboard")
 }
+const handlsubscription =()=> {
+  navigate("/subscription")
+}
 // const score = 1564;
     return (
         <div className="container mx-auto ">
           <div className="flex w-full  gap-4 mb-1 py-2 font-semibold rounded-lg">
+      <div  onClick={handleprofile} className="flex gap-2 cursor-pointer justify-center w-full px-4 py-2 
+          text-[#214082] bg-[#c1e7e3] rounded-lg">
+        <img src={profileIcon} alt="" className="w-6 h-6" />
       <button
-      onClick={handleprofile}
-        className={`w-full px-4 py-2 
-          text-[#214082] bg-[#c1e7e3] rounded-lg
+     
+        className={`
+          text-[#214082] 
         `}
       >
       Profile
       </button>
+      </div>
+      <div  onClick={handlemyhistory} className="flex gap-2 cursor-pointer justify-center w-full px-4 py-2 
+          text-[#214082] bg-[#ceffe4] rounded-lg">
+            <img src={myHistoryIcon} alt="" className="w-6 h-6" />
       <button
-             onClick={handlemyhistory}
-        className={`w-full px-4 py-2  text-[#214082] bg-[#ceffe4] rounded-lg
+            
+        className={`  text-[#214082]
         `}
       >
         Quizzes Overview 
       </button>
+   </div>
+   <div onClick={handleglobal} className="flex    cursor-pointer gap-2 justify-center w-full px-4 py-2 
+          text-[#214082] bg-[#ffe9ee] rounded-lg">
+            <img src={global1} alt="" className="w-6 h-6" />
       <button
-        //  onClick={handlemyhistory}
-        className={`w-full px-4 py-2  bg-[#ffe5d9]
-      rounded-lg  text-[#214082] 
-        `}
-      >
-       Weekly Progress
-      </button>
-      <button
-          onClick={handleglobal}
-        className={`w-full px-4 py-2 rounded-lg text-[#214082] bg-[#ffe9ee]
+        
+        className={` text-[#214082]
         `}
       >
         Global Rank
       </button>
+      </div>
+      <div onClick={handlsubscription} className="flex cursor-pointer gap-2 justify-center w-full px-4 py-2 rounded-lg  bg-[#c1bbdd]">
+
+      
+      <img src={card} alt="" className="w-6 h-6" />
+
       <button
         // onClick={() => handleTabClick('Textbook')}
-        className={`w-full px-4 py-2   text-[#214082] rounded-lg  bg-[#c1bbdd]
+        className={`text-[#214082] 
         `}
       >
         Subscription 
       </button>
+      </div>
+      <div className="flex gap-2 justify-center w-full px-4 py-2 
+          text-[#214082] bg-[#ffe5d9] rounded-lg">
+            <img src={weekly} alt="" className="w-6 h-6" />
+      <button
+        //  onClick={handlemyhistory}
+        className={`  text-[#214082] 
+        `}
+      >
+       Weekly Progress
+      </button>
+      </div>
+
     </div>
             <div className="grid grid-cols-5 gap-4 mb-4">
             <div
@@ -681,7 +724,7 @@ const handleglobal =()=> {
                 <div   onClick={handlemyhistory} className="flex flex-col cursor-pointer justify-center items-center relative  border shadow-lg rounded-sm py-2 bg-white">
                   <div className=" space-y-2 flex flex-col items-start justify-center pl-[10px]">
                     <div className=" flex justify-center items-center text-center mt-2">
-                        <h3 className="text-[14px] font-[500] text-[#214082] ">Quizzes : </h3>
+                        <h3 className="text-[14px] font-[500] text-[#214082] ">Total Quizzes Attempted : </h3>
                         <p className="text-[14px] font-bold text-orange-500 ml-[2px]"> {totalQuizzes}</p>
                     </div>
                     <div className=" flex justify-center items-center text-center my-4">
@@ -692,12 +735,13 @@ const handleglobal =()=> {
                         <h3 className="text-[14px] font-[500] text-[#214082] ">Average Score : </h3>
                         <p className="text-[14px] font-bold text-orange-500 ml-[2px]"> {averageScorePercentage}%</p>
                     </div>
+                    <div className=" flex justify-center items-center text-center my-4">
+                        <h3 className="text-[14px] font-[500] text-[#214082] ">Last Quiz Attempted : </h3>
+                        <p className="text-[14px] font-bold text-orange-500 ml-[2px]"> {lastquiz}</p>
+                    </div>
                     </div>
                 </div>
-                <div   className="flex flex-col cursor-pointer items-center justify-center relative  border shadow-lg rounded-sm py-2 bg-white">
-           <ProgressIndicator />
-           
-        </div>
+             
         <div onClick={handleglobal} className="flex flex-col items-center cursor-pointer justify-start relative border shadow-lg rounded-sm py-2 bg-white">
         <div className="flex flex-col items-center">
       {/* Icons above the rank number */}
@@ -753,9 +797,9 @@ const handleglobal =()=> {
 
                     {/* <h3 className="text-sm font-bold mb-4 text-[#214082]"> <span>Public</span></h3> */}
                     <div className="space-y-2">
-                        <div className="flex justify-between">
-                            <p className="text-[14px] text-[#214082] ">Type : </p>
-                            <div>
+                        <div className="flex ">
+                            {/* <p className="text-[14px] text-[#214082] ">Subscription  : </p> */}
+                            <div className="flex">
   <p
     className={`text-[14px] font-medium ml-2 ${
       userType === "Public" ? 'text-orange-500' : 'text-[#8b8c8d]'
@@ -779,16 +823,34 @@ const handleglobal =()=> {
   </p>
 </div>
                         </div>
-                        <div className="flex justify-between">
-                            <p className="text-[14px] text-[#214082]">Date : </p>
-                            {/* <p className="font-medium text-orange-500">{userData.subscription.startDate}</p> */}
+                        <div className="flex ">
+                            <p className="text-[14px] text-[#214082]">Subscription Type : </p>
+                            <p className="font-medium text-[14px] text-orange-500 ml-2"> {userType}</p>
                         </div>
                         <div className="flex ">
-                            <p className="text-[14px] text-[#214082] mr-31%">Days : </p>
-                            <p className="font-medium text-[14px] ml-2 text-orange-500"> Unlimited</p>
+                            <p className="text-[14px] text-[#214082] mr-31%">Premium (Exp)</p>
+                            <p className="text-[14px] text-[#214082] mr-31% ml-6"> : </p>
+
+                            {/* <p className="font-medium  text-[14px] ml-2 text-orange-500">   (Expires : {subscriptionDetails1?.end_time || "N/A"})</p> */}
+                                                        <p className="font-medium  text-[14px] ml-2 text-orange-500 ">{subscriptionDetails1?.end_time || "N/A"}</p>
+
+                        </div>
+                        <div className="flex ">
+                            <p className="text-[14px] text-[#214082] mr-31%">Start Date  </p>
+                            <p className="text-[14px] text-[#214082]  ml-[50px]"> :  </p>
+                            <p className="font-medium  text-[14px] text-orange-500 ml-2">  {subscriptionDetails1?.start_time || "N/A"}</p>
+                        </div>
+                        <div className="flex ">
+                            <p className="text-[14px] text-[#214082] mr-31%">Days Remaining </p>
+                            <p className="text-[14px] text-[#214082]  ml-4"> :  </p>
+                            <p className="font-medium  text-[14px] ml-2 text-orange-500"> {subscriptionDetails1?.remaining_days_left || "N/A"}</p>
                         </div>
                     </div>
                 </div>
+                <div   className="flex flex-col cursor-pointer items-center justify-center relative  border shadow-lg rounded-sm py-2 bg-white">
+           <ProgressIndicator />
+           
+        </div>
             </div>
 
           

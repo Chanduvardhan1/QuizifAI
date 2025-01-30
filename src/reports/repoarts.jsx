@@ -135,7 +135,7 @@ Global Leaderboard Reports
             </h1>
         </div>
         <div onClick={handleGlobalLeaderboard1}>
-            <p className="text-[#00008b] cursor-pointer">Golbal Leaderboard</p>
+            <p className="text-[#00008b] cursor-pointer">Global Leaderboard</p>
         </div>
     </div>
     <div className="flex flex-col p-5 gap-2 shadow-md justify-start items-center w-[25%]  bg-white">
@@ -157,7 +157,7 @@ My History Reports
         </div>
         <div className=" text-[16px] font-semibold text-[#EF5130]">
             <h1 className="text-[16px]">
-            Quiz Status Report Reports
+            Quiz Status Reports
             </h1>
         </div>
         <div onClick={handleGlobalLeaderboard}>

@@ -1996,11 +1996,17 @@ const [selectedOrg, setSelectedOrg] = useState('');
 useEffect(() => {
   const fetchOrganizations = async () => {
     try {
+      const authToken = localStorage.getItem('authToken') || null;
+  
+      if (!authToken) {
+        console.error('No authToken found in localStorage.');
+        return;
+      }
       const response = await fetch('https://dev.quizifai.com:8010/organization/', {
         method: 'GET',
         headers: {
           Accept: 'application/json',
-          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjaGFuZHUgdmFyZGhhbiBrIiwiZXhwIjoyNTM0MDIzMDA3OTl9.H_wmqwEmdspaXzFRthV49YH_y25UZlj5zul3hV0bXF8',
+          Authorization: `Bearer ${authToken}`,
         },
       });
       const result = await response.json();
@@ -2151,9 +2157,104 @@ useEffect(() => {
 };
 const [activeTab, setActiveTab] = useState('Manual');
 
-const handleTabClick = (tab) => {
-  setActiveTab(tab);
+// const handleTabClick = (tab) => {
+//   setActiveTab(tab);
+// };
+// const handleTabClick = async (tab) => {
+//   if (tab === "Pdf") {
+//     try {
+//       const userId = localStorage.getItem("user_id");
+//       const token = localStorage.getItem("access_token"); // Replace with actual token retrieval
+
+//       const response = await fetch(
+//         `https://dev.quizifai.com:8010/get_user_subscriptionlimitations?user_id=${userId}`,
+//         {
+//           method: "POST",
+//           headers: {
+//             Accept: "application/json",
+//             Authorization: `Bearer ${token}`, // Use dynamically retrieved token
+//           },
+//         }
+//       );
+
+//       const result = await response.json();
+
+//       if (result.response === "success") {
+//         const { remaining_ai_creations } = result.data;
+
+//         // Check if AI creations are exhausted
+//         if (remaining_ai_creations === 0) {
+//           toast.error("You have no remaining AI-powered quiz creations.");
+//           return; // Prevent tab change
+//         }
+
+//         // Allow tab change
+//         setActiveTab(tab);
+//       } else {
+//         toast.error("Failed to fetch subscription limitations. Please try again.");
+//       }
+//     } catch (error) {
+//       console.error("Error fetching subscription limitations:", error);
+//       toast.error("An error occurred while checking subscription limitations.");
+//     }
+//   } else {
+//     setActiveTab(tab); // Allow tab change for other tabs
+//   }
+// };
+const handleTabClick = async (tabName) => {
+  if (tabName === "Pdf" || tabName === "Manual") {
+    try {
+      const userId = localStorage.getItem("user_id");
+      const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+
+      if (!authToken) {
+        throw new Error("No authentication token found");
+      }  
+      const response = await fetch(
+        `https://dev.quizifai.com:8010/get_user_subscriptionlimitations?user_id=${userId}`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${authToken}`, // Use dynamically retrieved token
+          },
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.response === "success") {
+        const { remaining_ai_creations, remaining_manual_creations } = result.data;
+
+        // Check conditions for Pdf (AI-Powered Creation)
+        if (tabName === "Pdf" && remaining_ai_creations === 0) {
+          toast.error("You have no remaining AI-powered quiz creations.");
+          return; // Prevent tab change
+        }
+
+        // Check conditions for Manual Creation
+        if (tabName === "Manual" && remaining_manual_creations === 0) {
+          toast.error("You have no remaining manual quiz creations.");
+          return; // Prevent tab change
+        }
+
+        // Allow tab change
+        setActiveTab(tabName);
+      } else if (result.response === "fail") {
+              // Show the failure message from the API response
+              toast.error(result.response_message || "Failed to start the quiz.");
+            } else {
+        toast.error("Failed to fetch subscription limitations. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error fetching subscription limitations:", error);
+      toast.error("An error occurred while checking subscription limitations.");
+    }
+  } else {
+    setActiveTab(tabName); // Allow tab change for other tabs
+  }
 };
+
   return (
     <>
 

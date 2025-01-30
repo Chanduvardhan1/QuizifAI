@@ -74,11 +74,13 @@ const QuizQuestions = () => {
     course_name,
     class_name,
     quiz_metrics,
+    
   } = location.state || {};
   const {
     total_attempts,
     your_attempts,
     highest_score,
+    photo1,
     quickest_completion_time,
   } = quiz_metrics || {};
 
@@ -959,7 +961,7 @@ const QuizQuestions = () => {
       {/* Quiz Image */}
       <div className="relative mr-2">
         <img
-          src={quizData?.questions?.[0]?.quiz_statistics?.photo1 || physics}
+          src={photo1 || physics}
           alt="Quiz Cover"
           className="w-[120px] h-[165px] rounded-md mr-4 cursor-pointer"
         />

@@ -311,7 +311,8 @@ const LoginPage = () => {
           localStorage.setItem('org_id', orgId);
           localStorage.setItem('user_type', user_type);
           localStorage.setItem('subscription_type', subscriptionType);
-  
+          localStorage.setItem("subscription_details", JSON.stringify(subscription_details));
+
           if (loginOption === "email") {
             localStorage.setItem('email', email);
           }

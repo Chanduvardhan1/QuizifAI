@@ -15,6 +15,7 @@ import premiumlite from "../../src/assets/Images/dashboard/pemium lite.avif";
 import premium from "../../src/assets/Images/dashboard/Premium.jpg";
 import Orginazation from "../../src/assets/Images/dashboard/orginazations1.jpg";
 import { useNavigate } from "react-router-dom";
+import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 
 const subscription = ()=> {
  
@@ -272,11 +273,16 @@ const subscription = ()=> {
         };
   
         try {
+          const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+
+          if (!authToken) {
+            throw new Error("No authentication token found");
+          } 
           const verifyPaymentResponse = await fetch('https://dev.quizifai.com:8010/verify_payment_signature/', {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
-              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDaGFuZHUgVmFyZGhhbiBLIiwiZXhwIjoyNTM0MDIzMDA3OTl9.cieF0LLgjuCOq0di0ZQ-QpUpplNc1beM0BKXk8zQVXo',
+              Authorization: `Bearer ${authToken}`,
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(paymentDetails),
@@ -315,9 +321,44 @@ const subscription = ()=> {
   };
   
   const handleclose = () => {
-    setResponseMessage(null); // Close the modal
+    setResponseMessage(null);
+    handleBackToLogin();
+     // Close the modal
   };
-
+  const handleBackToLogin = () => {
+    const authToken = localStorage.getItem('authToken') || null;
+  
+    if (!authToken) {
+      console.error('No authToken found in localStorage.');
+      return;
+    }
+  
+    fetch('https://dev.quizifai.com:8010/usr_logout/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authToken}`,
+      },
+      body: JSON.stringify({
+        user_id: userId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.response === 'success') {
+          localStorage.clear();
+          logout(); // Clear AuthContext
+          console.log('Navigating to login...');
+          navigate('/login'); // Navigate to login page
+        } else {
+          console.error('Logout failed:', data.response_message);
+        }
+      })
+      .catch((error) => {
+        console.error('Error logging out:', error);
+      });
+  };
   const [currentPage, setCurrentPage] = useState("plans"); // To track the current step
   const [selectedPlan, setSelectedPlan] = useState(null); // To store the selected plan
   const [showAdditionalCards, setShowAdditionalCards] = useState(false);
@@ -442,7 +483,15 @@ const subscription = ()=> {
     <div className="flex w-full">
       <Navigation/>
       <div className="w-full bg-[#f5f5f5]">
-
+    <div className=" absolute right-2 top-2">
+            <img
+              src={LogoutIcon}
+              onClick={handleBackToLogin}
+              alt="Logout Icon"
+              className="w-5 h-5 cursor-pointer "
+            />
+            {/* <p className="text-[#002366] text-[14px]">Logout</p> */}
+            </div>
       
 {/* <div className="flex px-4">
     <img
@@ -454,7 +503,7 @@ const subscription = ()=> {
 </div> */}
 <div className="flex px-4 pb-6 justify-center">
 
-   <h1 className=" text-[30px] text-[#00024b] font-extrabold">Subscription Plans</h1>
+   <h1 className=" text-[18px] text-[#00024b] font-extrabold">Subscription Plans</h1>
 </div>
 {currentPage === "plans" && (
 
@@ -464,13 +513,13 @@ const subscription = ()=> {
       <div className="flex flex-col gap-[2px] justify-center">
       {/* <div className="bg-[#9fcbf0] rounded-r-full flex items-center justify-center"> */}
 
-<h2 className="text-2xl font-bold text-center text-[#00024b]">Public</h2>
+<h2 className="text-[18px] font-bold text-center text-[#00024b]">Public</h2>
 {/* </div> */}
         <img src={Public} alt="" className="h-[100px]" />
         
       </div>
     
-      <p className="text-xl font-semibold text-center">Free</p>
+      <p className="text-[16px] font-semibold text-center">Free</p>
       <ul className=" mt-6 space-y-3 text-sm">
           <li>✔ Access to Public Quizzes</li>
           <li>✔ Limited to Two Quizzes Daily</li>
@@ -500,7 +549,7 @@ const subscription = ()=> {
     <div className="flex flex-col gap-[2px] justify-center">
       {/* <div className="bg-[#9fcbf0] rounded-r-full flex items-center justify-center"> */}
 
-<h2 className="text-2xl font-bold text-center text-[#00024b]">Premium Lite</h2>
+<h2 className="text-[18px] font-bold text-center text-[#00024b]">Premium Lite</h2>
 {/* </div> */}
         <img src={premiumlite} alt="" className="h-[100px]" />
         
@@ -532,7 +581,7 @@ const subscription = ()=> {
     <div className="flex flex-col gap-[2px] justify-center">
       {/* <div className="bg-[#9fcbf0] rounded-r-full flex items-center justify-center"> */}
 
-<h2 className="text-2xl font-bold text-center text-[#00024b]">Premium</h2>
+<h2 className="text-[18px] font-bold text-center text-[#00024b]">Premium</h2>
 {/* </div> */}
         <img src={premium} alt="" className="h-[100px]" />
         
@@ -570,7 +619,7 @@ const subscription = ()=> {
     <div className="flex flex-col gap-[2px] justify-center">
       {/* <div className="bg-[#9fcbf0] rounded-r-full flex items-center justify-center"> */}
 
-<h2 className="text-2xl font-bold text-center text-[#00024b]">Organization</h2>
+<h2 className="text-[18px] font-bold text-center text-[#00024b]">Organization</h2>
 {/* </div> */}
         <img src={Orginazation} alt="" className="h-[100px]" />
         

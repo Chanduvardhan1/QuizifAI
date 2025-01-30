@@ -41,6 +41,7 @@ import calander from "../../src/assets/Images/quiz-type/calander.png"
 import timer from "../../src/assets/Images/quiz-type/Timer.png"
 import comment from "../../src/assets/Images/quiz-type/comment.png"
 import Modal from "react-modal";
+import { CircularProgress } from "@mui/material";
 
 // import view1 from "../../public/view1.png";
 import newView from "../../public/newview.png";
@@ -421,6 +422,7 @@ const Dashboard = () => {
     fetchQuizData();
   }, [authToken, isAuthenticated, navigate, userId]);
 
+
   const handleStartQuiz = async (quizId, activeFlag, premiumQuizFlag) => {
     // Check if the quiz is inactive
     if (activeFlag === "i" || activeFlag === "false") {
@@ -434,6 +436,11 @@ const Dashboard = () => {
     }
 
     try {
+      const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+
+      if (!authToken) {
+        throw new Error("No authentication token found");
+      }
       // Fetch user subscription limitations
       const response = await fetch(
         `https://dev.quizifai.com:8010/get_user_subscriptionlimitations?user_id=${userId}`,
@@ -441,7 +448,7 @@ const Dashboard = () => {
           method: "POST",
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer <YOUR_ACCESS_TOKEN>`, // Replace with the actual token
+            Authorization: `Bearer ${authToken}`, // Replace with the actual token
           },
         }
       );
@@ -511,6 +518,11 @@ const Dashboard = () => {
     }
   
     try {
+      const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+
+      if (!authToken) {
+        throw new Error("No authentication token found");
+      }
       // Fetch user subscription limitations
       const response = await fetch(
         `https://dev.quizifai.com:8010/get_user_subscriptionlimitations?user_id=${userId}`,
@@ -518,7 +530,7 @@ const Dashboard = () => {
           method: "POST",
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer <YOUR_ACCESS_TOKEN>`, // Replace with actual token
+            Authorization: `Bearer ${authToken}`, // Replace with actual token
           },
         }
       );
@@ -643,9 +655,59 @@ const Dashboard = () => {
     localStorage.setItem("quiz_level_attempt_id", attemptId); // Store attempt_id in local storage
     navigate(`/quizview_results`);
   };
-  const createQuiz = () => {
-    navigate(`/pdf`);
+  // const createQuiz = () => {
+  //   navigate(`/pdf`);
+  // };
+
+  const [loading, setLoading] = useState(false);
+
+  const createQuiz = async () => {
+    setLoading(true); 
+    try {
+      const userId = localStorage.getItem("user_id");
+      const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+
+      if (!authToken) {
+        throw new Error("No authentication token found");
+      }  
+      const response = await fetch(
+        `https://dev.quizifai.com:8010/get_user_subscriptionlimitations?user_id=${userId}`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${authToken}`, // Use dynamically retrieved token
+          },
+        }
+      );
+  
+      const result = await response.json();
+  
+      if (result.response === "success") {
+        const { remaining_ai_creations, remaining_manual_creations } = result.data;
+  
+        // Check if both remaining AI and manual creations are 0
+        if (remaining_ai_creations === 0 && remaining_manual_creations === 0) {
+          toast.error("You have no remaining attempts to create a quiz.");
+          return;
+        }
+  
+        // Proceed to PDF page
+        navigate(`/pdf`);
+      } else if (result.response === "fail") {
+        // Show the failure message from the API response
+        toast.error(result.response_message || "Failed to start the quiz.");
+      } else {
+        toast.error("Failed to fetch subscription limitations. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error fetching subscription limitations:", error);
+      toast.error("An error occurred while checking subscription limitations.");
+    }finally {
+      setLoading(false); // Hide loading after API response
+    }
   };
+  
   const createQuizbyquizmaster = () => {
     navigate(`/Qizmasterquizess`);
   };
@@ -830,18 +892,18 @@ const Dashboard = () => {
           <div className="flex gap-[10px]">
           {(userRole === "Quiz Master") && (
 
-<div className="w-[220px] h-[41px]  rounded-[10px] bg-[#fee2e2]">
+<div className="w-[115px] h-[41px]  rounded-[10px] bg-[#fee2e2]">
   <div className="flex cursor-pointer"  onClick={createQuizbyquizmaster}>
-    <img
+    {/* <img
       className="w-[25px] h-[25px] ml-2 mt-2"
       src={Plus}
       alt="Plus Icon"
-    />
+    /> */}
     <a
       onClick={createQuiz}
       className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
     >
-      Quiz Created by Quiz Master
+       Created Quizzes
     </a>
   </div>
 </div>
@@ -930,10 +992,30 @@ const Dashboard = () => {
           <DashBoardNavBar />
           
         </div>
-        <div className="flex justify-end items-center">
-        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[10px]">
+        {loading && (
+  <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+    <CircularProgress size={40} color="primary" />
+  </div>
+)}
+
+        
+        <div className="mx-[10px]">
+          <div
+            className="flex justify-between mr-[10px]"
+            style={{ marginBottom: "20px" }}
+          >
+            <div className="flex items-center">
+            <p className="text-[#002366] text-[15px] font-medium leading-6">
+              Latest Quizzes
+            </p>
+            </div>
+           
+            <div className="flex justify-end">
+            <div className="flex justify-end items-center">
+        <label className="font-Poppins text-[#214082] font-medium text-[15px] ml-[10px]">
         Premium Quizzes <span className="text-red-500"></span>
         </label>
+        <div className="ml-3">
         <FormControlLabel
               control={<Switch />} 
               // label="Required"
@@ -941,28 +1023,23 @@ const Dashboard = () => {
                 checked={Premium}
                 className="react-switch"
               />
+              </div>
     </div>
-        <div className="mx-[10px]">
-          <div
-            className="flex justify-between mr-[10px]"
-            style={{ marginBottom: "20px" }}
-          >
-            <p className="text-[#002366] text-[15px] font-medium leading-6">
-              Latest Quizzes
-            </p>
             <span className="flex">
-              <span
+              {/* <span
                 className="text-[#EF5130] text-[12px] mr-[20px] mt-1 cursor-pointer"
                 style={{ fontWeight: "600" }}
                 onClick={handleBackToQuizzes}
               >
                 More{" "}
-              </span>
+              </span> */}
               <img
                 className="h-[10px] w-[9px] mt-[9px] -ml-[15px]"
                 src={arrow}
               />
             </span>
+            </div>
+         
           </div>
           {isPremiumModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black z-10 bg-opacity-50">
@@ -1006,7 +1083,7 @@ const Dashboard = () => {
 
                     const shouldShowQuiz = Premium
                     ? quizItem.premium_quiz_flag === true // Show only premium quizzes if toggle is on
-                    : quizItem.premium_quiz_flag === null; // Show only non-premium quizzes if toggle is off
+                    : quizItem.premium_quiz_flag === null || quizItem.premium_quiz_flag === false; // Show only non-premium quizzes if toggle is off
               
                 return (
                   shouldShowQuiz  &&
@@ -1449,7 +1526,8 @@ const Dashboard = () => {
                                 
                                
                                className="w-[18px] cursor-pointer h-[18px] mr-1" />
-                                <img src={print1} className="w-[18px] h-[18px] mr-1" />
+
+                                <img src={print1} className="w-[18px] cursor-pointer h-[18px] mr-1" />
                       
                               </div>
                             </div>
@@ -2192,7 +2270,7 @@ alt="Disable icon"
             }
             
                         className="w-[18px] cursor-pointer h-[18px] mr-1" />
-     <img src={print1} className="w-[18px] h-[18px] mr-1" />
+     <img src={print1} className="w-[18px] h-[18px] mr-1 cursor-pointer" />
 
    </div>
  </div>
@@ -2588,7 +2666,7 @@ alt="Disable icon"
                     quizItem.active_flag?.toLowerCase() === "Y";
                     const shouldShowQuiz = Premium
                     ? quizItem.premium_quiz_flag === true // Show only premium quizzes if toggle is on
-                    : quizItem.premium_quiz_flag === null; // Show only non-premium quizzes if toggle is off
+                    : quizItem.premium_quiz_flag === null || quizItem.premium_quiz_flag === false; // Show only non-premium quizzes if toggle is off
               
                 return (
 
@@ -3017,13 +3095,13 @@ alt="Disable icon"
                             <div className="flex items-end justify-end ">
                               <div className="flex items-end">
                                 <img
-                                //  onClick={() =>
-                                //                       quizresults(
-                                //                         quizItem.quiz_id,
-                                //                         quizItem.quiz_level_attempt_id
-                                //                       )
-                                //                     } 
-                                 src={view1} className="w-[18px] h-[18px] mr-1" />
+                                 onClick={() =>
+                                                      quizresults(
+                                                        quizItem.quiz_id,
+                                                        quizItem.quiz_level_attempt_id
+                                                      )
+                                                    } 
+                                 src={view1} className="w-[18px] cursor-pointer h-[18px] mr-1" />
                                 <img src={leader}
                                 onClick={() =>
                                   leaderboard1(
@@ -3033,8 +3111,8 @@ alt="Disable icon"
                                     quizItem.quiz_duration,
                                     quizItem.pass_percentage
                                   )
-                                } className="w-[18px] h-[18px] mr-1" />
-                                <img src={print1} className="w-[18px] h-[18px] mr-1" />
+                                } className="w-[18px] h-[18px] cursor-pointer mr-1" />
+                                <img src={print1} className="w-[18px] cursor-pointer h-[18px] mr-1" />
                       
                               </div>
                             </div>
@@ -3712,7 +3790,7 @@ src={quizItem.photo1 || back}
               )
             }
                         className="w-[18px] cursor-pointer h-[18px] mr-1" />
-     <img src={print1} className="w-[18px] h-[18px] mr-1" />
+     <img src={print1} className="w-[18px] h-[18px] mr-1 cursor-pointer" />
 
    </div>
  </div>

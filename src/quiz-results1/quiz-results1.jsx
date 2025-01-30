@@ -182,7 +182,7 @@ const topThree = leaderboardData.slice(0, 3);
   {/* Quiz Image */}
   <div className="relative mr-2">
     <img
-      src={photo1}
+      src={photo1 || physics}
       alt="Quiz Cover"
       className="w-[120px] h-[165px] rounded-md mr-4 cursor-pointer"
     />

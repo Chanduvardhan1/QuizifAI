@@ -144,6 +144,7 @@ const quizAccess = () => {
             total_attempts: quizData["quiz metrics"]?.total_attempts || 0,
             your_attempts: quizData["quiz metrics"]?.your_attempts || 0,
             highest_score: quizData["quiz metrics"]?.highest_score || null,
+            photo1:quizData["quiz metrics"]?.photo1 || null,
             quickest_completion_time: quizData["quiz metrics"]?.quickest_completion_time || null,
           },
         }
@@ -217,7 +218,7 @@ const quizAccess = () => {
       {/* Quiz Image */}
       <div className="relative mr-2">
         <img
-          src={physics}
+          src={quizData['quiz metrics'].photo1 || physics}
           alt="Quiz Cover"
           className="w-[120px] h-[165px] rounded-md mr-4 cursor-pointer"
         />

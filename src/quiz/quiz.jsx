@@ -46,6 +46,7 @@ import assign from "../../src/assets/Images/dashboard/assign.png"
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch'
 import crown from "../../src/assets/Images/dashboard/image (16).png";
+import { CircularProgress } from "@mui/material";
 
 // Modal.setAppElement(el);
 const Quiz = () => {
@@ -478,10 +479,59 @@ const [multiAnswer, setMultiAnswer] = useState(false);
   //   });
   // };
 
-  const createquiz = () => {
-    navigate("/pdf");
-  };
+  // const createquiz = () => {
+  //   navigate("/pdf");
+  // };
+  const [loading, setLoading] = useState(false);
 
+  const createquiz = async () => {
+    setLoading(true); 
+
+    try {
+      const userId = localStorage.getItem("user_id");
+      const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+
+      if (!authToken) {
+        throw new Error("No authentication token found");
+      }  
+      const response = await fetch(
+        `https://dev.quizifai.com:8010/get_user_subscriptionlimitations?user_id=${userId}`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${authToken}`, // Use dynamically retrieved token
+          },
+        }
+      );
+  
+      const result = await response.json();
+  
+      if (result.response === "success") {
+        const { remaining_ai_creations, remaining_manual_creations } = result.data;
+  
+        // Check if both remaining AI and manual creations are 0
+        if (remaining_ai_creations === 0 && remaining_manual_creations === 0) {
+          toast.error("You have no remaining attempts to create a quiz.");
+          return;
+        }
+  
+        // Proceed to PDF page
+        navigate(`/pdf`);
+      } else if (result.response === "fail") {
+        // Show the failure message from the API response
+        toast.error(result.response_message || "Failed to start the quiz.");
+      } else {
+        toast.error("Failed to fetch subscription limitations. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error fetching subscription limitations:", error);
+      toast.error("An error occurred while checking subscription limitations.");
+    }finally {
+      setLoading(false); // Hide loading after API response
+    }
+  };
+  
   const Edit = (quizId) => {
     // navigate(`/quizaccess/${quizId}`);
     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
@@ -1278,6 +1328,11 @@ const [multiAnswer, setMultiAnswer] = useState(false);
           </div>
         </div>
        )}
+         {loading && (
+         <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+           <CircularProgress size={40} color="primary" />
+         </div>
+       )}
           <div className="mx-auto">
             <div className="flex flex-wrap mx-auto gap-[10px] ml-[18px]">
               {filteredQuizzes
@@ -1293,7 +1348,7 @@ const [multiAnswer, setMultiAnswer] = useState(false);
       quizItem.active_flag?.toLowerCase() === "y";
       const shouldShowQuiz = Premium
       ? quizItem.premium_quiz_flag === true // Show only premium quizzes if toggle is on
-      : quizItem.premium_quiz_flag === null; // Show only non-premium quizzes if toggle is off
+      : quizItem.premium_quiz_flag === null || quizItem.premium_quiz_flag === false; // Show only non-premium quizzes if toggle is off
 
                   return (
                     shouldShowQuiz &&

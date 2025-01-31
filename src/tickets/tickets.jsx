@@ -104,9 +104,9 @@ const handleStatuscategories = (e) => {
           body: JSON.stringify({}),
         });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch dropdown data');
-        }
+        // if (!response.ok) {
+        //   throw new Error('Failed to fetch dropdown data');
+        // }
 
         const data = await response.json();
 

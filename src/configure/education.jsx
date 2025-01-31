@@ -5,11 +5,14 @@ import Course from './course.jsx';
 import Specialisations from './specialisations.jsx';
 import Classes from './classes.jsx';
 import Subjects from './subjects.jsx';
+import close from "../../src/assets/Images/images/dashboard/cancel.png"
+import { useNavigate } from "react-router-dom";
 
 
 const education = () => {
 
   const userId = localStorage.getItem("user_id");
+  const navigate = useNavigate();
 
 
 //----------------** activeTab **----------------//
@@ -19,14 +22,18 @@ const handleTabClick = (tab) => {
   setActiveTab(tab);
 };
 //----------------**activeTab end**----------------//
-
+const handleBack = () => {
+  navigate("/configure")
+};
 
   return (
     <>
     <div className='flex w-full'>
     <Navigation/> 
-    <div className='flex w-full flex-col p-5 bg-[#f5f5f5]'>
-
+    <div className='flex w-full flex-col p-5 bg-[#f5f5f5] pt-12'>
+<div onClick={handleBack} className=" absolute top-3 right-3 cursor-pointer">
+          <img src={close} alt="" className="w-[25px] h-[25px]" />
+        </div>
     <div className="flex w-full bg-[#eedbe5] px-2 pt-2 font-semibold rounded-t-lg">
       <button
         onClick={() => handleTabClick('Course')}

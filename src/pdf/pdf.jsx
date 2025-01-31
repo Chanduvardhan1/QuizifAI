@@ -43,6 +43,7 @@ import GreaterThan from "../assets/Images/images/dashboard/greaterthan.png";
 import QuestionPaper from "../assets/Images/Assets/questionPaper.png";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+import { CircularProgress } from "@mui/material";
 
 const options1 = [{ label: "Numbers" }];
 
@@ -256,6 +257,7 @@ const [ isEditing ,setisEditing] = useState(false);
      "Be aware that the quiz might automatically submit at the end of the allotted time.",
      "Contact support or your instructor immediately if you face technical issues.",
    ]);
+  const [loading, setLoading] = useState(false);
 
   const [modalMessage, setModalMessage] = useState("");
     const [modalMessage1, setModalMessage1] = useState("");
@@ -1889,7 +1891,7 @@ const handleNext4 = async () => {
         return;
       }
     }
-
+    setLoading(true);
     const response = await fetch(
       `https://dev.quizifai.com:8010/crt_qz_from_pdf`,
       {
@@ -1977,6 +1979,8 @@ const handleNext4 = async () => {
     console.error("Type-Quiz failed:", error);
     setErrorMessage("An error occurred while choosing the type of the quiz");
     setIsSubmitting(false);
+  }finally {
+    setLoading(false); // Hide loading after API response
   }
 };
 
@@ -3309,6 +3313,11 @@ const handleTabClick = async (tabName) => {
          <>
         {/* {showRegistrationSuccess && ( */}
           <main className="w-max-auto bg-white p-[10px] mt-[10px]">
+               {loading && (
+               <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+                 <CircularProgress size={40} color="primary" />
+               </div>
+             )}
               <div className="flex flex-col items-center justify-center mt-10">
                 <div className=" p-2 border-[1px] bg-gray-300 rounded-lg flex flex-col justify-center">
                   <div className="flex">

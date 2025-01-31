@@ -328,6 +328,8 @@ const [multiAnswer, setMultiAnswer] = useState(false);
 
     fetchDropdownValues();
   }, []);
+//---------------------**dsahboard data fetch **-------------------------//
+  const [loading1, setLoading1] = useState(true); // Loading state
 
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -394,11 +396,14 @@ const [multiAnswer, setMultiAnswer] = useState(false);
         setCreatedBy(uniqueCreatedBy);
       } catch (error) {
         console.error("Error fetching quiz data:", error);
+      }finally {
+        setLoading1(false); // Stop loading after API call
       }
     };
 
     fetchQuizData();
   }, [userId, authToken]);
+//---------------------**dsahboard data fetch end **----------------------//
 
   useEffect(() => {
     if (selectedCategory.length > 0) {
@@ -1135,7 +1140,7 @@ const [multiAnswer, setMultiAnswer] = useState(false);
           </div> */}
   <div className="flex justify-end items-center">
                     <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[10px]">
-                    Premium Quizs <span className="text-red-500"></span>
+                    Premium Quizzes <span className="text-red-500"></span>
                     </label>
                     <FormControlLabel
                           control={<Switch />} 
@@ -1335,7 +1340,41 @@ const [multiAnswer, setMultiAnswer] = useState(false);
        )}
           <div className="mx-auto">
             <div className="flex flex-wrap mx-auto gap-[10px] ml-[18px]">
-              {filteredQuizzes
+              {loading1
+          ? // Show Skeleton Loaders
+          [...Array(9)].map((_, index) => (
+            <div key={index} className="w-full max-w-[390px] h-[170px] bg-gray-200 p-4 animate-pulse rounded-lg shadow-lg">
+               <div className="flex">
+            <div>
+            <div  className="rounded-md w-[120px]  h-[140px] bg-gray-300 " />
+
+            </div>
+              <div className="ml-3 flex flex-col gap-2">
+                <div  className=" w-[170px]  h-[20px] bg-gray-300 rounded-sm" />
+                <div  className=" w-[230px]  h-[15px] bg-gray-300 rounded-sm" />
+                <div className="flex justify-between">
+                <div  className=" w-[90px]  h-[15px] bg-gray-300 rounded-sm" />
+                <div  className=" w-[90px]  h-[15px] bg-gray-300 rounded-sm" />
+
+                </div>
+                <div className="flex justify-between">
+                <div  className=" w-[90px]  h-[15px] bg-gray-300 rounded-sm" />
+                <div  className=" w-[90px]  h-[15px] bg-gray-300 rounded-sm" />
+
+                </div>
+                <div  className=" w-[80px]  h-[15px] bg-gray-300 rounded-sm" />
+                <div className="flex gap-1 justify-end">
+                <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" />
+
+                <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" />
+                <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" />
+
+                </div>
+              </div>
+            </div>
+            </div>
+          ))
+        : filteredQuizzes
                 .filter((quizItem) => {
                   const adjustedAttemptsCount = quizItem.attempts_count === 1 ? 0 : quizItem.attempts_count;
                   const quizCreateDate = new Date(quizItem.quiz_start_date);
@@ -1759,7 +1798,17 @@ const [multiAnswer, setMultiAnswer] = useState(false);
                              <span className="ml-1 text-[12px]">{quizItem.quiz_attempts} Attempts</span>
                            </div>
                          </div>
-                         <div className="flex items-end justify-end ">
+                         <div className="flex justify-between pl-1">
+                              <div>
+                              <p className="text-[12px]"> 
+                                <span>{quizItem.pass_flag ? 'Pass' : 'Fail'}</span><span> |</span>
+                               {/* <span> 8 Fastest</span> <span> |</span>
+                               <span> 8 Higest</span><span> |</span> */}
+                               <span> {quizItem.attained_score} Score</span><span> |</span>
+                               <span> {quizItem.quiz_grade} Grade</span>
+
+                               </p>
+                              </div>
                            <div className="flex items-end">
                              <img      onClick={() =>
                                        quizresults(

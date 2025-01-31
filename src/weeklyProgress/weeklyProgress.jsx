@@ -1,10 +1,68 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
+import { AuthContext } from "../Authcontext/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function SegmentedProgressIndicator() {
   const [quizProgress, setQuizProgress] = useState(null);
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
+  const navigate = useNavigate();
 
+  const { isAuthenticated, authToken,logout } = useContext(AuthContext);
+
+  //---------------------**dsahboard data fetch **-------------------------//
+    const [loading1, setLoading1] = useState(true); // Loading state
+    const [weekStats, setWeekStats] = useState({
+      week_detail: "",
+      total_quiz_time: "",
+      attempted_quiz_count: 0,
+      accuracy_rate: "",
+      score_performance: "",
+    });
+
+    useEffect(() => {
+      if (!isAuthenticated) {
+        navigate("/login"); // Redirect to login if not authenticated
+        return;
+      }
+      const fetchQuizData = async () => {
+        try {
+          const response = await fetch(
+            "https://dev.quizifai.com:8010/dashboard",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${authToken}`,
+              },
+              body: JSON.stringify({
+                user_id: userId,
+              }),
+            }
+          );
+          if (!response.ok) {
+            throw new Error("Failed to fetch quiz data");
+          }
+          const result = await response.json();
+  
+          const data = result.data[0];
+
+  const weekStatsData = data.week_stats;
+
+        // Set the week stats in the state
+        setWeekStats(weekStatsData);
+        } catch (error) {
+          console.error("Error fetching quiz data:", error);
+        }finally {
+          setLoading1(false); // Stop loading after API call
+        }
+      };
+  
+      fetchQuizData();
+    }, [authToken, isAuthenticated, navigate, userId]);
+  
+  //---------------------**dsahboard data fetch end **----------------------//
+  
   // Fetch quiz progress
   useEffect(() => {
     const fetchQuizProgress = async () => {
@@ -76,23 +134,46 @@ const progressLabel = getProgressLabel(progress);
         <div className="flex flex-col w-full px-5 items-center">
           <div className="flex w-full flex-col gap-1 justify-between mt-1">
             <div className="flex flex-col gap-2">
-            
-              <h1 className="text-[#002366] text-[14px]">
-                Total Attempted Quizzes :{" "}
-                <span className="text-[#FF6701]">
-                  {quizProgress.data.total_attempted_quizzes}
+            <h1 className="text-[#002366] text-[14px]">
+               Week :{" "}
+                <span className="text-[#FF6701] text-[12px]">
+                  {weekStats.week_detail}
                 </span>
               </h1>
               <h1 className="text-[#002366] text-[14px]">
+              Score Performance :{" "}
+                <span className="text-[#FF6701] text-[12px]">
+                  {weekStats.score_performance}
+                </span>
+              </h1>
+              <h1 className="text-[#002366] text-[14px]">
+              Accuracy Rate :{" "}
+                <span className="text-[#FF6701] text-[12px]">
+                  {weekStats.accuracy_rate}
+                </span>
+              </h1>
+              <h1 className="text-[#002366] text-[14px]">
+              Time Spent 
+              <span className="ml-[2px]">:</span>{" "}
+
+                <span className="text-[#FF6701] text-[12px]">
+                  {weekStats.total_quiz_time}
+                </span>
+              </h1>
+              {/* <h1 className="text-[#002366] text-[14px]">
                 Assigned Quizzes{" "}
                 <span className="ml-[21px]">:</span>{" "}
                 <span className="text-[#FF6701]">
                   {quizProgress.data.total_assigned_quizzes}
                 </span>
-              </h1>
+              </h1> */}
               <h1 className="text-[#002366] text-[14px]">
+              Quizzes Completed {" "}
+              <span className="ml-[2px]">:</span>{" "}
+              <span className="text-[#FF6701] text-[12px]">
                 {quizProgress.data.total_attempted_quizzes}/
-                {quizProgress.data.total_assigned_quizzes} Quizzes Done
+                {quizProgress.data.total_assigned_quizzes}
+                </span>
               </h1>
             </div>
           </div>

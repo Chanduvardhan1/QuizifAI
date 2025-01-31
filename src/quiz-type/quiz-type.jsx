@@ -43,6 +43,7 @@ import { uploadImage } from '../Api/constants';
 import api from '../Api/api';
 import physics from "../../src/assets/Images/quiz-type/quizcover.jpg"
 import back from "../../src/assets/Images/dashboard/quiz12.png"
+import { CircularProgress } from "@mui/material";
 
 import username from "../../src/assets/Images/quiz-type/username.png"
 import calander from "../../src/assets/Images/quiz-type/calander.png"
@@ -242,6 +243,7 @@ export default function quiztype() {
   const [moderatequestions, setModeratequestions] = useState('')
   const [complexquestions, setComplexquestions] = useState('')
   const [ isEditing ,setisEditing] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // const questionsPerPage = 20; // Number of questions per tab
   // const [currentPage, setCurrentPage] = useState(1)
@@ -1052,7 +1054,7 @@ for (const question of questions) {
     }
   }
 }
-        
+setLoading(true);
 
       const questionDuration = calculateQuizDuration();
       console.log('publicAccess',publicAccess);
@@ -1162,6 +1164,8 @@ for (const question of questions) {
       console.error("Type-Quiz failed:", error);
       setErrorMessage("An error occurred while choosing the type of the quiz");
       setIsSubmitting(false);
+    }finally {
+      setLoading(false); // Hide loading after API response
     }
   };
 
@@ -2883,7 +2887,11 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
          <>
         {/* {showRegistrationSuccess && ( */}
           <main className="w-max-auto bg-white p-[10px] mt-[10px]">
-          
+             {loading && (
+            <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+              <CircularProgress size={40} color="primary" />
+            </div>
+          )}
             <div className="w-full">
               <h1 className="font-Poppins font-bold text-[30px] leading-[45px] text-orange-400">
                 Create / Edit your Quiz

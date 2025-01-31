@@ -9,6 +9,7 @@ import trophy from "../../src/assets/Images/dashboard/trophy.png"
 // import nyayahImage from "../../src/assets/Images/images/quizresults/schedule.png";
 import Navigation from "../navbar/navbar";
 import close from "../../src/assets/Images/images/dashboard/cancel.png"
+import { CircularProgress } from "@mui/material";
 
 
 const MyTickets = () => {
@@ -96,10 +97,11 @@ const handleStatuscategories = (e) => {
 //   const selectedStatusId = e.target.value; // Get the selected ID
 //   setSelectedStatus(selectedStatusId); // Update the state with the selected status ID
 // };
+  const [loading, setLoading] = useState(false);
+
  useEffect(() => {
     const fetchDropdowns = async () => {
       try {
-        setIsLoading(true);
         const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
 
         if (!authToken) {
@@ -116,9 +118,9 @@ const handleStatuscategories = (e) => {
           body: JSON.stringify({}),
         });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch dropdown data');
-        }
+        // if (!response.ok) {
+        //   throw new Error('Failed to fetch dropdown data');
+        // }
 
         const data = await response.json();
 
@@ -128,13 +130,9 @@ const handleStatuscategories = (e) => {
           setPriorities(data.data.priorities);
           setStatuses(data.data.statuses);
           setAdmins(data.data.admins);
-        } else {
-          throw new Error('Invalid data format');
         }
       } catch (err) {
         setError(err.message);
-      } finally {
-        setIsLoading(false);
       }
     };
 
@@ -154,7 +152,8 @@ const handleStatuscategories = (e) => {
 useEffect(() => {
   const fetchTickets = async () => {
     try {
-      setIsLoading(true);
+      setLoading(true); 
+
       const user_id = localStorage.getItem('user_id');
       const authToken = localStorage.getItem('authToken');
 
@@ -222,7 +221,7 @@ useEffect(() => {
         ]);
       }
     } finally {
-      setIsLoading(false);
+      setLoading(false); // Hide loading after API response
     }
   };
 
@@ -233,7 +232,7 @@ const fetchTicketDetails = async () => {
   if (!selectedTicket) return;
 
   try {
-    setIsLoading(true);
+    setLoading(true); 
     const ticketId = selectedTicket.id.replace('#', ''); // Remove the # from ticket ID
     const authToken = localStorage.getItem('authToken');
 
@@ -271,7 +270,7 @@ const fetchTicketDetails = async () => {
     console.error('Error fetching ticket details:', err);
     setError(err.message || 'An error occurred while fetching ticket details');
   } finally {
-    setIsLoading(false);
+    setLoading(false); // Hide loading after API response
   }
 };
 
@@ -280,13 +279,13 @@ useEffect(() => {
 }, [selectedTicket]);
 
 
-  if (isLoading) {
-    return (
-      <div className="p-4 mt-[150px] ml-[60px] flex justify-center">
-        <div className="text-center">Loading ticket details...</div>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="p-4 mt-[150px] ml-[60px] flex justify-center">
+  //       <div className="text-center">Loading ticket details...</div>
+  //     </div>
+  //   );
+  // }
 
   if (error) {
     return (
@@ -297,6 +296,7 @@ useEffect(() => {
   }
   const handleSave = async () => {
     try {
+      setLoading(true); 
       const authToken = localStorage.getItem('authToken');
   
       if (!authToken) {
@@ -342,6 +342,8 @@ useEffect(() => {
     } catch (error) {
       console.error('Error updating ticket:', error);
       alert('An error occurred while updating the ticket. Please try again.');
+    }finally {
+      setLoading(false); // Hide loading after API response
     }
   };
   
@@ -349,6 +351,8 @@ useEffect(() => {
   
   const handleAddComment = async (ticketId) => {
     try {
+      setLoading(true); 
+
       const authToken = localStorage.getItem('authToken');
 
       if (!authToken) {
@@ -379,11 +383,15 @@ useEffect(() => {
       }
     } catch (err) {
       console.error('Error adding comment:', err);
+    }finally {
+      setLoading(false); // Hide loading after API response
     }
   };
   
   const handleEditComment = async (ticketId, commentId) => {
     try {
+      setLoading(true); 
+
       const authToken = localStorage.getItem('authToken');
 
       if (!authToken) {
@@ -415,6 +423,8 @@ useEffect(() => {
       }
     } catch (err) {
       console.error('Error editing comment:', err);
+    }finally {
+      setLoading(false); // Hide loading after API response
     }
   };
 
@@ -645,8 +655,15 @@ const handleEditClick = (ticket) => {
   return (
     <div className='flex'>
         <Navigation/>
+
         {step === 1 && (
+           
  <div className='flex flex-col w-full'>
+   {loading && (
+            <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+              <CircularProgress size={40} color="primary" />
+            </div>
+          )}
  <div className="p-4 flex w-full flex-col pt-12">
           <div onClick={handleBack} className=" absolute top-3 right-3 cursor-pointer">
                    <img src={close} alt="" className="w-[25px] h-[25px]" />
@@ -829,6 +846,11 @@ const handleEditClick = (ticket) => {
 
 {step ===2 && (
         <div className="p-4 flex w-full flex-col">
+           {loading && (
+            <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+              <CircularProgress size={40} color="primary" />
+            </div>
+          )}
         <div className="flex justify-between items-center mb-6">
           <h1 className={`text-2xl font-bold text-[#00008b]`}>Kanban Board</h1>
     
@@ -869,6 +891,11 @@ const handleEditClick = (ticket) => {
 )}
  {step === 3 && (
      <div className="p-4 w-full">
+       {loading && (
+            <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+              <CircularProgress size={40} color="primary" />
+            </div>
+          )}
      <div className="flex justify-between items-center mb-6">
        <h1 className={`text-2xl font-bold text-[#00008b]`}>
          {ticketDetails ? `Edit Ticket #${ticketDetails.ticket_id}` : 'Edit Ticket'}

@@ -6,6 +6,7 @@ import Navigation from "../navbar/navbar";
 import { useNavigate } from "react-router-dom";
 // import { useHistory } from 'react-router-dom';
 import { MdOutlineCancel } from "react-icons/md";
+import { CircularProgress } from "@mui/material";
 
 // Navbar-icons
 import QuizifAilogo from "../assets/Images/images/home/Quizifai3.png";
@@ -245,6 +246,7 @@ export default function editmanuly() {
   const saveButtonRef = useRef(null);
   const [selectedQuestions, setSelectedQuestions] = useState([]); // State to store selected questions
   const [isAllSelected, setIsAllSelected] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [quizcreation, setQuizcreation] = useState('')
  const [instructions, setInstructions] = useState([
@@ -263,7 +265,7 @@ export default function editmanuly() {
   ]);
 
   const [ isEditing ,setisEditing] = useState(false);
-  const orgId = localStorage.getItem('org_id');
+  const orgId = localStorage.getItem('org_id') || null;
 const [quizid, setQuizId] = useState('');
 
    const [username1, setUsername1] = useState("");
@@ -285,7 +287,8 @@ const [quizid, setQuizId] = useState('');
   const [isFlipped, setIsFlipped] = useState(false);
   const [layout1 , setlayout1] = useState(false)
     const [edit,setEdit] = useState(false)
-
+    const [photo1, setPhoto1] = useState('');
+    const [photo2, setPhoto2] = useState('');
 
 
   
@@ -887,6 +890,7 @@ const [quizid, setQuizId] = useState('');
     // }
 
     try {
+      setLoading(true);
       const user_id = localStorage.getItem('user_id');
       const quiz_id = localStorage.getItem('quiz_id');
 
@@ -1010,6 +1014,8 @@ const [quizid, setQuizId] = useState('');
     } catch (error) {
       console.error("Type-Quiz failed:", error);
       toast.error("An error occurred while choosing the type of the quiz");
+    }finally {
+      setLoading(false); // Stop loading
     }
   };
   // useEffect(() => {
@@ -1132,6 +1138,9 @@ const [quizid, setQuizId] = useState('');
         setdisabledon(data.data.disabled_on);
         setquiztotalmarks(data.data.quiz_total_marks);
         setQuizcreation(data.data.quiz_creation_method)
+        setQuizcreation(data.data.quiz_creation_method)
+        setPhoto1(data.data["quiz metrics"].photo1);
+            setPhoto2(data.data["quiz metrics"].photo2);
         console.log('Available classes:', data.data.class_name);
         console.log('Available subcategories:', data.data.quiz_sub_category_name);
 
@@ -1484,6 +1493,11 @@ const [quizid, setQuizId] = useState('');
 
       <div className="w-full ">
 {/* <div className="flex justify-end py-2 cursor-pointer text-[#eeb600f0]" onClick={Back}><MdOutlineCancel /></div> */}
+{loading && (
+  <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+    <CircularProgress size={40} color="primary" />
+  </div>
+)}
 
 
 
@@ -1504,8 +1518,12 @@ const [quizid, setQuizId] = useState('');
         /> */}
             <div className="relative mr-2">
             <img
-    src={isFlipped ? (backImage ? URL.createObjectURL(backImage) : back): (frontImage ? URL.createObjectURL(frontImage) : back)
-    }
+            src={isFlipped ? (backImage ? URL.createObjectURL(backImage) : photo2 || back): (frontImage ? URL.createObjectURL(frontImage) : photo1 || back)
+            }
+        
+//     src={isFlipped ? (photo2 ? URL.createObjectURL(data.data["quiz metrics"].photo2) : back): (data.data["quiz metrics"].photo1 ? URL.createObjectURL(data.data["quiz metrics"].photo1) : back)
+//       // src={isFlipped ? photo2 : photo1}
+//  }
     alt="Quiz Cover"
     className="w-[120px] h-[140px] rounded-md mr-4 cursor-pointer"
     onClick={handleFlip}

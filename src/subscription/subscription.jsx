@@ -16,6 +16,7 @@ import premium from "../../src/assets/Images/dashboard/Premium.jpg";
 import Orginazation from "../../src/assets/Images/dashboard/orginazations1.jpg";
 import { useNavigate } from "react-router-dom";
 import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
+import { CircularProgress } from "@mui/material";
 
 const subscription = ()=> {
  
@@ -47,11 +48,16 @@ const subscription = ()=> {
 
   useEffect(() => {
     const fetchUserProfile = async () => {
+      const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+
+      if (!authToken) {
+        throw new Error("No authentication token found");
+      } 
       const response = await fetch('https://dev.quizifai.com:8010/get_prfl_dtls', {
         method: 'POST',
         headers: {
           'accept': 'application/json',
-          'Authorization': 'Bearer <your-access-token>',
+          Authorization: `Bearer ${authToken}`, // Use dynamically retrieved token
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ user_id: userId })
@@ -123,15 +129,19 @@ const subscription = ()=> {
     setError("");
   
     try {
+      const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+
+      if (!authToken) {
+        throw new Error("No authentication token found");
+      } 
       // Step 1: Create Order
       const response = await fetch("https://dev.quizifai.com:8010/create_order", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDaGFuZHUgVmFyZGhhbiBLIiwiZXhwIjoyNTM0MDIzMDA3OTl9.ISVQ2Nv4VIeP0GPwP0I2AHb01bxWg4cxcE2t7KIvViw",
-        },
+          Authorization: `Bearer ${authToken}`, // Use dynamically retrieved token
+          },
         body: JSON.stringify({
           user_id: userId,
           user_name: userName,
@@ -182,15 +192,19 @@ const subscription = ()=> {
     setError("");
   
     try {
+      const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+
+      if (!authToken) {
+        throw new Error("No authentication token found");
+      }  
       // Step 1: Create Order
       const response = await fetch("https://dev.quizifai.com:8010/create_order", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDaGFuZHUgVmFyZGhhbiBLIiwiZXhwIjoyNTM0MDIzMDA3OTl9.ISVQ2Nv4VIeP0GPwP0I2AHb01bxWg4cxcE2t7KIvViw",
-        },
+          Authorization: `Bearer ${authToken}`, // Use dynamically retrieved token
+          },
         body: JSON.stringify({
           user_id: userId,
           user_name: userName,
@@ -450,12 +464,17 @@ const subscription = ()=> {
     // Fetch quiz package data from the API
     const fetchQuizPackages = async () => {
       try {
+        const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+
+        if (!authToken) {
+          throw new Error("No authentication token found");
+        } 
         const response = await fetch("https://dev.quizifai.com:8010/quiz_packages/", {
           method: "GET",
           headers: {
             Accept: "application/json",
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDaGFuZHUgVmFyZGhhbiBLIiwiZXhwIjoyNTM0MDIzMDA3OTl9.HNL30FsCwbOy1jxo56X4LuOiC6Lnm9I4Lzkhe_Lb428",
+            Authorization: `Bearer ${authToken}`, // Use dynamically retrieved token
+
           },
         });
   
@@ -483,6 +502,11 @@ const subscription = ()=> {
     <div className="flex w-full">
       <Navigation/>
       <div className="w-full bg-[#f5f5f5]">
+      {loading && (
+  <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+    <CircularProgress size={40} color="primary" />
+  </div>
+)}
     <div className=" absolute right-2 top-2">
             <img
               src={LogoutIcon}
@@ -508,7 +532,13 @@ const subscription = ()=> {
 {currentPage === "plans" && (
 
     <div className="flex flex-wrap justify-center gap-6 px-4">
+     {loading && (
+  <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+    <CircularProgress size={40} color="primary" />
+  </div>
+)}
     {/* Public Plan */}
+
     <div className="bg-white text-black rounded-lg shadow-2xl p-6 w-full md:w-[22%]  flex flex-col justify-between">
       <div className="flex flex-col gap-[2px] justify-center">
       {/* <div className="bg-[#9fcbf0] rounded-r-full flex items-center justify-center"> */}
@@ -653,6 +683,11 @@ const subscription = ()=> {
   {/* Payment Methods Page */}
   {currentPage === "payment" && (
         <div className="w-full flex flex-col justify-center bg-[#141652] rounded-lg shadow-md p-6">
+          {loading && (
+  <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+    <CircularProgress size={40} color="primary" />
+  </div>
+)}
           <h2 className="text-2xl text-white font-bold mb-6 text-center">
             Payment Methods
           </h2>
@@ -745,6 +780,11 @@ const subscription = ()=> {
 
 {currentPage === "paymentpremium" && (
         <div className="w-full flex flex-col justify-center  bg-[#141652] rounded-lg shadow-md p-6">
+     {loading && (
+  <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+    <CircularProgress size={40} color="primary" />
+  </div>
+)}
           <h2 className="text-2xl text-white font-bold mb-6 text-center">
             Payment Methods
           </h2>
@@ -875,6 +915,11 @@ const subscription = ()=> {
       {/* Confirmation Page */}
       {currentPage === "confirmation" && (
         <div className="w-full max-w-lg bg-white rounded-lg shadow-md p-6 text-center">
+       {loading && (
+  <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+    <CircularProgress size={40} color="primary" />
+  </div>
+)}
           <h2 className="text-2xl font-bold mb-6">Payment Successful!</h2>
           <p className="text-gray-600">
             Thank you for purchasing the <strong>{selectedPlan}</strong> plan.

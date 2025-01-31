@@ -721,23 +721,23 @@ const handlsubscription =()=> {
     </div>
   </div>
 
-                <div   onClick={handlemyhistory} className="flex flex-col cursor-pointer justify-center items-center relative  border shadow-lg rounded-sm py-2 bg-white">
+                <div   onClick={handlemyhistory} className="flex flex-col cursor-pointer justify-start items-center relative  border shadow-lg rounded-sm py-2 bg-white">
                   <div className=" space-y-2 flex flex-col items-start justify-center pl-[10px]">
                     <div className=" flex justify-center items-center text-center mt-2">
                         <h3 className="text-[14px] font-[500] text-[#214082] ">Total Quizzes Attempted : </h3>
-                        <p className="text-[14px] font-bold text-orange-500 ml-[2px]"> {totalQuizzes}</p>
+                        <p className="text-[12px] font-bold text-orange-500 ml-[2px] mt-1"> {totalQuizzes}</p>
                     </div>
                     <div className=" flex justify-center items-center text-center my-4">
                         <h3 className="text-[14px] font-[500] text-[#214082] ">Minutes : </h3>
-                        <p className="text-[14px] font-bold text-orange-500 ml-[2px]"> {totalMinutes}</p>
+                        <p className="text-[12px] font-bold text-orange-500 ml-[2px] mt-1"> {totalMinutes}</p>
                     </div>
                     <div className="flex justify-center items-center text-center">
                         <h3 className="text-[14px] font-[500] text-[#214082] ">Average Score : </h3>
-                        <p className="text-[14px] font-bold text-orange-500 ml-[2px]"> {averageScorePercentage}%</p>
+                        <p className="text-[12px] font-bold text-orange-500 ml-[2px] mt-1"> {averageScorePercentage}%</p>
                     </div>
                     <div className=" flex justify-center items-center text-center my-4">
                         <h3 className="text-[14px] font-[500] text-[#214082] ">Last Quiz Attempted : </h3>
-                        <p className="text-[14px] font-bold text-orange-500 ml-[2px]"> {lastquiz}</p>
+                        <p className="text-[12px] font-bold text-orange-500 ml-[2px] mt-1"> {lastquiz}</p>
                     </div>
                     </div>
                 </div>
@@ -770,8 +770,8 @@ const handlsubscription =()=> {
       <div className="">
 
       
-      <h1 className='text-[#002366] text-[14px]'>Global Rank <span className=' ml-[10px]'>:</span> <span className='text-[#FF6701]'>{globalRank}</span></h1>
-      <h1 className='text-[#002366] text-[14px]'>Global score  <span className=' ml-[10px]'>:</span> <span className='text-[#FF6701]'>{globalscore}</span></h1>
+      <h1 className='text-[#002366] text-[14px]'>Global Rank <span className=' ml-[10px]'>:</span> <span className='text-[#FF6701] text-[12px]'>{globalRank}</span></h1>
+      <h1 className='text-[#002366] text-[14px]'>Global score  <span className=' ml-[10px]'>:</span> <span className='text-[#FF6701] text-[12px]'>{globalscore}</span></h1>
       </div>
       {/* Buttons to simulate rank change for testing */}
       {/* <div className="flex gap-2 mt-4">
@@ -825,25 +825,25 @@ const handlsubscription =()=> {
                         </div>
                         <div className="flex ">
                             <p className="text-[14px] text-[#214082]">Subscription Type : </p>
-                            <p className="font-medium text-[14px] text-orange-500 ml-2"> {userType}</p>
+                            <p className="font-medium text-[12px] text-orange-500 ml-2"> {userType}</p>
                         </div>
                         <div className="flex ">
                             <p className="text-[14px] text-[#214082] mr-31%">Premium (Exp)</p>
-                            <p className="text-[14px] text-[#214082] mr-31% ml-6"> : </p>
+                            <p className="text-[12px] text-[#214082] mr-31% ml-6"> : </p>
 
                             {/* <p className="font-medium  text-[14px] ml-2 text-orange-500">   (Expires : {subscriptionDetails1?.end_time || "N/A"})</p> */}
-                                                        <p className="font-medium  text-[14px] ml-2 text-orange-500 ">{subscriptionDetails1?.end_time || "N/A"}</p>
+                                                        <p className="font-medium  text-[12px] ml-2 text-orange-500 ">{subscriptionDetails1?.end_time || "N/A"}</p>
 
                         </div>
                         <div className="flex ">
                             <p className="text-[14px] text-[#214082] mr-31%">Start Date  </p>
-                            <p className="text-[14px] text-[#214082]  ml-[50px]"> :  </p>
-                            <p className="font-medium  text-[14px] text-orange-500 ml-2">  {subscriptionDetails1?.start_time || "N/A"}</p>
+                            <p className="text-[12px] text-[#214082]  ml-[50px]"> :  </p>
+                            <p className="font-medium  text-[12px] text-orange-500 ml-2">  {subscriptionDetails1?.start_time || "N/A"}</p>
                         </div>
                         <div className="flex ">
                             <p className="text-[14px] text-[#214082] mr-31%">Days Remaining </p>
-                            <p className="text-[14px] text-[#214082]  ml-4"> :  </p>
-                            <p className="font-medium  text-[14px] ml-2 text-orange-500"> {subscriptionDetails1?.remaining_days_left || "N/A"}</p>
+                            <p className="text-[12px] text-[#214082]  ml-4"> :  </p>
+                            <p className="font-medium  text-[12px] ml-2 text-orange-500"> {subscriptionDetails1?.remaining_days_left || "N/A"}</p>
                         </div>
                     </div>
                 </div>

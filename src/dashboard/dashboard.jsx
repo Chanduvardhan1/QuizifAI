@@ -42,6 +42,7 @@ import timer from "../../src/assets/Images/quiz-type/Timer.png"
 import comment from "../../src/assets/Images/quiz-type/comment.png"
 import Modal from "react-modal";
 import { CircularProgress } from "@mui/material";
+import Skeleton from "react-loading-skeleton"; // Install using npm install react-loading-skeleton
 
 // import view1 from "../../public/view1.png";
 import newView from "../../public/newview.png";
@@ -375,6 +376,8 @@ const Dashboard = () => {
       window.removeEventListener("beforeunload", handleWindowClose);
     };
   }, []);
+//---------------------**dsahboard data fetch **-------------------------//
+  const [loading1, setLoading1] = useState(true); // Loading state
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -416,12 +419,15 @@ const Dashboard = () => {
 
       } catch (error) {
         console.error("Error fetching quiz data:", error);
+      }finally {
+        setLoading1(false); // Stop loading after API call
       }
     };
 
     fetchQuizData();
   }, [authToken, isAuthenticated, navigate, userId]);
 
+//---------------------**dsahboard data fetch end **----------------------//
 
   const handleStartQuiz = async (quizId, activeFlag, premiumQuizFlag) => {
     // Check if the quiz is inactive
@@ -900,7 +906,7 @@ const Dashboard = () => {
       alt="Plus Icon"
     /> */}
     <a
-      onClick={createQuiz}
+      // onClick={createQuiz}
       className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
     >
        Created Quizzes
@@ -1070,7 +1076,41 @@ const Dashboard = () => {
 
 
           <div className="w-full flex flex-wrap mx-auto gap-[24px]">
-            {allquizzes
+            {loading1
+          ? // Show Skeleton Loaders
+          [...Array(3)].map((_, index) => (
+            <div key={index} className="w-full max-w-[390px] h-[170px] bg-gray-200 p-4 animate-pulse rounded-lg shadow-lg">
+               <div className="flex">
+            <div>
+            <div  className="rounded-md w-[120px]  h-[140px] bg-gray-300 " />
+
+            </div>
+              <div className="ml-3 flex flex-col gap-2">
+                <div  className=" w-[170px]  h-[20px] bg-gray-300 rounded-sm" />
+                <div  className=" w-[230px]  h-[15px] bg-gray-300 rounded-sm" />
+                <div className="flex justify-between">
+                <div  className=" w-[90px]  h-[15px] bg-gray-300 rounded-sm" />
+                <div  className=" w-[90px]  h-[15px] bg-gray-300 rounded-sm" />
+
+                </div>
+                <div className="flex justify-between">
+                <div  className=" w-[90px]  h-[15px] bg-gray-300 rounded-sm" />
+                <div  className=" w-[90px]  h-[15px] bg-gray-300 rounded-sm" />
+
+                </div>
+                <div  className=" w-[80px]  h-[15px] bg-gray-300 rounded-sm" />
+                <div className="flex gap-1 justify-end">
+                <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" />
+
+                <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" />
+                <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" />
+
+                </div>
+              </div>
+            </div>
+            </div>
+          ))
+        :allquizzes
               .filter((quizItem) => {
                 const quizCreateDate = new Date(quizItem.quiz_start_date);
                 const quizEndDate = quizItem.quiz_end_date
@@ -1504,7 +1544,17 @@ const Dashboard = () => {
                                 <span className="ml-1 text-[12px]">{quizItem.quiz_attempts} Attempt</span>
                               </div>
                             </div>
-                            <div className="flex items-end justify-end ">
+                            <div className="flex justify-between pl-1">
+                              <div>
+                               <p className="text-[12px]"> 
+                                <span>{quizItem.pass_flag ? 'Pass' : 'Fail'}</span><span> |</span>
+                               {/* <span> 8 Fastest</span> <span> |</span>
+                               <span> 8 Higest</span><span> |</span> */}
+                               <span> {quizItem.attained_score} Score</span><span> |</span>
+                               <span> {quizItem.quiz_grade} Grade</span>
+
+                               </p>
+                              </div>
                               <div className="flex items-end">
                                 <img
                                   onClick={() =>
@@ -2238,6 +2288,7 @@ alt="Disable icon"
    </div>
  </div>
  <div className="flex items-end justify-end ">
+  
    <div className="flex items-end">
      {/* <img
        onClick={() =>
@@ -2654,7 +2705,41 @@ alt="Disable icon"
           </div>
 
           <div className="w-full flex flex-wrap mx-auto gap-[24px]">
-            {allquizzes
+            {loading1
+          ? // Show Skeleton Loaders
+          [...Array(3)].map((_, index) => (
+            <div key={index} className="w-full max-w-[390px] h-[170px] bg-gray-200 p-4 animate-pulse rounded-lg shadow-lg">
+               <div className="flex">
+            <div>
+            <div  className="rounded-md w-[120px]  h-[140px] bg-gray-300 " />
+
+            </div>
+              <div className="ml-3 flex flex-col gap-2">
+                <div  className=" w-[170px]  h-[20px] bg-gray-300 rounded-sm" />
+                <div  className=" w-[230px]  h-[15px] bg-gray-300 rounded-sm" />
+                <div className="flex justify-between">
+                <div  className=" w-[90px]  h-[15px] bg-gray-300 rounded-sm" />
+                <div  className=" w-[90px]  h-[15px] bg-gray-300 rounded-sm" />
+
+                </div>
+                <div className="flex justify-between">
+                <div  className=" w-[90px]  h-[15px] bg-gray-300 rounded-sm" />
+                <div  className=" w-[90px]  h-[15px] bg-gray-300 rounded-sm" />
+
+                </div>
+                <div  className=" w-[80px]  h-[15px] bg-gray-300 rounded-sm" />
+                <div className="flex gap-1 justify-end">
+                <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" />
+
+                <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" />
+                <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" />
+
+                </div>
+              </div>
+            </div>
+            </div>
+          ))
+        :allquizzes
               .filter((quizItem) => {
                 const quizCreateDate = new Date(quizItem.quiz_start_date);
                 const quizEndDate = quizItem.quiz_end_date
@@ -3092,7 +3177,17 @@ alt="Disable icon"
                                 <span className="ml-1 text-[12px]">{quizItem.quiz_attempts} Attempt</span>
                               </div>
                             </div>
-                            <div className="flex items-end justify-end ">
+                            <div className="flex justify-between pl-1">
+                              <div>
+                              <p className="text-[12px]"> 
+                                <span>{quizItem.pass_flag ? 'Pass' : 'Fail'}</span><span> |</span>
+                               {/* <span> 8 Fastest</span> <span> |</span>
+                               <span> 8 Higest</span><span> |</span> */}
+                               <span> {quizItem.attained_score} Score</span><span> |</span>
+                               <span> {quizItem.quiz_grade} Grade</span>
+
+                               </p>
+                              </div>
                               <div className="flex items-end">
                                 <img
                                  onClick={() =>
@@ -3758,7 +3853,8 @@ src={quizItem.photo1 || back}
      <span className="ml-1 text-[12px]">{quizItem.quiz_attempts} Attempt</span>
    </div>
  </div>
- <div className="flex items-end justify-end ">
+ <div className="flex items-end justify-end">
+                        
    <div className="flex items-end">
      {/* <img
        onClick={() =>

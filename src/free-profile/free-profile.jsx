@@ -21,6 +21,7 @@ import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
 import camera1 from "../../src/assets/Images/dashboard/edit.png"
 import x from "../../src/assets/Images/quiz-type/cross-button.png"
 import { useNavigate } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
 
 const FreeProfile = () => {
   const getFormattedDate = () => {
@@ -119,7 +120,7 @@ const FreeProfile = () => {
 
 
   const [photo, setPhoto] = useState(''); // State to store the image URL
-  const [loading, setLoading] = useState(true); // State to manage loading status
+  // const [loading, setLoading] = useState(true); // State to manage loading status
   // const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
    // State to manage modal visibility
@@ -158,9 +159,12 @@ const FreeProfile = () => {
       setError("");
     }
   };
+  const [loading, setLoading] = useState(false);
 
   const fetchDetailsByPincode = async (pincode) => {
+    setLoading(true);
     try {
+      
       const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
 
       if (!authToken) {
@@ -190,6 +194,8 @@ const FreeProfile = () => {
       }
     } catch (error) {
       console.error("Error fetching details by pincode", error);
+    }finally {
+      setLoading(false); // Hide loading after API response
     }
   };
 
@@ -311,7 +317,7 @@ const FreeProfile = () => {
   useEffect(() => {
     const fetchQuizData = async () => {
       console.log("User ID:", userId);
-  
+      setLoading(true);
       try {
         const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
   
@@ -393,6 +399,8 @@ const FreeProfile = () => {
         console.log("User Data Initialized:", initialData);
       } catch (error) {
         console.error("Error fetching user profile details:", error.message);
+      }finally {
+        setLoading(false); // Hide loading after API response
       }
     };
   
@@ -547,6 +555,7 @@ const FreeProfile = () => {
 
   const handleSaveClick = async () => {
     // Validation logic
+    setLoading(true);
     const errors = [];
     if (!dob) errors.push("Date of birth is required.");
     if (!gender) errors.push("Gender is required.");
@@ -632,6 +641,8 @@ const FreeProfile = () => {
     } catch (error) {
       console.error("Error updating profile:", error);
       toast.error("An error occurred while updating the profile. Please try again.");
+    }finally {
+      setLoading(false); // Hide loading after API response
     }
   };
   
@@ -794,6 +805,7 @@ const FreeProfile = () => {
   
   
   const handleLoginSaveClick = async () => {
+    setLoading(true); 
     const payload = {
       preferred_login_method: loginMethod, // Determine the method based on input
       identifier: loginMethod === "Email" ? email : mobileNumber, // Use email or mobile as the identifier
@@ -862,12 +874,15 @@ const FreeProfile = () => {
   
       // Show error message only when no success was processed
       toast.error("Error sending OTP. Please try again.");
+    }finally {
+      setLoading(false); // Hide loading after API response
     }
   };
   
   
   
   const updatePreferredLoginMethod = async () => {
+    setLoading(true); 
     // Replace the placeholder values with actual data from your state or inputs
     const payload = {
       preferred_login_method: loginMethod, // or "Mobile"
@@ -920,10 +935,13 @@ const FreeProfile = () => {
     } catch (error) {
       console.error("Error in updatePreferredLoginMethod:", error.message);
       toast.error("Error updating preferred login method. Please try again.");
+    }finally {
+      setLoading(false); // Hide loading after API response
     }
   };
   
   const updatePreferredLoginMethod1 = async () => {
+    setLoading(true); 
     // Replace the placeholder values with actual data from your state or inputs
     const payload = {
       preferred_login_method: loginMethod, // or "Mobile"
@@ -976,6 +994,8 @@ const FreeProfile = () => {
     } catch (error) {
       console.error("Error in updatePreferredLoginMethod:", error.message);
       toast.error("Error updating preferred login method. Please try again.");
+    }finally {
+      setLoading(false); // Hide loading after API response
     }
   };
   
@@ -1108,7 +1128,7 @@ const FreeProfile = () => {
 
   const handleUpdatePassword = async (e) => {
     e.preventDefault();
-  
+    setLoading(true); 
     if (!showNewPasswords) {
       setShowNewPasswords(true);
       setButtonText("Save Password");
@@ -1190,6 +1210,8 @@ const FreeProfile = () => {
       } else {
         toast.error("An error occurred while updating the password.");
       }
+    }finally {
+      setLoading(false); // Hide loading after API response
     }
   };
   
@@ -1275,6 +1297,7 @@ const FreeProfile = () => {
     setCrop(crop);
   };
   const handleBackToLogin = () => {
+    
     const authToken = localStorage.getItem('authToken') || null;
   
     if (!authToken) {
@@ -1312,6 +1335,7 @@ const FreeProfile = () => {
   
 
   const fetchProfileImage = async () => {
+    setLoading(true);
     try {
       const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
             if (!authToken) {
@@ -1347,7 +1371,7 @@ const FreeProfile = () => {
   const uploadImage = async (file) => {
     const formData = new FormData();
     formData.append('file', file);
-  
+    setLoading(true);
     try {
       const response = await fetch(`https://dev.quizifai.com:8010/upload-image?user_id=${userId}`, {
         method: 'POST',
@@ -1366,6 +1390,8 @@ const FreeProfile = () => {
       }
     } catch (error) {
       setError('Error uploading image: ' + error.message);
+    }finally {
+      setLoading(false); // Hide loading after API response
     }
   };
   
@@ -1390,6 +1416,7 @@ const FreeProfile = () => {
 //   }, []);
   
   const deleteImage = async () => {
+    setLoading(true);
     try {
       const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
             if (!authToken) {
@@ -1414,6 +1441,8 @@ const FreeProfile = () => {
       }
     } catch (error) {
       setError('Error deleting image: ' + error.message);
+    }finally {
+      setLoading(false); // Hide loading after API response
     }
   };
   const openModal = () => {
@@ -1431,6 +1460,11 @@ const FreeProfile = () => {
         className={styles.mainContent}
         style={{ backgroundColor: "#F5F5F5" }}
       >
+             {loading && (
+          <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+            <CircularProgress size={40} color="primary" />
+          </div>
+        )}
         <div className={styles.header}>
           {/* Header content */}
           <div className="flex justify-between w-full items-center px-[25px]">

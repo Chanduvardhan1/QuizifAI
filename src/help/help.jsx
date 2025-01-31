@@ -13,6 +13,7 @@ import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 import { useNavigate } from "react-router-dom";
 // import help from "../../src/assets/Images/dashboard/communication.png"
 import help from "../../public/chatbots1.png";
+import { CircularProgress } from "@mui/material";
 
 const HelpDesk = () => {
     const navigate = useNavigate();
@@ -38,6 +39,7 @@ const [error, setError] = useState(null);
 const orgId = localStorage.getItem('org_id');
 const [userId, setUserId] = useState(localStorage.getItem("user_id"));
 
+  const [loading, setLoading] = useState(false);
 
   const options = [
     "I'm facing an issue",
@@ -96,7 +98,7 @@ const [userId, setUserId] = useState(localStorage.getItem("user_id"));
   useEffect(() => {
     const fetchDropdowns = async () => {
       try {
-        setIsLoading(true);
+        setLoading(true); 
         const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
 
         if (!authToken) {
@@ -131,7 +133,7 @@ const [userId, setUserId] = useState(localStorage.getItem("user_id"));
       } catch (err) {
         setError(err.message);
       } finally {
-        setIsLoading(false);
+        setLoading(false); // Hide loading after API response
       }
     };
 
@@ -178,7 +180,7 @@ const [userId, setUserId] = useState(localStorage.getItem("user_id"));
     }
   
     try {
-      setIsLoading(true);
+      setLoading(true); 
       const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
   
       if (!authToken) {
@@ -223,7 +225,7 @@ const [userId, setUserId] = useState(localStorage.getItem("user_id"));
         { sender: 'assistant', text: 'Sorry, there was an error creating your ticket. Please try again.' },
       ]);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
   
@@ -345,7 +347,11 @@ const handleMytickets = ()=> {
         <Navigation/>
    
         <ToastContainer/>
-
+  {loading && (
+  <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+    <CircularProgress size={40} color="primary" />
+  </div>
+)}
         <div className="flex flex-col  flex-1 p-4 pt-12 gap-2">
            <div className=" absolute top-3 right-3 cursor-pointer">
                     <img

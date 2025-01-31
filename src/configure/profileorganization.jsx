@@ -18,6 +18,7 @@ import camera1 from "../../src/assets/Images/dashboard/edit.png"
 import search from "../assets/Images/images/dashboard/Search.png";
 import x from "../../src/assets/Images/quiz-type/cross-button.png"
 import close from "../../src/assets/Images/images/dashboard/cancel.png"
+import { CircularProgress } from "@mui/material";
 
 const profileorganization = () => {
   const [categories, setCategories] = useState([]);
@@ -55,6 +56,7 @@ const profileorganization = () => {
   const [username, setUsername] = useState("");
   const [adminname, setAdminname] = useState('');
   const [adminemail, setAdminemail] = useState('');
+  const [loading1, setLoading1] = useState(false);
 
   useEffect(() => {
     const storedUsername = localStorage.getItem("username");
@@ -88,6 +90,8 @@ const handlePostalCodeChange = (e) => {
 };
 const fetchDetailsByPincode = async (pincode) => {
   try {
+      setLoading1(true); // Stop loading after API call
+    
     const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
 
     if (!authToken) {
@@ -117,6 +121,8 @@ const fetchDetailsByPincode = async (pincode) => {
     }
   } catch (error) {
     console.error("Error fetching details by pincode", error);
+  }finally {
+    setLoading1(false); // Stop loading after API call
   }
 };
 
@@ -212,6 +218,7 @@ console.log('email id 1:',email)
 
 const fetchOrganizationDetails = async () => {
   try {
+    setLoading1(true); 
     const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
 
     if (!authToken) {
@@ -270,6 +277,8 @@ const fetchOrganizationDetails = async () => {
   }  catch (error) {
     console.error('Fetch Error:', error);
     alert('An error occurred while fetching data');
+  }finally {
+    setLoading1(false); // Stop loading after API call
   }
 };
 
@@ -326,6 +335,7 @@ const handleSubmit = async (e) => {
   };
 
   try {
+    setLoading1(true); 
     const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
 
   if (!authToken) {
@@ -358,6 +368,8 @@ const handleSubmit = async (e) => {
     setModalMessage('Failed to add organization profile. Please try again.');
     setIsError(true);
     setIsModalVisible(true);
+  }finally {
+    setLoading1(false); // Stop loading after API call
   }
 };
 
@@ -377,6 +389,8 @@ const [selectedOrgTypeId, setSelectedOrgTypeId] = useState(null);
 useEffect(() => {
   const fetchOrgTypes = async () => {
     try {
+        setLoading1(true); // Stop loading after API call
+     
       const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
 
       if (!authToken) {
@@ -400,6 +414,8 @@ useEffect(() => {
       }
     } catch (error) {
       console.error('Error fetching organization types:', error);
+    }finally {
+      setLoading1(false); // Stop loading after API call
     }
   };
 
@@ -423,6 +439,7 @@ const handleSelectChange = (event) => {
 
     const fetchProfileImage = async () => {
       try {
+        setLoading1(true);
         const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
               if (!authToken) {
                 console.error("No authentication token found. Please log in again.");
@@ -460,6 +477,7 @@ const handleSelectChange = (event) => {
       formData.append('file', file);
     
       try {
+        setLoading1(true);
         const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
 
         if (!authToken) {
@@ -482,6 +500,8 @@ const handleSelectChange = (event) => {
         }
       } catch (error) {
         setError1('Error uploading image: ' + error.message);
+      }finally {
+        setLoading1(false); // Stop loading after API call
       }
     };
     
@@ -504,6 +524,7 @@ const handleSelectChange = (event) => {
 
     const deleteImage = async () => {
       try {
+        setLoading1(true);
         const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
               if (!authToken) {
                 console.error("No authentication token found. Please log in again.");
@@ -527,6 +548,8 @@ const handleSelectChange = (event) => {
         }
       } catch (error) {
         setError1('Error deleting image: ' + error.message);
+      }finally {
+        setLoading1(false); // Stop loading after API call
       }
     };
     const openModal = () => {
@@ -564,6 +587,11 @@ const handleSelectChange = (event) => {
     <div className='flex w-full'>
     <Navigation/> 
     <div className='w-full p-5 bg-[#F5F5F5]'>
+       {loading1 && (
+        <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+          <CircularProgress size={40} color="primary" />
+        </div>
+      )}
     <div onClick={handleBack} className=" absolute top-5 right-5 cursor-pointer">
           <img src={close} alt="" className="w-[25px] h-[25px]" />
         </div>

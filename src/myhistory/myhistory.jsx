@@ -518,7 +518,7 @@ const handleBack = () => {
                       onClick={() =>
                         leaderboard(quiz.quiz_id, quiz.quiz_level_attempt_id)
                       }
-                      className="cursor-pointer py-2 px-2 border-b text-center text-nowrap"
+                      className="cursor-pointer py-2 px-2 border-b text-left text-nowrap"
                     >
                       {quiz.month}
                     </td>

@@ -8,6 +8,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
 import close from "../../src/assets/Images/images/dashboard/cancel.png"
 import editicon from "../../src/assets/Images/quiz-type/edit.png"
+import { CircularProgress } from "@mui/material";
 
 
 
@@ -17,6 +18,7 @@ function usersgroup() {
     const [newPasswordVisible, setNewPasswordVisible] = useState(false);
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
     const [showNewPasswords, setShowNewPasswords] = useState(false);
+  const [loading1, setLoading1] = useState(false);
 
     const navigate = useNavigate();
     const userId = localStorage.getItem("user_id");

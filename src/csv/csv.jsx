@@ -13,6 +13,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 // import ToggleButton from 'react-toggle-button'
 import { FaSyncAlt } from 'react-icons/fa';
+import { CircularProgress } from "@mui/material";
 
 // Navbar-icons
 import QuizifAilogo from "../assets/Images/quiz-type/Quizifai 1.png";
@@ -262,6 +263,7 @@ const userRole = localStorage.getItem('user_role');
 const FormattedDate = `${currentDate.getDate().toString().padStart(2, '0')}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getFullYear()}`;
   const [edit,setEdit] = useState(false)
   const orgId = localStorage.getItem('org_id'); // Check for orgId in localStorage
+  const [loading, setLoading] = useState(false);
 
 const [editableFields, setEditableFields] = useState({
     hallTicket: false,
@@ -891,6 +893,7 @@ const handleComplexquestions = (event) => {
       //   setIsSubmitting(false);
       //   return;
       // }
+      setLoading(true); 
       setIsSubmitting(true);
       const response = await fetch(
         `https://dev.quizifai.com:8010/crt_qz_from_exl_csv`,
@@ -984,6 +987,8 @@ const handleComplexquestions = (event) => {
     } catch (error) {
       console.error("Type-Quiz failed:", error);
       setErrorMessage("An error occurred while choosing the type of the quiz");
+    }finally {
+      setLoading(false); // Hide loading after API response
     }
   };
 
@@ -2698,7 +2703,11 @@ const handleback =() =>{
          <>
         {/* {showRegistrationSuccess && ( */}
           <main className="w-max-auto bg-white p-[10px] mt-[10px]">
-          
+             {loading && (
+            <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+              <CircularProgress size={40} color="primary" />
+            </div>
+          )}
             <div className="w-full">
               <h1 className="font-Poppins font-bold text-[30px] leading-[45px] text-orange-400">
                 Create / Edit your Quiz

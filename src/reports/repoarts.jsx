@@ -40,6 +40,53 @@ import status from "../../src/assets/Images/dashboard/status (1).png"
 
 import { MdOutlineCancel } from "react-icons/md";
 
+const reportsData = [
+  {
+    image:myHistoryIcon,
+      category: 'My Reports',
+      reports: ['My History', 'Global Score leaderboard']
+  },
+  {
+    image:status,
+      category: 'Quiz Master Reports',
+      reports: ['Quiz Status Detail', 'Quiz Status Summary']
+  },
+  {
+    image:status,
+      category: 'Quiz Admin Reports',
+      reports: [
+          'Quiz Status Detail',
+          'Quiz Status Summary',
+          'Class-Wise Quiz Performance Summary',
+          'Course-Wise Quiz Analysis',
+          'Section-Wise Comparison'
+      ]
+  },
+  {
+    image:status,
+      category: 'Organization Reports',
+      reports: [
+          'Organization-Wide Quiz Performance Summary',
+          'Department/Class-Wise Quiz Analysis',
+          'Quiz Master Performance Across Organization',
+          'Organization-Wide Top Scorers',
+          'Organization-Wide Quiz Trends',
+          'Organization-Wide Low Performers'
+      ]
+  },
+  {
+    image:status,
+      category: 'Super Admin Reports',
+      reports: [
+          'Organization Overview',
+          'Super Admin Metrics',
+          'User List Across Organizations',
+          'Organization-Wide Quiz Summary',
+          'Subscription Summary'
+      ]
+  }
+];
+
 
 const repoarts = () => {
       const [userId, setUserId] = useState(localStorage.getItem("user_id"));
@@ -80,6 +127,29 @@ const repoarts = () => {
         console.error('Error logging out:', error);
       });
   };
+//----------------------** navigaite other pages**------------//
+    const [isModalOpen3, setIsModalOpen3] = useState(false);
+    const closeModal3 = () => {
+      setIsModalOpen3(false);
+    };
+
+  const userRole = localStorage.getItem("user_role");
+  const orgId = localStorage.getItem("org_id");
+
+  const allowedRoles1 = ["Quiz Master","Admin","Super Admin"];
+
+  const handleRestrictedClick3 = (navigateTo) => {
+    // Check if the user role is "Quiz Master" and orgId exists
+    if (allowedRoles1.includes(userRole) && orgId) {
+      navigate(navigateTo); // Allow navigation
+    } else {
+      setIsModalOpen3(true); // Show modal for restricted access
+    }
+  };
+
+  const handleGlobalLeaderboard = () => handleRestrictedClick3("/leaderboardall");
+
+//----------------------** navigaite other pages**------------//
 
 const  handleGlobalLeaderboard1 =() => {
     navigate('/globalleaderboard');
@@ -88,9 +158,9 @@ const  handleGlobalLeaderboard1 =() => {
 const  handleMyHistory =() => {
     navigate('/myhistory');
 }
-const  handleGlobalLeaderboard =() => {
-    navigate('/leaderboardall');
-}
+// const  handleGlobalLeaderboard =() => {
+//     navigate('/leaderboardall');
+// }
   const [username, setUsername] = useState("");
   
  useEffect(() => {
@@ -99,7 +169,9 @@ const  handleGlobalLeaderboard =() => {
       setUsername(storedUsername);
     }
   }, []);
-  
+  const handleReportClick = (path) => {
+    navigate(path); // Navigate to the selected report page
+};
     return (
         <>
           <div className="flex">
@@ -122,50 +194,63 @@ const  handleGlobalLeaderboard =() => {
             {/* <p className="text-[#002366] text-[14px]">Logout</p> */}
             </div>
           </div>
-    <div className="flex gap-5 h-[80%]">
-
-    
-    <div className="flex flex-col p-5 gap-2 shadow-md justify-start items-center w-[25%]  bg-white">
-        <div>
-            <img src={global1} alt="" className="w-[50px] h-[50px]" />
+          <div className="flex flex-wrap gap-4 justify-center p-5">
+      {reportsData.map((categoryData, index) => (
+        <div
+          key={index}
+          className="flex flex-col p-5 gap-2 shadow-md justify-start items-start w-[25%] bg-white"
+        >
+          <div>
+            <img src={categoryData.image} alt="Report Icon" className="w-[40px] h-[40px]" />
+          </div>
+          <div className="text-[14px] font-semibold text-[#EF5130]">
+            <h1 className="text-[14px]">{categoryData.category}</h1>
+          </div>
+          {categoryData.reports.map((reportItem, index) => (
+            <p
+              key={index}
+              className={` text-[11px] font-semibold ${
+                ["Quiz Status Detail"].includes(
+                  reportItem
+                ) && categoryData.category === "Quiz Master Reports"
+                  ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
+                  : ["My Reports"].includes(
+                      categoryData.category
+                    )
+                  ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
+                  : "text-gray-500"
+              }`}
+              onClick={
+                reportItem === "My History"
+                  ? handleMyHistory
+                  : reportItem === "Global Score leaderboard"
+                  ? handleGlobalLeaderboard1
+                  : reportItem === "Quiz Status Detail"
+                  ? handleGlobalLeaderboard
+                  :null}
+            >
+              {reportItem}
+            </p>
+          ))}
         </div>
-        <div className=" text-[16px] font-semibold text-[#EF5130]">
-            <h1 className="text-[16px]">
-Global Leaderboard Reports
-            </h1>
-        </div>
-        <div onClick={handleGlobalLeaderboard1}>
-            <p className="text-[#00008b] cursor-pointer">Global Leaderboard</p>
-        </div>
-    </div>
-    <div className="flex flex-col p-5 gap-2 shadow-md justify-start items-center w-[25%]  bg-white">
-        <div>
-            <img src={myHistoryIcon} alt="" className="w-[50px] h-[50px]" />
-        </div>
-        <div className=" text-[16px] font-semibold text-[#EF5130]">
-            <h1 className="text-[16px]">
-My History Reports
-            </h1>
-        </div>
-        <div onClick={handleMyHistory}>
-            <p className="text-[#00008b] cursor-pointer">My History</p>
-        </div>
-    </div>
-    <div className="flex flex-col p-5 gap-2 shadow-md justify-start items-center w-[25%]  bg-white">
-        <div>
-            <img src={status} alt="" className="w-[50px] h-[50px]" />
-        </div>
-        <div className=" text-[16px] font-semibold text-[#EF5130]">
-            <h1 className="text-[16px]">
-            Quiz Status Reports
-            </h1>
-        </div>
-        <div onClick={handleGlobalLeaderboard}>
-            <p className="text-[#00008b] cursor-pointer">Quiz Status Report</p>
-        </div>
+      ))}
     </div>
 </div>
-</div>
+{isModalOpen3 && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+            <p className="text-lg font-semibold mb-4">
+            You must be a Quiz Master and belong to an organization to access this feature.
+            </p>
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              onClick={closeModal3}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
 </div>
         </>
    

@@ -40,82 +40,82 @@ const Navigation = () => {
   const navigate = useNavigate();
 
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login'); // Redirect to login if not authenticated
-      return;
-    }
-    const fetchQuizData = async () => {
-      console.log("User ID:", userId);
+  // useEffect(() => {
+  //   if (!isAuthenticated) {
+  //     navigate('/login'); // Redirect to login if not authenticated
+  //     return;
+  //   }
+  //   const fetchQuizData = async () => {
+  //     console.log("User ID:", userId);
 
-      try {
+  //     try {
 
-        const response = await fetch(
-          `https://dev.quizifai.com:8010/dashboard`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${authToken}`,
-            },
-            body: JSON.stringify({
-              user_id: userId
-            }),
-          }
-        );
+  //       const response = await fetch(
+  //         `https://dev.quizifai.com:8010/dashboard`,
+  //         {
+  //           method: "POST",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             "Authorization": `Bearer ${authToken}`,
+  //           },
+  //           body: JSON.stringify({
+  //             user_id: userId
+  //           }),
+  //         }
+  //       );
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const data = await response.json();
-        console.log("Data:", data);
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch data");
+  //       }
+  //       const data = await response.json();
+  //       console.log("Data:", data);
 
-        const auditDetails = data.data[0].audit_details;
-        if (auditDetails) {
-          // setCity(auditDetails.location_name || "");
-          setCountry(auditDetails.country_name || "");
-          // setGlobalRank(auditDetails.global_score_rank || "");
-          // setGlobalscore(auditDetails.global_score || "");
-          setRegisteredOn(auditDetails.created_date || "");
-          setLastLogin(auditDetails.last_login_timestamp || "");
-          setPasswordChanged(auditDetails.user_password_change_date || "");
+  //       const auditDetails = data.data[0].audit_details;
+  //       if (auditDetails) {
+  //         // setCity(auditDetails.location_name || "");
+  //         setCountry(auditDetails.country_name || "");
+  //         // setGlobalRank(auditDetails.global_score_rank || "");
+  //         // setGlobalscore(auditDetails.global_score || "");
+  //         setRegisteredOn(auditDetails.created_date || "");
+  //         setLastLogin(auditDetails.last_login_timestamp || "");
+  //         setPasswordChanged(auditDetails.user_password_change_date || "");
 
-          const userDetails = auditDetails;
-          setUserName(userDetails.full_name);
+  //         const userDetails = auditDetails;
+  //         setUserName(userDetails.full_name);
 
-          const UserProfileDetails = data.data[0].user_profile_details;
-          setDistrict(UserProfileDetails.district_name);
-          setOccupation(UserProfileDetails.occupation_name);
-          setCity(UserProfileDetails.location_name);
-          setOtherOccupation(UserProfileDetails.other_occupation_name);
+  //         const UserProfileDetails = data.data[0].user_profile_details;
+  //         setDistrict(UserProfileDetails.district_name);
+  //         setOccupation(UserProfileDetails.occupation_name);
+  //         setCity(UserProfileDetails.location_name);
+  //         setOtherOccupation(UserProfileDetails.other_occupation_name);
 
-          // const subscriptionDetails = auditDetails.subscription_details && auditDetails.subscription_details[0];
-        } else {
-          console.error("No user details found.");
-        }
+  //         // const subscriptionDetails = auditDetails.subscription_details && auditDetails.subscription_details[0];
+  //       } else {
+  //         console.error("No user details found.");
+  //       }
 
-        const usermetrics = data.data[0].user_metrics;
-        if (usermetrics) {
-          setTotalQuizzes(usermetrics.countofquizes || 0);
-          setTotalMinutes(usermetrics.total_minutes || 0);
-          setAverageScorePercentage(usermetrics.average_total_percentage || 0);
-          // setGlobalRank(usermetrics.global_score_rank || "");
-        } else {
-          console.error("No user metrics found.");
-        }
-      } catch (error) {
-        console.error("Error fetching quiz data:", error);
-      }
-    };
+  //       const usermetrics = data.data[0].user_metrics;
+  //       if (usermetrics) {
+  //         setTotalQuizzes(usermetrics.countofquizes || 0);
+  //         setTotalMinutes(usermetrics.total_minutes || 0);
+  //         setAverageScorePercentage(usermetrics.average_total_percentage || 0);
+  //         // setGlobalRank(usermetrics.global_score_rank || "");
+  //       } else {
+  //         console.error("No user metrics found.");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching quiz data:", error);
+  //     }
+  //   };
 
-    fetchQuizData();
-  }, [userId, authToken, isAuthenticated, navigate]);
+  //   fetchQuizData();
+  // }, [userId, authToken, isAuthenticated, navigate]);
 
-  useEffect(() => {
-    console.log("Registered On:", registeredOn);
-    console.log("Last Login:", lastLogin);
-    console.log("Password Changed:", passwordChanged);
-  }, [registeredOn, lastLogin, passwordChanged]);
+  // useEffect(() => {
+  //   console.log("Registered On:", registeredOn);
+  //   console.log("Last Login:", lastLogin);
+  //   console.log("Password Changed:", passwordChanged);
+  // }, [registeredOn, lastLogin, passwordChanged]);
 
 
   const handleNavigation = (page) => {

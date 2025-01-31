@@ -31,6 +31,8 @@ const configure = () => {
   const [isModalOpen1, setIsModalOpen1] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [isModalOpen3, setIsModalOpen3] = useState(false);
+  const [isModalOpen4, setIsModalOpen4] = useState(false);
+
   const orgId = localStorage.getItem("org_id");
 
   const {authToken, logout } = useContext(AuthContext);
@@ -48,6 +50,7 @@ const configure = () => {
   const allowedRoles1 = ["Quiz Master","Admin","Super Admin"];
   const allowedRoles2 = ["Super Admin"];
   const allowedRoles3 = ["Quiz Master","Admin","Super Admin","Quiz User"];
+  const allowedRoles4 = ["Quiz Master"];
 
   const handleRestrictedClick = (navigateTo) => {
     if (allowedRoles.includes(userRole)) {
@@ -88,6 +91,13 @@ const configure = () => {
       setIsModalOpen2(true);
     }
   };
+  const handleRestrictedClick4 = (navigateTo) => {
+    if (allowedRoles4.includes(userRole)) {
+      navigate(navigateTo);
+    } else {
+      setIsModalOpen4(true);
+    }
+  };
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -99,6 +109,9 @@ const configure = () => {
   };
   const closeModal3 = () => {
     setIsModalOpen3(false);
+  };
+  const closeModal4 = () => {
+    setIsModalOpen4(false);
   };
 
   const handleCategoriesClick = () => handleRestrictedClick("/category");
@@ -115,6 +128,7 @@ const configure = () => {
   const handleSettings = () => handleRestrictedClick("/Profilesettings");
   const handleQuestionBank = () => handleRestrictedClick("/questionbank");
   const handleExpiryQuiz = () => handleRestrictedClick1("/Expiryquiz");
+  
   const handleUserList = () => handleRestrictedClick("/userslist");
   const handleInstitution = ()=>  handleRestrictedClick("/education");
   const handleGlobalLeaderboard = () => handleRestrictedClick1("/leaderboardall");
@@ -126,6 +140,8 @@ const configure = () => {
   const handleMyHistory=() => handleRestrictedClickAll('/myhistory')
   const handleDisableQuizs = () => handleRestrictedClick1("/Disablequiz");
   const handleAssignQuiz = () => handleRestrictedClick3("/multiassignquiz");
+
+  const handleQuizCreatedbyQuizMaste = () => handleRestrictedClick4("/Qizmasterquizess");
 
   const handleHelp = () =>{
     navigate("/HelpDesk")
@@ -217,7 +233,7 @@ const configure = () => {
       image:Q,
       title: "Quizzes",
       content:
-        "Question Bank, Quiz Print Templates, Assign Quiz, Disable Quizs, Expiry Quiz",
+        "Question Bank, Quiz Print Templates, Assign Quiz, Disable Quizs, Expiry Quiz, Quiz Created by Quiz Master",
     },
     {
       id: 7,
@@ -397,6 +413,21 @@ const configure = () => {
           </div>
         </div>
       )}
+       {isModalOpen4 && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+            <p className="text-lg font-semibold mb-4">
+            You do not have permission to access this page. Only for Quiz Master.
+            </p>
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              onClick={closeModal4}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
           {/* <div className={styles.headerRight}>
           <div className="w-[99px] h-[41px] absolute mr-[170px] -mt-2 rounded-[10px] bg-[#f3d0d5]">
             <div className="flex">
@@ -534,6 +565,8 @@ const configure = () => {
                       ? handleInstitution
                       : contentItem === "Expiry Quiz"
                       ? handleExpiryQuiz
+                      : contentItem === "Quiz Created by Quiz Master"
+                      ? handleQuizCreatedbyQuizMaste
                       : contentItem === "Disable Quizs"
                       ? handleDisableQuizs
                       : contentItem === "Assign Quiz"

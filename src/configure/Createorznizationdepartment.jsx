@@ -4,6 +4,7 @@ import Select from 'react-select';
 import { useNavigate } from "react-router-dom";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch'
+import { CircularProgress } from "@mui/material";
 
 
 //-------------**importing  navbar**-------------//
@@ -64,6 +65,7 @@ const creatorganizationdeparment = () => {
 
   const userRole = localStorage.getItem("user_role");
   const orgId = localStorage.getItem('org_id');
+  const [loading1, setLoading1] = useState(false); // Loading state
 
   const [username1, setUsername1] = useState("");
 
@@ -263,6 +265,7 @@ const [edit, setedit] = useState(false);
     // Fetch users from the API
     const fetchUsers = async () => {
       try {
+        setLoading1(true);
         const authToken = localStorage.getItem("authToken");
   
         if (!authToken) {
@@ -284,6 +287,8 @@ const [edit, setedit] = useState(false);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
+      }finally {
+        setLoading1(false); // Stop loading after API call
       }
     };
     useEffect(() => {
@@ -337,7 +342,6 @@ const [edit, setedit] = useState(false);
 
 const handleSubmit2 = (e) => {
     e.preventDefault();
-  
     const formData = {
       first_name: firstName1,
       middle_name: middleName1,
@@ -451,7 +455,7 @@ const reset =()=> {
 
 const handleSubmit1 = async (e) => {
     e.preventDefault();
-  
+    
     // Input validation
     if (!userId || userId.trim() === "") {
       setResponseMessage1("User ID is required.");
@@ -484,6 +488,7 @@ const handleSubmit1 = async (e) => {
     };
   
     try {
+      setLoading1(true);
       const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
   
       if (!authToken) {
@@ -514,6 +519,8 @@ const handleSubmit1 = async (e) => {
     } catch (error) {
       console.error('Error:', error);
       setResponseMessage1("Something went wrong. Please try again.");
+    }finally {
+      setLoading1(false); // Stop loading after API call
     }
   };
   
@@ -563,6 +570,8 @@ const handleEdit = (dept) => {
 
 const handleSubmit = async () => {
     try {
+      setLoading1(true);
+
         const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
   
       if (!authToken) {
@@ -603,6 +612,8 @@ const handleSubmit = async () => {
     } catch (error) {
       console.error('Error submitting department:', error.message);
       setResponseMessage1('An error occurred while submitting the department.');
+    }finally {
+      setLoading1(false); // Stop loading after API call
     }
   };
 
@@ -635,6 +646,7 @@ const handleDelete = (departmentId) => {
 const deleteDepartment = async (departmentId) => {
   
     try {
+      setLoading1(true);
         const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
   
       if (!authToken) {
@@ -660,6 +672,8 @@ const deleteDepartment = async (departmentId) => {
     } catch (error) {
       console.error("Error deleting department:", error);
       setResponseMessage1("Failed to delete the department.");
+    }finally {
+      setLoading1(false); // Stop loading after API call
     }
   };
   
@@ -674,6 +688,7 @@ const [departments, setDepartments] = useState([]);
 
 const fetchDepartments = async () => {
     try {
+      setLoading1(true);
       const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
 
       if (!authToken) {
@@ -700,6 +715,9 @@ const fetchDepartments = async () => {
     } catch (err) {
       setError("Failed to fetch departments. Please try again.");
       setLoading(false);
+    }
+    finally {
+      setLoading1(false); // Stop loading after API call
     }
   };
 
@@ -773,6 +791,7 @@ useEffect(() => {
 useEffect(() => {
   const fetchUsers = async () => {
     try {
+      setLoading1(true);
       const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
 
       if (!authToken) {
@@ -829,6 +848,8 @@ useEffect(() => {
       }
     } catch (error) {
       console.error('Error fetching users:', error.message);
+    }finally {
+      setLoading1(false); // Stop loading after API call
     }
   };
 
@@ -936,7 +957,11 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
       <div className="flex w-full font-Poppins">
         <Navigation />
         <div className="flex w-full flex-col p-5 bg-[#f5f5f5]">
-      
+         {loading1 && (
+        <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+          <CircularProgress size={40} color="primary" />
+        </div>
+      )}
         <div onClick={handleBack} className=" absolute top-3 right-3 cursor-pointer">
           <img src={close} alt="" className="w-[25px] h-[25px]" />
         </div>

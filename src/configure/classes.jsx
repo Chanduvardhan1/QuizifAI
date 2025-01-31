@@ -13,6 +13,7 @@ import Line from "../../src/assets/Images/Assets/Line.png"
 import { RiDeleteBinLine } from "react-icons/ri";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CircularProgress } from "@mui/material";
 
 const classes = () => {
   const [categories, setCategories] = useState([]);
@@ -56,6 +57,9 @@ const classes = () => {
   const [sectionCode, setSectionCode] = useState('');
   const [createdBy, setCreatedBy] = useState('');
   const [updatedBy, setUpdatedBy] = useState('');
+  const [loading, setLoading] = useState(false);
+
+
 
   const closeModal = () => {
     setShowModal(false);
@@ -72,6 +76,7 @@ const classes = () => {
   const handleAddClass = async () => {
 
     try {
+
       const authToken = localStorage.getItem("authToken");
   
       if (!authToken) {
@@ -109,7 +114,7 @@ const classes = () => {
     toast.error("Section Name is required.");
     return;
   }
-
+setLoading(true); 
       const response = await fetch("https://dev.quizifai.com:8010/add_class_and_section/", {
         method: "POST",
         headers: {
@@ -166,6 +171,8 @@ const classes = () => {
       setModalMessage("An error occurred while adding the class.");
       setIsError(true);
       setShowModal(true);
+    }finally {
+      setLoading(false); // Hide loading after API response
     }
   };
   
@@ -215,6 +222,7 @@ const classes = () => {
         toast.error("Section Id is required.");
         return;
       }
+      setLoading(true); 
       const response = await fetch('https://dev.quizifai.com:8010/edit_class_and_section/', {
         method: 'POST',
         headers: {
@@ -278,6 +286,8 @@ const classes = () => {
       setIsError(true);
       setShowModal(true);
       // Handle error (e.g., show an error message)
+    }finally {
+      setLoading(false); // Hide loading after API response
     }
   };
   const handleSubmit = () => {
@@ -298,6 +308,7 @@ const classes = () => {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
+        setLoading(true); 
         const authToken = localStorage.getItem("authToken"); // Replace with actual token retrieval logic
 
         if (!authToken) {
@@ -326,6 +337,8 @@ const classes = () => {
         }
       } catch (error) {
         setError("An error occurred while fetching departments.");
+      }finally {
+        setLoading(false); // Hide loading after API response
       }
     };
 
@@ -344,6 +357,7 @@ const classes = () => {
 
   const fetchCourses = async () => {
     try {
+      setLoading(true); 
       const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
   
       if (!authToken) {
@@ -368,6 +382,8 @@ const classes = () => {
       }
     } catch (error) {
       console.error('Error fetching data:', error);
+    }finally {
+      setLoading(false); // Hide loading after API response
     }
   };
 
@@ -439,7 +455,11 @@ const classes = () => {
     <div className='flex w-full flex-col gap-2'>
       <ToastContainer/>
     <div className='flex justify-end pt-2'>
-    
+      {loading && (
+      <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+        <CircularProgress size={40} color="primary" />
+      </div>
+    )}
         <div className="flex items-center pr-[20px] py-1 rounded-[10px] bg-[#F7E0E3] cursor-pointer" onClick={toggleNavbar}>
     <img className="w-[20px] h-[20px] ml-2" src={Plus} alt="Plus Icon" />
     <span className="hover:underline underline-offset-2 font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2">

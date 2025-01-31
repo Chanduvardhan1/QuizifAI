@@ -173,9 +173,7 @@ const qizmasterquizess = () => {
     }
   };
 
-  const toggleOptions = () => {
-    setIsOptionsVisible(!isOptionsVisible);
-  };
+ 
   const handleDisableQuiz = async (quizItem) => {
     try {
       const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
@@ -225,52 +223,7 @@ const qizmasterquizess = () => {
     }
   };
   
-  // const handleDisableQuiz = async () => {
-  //   try {
-  //     const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
 
-  //     if (!authToken) {
-  //       throw new Error("No authentication token found");
-  //     }
-
-  //     const headers = {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${authToken}`,
-  //     };
-
-  //     const body = JSON.stringify({
-  //       user_id: userId,
-  //       quiz_id: quizId,
-  //     });
-
-  //     const response = await fetch(
-  //       "https://dev.quizifai.com:8010/disable_quiz/",
-  //       {
-  //         method: "POST",
-  //         headers,
-  //         body,
-  //       }
-  //     );
-
-  //     if (response.ok) {
-  //       const result = await response.json();
-  //       console.log("Disable response:", result);
-  //     //   setModalIsOpen1(false);
-  //     // } else {
-  //     //   console.error("Failed to disable quiz");
-  //     // }
-  //     if (result.response === "fail") {
-  //       // Show popup with message
-  //       setPopupMessage(result.response_message);
-  //       setShowPopup(true);
-  //     } else {
-  //       setModalIsOpen1(false);
-  //     }
-  //   }
-  //   } catch (error) {
-  //     console.error("Error during disable operation:", error);
-  //   }
-  // };
   useEffect(() => {
     if (isDisableConfirmed) {
       handleDisableQuiz();
@@ -332,12 +285,7 @@ const qizmasterquizess = () => {
       handleDeleteQuiz();
     }
   }, [isDeleteConfirmed]);
-  useEffect(() => {
-    // Example: Checking authentication state on component mount
-    console.log("User is authenticated:", isAuthenticated);
-    // You might not need to directly use setIsAuthenticated here
-    // It's typically handled within the AuthContext
-  }, [isAuthenticated]);
+ 
 
   useEffect(() => {
     const handleWindowClose = () => {
@@ -363,6 +311,8 @@ const qizmasterquizess = () => {
     };
   }, []);
 
+    const [loading1, setLoading1] = useState(true); // Loading state
+  
   
   useEffect(() => {
     if (!isAuthenticated) {
@@ -398,53 +348,16 @@ const qizmasterquizess = () => {
       } catch (err) {
         console.error("Error fetching quizzes:", err);
         setError("Failed to fetch quizzes. Please try again later.");
+      }finally {
+        setLoading1(false); // Stop loading after API call
       }
     };
 
     fetchQuizzes();
-  }, [authToken, isAuthenticated, navigate, userId]);
+  }, [authToken, isAuthenticated, userId]);
 
 
-  const handleStartQuiz = (quizId, activeFlag) => {
-    if (activeFlag === "i") {
-      toast.error("This quiz is inactive and cannot be started.");
-      return;
-    }
-    // navigate(`/quizaccess/${quizId}`);
-    localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
-    navigate(`/quizaccess`);
-  };
-  // const handleStartQuiz1 = (quizId, attemptsCount, retakeFlag) => {
-  //   if (attemptsCount >= retakeFlag) {
-  //     toast.error(
-  //       "You have reached the maximum number of retake attempts for this quiz."
-  //     );
-  //   } else {
-  //     localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
-  //     navigate(`/quizaccess`);
-  //     setMessage(""); // Clear any previous messages
-  //   }
-  // };
-  const handleStartQuiz1 = (quizId, attemptsCount, retakeFlag, activeFlag) => {
-    // Check if the quiz is inactive
-    if (activeFlag === "i") {
-      toast.error("This quiz is inactive and cannot be started.");
-      return;
-    }
-  
-    // Check if the user has reached the maximum number of attempts
-    if (attemptsCount >= retakeFlag) {
-      toast.error(
-        "You have reached the maximum number of retake attempts for this quiz."
-      );
-      return;
-    }
-  
-    // Proceed with starting the quiz
-    localStorage.setItem("quiz_id", quizId); // Store quiz_id in local storage
-    navigate(`/quizaccess`);
-    setMessage(""); // Clear any previous messages
-  };
+
   
   const leaderboard = (
     quizId,
@@ -643,10 +556,49 @@ const qizmasterquizess = () => {
        <div onClick={handleBack} className=" absolute top-5 right-5 cursor-pointer">
                 <img src={close} alt="" className="w-[25px] h-[25px]" />
               </div>
-      <div className="w-full flex ">
-      {allquizzes.length > 0 ? (
-        <div className="w-full flex flex-wrap mx-auto gap-[22px] p-2 pt-12">
+              <div className=" mx-auto pl-2 ">
+              <div className="flex flex-wrap mx-auto gap-[10px] ml-[18px] pt-12">
+
+      {loading1
+          ? // Show Skeleton Loaders
+          [...Array(9)].map((_, index) => (
+            <div key={index} className="w-full max-w-[390px] h-[170px] bg-gray-200 p-4 animate-pulse rounded-lg shadow-lg">
+               <div className="flex">
+            <div>
+            <div  className="rounded-md w-[120px]  h-[140px] bg-gray-300 " />
+
+            </div>
+              <div className="ml-3 flex flex-col gap-2">
+                <div  className=" w-[170px]  h-[20px] bg-gray-300 rounded-sm" />
+                <div  className=" w-[230px]  h-[15px] bg-gray-300 rounded-sm" />
+                <div className="flex justify-between">
+                <div  className=" w-[90px]  h-[15px] bg-gray-300 rounded-sm" />
+                <div  className=" w-[90px]  h-[15px] bg-gray-300 rounded-sm" />
+
+                </div>
+                <div className="flex justify-between">
+                <div  className=" w-[90px]  h-[15px] bg-gray-300 rounded-sm" />
+                <div  className=" w-[90px]  h-[15px] bg-gray-300 rounded-sm" />
+
+                </div>
+                <div  className=" w-[80px]  h-[15px] bg-gray-300 rounded-sm" />
+                <div className="flex gap-1 justify-end">
+                <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" />
+
+                <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" />
+                <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" />
+
+                </div>
+              </div>
+            </div>
+            </div>
+          ))
+        : allquizzes.length > 0 ? (
+                <div className="w-full gap-[10px] flex flex-wrap mx-auto">
+
+
    { allquizzes.map((quizItem, index) => (
+
                   <div
                   key={index}
                   className={`
@@ -1063,7 +1015,6 @@ const qizmasterquizess = () => {
                           </div>
                         </div>
                       </div>
-            
               ))}
               </div>
             ) : (
@@ -1074,7 +1025,7 @@ const qizmasterquizess = () => {
               </div>
               )}
           </div>
-    
+          </div>
     </div>
   );
 };

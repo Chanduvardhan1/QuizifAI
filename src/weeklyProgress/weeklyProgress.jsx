@@ -141,18 +141,6 @@ const progressLabel = getProgressLabel(progress);
                 </span>
               </h1>
               <h1 className="text-[#002366] text-[14px]">
-              Score Performance :{" "}
-                <span className="text-[#FF6701] text-[12px]">
-                  {weekStats.score_performance}
-                </span>
-              </h1>
-              <h1 className="text-[#002366] text-[14px]">
-              Accuracy Rate :{" "}
-                <span className="text-[#FF6701] text-[12px]">
-                  {weekStats.accuracy_rate}
-                </span>
-              </h1>
-              <h1 className="text-[#002366] text-[14px]">
               Time Spent 
               <span className="ml-[2px]">:</span>{" "}
 
@@ -160,6 +148,15 @@ const progressLabel = getProgressLabel(progress);
                   {weekStats.total_quiz_time}
                 </span>
               </h1>
+              <h1 className="text-[#002366] text-[14px]">
+              Accuracy Rate 
+              <span className="text-[14px] font-[500] text-[#214082] ml-[29px] "> : </span>
+
+                <span className="text-[#FF6701] text-[12px]">
+                  {weekStats.accuracy_rate}
+                </span>
+              </h1>
+           
               {/* <h1 className="text-[#002366] text-[14px]">
                 Assigned Quizzes{" "}
                 <span className="ml-[21px]">:</span>{" "}
@@ -167,19 +164,27 @@ const progressLabel = getProgressLabel(progress);
                   {quizProgress.data.total_assigned_quizzes}
                 </span>
               </h1> */}
-              <h1 className="text-[#002366] text-[14px]">
+                 <h1 className="text-[#002366] text-[14px]">
+              Score Performance 
+              <span className="text-[14px] font-[500] text-[#214082]  "> : </span>
+
+                <span className="text-[#FF6701] text-[12px]">
+                  {weekStats.score_performance}
+                </span>
+              </h1>
+              {/* <h1 className="text-[#002366] text-[14px]">
               Quizzes Completed {" "}
-              <span className="ml-[2px]">:</span>{" "}
+              <span className="ml-[0px]">:</span>{" "}
               <span className="text-[#FF6701] text-[12px]">
                 {quizProgress.data.total_attempted_quizzes}/
                 {quizProgress.data.total_assigned_quizzes}
                 </span>
-              </h1>
+              </h1> */}
             </div>
           </div>
           <div className="flex flex-col items-center w-full mt-1 space-y-1">
             {/* Progress bar container */}
-            <div className="w-full max-w-lg bg-gray-200 h-2 rounded-lg relative">
+            {/* <div className="w-full max-w-lg bg-gray-200 h-2 rounded-lg relative">
               <div
                 className="h-2 rounded-lg"
                 style={{
@@ -189,7 +194,6 @@ const progressLabel = getProgressLabel(progress);
                 }}
               ></div>
             </div>
-            {/* Progress percentage and label */}
             <div className="text-center">
               <h1
                 className="text-[18px] font-bold"
@@ -203,7 +207,7 @@ const progressLabel = getProgressLabel(progress);
               >
                 {progressLabel}
               </h2>
-            </div>
+            </div> */}
           </div>
         </div>
       ) : (

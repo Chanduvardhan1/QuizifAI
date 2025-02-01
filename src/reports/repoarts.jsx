@@ -37,22 +37,33 @@ import { useNavigate } from "react-router-dom";
 import myHistoryIcon from "../../public/myhistory.png"
 import global1 from "../../src/assets/Images/dashboard/image (13).png";
 import status from "../../src/assets/Images/dashboard/status (1).png"
+import superadmin from "../../src/assets/Images/dashboard/image (21).1.webp";
+import admin from "../../src/assets/Images/dashboard/image (21).png";
+import organization from "../../src/assets/Images/dashboard/image (20).png";
+import Quizmaster from "../../src/assets/Images/dashboard/quizmaster.webp";
+import repoart from "../../src/assets/Images/dashboard/report.webp";
 
 import { MdOutlineCancel } from "react-icons/md";
 
 const reportsData = [
   {
-    image:myHistoryIcon,
+    image:repoart,
       category: 'My Reports',
+      color: "bg-[#c1e7e3]",  
+
       reports: ['My History', 'Global Score leaderboard']
   },
   {
-    image:status,
+    image:Quizmaster,
+    color: "bg-[#ceffe4]",  
+
       category: 'Quiz Master Reports',
       reports: ['Quiz Status Detail', 'Quiz Status Summary']
   },
   {
-    image:status,
+    image:admin,
+    color: "bg-[#ffe9ee]",  
+
       category: 'Quiz Admin Reports',
       reports: [
           'Quiz Status Detail',
@@ -63,7 +74,9 @@ const reportsData = [
       ]
   },
   {
-    image:status,
+    image:organization,
+    color: "bg-[#c1bbdd]",  
+
       category: 'Organization Reports',
       reports: [
           'Organization-Wide Quiz Performance Summary',
@@ -75,7 +88,9 @@ const reportsData = [
       ]
   },
   {
-    image:status,
+    image:superadmin,
+    color: "bg-[#c1e7e3]",  
+
       category: 'Super Admin Reports',
       reports: [
           'Organization Overview',
@@ -87,6 +102,13 @@ const reportsData = [
   }
 ];
 
+const categoryColors = {
+  "Quiz Master Reports": "bg-[#c1e7e3]",  
+  "User Reports": "bg-[#ceffe4]",  
+  "Performance Reports": "bg-[#ffe9ee]",  
+  "My Reports": "bg-[#c1bbdd]",  
+  "Default": "bg-gray-200" // Fallback color
+};
 
 const repoarts = () => {
       const [userId, setUserId] = useState(localStorage.getItem("user_id"));
@@ -194,18 +216,36 @@ const  handleMyHistory =() => {
             {/* <p className="text-[#002366] text-[14px]">Logout</p> */}
             </div>
           </div>
-          <div className="flex flex-wrap gap-4 justify-center p-5">
+          <div className="flex flex-wrap justify-left w-full gap-2 ">
       {reportsData.map((categoryData, index) => (
+        
         <div
           key={index}
-          className="flex flex-col p-5 gap-2 shadow-md justify-start items-start w-[25%] bg-white"
+          className="flex flex-col p-5 gap-2 justify-start items-start w-[25%]  "
+          >
+      <div   className={`flex cursor-pointer gap-2 justify-center w-full px-4 py-2 rounded-lg ${categoryData.color}`}
+      >
+        
+              
+        <img src={categoryData.image} alt="" className="w-6 h-6" />
+  
+        <button
+          className={`text-[#214082] 
+          `}
         >
-          <div>
+          {categoryData.category} 
+        </button>
+        </div>
+        <div
+         
+       className="flex flex-col p-5 gap-2 shadow-md justify-start items-start w-full h-full bg-white">
+
+          {/* <div>
             <img src={categoryData.image} alt="Report Icon" className="w-[40px] h-[40px]" />
           </div>
           <div className="text-[14px] font-semibold text-[#EF5130]">
             <h1 className="text-[14px]">{categoryData.category}</h1>
-          </div>
+          </div> */}
           {categoryData.reports.map((reportItem, index) => (
             <p
               key={index}
@@ -233,6 +273,7 @@ const  handleMyHistory =() => {
             </p>
           ))}
         </div>
+         </div>
       ))}
     </div>
 </div>

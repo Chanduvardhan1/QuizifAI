@@ -6,19 +6,19 @@ import Store from './Store.jsx';
 import './App.css';
 
     function App() {
-      useEffect(() => {
-        // Add an event listener to disable right-click
-        const disableRightClick = (e) => {
-            e.preventDefault();
-        };
+    //   useEffect(() => {
+    //     // Add an event listener to disable right-click
+    //     const disableRightClick = (e) => {
+    //         e.preventDefault();
+    //     };
 
-        document.addEventListener('contextmenu', disableRightClick);
+    //     document.addEventListener('contextmenu', disableRightClick);
 
-        // Clean up the event listener when the component unmounts
-        return () => {
-            document.removeEventListener('contextmenu', disableRightClick);
-        };
-    }, []);
+    //     // Clean up the event listener when the component unmounts
+    //     return () => {
+    //         document.removeEventListener('contextmenu', disableRightClick);
+    //     };
+    // }, []);
 
     useEffect(() => {
       const handleKeyDown = (event) => {

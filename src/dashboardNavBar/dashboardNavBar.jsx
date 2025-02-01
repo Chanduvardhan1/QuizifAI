@@ -225,8 +225,9 @@ import questionmark from "../assets/Images/images/dashboard/questionmark.png";
 import card from "../../src/assets/Images/dashboard/image (6).png"
 import profileIcon from "../../public/profilepage.png";
 import global1 from "../../src/assets/Images/dashboard/image (13).png";
-import myHistoryIcon from "../../public/myhistory.png"
+// import myHistoryIcon from "../../public/myhistory.png"
 import weekly from "../../src/assets/Images/dashboard/image (18).png";
+import myHistoryIcon from "../../src/assets/Images/dashboard/image (19).png";
 
 export default function dashboardNavBar() {
     // const [userData, setUserData] = useState({
@@ -723,21 +724,28 @@ const handlsubscription =()=> {
 
                 <div   onClick={handlemyhistory} className="flex flex-col cursor-pointer justify-start items-center relative  border shadow-lg rounded-sm py-2 bg-white">
                   <div className=" space-y-2 flex flex-col items-start justify-center pl-[10px]">
-                    <div className=" flex justify-center items-center text-center mt-2">
-                        <h3 className="text-[14px] font-[500] text-[#214082] ">Total Quizzes Attempted : </h3>
-                        <p className="text-[12px] font-bold text-orange-500 ml-[2px] mt-1"> {totalQuizzes}</p>
-                    </div>
-                    <div className=" flex justify-center items-center text-center my-4">
-                        <h3 className="text-[14px] font-[500] text-[#214082] ">Minutes : </h3>
+                  
+                    <div className=" flex justify-center items-center text-center ">
+                        <h3 className="text-[14px] font-[500] text-[#214082] ">Minutes </h3>
+                        <span className="text-[14px] font-[500] text-[#214082] ml-[79px] "> : </span>
                         <p className="text-[12px] font-bold text-orange-500 ml-[2px] mt-1"> {totalMinutes}</p>
                     </div>
                     <div className="flex justify-center items-center text-center">
-                        <h3 className="text-[14px] font-[500] text-[#214082] ">Average Score : </h3>
+                        <h3 className="text-[14px] font-[500] text-[#214082] ">Average Score</h3>
+                        <span className="text-[14px] font-[500] text-[#214082] ml-[42px]"> : </span>
                         <p className="text-[12px] font-bold text-orange-500 ml-[2px] mt-1"> {averageScorePercentage}%</p>
                     </div>
+                 
                     <div className=" flex justify-center items-center text-center my-4">
-                        <h3 className="text-[14px] font-[500] text-[#214082] ">Last Quiz Attempted : </h3>
+                        <h3 className="text-[14px] font-[500] text-[#214082] ">Last Quiz Attempted </h3>
+                        <span className="text-[14px] font-[500] text-[#214082] ml-[3px]"> : </span>
                         <p className="text-[12px] font-bold text-orange-500 ml-[2px] mt-1"> {lastquiz}</p>
+                    </div>
+                    <div className=" flex justify-center items-center text-center mt-2">
+                        <h3 className="text-[14px] font-[500] text-[#214082] ">Total Quizzes Attempted </h3>
+                        <span className="text-[14px] font-[500] text-[#214082] ml-[0px]"> : </span>
+
+                        <p className="text-[12px] font-bold text-orange-500 ml-[2px] mt-1"> {totalQuizzes}</p>
                     </div>
                     </div>
                 </div>
@@ -847,7 +855,7 @@ const handlsubscription =()=> {
                         </div>
                     </div>
                 </div>
-                <div   className="flex flex-col cursor-pointer items-center justify-center relative  border shadow-lg rounded-sm py-2 bg-white">
+                <div   className="flex flex-col cursor-pointer items-center justify-start relative  border shadow-lg rounded-sm py-2 bg-white">
            <ProgressIndicator />
            
         </div>

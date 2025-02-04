@@ -6,6 +6,8 @@ export default function SegmentedProgressIndicator() {
   const [quizProgress, setQuizProgress] = useState(null);
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
+  const orgId = localStorage.getItem('org_id');
+
   const navigate = useNavigate();
 
   const { isAuthenticated, authToken,logout } = useContext(AuthContext);
@@ -172,19 +174,24 @@ const progressLabel = getProgressLabel(progress);
                   {weekStats.score_performance}
                 </span>
               </h1>
-              {/* <h1 className="text-[#002366] text-[14px]">
+              {/* {orgId && (
+              <h1 className="text-[#002366] text-[14px]">
               Quizzes Completed {" "}
               <span className="ml-[0px]">:</span>{" "}
               <span className="text-[#FF6701] text-[12px]">
                 {quizProgress.data.total_attempted_quizzes}/
                 {quizProgress.data.total_assigned_quizzes}
                 </span>
-              </h1> */}
+              </h1>
+              )} */}
             </div>
           </div>
+          {/* {orgId && (
           <div className="flex flex-col items-center w-full mt-1 space-y-1">
-            {/* Progress bar container */}
-            {/* <div className="w-full max-w-lg bg-gray-200 h-2 rounded-lg relative">
+          
+
+          
+            <div className="w-full max-w-lg bg-gray-200 h-2 rounded-lg relative">
               <div
                 className="h-2 rounded-lg"
                 style={{
@@ -207,8 +214,11 @@ const progressLabel = getProgressLabel(progress);
               >
                 {progressLabel}
               </h2>
-            </div> */}
-          </div>
+            </div>
+            </div>
+
+)} */}
+         
         </div>
       ) : (
         <p>{error || "No quiz progress data available."}</p>

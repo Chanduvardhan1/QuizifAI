@@ -17,11 +17,17 @@ const global = () => {
     useEffect(() => {
       const fetchLeaderboard = async () => {
         try {
+          const authToken = localStorage.getItem('authToken') || null;
+  
+          if (!authToken) {
+            console.error('No authToken found in localStorage.');
+            return;
+          }
           const response = await fetch('https://dev.quizifai.com:8010/leaderboard_result_for_admin', {
             method: 'POST',
             headers: {
               'accept': 'application/json',
-              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDaGFuZHUgVmFyZGhhbiBLIiwiZXhwIjoyNTM0MDIzMDA3OTl9.y5r49Zue79xvpjtCV8oIPw4Pijv12lB4GFBBP1thrS8',
+              Authorization: `Bearer ${authToken}`,
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({ org_id: orgId }),

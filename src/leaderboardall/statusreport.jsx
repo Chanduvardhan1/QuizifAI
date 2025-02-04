@@ -23,13 +23,19 @@ const statusreport = () => {
     useEffect(() => {
       const fetchLeaderboard = async () => {
         try {
+          const authToken = localStorage.getItem('authToken') || null;
+  
+          if (!authToken) {
+            console.error('No authToken found in localStorage.');
+            return;
+          }
           const response = await fetch(
             "https://dev.quizifai.com:8010/leaderboard_result_for_admin",
             {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer YOUR_ACCESS_TOKEN_HERE`,
+                Authorization: `Bearer ${authToken}`,
               },
               body: JSON.stringify({ org_id: orgId }),
             }

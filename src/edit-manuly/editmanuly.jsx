@@ -264,6 +264,41 @@ export default function editmanuly() {
     "Contact support or your instructor immediately if you face technical issues.",
   ]);
 
+
+
+
+  const [showModal, setShowModal] = useState(false);
+  const [showModal1, setShowModal1] = useState(false);
+  const [shownext, setnext] = useState(false);
+
+
+  const closeModal = () => {
+    setShowModal(false); // Close the modal
+    const orgId = localStorage.getItem('org_id'); // Check for orgId in localStorage
+  
+    if (!orgId) {
+      // If orgId is not present, navigate to the dashboard
+      navigate("/dashboard");
+      return; // Stop further execution
+    }
+  
+    if (publicAccess === "off") {
+      // Logic for publicAccess being "off" (optional action)
+    } else if (publicAccess === "on") {
+      navigate("/dashboard");
+    }
+   
+  };
+
+    useEffect(() => {
+      const orgId = localStorage.getItem("org_id"); // Retrieve orgId from localStorage
+      setPublicAccess(!orgId); // If orgId is not there, set publicAccess to true
+    }, []);
+  
+    const closeModal1 = () => {
+      setShowModal1(false);
+    };
+
   const [ isEditing ,setisEditing] = useState(false);
   const orgId = localStorage.getItem('org_id') || null;
 const [quizid, setQuizId] = useState('');
@@ -290,7 +325,103 @@ const [quizid, setQuizId] = useState('');
     const [photo1, setPhoto1] = useState('');
     const [photo2, setPhoto2] = useState('');
 
+  const [step, setStep] = useState(0);
 
+  const handleNextpage0 = () => {
+
+    setStep(1);
+  };
+
+  const handleNextpage = () => {
+    // Validation checks
+    if (!title.trim()) {
+      toast.error("Quiz title is required.");
+      setIsSubmitting(false);
+      return;
+    }
+  
+  
+    if (!description.trim()) {
+      toast.error("Quiz description is required.");
+      setIsSubmitting(false);
+      return;
+    }
+  
+    if (!selectedCategory) {
+      toast.error("Quiz category is required.");
+      setIsSubmitting(false);
+      return;
+    }
+    if (!selectedComplexity) {
+      toast.error("complexity name is required.");
+      setIsSubmitting(false);
+      return;
+    }
+    // If all validations pass, move to the next step
+    setStep(2);
+  };
+  
+  const handleNextpage1 = () => {
+    if (!numQuestions || isNaN(numQuestions) || numQuestions <= 0) {
+      toast.error("Please provide a valid number of questions.");
+      setIsSubmitting(false);
+      return;
+    }
+    if (!percentage || isNaN(percentage) || percentage <= 0 || percentage > 100) {
+      toast.error("Pass percentage must be a valid number between 1 and 100.");
+      setIsSubmitting(false);
+      return;
+    }
+    if (!duration || isNaN(duration) || duration <= 0) {
+      toast.error("Quiz duration is required and must be a valid number.");
+      setIsSubmitting(false);
+      return;
+    }
+    if (!quiztotalmarks || isNaN(quiztotalmarks) || quiztotalmarks <= 0) {
+      toast.error("Total quiz marks must be a valid number.");
+      setIsSubmitting(false);
+      return;
+    }
+    if (!availablefrom || !disabledon || new Date(availablefrom) >= new Date(disabledon)) {
+      toast.error("Please provide valid start and end dates for the quiz.");
+      setIsSubmitting(false);
+      return;
+    }
+ 
+    setStep(3);
+  };
+  const handleNextpage2 = () => {
+    setStep(4);
+
+  };
+  const handleNextpage3 = () => {
+    setStep(5);
+
+  };
+  const handleNextpage4 = () => {
+  
+    setStep(6);
+
+
+  };
+  const handleNextpage5 = () => {
+    setStep(6);
+
+  };
+
+    const [visibleInstructions, setVisibleInstructions] = useState(10);
+  
+   
+    const handleInstructionChange = (index, value) => {
+      const updatedInstructions = [...instructions];
+      updatedInstructions[index] = value;
+      setInstructions(updatedInstructions);
+    };
+  
+    const handleAddLine = () => {
+      setInstructions((prev) => [...prev, ""]);
+      setVisibleInstructions((prev) => prev + 1);
+    };
   
     // --------------***Quiz Pakage and sections*** -------------- //
     const [showPackageFields, setShowPackageFields] = useState(false);
@@ -971,10 +1102,20 @@ const [quizid, setQuizId] = useState('');
 
       if (response.ok) {
         if (responseData.response === "success") {
-          setIsModified(false);
-          setQuizId(responseData.data.quiz_id);
-          await handleUpload(responseData.data.quiz_id);
-          navigate("/quizcreated", { state: { quizData: responseData } });
+          setModalMessage("Quiz created successfully!");
+          setIsError(false);
+          setShowModal(true);
+          setnext(true);
+           setQuizId(responseData.data.quiz_id)
+           console.log('Quiz Name:', responseData.data.quiz_title); // Add this to see the value
+          setQuizName(responseData.data.quiz_title);
+           setPublicAccess(responseData.data.public_access_flag === "off");
+            console.log('id',quizid);
+            const newQuizId = responseData.data.quiz_id;
+            setQuizId(newQuizId);
+            if (newQuizId) {
+              await handleUpload(newQuizId); // Pass quiz ID as a parameter
+            }
         } else if (responseData.data && responseData.data.length > 0) {
           // Handle the specific message about the inactive quiz
           toast.error(responseData.data[0]);
@@ -1437,8 +1578,275 @@ const [quizid, setQuizId] = useState('');
   //   }
   // };
  
+
+
+
+
+// --------------***class and sections *** -------------- //
+const [classes1, setClasses1] = useState([]);
+const [sections, setSections] = useState([]);
+const [selectedClass1, setSelectedClass1] = useState('');
+const [selectedSection, setSelectedSection] = useState('');
+const [departments, setDepartments] = useState([]);
+const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
+
+useEffect(() => {
+  // Fetch organization-related details
+  const fetchDetails = async () => {
+    try {
+      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+      if (!authToken) {
+        console.error('No authentication token found');
+        return;
+      }
+      const response = await fetch(
+        `https://dev.quizifai.com:8010/get_organization_related_dept_cls_sec_details?org_id=${orgId}`,
+        {
+          method: 'POST',
+          headers: {
+            accept: 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+          },
+          body: '', // Empty body for POST request
+        }
+      );
+      const data = await response.json();
+      setClasses1(data.data.classes || []);
+      setSections(data.data.sections || []);
+      setDepartments(data.data.departments || []);
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  fetchDetails();
+}, []);
+
+const handleClassChange = (e) => {
+  setSelectedClass1(e.target.value);
+};
+
+const handleSectionChange = (e) => {
+  setSelectedSection(e.target.value);
+};
+
+
+
+// --------------***class and sections end*** -------------- //
+
+
+  //---------------**Department Selector**----------------//
+
  
+  // useEffect(() => {
+  //   const fetchDepartments = async () => {
+  //     try {
+  //       const user_id = localStorage.getItem('user_id');
+
+  //       const authToken = localStorage.getItem("authToken"); // Replace with actual token retrieval logic
+
+  //       if (!authToken) {
+  //         console.error("No authentication token found");
+  //         setErrorMessage("Authentication token not found.");
+  //         return;
+  //       }
+
+  //       const response = await fetch(
+  //         `https://dev.quizifai.com:8010/view_departments_created_by_admin/?admin_id=${user_id}`,
+  //         {
+  //           method: "GET",
+  //           headers: {
+  //             accept: "application/json",
+  //             Authorization: `Bearer ${authToken}`,
+  //           },
+  //         }
+  //       );
+
+  //       const result = await response.json();
+
+  //       if (response.ok && result.response === "success") {
+  //         setDepartments(result.data);
+  //       } else {
+  //         console.error("Failed to fetch departments:", result);
+  //         setErrorMessage("Failed to fetch departments.");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching departments:", error);
+  //       setErrorMessage("An error occurred while fetching departments.");
+  //     }
+  //   };
+
+  //   fetchDepartments();
+  // }, []);
+
+  const handleDepartmentChange = (e) => {
+    const selectedId = e.target.value;
+    setSelectedDepartmentId(selectedId);
+
+    // Pass department_id to the backend or handle it as needed
+    console.log("Selected department_id:", selectedId);
+  };
+
+    //---------------**Department Selector end**----------------//
+
+
+
+
+
+
+//-----------------**AssignQuiz**-----------------//
+const [shareWithGroupOrOrg, setShareWithGroupOrOrg] = useState(false); // Initialize toggle state
+const [groupName, setGroupName] = useState('');
+const [file, setFile] = useState(null);
+// const [quizid, setQuizId] = useState('');
+const [quizName, setQuizName] = useState('');
+
+const [isSubmitting, setIsSubmitting] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
+const [showassign, setShowassign] = useState(false);
+const [isError1, setIsError1] = useState(false);
+const [modalMessage2, setModalMessage2] = useState('');
+
+const closeModal2 = () => {
+  setShowassign(false);
+};
+const handleToggle = (event) => {
+  setShareWithGroupOrOrg(event.target.checked); // Update state based on toggle
+}; 
+const handleToggle4 = (event) => {
+  // setShowPackageFields(event.target.checked);
+  setShowPackageFields1(true); // Update state based on toggle
+}; 
+// const handleToggle5 = (event) => {
+//   setShowPackageFields(event.target.checked);
+// }; 
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const selectedUserIds = selectedUsers.map((user) => user.value); // Extract IDs
+
+  // Prepare FormData
+  const formData = new FormData();
+  formData.append('quiz_id', quizid);
+  formData.append('org_id', orgId);
+  formData.append('share_with_group_or_org', shareWithGroupOrOrg);
+  formData.append('group_name', groupName);
+  formData.append('department_id', selectedDepartmentId);
+  formData.append('section_id', selectedSection);
+  formData.append('class_id', selectedClass1);
+  formData.append('user_ids',selectedUserIds ); // Pass user IDs as a comma-separated string
+  if (file) formData.append('files', file);
+
+  try {
+    const response = await fetch(
+      'https://dev.quizifai.com:8010/assign-quiz-to-group-organization-or-users/',
+      {
+        method: 'POST',
+        body: formData,
+        headers: {
+          accept: 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const result = await response.json();
+
+    if (result && result.response === "success") {
+      setModalMessage2('Quiz assigned successfully!');
+      setIsError1(false);
+    } else {
+      setModalMessage2('Failed to assign quiz. Please try again.');
+      setIsError1(true);
+    }
+
+    setShowassign(true);
+    console.log('Response:', result);
+  } catch (error) {
+    console.error('Error assigning quiz:', error.message);
+    setModalMessage2('Failed to assign quiz. Please try again.');
+    setIsError1(true);
+    setShowassign(true);
+  }
+};
  
+//-----------------**AssignQuiz END**-----------------//
+
+
+
+
+
+  //-----------------**users dropdown**-----------------//
+  const [users, setUsers] = useState([]); // Store dropdown options
+  const [selectedUsers, setSelectedUsers] = useState([]); // Store selected user IDs
+  // const [quizId, setQuizId] = useState('');
+  
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
+  
+        if (!authToken) {
+          throw new Error('No authentication token found');
+        }
+        const response = await fetch(
+          `https://dev.quizifai.com:8010/get_organization_nrml_usrs?org_id=${orgId}`,
+          {
+            method: 'POST',
+            headers: {
+              accept: 'application/json',
+              'Authorization': `Bearer ${authToken}`,
+            },
+          }
+        );
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+  
+        const result = await response.json();
+  
+        if (result.response === 'success' && result.data) {
+          // Map response data to react-select options
+          const options = result.data.map((user) => ({
+            value: user.user_id,
+            label: user.user_name,
+          }));
+          setUsers(options);
+        } else {
+          console.error('Failed to fetch users:', result.response_message);
+        }
+      } catch (error) {
+        console.error('Error fetching users:', error.message);
+      }
+    };
+  
+    fetchUsers();
+  }, []);
+  //-----------------**users dropdown END**-----------------//
+  
+ 
+  const customOption = ({ data, innerRef, innerProps, isSelected }) => (
+    <div
+      ref={innerRef}
+      {...innerProps}
+      className={`flex items-center p-2 cursor-pointer ${
+        isSelected ? 'bg-blue-50' : 'hover:bg-gray-100'
+      }`}
+    >
+      <input
+        type="checkbox"
+        checked={isSelected}
+        onChange={() => {}}
+        className="mr-2"
+      />
+      <span>{data.label}</span>
+    </div>
+  );
  
  
   const toggleQuestionSelection = (index) => {
@@ -1509,7 +1917,7 @@ const [quizid, setQuizId] = useState('');
         Finalize the configuration and click 'Next' to proceed with adding your quiz questions.
       </h1>
     </div> */}
-
+  {step !== 0 && (
   <div className="flex w-full h-[15%] border-[#d9afc4] border-[1px] border-b-[8px] rounded-lg rounded-b-xl shadow-lg p-2 bg-white ">
         {/* <img
           src={physics}
@@ -1631,7 +2039,75 @@ const [quizid, setQuizId] = useState('');
           </div> */}
         </div>
       </div>
+)}
+ {step === 0 && (
+         <>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-white my-4 p-5">
+  <div className="md:col-span-2">
+    <h1 className="font-semibold text-[20px] text-[#214082]">Quiz Instructions</h1>
+  </div>
 
+  {instructions.slice(0, visibleInstructions).map((instruction, index) => (
+        <div key={index} className="flex items-start mb-2">
+          {/* Number Display */}
+          <div className="w-4 text-[14px] font-semibold text-right mr-2">{index + 1}.</div>
+          {/* Input for Editing */}
+          <input
+          disabled={!isEditing}
+            value={instruction}
+            onChange={(e) => handleInstructionChange(index, e.target.value)}
+            className={`w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[14px] focus:outline-none ${
+              !isEditing ? 'text-gray-700 cursor-not-allowed' : 'text-black'
+            }`}
+                      />
+          {/* Remove Line Button */}
+       
+        </div>
+      ))}
+      {/* Add Line Button */}
+      <div>
+      <button
+      disabled={!isEditing}
+        onClick={handleAddLine}
+        className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+      >
+        + Add Line
+      </button>
+      </div>
+  <div className="flex justify-end md:col-span-2">
+    <div className="flex gap-1">
+{edit ? (
+ <button
+ onClick={handelesave} 
+ className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+>
+ Save
+</button>
+):(
+  <button
+  onClick={handeledit} 
+  className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+>
+  Edit
+</button>
+)}
+ 
+    <button
+      onClick={handleNextpage0}
+      className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+    >
+      Next
+    </button>
+    
+    </div>
+  </div>
+</div>
+
+        </> 
+       )}
+        {step === 1 && (
+         <>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white my-4 p-5">
     
       <div className="md:col-span-2"> 
@@ -1925,7 +2401,7 @@ const [quizid, setQuizId] = useState('');
                 </>
                 )}
 
-      <div className="=">
+      <div className="">
 
 <div className="w-full flex gap-6">
       {/* Complexity */}
@@ -1956,7 +2432,22 @@ const [quizid, setQuizId] = useState('');
 
 </div>
 
+<div className="flex justify-between md:col-span-2">
+            <button
+              onClick={() => setStep(0)}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
 
+            >
+              Back
+            </button>
+            <button
+              onClick={handleNextpage}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Next
+            </button>
+          </div>
 
 
 
@@ -1998,7 +2489,17 @@ const [quizid, setQuizId] = useState('');
           </div> */}
          
     </div>
-       
+
+    </> 
+
+
+       )}
+
+
+{step === 2 && (
+         <>
+
+
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white my-4 p-5">
   
     <div className="md:col-span-2">
@@ -2222,11 +2723,30 @@ const [quizid, setQuizId] = useState('');
               </div>
       </div>
   
+      <div className="flex justify-between md:col-span-2">
+            <button
+              onClick={() => setStep(1)}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
 
+            >
+              Back
+            </button>
+            <button
+              onClick={handleNextpage1}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Next
+            </button>
+          </div>
     
       </div>
-   
- 
+
+
+      </> 
+       )}
+    {step === 3 && (
+      <>
     <div className=" bg-white my-4 p-5">
     <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-6 bg-white ">
     
@@ -2321,9 +2841,27 @@ const [quizid, setQuizId] = useState('');
    
     </div>
   
-   
+    <div className="flex justify-between md:col-span-2 py-5">
+            <button
+              onClick={() => setStep(2)}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
 
+            >
+              Back
+            </button>
+            <button
+              onClick={handleNextpage2}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
 
+            >
+              Next
+            </button>
+          </div>
+  </> 
+       )}
+
+{step === 4 && (
+         <>
         {/* {showRegistrationSuccess && ( */}
           <main className="w-max-auto bg-white p-[10px] mt-[10px]">
           
@@ -2493,8 +3031,658 @@ const [quizid, setQuizId] = useState('');
           </main>
         {/* // )} */}
       
+        </>
+)}
+{step === 5 && (
+         <>
+          <div className=" bg-white my-4 p-5">
+          <div className="flex flex-col gap-6 bg-white ">
+    
+    <div className="flex items-start">
+        <h1 className=" font-semibold text-[20px] text-[#214082]">Assign Quizzes</h1>
+      </div>
+     
+      {/* <div className="flex flex-col w-full">
+  <div className="w-full flex flex-row">
+    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+      Oragnization<span className="text-red-500">*</span>
+    </label>
+    <input
+                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+value={orgId}
+                  placeholder="Oragnization"
+                
+                ></input>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div> */}
+<div className="flex gap-6 w-full">
+
+<div className="flex flex-col  gap-6 w-full">
+<div className="flex flex-col w-full">
+  <div className="w-full flex flex-row">
+    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+      Quiz ID<span className="text-red-500">*</span>
+    </label>
+    <input
+                             className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                             value={`${quizName}`} 
+                  placeholder="Oragnization"
+                
+                ></input>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
 
 
+
+<div className="flex items-center">
+        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[72px]">
+         Group/Organization
+        <span className="text-red-500">*</span>
+        </label>
+        <FormControlLabel
+        control={<Switch />} 
+        checked={shareWithGroupOrOrg} // Controlled state
+        onChange={handleToggle} // Update state on toggle
+          className="react-switch"
+        />
+        
+      </div>
+    
+        <div className="flex flex-col w-full">
+  <div className="w-full flex flex-row">
+    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+      Deparment<span className="text-red-500"></span>
+    </label>
+    <select
+      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+      value={selectedDepartmentId}
+      onChange={handleDepartmentChange}
+    >
+      <option value="" disabled>Select a Deparment</option>
+      <option value="">None</option>
+      {departments.map((dept) => (
+          <option key={dept.department_id} value={dept.department_id}>
+            {dept.department_name}
+          </option>
+        ))}
+    </select>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+
+  {!shareWithGroupOrOrg &&(
+<div className="flex flex-col w-full">
+  <div className="w-full flex flex-row">
+    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+      User ID<span className="text-red-500">*</span>
+    </label>
+    {/* <Select
+  options={users} // Dynamically populated options
+isMulti
+  value={selectedUsers} // Selected values
+  onChange={setSelectedUsers} // Update state on selection
+  className="basic-multi-select w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+  classNamePrefix="select"
+/> */}
+ <Select
+        options={users}
+        isMulti
+        value={selectedUsers}
+        onChange={setSelectedUsers}
+        className="basic-multi-select w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+        classNamePrefix="select"
+        placeholder="Search and select users..."
+        closeMenuOnSelect={false}
+        components={{ Option: customOption }}
+        isSearchable={true}
+        styles={{
+          control: (base, state) => ({
+            ...base,
+            borderColor: state.isFocused ? '#2563EB' : '#D1D5DB',
+            boxShadow: state.isFocused ? '0 0 0 2px rgba(59, 130, 246, 0.5)' : base.boxShadow,
+            '&:hover': { borderColor: '#2563EB' },
+          }),
+          option: (base, state) => ({
+            ...base,
+            padding: '8px 12px',
+            display: 'flex',
+            alignItems: 'center',
+          }),
+          multiValue: (base) => ({
+            ...base,
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            color: '#2563EB',
+          }),
+          multiValueLabel: (base) => ({
+            ...base,
+            color: '#2563EB',
+          }),
+          multiValueRemove: (base) => ({
+            ...base,
+            color: '#2563EB',
+            ':hover': {
+              backgroundColor: 'rgba(59, 130, 246, 0.3)',
+              color: 'white',
+            },
+          }),
+        }}
+      />
+
+  </div>
+  {/* <hr className="h-[1px] w-full" /> */}
+</div>
+   
+)}
+<div className="flex flex-col w-full">
+  <div className="w-full flex flex-row">
+    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+    File <span className="text-red-500"></span>
+    </label>
+    <input
+      className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+      placeholder="File"
+      type="file"
+      onChange={(e) => setFile(e.target.files[0])}>
+      </input>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+</div>
+<div className="flex flex-col  gap-6 w-full">
+
+      <div className="w-full flex flex-col">
+  <div className="w-full flex flex-row">
+    <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
+      Class<span className="text-red-500"></span>
+    </label>
+    <select
+      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+      value={selectedClass1}
+      onChange={handleClassChange}
+    >
+      <option value="" disabled>Select a Class</option>
+      <option value="">None</option>
+      {classes1.map((cls) => (
+            <option key={cls.class_id} value={cls.class_id}>
+              {cls.class_name}
+            </option>
+          ))}
+    </select>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+<div className="w-full flex flex-col">
+  <div className="w-full flex flex-row">
+    <label className=" w-[20%] text-blue-800 font-semibold mb-2">
+    Section<span className="text-red-500"></span>
+    </label>
+    <select
+      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+      value={selectedSection}
+      onChange={handleSectionChange}
+    >
+      <option value="" disabled>Select a Section</option>
+      <option value="">None</option>
+      {sections
+            .filter((sec) => sec.class_id === parseInt(selectedClass1))
+            .map((sec) => (
+              <option key={sec.section_id} value={sec.section_id}>
+                {sec.section_name}
+              </option>
+            ))} 
+    </select>
+  </div>
+  <hr className="h-[1px] w-full" />
+</div>
+
+
+
+
+
+
+
+</div>
+
+</div>
+
+
+    </div>
+  
+    <div className="flex justify-between md:col-span-2 py-5">
+    
+
+            <button
+              onClick={() => setStep(4)}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Back
+            </button>
+            <div className="flex gap-2">
+            <button onClick={handleNextpage5} className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-sm text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
+  Skip
+</button>
+
+            <button
+            onClick={handleSubmit}
+              // onClick={handleNextpage4}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Assign
+            </button>
+            
+            <button
+            onClick={handleNextpage5}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Next
+            </button>
+            </div>
+          
+          </div>
+   
+ 
+   
+    </div>
+    </> 
+       )}
+        {step === 6 && (
+         <>
+    <div className=" bg-white my-4 p-5">
+    <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-6 bg-white ">
+    
+    <div className="md:col-span-2">
+        <h1 className=" font-semibold text-[20px] text-[#214082]">Print Quiz</h1>
+      </div>
+     
+     
+      <div className="w-full flex items-center ">
+ <div className=" w-full flex flex-col">
+            <div className="w-full flex flex-row">
+              <label className=" w-[23%] text-blue-800 font-semibold mb-2 mr-[10px]">
+               Instructions <span className="text-red-500">*</span>
+              </label>
+              <textarea
+                className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
+                 rows="4" 
+                cols="50"
+                required
+                value={instructions}
+                onChange={(e) => setInstructions(e.target.value)}
+                disabled={!isEditing}
+
+              />
+            </div>
+            <hr className="h-[1px] w-full" />
+
+          </div>
+             <div className="  m-2">
+              <img src={editicon} onClick={handeledit} className=" w-[18px] h-[18px] cursor-pointer "/>
+        
+          </div>
+          </div>
+          <div className='w-full'>
+        <div className='font-bold text-center text-[25px] font-Poppins text-blue-900 mt-3 hover:transform hover:scale-110 transition-transform duration-300 ease-in-out'style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>   
+         <h1>EXAM PAPER TEMPLATES</h1>
+        </div>
+
+        <div className='flex justify-around mt-5'>
+            <div className='bg-[#F3F7FB] px-10 py-4'>
+                <div className='h-14 w-14 bg-white rounded-full border-t-2 border-[#EF5130]'> 
+                <img className='h-7 w-7 ml-4 mt-3' src={QuestionPaper}/>
+                </div>
+                <h1 className='text-[15px] font-semibold'>Layout 1</h1>
+                <button className='bg-[#EF5130] text-white rounded-[15px] px-1 relative left-2 mt-3' onClick={handleToLayout1}>View</button>
+            </div>
+{layout1 && (
+
+     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 overflow-y-auto" ref={pdfRef1}>
+        <div
+            className="bg-white w-[794px] h-[1123px] p-8 rounded-lg shadow-lg relative"
+            style={{
+              width: "794px", // 210mm in pixels (A4 width at 96 DPI)
+              height: "1123px", // 297mm in pixels (A4 height at 96 DPI)
+            }}
+          >
+              {/* Close Button */}
+              <button
+              className="absolute top-4 right-4 bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
+              onClick={togglePopup}
+            >
+              Close
+            </button>
+     <h1 className='font-serif font-bold text-center text-[25px] mt-20 focus:outline-none focus:border-none'
+     onClick={() => handleFieldClick('hallTicket')}
+     contentEditable={editableFields.hallTicket}
+     >
+     <span className='text-red-600 border-none'>KENDRIYA VIDYALAYA SANGATHAN, RAIPUR REGION </span><br/>
+     <span>SCIENCE</span> <br/>CLASS IX (THEORY)
+     <br/>SAMPLE QUESTION PAPER - II <br/>2024</h1>
+ 
+     <div className='h-[130px] w-[130px] border-4 border-solid focus:outline-none focus:border-none relative -mt-[140px] ml-32'>
+     <div className="w-[100px] ml-[11px] h-[100px] mt-3" style={{ position: "relative" }}>
+       {image ? (
+         <img className="w-[100px] h-[100px] border-2 border-white" src={image} alt="Uploaded" />
+       ) : (
+         <img className="w-[100px] h-[100px] border-2 border-white" src={QuizifAilogo} alt="Default" />
+       )}
+       <input type="file" ref={inputReff} onChange={handleImageChange1} style={{ display: "none" }} />
+ 
+       <div className="w-fit h-[24px] px-[2px] py-[1px] relative left-16 -top-7">
+         <div className="rounded-full w-fit h-[28px] px-[2px] py-[2px] flex items-center justify-center group">
+           {/* <img className="h-4 w-4 relative -top-[3px] cursor-pointer" src={Camera} alt="Camera" /> */}
+           <div className="absolute top-full text-[7px] left-0 right-[30px] mt-1 bg-white rounded-sm text-black w-fit h-[37px] cursor-pointer px-1 py-[2px] text-nowrap items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+             <p onClick={handleReplaceImage}>Replace Image</p><br/>
+             <p className="relative -top-[10px]" onClick={handleViewImage}>View Image</p><br/>
+             <p className="relative -top-[20px]" onClick={handleDeleteImage}>Delete Image</p>
+           </div>
+         </div>
+       </div>
+     </div>
+     </div>
+ 
+             <div className='flex justify-between mt-14'>
+                 <div className='ml-32'>
+                 <div className='font-serif font-bold  text-[20px] focus:outline-none focus:border-none'
+             onClick={() => handleFieldClick('hallTicket')}
+             contentEditable={editableFields.hallTicket}
+             >Hall Ticket No:</div>
+ 
+             <div className='font-serif font-bold text-[20px] focus:outline-none focus:border-none'
+             onClick={() => handleFieldClick('time')}
+             contentEditable={editableFields.time}
+             >Time:<span className='font-thin font-none pl-1'>60 Min</span></div>  
+                 </div>
+             
+             <div className='mr-24'>
+             <div className='font-serif font-bold text-[20px] focus:outline-none focus:border-none'
+             onClick={() => handleFieldClick('subjectCode')}
+             contentEditable={editableFields.subjectCode}
+             >Subject Code:</div>
+ 
+             <div className='font-serif font-bold text-[20px] focus:outline-none focus:border-none'
+             onClick={() => handleFieldClick('maxMarks')}
+             contentEditable={editableFields.maxMarks}
+             >Maximum Marks:<span className='font-thin font-none pl-1'>75</span></div>
+             </div>
+             </div>
+             
+ 
+ 
+             <h1 className='font-serif font-semibold text-center text-[25px] relative text-blue-900 mt-5 pl-20 -ml-20 focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('heading')}
+              contentEditable={editableFields.heading}
+              >Multiple Choice Questions</h1>
+ 
+             <div className='flex'>
+                 <h1 className='pl-[200px] pt-[35px] text-bold font-serif text-[21px] pr-3'>1.</h1>
+                 <span className='pt-[40px] pr-[350px] focus:outline-none focus:border-none' 
+                 onClick={() => handleFieldClick('question1')}
+                 contentEditable = {editableFields.question1}>
+                 Seema visited a Natural Gas Compressing Unit and found that the gas can
+                 be liquefied under specific conditions of temperature and pressure. While
+                 sharing her experience with friends she got confused. Help her to identity
+                 the correct set of conditions.
+                 </span>
+             </div>
+             <span className=' font-serif pl-[220px] focus:outline-none focus:border-none'
+             onClick={() => handleFieldClick('option1')}
+             contentEditable = {editableFields.option1}>(a) Low temperature, low pressure</span><br/>
+              <span className=' font-serif pl-[220px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('option2')}
+              contentEditable = {editableFields.option2}>(b) High temperature, low pressure</span><br/>
+              <span className=' font-serif pl-[220px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('option3')}
+              contentEditable = {editableFields.option3}>(c) Low temperature, high pressure</span><br/>
+              <span className=' font-serif pl-[220px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('option4')}
+              contentEditable = {editableFields.option4}>(d) High temperature, high pressure</span>
+              <span className='pl-[330px] focus:outline-none focus:border-none' 
+              onClick={() => handleFieldClick('mark1')}
+              contentEditable= {editableFields.mark1}>(1)</span>
+ 
+              <div className='flex'>
+                 <h1 className='pl-[200px] pt-[15px] text-bold font-serif text-[20px] pr-3'>2.</h1>
+                 <span className='pt-[18px] pr-[350px] focus:outline-none focus:border-none'
+                 onClick={() => handleFieldClick('question2')}
+                 contentEditable = {editableFields.question2}>
+                 Which of the following are physical changes?
+                 </span>
+             </div>
+             <span className=' font-serif pl-[220px] focus:outline-none focus:border-none'
+             onClick={() => handleFieldClick('option11')}
+             contentEditable = {editableFields.option11}>(i) Melting of iron metal</span><br/>
+              <span className=' font-serif pl-[220px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('option12')}
+              contentEditable = {editableFields.option12}>(ii) Rusting of iron</span><br/>
+              <span className=' font-serif pl-[220px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('option13')}
+              contentEditable = {editableFields.option13}>(iii) Bending of an iron rod</span><br/>
+              <span className=' font-serif pl-[220px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('option14')}
+              contentEditable = {editableFields.option14}>(iv) Drawing a wire of iron metal</span><br/>
+ 
+              <span className=' font-serif pl-[220px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('option111')}
+              contentEditable = {editableFields.option112}>(a) (i), (ii) and (iii)</span><br/>
+              <span className=' font-serif pl-[220px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('option112')}
+              contentEditable = {editableFields.option112}>(b) (i), (ii) and (iv)</span><br/>
+              <span className=' font-serif pl-[220px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('option113')}
+              contentEditable = {editableFields.option113}>(c) (i), (iii) and (iv)</span><br/>
+              <span className=' font-serif pl-[220px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('option114')}
+              contentEditable = {editableFields.option114}>(d) (ii), (iii) and (iv)</span>
+              <span className='pl-[459px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('mark2')}
+              contentEditable = {editableFields.mark2}>(1)</span>
+ 
+              <div className='flex'>
+                 <h1 className='pl-[200px] pt-[10px] text-bold font-serif text-[20px] pr-3'>3.</h1>
+                 <span className='pt-[14px] pr-[350px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('question3')}
+              contentEditable = {editableFields.question3}>
+                 Which one of the following has maximum number of atoms?
+                 </span>
+             </div>
+             <span className=' font-serif pl-[220px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('option21')}
+              contentEditable = {editableFields.option21}>(a) 18 g of H2O</span><br/>
+              <span className=' font-serif pl-[220px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('option22')}
+              contentEditable = {editableFields.option22}>(b) 18 g of O2</span><br/>
+              <span className=' font-serif pl-[220px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('option23')}
+              contentEditable = {editableFields.option23}>(c) 18 g of CO2</span><br/>
+              <span className=' font-serif pl-[220px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('option24')}
+              contentEditable = {editableFields.option24}>(d) 18 g of CH4</span>
+              <span className='pl-[479px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('marks3')}
+              contentEditable = {editableFields.mark3}>(1)</span>
+ 
+              <div className='flex'>
+                 <h1 className='pl-[200px] pt-[15px] text-bold font-serif text-[20px] pr-3'>4.</h1>
+                 <span className='pt-[17px] pr-[350px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('question4')}
+              contentEditable = {editableFields.question4}>
+                 In a sample of ethyl ethanoate (CH3COOC2H5) the two oxygen atoms have
+                 the same number of electrons but different number of neutrons. Which of
+                 the following is the correct reason for it?
+                 </span>
+             </div>
+             <span className=' font-serif pl-[220px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('option31')}
+              contentEditable = {editableFields.option31}>(a) One of the oxygen atoms has gained electrons</span><br/>
+              <span className=' font-serif pl-[220px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('option32')}
+              contentEditable = {editableFields.option32}>(b) One of the oxygen atoms has gained two neutrons</span><br/>
+              <span className=' font-serif pl-[220px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('option33')}
+              contentEditable = {editableFields.option33}>(c) The two oxygen atoms are isotopes</span><br/>
+              <span className=' font-serif pl-[220px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('option34')}
+              contentEditable = {editableFields.option34}> (d) The two oxygen atoms are isobars.</span>
+              <span className='pl-[320px] focus:outline-none focus:border-none'
+              onClick={() => handleFieldClick('mark4')}
+              contentEditable = {editableFields.mark4}>(1)</span>
+ 
+              <h1 className='text-xs pl-[1000px] pt-10 pb-10 font-semibold'>{FormattedDate}</h1>
+              <div className='flex gap-5 mb-5 justify-center'>
+              <button 
+           className='bg-[#223F80] rounded-md text-white px-3 py-1 hover:bg-[#EF5130]'
+           onClick={handleSave1} // Attach the save function here
+         >
+           Save
+         </button>            
+         <button className='bg-[#223F80] rounded-md text-white px-3 py-1 relative  hover:bg-[#EF5130]' onClick={downloadPDF1}>Download PDF</button>
+              <button className='bg-[#223F80] rounded-md text-white px-3  hover:bg-[#EF5130]' onClick={handleToPrint}>Print</button>
+              </div>
+ 
+ 
+     </div>
+     </div>
+)}
+            <div className='bg-[#F3F7FB] px-10 py-4'>
+                <div className='h-14 w-14 bg-white rounded-full border-t-2 border-[#EF5130]'> 
+                <img className='h-7 w-7 ml-4 mt-3' src={QuestionPaper}/>
+                </div>
+                <h1 className='text-[15px] font-semibold'>Layout 2</h1>
+                <button className='bg-[#EF5130] text-white rounded-[15px] px-1 relative left-2 mt-3' onClick={handleToLayout2}>View</button>
+            </div>
+
+           
+            <div className='bg-[#F3F7FB] px-10 py-4'>
+                <div className='h-14 w-14 bg-white rounded-full border-t-2 border-[#EF5130]'> 
+                <img className='h-7 w-7 ml-4 mt-3' src={QuestionPaper}/>
+                </div>
+                <h1 className='text-[15px] font-semibold'>Layout 3</h1>
+                <button className='bg-[#EF5130] text-white rounded-[15px] px-1 relative left-2 mt-3' onClick={handleToLayout3}>View</button>
+            </div>
+            <div className='bg-[#F3F7FB] px-10 py-4'>
+                <div className='h-14 w-14 bg-white rounded-full border-t-2 border-[#EF5130]'> 
+                <img className='h-7 w-7 ml-4 mt-3' src={QuestionPaper}/>
+                </div>
+                <h1 className='text-[15px] font-semibold'>Layout 4</h1>
+                <button className='bg-[#EF5130] text-white rounded-[15px] px-1 relative left-2 mt-3' onClick={handleToLayout4}>View</button>
+            </div>
+        </div>
+       </div>
+  {/* Multiple Answers */}
+  <div className="flex justify-end md:col-span-2">
+  <button onClick={handleback} className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-sm text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
+  Skip
+</button>
+
+  <button
+           
+              className="px-[40px] p-[5px] ml-2 bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Print
+            </button>
+     
+ {/* Multiple Answers */}
+ <button
+              className="px-[40px] ml-2 p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Save
+            </button>
+            </div>
+    </div>
+  
+    <div className="flex justify-between md:col-span-2 py-5">
+            <button
+              onClick={() => setStep(5)}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Back
+            </button>
+          </div>
+ 
+   
+    </div>
+    </> 
+       )}
+         {showModal && (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div
+          className={`bg-white rounded-lg shadow-lg p-6 w-96 text-center ${
+            isError ? "border-red-500" : "border-green-500"
+          } border-t-4`}
+        >
+          <h2
+            className={`text-xl font-semibold ${
+              isError ? "text-red-500" : "text-green-500"
+            }`}
+          >
+            {isError ? "Error" : "Success"}
+          </h2>
+          <p className="mt-2 text-gray-700">{modalMessage}</p>
+          <button
+            onClick={closeModal}
+            className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    )}
+       {showModal1 && (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div
+          className={`bg-white rounded-lg shadow-lg p-6 w-96 text-center ${
+            isError ? "border-red-500" : "border-green-500"
+          } border-t-4`}
+        >
+          {/* <h2
+            className={`text-xl font-semibold ${
+              isError ? "text-red-500" : "text-green-500"
+            }`}
+          >
+            {isError ? "Error" : "Success"}
+          </h2> */}
+          <p className="mt-2 text-gray-700">{modalMessage1}</p>
+          <button
+            onClick={closeModal1}
+            className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    )}
+    {showassign && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div
+      className={`bg-white rounded-lg shadow-lg p-6 w-96 text-center ${
+        isError1 ? "border-red-500" : "border-green-500"
+      } border-t-4`}
+    >
+      <h2
+        className={`text-xl font-semibold ${
+          isError1 ? "text-red-500" : "text-green-500"
+        }`}
+      >
+        {isError1 ? "Error" : "Success"}
+      </h2>
+      <p className="mt-2 text-gray-700">{modalMessage2}</p>
+      <button
+        onClick={closeModal2}
+        className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
  </main>
 )}
 

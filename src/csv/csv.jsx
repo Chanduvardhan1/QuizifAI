@@ -186,6 +186,7 @@ export default function quiztype() {
   const [optionsArray, setoptionsArray] = useState("");
   const [questionsData, setquestionsData] = useState("");
   const [numQuestions, setNumQuestions] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   const [selectedTiming, setSelectedTiming] = useState([]);
   // const [questions, setQuestions] = useState(
@@ -201,7 +202,7 @@ export default function quiztype() {
   // );
 
   const [coursename, setcoursename] = useState("");
-  const [classes, setClasses] = useState("");
+  const [classes, setClasses] = useState([]);
   const [quizCategory, setQuizCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
 
@@ -407,6 +408,155 @@ useEffect(() =>{
     setlayout1(false)
   }
 
+  const [selectedSubCategory, setSelectedSubCategory] = useState('');
+  const [courses, setCourses] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState('');
+  const [selectedClass, setSelectedClass] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]); // Initialize as empty array
+
+  const fetchCategories = async () => {
+    try {
+      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+      if (!authToken) {
+        console.error('No authentication token found. Please log in again.');
+        return;
+      }
+
+      const response = await fetch('https://dev.quizifai.com:8010/categories&sub_categories/', {
+        headers: {
+          'Authorization': `Bearer ${authToken}`, // Include the auth token in the Authorization header
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.response === 'success') {
+        setCategories(data.data);
+      } else {
+        console.error('Failed to fetch categories:', data.message || 'Unknown error');
+      }
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+  const handleSelectCategory = (event) => {
+    const selectedCategory = event.target.value;
+    setSelectedCategory(selectedCategory);
+    const category = categories.find(cat => cat.category_name === selectedCategory);
+    if (category) {
+      setSubCategories(category.sub_categories.map(subCat => subCat.sub_category_name));
+      setSelectedSubCategory(''); // Reset subcategory when a new category is selected
+    }
+  };
+
+  // Handle subcategory selection
+  const handleSelectSubCategory = (event) => {
+    const selectedSubCategory = event.target.value;
+    setSelectedSubCategory(selectedSubCategory);
+  };
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+  const fetchCourses = async () => {
+    try {
+      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+      if (!authToken) {
+        console.error('No authentication token found. Please log in again.');
+        return;
+      }
+      const response = await fetch('https://dev.quizifai.com:8010/courses-clsses/', {
+        headers: {
+          'Authorization': `Bearer ${authToken}`, // Include the auth token in the Authorization header
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      if (data.response === 'success') {
+        setCourses(data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+    }
+  };
+
+  // Handle course selection
+  const handleSelectCourse = (event) => {
+    const selectedCourse = event.target.value;
+    setSelectedCourse(selectedCourse);
+
+    if (selectedCourse === "") {
+      // Clear the selection
+      setClasses([]);
+    } else {
+      // Find the selected course and set its classes
+      const course = courses.find(
+        (course) => course.course_name === selectedCourse
+      );
+      if (course) {
+        setClasses(course.classes.map((cls) => cls.class_name));
+      }
+    }
+  };
+
+  // Handle class selection
+  const handleSelectClass = (event) => {
+    const selectedClass = event.target.value;
+    setSelectedClass(selectedClass);
+  };
+
+
+  useEffect(() => {
+    fetchComplexities();
+  }, []);
+
+  const fetchComplexities = async () => {
+    try {
+      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+      if (!authToken) {
+        console.error('No authentication token found. Please log in again.');
+        return;
+      }
+      const response = await fetch('https://dev.quizifai.com:8010/complexities/', {
+        headers: {
+          'Authorization': `Bearer ${authToken}`, // Include the auth token in the Authorization header
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (data.response === 'success') {
+        setComplexities(data.data.map(complexity => complexity.complexity_name));
+      }
+    } catch (error) {
+      console.error('Error fetching complexities:', error);
+    }
+  };
+
+  // Handle complexity selection
+  const handleSelectComplexity = (event) => {
+    setSelectedComplexity(event.target.value);
+  };
+
+
+
 //----------------***quiz print end***-----------------
 
   // --------------***Quiz Pakage and sections*** -------------- //
@@ -553,27 +703,22 @@ const closeModal1 = () => {
   };
 
   const handleNextpage = () => {
-    if (!file) {
-      toast.error("Please select a file to upload.");
-      setIsSubmitting(false);
-      return;
-    }
-  
+   
     // Validation: Check file type
-    const allowedFileTypes = ["application/vnd.ms-excel", "text/csv"];
-    if (!allowedFileTypes.includes(file.type)) {
-      toast.error("Invalid file type. Please upload a CSV file.");
-      setIsSubmitting(false);
-      return;
-    }
+    // const allowedFileTypes = ["application/vnd.ms-excel", "text/csv"];
+    // if (!allowedFileTypes.includes(file.type)) {
+    //   toast.error("Invalid file type. Please upload a CSV file.");
+    //   setIsSubmitting(false);
+    //   return;
+    // }
   
     // Validation: Check file size (example: limit to 5MB)
-    const maxFileSize = 5 * 1024 * 1024; // 5MB
-    if (file.size > maxFileSize) {
-      toast.error("File size exceeds the 5MB limit. Please upload a smaller file.");
-      setIsSubmitting(false);
-      return;
-    }
+    // const maxFileSize = 5 * 1024 * 1024; // 5MB
+    // if (file.size > maxFileSize) {
+    //   toast.error("File size exceeds the 5MB limit. Please upload a smaller file.");
+    //   setIsSubmitting(false);
+    //   return;
+    // }
     setStep(2);
   };
   const handleNextpage1 = () => {
@@ -779,9 +924,9 @@ const handleComplexquestions = (event) => {
   //   setSubCategory("");
   // };
 
-  const handleSelectSubCategory = (e) => {
-    setSubCategory(e.target.value);
-  };
+  // const handleSelectSubCategory = (e) => {
+  //   setSubCategory(e.target.value);
+  // };
 
   // useEffect(() => {
   //   // Fetch courses
@@ -835,16 +980,16 @@ const handleComplexquestions = (event) => {
   //       });
   //   }
   // }, [coursename]);
-  const handleSelectCourse = (e) => {
-    const selectedCourse = e.target.value;
-    setcoursename(selectedCourse);
-    // Reset classes when course changes
-    setClasses("");
-  };
+  // const handleSelectCourse = (e) => {
+  //   const selectedCourse = e.target.value;
+  //   setcoursename(selectedCourse);
+  //   // Reset classes when course changes
+  //   setClasses("");
+  // };
 
-  const handleSelectClass = (e) => {
-    setClasses(e.target.value);
-  }; // Dependency on coursename ensures this effect runs whenever coursename changes
+  // const handleSelectClass = (e) => {
+  //   setClasses(e.target.value);
+  // }; // Dependency on coursename ensures this effect runs whenever coursename changes
 
   const navigate = useNavigate();
   const handleNext1 = () => {
@@ -887,6 +1032,12 @@ const handleComplexquestions = (event) => {
   const handleNext  = async () => {
      
     const user_id = localStorage.getItem('user_id');
+    const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+    if (!authToken) {
+      console.error('No authentication token found. Please log in again.');
+      return;
+    }
     try {
       // if (!frontImage || !backImage) {
       //   toast.error('Please select both front and back images');
@@ -900,6 +1051,8 @@ const handleComplexquestions = (event) => {
         {
           method: "POST",
           headers: {
+            "accept": "application/json" ,
+            'Authorization': `Bearer ${authToken}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -908,21 +1061,15 @@ const handleComplexquestions = (event) => {
             quiz_description: quizData
               ? quizData.quiz_description
               : description,
-            quiz_category_name: quizData
-              ? quizData.quiz_category_name
-              : categoryOptions[0],
+            quiz_category_name: selectedCategory,
             multi_answer: quizData ? quizData.multi_answer : multiAnswer,
-            quiz_sub_category_name: quizData
-              ? quizData.quiz_sub_category_name
-              : subCategoryOptions[0],
-            class_name: quizData ? quizData.course_name : classes,
+            quiz_sub_category_name: selectedSubCategory,
+            class_name: selectedClass || "",
             pass_percentage: percentage,
-            quiz_complexity_name: quizData
-              ? quizData.quiz_complexity_name
-              : complexityOptions[0],
+            quiz_complexity_name: selectedComplexity,
             retake_flag: quizData ? quizData.retake_flag : isRetakeOn,
-            quiz_duration: duration,
-            course_name: quizData ? quizData.course_name : coursename,
+            quiz_duration:  parseInt(duration),
+            course_name: selectedCourse || "",
             quiz_time_bounded_questions: quizData
               ? quizData.quiz_time_bounded_questions
               : selectedTiming[0],
@@ -934,13 +1081,14 @@ const handleComplexquestions = (event) => {
               : description,
               user_id:user_id,
                quiz_instructions: instructionsString,
-            org_id: selectedOrg,
+            org_id: orgId,
             pdf_url:pdfUrl,
             premium_quiz_flag: showPackageFields,
             quiz_package_name: selectedPackageName,
             quiz_package_id: selectedPackageId,
             questions: questions.map((question) => ({
               question_text: question.question_text,
+              correct_answer_description: question.correct_answer_description,
               question_weightage: question.question_weightage,
               multi_answer_flag: quizData ? quizData.multi_answer : multiAnswer,
               question_duration: question.question_duration,
@@ -1368,7 +1516,7 @@ const handleback =() =>{
         setComplexityOptions([responseData.data[0].quiz_complexity_name]);
         setSelectedComplexity(responseData.data[0].quiz_complexity_name);
         setTimings(responseData.data[0].quiz_time_bounded_questions);
-        setSubCategory(responseData.data[0].quiz_sub_category_name);
+        // setSelectedSubCategory(responseData.data[0].quiz_sub_category_name);
         setcoursename(responseData.data[0].course_name);
         setClasses(responseData.data[0].class_name);
         setPercentage(responseData.data[0].pass_percentage);
@@ -1380,11 +1528,11 @@ const handleback =() =>{
         // navigate("/quizcreated", { state: { quizData: responseData } });
 
         // Set category and subcategory options
-        setCategoryOptions([responseData.data[0].quiz_category_name]);
-        setSubCategoryOptions([responseData.data[0].quiz_sub_category_name]);
-        setCourseOptions([responseData.data[0].course_name]);
-        setClassOptions([responseData.data[0].class_name]);
-
+        setSelectedCategory(responseData.data[0].quiz_category_name || "");
+        setSelectedSubCategory(responseData.data[0].quiz_sub_category_name || "");
+        setSelectedCourse(responseData.data[0].course_name || "");
+        setSelectedClass(responseData.data[0].class_name || "");
+        setPublicAccess(responseData.data[0].quiz_public_access === "on");
         setPercentageOptions([
           {
             label: responseData.data[0].pass_percentage,
@@ -1520,11 +1668,18 @@ const handleback =() =>{
   useEffect(() => {
     const fetchOrganizations = async () => {
       try {
+        const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+        if (!authToken) {
+          setErrorMessage('No authentication token found. Please log in again.');
+          clearInterval(interval);
+          return;
+        }
         const response = await fetch('https://dev.quizifai.com:8010/organization/', {
           method: 'GET',
           headers: {
             Accept: 'application/json',
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjaGFuZHUgdmFyZGhhbiBrIiwiZXhwIjoyNTM0MDIzMDA3OTl9.H_wmqwEmdspaXzFRthV49YH_y25UZlj5zul3hV0bXF8',
+            'Authorization': `Bearer ${authToken}`,
           },
         });
         const result = await response.json();
@@ -1573,6 +1728,17 @@ const handleback =() =>{
     navigate("/create-quiz");
   
 };
+
+
+const handleDownloadTemplate = () => {
+  const templateUrl = "/assets/templates/bulk_user_upload_template.xlsx";
+  const link = document.createElement("a");
+  link.href = templateUrl;
+  link.download = "bulk_user_upload_template.xlsx";
+  link.click();
+};
+
+
   return (
     <>
      <div className="flex flex-row w-full bg-[#f5f5f5] ">
@@ -1786,6 +1952,8 @@ const handleback =() =>{
       <div className="md:col-span-2"> 
         <h1 className=" font-semibold text-[20px] text-[#00008b]">Generic Fields</h1>
       </div>
+      <div className="flex gap-2"> 
+
       {/* Show Quiz Title and Description in Step 1 */}
       <div className="flex flex-col items-start justify-start md:col-span-2" >
                 <div className=" p-2 border-[1px] bg-white flex flex-col justify-center">
@@ -1832,7 +2000,16 @@ const handleback =() =>{
 {errorMessage && <p className=" flex text-red-500">{errorMessage}</p> }
 </div>
     </div>
-
+    <div className="mb-6 flex items-center space-x-4">
+          <button
+            onClick={handleDownloadTemplate}
+            className="text-blue-600 underline text-sm"
+          >
+            Download Template
+          </button>
+         
+          </div>
+          </div>
           {/* Quiz Title */}
           <div className="flex flex-col md:col-span-2">
             <div className="w-full flex flex-row">
@@ -1883,19 +2060,26 @@ const handleback =() =>{
               </label>
               <select
                 className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-
-                    value={
-                      quizData
-                        ? quizData.quiz_category_name
-                        : categoryOptions[0]
-                    }
-                    onChange={(e) => setQuizCategory(e.target.value)}
+                value={selectedCategory}
+                onChange={handleSelectCategory}
+                    // value={
+                    //   quizData
+                    //     ? quizData.quiz_category_name
+                    //     : categoryOptions[0]
+                    // }
+                    // onChange={(e) => setQuizCategory(e.target.value)}
                   >
-                    {categoryOptions.map((category, index) => (
+                         <option value="" disabled>Select a category</option>
+                {categories.map(category => (
+                  <option key={category.category_id} value={category.category_name}>
+                    {category.category_name}
+                  </option>
+                ))}
+                    {/* {categoryOptions.map((category, index) => (
                       <option key={index} value={category}>
                         {category}
                       </option>
-                    ))}
+                    ))} */}
                   </select>
             </div>
             <hr className="h-[1px] w-full" />
@@ -1909,19 +2093,26 @@ const handleback =() =>{
               </label>
               <select
                 className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-
-                    onChange={(e) => setSubCategory(e.target.value)}
-                    value={
-                      quizData
-                        ? quizData.quiz_sub_category_name
-                        : subCategoryOptions[0]
-                    }
+                value={selectedSubCategory}
+                onChange={handleSelectSubCategory}
+                    // onChange={(e) => setSubCategory(e.target.value)}
+                    // value={
+                    //   quizData
+                    //     ? quizData.quiz_sub_category_name
+                    //     : subCategoryOptions[0]
+                    // }
                   >
-                    {subCategoryOptions.map((subCategory, index) => (
+                    {/* {subCategoryOptions.map((subCategory, index) => (
                       <option key={index} value={subCategory}>
                         {subCategory}
                       </option>
-                    ))}
+                    ))} */}
+                  <option value="" disabled>Select a subcategory</option>
+                       {subCategories.map((subCategory, index) => (
+                  <option key={index} value={subCategory}>
+                    {subCategory}
+                  </option>
+                ))}
                   </select>
             </div>
             <hr className="h-[1px] w-full" />
@@ -1995,7 +2186,7 @@ const handleback =() =>{
         control={<Switch />} 
         // label="Required"
           onChange={toggler3}
-          checked={ quizData ? quizData.quiz_public_access : publicAccess}
+          checked={publicAccess}
           className="react-switch"
         />
        
@@ -2046,14 +2237,23 @@ const handleback =() =>{
               </label>
               <select
                 className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-                  onChange={(e) => setcoursename(e.target.value)}
-                  value={quizData ? quizData.course_name : ""}
+                  // onChange={(e) => setcoursename(e.target.value)}
+                  // value={quizData ? quizData.course_name : ""}
+                  value={selectedCourse}
+                  onChange={handleSelectCourse}
                 >
-                  {complexities.map((complexity, index) => (
+                  {/* {complexities.map((complexity, index) => (
                     <option key={index} value={complexity}>
                       {complexity}
                     </option>
-                  ))}
+                  ))} */}
+                    <option value="" disabled>Select a course</option>
+      <option value="">None</option>
+      {courses.map((course) => (
+        <option key={course.course_id} value={course.course_name}>
+          {course.course_name}
+        </option>
+      ))}
                 </select>
             </div>
             <hr className="h-[1px] w-full" />
@@ -2067,14 +2267,27 @@ const handleback =() =>{
               </label>
               <select
                   className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-                  onChange={(e) => setClasses(e.target.value)}
-                  value={quizData ? quizData.class_name : ""}
+                  // onChange={(e) => setClasses(e.target.value)}
+                  // value={quizData ? quizData.class_name : ""}
+                  value={selectedClass}
+                  onChange={handleSelectClass}
                 >
-                  {classOptions.map((classOption, index) => (
+                  {/* {classOptions.map((classOption, index) => (
                     <option key={index} value={classOption}>
                       {classOption}
                     </option>
-                  ))}
+                  ))} */}
+                   <option value="" disabled>Select a class</option>
+      <option value="">None</option>
+      {Array.isArray(classes) && classes.length > 0 ? (
+        classes.map((className, index) => (
+          <option key={index} value={className}>
+            {className}
+          </option>
+        ))
+      ) : (
+        <option disabled>No classes available</option>
+      )}
                 </select>
             </div>
             <hr className="h-[1px] w-full" />
@@ -2133,18 +2346,26 @@ const handleback =() =>{
         <select
           className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
 
-                    onChange={(e) => setSelectedComplexity(e.target.value)}
-                    value={
-                      quizData
-                        ? quizData.quiz_complexity_name
-                        : complexityOptions[0]
-                    }
+                    // onChange={(e) => setSelectedComplexity(e.target.value)}
+                    // value={
+                    //   quizData
+                    //     ? quizData.quiz_complexity_name
+                    //     : complexityOptions[0]
+                    // }
+                    value={selectedComplexity}
+                    onChange={handleSelectComplexity}
                   >
-                    {complexityOptions.map((complexity, index) => (
+                    {/* {complexityOptions.map((complexity, index) => (
                       <option key={index} value={complexity}>
                         {complexity}
                       </option>
-                    ))}
+                    ))} */}
+                       <option value="" disabled>Complexities</option>
+                {complexities.map((complexity, index) => (
+                  <option key={index} value={complexity}>
+                    {complexity}
+                  </option>
+                ))}
                   </select>
         </div>
       
@@ -2826,6 +3047,18 @@ const handleback =() =>{
                       </button>
                     </div>
                   ))}
+                         <input
+      type="text"
+      placeholder="Enter correct answer description"
+      className="w-[90%] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] p-[10px] text-[14px] "
+      value={question.correct_answer_description || ''} // Show the correct description
+      onChange={(e) => {
+        const newQuestions = [...questions];
+        newQuestions[questionIndex].correct_answer_description = e.target.value;
+        setQuestions(newQuestions); // Update the questions state
+        setIsModified(true); // Mark as modified
+      }}
+    />
                 </div>
               ))}
                   <div className="flex justify-between mt-4">
@@ -2848,7 +3081,7 @@ const handleback =() =>{
      
         <button
                 className="flex gap-1 items-center cursor-pointer"
-                onClick={handleNext}
+                // onClick={handleNext}
                 disabled={(currentPage + 1) * questionsPerPage >= questions.length}
               >
                 <h1 className="text-[#F17530]">Next</h1>

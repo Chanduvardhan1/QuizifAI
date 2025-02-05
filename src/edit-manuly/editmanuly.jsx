@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 // import { useHistory } from 'react-router-dom';
 import { MdOutlineCancel } from "react-icons/md";
 import { CircularProgress } from "@mui/material";
+import Select from 'react-select';
 
 // Navbar-icons
 import QuizifAilogo from "../assets/Images/images/home/Quizifai3.png";
@@ -271,6 +272,22 @@ export default function editmanuly() {
   const [showModal1, setShowModal1] = useState(false);
   const [shownext, setnext] = useState(false);
 
+
+  const handleToLayout1 = () =>{
+    navigate('/pdf1');
+}
+const handleToLayout2 = () =>{
+    navigate('/pdf2');
+}
+const handleToLayout3 = () =>{
+    navigate('/pdf3');
+}
+const handleToLayout4 = () =>{
+    navigate('/pdf1');
+}
+const handleback =() =>{
+  navigate('/dashboard')
+}
 
   const closeModal = () => {
     setShowModal(false); // Close the modal
@@ -2813,8 +2830,21 @@ const handleSubmit = async (e) => {
         />
         
       </div>
-     
-
+    
+ <div className="flex items-center">
+        <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[55px]">
+        Learning Material <span className="text-red-500"></span>
+        </label>
+        <FormControlLabel
+        control={<Switch />} 
+        // label="Required"
+        disabled
+          // onChange={toggler1}
+          // checked={multiAnswer}
+          className="react-switch"
+        />
+        
+      </div>
     </div>
   
    
@@ -3009,7 +3039,48 @@ const handleSubmit = async (e) => {
               </div>
             ))}
 
-            <div className=" flex  gap-[20px] items-center pl-[25px] ">
+<div className=" flex justify-between items-center py-5 ">
+                <div>
+
+               
+                <button
+                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
+                  onClick={() => setStep(3)}
+                >
+                  Back
+                </button>
+                </div>
+                <div className="flex gap-[5px]">
+                <button
+      className={`w-[123px] h-[32px] rounded-[10px] ${
+        isDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-[#1E4DE9] hover:bg-[rgb(239,81,48)]"
+      } text-white transform hover:scale-105 transition duration-200`}
+      disabled={isDisabled}
+      onClick={handleClick}
+    >
+      Save as Drafts
+    </button>
+
+                <button
+                 disabled={isSubmitting} 
+                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
+              onClick={handleNext}
+             
+                >
+                  {isSubmitting ? "Created" : "Create"}
+                </button>
+                {shownext && (
+                <button
+            onClick={handleNextpage3}
+              className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+
+            >
+              Next
+            </button>
+                 )}
+                </div>
+              </div>
+            {/* <div className=" flex  gap-[20px] items-center pl-[25px] ">
               <button
                 className="w-[80px] h-[30px] rounded-[10px] bg-[#1E4DE9] text-white hover:bg-[#EF5130]"
                 onClick={handleNext}
@@ -3023,7 +3094,7 @@ const handleSubmit = async (e) => {
               >
                 Cancel
               </button>
-            </div>
+            </div> */}
          
             </div>
 

@@ -315,7 +315,7 @@ const close =()=> {
         }
 
         const response = await fetch(
-          "https://dev.quizifai.com:8010/view_departments_created_by_admin/?admin_id=1037",
+          `https://dev.quizifai.com:8010/view_departments_created_by_admin/?admin_id=${userId}`,
           {
             method: "GET",
             headers: {

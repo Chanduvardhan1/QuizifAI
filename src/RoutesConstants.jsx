@@ -116,6 +116,23 @@ import MyTickets1 from "./mytickets/mytickets.jsx";
 import Qizmasterquizess from "./quizmasterquizess/quizmasterquizess.jsx";
 
 
+import Usersquizreports from "./reports/usersquizreport.jsx";
+
+import Myquizattemtdetails from "./reports/myquizattemtdetails.jsx";
+import Organizationusesdetails from "./reports/organizationusesdetails.jsx";
+import Organizationquizsummary from "./reports/organization_Quiz_Summary.jsx";
+import Organizationtopscore from "./reports/orgainazationtopscore.jsx";
+import Organizationquizmaster from "./reports/organizationquizmaster.jsx";
+import Organizationallusers from "./reports/organizationallusers.jsx";
+import Alluserssummaryorganization from "./reports/alluserssummaryorganization.jsx";
+
+import Superadminsummary from "./reports/superadminsummary.jsx";
+import Superadminallusers from "./reports/superadminallusers.jsx";
+import Superadminquizmaster from "./reports/superadminquizmaster.jsx";
+import Superadminquizsummary from "./reports/superadminquizsummary.jsx";
+import Superadminusesdetails from "./reports/superadminusersdetails.jsx";
+import Allusersactivitysuperadmin from "./reports/allusersactivitysuperadmin.jsx";
+import Databaseauditsummary from "./reports/databaseauditsummary.jsx";
 export default () => {
     return [
         {
@@ -130,10 +147,85 @@ export default () => {
             path:'HelpDesk',
             component:HelpDesk,
             isPrivate: true
+        }, 
+        {
+            path:'Usersquizreports',
+            component:Usersquizreports,
+            isPrivate: true
+        },
+        {
+            path:'Superadminsummary',
+            component:Superadminsummary,
+            isPrivate: true
+        },
+        {
+            path:'Superadminallusers',
+            component:Superadminallusers,
+            isPrivate: true
+        },
+        {
+            path:'Superadminquizmaster',
+            component:Superadminquizmaster,
+            isPrivate: true
+        },
+        {
+            path:'Superadminquizsummary',
+            component:Superadminquizsummary,
+            isPrivate: true
+        },
+        {
+            path:'Superadminusesdetails',
+            component:Superadminusesdetails,
+            isPrivate: true
+        },
+        {
+            path:'Databaseauditsummary',
+            component:Databaseauditsummary,
+            isPrivate: true
+        },
+        {
+            path:'Allusersactivitysuperadmin',
+            component:Allusersactivitysuperadmin,
+            isPrivate: true
+        },
+        {
+            path:'Alluserssummaryorganization',
+            component:Alluserssummaryorganization,
+            isPrivate: true
+        },
+        {
+            path:'Organizationallusers',
+            component:Organizationallusers,
+            isPrivate: true
+        },
+        {
+            path:'Organizationquizmaster',
+            component:Organizationquizmaster,
+            isPrivate: true
+        },
+        {
+            path:'Organizationtopscore',
+            component:Organizationtopscore,
+            isPrivate: true
+        },
+        {
+            path:'Organizationquizsummary',
+            component:Organizationquizsummary,
+            isPrivate: true
+        },
+        {
+            path:'Organizationusesdetails',
+            component:Organizationusesdetails,
+            isPrivate: true
         },
         {
             path:'MyTickets',
             component:MyTickets,
+            isPrivate: true
+        },
+        {
+            path:'Myquizattemtdetails',
+            component:Myquizattemtdetails,
             isPrivate: true
         },
         {

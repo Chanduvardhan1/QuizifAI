@@ -536,7 +536,7 @@ const quizresults = () => {
                 <div className="w-full mt-8" key={index}>
                   {/* Question Text */}
                   <div className="mb-2">
-                    <span className="text-[#214082] text-lg font-semibold">
+                    <span className="text-[#214082] text-[15px] font-semibold">
                       {index + 1}. {question.question_text}
                     </span>
                   </div>

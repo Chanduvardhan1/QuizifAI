@@ -652,16 +652,29 @@ const endIndex = startIndex + questionsPerPage;
 // Slice the questions for the current page
 const currentQuestions = questions.slice(startIndex, endIndex);
 
+// const handleNext4 = () => {
+//   if ((currentPage + 1) * questionsPerPage < questions.length) {
+//     setCurrentPage(currentPage + 1);
+//   }
+// };
+
+const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+// const currentPage = Math.floor(currentQuestionIndex / questionsPerPage);
+
 const handleNext4 = () => {
-  if ((currentPage + 1) * questionsPerPage < questions.length) {
-    setCurrentPage(currentPage + 1);
+  if (currentQuestionIndex < questions.length - 1) {
+    setCurrentQuestionIndex(currentQuestionIndex + 1);
   }
 };
 
-const handlePrevious = () => {
-  if (currentPage > 0) {
-    setCurrentPage(currentPage - 1);
+const handlePrev = () => {
+  if (currentQuestionIndex > 0) {
+    setCurrentQuestionIndex(currentQuestionIndex - 1);
   }
+};
+
+const handleQuestionClick = (index) => {
+  setCurrentQuestionIndex(index);
 };
 
   const closeModal = () => {
@@ -719,9 +732,22 @@ const closeModal1 = () => {
     //   setIsSubmitting(false);
     //   return;
     // }
+
+       if (!selectedCategory) {
+          toast.error("Quiz category is required.");
+          setIsSubmitting(false);
+          return;
+        }
+        if (!selectedComplexity) {
+          toast.error("complexity name is required.");
+          setIsSubmitting(false);
+          return;
+        }
     setStep(2);
   };
   const handleNextpage1 = () => {
+    
+       
     setStep(3);
   };
   const handleNextpage2 = () => {
@@ -1507,32 +1533,33 @@ const handleback =() =>{
       console.log(responseData, "data");
 
       if (response.ok && responseData.response === "success") {
+        const quizInfo = responseData.data[0];
         if (responseData.pdf_url?.status === "success") {
           const pdfUrl = responseData.pdf_url.pdf_url;
           setPdfUrl(pdfUrl); // Save PDF URL to state
           console.log("File uploaded successfully. PDF URL:", pdfUrl);
         }
-        setQuizData(responseData.data[0]);
-        setComplexityOptions([responseData.data[0].quiz_complexity_name]);
-        setSelectedComplexity(responseData.data[0].quiz_complexity_name);
-        setTimings(responseData.data[0].quiz_time_bounded_questions);
-        // setSelectedSubCategory(responseData.data[0].quiz_sub_category_name);
-        setcoursename(responseData.data[0].course_name);
-        setClasses(responseData.data[0].class_name);
-        setPercentage(responseData.data[0].pass_percentage);
-
-        setSelectedValue(responseData.data[0].retake_flag);
-        setDuration(responseData.data[0].quiz_duration);
-        setQuestions(responseData.data[0].questions);
-        // Assuming router and state setter are defined properly
-        // navigate("/quizcreated", { state: { quizData: responseData } });
-
-        // Set category and subcategory options
-        setSelectedCategory(responseData.data[0].quiz_category_name || "");
-        setSelectedSubCategory(responseData.data[0].quiz_sub_category_name || "");
-        setSelectedCourse(responseData.data[0].course_name || "");
-        setSelectedClass(responseData.data[0].class_name || "");
-        setPublicAccess(responseData.data[0].quiz_public_access === "on");
+      
+        setQuizData(quizInfo);
+        setTitle(quizInfo.quiz_title)
+        setdisabledon(quizInfo.available_from);
+        setavailablefrom(quizInfo.disabled_on);
+        setNumQuestions(quizInfo.num_questions);
+        setDescription(quizInfo.quiz_description);
+        
+        // setComplexityOptions([quizInfo.quiz_complexity_name]);
+        setSelectedComplexity(quizInfo.quiz_complexity_name);
+        setTimings(quizInfo.quiz_time_bounded_questions);
+        setSelectedCategory(quizInfo.quiz_category_name || "");
+        setSelectedSubCategory(quizInfo.quiz_sub_category_name || "");
+        setSelectedCourse(quizInfo.course_name || "");
+        setSelectedClass(quizInfo.class_name || "");
+        setPercentage(quizInfo.pass_percentage);
+        setSelectedValue(quizInfo.retake_flag);
+        setDuration(quizInfo.quiz_duration);
+        setquiztotalmarks(quizInfo.quiz_total_marks);
+        setPublicAccess(quizInfo.quiz_public_access === "on");
+        setQuestions(quizInfo.questions);
         setPercentageOptions([
           {
             label: responseData.data[0].pass_percentage,
@@ -1731,10 +1758,10 @@ const handleback =() =>{
 
 
 const handleDownloadTemplate = () => {
-  const templateUrl = "/assets/templates/bulk_user_upload_template.xlsx";
+  const templateUrl = "src/assets/Tamplate/Quiz template.xlsx";
   const link = document.createElement("a");
   link.href = templateUrl;
-  link.download = "bulk_user_upload_template.xlsx";
+  link.download = "bQuiz template.xlsx";
   link.click();
 };
 
@@ -1820,13 +1847,13 @@ const handleDownloadTemplate = () => {
 
         {/* Meta Information */}
         <div className="text-[#00008b] text-sm flex flex-wrap mt-2">
-          <span>{ quizData? quizData.quiz_category_name: categoryOptions[0]}</span>
+          <span>{selectedCategory}</span>
           <span className="mx-1">.</span>
-          <span>{quizData? quizData.quiz_sub_category_name: subCategoryOptions[0]}</span>
+          <span>{selectedSubCategory}</span>
           <span className="mx-1">.</span>
-          <span>{quizData ? quizData.course_name : ""} {quizData ? quizData.class_name : ""}</span>
+          <span>{selectedCourse} {selectedClass}</span>
           <span className="mx-1">.</span>
-          <span>{ quizData ? quizData.quiz_complexity_name: complexityOptions[0]}</span>
+          <span>{selectedComplexity}</span>
         </div>
 
         {/* Icons Row */}
@@ -2020,7 +2047,7 @@ const handleDownloadTemplate = () => {
   className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
   type="text"
   required
-  value={quizData ? quizData.quiz_title : title}
+  value={title}
   onChange={(e) => setTitle(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1))}
 />
 
@@ -2038,7 +2065,7 @@ const handleDownloadTemplate = () => {
                 className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
                 type="text"
                 required
-                value={quizData ? quizData.quiz_description : description}
+                value={description}
 
                 onChange={(e) => setDescription(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1))}
               />
@@ -2435,7 +2462,7 @@ const handleDownloadTemplate = () => {
                     className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
 
                     placeholder="No of questions"
-                    value={quizData ? quizData.num_questions : numQuestions}
+                    value={numQuestions}
                     onChange={(e) => {
                       const value = parseInt(e.target.value);
                       setNumQuestions(value);
@@ -2468,7 +2495,7 @@ const handleDownloadTemplate = () => {
                              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
 
                   placeholder="Total marks"
-                  value={quizData ? quizData.quiz_total_marks : description}
+                  value={quiztotalmarks}
                   onChange={(e) => setquiztotalmarks(e.target.value)}
                 ></input>
         </div>
@@ -2660,7 +2687,7 @@ const handleDownloadTemplate = () => {
               type="date"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
                 placeholder="YYYY-MM-DD"
-                value={quizData ? quizData.available_from : availablefrom}
+                value={availablefrom}
                 onChange={(e) => setavailablefrom(e.target.value)}
               ></input>
   
@@ -2677,7 +2704,7 @@ const handleDownloadTemplate = () => {
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
 
                 placeholder="YYYY-MM-DD"
-                value={quizData ? quizData.disabled_on : disabledon}
+                value={disabledon}
                 onChange={(e) => setdisabledon(e.target.value)}
               ></input>
   
@@ -2694,10 +2721,7 @@ const handleDownloadTemplate = () => {
            className={ ` w-[75%] border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
                 
                     onChange={(e) => setTimings(e.target.value)}
-                    value={
-                      quizData
-                        ? quizData.quiz_time_bounded_questions
-                        : selectedTiming[0]
+                    value={timings
                     }
                   >
                     {selectedTiming.map((timing, index) => (
@@ -2951,7 +2975,119 @@ const handleDownloadTemplate = () => {
       </div> */}
       
       </div>
-      {currentQuestions.map((question, questionIndex) => (
+      <div className="p-4">
+      {/* Question Number Navigation */}
+      <div className="flex gap-2 mb-4">
+        {questions.map((question, index) => {
+          const isIncomplete =
+            !question.question_text ||
+            question.options.some((option) => !option.answer_option_text) ||
+            !question.correct_answer_description;
+
+          return (
+            <div
+            key={index}
+            onClick={() => handleQuestionClick(index)}
+            className={`cursor-pointer w-8 h-8 flex items-center justify-center border text-sm font-medium rounded-md transition-all duration-300 
+    
+              ${index === currentQuestionIndex ? "bg-blue-200 font-bold" : ""}`} // Added font-bold here
+          >
+            {index + 1}
+          </div>
+          );
+        })}
+      </div>
+
+      {/* Current Question Display */}
+      <div className="mb-8">
+        <div className="flex items-center mb-4">
+          <div className="mr-2 text-xl font-bold text-[#214082]">
+            {currentQuestionIndex + 1}.
+          </div>
+          <input
+            type="text"
+            placeholder="Question"
+            className="w-[70%] h-[40px] text-[#214082] font-bold rounded-md border border-gray-400 p-2 text-[14px]"
+            value={questions[currentQuestionIndex].question_text}
+            onChange={(e) => {
+              const newQuestions = [...questions];
+              newQuestions[currentQuestionIndex].question_text = e.target.value;
+              setQuestions(newQuestions);
+            }}
+          />
+        </div>
+        {/* Options */}
+        {questions[currentQuestionIndex].options.map((option, optionIndex) => (
+          <div key={optionIndex} className="flex items-center mb-2">
+            <div className="mr-2 font-normal w-[40px] rounded-md p-2 border border-gray-400 flex justify-center text-center items-center text-[14px]">
+              {String.fromCharCode(97 + optionIndex).toUpperCase()}
+            </div>
+            <input
+              type="text"
+              placeholder="Option Text"
+              className="w-[850px] rounded-md border border-gray-400 p-2 text-[12px]"
+              value={option.answer_option_text}
+              onChange={(e) => {
+                const newOptions = [...questions[currentQuestionIndex].options];
+                newOptions[optionIndex].answer_option_text = e.target.value;
+                const newQuestions = [...questions];
+                newQuestions[currentQuestionIndex].options = newOptions;
+                setQuestions(newQuestions);
+              }}
+            />
+              <button
+                        className={`ml-2 ${
+                          option.correct_answer_flag
+                            ? "bg-green-500"
+                            : "bg-gray-300"
+                        } rounded-full w-10 h-[20px] transition-colors duration-300 focus:outline-none`}
+                        onClick={() =>
+                          handleToggleButton(questionIndex, optionIndex)
+                        }
+                      >
+                        <span
+                          className={`block ${
+                            option.correct_answer_flag
+                              ? "translate-x-5"
+                              : "translate-x-0"
+                          } transform -translate-y-1.5 w-[18px] h-[18px] relative top-[6px] bg-white rounded-full shadow-md transition-transform duration-300`}
+                        ></span>
+                      </button>
+          </div>
+        ))}
+        {/* Correct Answer Description */}
+        <input
+          type="text"
+          placeholder="Enter correct answer description"
+          className="w-full h-[40px] rounded-md border border-gray-400 p-2 text-[14px]"
+          value={questions[currentQuestionIndex].correct_answer_description || ""}
+          onChange={(e) => {
+            const newQuestions = [...questions];
+            newQuestions[currentQuestionIndex].correct_answer_description = e.target.value;
+            setQuestions(newQuestions);
+          }}
+        />
+      </div>
+      
+      {/* Navigation Buttons */}
+      {/* <div className="mt-4 flex justify-between">
+        <button
+          className="px-4 py-2 bg-gray-300 rounded-md"
+          disabled={currentQuestionIndex === 0}
+          onClick={handlePrev}
+        >
+          Previous
+        </button>
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded-md"
+          disabled={currentQuestionIndex === questions.length - 1}
+          onClick={handleNext4}
+        >
+          Next
+        </button>
+      </div> */}
+    </div>
+      {/* {currentQuestions.map((question, questionIndex) => (
         <div key={startIndex + questionIndex} className="mb-8">
           <div className="flex items-center mb-4">
             <div className="mr-2 text-xl font-bold text-[#214082]">
@@ -2970,7 +3106,6 @@ const handleDownloadTemplate = () => {
                       }}
                     />
 
-                    {/* Input field for question weightage */}
                     <input
                       type="number"
                       placeholder="Marks"
@@ -2988,7 +3123,6 @@ const handleDownloadTemplate = () => {
                       }}
                     />
 
-                    {/* Input field for question duration */}
                     <input
                       type="text"
                       hidden
@@ -3005,10 +3139,8 @@ const handleDownloadTemplate = () => {
                     />
      
                   </div>
-                  {/* Input fields for options */}
                   {question.options.map((option, optionIndex) => (
                     <div key={optionIndex} className="flex items-center mb-2">
-                      {/* Option input field */}
                         <div className="mr-2  font-normal w-[40px] rounded-[5px] p-[8px] border-[1px] border-solid border-[#B8BBC2] flex justify-center text-center justify-items-center items-center text-[14px]">
                         {String.fromCharCode(97 + optionIndex).toUpperCase()}
                         </div>
@@ -3026,7 +3158,6 @@ const handleDownloadTemplate = () => {
                           setQuestions(newQuestions);
                         }}
                       />
-                      {/* Add correct answer flag input */}
                       <button
                         className={`mr-2 ${
                           option.correct_answer_flag
@@ -3060,8 +3191,8 @@ const handleDownloadTemplate = () => {
       }}
     />
                 </div>
-              ))}
-                  <div className="flex justify-between mt-4">
+              ))} */}
+                  {/* <div className="flex justify-between mt-4">
         <button
                 className="flex gap-1 items-center cursor-pointer"
                 onClick={handlePrevious}
@@ -3087,7 +3218,7 @@ const handleDownloadTemplate = () => {
                 <h1 className="text-[#F17530]">Next</h1>
                 <img className="h-3 w-3" src={GreaterThan} alt="Next icon" />
               </button>
-      </div>
+      </div> */}
   
               <div className=" flex justify-between items-center py-5 ">
                 <button

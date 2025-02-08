@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 // import Image from "next/image";
 
 // Navbar-icons
@@ -42,6 +42,8 @@ import admin from "../../src/assets/Images/dashboard/image (21).png";
 import organization from "../../src/assets/Images/dashboard/image (20).png";
 import Quizmaster from "../../src/assets/Images/dashboard/quizmaster.webp";
 import repoart from "../../src/assets/Images/dashboard/report.webp";
+import { AuthContext } from "../Authcontext/AuthContext";
+
 
 import { MdOutlineCancel } from "react-icons/md";
 
@@ -51,14 +53,14 @@ const reportsData = [
       category: 'My Reports',
       color: "bg-[#c1e7e3]",  
 
-      reports: ['My History', 'Global Score leaderboard']
+      reports: ['My History', 'My Quiz Attemt Details', 'Global Score leaderboard', 'Users Quiz Report']
   },
   {
     image:Quizmaster,
     color: "bg-[#ceffe4]",  
 
       category: 'Quiz Master Reports',
-      reports: ['Quiz Status Detail', 'Quiz Status Summary']
+      reports: ['Quiz Master Performance', 'Quiz Status Detail', 'Quiz Status Summary']
   },
   {
     image:admin,
@@ -79,12 +81,17 @@ const reportsData = [
 
       category: 'Organization Reports',
       reports: [
-          'Organization-Wide Quiz Performance Summary',
-          'Department/Class-Wise Quiz Analysis',
+          'Organization Top Scorers',
+          'Organization User List',
+          'Organization Quiz Summary',
+          // 'Detailed User Report',
+          'Organization All Users',
+          'All User Summary Report',
+          // 'Organization-Wide Quiz Performance Summary',
+          // 'Department/Class-Wise Quiz Analysis',
           'Quiz Master Performance Across Organization',
-          'Organization-Wide Top Scorers',
-          'Organization-Wide Quiz Trends',
-          'Organization-Wide Low Performers'
+          // 'Organization-Wide Quiz Trends',
+          // 'Organization-Wide Low Performers'
       ]
   },
   {
@@ -93,11 +100,19 @@ const reportsData = [
 
       category: 'Super Admin Reports',
       reports: [
-          'Organization Overview',
-          'Super Admin Metrics',
-          'User List Across Organizations',
-          'Organization-Wide Quiz Summary',
-          'Subscription Summary'
+          'Organization User List SuperAdmin',
+          'Organization Quiz Summary SuperAdmin',
+          // 'Detailed User Report',
+          'User Summary Report',
+          'User Activity Summary',
+          'Database Audit Summary',
+          // 'Organization Overview',
+          'Quiz Master Performance',
+          'All Users SuperAdmin',
+          // 'Super Admin Metrics',
+          // 'User List Across Organizations',
+          // 'Organization-Wide Quiz Summary',
+          // 'Subscription Summary'
       ]
   }
 ];
@@ -112,7 +127,8 @@ const categoryColors = {
 
 const repoarts = () => {
       const [userId, setUserId] = useState(localStorage.getItem("user_id"));
-    
+      const { isAuthenticated, authToken,logout } = useContext(AuthContext);
+
    const navigate = useNavigate();
    const handleBackToLogin = () => {
     const authToken = localStorage.getItem('authToken') || null;
@@ -150,27 +166,153 @@ const repoarts = () => {
       });
   };
 //----------------------** navigaite other pages**------------//
+    const [isModalOpen1, setIsModalOpen1] = useState(false);
+    const [isModalOpen2, setIsModalOpen2] = useState(false);
     const [isModalOpen3, setIsModalOpen3] = useState(false);
+    const [isModalOpen4, setIsModalOpen4] = useState(false);
+    const [isModalOpen5, setIsModalOpen5] = useState(false);
+    const closeModal1 = () => {
+      setIsModalOpen1(false);
+    };
+    const closeModal2 = () => {
+      setIsModalOpen2(false);
+    };
     const closeModal3 = () => {
       setIsModalOpen3(false);
+    };
+    const closeModal4 = () => {
+      setIsModalOpen4(false);
+    };
+    const closeModal5 = () => {
+      setIsModalOpen5(false);
     };
 
   const userRole = localStorage.getItem("user_role");
   const orgId = localStorage.getItem("org_id");
 
-  const allowedRoles1 = ["Quiz Master","Admin","Super Admin"];
+  const allowedRoles1 = ["Quiz Master","Admin"];
+
+  const allowedRoles2 = ["Admin"];
+  const allowedRoles3 = ["Super Admin"];
+
+
+  const handleRestrictedClick1 = (navigateTo) => {
+    // Check if the user role is "Quiz Master" and orgId exists
+    if (allowedRoles1.includes(userRole) && orgId) {
+      navigate(navigateTo); // Allow navigation
+    } else {
+      setIsModalOpen1(true); // Show modal for restricted access
+    }
+  };
+
+
+  const handleRestrictedClick2 = (navigateTo) => {
+    // Check if the user role is "Quiz Master" and orgId exists
+    if (allowedRoles1.includes(userRole)) {
+      navigate(navigateTo); // Allow navigation
+    } else {
+      setIsModalOpen2(true); // Show modal for restricted access
+    }
+  };
 
   const handleRestrictedClick3 = (navigateTo) => {
     // Check if the user role is "Quiz Master" and orgId exists
-    if (allowedRoles1.includes(userRole) && orgId) {
+    if (allowedRoles2.includes(userRole) && orgId) {
       navigate(navigateTo); // Allow navigation
     } else {
       setIsModalOpen3(true); // Show modal for restricted access
     }
   };
 
-  const handleGlobalLeaderboard = () => handleRestrictedClick3("/leaderboardall");
+  const handleRestrictedClick4 = (navigateTo) => {
+    // Check if the user role is "Quiz Master" and orgId exists
+    if (allowedRoles2.includes(userRole)) {
+      navigate(navigateTo); // Allow navigation
+    } else {
+      setIsModalOpen4(true); // Show modal for restricted access
+    }
+  };
 
+  const handleRestrictedClick5 = (navigateTo) => {
+    // Check if the user role is "Quiz Master" and orgId exists
+    if (allowedRoles3.includes(userRole)) {
+      navigate(navigateTo); // Allow navigation
+    } else {
+      setIsModalOpen5(true); // Show modal for restricted access
+    }
+  };
+
+  const handleGlobalLeaderboard = () => handleRestrictedClick1("/leaderboardall");
+  const handleOrganizationUserList = () => handleRestrictedClick3("/Organizationusesdetails");
+  const handleOrganizationQuizSummary = () => handleRestrictedClick3("/Organizationquizsummary");
+  const handleOrganizationTopScorers = () => handleRestrictedClick3("/Organizationtopscore");
+  const handleQuizMasterPerformance = () => handleRestrictedClick3("/Organizationquizmaster");
+  const handleOrganizationAllUsers = () => handleRestrictedClick3("/Organizationallusers");
+  const handleAllUserSummaryReport = () => handleRestrictedClick3("/Alluserssummaryorganization");
+
+  const handleUserActivitySummary = () => handleRestrictedClick5("/Allusersactivitysuperadmin");
+  const handleDatabaseAuditSummary = () => handleRestrictedClick5("/Databaseauditsummary");
+  const handleOrganizationUserListSuperAdmin = () => handleRestrictedClick5("/Superadminusesdetails");
+  const handleOrganizationQuizSummarySuperAdmin = () => handleRestrictedClick5("/Superadminquizsummary");
+  const handleQuizMasterPerformancesuperadmin = () => handleRestrictedClick5("/Superadminquizmaster");
+  const handleAllUsersSuperAdmin = () => handleRestrictedClick5("/Superadminallusers");
+  const handleUserSummaryReport = () => handleRestrictedClick5("/Superadminsummary");
+
+
+  const  handleMyQuizAttemtDetails =  () => {
+    navigate('/Myquizattemtdetails');
+  } 
+  // const handleOrganizationUserList  =  () => {
+  //   navigate('/Organizationusesdetails');
+  // } 
+  // const handleOrganizationQuizSummary  =  () => {
+  //   navigate('/Organizationquizsummary');
+  // } 
+  // const handleOrganizationTopScorers  =  () => {
+  //   navigate('/Organizationtopscore');
+  // } 
+  // const handleQuizMasterPerformance  =  () => {
+  //   navigate('/Organizationquizmaster');
+  // } 
+
+  // const handleOrganizationAllUsers  =  () => {
+  //   navigate('/Organizationallusers');
+  // } 
+  // const handleAllUserSummaryReport  =  () => {
+  //   navigate('/Alluserssummaryorganization');
+  // } 
+  // const handleUserActivitySummary  =  () => {
+  //   navigate('/Allusersactivitysuperadmin');
+  // } 
+
+  // const handleDatabaseAuditSummary  =  () => {
+  //   navigate('/Databaseauditsummary');
+  // } 
+
+
+  // const handleOrganizationUserListSuperAdmin  =  () => {
+  //   navigate('/Superadminusesdetails');
+  // } 
+
+  // const handleOrganizationQuizSummarySuperAdmin  =  () => {
+  //   navigate('/Superadminquizsummary');
+  // } 
+  // const handleQuizMasterPerformancesuperadmin  =  () => {
+  //   navigate('/Superadminquizmaster');
+  // }
+  // const handleAllUsersSuperAdmin  =  () => {
+  //   navigate('/Superadminallusers');
+  // }
+
+  // const handleUserSummaryReport  =  () => {
+  //   navigate('/Superadminsummary');
+  // }
+  const handleUsersQuizReport  =  () => {
+    navigate('/Usersquizreports');
+  }
+
+  
+  
 //----------------------** navigaite other pages**------------//
 
 const  handleGlobalLeaderboard1 =() => {
@@ -254,7 +396,7 @@ const  handleMyHistory =() => {
                   reportItem
                 ) && categoryData.category === "Quiz Master Reports"
                   ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
-                  : ["My Reports"].includes(
+                  : ["My Reports", "Organization Reports" , "Super Admin Reports"].includes(
                       categoryData.category
                     )
                   ? "text-[#3340AF] hover:underline hover:underline-offset-2 cursor-pointer"
@@ -267,6 +409,37 @@ const  handleMyHistory =() => {
                   ? handleGlobalLeaderboard1
                   : reportItem === "Quiz Status Detail"
                   ? handleGlobalLeaderboard
+                  : reportItem === "My Quiz Attemt Details"
+                  ? handleMyQuizAttemtDetails
+                  : reportItem === "Organization User List"
+                  ? handleOrganizationUserList
+                  : reportItem === "Organization Quiz Summary"
+                  ? handleOrganizationQuizSummary
+                  : reportItem === "Organization Top Scorers"
+                  ? handleOrganizationTopScorers
+                  : reportItem === "Quiz Master Performance Across Organization"
+                  ? handleQuizMasterPerformance
+                  : reportItem === "Organization All Users"
+                  ? handleOrganizationAllUsers
+                  : reportItem === "All User Summary Report"
+                  ? handleAllUserSummaryReport
+                  : reportItem === "User Activity Summary"
+                  ? handleUserActivitySummary
+                  : reportItem === "Database Audit Summary"
+                  ? handleDatabaseAuditSummary
+                  : reportItem === "Organization User List SuperAdmin"
+                  ? handleOrganizationUserListSuperAdmin
+                  : reportItem === "Organization Quiz Summary SuperAdmin"
+                  ? handleOrganizationQuizSummarySuperAdmin
+                  : reportItem === "Quiz Master Performance"
+                  ? handleQuizMasterPerformancesuperadmin     
+                  : reportItem === "All Users SuperAdmin"
+                  ? handleAllUsersSuperAdmin  
+                  : reportItem === "User Summary Report"
+                  ? handleUserSummaryReport 
+                  : reportItem === "Users Quiz Report"
+                  ? handleUsersQuizReport
+                  
                   :null}
             >
               {reportItem}
@@ -277,7 +450,7 @@ const  handleMyHistory =() => {
       ))}
     </div>
 </div>
-{isModalOpen3 && (
+{isModalOpen1 && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
             <p className="text-lg font-semibold mb-4">
@@ -285,7 +458,67 @@ const  handleMyHistory =() => {
             </p>
             <button
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              onClick={closeModal1}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+      {isModalOpen2 && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+            <p className="text-lg font-semibold mb-4">
+            You must be a Quiz Master access this feature.
+            </p>
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              onClick={closeModal2}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+      {isModalOpen3 && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+            <p className="text-lg font-semibold mb-4">
+            You must be a Admin and belong to an organization to access this feature.
+            </p>
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
               onClick={closeModal3}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+      {isModalOpen4 && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+            <p className="text-lg font-semibold mb-4">
+            You must be a Admin access this feature.
+            </p>
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              onClick={closeModal4}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+      {isModalOpen5 && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+            <p className="text-lg font-semibold mb-4">
+            You must be a super Admin access this feature.
+            </p>
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              onClick={closeModal5}
             >
               Close
             </button>

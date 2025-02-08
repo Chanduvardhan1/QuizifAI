@@ -17,7 +17,7 @@ import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
 import close from "../../src/assets/Images/images/dashboard/cancel.png"
 
 
-const myhistory = () => {
+const organizationquizmaster = () => {
   const [userName, setUserName] = useState("");
   const [globalRank, setGlobalRank] = useState("");
   const [globalScore, setGlobalScore] = useState("");
@@ -41,62 +41,52 @@ const myhistory = () => {
 
   const [crop, setCrop] = useState({ aspect: 1 });
   const [completedCrop, setCompletedCrop] = useState(null);
-  const [sortOption, setSortOption] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [sortOption, setSortOption] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 25;
 
-  
-    useEffect(() => {
-      const fetchQuizData = async () => {
-        try {
-          const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
-          if (!authToken) {
-            console.error("No authentication token found. Please log in again.");
-            return;
-          }
-          const response = await fetch(
-            `https://dev.quizifai.com:8010/history_Page/`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${authToken}`,
-              },
-              body: JSON.stringify({
-                user_id: userId,
-              }),
-            }
-          );
-          if (!response.ok) {
-            throw new Error("Failed to fetch history quiz data");
-          }
-          const result = await response.json();
-          console.log("History data :", result);
-  
-          const data = result.data;
-          setUserName(data.user_name || "");
-          setNoOfQuizzes(data.total_no_of_quizzes);
-          setNoOfAttempts(data.total_no_of_attempts);
-          setGlobalRank(data.global_score_rank);
-          setGlobalScore(data.global_score);
-          setNoOfMinutes(data.total_duration);
-          setSimpleCount(data.simple_count);
-          setModerateCount(data.moderate_count);
-          setComplexCount(data.complex_count);
-          setPassCount(data.pass_count);
-          setFailCount(data.fail_count);
-  
-          // Set quiz details if needed
-          // const quizDate = data.quiz_details;
-          setQuizDetails(data.quiz_details);
-          // setDate(quizDate.month);
-        } catch (error) {
-          console.error("Error fetching history quiz data:", error);
-        }
-      };
-      fetchQuizData();
-    }, [authToken, isAuthenticated, navigate, userId]);
+  const [quizzes, setQuizzes] = useState([]);
+  const orgId = localStorage.getItem("org_id");
+
+
+  const [searchTerm, setSearchTerm] = useState("");
+const [quizMasters, setQuizMasters] = useState([]);
+const [quizMasterNames, setQuizMasterNames] = useState([]);
+
+// Fetch Data
+useEffect(() => {
+  const authToken = localStorage.getItem("authToken") || null;
+
+  if (!authToken) {
+    console.error("No authToken found in localStorage.");
+    return;
+  }
+
+  fetch(`https://dev.quizifai.com:8010/quiz-master-performance-for-org-admin/?org_id=${orgId}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${authToken}`,
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      setQuizMasters(data.data);
+      setQuizMasterNames([...new Set(data.data.map((item) => item.quiz_master_name))]); // Extract unique names
+    })
+    .catch((error) => console.error("Error fetching data:", error));
+}, []);
+
+// Filtered Data
+const filteredQuizMasters = quizMasters.filter(
+  (quizMaster) =>
+    quizMaster.quiz_master_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    quizMaster.total_quizzes_created.toString().includes(searchTerm) ||
+    quizMaster.average_quiz_complexity.toString().includes(searchTerm) ||
+    quizMaster.total_attempts_on_quizzes.toString().includes(searchTerm)
+);
+
+
 
   // Handle sort change
   const handleSortChange = (event) => {
@@ -110,68 +100,27 @@ const myhistory = () => {
     setCurrentPage(1); // Reset to the first page when search changes
   };
 
+  useEffect(() => {
+    const filtered = quizzes.filter((quiz) => {
+      const matchesSearchTerm =
+        quiz.quiz_title.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSortOption =
+        sortOption === 'All' || quiz.quiz_title === sortOption;
+      return matchesSearchTerm && matchesSortOption;
+    });
+    // setFilteredQuizzes(filtered);
+  }, [searchTerm, sortOption, quizzes]);
+
+//   const handleSearchChange = (e) => {
+//     setSearchTerm(e.target.value);
+//   };
+
+//   const handleSortChange = (e) => {
+//     setSortOption(e.target.value);
+//   };
+
   // Get the current date for filtering
-const today = new Date();
-const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-const startOfWeek = new Date(today);
-startOfWeek.setDate(today.getDate() - today.getDay()); // Start of the week
 
-// Filter quizzes based on search term
-const filteredQuizzes = quizDetails.filter((quiz) => {
-  return (
-    quiz.quiz_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    quiz.time.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    quiz.month.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    quiz.attempt_duration_mins
-      .toString()
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
-  );
-});
-
-// Sort and filter quizzes based on selected option
-const filteredByDate = filteredQuizzes.filter((quiz) => {
-  const quizDate = new Date(quiz.month);
-  if (sortOption === "This Month") {
-    return quizDate >= firstDayOfMonth;
-  } else if (sortOption === "This Week") {
-    return quizDate >= startOfWeek;
-  } else if (sortOption === "Today") {
-    return quizDate.toDateString() === today.toDateString();
-  }
-  return true; // Show all quizzes if "All" is selected
-});
-
-// Sort quizzes if "Latest" is selected
-const sortedQuizzes =
-  sortOption === "All"
-    ? filteredByDate.sort((a, b) => new Date(b.date) - new Date(a.date))
-    : filteredByDate;
-
-// Pagination logic
-const indexOfLastRow = currentPage * rowsPerPage;
-const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-const currentRows = sortedQuizzes.slice(indexOfFirstRow, indexOfLastRow);
-
-// Show message if no quizzes are found
-const noQuizzesMessage = () => {
-  if (sortOption === "Today") return "No quizzes attempted on today.";
-  if (sortOption === "This Week") return "No quizzes attempted this week.";
-  if (sortOption === "This Month") return "No quizzes attempted this month.";
-  return "No quizzes available.";
-};
-// Handle pagination next/previous
-const handleNext = () => {
-  if (indexOfLastRow < sortedQuizzes.length) {
-    setCurrentPage(currentPage + 1);
-  }
-};
-
-const handlePrevious = () => {
-  if (currentPage > 1) {
-    setCurrentPage(currentPage - 1);
-  }
-};
 
   // Image handling and crop logic
   useEffect(() => {
@@ -332,7 +281,24 @@ const [error, setError] = useState(null);
 const handleBack = () => {
   navigate("/repoarts")
 };
+const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
+
+// const quizTitles = ['All', ...new Set(quizAttempts.map(quiz => quiz.quiz_title))];
+
+// Filtering logic for search term and selected quiz title
+// const filteredQuizzes = quizAttempts.filter((quiz) => {
+//     // Ensure the search term is trimmed and case-insensitive
+//     const trimmedSearchTerm = searchTerm.trim().toLowerCase();
+//     const lowerCaseQuizTitle = quiz.quiz_title.toLowerCase();
   
+//     const searchMatch = lowerCaseQuizTitle.includes(trimmedSearchTerm); // search term match
+//     const titleMatch = selectedQuizTitle === 'All' || quiz.quiz_title === selectedQuizTitle; // selected quiz title match
+  
+//     // Debugging the filter match
+//     console.log('Quiz:', quiz.quiz_title, 'Search Match:', searchMatch, 'Title Match:', titleMatch);
+  
+//     return searchMatch && titleMatch; // Only return quizzes that match both
+//   });
   return (
     <>
       <div className="flex w-full">
@@ -341,18 +307,23 @@ const handleBack = () => {
         <div onClick={handleBack} className=" absolute top-3 right-3 cursor-pointer">
                <img src={close} alt="" className="w-[25px] h-[25px]" />
              </div>
-          <div className="flex justify-center p-[5px] text-[24px]">
-            <h1 className="text-[#F17530]">My History</h1>
-          </div>
-          <div className=" absolute top-[5px] right-[5px]">
-            
-          
-      
-</div>
+          {/* <div className="flex justify-center p-[5px] text-[24px]">
+            <h1 className="text-[#F17530]">Organization Quiz Master</h1>
+          </div> */}
+          <div className="flex justify-start items-center p-[5px] text-[18px]">
+                <span className="text-[#F17530]">Title</span>
+                <span className="text-[#F17530] ml-[62px]"> : </span>
+
+              <span className="text-[#214082] text-[16px] ml-2">Organization Quiz Master</span>
+            </div>
+            <div className="flex justify-start items-center p-[5px] text-[18px]">
+                <span className="text-[#F17530]">Description : </span>
+              <span className="text-[#214082] ml-2  text-[16px]">An organization users list records all individuals in an organization, detailing their roles, permissions, and contact info in a structured format.</span>
+            </div>
 {/* <div className="flex">
 <DashBoardNavBar/>
 </div> */}
-          <div className="py-[20px] my-[10px]">
+          {/* <div className="py-[20px] my-[10px]">
             <div className="flex flex-col gap-5">
               <div className="flex gap-3 pb-2 items-center ">
               <div
@@ -453,142 +424,85 @@ const handleBack = () => {
                   </div>
               </div>
               
-            </div>
-          <div className=" flex  justify-between p-[5px] mb-3">
-            <div>
-              <h1 className="text-[#F17530] pt-3">Quizzes History : </h1>
-            </div>
+            </div> */}
+            {/* <div>
+              <h1 className="text-[#F17530] pt-3">Organization Quiz Master : </h1>
+            </div> */}
 
-            <div className="flex gap-[5px] justify-center items-center">
-              <div className="flex">
-                <input
-                  type="search"
-                  className="p-1 border-2 border-black rounded-lg bg-[url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 24 24%27 stroke=%27currentColor%27%3e%3cpath strokeLinecap=%27round%27 strokeLinejoin=%27round%27 strokeWidth=%272%27 d=%27M21 21l-4.35-4.35M16.5 10.5a6 6 0 11-12 0 6 6 0 0112 0z%27 /%3e%3c/svg%3e')] bg-no-repeat bg-left-3 bg-center"
-                  placeholder="search"
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                />
-                <img
-                  className="h-4 w-4 relative top-[9px] right-9"
-                  src={searchIcon}
-                  alt="search icon"
-                />
-              </div>
+            <div className="flex justify-between items-center mb-3">
+    
+      <div className="flex w-full">
 
-              <span className="text-[#F17530]">Sort by : </span>
-              <span>
-                <select className="py-1 px-2 rounded-md"
-                 value={sortOption} onChange={handleSortChange}>
-                  <option value="All">All</option>
-                  <option value="This Day">This Day</option>
-                  <option value="This Week">This Week</option>
-                  <option value="This Month">This Month</option>
-                </select>
-              </span>
-            </div>
-          </div>
-          <div className="overflow-x-auto">
-            {sortedQuizzes.length === 0?(
-              <div className="text-center text-red-500 my-4">{noQuizzesMessage()}</div>
-            ):(
-              <table className="min-w-full bg-gray-100 border border-gray-200 rounded-lg border-spacing-y-2">
-              <thead className="bg-[#CBF2FB]">
-                <tr className="text-[14px]">
-                  <th className="py-2 px-4 border-b">Seq</th>
-                  <th className="py-2 px-4 border-b text-start">Date</th>
-                  <th className="py-2 px-4 border-b">Time</th>
-                  <th className="py-2 px-4 border-b text-start">Quiz Title</th>
-                  <th className="py-2 px-4 border-b text-start">Duration</th>
-                  <th className="py-2 px-4 border-b">Rank</th>
-                  <th className="py-2 px-4 border-b text-nowrap">Pass %</th>
-                  <th className="py-2 px-4 border-b">Grade</th>
-                  <th className="py-2 px-4 border-b">Pass/Fail</th>
-                </tr>
-              </thead>
-              <tbody className="space-y-4">
-                {currentRows.map((quiz, index) => (
-                  <tr key={index} className="bg-white hover:bg-gray-100 active:bg-green-200 text-[12px]">
-                    <td className="py-2 px-4 border-b text-center">
-                      {indexOfFirstRow + index + 1}
-                    </td>
-                    <td
-                      onClick={() =>
-                        leaderboard(quiz.quiz_id, quiz.quiz_level_attempt_id)
-                      }
-                      className="cursor-pointer py-2 px-2 border-b text-left text-nowrap"
-                    >
-                      {quiz.month}
-                    </td>
-                    <td
-                      onClick={() =>
-                        leaderboard(quiz.quiz_id, quiz.quiz_level_attempt_id)
-                      }
-                      className="cursor-pointer py-2 px-4 border-b text-center text-nowrap"
-                    >
-                      {quiz.time}
-                    </td>
+      {/* Quiz Master Dropdown */}
+      <span className="text-[#F17530] text-[18px]">Quiz Master </span>
+      <span className="text-[#F17530] text-[18px] ml-1">: </span>
 
-                    <td
-                      onClick={() =>
-                        leaderboard(quiz.quiz_id, quiz.quiz_level_attempt_id)
-                      }
-                      className="cursor-pointer py-2 px-4 border-b text-start"
-                    >
-                      {quiz.quiz_name}
-                    </td>
+      <select className="py-1 px-2 rounded-md border ml-2">
+        <option value="">All</option>
+        {quizMasterNames.map((name, index) => (
+          <option key={index} value={name}>
+            {name}
+          </option>
+        ))}
+      </select>
+      </div>
+        {/* Search Input */}
+        <div className="flex">
+        <input
+          type="search"
+          className="p-1 border-2 border-black rounded-lg bg-no-repeat bg-left-3 bg-center"
+          placeholder="Search"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <img className="h-4 w-4 relative top-[9px] right-9" src={searchIcon} alt="search icon" />
+      </div>
+    </div>
 
-                    <td
-                      onClick={() =>
-                        leaderboard(quiz.quiz_id, quiz.quiz_level_attempt_id)
-                      }
-                      className="cursor-pointer py-2 px-4 border-b text-left text-nowrap"
-                    >
-                      {quiz.attempt_duration_mins}
-                    </td>
-
-                    <td
-                      onClick={() =>
-                        leaderboard(quiz.quiz_id, quiz.quiz_level_attempt_id)
-                      }
-                      className="cursor-pointer py-2 px-4 border-b text-center"
-                    >
-                      {quiz.score_rank}
-                    </td>
-
-                    <td
-                      onClick={() =>
-                        leaderboard(quiz.quiz_id, quiz.quiz_level_attempt_id)
-                      }
-                      className="cursor-pointer py-2 px-4 border-b text-center"
-                    >
-                      {quiz.attained_percentage}
-                    </td>
-                    <td
-                      onClick={() =>
-                        leaderboard(quiz.quiz_id, quiz.quiz_level_attempt_id)
-                      }
-                      className="cursor-pointer py-2 px-4 border-b text-center"
-                    >
-                      {quiz.quiz_grade}
-                    </td>
-                    <td
-                      onClick={() =>
-                        leaderboard(quiz.quiz_id, quiz.quiz_level_attempt_id)
-                      }
-                      className="cursor-pointer py-2 px-4 border-b text-center"
-                    >
-                      {quiz.pass_flag}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            )}
+      
+          <div className=" overflow-x-hidden">
+          <table className="min-w-full bg-gray-100 border border-gray-200 rounded-lg border-spacing-y-2 overflow-hidden">
+      <thead className="bg-[#CBF2FB]">
+        <tr className="text-[14px]">
+          <th className="py-2 px-4 border-b">Seq</th>
+          <th className="py-2 px-4 border-b">Quiz Master ID</th>
+          <th className="py-2 px-4 border-b text-start">Quiz Master Name</th>
+          <th className="py-2 px-4 border-b">Total Quizzes Created</th>
+          <th className="py-2 px-4 border-b text-center">Avg Quiz Complexity</th>
+          <th className="py-2 px-4 border-b">Total Attempts</th>
+          <th className="py-2 px-4 border-b">Avg Score</th>
+          <th className="py-2 px-4 border-b">Top Scorer</th>
+          <th className="py-2 px-4 border-b">Distinct Users Attempted</th>
+          <th className="py-2 px-4 border-b">Engagement Rate</th>
+          <th className="py-2 px-4 border-b">Completion Rate</th>
+          <th className="py-2 px-4 border-b">Avg Attempts Per Quiz</th>
+          <th className="py-2 px-4 border-b">Success Rate</th>
+        </tr>
+      </thead>
+      <tbody className="space-y-4">
+        {filteredQuizMasters.map((quizMaster, index) => (
+          <tr key={quizMaster.quiz_master_id} className="bg-white hover:bg-gray-100 text-[12px]">
+            <td className="py-2 px-4 border-b text-center">{index + 1}</td>
+            <td className="py-2 px-2 border-b text-center">{quizMaster.quiz_master_id}</td>
+            <td className="py-2 px-4 border-b text-start">{quizMaster.quiz_master_name}</td>
+            <td className="py-2 px-4 border-b text-center">{quizMaster.total_quizzes_created}</td>
+            <td className="py-2 px-4 border-b text-center">{quizMaster.average_quiz_complexity}</td>
+            <td className="py-2 px-4 border-b text-center">{quizMaster.total_attempts_on_quizzes}</td>
+            <td className="py-2 px-4 border-b text-center">{quizMaster.average_score_on_quizzes}</td>
+            <td className="py-2 px-4 border-b text-center">{quizMaster.top_scorer_across_quizzes}</td>
+            <td className="py-2 px-4 border-b text-center">{quizMaster.distinct_users_attempted_quizzes}</td>
+            <td className="py-2 px-4 border-b text-center">{quizMaster.engagement_rate}%</td>
+            <td className="py-2 px-4 border-b text-center">{quizMaster.completion_rate}%</td>
+            <td className="py-2 px-4 border-b text-center">{quizMaster.average_attempts_per_quiz}</td>
+            <td className="py-2 px-4 border-b text-center">{quizMaster.quiz_master_success_rate}%</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
        
-            <div className="flex justify-between mt-4">
+            {/* <div className="flex justify-between mt-4">
               <button
                 className="flex gap-1 items-center cursor-pointer"
-                onClick={handlePrevious}
                 disabled={currentPage === 1}
               >
                 <img
@@ -610,7 +524,7 @@ const handleBack = () => {
                 <h1 className="text-[#F17530]">Next</h1>
                 <img className="h-3 w-3" src={GreaterThan} alt="Next icon" />
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
         {/* <LogoutBar /> */}
@@ -619,4 +533,4 @@ const handleBack = () => {
   );
 };
 
-export default myhistory;
+export default organizationquizmaster;

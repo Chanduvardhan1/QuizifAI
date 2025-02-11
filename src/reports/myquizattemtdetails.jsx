@@ -57,13 +57,18 @@ const myquizattemtdetails = () => {
   useEffect(() => {
     const fetchQuizAttempts = async () => {
       try {
+        const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+  
+        if (!authToken) {
+          throw new Error("No authentication token found");
+        }
         const response = await fetch(
           `https://dev.quizifai.com:8010/users-quizattemptdetails/?user_id=${userId}`,
           {
             method: "GET",
             headers: {
               accept: "application/json",
-              Authorization: "Bearer your_token_here",
+              Authorization: `Bearer ${authToken}`,
             },
           }
         );
@@ -290,7 +295,7 @@ const handleBack = () => {
             </div>
             <div className="flex justify-start items-center p-[5px] text-[18px]">
                 <span className="text-[#F17530]">Description : </span>
-              <span className="text-[#214082] ml-2  text-[16px]">An organization users list records all individuals in an organization, detailing their roles, permissions, and contact info in a structured format.</span>
+              <span className="text-[#214082] ml-2  text-[16px]">My Quiz Attempts page displays the details of all the quizzes you have attempted, including completion status, scores, and history for easy tracking.</span>
             </div>
 {/* <div className="flex">
 <DashBoardNavBar/>

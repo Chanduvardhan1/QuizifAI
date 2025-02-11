@@ -585,11 +585,16 @@ const [quizid, setQuizId] = useState('');
     formData.append('file2', backImage);
 
     try {
-
+      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+    
+      if (!authToken) {
+        console.error('No authentication token found');
+        return;
+      }
       const response = await fetch(`https://dev.quizifai.com:8010/upload-qz_image?quiz_id=${quiz_id}`, {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Replace with your actual token
+          'Authorization': `Bearer ${authToken}`, // Replace with your actual token
         },
         body: formData,
       });

@@ -261,8 +261,8 @@ const LoginPage = () => {
   
         const errorMessage =
           loginOption === "email"
-            ? "Incorrect email or password. Please try again."
-            : "Incorrect mobile number or password. Please try again.";
+            ? "Please check your credentials and try again."
+            : "Please check your credentials and try again.";
   
         setErrorMessage(backendMessage.includes("Incorrect") ? errorMessage : backendMessage);
         return;

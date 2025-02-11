@@ -187,6 +187,8 @@ const subscription = ()=> {
   const handlePayNow1 = (pkg) => {
     createOrderAndPay1(pkg.subscription_plan_id, pkg.amount, pkg.plan_type, pkg.quiz_package_id);
   }
+  const [showPopup, setShowPopup] = useState(false);
+
   const createOrderAndPay1 = async (subscriptionPlanId, amount, planType, quizPackageId) => {
     setLoading(true);
     setError("");
@@ -705,9 +707,34 @@ const subscription = ()=> {
         <p className="text-sm text-center mt-4">
         {pkg.quiz_package_description}
         </p>
-        <button onClick={() => handlePayNow1(pkg)}  className="mt-2  bg-[#567ed6] text-white font-medium py-2 px-4 rounded-sm ">
+
+        <button
+         onClick={() => setShowPopup(true)}
+        //  onClick={() => handlePayNow1(pkg)}  
+         className="mt-2  bg-[#567ed6] text-white font-medium py-2 px-4 rounded-sm ">
             Pay Now
         </button>
+        {showPopup && (
+              <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div
+              className={`bg-white rounded-lg shadow-lg p-6 w-96 text-center  border-t-4`}
+            >
+              <h2
+                className={`text-xl font-semibold `}
+              >
+                This feature is not implemented yet!
+              </h2>
+              <button
+                onClick={() => setShowPopup(false)} // Close the popup
+                className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+       
+      
+      )}
       </div>
            ))}
       </div>

@@ -351,7 +351,7 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
             </div>
             <div className="flex justify-start items-center p-[5px] text-[18px]">
                 <span className="text-[#F17530]">Description : </span>
-              <span className="text-[#214082] ml-2  text-[16px]">An organization users list records all individuals in an organization, detailing their roles, permissions, and contact info in a structured format.</span>
+              <span className="text-[#214082] ml-2  text-[16px]">The Organization User List for Super Admin provides a comprehensive view of all users within the organization, allowing management of roles, statuses, and account details.</span>
             </div>
 {/* <div className="flex">
 <DashBoardNavBar/>

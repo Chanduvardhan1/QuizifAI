@@ -370,6 +370,7 @@ const FreeProfile = () => {
         setAddressId(userProfileDetails.user_address_id);
         setAddress(userProfileDetails.user_address_line_1);
         setAddress1(userProfileDetails.user_address_line_2);
+        setShowOtherInput(userProfileDetails.occupation_name === "Other");
 
         // Update any other states as needed
         const initialData = {
@@ -555,7 +556,7 @@ const FreeProfile = () => {
 
   const handleSaveClick = async () => {
     // Validation logic
-    setLoading(true);
+   
     const errors = [];
     if (!dob) errors.push("Date of birth is required.");
     if (!gender) errors.push("Gender is required.");
@@ -592,6 +593,7 @@ const FreeProfile = () => {
     console.log("Updating profile with payload:", payload);
   
     try {
+      setLoading(true);
       const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
   
       if (!authToken) {
@@ -710,6 +712,8 @@ const FreeProfile = () => {
     setOccupation(selectedOccupation);
     setShowOtherInput(selectedOccupation === "Other");
   };
+
+
   // const handleLoginSaveClick = async () => {
   //   const payload = {
   //     user_id: userId,

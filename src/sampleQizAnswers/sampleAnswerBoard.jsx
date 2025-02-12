@@ -50,7 +50,7 @@ function sampleAnswerBoard(props) {
       </div>
 
       {/* Display Current Question */}
-      <div className=" w-full mt-[4%]">
+      <div className=" w-full ">
         {props.q && props.q[currentQuestionIndex] && (
           <div className="answerQ w-full px-5">
             <h3 className="heading1">{`${
@@ -60,7 +60,7 @@ function sampleAnswerBoard(props) {
             {props.q[currentQuestionIndex].options.map((option, y) => (
               <div
                 key={y}
-                className={`flex items-center mb-4 font-[lato] ${
+                className={`flex items-center mb-2 font-[lato] ${
                   y === props.q[currentQuestionIndex].answerIndex
                     ? "correctAnswerQ"
                     : ""

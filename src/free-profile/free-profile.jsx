@@ -317,8 +317,9 @@ const FreeProfile = () => {
   useEffect(() => {
     const fetchQuizData = async () => {
       console.log("User ID:", userId);
-      setLoading(true);
+     
       try {
+        setLoading(true);
         const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
   
         if (!authToken) {
@@ -809,7 +810,7 @@ const FreeProfile = () => {
   
   
   const handleLoginSaveClick = async () => {
-    setLoading(true); 
+     
     const payload = {
       preferred_login_method: loginMethod, // Determine the method based on input
       identifier: loginMethod === "Email" ? email : mobileNumber, // Use email or mobile as the identifier
@@ -819,6 +820,7 @@ const FreeProfile = () => {
     console.log("Sending OTP with payload:", payload);
   
     try {
+      setLoading(true);
       const authToken = localStorage.getItem("authToken");
   
       if (!authToken) {
@@ -886,7 +888,7 @@ const FreeProfile = () => {
   
   
   const updatePreferredLoginMethod = async () => {
-    setLoading(true); 
+    
     // Replace the placeholder values with actual data from your state or inputs
     const payload = {
       preferred_login_method: loginMethod, // or "Mobile"
@@ -899,6 +901,7 @@ const FreeProfile = () => {
     };
   
     try {
+      setLoading(true); 
       const authToken = localStorage.getItem("authToken"); // Fetch the auth token from localStorage
       if (!authToken) {
         throw new Error("No authentication token found.");
@@ -945,7 +948,7 @@ const FreeProfile = () => {
   };
   
   const updatePreferredLoginMethod1 = async () => {
-    setLoading(true); 
+     
     // Replace the placeholder values with actual data from your state or inputs
     const payload = {
       preferred_login_method: loginMethod, // or "Mobile"
@@ -958,6 +961,7 @@ const FreeProfile = () => {
     };
   
     try {
+      setLoading(true);
       const authToken = localStorage.getItem("authToken"); // Fetch the auth token from localStorage
       if (!authToken) {
         throw new Error("No authentication token found.");
@@ -1132,7 +1136,7 @@ const FreeProfile = () => {
 
   const handleUpdatePassword = async (e) => {
     e.preventDefault();
-    setLoading(true); 
+    
     if (!showNewPasswords) {
       setShowNewPasswords(true);
       setButtonText("Save Password");
@@ -1164,6 +1168,7 @@ const FreeProfile = () => {
     }
   
     try {
+      setLoading(true);
       const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
   
       if (!authToken) {
@@ -1339,8 +1344,9 @@ const FreeProfile = () => {
   
 
   const fetchProfileImage = async () => {
-    setLoading(true);
+    
     try {
+      setLoading(true);
       const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
             if (!authToken) {
               console.error("No authentication token found. Please log in again.");
@@ -1420,8 +1426,9 @@ const FreeProfile = () => {
 //   }, []);
   
   const deleteImage = async () => {
-    setLoading(true);
+    
     try {
+      setLoading(true);
       const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
             if (!authToken) {
               console.error("No authentication token found. Please log in again.");

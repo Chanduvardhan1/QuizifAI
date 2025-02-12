@@ -139,6 +139,8 @@ const handleStatuscategories = (e) => {
     fetchDropdowns();
   }, []);
 
+  const [ownerStats, setOwnerStats] = useState(null);
+
 
   const formatDate = (dateString) => {
   if (!dateString) return 'N/A'; 
@@ -152,31 +154,34 @@ const handleStatuscategories = (e) => {
 useEffect(() => {
   const fetchTickets = async () => {
     try {
-      setLoading(true); 
+      setLoading(true); // Show loading state
 
       const user_id = localStorage.getItem('user_id');
       const authToken = localStorage.getItem('authToken');
 
+      // Check if authToken and user_id are available
       if (!authToken) {
         console.error('No authentication token found. Please log in again.');
         return;
       }
 
       if (!user_id) {
-        throw new Error('User ID not found in session storage');
+        throw new Error('User ID not found in local storage');
       }
 
       const url = `https://dev.quizifai.com:8010/view_tkt?ownerid=${user_id}`;
 
+      // API request
       const response = await fetch(url, {
-        method: 'POST', // Change to 'GET' if the API doesn't require POST
+        method: 'POST', // Update this to 'GET' if your API requires a GET request
         headers: {
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${authToken}`,
+          Accept: 'application/json',
+          Authorization: `Bearer ${authToken}`,
         },
-        body: null, // Remove if the API doesn't require a request body
+        body: null, // Remove this line if the API doesn't need a request body
       });
 
+      // Handle non-OK responses
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
@@ -185,8 +190,10 @@ useEffect(() => {
       const result = await response.json();
       console.log('Fetched Tickets Response:', result);
 
+      // Handle successful response
       if (result.response === 'success') {
-        const transformedTickets = result.data.map(ticket => ({
+        setOwnerStats(result.data.owner_stats);
+        const transformedTickets = result.data.tickets.map(ticket => ({
           id: `#${ticket.ticket_id}`,
           title: `Ticket ${ticket.ticket_id}`,
           description: ticket.ticket_description || 'No description provided',
@@ -201,11 +208,12 @@ useEffect(() => {
         }));
 
         setTickets(transformedTickets);
-      } 
+      }
     } catch (err) {
       console.error('Error fetching tickets:', err);
       setError(err.message);
 
+      // Fallback data for development
       if (process.env.NODE_ENV === 'development') {
         setTickets([
           {
@@ -221,12 +229,102 @@ useEffect(() => {
         ]);
       }
     } finally {
-      setLoading(false); // Hide loading after API response
+      setLoading(false); // Hide loading spinner
     }
   };
 
   fetchTickets();
 }, []);
+
+// useEffect(() => {
+//   const fetchTickets = async () => {
+//     try {
+//       setLoading(true);
+
+//       const user_id = localStorage.getItem('user_id');
+//       const authToken = localStorage.getItem('authToken');
+
+//       if (!authToken) {
+//         console.error('No authentication token found. Please log in again.');
+//         return;
+//       }
+
+//       if (!user_id) {
+//         throw new Error('User ID not found in session storage');
+//       }
+
+//       const url = `https://dev.quizifai.com:8010/view_tkt?ownerid=${user_id}`;
+
+//             const response = await fetch(url, {
+//               method: 'POST', // Change to 'GET' if the API doesn't require POST
+//               headers: {
+//                 'Accept': 'application/json',
+//                 'Authorization': `Bearer ${authToken}`,
+//               },
+//               body: null, // Remove if the API doesn't require a request body
+//             });
+
+//       if (!response.ok) {
+//         const errorText = await response.text();
+//         throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
+//       }
+
+//       const result = await response.json();
+//       console.log('Fetched Tickets Response:', result);
+
+//       if (result.response === 'success') {
+//         if (Array.isArray(result.data)) {
+//           const transformedTickets = result.data.map(ticket => ({
+//             id: `#${ticket.ticket_id}`,
+//             title: `Ticket ${ticket.ticket_id}`,
+//             description: ticket.ticket_description || 'No description provided',
+//             feature: ticket.category || 'Other',
+//             status: ticket.status || 'New',
+//             priority: ticket.priority_level || 1,
+//             createdAt: formatDate(ticket.audit?.[0]?.created_date) || 'Unknown',
+//             lastUpdated: formatDate(ticket.audit?.[ticket.audit.length - 1]?.created_date) || 'Unknown',
+//             attachments: ticket.attachments?.filter(att => att.file_name) || [],
+//             comments: ticket.comments?.filter(comment => comment.comment_text) || [],
+//             assignedTo: ticket.assignedto_id,
+//           }));
+//           setTickets(transformedTickets);
+//         }
+
+//         // Set owner stats
+//         if (result.owner_stats) {
+//           setOwnerStats(result.owner_stats);
+//         } else {
+//           console.warn('Owner stats not available in the response.');
+//         }
+//       } else {
+//         throw new Error('Invalid data format received from API.');
+//       }
+//     } catch (err) {
+//       console.error('Error fetching tickets:', err);
+//       setError(err.message);
+
+//       if (process.env.NODE_ENV === 'development') {
+//         setTickets([
+//           {
+//             id: '#1',
+//             title: 'Sample Ticket',
+//             description: 'This is a fallback ticket for testing',
+//             feature: 'Other',
+//             status: 'New',
+//             priority: 1,
+//             createdAt: '1 day ago',
+//             lastUpdated: 'Just now',
+//           },
+//         ]);
+//       }
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   fetchTickets();
+// }, []);
+
 
 const fetchTicketDetails = async () => {
   if (!selectedTicket) return;
@@ -694,7 +792,7 @@ const handleEditClick = (ticket) => {
            </div>
          </div>
        </div>
- 
+       {ownerStats && (
        <div className="flex gap-4 mb-6">
    {/* Card 1 */}
    <div className="bg-white shadow rounded-lg flex flex-col items-center border-[2px] border-[#8cd18e] justify-center p-4 w-1/3">
@@ -702,7 +800,7 @@ const handleEditClick = (ticket) => {
        className={`text-4xl font-bold text-[#00008b]
        `}
      >
-       6
+       {ownerStats.total_tickets}
      </h2>
      <p className="text-[#00008b]">Total Tickets</p>
    </div>
@@ -712,7 +810,7 @@ const handleEditClick = (ticket) => {
      <h2 
        className={`text-4xl font-bold text-[#00008b]`}
      >
-       2
+       {ownerStats.high_priority_tickets}
      </h2>
      <p className="text-[#00008b]">High Priority</p>
    </div>
@@ -722,13 +820,13 @@ const handleEditClick = (ticket) => {
      <h2 
        className={`text-4xl font-bold text-[#00008b]`}
      >
-       1
+       {ownerStats.new_tickets}
      </h2>
      <p className="text-[#00008b]">New Tickets</p>
    </div>
  </div>
  
- 
+       )}
        <div className="mb-6 flex gap-4">
          <div className="relative">
            <select

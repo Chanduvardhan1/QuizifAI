@@ -19,7 +19,7 @@ const HeaderSection = () => {
 
   const getButtonClassName = (path) => `w-20 h-[30px] text-white text-[13px] leading-7 font-bold rounded-full mb-4 ${currentPath === path ? 'font-bold' : 'font-normal'}`;
   return (
-    <div className='p-4 px-20'>
+    <div className=' px-20'>
       <section className='p-2'>
         <div className='container flex mx-auto'>
           <div>

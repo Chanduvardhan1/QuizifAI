@@ -113,7 +113,7 @@ const Samplequiz = () => {
         <img
           src={physics}
           alt="Quiz Cover"
-          className="w-[120px] h-[165px] rounded-md mr-4 cursor-pointer"
+          className="w-[100px] h-[140px] rounded-md mr-4 cursor-pointer"
         />
       </div>
 
@@ -166,7 +166,7 @@ const Samplequiz = () => {
         </p>
 
         {/* Meta Information */}
-        <div className="text-[#00008b] text-sm flex flex-wrap mt-3">
+        <div className="text-[#00008b] text-sm flex flex-wrap mt-1">
           <span>General</span>
           <span className="mx-1">.</span>
           <span>General</span>
@@ -179,7 +179,7 @@ const Samplequiz = () => {
         </div>
 
         {/* Icons and Additional Info */}
-        <div className="flex-col items-center space-y-4 mt-3 text-[#00008b]">
+        <div className="flex-col items-center space-y-1 mt-1 text-[#00008b]">
           {/* Author and Date */}
           <div className="flex items-center space-x-10">
             <div className="flex items-center">
@@ -263,7 +263,7 @@ const Samplequiz = () => {
 
   <div class="w-full flex items-end">
     
-  <div class="w-full flex justify-center items-center flex-col gap-4 sm:w-[50%]">
+  <div class="w-full flex justify-center items-center flex-col gap-2 sm:w-[50%]">
   <div class="w-[210px] h-[7vh] flex items-center">
     <img class="h-[20px] w-[20px]" src={dateIcon} alt="Calendar Icon" />
     <span class="ml-2 font-lato text-[14px] font-semibold text-blue-900">{dateString}</span>

@@ -487,13 +487,13 @@ const handleBack = () => {
            </button>
          </div>
          <div className="flex items-center justify-center">
-         <button
+         {/* <button
              // onClick={handleOnAnswer}
              className="text-blue-900 text-sm bg-blue-200 border border-blue-900 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
            >
              Print
              <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" />
-           </button>
+           </button> */}
          </div>
        </div>
        
@@ -682,13 +682,13 @@ const handleBack = () => {
       {/* <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
         Leader Board
       </button> */}
-      <button
+      {/* <button
     // onClick={handleOnAnswer}
     className="text-blue-900 text-sm bg-blue-200 border border-blue-900 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
   >
      Leader Board
     <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" />
-  </button>
+  </button> */}
     </div>
 </div>
   </div>

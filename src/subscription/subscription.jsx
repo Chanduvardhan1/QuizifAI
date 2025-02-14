@@ -396,6 +396,11 @@ const subscription = ()=> {
     navigate("/dashboard");
 
   };
+  const HandleOrganizationcontactus = () => {
+    navigate("/Organizationcontactus");
+
+  };
+  
   const handleConfirmPayment = (packageName) => {
     alert(`You selected the ${packageName} package for payment.`);
     // Add payment handling logic here
@@ -499,6 +504,79 @@ const subscription = ()=> {
   }, []);
   
     //-------------------**quizPackages END**--------------------//
+
+        //-------------------**Conctactus **--------------------//
+
+    const [showForm, setShowForm] = useState(false);
+
+
+
+    const handleContactClick = () => {
+      setShowForm(!showForm);
+    };
+     const [organizationName1, setOrganizationName1] = useState("");
+  const [organizationType1, setOrganizationType1] = useState("");
+  const [numberOfUsers1, setNumberOfUsers1] = useState("");
+  const [fullName1, setFullName1] = useState("");
+  const [emailAddress1, setEmailAddress1] = useState("");
+  const [phoneNumber1, setPhoneNumber1] = useState("");
+  const [purposeOfUse1, setPurposeOfUse1] = useState("");
+  const [responseMessage1, setResponseMessage1] = useState("");
+  const [showPopup1, setShowPopup1] = useState(false);
+const [Designation, setDesignation] =useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const data = {
+      organization_name: organizationName1,
+      organization_type: organizationType1,
+      number_of_users: numberOfUsers1,
+      full_name: fullName1,
+      designation:Designation,
+      email_address: emailAddress1,
+      phone_number: phoneNumber1,
+      purpose_of_use: purposeOfUse1,
+    };
+
+    try {
+      const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+
+      if (!authToken) {
+        throw new Error("No authentication token found");
+      } 
+      const response = await fetch(
+        "https://dev.quizifai.com:8010/organization_contact_us_email",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,           },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const result = await response.json();
+      if (result.response === "success") {
+        setResponseMessage1(
+          "Subscription request submitted successfully. A confirmation email has been sent."
+        );
+        
+      } else if (result.response === "fail") {
+        setResponseMessage1("Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      setResponseMessage1("Failed to submit. Please check your connection.");
+    }
+
+    setShowPopup1(true);
+  };
+
+  const handleClose1 = () => {
+    setShowPopup1(false);
+    setShowForm(false);
+  };
+        //-------------------**Conctactus END**--------------------//
 
   return (
     <div className="flex w-full">
@@ -648,6 +726,7 @@ const subscription = ()=> {
   
     {/* Organization Access Plan */}
     <div className="bg-white text-black rounded-lg shadow-lg p-6 w-full md:w-[22%]   flex flex-col justify-between">
+    
     <div className="flex flex-col gap-[2px] justify-center">
       {/* <div className="bg-[#9fcbf0] rounded-r-full flex items-center justify-center"> */}
 
@@ -657,7 +736,9 @@ const subscription = ()=> {
         
       </div>
  
-      {/* <h2 className="text-2xl font-bold mb-4 text-center">Organization Access</h2> */}
+      {!showForm ? (
+        <>
+         {/* <h2 className="text-2xl font-bold mb-4 text-center">Organization Access</h2> */}
       <ul className="mt-2 space-y-2 text-sm">
           <li>✔ Premium Access</li>
           <li>✔ Access to Reports</li>
@@ -671,7 +752,7 @@ const subscription = ()=> {
         Pricing: Rs 1 per day per user with one-year subscription<br />
         Rs 5 per day per user with one-month access
       </p>
-      <button  className="mt-2  bg-[#567ed6] text-white font-medium py-2 px-4 rounded-sm ">
+      <button onClick={handleContactClick} className="mt-2  bg-[#567ed6] text-white font-medium py-2 px-4 rounded-sm ">
       Contact US
       </button>
       {/* <div className="flex justify-center">
@@ -679,6 +760,146 @@ const subscription = ()=> {
       Contact US
       </button>
       </div> */}
+              </>
+
+       ) : (
+
+        <div className="space-y-2">
+          <h2 className="text-[18px] font-bold text-center text-[#00024b]">Contact Us</h2>
+          
+          <div>
+          <input
+              type="text"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                placeholder="Organization Name"
+                required
+                value={organizationName1}
+                onChange={(e) => setOrganizationName1(e.target.value)}
+              ></input>
+          </div>
+          <div>
+            <select  value={organizationType1}
+            onChange={(e) => setOrganizationType1(e.target.value)}  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `} required>
+              <option value="">Organization Type </option>
+              <option value="Education">Education (School, College, University)</option>
+              <option value="Corporate">Corporate (Employee Training, Team Engagement)</option>
+              <option value="Non-Profit">Non-Profit / NGO</option>
+              <option value="Government">Government Institution</option>
+              <option value="Coaching">Coaching/Training Institute</option>
+              <option value="Other">Other (Specify)</option>
+            </select>
+          </div>
+
+          <div>
+            <select value={numberOfUsers1}
+            onChange={(e) => setNumberOfUsers1(e.target.value)} className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `} required>
+              <option value="">Number of Users</option>
+              <option value="1-10">1-10</option>
+              <option value="11-50">11-50</option>
+              <option value="51-100">51-100</option>
+              <option value="101-500">101-500</option>
+              <option value="500+">500+</option>
+            </select>
+          </div>
+
+          <div>
+            <input
+              type="text"
+              value={fullName1}
+              onChange={(e) => setFullName1(e.target.value)}
+              placeholder="Full Name"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+              required
+            />
+          </div>
+
+          <div>
+            <input
+              type="text"
+              value={Designation}
+              onChange={(e) => setDesignation(e.target.value)}
+               placeholder="Designation"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+              required
+            />
+          </div>
+
+          <div>
+            <input
+              type="email"
+              value={emailAddress1}
+            onChange={(e) => setEmailAddress1(e.target.value)}
+              placeholder="Email Address"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+              required
+            />
+          </div>
+
+          <div>
+            <input
+              type="tel"
+              value={phoneNumber1}
+              onChange={(e) => setPhoneNumber1(e.target.value)}
+              placeholder="Phone Number"
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+              required
+              pattern="\d{10,15}"
+            />
+          </div>
+
+          <div>
+            <select  value={purposeOfUse1}
+            onChange={(e) => setPurposeOfUse1(e.target.value)} className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `} required>
+              <option value="">Purpose of Use</option>
+              <option value="Employee Training">Employee Training</option>
+              <option value="Student Learning">Student Learning & Assessments</option>
+              <option value="Exam Preparation">Competitive Exam Preparation</option>
+              <option value="Fun Activities">Fun/Engagement Activities</option>
+              <option value="Certification">Certification & Compliance Testing</option>
+              <option value="Customer Training">Customer/Client Training</option>
+              <option value="Other">Other (Specify)</option>
+            </select>
+          </div>
+
+          <div className="flex justify-between">
+            <button onClick={handleContactClick} className="mt-2  bg-[#567ed6] text-white font-medium py-2 px-4 rounded-sm ">
+            Back
+      </button>
+      <button onClick={handleSubmit} className="mt-2  bg-[#567ed6] text-white font-medium py-2 px-4 rounded-sm ">
+      Submit
+      </button>
+           
+          </div>
+        </div>
+      )}
+      {showPopup1 && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div
+            className={`bg-white rounded-lg shadow-lg p-6 w-96 text-center ${
+              responseMessage1.includes("success")
+                ? "border-green-500"
+                : "border-red-500"
+            } border-t-4`}
+          >
+            <h2
+              className={`text-xl font-semibold ${
+                responseMessage1.includes("success")
+                  ? "text-green-500"
+                  : "text-red-500"
+              }`}
+            >
+              {responseMessage1.includes("success") ? "Success" : "Error"}
+            </h2>
+            <p className="mt-2 text-gray-700">{responseMessage1}</p>
+            <button
+              onClick={handleClose1}
+              className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   </div>
 )}

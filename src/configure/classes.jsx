@@ -546,9 +546,95 @@ setLoading(true);
     </div>
     
       )}
-      
+     <table className="h-[20px] table-auto rounded text-left bg-[#F7E0E3] text-[#2b51a1] text-[14px] font-light">
+  <thead>
+    <tr className="h-[50px]">
+      <th className="px-4 py-2 text-nowrap">Class ID</th>
+      <th className="px-4 py-2">Class Name</th>
+      <th className="px-4 py-2">Section</th>
+      <th className="px-4 py-2 text-nowrap">Specialization</th>
+      <th className="px-2 py-2 text-wrap">Courses</th>
+      <th className="px-4 py-2 text-nowrap">
+        <div className="flex justify-center items-center">
+          <input
+            className="text-[10px] pl-[30px] pr-[10px] rounded-[20px] h-[28px] mr-[10px] w-fit bg-[#FFFFFF] text-left placeholder-[#214082] border-none focus:border-none outline-none"
+            type="text"
+            placeholder="Search"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+          />
+          <img
+            className="h-[12px] w-[12px] relative top-[2px] right-[155px]"
+            src={searchIcon}
+          />
+        </div>
+      </th>
+    </tr>
+  </thead>
+  <tbody className="bg-white border-gray-500">
+    {courses.length > 0 ? (
+      courses.map((course) => (
+        <tr key={course.course_id}>
+          <td className="px-4 py-2 border text-[#214082] font-bold text-[10px] text-center">
+            {course.classes.map((cls) => (
+              <div key={cls.class_id}>{cls.class_id}</div>
+            ))}
+          </td>
+          <td className="px-4 py-2 border text-[#214082] font-bold text-[10px] text-left">
+            {course.classes.map((cls) => (
+              <div key={cls.class_id}>{cls.class_name}</div>
+            ))}
+          </td>
+          <td className="px-4 py-2 border text-[#214082] font-bold text-[10px] text-start">
+            {course.classes.map((cls) => (
+              <div key={cls.class_id}>
+                {cls.sections.length > 0 ? (
+                  cls.sections.map((section) => (
+                    <div key={section.section_id}>{section.section_name}</div>
+                  ))
+                ) : (
+                  <div>No Sections</div>
+                )}
+              </div>
+            ))}
+          </td>
+          <td className="px-4 py-2 border text-[#214082] font-bold text-[10px] text-start">
+            {course.specializations.map((specialization) => (
+              <div key={specialization.specialization_id}>
+                {specialization.specialization_name}
+              </div>
+            ))}
+          </td>
+          <td className="px-4 py-2 border text-[#214082] font-bold text-[10px] text-start">
+            {course.course_name}
+          </td>
+          <td className="h-full border text-[#214082] flex gap-2 pl-[40px] pt-2 text-[12px] cursor-pointer hover:font-medium hover:underline">
+            <img
+              className="h-[13px] w-[13px] mr-1 cursor-pointer"
+              src={Edit}
+              alt="Edit"
+              onClick={() => handleEdit(course)}
+            />
+            <button className="flex text-orange-500 w-[30px] h-[30px]">
+              <RiDeleteBinLine />
+            </button>
+          </td>
+        </tr>
+      ))
+    ) : (
+      <tr>
+        <td
+          colSpan="6"
+          className="px-4 py-2 text-center text-[#214082] font-bold text-[12px]"
+        >
+          No data available
+        </td>
+      </tr>
+    )}
+  </tbody>
+</table> 
 
-      <table className='h-[20px] table-auto  rounded text-left bg-[#F7E0E3] text-[#2b51a1] text-[14px] font-light'>
+      {/* <table className='h-[20px] table-auto  rounded text-left bg-[#F7E0E3] text-[#2b51a1] text-[14px] font-light'>
         <thead>
           <tr className='h-[50px]'>
             <th className='px-4 py-2 text-nowrap'>Class ID</th>
@@ -612,11 +698,7 @@ setLoading(true);
       ))}</td>
 
                 <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'>{course.course_name}</td>
-              {/* <td  className='px-4 py-2 border text-[#214082] font-bold text-[10px] text-start'>
-              {course.classes.map((cls) => (
-                  <div key={cls.class_id}>{cls.class_name}</div>
-                ))}
-              </td> */}
+              
               <td className='h-full border text-[#214082] flex gap-2 pl-[40px] pt-2 text-[12px] cursor-pointer hover:font-medium hover:underline'>         
               <img
                 className='h-[13px] w-[13px] mr-1 cursor-pointer'
@@ -631,7 +713,7 @@ setLoading(true);
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> */}
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div

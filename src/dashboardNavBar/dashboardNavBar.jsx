@@ -800,7 +800,8 @@ const handlsubscription =()=> {
 
     </div>
 
-                <div className="flex flex-col items-center justify-start relative border shadow-lg rounded-sm py-2  bg-white">
+                
+    <div className="flex flex-col items-center justify-start relative border shadow-lg rounded-sm py-2  bg-white">
                 {/* <h3 className="text-[14px] font-bold mb-5 text-[#214082]">Subscription</h3> */}
 
                     {/* <h3 className="text-sm font-bold mb-4 text-[#214082]"> <span>Public</span></h3> */}
@@ -837,7 +838,7 @@ const handlsubscription =()=> {
                         </div>
                         <div className="flex ">
                             <p className="text-[14px] text-[#214082] mr-31%">Premium (Exp)</p>
-                            <p className="text-[12px] text-[#214082] mr-31% ml-6"> : </p>
+                            <p className="text-[14px] text-[#214082] mr-31% ml-6"> : </p>
 
                             {/* <p className="font-medium  text-[14px] ml-2 text-orange-500">   (Expires : {subscriptionDetails1?.end_time || "N/A"})</p> */}
                                                         <p className="font-medium  text-[12px] ml-2 text-orange-500 ">{subscriptionDetails1?.end_time || "N/A"}</p>
@@ -845,12 +846,12 @@ const handlsubscription =()=> {
                         </div>
                         <div className="flex ">
                             <p className="text-[14px] text-[#214082] mr-31%">Start Date  </p>
-                            <p className="text-[12px] text-[#214082]  ml-[50px]"> :  </p>
+                            <p className="text-[14px] text-[#214082]  ml-[50px]"> :  </p>
                             <p className="font-medium  text-[12px] text-orange-500 ml-2">  {subscriptionDetails1?.start_time || "N/A"}</p>
                         </div>
                         <div className="flex ">
                             <p className="text-[14px] text-[#214082] mr-31%">Days Remaining </p>
-                            <p className="text-[12px] text-[#214082]  ml-4"> :  </p>
+                            <p className="text-[14px] text-[#214082]  ml-4"> :  </p>
                             <p className="font-medium  text-[12px] ml-2 text-orange-500"> {subscriptionDetails1?.remaining_days_left || "N/A"}</p>
                         </div>
                     </div>

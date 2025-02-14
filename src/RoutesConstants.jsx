@@ -133,6 +133,8 @@ import Superadminquizsummary from "./reports/superadminquizsummary.jsx";
 import Superadminusesdetails from "./reports/superadminusersdetails.jsx";
 import Allusersactivitysuperadmin from "./reports/allusersactivitysuperadmin.jsx";
 import Databaseauditsummary from "./reports/databaseauditsummary.jsx";
+
+import Organizationcontactus from "./organization_contactus/contactus.jsx";
 export default () => {
     return [
         {
@@ -148,6 +150,12 @@ export default () => {
             component:HelpDesk,
             isPrivate: true
         }, 
+        
+        {
+            path:'Organizationcontactus',
+            component:Organizationcontactus,
+            isPrivate: true
+        },
         {
             path:'Usersquizreports',
             component:Usersquizreports,

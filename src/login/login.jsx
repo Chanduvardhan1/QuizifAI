@@ -337,8 +337,15 @@ const LoginPage = () => {
         setErrorMessage(errorMsg);
       }
     } catch (error) {
-      setErrorMessage("An error occurred while logging in.");
-      console.error("Login error:", error);
+      if (error instanceof SyntaxError) {
+        setErrorMessage("A parsing error occurred. Please check your input file.");
+      } else if (error.message.includes("NetworkError")) {
+        setErrorMessage("A network error occurred. Please check your internet connection.");
+      } else if (error.message.includes("Failed to fetch")) {
+        setErrorMessage("Server could not be reached. Please try again later.");
+      } else {
+        setErrorMessage("An unexpected error occurred while processing your request. Please try again.");
+      }
     }
   };
   

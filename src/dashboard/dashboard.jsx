@@ -46,8 +46,8 @@ import Skeleton from "react-loading-skeleton"; // Install using npm install reac
 
 // import view1 from "../../public/view1.png";
 import newView from "../../public/newview.png";
-import NonAtemptedCard from "../../src/commonCard/nonAttemtedCard.jsx";
-import AtemptedCard from "../../src/commonCard/attemptedCard.jsx";
+// import NonAtemptedCard from "../../src/commonCard/nonAttemtedCard.jsx";
+// import AtemptedCard from "../../src/commonCard/attemptedCard.jsx";
 import WeeklyProgess from "../../src/weeklyProgress/weeklyProgress.jsx";
 import DashBoardNavBar from "../../src/dashboardNavBar/dashboardNavBar.jsx";
 import more from "../../src/assets/Images/dashboard/more.png"
@@ -236,7 +236,15 @@ const Dashboard = () => {
         console.error("Failed to disable quiz");
       }
     } catch (error) {
-      console.error("Error during disable operation:", error);
+      if (error instanceof SyntaxError) {
+        toast.error("A parsing error occurred. Please check your input file.");
+      } else if (error.message.includes("NetworkError")) {
+        toast.error("A network error occurred. Please check your internet connection.");
+      } else if (error.message.includes("Failed to fetch")) {
+        toast.error("Server could not be reached. Please try again later.");
+      } else {
+        toast.error("An unexpected error occurred while processing your request. Please try again.");
+      }
     }
   };
   
@@ -338,7 +346,15 @@ const Dashboard = () => {
         console.error("Failed to delete quiz");
       }
     } catch (error) {
-      console.error("Error during delete operation:", error);
+      if (error instanceof SyntaxError) {
+        toast.error("A parsing error occurred. Please check your input file.");
+      } else if (error.message.includes("NetworkError")) {
+        toast.error("A network error occurred. Please check your internet connection.");
+      } else if (error.message.includes("Failed to fetch")) {
+        toast.error("Server could not be reached. Please try again later.");
+      } else {
+        toast.error("An unexpected error occurred while processing your request. Please try again.");
+      }
     }
   };
   useEffect(() => {
@@ -418,7 +434,15 @@ const Dashboard = () => {
         localStorage.setItem("username", userDetails.full_name);
 
       } catch (error) {
-        console.error("Error fetching quiz data:", error);
+        if (error instanceof SyntaxError) {
+          toast.error("A parsing error occurred. Please check your input file.");
+        } else if (error.message.includes("NetworkError")) {
+          toast.error("A network error occurred. Please check your internet connection.");
+        } else if (error.message.includes("Failed to fetch")) {
+          toast.error("Server could not be reached. Please try again later.");
+        } else {
+          toast.error("An unexpected error occurred while processing your request. Please try again.");
+        }
       }finally {
         setLoading1(false); // Stop loading after API call
       }
@@ -483,7 +507,15 @@ const Dashboard = () => {
       }
     } catch (error) {
       console.error("Error fetching subscription limitations:", error);
-      toast.error("An error occurred while checking subscription limitations.");
+      if (error instanceof SyntaxError) {
+        toast.error("A parsing error occurred. Please check your input file.");
+      } else if (error.message.includes("NetworkError")) {
+        toast.error("A network error occurred. Please check your internet connection.");
+      } else if (error.message.includes("Failed to fetch")) {
+        toast.error("Server could not be reached. Please try again later.");
+      } else {
+        toast.error("An unexpected error occurred while processing your request. Please try again.");
+      }
     }
   };
   // const handleStartQuiz1 = (quizId, attemptsCount, retakeFlag) => {
@@ -565,7 +597,15 @@ const Dashboard = () => {
       }
     } catch (error) {
       console.error("Error fetching subscription limitations:", error);
-      toast.error("An error occurred while checking subscription limitations.");
+      if (error instanceof SyntaxError) {
+        toast.error("A parsing error occurred. Please check your input file.");
+      } else if (error.message.includes("NetworkError")) {
+        toast.error("A network error occurred. Please check your internet connection.");
+      } else if (error.message.includes("Failed to fetch")) {
+        toast.error("Server could not be reached. Please try again later.");
+      } else {
+        toast.error("An unexpected error occurred while processing your request. Please try again.");
+      }
     }
   };
   
@@ -708,7 +748,15 @@ const Dashboard = () => {
       }
     } catch (error) {
       console.error("Error fetching subscription limitations:", error);
-      toast.error("An error occurred while checking subscription limitations.");
+      if (error instanceof SyntaxError) {
+        toast.error("A parsing error occurred. Please check your input file.");
+      } else if (error.message.includes("NetworkError")) {
+        toast.error("A network error occurred. Please check your internet connection.");
+      } else if (error.message.includes("Failed to fetch")) {
+        toast.error("Server could not be reached. Please try again later.");
+      } else {
+        toast.error("An unexpected error occurred while processing your request. Please try again.");
+      }
     }finally {
       setLoading(false); // Hide loading after API response
     }
@@ -1145,7 +1193,7 @@ const Dashboard = () => {
                           ${
                             quizItem.active_flag?.toLowerCase() === "i"  || quizItem.active_flag === "false"
                               ? "border-[#A7A7A7] border-[1px] border-b-[8px]"
-                              : quizItem.attempts_count > 0 && quizItem.attempts_count >= quizItem.retake_flag
+                              :quizItem.attempts_count >= quizItem.retake_flag
                               ? "border-[#81c784] border-[1px] border-b-[8px]"
                               : "border-[#fba0e3] border-[1px] border-b-[8px]"
                           }
@@ -2775,12 +2823,13 @@ alt="Disable icon"
         ${
           quizItem.active_flag?.toLowerCase() === "i" || quizItem.active_flag === "false"
             ? "border-[#A7A7A7] border-[1px] border-b-[8px]"
-            : quizItem.attempts_count > 0 && quizItem.attempts_count >= quizItem.retake_flag
+            : quizItem.attempts_count >= quizItem.retake_flag
             ? "border-[#81c784] border-[1px] border-b-[8px]"
             : "border-[#fba0e3] border-[1px] border-b-[8px]"
         }
         flex flex-row w-full max-w-[390px] h-[170px] rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4
       `}
+      
     >
                         {/* Image Section */}
                         <div       className="w-[140px] h-[127px]  rounded-md  mr-2"

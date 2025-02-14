@@ -493,7 +493,7 @@ const quizresults = () => {
          
          </div>
         ):(
-        <div className="w-[45%] rounded-2xl bg-white">
+        <div className="w-[80%] rounded-2xl bg-white">
           <div className="flex py-1 items-end justify-end ">
              <button
                onClick={handleToggleAnswers}

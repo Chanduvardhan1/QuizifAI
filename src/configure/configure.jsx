@@ -192,70 +192,90 @@ const configure = () => {
     fetchQuizData();
   }, [userId]);
 
+
   const items = [
     {
       id: 1,
-      image:congiguration,
+      image: congiguration,
       title: "Configuration",
       content: "Categories",
-      //  Courses, Specialisations, Classes, Subjects",
+      roles: ["Super Admin", "Admin", "Quiz Master"], // Roles allowed to see this card
     },
     {
       id: 2,
-      image:pepooles,
+      image: pepooles,
       title: "User & Roles",
       content:
         "Add User, Add Bulk Users, Add/Edit User Groups, User List, Reset User Password",
+      roles: ["Super Admin", "Admin"], // Restrict to specific roles
     },
     {
       id: 3,
-      image:software,
+      image: software,
       title: "Organization",
       content:
         "Create Organization, Create Organization Department, Organization Profile, Institution Quizs, Organization Preferences",
+      roles: ["Super Admin","Admin"], // Visible only to Super Admin
     },
     {
       id: 4,
-      image:card,
+      image: card,
       title: "Subscription",
-      content:
-        "Order List, Subscription Details",
+      content: "Order List, Subscription Details",
+      roles: ["Super Admin", "Admin"],
     },
-    // {
-    //   id: 5,
-    //   image:report,
-    //   title: "Reports",
-    //   content:
-    //     "Global Leaderboard, My History, Quiz Status Report, (Other Possible Reports)",
-    // },
     {
       id: 6,
-      image:Q,
+      image: Q,
       title: "Quizzes",
       content:
         "Question Bank, Quiz Print Templates, Assign Quiz, Disable Quizs, Expiry Quiz, Quiz Created by Quiz Master",
+      roles: ["Quiz Master", "Admin", "Super Admin"],
     },
     {
       id: 7,
-      image:ball,
+      image: ball,
       title: "Notification",
-      content:
-        "Notification Preferences, Notification List",
+      content: "Notification Preferences, Notification List",
+      roles: ["Super Admin", "Admin", "Quiz Master"],
     },
     {
       id: 8,
-      image:help,
+      image: help,
       title: "Help",
-      content:
-        "My Tickets, Help",
+      content: "My Tickets, Help",
+      roles: ["Super Admin", "Admin", "Quiz Master", "Quiz User"],
     },
   ];
-
-  const filteredItems = items.filter(
-    (item) =>
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.content.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  
+  const filteredItems = items.filter((item) => {
+    // Show "User & Roles" only for Admins with orgId
+    if (item.title === "User & Roles" &&  ["Super Admin", "Admin"].includes(userRole) ) {
+      return true;
+    }
+  
+    // Show other cards based on roles or any other conditions
+    if (["Super Admin", "Admin"].includes(userRole)  && item.title === "Organization") {
+      return true;
+    }
+    if (["Super Admin", "Admin"].includes(userRole) && item.title === "Subscription") {
+      return true;
+    }
+    if (["Quiz Master", "Admin","Super Admin"].includes(userRole) && item.title === "Quizzes") {
+      return true;
+    }
+  
+    if (["Super Admin", "Admin"].includes(userRole)  && item.title === "Configuration") {
+      return true;
+    }
+  
+    if (["Super Admin", "Admin"].includes(userRole) && item.title === "Notification") {
+      return true;
+    }
+  
+    // Add any default behavior to include cards visible to all roles
+    return ["Help"].includes(item.title); // "Help" is visible to all roles
+  });
 
   const highlightText = (text, query) => {
     if (!query) return text;

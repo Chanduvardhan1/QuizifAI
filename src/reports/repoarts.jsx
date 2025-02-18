@@ -186,9 +186,25 @@ const repoarts = () => {
     const closeModal5 = () => {
       setIsModalOpen5(false);
     };
+    const userRole = localStorage.getItem("user_role");
+    const orgId = localStorage.getItem("org_id");
 
-  const userRole = localStorage.getItem("user_role");
-  const orgId = localStorage.getItem("org_id");
+    const filteredReportsData = reportsData.filter(categoryData => {
+      if (userRole === "Admin" &&categoryData.category === "Organization Reports" && orgId) {
+        return true;
+      }
+      if (userRole === "Quiz Master" && categoryData.category.includes("Quiz Master")) {
+        return true;
+      }
+      if (userRole === "Super Admin" && categoryData.category.includes("Super Admin")) {
+        return true;
+      }
+      if (userRole && categoryData.category.includes("My Reports")) {
+        return true;
+      }
+      return false;
+    });
+
 
   const allowedRoles1 = ["Quiz Master","Admin"];
 
@@ -359,7 +375,7 @@ const  handleMyHistory =() => {
             </div>
           </div>
           <div className="flex flex-wrap justify-left w-full gap-2 ">
-      {reportsData.map((categoryData, index) => (
+      {filteredReportsData.map((categoryData, index) => (
         
         <div
           key={index}

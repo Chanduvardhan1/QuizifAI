@@ -343,15 +343,15 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
           {/* <div className="flex justify-center p-[5px] text-[24px]">
             <h1 className="text-[#F17530]">Organization Users List</h1>
           </div> */}
-          <div className="flex justify-start items-center p-[5px] text-[18px]">
+          <div className="flex justify-start items-center p-[5px] text-[14px]">
                 <span className="text-[#F17530]">Title</span>
-                <span className="text-[#F17530] ml-[62px]"> : </span>
+                <span className="text-[#F17530] ml-[49px]"> : </span>
 
-              <span className="text-[#214082] text-[16px] ml-2">Organization Users List</span>
+              <span className="text-[#214082] text-[12px] ml-2">Organization Users List</span>
             </div>
-            <div className="flex justify-start items-center p-[5px] text-[18px]">
+            <div className="flex justify-start items-center p-[5px] text-[14px]">
                 <span className="text-[#F17530]">Description : </span>
-              <span className="text-[#214082] ml-2  text-[16px]">The Organization User List for Super Admin provides a comprehensive view of all users within the organization, allowing management of roles, statuses, and account details.</span>
+              <span className="text-[#214082] ml-2  text-[12px]">The Organization User List for Super Admin provides a comprehensive view of all users within the organization, allowing management of roles, statuses, and account details.</span>
             </div>
 {/* <div className="flex">
 <DashBoardNavBar/>
@@ -460,15 +460,15 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
             </div> */}
       
 
-             <div className="flex justify-between mb-3 items-center">
+             <div className="flex justify-between mb-3 pl-[5px] items-center">
                
              <div className="flex w-full gap-2 ">
                    {/* Organization Dropdown */}
-                   <span className="text-[#F17530] text-[18px]">User Name</span>
-                   <span className="text-[#F17530] text-[18px] ml-2">: </span>
+                   <span className="text-[#F17530] text-[14px]">User Name</span>
+                   <span className="text-[#F17530] text-[14px] ">: </span>
 
                    <select
-          className="py-1 px-2 border rounded-md"
+          className="py-1 px-2 text-[12px] border rounded-md"
           value={selectedUserName}
           onChange={(e) => setSelectedUserName(e.target.value)}
         >
@@ -481,9 +481,9 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
         </select>
            
                    {/* User Role Dropdown */}
-                   <span className="text-[#F17530] text-[18px]">Email :</span>
+                   <span className="text-[#F17530] text-[14px]">Email :</span>
                    <select
-          className="py-1 px-2 border rounded-md"
+          className="py-1 px-2 text-[12px] border rounded-md"
           value={selectedEmail}
           onChange={(e) => setSelectedEmail(e.target.value)}
         >
@@ -496,9 +496,9 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
         </select>                  
            
                    {/* Registration Day Dropdown */}
-                   <span className="text-[#F17530] text-[18px]">Roles :</span>
+                   <span className="text-[#F17530] text-[14px]">Roles :</span>
                    <select
-          className="py-1 px-2 border rounded-md"
+          className="py-1 px-2 text-[12px] border rounded-md"
           value={selectedRole}
           onChange={(e) => setSelectedRole(e.target.value)}
         >
@@ -533,6 +533,7 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
         <thead className="bg-[#CBF2FB]">
           <tr className="text-[14px]">
             <th className="py-2 px-4 border-b">Seq</th>
+            <th className="py-2 px-4 border-b">Org ID</th>
             <th className="py-2 px-4 border-b">User ID</th>
             <th className="py-2 px-4 border-b text-start">User Name</th>
             <th className="py-2 px-4 border-b">Email</th>
@@ -556,6 +557,7 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
               className="bg-white hover:bg-gray-100 text-[12px]"
             >
               <td className="py-2 px-4 border-b text-center">{index + 1}</td>
+              <td className="py-2 px-2 border-b text-center text-nowrap">{user.org_id}</td>
               <td className="py-2 px-2 border-b text-center">{user.user_id}</td>
               <td className="py-2 px-4 border-b text-start">{user.user_name}</td>
               <td className="py-2 px-2 border-b text-center">{user.email}</td>

@@ -316,15 +316,15 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
           {/* <div className="flex justify-center p-[5px] text-[24px]">
             <h1 className="text-[#F17530]">Organization Quiz Summary</h1>
           </div> */}
-          <div className="flex justify-start items-center p-[5px] text-[18px]">
+          <div className="flex justify-start items-center p-[5px] text-[14px]">
                 <span className="text-[#F17530]">Title</span>
-                <span className="text-[#F17530] ml-[62px]"> : </span>
+                <span className="text-[#F17530] ml-[48px]"> : </span>
 
-              <span className="text-[#214082] text-[16px] ml-2">Organization Quiz Summary</span>
+              <span className="text-[#214082] text-[12px] ml-2">Organization Quiz Summary</span>
             </div>
-            <div className="flex justify-start items-center p-[5px] text-[18px]">
+            <div className="flex justify-start items-center p-[5px] text-[14px]">
                 <span className="text-[#F17530]">Description : </span>
-              <span className="text-[#214082] ml-2  text-[16px]">The Organization Quiz Summary for Organization Admin provides an overview of all quizzes conducted within the organization, including participation, completion rates, and performance insights.</span>
+              <span className="text-[#214082] ml-2  text-[12px]">The Organization Quiz Summary for Organization Admin provides an overview of all quizzes conducted within the organization, including participation, completion rates, and performance insights.</span>
             </div>
 {/* <div className="flex">
 <DashBoardNavBar/>
@@ -475,6 +475,7 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
         <table className="min-w-full bg-gray-100 border border-gray-200 rounded-lg overflow-hidden">
           <thead className="bg-[#CBF2FB]">
             <tr className="text-[14px]">
+            <th className="py-2 px-4 border-b">Org ID</th>
               <th className="py-2 px-4 border-b">Organization Name</th>
               <th className="py-2 px-4 border-b">Total Quizzes</th>
               <th className="py-2 px-4 border-b">Total Attempts</th>
@@ -489,6 +490,7 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
           </thead>
           <tbody>
             <tr className="bg-white hover:bg-gray-100 active:bg-green-200 text-[12px]">
+            <td className="py-2 px-2 border-b text-center text-nowrap">{quizSummary.org_id}</td>
               <td className="py-2 px-4 border-b text-center">{quizSummary.organization_name}</td>
               <td className="py-2 px-4 border-b text-center">{quizSummary.total_quizzes}</td>
               <td className="py-2 px-4 border-b text-center">{quizSummary.total_attempts}</td>

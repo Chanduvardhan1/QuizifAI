@@ -339,15 +339,17 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
           {/* <div className="flex justify-center p-[5px] text-[24px]">
             <h1 className="text-[#F17530]">Organization Quiz Summary</h1>
           </div> */}
-          <div className="flex justify-start items-center p-[5px] text-[18px]">
+          <div className="flex justify-start items-center p-[5px] text-[14px]">
                 <span className="text-[#F17530]">Title</span>
-                <span className="text-[#F17530] ml-[62px]"> : </span>
+                <span className="text-[#F17530] ml-[110px]"> : </span>
 
-              <span className="text-[#214082] text-[16px] ml-2">Organization Quiz Summary</span>
+              <span className="text-[#214082] text-[12px] ml-2">Organization Quiz Summary</span>
             </div>
-            <div className="flex justify-start items-center p-[5px] text-[18px]">
-                <span className="text-[#F17530]">Description : </span>
-              <span className="text-[#214082] ml-2  text-[16px]">An organization users list records all individuals in an organization, detailing their roles, permissions, and contact info in a structured format.</span>
+            <div className="flex justify-start items-center p-[5px] text-[14px]">
+                <span className="text-[#F17530]">Description  </span>
+                <span className="text-[#F17530] ml-[65px]"> : </span>
+
+              <span className="text-[#214082] ml-2  text-[12px]">An organization users list records all individuals in an organization, detailing their roles, permissions, and contact info in a structured format.</span>
             </div>
 {/* <div className="flex">
 <DashBoardNavBar/>
@@ -459,14 +461,14 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
               <h1 className="text-[#F17530] pt-3">Organization Quiz Summary : </h1>
             </div> */}
 
-            <div className="flex justify-between items-center mb-3">
+            <div className="flex justify-between items-center pl-[5px] mb-3">
       
             <div className="flex w-full gap-2 ">
-              <span className="text-[#F17530] text-[18px] mr-2">Organization Name</span>
-              <span className="text-[#F17530] text-[18px] ml-2">: </span>
+              <span className="text-[#F17530] text-[14px] mr-2">Organization Name</span>
+              <span className="text-[#F17530] text-[14px] ">: </span>
 
   <select
-    className="p-2 border border-gray-300 rounded-md"
+    className="p-2 border text-[12px] border-gray-300 rounded-md"
     value={filters.organization_name}
     onChange={(e) => setFilters({ ...filters, organization_name: e.target.value })}
   >
@@ -503,6 +505,7 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
         <table className="min-w-full bg-gray-100 border border-gray-200 rounded-lg border-spacing-y-2 overflow-hidden">
           <thead className="bg-[#CBF2FB]">
             <tr className="text-[14px]">
+            <th className="py-2 px-4 border-b">Org ID</th>
               <th className="py-2 px-4 border-b">Organization Name</th>
               <th className="py-2 px-4 border-b">Total Quizzes</th>
               <th className="py-2 px-4 border-b">Total Attempts</th>
@@ -522,6 +525,7 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
           <tbody>
           {filteredData.map((quiz, index) => (
             <tr  key={index}  className="bg-white hover:bg-gray-100 active:bg-green-200 text-[12px]">
+               <td className="py-2 px-2 border-b text-center text-nowrap">{quiz.org_id}</td>
               <td className="py-2 px-4 border-b text-start">{quiz.organization_name}</td>
               <td className="py-2 px-4 border-b text-center">{quiz.total_quizzes}</td>
               <td className="py-2 px-4 border-b text-center">{quiz.total_attempts}</td>

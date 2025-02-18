@@ -1922,6 +1922,9 @@ const handleNext4 = async () => {
           quiz_instructions: instructionsString,
           org_id: orgId,
           pdf_url: pdfUrl,
+          premium_quiz_flag: showPackageFields,
+          quiz_package_name: selectedPackageName,
+          quiz_package_id: selectedPackageId,
           questions: questions.map((question) => ({
             question_text: question.question_text,
             question_weightage: question.question_weightage,

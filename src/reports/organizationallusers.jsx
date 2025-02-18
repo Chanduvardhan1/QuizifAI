@@ -349,15 +349,15 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
           {/* <div className="flex justify-center p-[5px] text-[24px]">
             <h1 className="text-[#F17530]">Organization All Users</h1>
           </div> */}
-          <div className="flex justify-start items-center p-[5px] text-[18px]">
+          <div className="flex justify-start items-center p-[5px] text-[14px]">
                 <span className="text-[#F17530]">Title</span>
-                <span className="text-[#F17530] ml-[62px]"> : </span>
+                <span className="text-[#F17530] ml-[49px]"> : </span>
 
-              <span className="text-[#214082] text-[16px] ml-2">Organization All Users</span>
+              <span className="text-[#214082] text-[12px] ml-2">Organization All Users</span>
             </div>
-            <div className="flex justify-start items-center p-[5px] text-[18px]">
+            <div className="flex justify-start items-center p-[5px] text-[14px]">
                 <span className="text-[#F17530]">Description : </span>
-              <span className="text-[#214082] ml-2  text-[16px]">The Organization User List displays all registered users within the organization, including their roles, statuses, and relevant details for easy management.</span>
+              <span className="text-[#214082] ml-2  text-[12px]">The Organization User List displays all registered users within the organization, including their roles, statuses, and relevant details for easy management.</span>
             </div>
 {/* <div className="flex">
 <DashBoardNavBar/>
@@ -473,11 +473,11 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
 
 <div className="flex w-full gap-2 ">
               <div>
-    <span className="text-[#F17530] text-[18px]">First Name</span>
-    <span className="text-[#F17530] text-[18px] ml-4">: </span>
+    <span className="text-[#F17530] text-[14px]">First Name</span>
+    <span className="text-[#F17530] text-[14px] ml-3">: </span>
 
     <select
-      className="p-2 w-[100px] border border-gray-300 rounded-md"
+      className="p-2 w-[100px] text-[12px] border border-gray-300 rounded-md"
       value={filters.first_name}
       onChange={(e) => setFilters({ ...filters, first_name: e.target.value })}
     >
@@ -492,9 +492,9 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
 
   {/* User Email Dropdown */}
   <div>
-    <span className="text-[#F17530] text-[18px]">User Email : </span>
+    <span className="text-[#F17530] text-[14px]">User Email : </span>
     <select
-      className="p-2 w-[150px] border border-gray-300 rounded-md ml-2"
+      className="p-2 w-[150px] border text-[12px] border-gray-300 rounded-md ml-2"
       value={filters.user_email}
       onChange={(e) => setFilters({ ...filters, user_email: e.target.value })}
     >
@@ -509,9 +509,9 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
 
   {/* Organization Name Dropdown */}
   <div>
-    <span className="text-[#F17530] text-[18px]">Organization Name :</span>
+    <span className="text-[#F17530] text-[14px]">Organization Name :</span>
     <select
-      className="p-2 w-[100px] border border-gray-300 rounded-md ml-2"
+      className="p-2 w-[100px] border text-[12px] border-gray-300 rounded-md ml-2"
       value={filters.organization_name}
       onChange={(e) =>
         setFilters({ ...filters, organization_name: e.target.value })
@@ -528,9 +528,9 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
 
   {/* User Role Dropdown */}
   <div>
-    <span className="text-[#F17530] text-[18px]">User Role :</span>
+    <span className="text-[#F17530] text-[14px]">User Role :</span>
     <select
-      className="p-2 w-[100px] border border-gray-300 rounded-md ml-2"
+      className="p-2 w-[100px] border text-[12px] border-gray-300 rounded-md ml-2"
       value={filters.user_role}
       onChange={(e) => setFilters({ ...filters, user_role: e.target.value })}
     >

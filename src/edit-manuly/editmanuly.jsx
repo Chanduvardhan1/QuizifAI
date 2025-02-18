@@ -1293,7 +1293,7 @@ const [quizid, setQuizId] = useState('');
         setSelectedSubCategory(data.data.quiz_sub_category_name);
         setPercentage(data.data.pass_percentage);
         setSelectedValue(data.data.retake_flag);
-        setPublicAccess(data.data.quiz_public_access === "on");
+        setPublicAccess(data.data.quiz_public_access);
         setDuration(data.data.quiz_duration);
         setIsRetakeOn(data.data.retake_flag > 0);
         setTimings(data.data.quiz_time_bounded_questions);

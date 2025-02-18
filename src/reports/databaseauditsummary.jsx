@@ -354,15 +354,15 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
           {/* <div className="flex justify-center p-[5px] text-[24px]">
             <h1 className="text-[#F17530]">Database Audit Summary</h1>
           </div> */}
-          <div className="flex justify-start items-center p-[5px] text-[18px]">
+          <div className="flex justify-start items-center p-[5px] text-[14px]">
                 <span className="text-[#F17530]">Title</span>
-                <span className="text-[#F17530] ml-[62px]"> : </span>
+                <span className="text-[#F17530] ml-[47px]"> : </span>
 
-              <span className="text-[#214082] text-[16px] ml-2">Database Audit Summary</span>
+              <span className="text-[#214082] text-[12px] ml-2">Database Audit Summary</span>
             </div>
-            <div className="flex justify-start items-center p-[5px] text-[18px]">
+            <div className="flex justify-start items-center p-[5px] text-[14px]">
                 <span className="text-[#F17530]">Description : </span>
-              <span className="text-[#214082] ml-2  text-[16px]">An Database Audit Summary records all individuals in an organization, detailing their roles, permissions, and contact info in a structured format.</span>
+              <span className="text-[#214082] ml-2  text-[12px]">An Database Audit Summary records all individuals in an organization, detailing their roles, permissions, and contact info in a structured format.</span>
             </div>
      
 {/* <div className="flex">

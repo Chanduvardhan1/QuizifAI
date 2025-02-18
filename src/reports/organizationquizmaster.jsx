@@ -310,15 +310,16 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
           {/* <div className="flex justify-center p-[5px] text-[24px]">
             <h1 className="text-[#F17530]">Organization Quiz Master</h1>
           </div> */}
-          <div className="flex justify-start items-center p-[5px] text-[18px]">
+          <div className="flex justify-start items-center p-[5px] text-[14px]">
                 <span className="text-[#F17530]">Title</span>
-                <span className="text-[#F17530] ml-[62px]"> : </span>
+                <span className="text-[#F17530] ml-[54px]"> : </span>
 
-              <span className="text-[#214082] text-[16px] ml-2">Organization Quiz Master</span>
+              <span className="text-[#214082] text-[12px] ml-2">Organization Quiz Master</span>
             </div>
-            <div className="flex justify-start items-center p-[5px] text-[18px]">
-                <span className="text-[#F17530]">Description : </span>
-              <span className="text-[#214082] ml-2  text-[16px]">An organization users list records all individuals in an organization, detailing their roles, permissions, and contact info in a structured format.</span>
+            <div className="flex justify-start items-center p-[5px] text-[14px]">
+                <span className="text-[#F17530]">Description </span>
+                <span className="text-[#F17530] ml-[9px]"> : </span>
+              <span className="text-[#214082] ml-2  text-[12px]">An organization users list records all individuals in an organization, detailing their roles, permissions, and contact info in a structured format.</span>
             </div>
 {/* <div className="flex">
 <DashBoardNavBar/>
@@ -429,15 +430,15 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
               <h1 className="text-[#F17530] pt-3">Organization Quiz Master : </h1>
             </div> */}
 
-            <div className="flex justify-between items-center mb-3">
+            <div className="flex justify-between pl-[5px] items-center mb-3">
     
       <div className="flex w-full">
 
       {/* Quiz Master Dropdown */}
-      <span className="text-[#F17530] text-[18px]">Quiz Master </span>
-      <span className="text-[#F17530] text-[18px] ml-1">: </span>
+      <span className="text-[#F17530] text-[14px]">Quiz Master </span>
+      <span className="text-[#F17530] text-[14px] ml-1">: </span>
 
-      <select className="py-1 px-2 rounded-md border ml-2">
+      <select className="py-1 px-2 text-[12px] rounded-md border ml-2">
         <option value="">All</option>
         {quizMasterNames.map((name, index) => (
           <option key={index} value={name}>

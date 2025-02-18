@@ -273,15 +273,15 @@ const handleBack = () => {
           {/* <div className="flex justify-center p-[5px] text-[24px]">
             <h1 className="text-[#F17530]">My Quiz Report</h1>
           </div> */}
-          <div className="flex justify-start items-center p-[5px] text-[18px]">
+          <div className="flex justify-start items-center p-[5px] text-[14px]">
                 <span className="text-[#F17530]">Title</span>
-                <span className="text-[#F17530] ml-[62px]"> : </span>
+                <span className="text-[#F17530] ml-[49px]"> : </span>
 
-              <span className="text-[#214082] text-[16px] ml-2">My Quiz Report</span>
+              <span className="text-[#214082] text-[12px] ml-2">My Quiz Report</span>
             </div>
-            <div className="flex justify-start items-center p-[5px] text-[18px]">
+            <div className="flex justify-start items-center p-[5px] text-[14px]">
                 <span className="text-[#F17530]">Description : </span>
-              <span className="text-[#214082] ml-2  text-[16px]">An organization users list records all individuals in an organization, detailing their roles, permissions, and contact info in a structured format.</span>
+              <span className="text-[#214082] ml-2  text-[12px]">An organization users list records all individuals in an organization, detailing their roles, permissions, and contact info in a structured format.</span>
             </div>
 {/* <div className="flex">
 <DashBoardNavBar/>
@@ -393,13 +393,13 @@ const handleBack = () => {
             <div className="flex justify-between mb-3 items-center">
      
             <div className="flex w-full gap-2 ">
-        <span className="text-[#F17530] text-[18px]">User Name </span>
-        <span className="text-[#F17530] text-[18px] ml-1">: </span>
+        <span className="text-[#F17530] text-[14px]">User Name </span>
+        <span className="text-[#F17530] text-[14px] ml-1">: </span>
 
         <select
           value={userFilter}
           onChange={(e) => setUserFilter(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md"
+          className="p-2 border text-[12px] border-gray-300 rounded-md"
         >
           <option value="">Filter by User</option>
           {uniqueUsers.map((user) => (
@@ -407,11 +407,11 @@ const handleBack = () => {
           ))}
         </select>
 
-        <span className="text-[#F17530] text-[18px]">Quiz Title : </span>
+        <span className="text-[#F17530] text-[14px]">Quiz Title : </span>
         <select
           value={quizTitleFilter}
           onChange={(e) => setQuizTitleFilter(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md"
+          className="p-2 border text-[12px] border-gray-300 rounded-md"
         >
           <option value="">Filter by Quiz Title</option>
           {uniqueQuizTitles.map((title) => (

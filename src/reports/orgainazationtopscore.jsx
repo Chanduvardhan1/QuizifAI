@@ -313,15 +313,15 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
           {/* <div className="flex justify-center p-[5px] text-[24px]">
             <h1 className="text-[#F17530]">Organization Top Score</h1>
           </div> */}
-          <div className="flex justify-start items-center p-[5px] text-[18px]">
+          <div className="flex justify-start items-center p-[5px] text-[14px]">
                 <span className="text-[#F17530]">Title</span>
-                <span className="text-[#F17530] ml-[62px]"> : </span>
+                <span className="text-[#F17530] ml-[49px]"> : </span>
 
-              <span className="text-[#214082] text-[16px] ml-2">Organization Top Score</span>
+              <span className="text-[#214082] text-[12px] ml-2">Organization Top Score</span>
             </div>
-            <div className="flex justify-start items-center p-[5px] text-[18px]">
+            <div className="flex justify-start items-center p-[5px] text-[14px]">
                 <span className="text-[#F17530]">Description : </span>
-              <span className="text-[#214082] ml-2  text-[16px]">An organization users list records all individuals in an organization, detailing their roles, permissions, and contact info in a structured format.</span>
+              <span className="text-[#214082] ml-2  text-[12px]">An organization users list records all individuals in an organization, detailing their roles, permissions, and contact info in a structured format.</span>
             </div>
 {/* <div className="flex">
 <DashBoardNavBar/>
@@ -433,15 +433,15 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
               <h1 className="text-[#F17530] pt-3">Organization Top Score : </h1>
             </div> */}
 
-            <div className="flex justify-between items-center mb-3">
+            <div className="flex justify-between items-center mb-3 pl-[5px]">
              
 <div  className="flex w-full gap-2 ">
               <div>
-              <span className="text-[#F17530] text-[18px]">User Name</span>
-              <span className="text-[#F17530] text-[18px] ml-3">: </span>
+              <span className="text-[#F17530] text-[14px]">User Name</span>
+              <span className="text-[#F17530] text-[14px] ml-2">: </span>
 
         <select
-          className="py-1 px-2 rounded-md border"
+          className="py-1 px-2 text-[12px] rounded-md border"
           value={selectedUserName}
           onChange={(e) => setSelectedUserName(e.target.value)}
         >
@@ -454,9 +454,9 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
 
       {/* Class Section Dropdown */}
       <div>
-        <span className="text-[#F17530] text-[18px]">Class Section : </span>
+        <span className="text-[#F17530] text-[14px]">Class Section : </span>
         <select
-          className="py-1 px-2 rounded-md border"
+          className="py-1 px-2 text-[12px] rounded-md border"
           value={selectedClassSection}
           onChange={(e) => setSelectedClassSection(e.target.value)}
         >
@@ -489,6 +489,7 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
       <thead className="bg-[#CBF2FB]">
         <tr className="text-[14px]">
           <th className="py-2 px-4 border-b">Seq</th>
+          <th className="py-2 px-4 border-b">Org ID</th>
           <th className="py-2 px-4 border-b">User ID</th>
           <th className="py-2 px-4 border-b text-start">User Name</th>
           <th className="py-2 px-4 border-b text-start">Class Section</th>
@@ -502,6 +503,7 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
         {filteredUsers.map((user, index) => (
           <tr key={user.user_id} className="bg-white hover:bg-gray-100 active:bg-green-200 text-[12px]">
             <td className="py-2 px-4 border-b text-center">{index + 1}</td>
+            <td className="py-2 px-2 border-b text-center text-nowrap">{user.org_id}</td>
             <td className="py-2 px-2 border-b text-center text-nowrap">{user.user_id}</td>
             <td className="py-2 px-4 border-b text-start">{user.user_name}</td>
             <td className="py-2 px-4 border-b text-start">{user.class_section || "-"}</td>

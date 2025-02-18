@@ -287,15 +287,15 @@ const handleBack = () => {
           {/* <div className="flex justify-center p-[5px] text-[24px]">
             <h1 className="text-[#F17530]">My Quiz Attemt Details</h1>
           </div> */}
-          <div className="flex justify-start items-center p-[5px] text-[18px]">
+          <div className="flex justify-start items-center p-[5px] text-[14px]">
                 <span className="text-[#F17530]">Title</span>
-                <span className="text-[#F17530] ml-[62px]"> : </span>
+                <span className="text-[#F17530] ml-[49px]"> : </span>
 
-              <span className="text-[#214082] text-[16px] ml-2">My Quiz Attemt Details</span>
+              <span className="text-[#214082] text-[12px] ml-2">My Quiz Attemt Details</span>
             </div>
-            <div className="flex justify-start items-center p-[5px] text-[18px]">
+            <div className="flex justify-start items-center p-[5px] text-[14px]">
                 <span className="text-[#F17530]">Description : </span>
-              <span className="text-[#214082] ml-2  text-[16px]">My Quiz Attempts page displays the details of all the quizzes you have attempted, including completion status, scores, and history for easy tracking.</span>
+              <span className="text-[#214082] ml-2  text-[12px]">My Quiz Attempts page displays the details of all the quizzes you have attempted, including completion status, scores, and history for easy tracking.</span>
             </div>
 {/* <div className="flex">
 <DashBoardNavBar/>
@@ -409,10 +409,10 @@ const handleBack = () => {
             <div className="flex justify-between items-center mb-4">
        
 <div className="flex w-full gap-2 ">
-        <span className="text-[#F17530]  text-[18px]">Quiz Title </span>
-        <span className="text-[#F17530] text-[18px] ml-4">: </span>
+        <span className="text-[#F17530]  text-[14px]">Quiz Title </span>
+        <span className="text-[#F17530] text-[14px] ml-4">: </span>
         <select
-          className="py-1 px-2 rounded-md border"
+          className="py-1 px-2 text-[12px] rounded-md border"
           value={selectedQuizTitle}
           onChange={(e) => setSelectedQuizTitle(e.target.value)}
         >
@@ -424,9 +424,9 @@ const handleBack = () => {
           ))}
         </select>
 
-        <span className="text-[#F17530]  text-[18px]">Best Score: </span>
+        <span className="text-[#F17530]  text-[14px]">Best Score: </span>
         <select
-          className="py-1 px-2 rounded-md border"
+          className="py-1 px-2 text-[12px] rounded-md border"
           value={selectedBestScore}
           onChange={(e) => setSelectedBestScore(e.target.value)}
         >

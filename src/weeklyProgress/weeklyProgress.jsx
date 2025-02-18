@@ -144,7 +144,7 @@ const progressLabel = getProgressLabel(progress);
               </h1>
               <h1 className="text-[#002366] text-[14px]">
               Time Spent 
-              <span className="ml-[2px]">:</span>{" "}
+              <span className="ml-[34px]">:</span>{" "}
 
                 <span className="text-[#FF6701] text-[12px]">
                   {weekStats.total_quiz_time}
@@ -152,7 +152,7 @@ const progressLabel = getProgressLabel(progress);
               </h1>
               <h1 className="text-[#002366] text-[14px]">
               Accuracy Rate 
-              <span className="text-[14px] font-[500] text-[#214082] ml-[29px] "> : </span>
+              <span className="text-[14px] font-[500] text-[#214082] ml-[13px] "> : </span>
 
                 <span className="text-[#FF6701] text-[12px]">
                   {weekStats.accuracy_rate}
@@ -167,7 +167,7 @@ const progressLabel = getProgressLabel(progress);
                 </span>
               </h1> */}
                  <h1 className="text-[#002366] text-[14px]">
-              Score Performance 
+                 Score Outcomes 
               <span className="text-[14px] font-[500] text-[#214082]  "> : </span>
 
                 <span className="text-[#FF6701] text-[12px]">

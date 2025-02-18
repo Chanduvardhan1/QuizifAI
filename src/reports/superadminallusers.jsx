@@ -340,15 +340,15 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
           {/* <div className="flex justify-center p-[5px] text-[24px]">
             <h1 className="text-[#F17530]">Organization All Users</h1>
           </div> */}
-     <div className="flex justify-start items-center p-[5px] text-[18px]">
+     <div className="flex justify-start items-center p-[5px] text-[14px]">
                 <span className="text-[#F17530]">Title</span>
-                <span className="text-[#F17530] ml-[62px]"> : </span>
+                <span className="text-[#F17530] ml-[49px]"> : </span>
 
-              <span className="text-[#214082] text-[16px] ml-2">Organization All Users</span>
+              <span className="text-[#214082] text-[12px] ml-2">Organization All Users</span>
             </div>
-            <div className="flex justify-start items-center p-[5px] text-[18px]">
+            <div className="flex justify-start items-center p-[5px] text-[14px]">
                 <span className="text-[#F17530]">Description : </span>
-              <span className="text-[#214082] ml-2  text-[16px]">An organization users list records all individuals in an organization, detailing their roles, permissions, and contact info in a structured format.</span>
+              <span className="text-[#214082] ml-2  text-[12px]">An organization users list records all individuals in an organization, detailing their roles, permissions, and contact info in a structured format.</span>
             </div>
 {/* <div className="flex">
 <DashBoardNavBar/>
@@ -459,14 +459,14 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
               <h1 className="text-[#F17530] pt-3">Organization All Users : </h1>
             </div> */}
 
-            <div className="flex gap-[5px] justify-center items-center mb-4">
+            <div className="flex gap-[5px] pl-[5px] justify-center items-center mb-4">
        
             <div className="flex w-full gap-2 ">
-            <span className="text-[#F17530] text-[18px]">First Name</span>
-    <span className="text-[#F17530] text-[18px] ml-2">: </span>
+            <span className="text-[#F17530] text-[14px]">First Name</span>
+    <span className="text-[#F17530] text-[14px] ">: </span>
 
               <span>
-              <select className="py-1 px-2 rounded-md border" value={selectedFirstName} onChange={(e) => setSelectedFirstName(e.target.value)}>
+              <select className="py-1 px-2 text-[12px] rounded-md border" value={selectedFirstName} onChange={(e) => setSelectedFirstName(e.target.value)}>
           <option value="">All First Names</option>
           {uniqueFirstNames.map((name) => (
             <option key={name} value={name}>{name}</option>
@@ -474,9 +474,9 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
         </select>
               </span>
 
-              <span className="text-[#F17530] text-[18px]">Email : </span>
+              <span className="text-[#F17530] text-[14px]">Email : </span>
               <span>
-              <select className="py-1 px-2 w-[100px] rounded-md border" value={selectedEmail} onChange={(e) => setSelectedEmail(e.target.value)}>
+              <select className="py-1 px-2 text-[12px] w-[100px] rounded-md border" value={selectedEmail} onChange={(e) => setSelectedEmail(e.target.value)}>
           <option value="">All Emails</option>
           {uniqueEmails.map((email) => (
             <option key={email} value={email}>{email}</option>
@@ -484,9 +484,9 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
         </select>
               </span>
 
-              <span className="text-[#F17530] text-[18px]">Role : </span>
+              <span className="text-[#F17530] text-[14px]">Role : </span>
               <span>
-              <select className="py-1 px-2 w-[100px] rounded-md border" value={selectedRole} onChange={(e) => setSelectedRole(e.target.value)}>
+              <select className="py-1 px-2 text-[12px] w-[100px] rounded-md border" value={selectedRole} onChange={(e) => setSelectedRole(e.target.value)}>
           <option value="">All Roles</option>
           {uniqueRoles.map((role) => (
             <option key={role} value={role}>{role}</option>
@@ -495,9 +495,9 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
               </span>
 
 
-              <span className="text-[#F17530] text-[18px]">Organizations : </span>
+              <span className="text-[#F17530] text-[14px]">Organizations : </span>
               <span>
-              <select className="py-1 px-2 w-[200px] rounded-md border" value={selectedOrganization} onChange={(e) => setSelectedOrganization(e.target.value)}>
+              <select className="py-1 px-2 w-[200px] text-[12px] rounded-md border" value={selectedOrganization} onChange={(e) => setSelectedOrganization(e.target.value)}>
           <option value="">All Organizations</option>
           {uniqueOrganizations.map((org) => (
             <option key={org} value={org}>{org}</option>
@@ -527,6 +527,7 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
           <table className="min-w-full bg-gray-100  border border-gray-200 rounded-lg border-spacing-y-2 overflow-hidden">
         <thead className="bg-[#CBF2FB]">
           <tr className="text-[14px]">
+          <th className="py-2 px-4 border-b">Org ID</th>
             <th className="py-2 px-4 border-b">User ID</th>
             <th className="py-2 px-4 border-b">First Name</th>
             <th className="py-2 px-4 border-b">Last Name</th>
@@ -542,6 +543,7 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
         <tbody>
           {filteredUsers.map((user) => (
             <tr key={user.user_id} className="bg-white hover:bg-gray-100 active:bg-green-200 text-[12px]">
+              <td className="py-2 px-2 border-b text-center text-nowrap">{user.organization_id}</td>
               <td className="py-2 px-4 border-b text-center">{user.user_id}</td>
               <td className="py-2 px-4 border-b text-start">{user.first_name}</td>
               <td className="py-2 px-4 border-b text-start">{user.last_name}</td>

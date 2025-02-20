@@ -525,56 +525,121 @@ const subscription = ()=> {
   const [showPopup1, setShowPopup1] = useState(false);
 const [Designation, setDesignation] =useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    const data = {
-      organization_name: organizationName1,
-      organization_type: organizationType1,
-      number_of_users: numberOfUsers1,
-      full_name: fullName1,
-      designation:Designation,
-      email_address: emailAddress1,
-      phone_number: phoneNumber1,
-      purpose_of_use: purposeOfUse1,
-    };
+  // Validate inputs
+  if (!organizationName1) {
+    setResponseMessage1("Organization name is required.");
+    setShowPopup1(true);
+    return;
+  }
 
-    try {
-      const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+  if (!organizationType1) {
+    setResponseMessage1("Organization type is required.");
+    setShowPopup1(true);
+    return;
+  }
 
-      if (!authToken) {
-        throw new Error("No authentication token found");
-      } 
-      const response = await fetch(
-        "https://dev.quizifai.com:8010/organization_contact_us_email",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,           },
-          body: JSON.stringify(data),
-        }
-      );
+  if (!numberOfUsers1) {
+    setResponseMessage1("Please enter a valid number of users.");
+    setShowPopup1(true);
+    return;
+  }
 
-      const result = await response.json();
-      if (result.response === "success") {
-        setResponseMessage1(
-          "Subscription request submitted successfully. A confirmation email has been sent."
-        );
-        
-      } else if (result.response === "fail") {
-        setResponseMessage1("Something went wrong. Please try again.");
-      }
-    } catch (error) {
-      setResponseMessage1("Failed to submit. Please check your connection.");
+  if (!fullName1) {
+    setResponseMessage1("Full name is required.");
+    setShowPopup1(true);
+    return;
+  }
+
+  if (!Designation) {
+    setResponseMessage1("Designation is required.");
+    setShowPopup1(true);
+    return;
+  }
+
+  if (!emailAddress1 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddress1)) {
+    setResponseMessage1("Please enter a valid email address.");
+    setShowPopup1(true);
+    return;
+  }
+
+  if (!phoneNumber1 || !/^\d{10}$/.test(phoneNumber1)) {
+    setResponseMessage1("Please enter a valid 10-digit phone number.");
+    setShowPopup1(true);
+    return;
+  }
+
+  if (!purposeOfUse1) {
+    setResponseMessage1("Purpose of use is required.");
+    setShowPopup1(true);
+    return;
+  }
+
+  const data = {
+    organization_name: organizationName1,
+    organization_type: organizationType1,
+    number_of_users: numberOfUsers1,
+    full_name: fullName1,
+    designation: Designation,
+    email_address: emailAddress1,
+    phone_number: phoneNumber1,
+    purpose_of_use: purposeOfUse1,
+  };
+
+  try {
+    const authToken = localStorage.getItem("authToken"); // Get the auth token from localStorage
+
+    if (!authToken) {
+      throw new Error("No authentication token found");
     }
 
-    setShowPopup1(true);
-  };
+    const response = await fetch(
+      "https://dev.quizifai.com:8010/organization_contact_us_email",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(data),
+      }
+    );
+
+    const result = await response.json();
+    if (result.response === "success") {
+      setResponseMessage1(result.message[0]); // Use the message from the API response
+      setShowPopup1(true); // Ensure the popup is shown
+      setShowForm(false); // Hide the form
+      reset(); // Reset form fields
+      return;
+    } else if (result.response === "fail") {
+      setResponseMessage1("Something went wrong. Please try again.");
+    }
+  } catch (error) {
+    setResponseMessage1("Failed to submit. Please check your connection.");
+  }
+
+  setShowPopup1(true); // Ensure the popup is shown even on error
+};
+
 
   const handleClose1 = () => {
     setShowPopup1(false);
-    setShowForm(false);
+
+  };
+
+
+  const reset = () => {
+    setDesignation("");
+    setPurposeOfUse1("");
+    setPhoneNumber1("");
+    setEmailAddress1("");
+    setFullName1("");
+    setNumberOfUsers1("");
+    setOrganizationType1("");
+    setOrganizationName1("");
   };
         //-------------------**Conctactus END**--------------------//
 

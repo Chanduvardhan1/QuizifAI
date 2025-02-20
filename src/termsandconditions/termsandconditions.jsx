@@ -2,6 +2,7 @@ import React from 'react'
 import Navbarhome from '../navbarhome/navbarhome'
 import { CgCloseO } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
+import HeaderSection from "../HeaderSection/HeaderSection";
 
 
 
@@ -14,7 +15,7 @@ const handleBackToDashboard = () => {
   };
   return (
     <body className="bg-gray-100 overflow-hidden">
-        <Navbarhome/>
+        <HeaderSection/>
     <div className="container mx-auto overflow-hidden p-4">
         <div>
              {/* <button className='text-xl border px-5 bg-[#3B61C8] rounded-2xl text-white ml-[320px]' onClick={handleBackToDashboard}>close</button> */}

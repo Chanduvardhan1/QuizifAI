@@ -201,6 +201,26 @@ const handleToggle = (event) => {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
+
+  if (!quizId) {
+    setModalMessage2("Quiz Name is required.");
+    setIsError1(true);
+    setShowassign(true);
+    return;
+  }
+
+  if (!orgId) {
+    setModalMessage2("Organization ID is required.");
+    setIsError1(true);
+    setShowassign(true);
+    return;
+  }
+
+  
+
+
+ 
+
   const selectedUserIds = selectedUsers.map((user) => user.value); // Extract IDs
 
   // Prepare FormData
@@ -359,7 +379,7 @@ value={orgId}
 <div className="flex flex-col w-full">
   <div className="w-full flex flex-row">
     <label className="w-[20%] text-blue-800 font-semibold mb-2 ">
-      Quiz Id<span className="text-red-500">*</span>
+      Quiz Name<span className="text-red-500">*</span>
     </label>
     <select
       className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"

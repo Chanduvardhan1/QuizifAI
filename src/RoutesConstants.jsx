@@ -504,7 +504,7 @@ export default () => {
         {
             path:'termsandconditions',
             component: Termsandconditions,
-            isPrivate: true,
+
         },
         {
             path:'leaderboard',

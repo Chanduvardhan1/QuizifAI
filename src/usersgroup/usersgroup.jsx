@@ -9,6 +9,8 @@ import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
 import close from "../../src/assets/Images/images/dashboard/cancel.png"
 import editicon from "../../src/assets/Images/quiz-type/edit.png"
 import { CircularProgress } from "@mui/material";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 
@@ -332,7 +334,27 @@ const handleRoleChange = (e) => {
       // Handle form submission
       const handleSubmit = (e) => {
         e.preventDefault();
-    
+        if (!firstName || !lastName) {
+          toast.error("First name and last name are required.");
+          return;
+        }
+      
+        if (!userEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
+          toast.error("Please enter a valid email address.");
+          return;
+        }
+      
+        if (!password || password.length < 8) {
+          toast.error("Password must be at least 6 characters long.");
+          return;
+        }
+      
+        if (!selectedRoleId) {
+          toast.error("Please select a role.");
+          return;
+        }
+      
+
         const formData = {
           first_name: firstName,
           middle_name: middleName,
@@ -446,6 +468,7 @@ const handeledit =()=> {
       <div className="w-full flex">
         <div>
 <Navigation/>
+<ToastContainer/>
         </div>
         <div onClick={handleBack} className=" absolute top-3 right-3 cursor-pointer">
           <img src={close} alt="" className="w-[25px] h-[25px]" />

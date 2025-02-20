@@ -1294,6 +1294,7 @@ const [quizid, setQuizId] = useState('');
         setPercentage(data.data.pass_percentage);
         setSelectedValue(data.data.retake_flag);
         setPublicAccess(data.data.quiz_public_access);
+        setShowPackageFields(data.data.premium_quiz_flag);
         setDuration(data.data.quiz_duration);
         setIsRetakeOn(data.data.retake_flag > 0);
         setTimings(data.data.quiz_time_bounded_questions);

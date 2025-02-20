@@ -1255,7 +1255,104 @@ const QuizQuestions = () => {
 
         
         </div>
-     
+        {/* {currentQuestion && (
+  <>
+  <div>
+   <button
+          className="flex cursor-pointer items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px]"
+
+      onClick={() => {
+        const textToRead = [
+          `Question: ${currentQuestion.question_text}`,
+          ...sortedOptionKeys.map(
+            (key, index) => `Option ${optionLabels[index]}: ${currentQuestion[key]}`
+          ),
+        ].join(". ");
+
+        const utterance = new SpeechSynthesisUtterance(textToRead);
+        speechSynthesis.speak(utterance);
+      }}
+    >
+      Play Question and Options
+    </button>
+    </div>
+    <div className={styles.textContainer}>
+      <p>{`${currentQuestionIndex + 1}. ${
+        currentQuestion.question_text
+      }`}</p>
+      
+    </div>
+
+   
+
+    <div className={styles.boxesContainer}>
+      <ul style={{ listStyleType: "none", padding: 0 }}>
+        {sortedOptionKeys.map((key, index) => {
+          const optionId = currentQuestion[key.replace("_text", "_id")];
+          const optionLabel = optionLabels[index];
+          const isSelected =
+            selectedOptions[currentQuestionIndex] === optionId;
+
+          return (
+            <li key={optionId} style={{ marginBottom: "10px" }}>
+              <button
+                className={styles.box}
+                onClick={() => handleOptionSelect(optionId)}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  backgroundColor: "transparent",
+                  width: "100%",
+                  border: "none",
+                  textAlign: "left",
+                  cursor: "pointer",
+                }}
+              >
+                <div
+                  style={{
+                    width: "40px",
+                    marginRight: "10px",
+                    padding: "7px",
+                    textAlign: "center",
+                    border: isSelected
+                      ? "1px solid #22c55e"
+                      : "1px solid #ccc",
+                    borderRadius: "5px",
+                    backgroundColor: isSelected
+                      ? "#c9e4ca"
+                      : "#E8E9E8",
+                  }}
+                >
+                  {optionLabel}
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    fontWeight: isSelected ? "bold" : "normal",
+                    backgroundColor: isSelected
+                      ? "#c9e4ca"
+                      : "#E8E9E8",
+                    width: "550px",
+                    padding: "10px",
+                    border: isSelected
+                      ? "1px solid #22c55e"
+                      : "1px solid #ccc",
+                    borderRadius: "5px",
+                    textAlign: "left",
+                    fontSize: "14px",
+                  }}
+                >
+                  {currentQuestion[key]}
+                </div>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  </>
+)} */}
         <div className='flex flex-col justify-end px-2 items-center'>
   <div className=' w-[10px] rounded-full bg-[#00008b] h-[10px]'></div>
   <div className='h-[100%] w-[1px] bg-[#00008b]'></div>

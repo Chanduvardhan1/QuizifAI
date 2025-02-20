@@ -44,7 +44,7 @@ const [userId, setUserId] = useState(localStorage.getItem("user_id"));
   const options = [
     "I'm facing an issue",
     "I have a query",
-    "I need the status of my existing ticket",
+    // "I need the status of my existing ticket",
     'Other',
   ];
 

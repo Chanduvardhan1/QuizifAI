@@ -298,6 +298,7 @@ export default function quiztype() {
   const [files, setFiles] = useState("");
   const dispatch = useDispatch();
   // const [next, setNext] = useState(false);
+  const [userId, setUserId] = useState(localStorage.getItem("user_id"));
 
   const [frontImage, setFrontImage] = useState(null);
   const [backImage, setBackImage] = useState(null);
@@ -1419,6 +1420,7 @@ const handleToggle4 = (event) => {
 }; 
 const handleToggle5 = (event) => {
   setShowPackageFields(event.target.checked);
+  setShowPackageFields1(event.target.checked);
 }; 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -1521,6 +1523,65 @@ useEffect(() => {
   fetchUsers();
 }, []);
 //-----------------**users dropdown END**-----------------//
+
+//-----------------**package Name **-----------------//
+
+const [packageName, setPackageName] = useState("");
+const [packageDescription, setPackageDescription] = useState("");
+const [packageAmount, setPackageAmount] = useState("");
+const [successMessage, setSuccessMessage] = useState("");
+
+const handleSubmit3 = async (e) => {
+  e.preventDefault();
+
+  const payload = {
+    user_id: userId, // Replace with the actual user_id
+    quiz_package_name: packageName,
+    quiz_package_description: packageDescription,
+    quiz_package_price: parseFloat(packageAmount),
+    price_currency_code: "INR",
+    updated_by: userId, // Replace with the actual updater
+  };
+
+  try {
+    const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
+
+    if (!authToken) {
+      throw new Error('No authentication token found');
+    }
+    const response = await fetch(
+      "https://dev.quizifai.com:8010/create_quiz_package",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+          'Authorization': `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+
+    const result = await response.json();
+
+    if (response.ok) {
+      setSuccessMessage("Quiz package created successfully!");
+      setErrorMessage("");
+    } else {
+      setErrorMessage(result.message || "Failed to create quiz package.");
+      setSuccessMessage("");
+    }
+  } catch (error) {
+    setErrorMessage("An error occurred. Please try again.");
+    setSuccessMessage("");
+  }
+};
+
+//-----------------**package Name END**-----------------//
+
+
+
+
 
 const customOption = ({ data, innerRef, innerProps, isSelected }) => (
   <div
@@ -2085,24 +2146,19 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                  
                 </select>
                   </div>
-                  {showPackageFields && (
-        <>
+       <>
                   <div className="flex flex-row mb-4">
                 <label className="w-[35%] text-blue-800 font-semibold">
                 Package Name<span className="text-red-500"></span>
                 </label>
-                <select
-                  className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
-                  value={selectedPackageId}
-                  onChange={handlePackageChange}
-                   >
-                    <option value="">Select a Package</option>
-          {quizPackages.map((pkg) => (
-            <option key={pkg.quiz_package_id} value={pkg.quiz_package_id}>
-              {pkg.quiz_package_name}
-            </option>
-          ))}
-                </select>
+                <input
+                      className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+                      type="text"
+                      placeholder="Package Name"
+                      value={packageName}
+                      onChange={(e) => setPackageName(e.target.value)}
+                      required
+                    />
               </div>
             
                   <div className="flex flex-row mb-4">
@@ -2111,15 +2167,33 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                       className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
                       type="text"
                       placeholder="Package Description"
-
+                      value={packageDescription}
+                      onChange={(e) => setPackageDescription(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="flex flex-row mb-4">
+                    <label className="w-[35%] text-blue-800 font-semibold">Package Amount<span className="text-red-500"></span></label>
+                    <input
+                      className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+                      type="text"
+                      placeholder="Package Amount"
+                      value={packageAmount}
+                      onChange={(e) => setPackageAmount(e.target.value)}
+                      required
                     />
                   </div>
               
                   </>
-      )}
+   
                  
               
-              
+              <div>
+              {successMessage && (
+        <p className="text-green-600 font-semibold">{successMessage}</p>
+      )}
+      {errorMessage && <p className="text-red-600 font-semibold">{errorMessage}</p>}
+              </div>
                 
                   <div className='flex justify-end'>
               
@@ -2135,7 +2209,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                 Cancel
               </button>
               <button
-                onClick={handleToggle2}
+                onClick={handleSubmit3}
                    className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
                   >
                   Create

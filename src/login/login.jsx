@@ -232,6 +232,35 @@ const LoginPage = () => {
   // };
   
   const handleLogin1 = async (loginOption, email, mobile, password) => {
+  
+  
+    // Validate email or mobile based on the login option
+    if (loginOption === "email") {
+      if (!email) {
+        setErrorMessage("Please enter your email");
+        return;
+      }
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        setErrorMessage("Please enter a valid email address");
+        return;
+      }
+    } else if (loginOption === "mobile") {
+      if (!mobile) {
+        setErrorMessage("Please enter your mobile number");
+        return;
+      }
+      // Validate mobile number format (example: 10 digits)
+      const mobileRegex = /^[6-9]\d{9}$/;
+      if (!mobileRegex.test(mobile)) {
+        setErrorMessage("Please enter a valid mobile number");
+        return;
+      }
+    } else {
+      setErrorMessage("Invalid login option selected");
+      return;
+    }
     if (!password) {
       setErrorMessage("Please enter your password");
       return;

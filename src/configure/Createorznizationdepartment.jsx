@@ -342,6 +342,15 @@ const [edit, setedit] = useState(false);
 
 const handleSubmit2 = (e) => {
     e.preventDefault();
+    if (!firstName1 || !lastName1) {
+      setResponseMessage1("First name and last name are required.");
+      return;
+    }
+    if (!userEmail1 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
+      setResponseMessage1("Please enter a valid email address.");
+      return;
+    }
+   
     const formData = {
       first_name: firstName1,
       middle_name: middleName1,

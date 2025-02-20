@@ -70,7 +70,7 @@ import close from "../../src/assets/Images/images/dashboard/cancel.png"
 
 
 const quizresults = () => {
-  const [quizData, setQuizData] = useState(null);
+  const [quizData, setQuizData] = useState({});
   const [quizData1, setQuizData1] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -142,7 +142,7 @@ const quizresults = () => {
 
   const userId = localStorage.getItem("user_id");
 
-  useEffect(() => {
+ 
     const sendQuizResult = async () => {
       try {
         const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
@@ -179,10 +179,31 @@ const quizresults = () => {
       }
     };
 
-    if (quizId && attemptNo) {
-      sendQuizResult(); // Trigger the POST request only if quizId and attemptNo are available
-    }
-  }, [quizId, attemptNo, userId]);
+    useEffect(() => {
+      if (quizId && attemptNo) {
+        sendQuizResult();
+      }
+    }, [quizId, attemptNo, userId]);
+  
+    // Debugging quizData updates
+    useEffect(() => {
+      console.log('Updated quizData:', quizData);
+    }, [quizData]);
+  
+    // Load quizData from localStorage on initial mount (optional for persistence)
+    useEffect(() => {
+      const storedData = localStorage.getItem('quizData');
+      if (storedData) {
+        setQuizData(JSON.parse(storedData));
+      }
+    }, []);
+  
+    // Save quizData to localStorage whenever it updates
+    useEffect(() => {
+      if (quizData) {
+        localStorage.setItem('quizData', JSON.stringify(quizData));
+      }
+    }, [quizData]);
 
   useEffect(() => {
     const fetchLeaderboardData = async () => {
@@ -439,28 +460,31 @@ const quizresults = () => {
            <div class="relative flex justify-center flex-col items-center">
              <label class="absolute top-[40%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 text-[50px] text-blue-900 font-bold font-lato">{quizData.rank}</label>
              <img class="h-[108.62px] w-[130.01px] flex justify-center" src={rankimage} alt="Icon 1" />
-             <span class="text-blue-900 font-medium font-lato text-[17px]">Your Rank</span>
+             <span class="text-blue-900 font-bold font-lato text-[17px]">Your Rank</span>
            </div>
          
            <div class="w-full flex items-center">
            <div class="w-full flex justify-center items-center flex-col gap-4 sm:w-[50%]">
-           <div class="w-[210px] h-[7vh] flex items-center">
+           <div class="w-[210px] h-[5vh] flex items-center">
              <img class="h-[30px] w-[30px]" src={dateIcon} alt="Calendar Icon" />
-             <span class="ml-2 font-lato text-blue-900">{quizData.quiz_start_date}</span>
+             <span class="ml-2 font-lato font-bold text-[15px] text-blue-900">{quizData.quiz_start_date}</span>
            </div>
-           {quizData && quizData.attempt_duration && (
-  <div className="w-[210px] h-[7vh] flex items-center">
+  <div className="w-[210px] h-[5vh] flex items-center">
     <img className="h-[30px] w-[30px]" src={timeIcon} alt="Clock Icon" />
-    <span className="ml-2 font-lato text-blue-900">{quizData.attempt_duration}</span>
+    {quizData?.attempt_duration ? (
+          <span className="ml-2 font-lato font-bold text-[15px] text-blue-900">{`${quizData.attempt_duration}`}</span>
+        ) : (
+          <span className="ml-2 font-lato text-gray-500">Loading...</span>
+        )}
   </div>
-)}
-           <div class="w-[210px] h-[7vh] flex items-center">
+
+           <div class="w-[210px] h-[5vh] flex items-center">
              <img class="h-[30px] w-[30px]" src={vector} alt="Check Icon" />
-             <span class="ml-2 font-lato text-blue-900">{quizData.correct_answers} Correct answers</span>
+             <span class="ml-2 font-lato font-bold text-[15px] text-blue-900">{quizData.correct_answers} Correct answers</span>
            </div>
-           <div class="w-[210px] h-[7vh] flex items-center">
+           <div class="w-[210px] h-[5vh] flex items-center">
              <img class="h-[30px] w-[30px]" src={current} alt="Question Icon" />
-             <span class="ml-2 font-lato text-blue-900">Attempted {quizData.attempted_questions} questions</span>
+             <span class="ml-2 font-lato font-bold text-[15px] text-blue-900">Attempted {quizData.attempted_questions} questions</span>
            </div>
          </div>
          <div className='w-full flex justify-center items-center sm:w-[50%]'>

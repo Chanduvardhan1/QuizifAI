@@ -2607,46 +2607,170 @@ const handleTabClick = async (tabName) => {
 
           {/* Course */}
         
-          <div className="md:col-span-2">
-
-          <div className="flex gap-6">
-           
-        
-           {/* Premium */}
-  <div className=" w-[50%] flex flex-col">
-        <div className="w-[100%] flex flex-row">
-        <label className="w-[30%] text-blue-800 font-semibold mb-2 mr-[10px] ">Premium Quizes Create<span className="text-red-500"></span></label>
-        <FormControlLabel
-         control={<Switch />} 
-         checked={showPackageFields}
-         onChange={handleToggle5}
-          className="react-switch"
-        />
-       
-        </div>
-      
-      </div>
-           {/*  Public access */}
-  <div className=" w-[50%] flex flex-col">
-        <div className="w-[100%] flex flex-row">
-        <label className="w-[25%] text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500"></span></label>
-        <FormControlLabel
-         control={<Switch />} 
-        // label="Required"
-          onChange={toggler3}
-          checked={publicAccess}
-          className="react-switch"
-        />
-       
-        </div>
-      
-      </div>
-
-     
-      </div>
-     
-      </div>
-      {publicAccess && (
+            <div className="md:col-span-2">
+                   
+                             <div className="flex gap-6">
+                           
+                   
+                             {/* complexity */}
+                             <div className="w-full flex flex-col">
+                 <div className="w-full flex flex-row">
+                 <label className="w-[23%] text-blue-800 font-semibold mb-2">Complexity<span className="text-red-500">*</span></label>
+                 
+                 <select
+                           className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                   value={selectedComplexity}
+                   onChange={handleSelectComplexity}
+                 >
+                   <option value="" disabled>Complex</option>
+                   {complexities.map((complexity, index) => (
+                     <option key={index} value={complexity}>
+                       {complexity}
+                     </option>
+                   ))}
+                 </select>
+                 </div>
+               
+                 <hr className={`h-[1px] w-full`} />
+               </div>
+               <div className="w-full flex l">
+                              {/* Premium */}
+                              <div className=" w-full flex flex-col">
+                           <div className="w-[100%] flex flex-row items-center">
+                           <label className="w-[40%] text-blue-800 font-semibold  mr-[10px] ">Premium Quiz<span className="text-red-500"></span></label>
+                           <FormControlLabel
+                            control={<Switch />} 
+                            checked={showPackageFields}
+                            onChange={handleToggle5}
+                             className="react-switch"
+                           />
+                           {/* <button onClick={handleToggle4} className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]">+</button> */}
+                          
+                           </div>
+                         
+                         </div>
+                         {/* {showPackageFields1 && (
+                        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                        <div className="flex flex-col bg-white p-6 shadow-lg rounded-lg w-[50%]">
+                        <button
+                               className="flex justify-end text-gray-900 hover:text-gray-800"
+                               onClick={handleToggle2}
+                               aria-label="Close"
+                             >
+                               ✕
+                             </button>
+                        <h2 className="text-xl font-semibold text-blue-800 mb-4">Create Package</h2>
+                        <div className="flex items-center gap-2 mb-4">
+                           <input 
+                           className="w-4 h-4" type="checkbox"
+                           onChange={handleCheckboxChange1}
+                           />
+                            <label className="w-[30%] text-blue-800 font-semibold">
+                         Create New Package<span className="text-red-500"></span>
+                         </label>
+                         <select
+                           className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+         
+                            >
+                            <option value="">Select New Package </option>
+                          
+                         </select>
+                           </div>
+                <>
+                           <div className="flex flex-row mb-4">
+                         <label className="w-[35%] text-blue-800 font-semibold">
+                         Package Name<span className="text-red-500"></span>
+                         </label>
+                         <input
+                               className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+                               type="text"
+                               placeholder="Package Name"
+                               value={packageName}
+                               onChange={(e) => setPackageName(e.target.value)}
+                               required
+                             />
+                       </div>
+                     
+                           <div className="flex flex-row mb-4">
+                             <label className="w-[35%] text-blue-800 font-semibold">Package Description<span className="text-red-500"></span></label>
+                             <input
+                               className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+                               type="text"
+                               placeholder="Package Description"
+                               value={packageDescription}
+                               onChange={(e) => setPackageDescription(e.target.value)}
+                               required
+                             />
+                           </div>
+                           <div className="flex flex-row mb-4">
+                             <label className="w-[35%] text-blue-800 font-semibold">Package Amount<span className="text-red-500"></span></label>
+                             <input
+                               className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+                               type="text"
+                               placeholder="Package Amount"
+                               value={packageAmount}
+                               onChange={(e) => setPackageAmount(e.target.value)}
+                               required
+                             />
+                           </div>
+                       
+                           </>
+            
+                          
+                       
+                       <div>
+                       {successMessage && (
+                 <p className="text-green-600 font-semibold">{successMessage}</p>
+               )}
+               {errorMessage && <p className="text-red-600 font-semibold">{errorMessage}</p>}
+                       </div>
+                         
+                           <div className='flex justify-end'>
+                       
+                          
+                           <div className='flex gap-1'>
+                       
+                            
+                       <button
+                        className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+                        onClick={handleToggle2}
+         
+                       >
+                         Cancel
+                       </button>
+                       <button
+                         onClick={handleSubmit3}
+                            className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+                           >
+                           Create
+                           </button>
+                       </div>
+                           </div>
+                       
+                         </div>
+                           </div>
+                              )} */}
+                                   {/*  Public access */}
+                     <div className=" w-full flex flex-col">
+                           <div className="w-[100%] flex flex-row items-center">
+                           <label className="w-[36%] text-blue-800 font-semibold  mr-[10px] ">  Public access <span className="text-red-500"></span></label>
+                           <FormControlLabel
+                            control={<Switch />} 
+                           // label="Required"
+                             onChange={toggler3}
+                             checked={publicAccess}
+                             className="react-switch"
+                           />
+                          
+                           </div>
+                         
+                         </div>
+                         </div>
+               
+                         </div>
+                        
+                         </div>
+      {/* {publicAccess && (
         <>
   <div className="flex flex-col">
   <div className="w-full flex flex-row">
@@ -2670,7 +2794,6 @@ const handleTabClick = async (tabName) => {
   <hr className="h-[1px] w-full" />
 </div>
 
-{/* Class */}
 <div className="flex flex-col">
   <div className="w-full flex flex-row">
     <label className=" w-[25%] text-blue-800 font-semibold mb-2">
@@ -2693,7 +2816,7 @@ const handleTabClick = async (tabName) => {
   <hr className="h-[1px] w-full" />
 </div>
 </>
-            )}
+            )} */}
       {showPackageFields && (
 <>
 
@@ -2734,10 +2857,10 @@ const handleTabClick = async (tabName) => {
                 </div>
                 </>
                 )}
-      <div className="">
+      {/* <div className="">
 
 <div className="w-full flex gap-6">
-      {/* Complexity */}
+     
       <div className="w-full flex flex-col">
         <div className="w-full flex flex-row">
         <label className="w-[23%] text-blue-800 font-semibold mb-2">Complexity<span className="text-red-500">*</span></label>
@@ -2758,7 +2881,7 @@ const handleTabClick = async (tabName) => {
       
         <hr className={`h-[1px] w-full`} />
       </div>
-{/* <div className="w-full flex flex-col">
+<div className="w-full flex flex-col">
   <div className="w-full flex flex-row">
     <label className="w-[30%] text-blue-800 font-semibold mb-2 ">
       Subject<span className="text-red-500"></span>
@@ -2778,11 +2901,11 @@ const handleTabClick = async (tabName) => {
     </select>
   </div>
   <hr className="h-[1px] w-full" />
+</div>
+
+
+</div>
 </div> */}
-
-
-</div>
-</div>
       {/* <div className="w-full flex flex-col">
             <div className="w-full flex flex-row">
               <label className=" w-[20%] text-blue-800 font-semibold mb-2">

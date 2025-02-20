@@ -136,13 +136,13 @@ const progressLabel = getProgressLabel(progress);
         <div className="flex flex-col w-full px-5 items-center">
           <div className="flex w-full flex-col gap-1 justify-between mt-1">
             <div className="flex flex-col gap-2">
-            <h1 className="text-[#002366] text-[14px]">
+            <h1 className="text-[#214082] text-[14px]">
                Week :{" "}
                 <span className="text-[#FF6701] text-[12px]">
                   {weekStats.week_detail}
                 </span>
               </h1>
-              <h1 className="text-[#002366] text-[14px]">
+              <h1 className="text-[#214082] text-[14px]">
               Time Spent 
               <span className="ml-[34px]">:</span>{" "}
 
@@ -150,7 +150,7 @@ const progressLabel = getProgressLabel(progress);
                   {weekStats.total_quiz_time}
                 </span>
               </h1>
-              <h1 className="text-[#002366] text-[14px]">
+              <h1 className="text-[#214082] text-[14px]">
               Accuracy Rate 
               <span className="text-[14px] font-[500] text-[#214082] ml-[13px] "> : </span>
 
@@ -166,7 +166,7 @@ const progressLabel = getProgressLabel(progress);
                   {quizProgress.data.total_assigned_quizzes}
                 </span>
               </h1> */}
-                 <h1 className="text-[#002366] text-[14px]">
+                 <h1 className="text-[#214082] text-[14px]">
                  Score Outcomes 
               <span className="text-[14px] font-[500] text-[#214082]  "> : </span>
 

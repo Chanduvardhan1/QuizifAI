@@ -168,6 +168,7 @@ const quizresults = () => {
         if (result.response === "success") {
           setQuizData(result.data[0]);
           setIsQuizSubmitted(true);
+         
         } else {
           setIsQuizSubmitted(false);
           console.error("Failed to fetch quiz data:", result.response_message);
@@ -447,10 +448,12 @@ const quizresults = () => {
              <img class="h-[30px] w-[30px]" src={dateIcon} alt="Calendar Icon" />
              <span class="ml-2 font-lato text-blue-900">{quizData.quiz_start_date}</span>
            </div>
-           <div class="w-[210px] h-[7vh] flex items-center">
-             <img class="h-[30px] w-[30px]" src={timeIcon} alt="Clock Icon" />
-             <span class="ml-2 font-lato text-blue-900">{quizData.attempt_duration}</span>
-           </div>
+           {quizData && quizData.attempt_duration && (
+  <div className="w-[210px] h-[7vh] flex items-center">
+    <img className="h-[30px] w-[30px]" src={timeIcon} alt="Clock Icon" />
+    <span className="ml-2 font-lato text-blue-900">{quizData.attempt_duration}</span>
+  </div>
+)}
            <div class="w-[210px] h-[7vh] flex items-center">
              <img class="h-[30px] w-[30px]" src={vector} alt="Check Icon" />
              <span class="ml-2 font-lato text-blue-900">{quizData.correct_answers} Correct answers</span>

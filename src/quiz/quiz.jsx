@@ -1385,10 +1385,12 @@ const [multiAnswer, setMultiAnswer] = useState(false);
     const isActiveForOthers =
       quizItem.active_flag?.toLowerCase() === "true" ||
       quizItem.active_flag?.toLowerCase() === "y";
-      const shouldShowQuiz = Premium
-      ? quizItem.premium_quiz_flag === true // Show only premium quizzes if toggle is on
-      : quizItem.premium_quiz_flag === null || quizItem.premium_quiz_flag === false; // Show only non-premium quizzes if toggle is off
-
+       // const shouldShowQuiz = Premium
+                    // ? quizItem.premium_quiz_flag === true // Show only premium quizzes if toggle is on
+                    // : quizItem.premium_quiz_flag === null || quizItem.premium_quiz_flag === false; // Show only non-premium quizzes if toggle is off
+                    const shouldShowQuiz = Premium
+                    ? quizItem.premium_quiz_flag === true // Show only premium quizzes if the toggle is on
+                    : true; 
                   return (
                     shouldShowQuiz &&
                     (isQuizMaster || isActiveForOthers) &&

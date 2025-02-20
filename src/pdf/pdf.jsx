@@ -382,7 +382,7 @@ const [image, setImage] = useState("");
 const currentDate = new Date();
 const userRole = localStorage.getItem('user_role');
 const FormattedDate = `${currentDate.getDate().toString().padStart(2, '0')}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getFullYear()}`;
-const orgId = localStorage.getItem('org_id');
+const orgId = localStorage.getItem('org_id') || null;
   const [edit,setEdit] = useState(false)
 
 const [editableFields, setEditableFields] = useState({
@@ -1923,8 +1923,8 @@ const handleNext4 = async () => {
           org_id: orgId,
           pdf_url: pdfUrl,
           premium_quiz_flag: showPackageFields,
-          quiz_package_name: selectedPackageName,
-          quiz_package_id: selectedPackageId,
+          quiz_package_name: selectedPackageName || null,
+          quiz_package_id: selectedPackageId || null,
           questions: questions.map((question) => ({
             question_text: question.question_text,
             question_weightage: question.question_weightage,
@@ -1944,7 +1944,7 @@ const handleNext4 = async () => {
     const responseData = await response.json();
     console.log(responseData, "data");
 
-    if (response.ok) {
+    if (responseData.response === "success") {
       setModalMessage("Quiz created successfully!");
       setIsError(false);
       setShowModal(true);

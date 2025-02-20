@@ -282,7 +282,7 @@ const subscription = ()=> {
         const paymentDetails = {
           user_name: userName, // Replace with actual user name
           email_id: emailId,   // Replace with actual email
-          plan_type: "",  // Replace with actual plan type
+          plan_type: planType,  // Replace with actual plan type
           order_id: response.razorpay_order_id,
           payment_id: response.razorpay_payment_id,
           razorpay_signature: response.razorpay_signature,

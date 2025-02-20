@@ -2102,12 +2102,32 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                     <div className="flex gap-6">
                   
           
-                    {/* Class */}
-                   
+                    {/* complexity */}
+                    <div className="w-full flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[23%] text-blue-800 font-semibold mb-2">Complexity<span className="text-red-500">*</span></label>
+        
+        <select
+                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+          value={selectedComplexity}
+          onChange={handleSelectComplexity}
+        >
+          <option value="" disabled>Complex</option>
+          {complexities.map((complexity, index) => (
+            <option key={index} value={complexity}>
+              {complexity}
+            </option>
+          ))}
+        </select>
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      <div className="w-full flex l">
                      {/* Premium */}
-                     <div className=" w-[50%] flex flex-col">
-                  <div className="w-[100%] flex flex-row">
-                  <label className="w-[30%] text-blue-800 font-semibold mb-2 mr-[10px] ">Premium Quizes Create<span className="text-red-500"></span></label>
+                     <div className=" w-full flex flex-col">
+                  <div className="w-[100%] flex flex-row items-center">
+                  <label className="w-[40%] text-blue-800 font-semibold  mr-[10px] ">Premium Quiz<span className="text-red-500"></span></label>
                   <FormControlLabel
                    control={<Switch />} 
                    checked={showPackageFields}
@@ -2221,9 +2241,9 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                   </div>
                      )} */}
                           {/*  Public access */}
-            <div className=" w-[50%] flex flex-col">
-                  <div className="w-[100%] flex flex-row">
-                  <label className="w-[26%] text-blue-800 font-semibold mb-2 mr-[10px] ">  Public access <span className="text-red-500"></span></label>
+            <div className=" w-full flex flex-col">
+                  <div className="w-[100%] flex flex-row items-center">
+                  <label className="w-[36%] text-blue-800 font-semibold  mr-[10px] ">  Public access <span className="text-red-500"></span></label>
                   <FormControlLabel
                    control={<Switch />} 
                   // label="Required"
@@ -2235,13 +2255,13 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                   </div>
                 
                 </div>
-              
-               
+                </div>
+      
                 </div>
                
                 </div>
 
-                {publicAccess && (
+                {/* {publicAccess && (
         <>
   <div className="flex flex-col">
   <div className="w-full flex flex-row">
@@ -2265,7 +2285,6 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
   <hr className="h-[1px] w-full" />
 </div>
 
-{/* Class */}
 <div className="flex flex-col">
   <div className="w-full flex flex-row">
     <label className=" w-[25%] text-blue-800 font-semibold mb-2">
@@ -2288,7 +2307,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
   <hr className="h-[1px] w-full" />
 </div>
 </>
-            )}
+            )} */}
                 {showPackageFields && (
 <>
 
@@ -2330,10 +2349,12 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                 </div>
                 </>
                 )}
-      <div className="">
+      
+
+      {/* <div className="">
 
 <div className="w-full flex gap-6">
-      {/* Complexity */}
+ 
       <div className="w-full flex flex-col">
         <div className="w-full flex flex-row">
         <label className="w-[23%] text-blue-800 font-semibold mb-2">Complexity<span className="text-red-500">*</span></label>
@@ -2354,7 +2375,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
       
         <hr className={`h-[1px] w-full`} />
       </div>
-{/* <div className="w-full flex flex-col">
+<div className="w-full flex flex-col">
   <div className="w-full flex flex-row">
     <label className="w-[30%] text-blue-800 font-semibold mb-2 ">
       Subject<span className="text-red-500"></span>
@@ -2374,12 +2395,13 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
     </select>
   </div>
   <hr className="h-[1px] w-full" />
+</div>
+
+
+</div>
+
 </div> */}
 
-
-</div>
-
-</div>
 {/* <div className="md:col-span-2">
 
 <div className="w-full flex justify-between gap-6">

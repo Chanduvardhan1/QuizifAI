@@ -142,68 +142,6 @@ const quizresults = () => {
 
   const userId = localStorage.getItem("user_id");
 
- 
-    const sendQuizResult = async () => {
-      try {
-        const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
-
-        if (!authToken) {
-          console.error('No authentication token found');
-          return;
-        }
-        const response = await fetch('https://dev.quizifai.com:8010/quiz_result', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${authToken}`,
-          },
-          body: JSON.stringify({
-            user_id: userId,
-            quiz_id: quizId,
-            attempt_id: attemptNo
-          })
-        });
-        const result = await response.json();
-        if (result.response === "success") {
-          setQuizData(result.data[0]);
-          setIsQuizSubmitted(true);
-         
-        } else {
-          setIsQuizSubmitted(false);
-          console.error("Failed to fetch quiz data:", result.response_message);
-        }
-      } catch (error) {
-        console.error('Error submitting quiz result:', error);
-        setIsQuizSubmitted(false); // Ensure it's false on error
-      }
-    };
-
-    useEffect(() => {
-      if (quizId && attemptNo) {
-        sendQuizResult();
-      }
-    }, [quizId, attemptNo, userId]);
-  
-    // Debugging quizData updates
-    useEffect(() => {
-      console.log('Updated quizData:', quizData);
-    }, [quizData]);
-  
-    // Load quizData from localStorage on initial mount (optional for persistence)
-    useEffect(() => {
-      const storedData = localStorage.getItem('quizData');
-      if (storedData) {
-        setQuizData(JSON.parse(storedData));
-      }
-    }, []);
-  
-    // Save quizData to localStorage whenever it updates
-    useEffect(() => {
-      if (quizData) {
-        localStorage.setItem('quizData', JSON.stringify(quizData));
-      }
-    }, [quizData]);
 
   useEffect(() => {
     const fetchLeaderboardData = async () => {
@@ -266,6 +204,79 @@ const quizresults = () => {
       console.error('resultRef is not attached to any DOM element');
     }
   };
+
+
+
+ 
+  const sendQuizResult = async () => {
+    try {
+      const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+      if (!authToken) {
+        console.error('No authentication token found');
+        return;
+      }
+      const response = await fetch('https://dev.quizifai.com:8010/quiz_result', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          quiz_id: quizId,
+          attempt_id: attemptNo
+        })
+      });
+      const result = await response.json();
+      if (result.response === "success") {
+        setQuizData(result.data[0]);
+        setIsQuizSubmitted(true);
+       
+      } else {
+        setIsQuizSubmitted(false);
+        console.error("Failed to fetch quiz data:", result.response_message);
+      }
+    } catch (error) {
+      console.error('Error submitting quiz result:', error);
+      setIsQuizSubmitted(false); // Ensure it's false on error
+    }
+  };
+  
+  useEffect(() => {
+    const hasReloaded = sessionStorage.getItem('hasReloaded');
+    if (!hasReloaded) {
+      sessionStorage.setItem('hasReloaded', 'true');
+      window.location.reload();
+    }
+  }, []);
+  useEffect(() => {
+    if (quizId && attemptNo) {
+      sendQuizResult();
+    }
+  }, [quizId, attemptNo, userId]);
+
+  // Debugging quizData updates
+  useEffect(() => {
+    console.log('Updated quizData:', quizData);
+  }, [quizData]);
+
+  // Load quizData from localStorage on initial mount (optional for persistence)
+  useEffect(() => {
+    const storedData = localStorage.getItem('quizData');
+    if (storedData) {
+      setQuizData(JSON.parse(storedData));
+    }
+  }, []);
+
+  // Save quizData to localStorage whenever it updates
+  useEffect(() => {
+    if (quizData) {
+      localStorage.setItem('quizData', JSON.stringify(quizData));
+    }
+  }, [quizData]);
+
   if (!quizData) {
     return <div>Loading...</div>;
   }

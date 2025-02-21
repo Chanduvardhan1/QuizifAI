@@ -77,8 +77,11 @@ import timer from "../../src/assets/Images/quiz-type/Timer.png"
 import calander from "../../src/assets/Images/quiz-type/calander.png"
 import username from "../../src/assets/Images/quiz-type/username.png"
 import comment from "../../src/assets/Images/quiz-type/comment.png"
+import { useNavigate } from 'react-router-dom';
 
 const Questions = () => {
+    const navigate = useNavigate();
+  
   const location = useLocation();
   // const { quizId , quizTotalMarks, passPercentage,quizname,quizdescription,createdby,complexity,numberofquestions,quizduration,  mincompletiontime,
   //   quizattempts,

@@ -521,73 +521,73 @@ const quiz_results = () => {
      
       <div className='flex w-full' >
       {!showAnswers ? (
-         <div class="w-[50%] text-center p-4">
-         <div class="">
-       
-           <div class="flex items-center justify-center">
-             <span class="inline-block h-[1px] bg-blue-900 w-[80px] mr-[5px]"></span>
-             <label class="text-[#d98b19] font-lato text-[18px] font-semibold">Your Attempt Details</label>
-             <span class="inline-block h-[1px] bg-blue-900 w-[80px] ml-[5px]"></span>
-           </div>
-         </div>
-       
-         <div class="relative flex justify-center flex-col items-center">
-           <label class="absolute top-[40%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 text-[50px] text-blue-900 font-bold font-lato">{quizData.rank}</label>
-           <img class="h-[108.62px] w-[130.01px] flex justify-center" src={rankimage} alt="Icon 1" />
-           <span class="text-blue-900  font-bold font-lato text-[17px]">Your Rank</span>
-         </div>
-       
-         <div class="w-full flex items-center">
-         <div class="w-full flex justify-center items-center flex-col gap-4 sm:w-[50%]">
-         <div class="w-[210px] h-[5vh] flex items-center">
-           <img class="h-[30px] w-[30px]" src={dateIcon} alt="Calendar Icon" />
-           <span class="ml-2 font-lato  font-bold text-[15px] text-blue-900">{quizData.quiz_start_date}</span>
-         </div>
-         <div class="w-[210px] h-[5vh] flex items-center">
-           <img class="h-[30px] w-[30px]" src={timeIcon} alt="Clock Icon" />
-           <span class="ml-2 font-lato  font-bold text-[15px] text-blue-900">{quizData.attempt_duration}</span>
-         </div>
-         <div class="w-[210px] h-[5vh] flex items-center">
-           <img class="h-[30px] w-[30px]" src={vector} alt="Check Icon" />
-           <span class="ml-2 font-lato font-bold text-[15px] text-blue-900">{quizData.correct_answers} Correct answers</span>
-         </div>
-         <div class="w-[210px] h-[5vh] flex items-center">
-           <img class="h-[30px] w-[30px]" src={current} alt="Question Icon" />
-           <span class="ml-2 font-lato font-bold text-[15px] text-blue-900">Attempted {quizData.attempted_questions} questions</span>
+       <div class="w-[50%] text-center p-4">
+       <div class="">
+     
+         <div class="flex items-center justify-center">
+           <span class="inline-block h-[1px] bg-blue-900 w-[80px] mr-[5px]"></span>
+           <label class="text-[#d98b19] font-lato text-[18px] font-semibold">Your Attempt Details</label>
+           <span class="inline-block h-[1px] bg-blue-900 w-[80px] ml-[5px]"></span>
          </div>
        </div>
-       <div className='w-full flex justify-center items-center sm:w-[50%]'>
-       <div class="flex  w-[70%] flex-col p-2 px-6 rounded-2xl bg-green-300 items-center">
-       
-             <div class=" text-green-700 font-medium text-center">{quizData.attained_score_percentage}%</div>
-             <div class=" text-[#fa5967]  text-center">{quizData.quiz_grade}, {quizData.pass_flag ? 'Pass' : 'Fail'}</div>
-           </div>
+     
+       <div class="relative flex justify-center flex-col items-center">
+         <label class="absolute top-[40%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 text-[50px] text-blue-900 font-bold font-lato">{quizData.rank}</label>
+         <img class="h-[108.62px] w-[130.01px] flex justify-center" src={rankimage} alt="Icon 1" />
+         <span class="text-blue-900 font-bold font-lato text-[17px]">Your Rank</span>
        </div>
-       
-           
-         </div>
-         <div className="flex flex-wrap justify-end gap-2">
-         <div className="flex items-center gap-1 justify-center ">
-           <button
-             onClick={handleToggleAnswers}
-             className="text-blue-900 text-sm bg-blue-200 border border-blue-900 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
-           >
-             Answers
-             <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" />
-           </button>
-         </div>
-         <div className="flex items-center justify-center">
-         {/* <button
-             // onClick={handleOnAnswer}
-             className="text-blue-900 text-sm bg-blue-200 border border-blue-900 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
-           >
-             Print
-             <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" />
-           </button> */}
-         </div>
+     
+       <div class="w-full flex items-center">
+       <div class="w-full flex justify-center items-center flex-col gap-4 sm:w-[50%]">
+       <div class="w-[210px] h-[5vh] flex items-center">
+         <img class="h-[30px] w-[30px]" src={dateIcon} alt="Calendar Icon" />
+         <span class="ml-2 font-lato font-bold text-[15px] text-blue-900">{quizData.quiz_start_date}</span>
        </div>
-       
+       <div class="w-[210px] h-[5vh] flex items-center">
+         <img class="h-[30px] w-[30px]" src={timeIcon} alt="Clock Icon" />
+         <span class="ml-2 font-lato font-bold text-[15px] text-blue-900">{quizData.attempt_duration}</span>
        </div>
+       <div class="w-[210px] h-[5vh] flex items-center">
+         <img class="h-[30px] w-[30px]" src={vector} alt="Check Icon" />
+         <span class="ml-2 font-lato font-bold text-[15px] text-blue-900">{quizData.correct_answers} Correct answers</span>
+       </div>
+       <div class="w-[210px] h-[5vh] flex items-center">
+         <img class="h-[30px] w-[30px]" src={current} alt="Question Icon" />
+         <span class="ml-2 font-lato font-bold text-[15px] text-blue-900">Attempted {quizData.attempted_questions} questions</span>
+       </div>
+     </div>
+     <div className='w-full flex justify-center items-center sm:w-[50%]'>
+     <div class="flex  w-[70%] flex-col p-2 px-6 rounded-2xl bg-green-300 items-center">
+     
+           <div class=" text-green-700 font-medium text-center">{quizData.attained_score_percentage}%</div>
+           <div class=" text-[#fa5967]  text-center">{quizData.quiz_grade}, {quizData.pass_flag ? 'Pass' : 'Fail'}</div>
+         </div>
+     </div>
+     
+         
+       </div>
+       <div className="flex flex-wrap justify-end gap-2">
+       <div className="flex items-center gap-1 justify-center ">
+         <button
+           onClick={handleToggleAnswers}
+           className="text-blue-900 text-sm bg-blue-200 border border-blue-900 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
+         >
+           Answers
+           <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" />
+         </button>
+       </div>
+       <div className="flex items-center justify-center">
+       {/* <button
+           // onClick={handleOnAnswer}
+           className="text-blue-900 text-sm bg-blue-200 border border-blue-900 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
+         >
+           Print
+           <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" />
+         </button> */}
+       </div>
+     </div>
+     
+     </div>
       ):(
       <div className="w-[80%] rounded-2xl bg-white">
         <div className="flex py-1 items-end justify-end ">

@@ -243,39 +243,46 @@ const quizresults = () => {
       setIsQuizSubmitted(false); // Ensure it's false on error
     }
   };
+
+  useEffect(() => {
+    const fetchQuizResultTwice = async () => {
+      if (quizId && attemptNo && userId) {
+        const firstCallResult = await sendQuizResult();
+        if (firstCallResult?.response === "success") {
+          await sendQuizResult(); // Trigger second call after the first succeeds
+        }
+      }
+    };
   
-  useEffect(() => {
-    const hasReloaded = sessionStorage.getItem('hasReloaded');
-    if (!hasReloaded) {
-      sessionStorage.setItem('hasReloaded', 'true');
-      window.location.reload();
-    }
-  }, []);
-  useEffect(() => {
-    if (quizId && attemptNo) {
-      sendQuizResult();
-    }
+    fetchQuizResultTwice();
   }, [quizId, attemptNo, userId]);
+  
+  
+  // useEffect(() => {
+  //   if (quizId && attemptNo) {
+  //     sendQuizResult();
+  //   }
+  // }, [quizId, attemptNo, userId]);
 
   // Debugging quizData updates
-  useEffect(() => {
-    console.log('Updated quizData:', quizData);
-  }, [quizData]);
+  // useEffect(() => {
+  //   console.log('Updated quizData:', quizData);
+  // }, [quizData]);
 
-  // Load quizData from localStorage on initial mount (optional for persistence)
-  useEffect(() => {
-    const storedData = localStorage.getItem('quizData');
-    if (storedData) {
-      setQuizData(JSON.parse(storedData));
-    }
-  }, []);
+  // // Load quizData from localStorage on initial mount (optional for persistence)
+  // useEffect(() => {
+  //   const storedData = localStorage.getItem('quizData');
+  //   if (storedData) {
+  //     setQuizData(JSON.parse(storedData));
+  //   }
+  // }, []);
 
   // Save quizData to localStorage whenever it updates
-  useEffect(() => {
-    if (quizData) {
-      localStorage.setItem('quizData', JSON.stringify(quizData));
-    }
-  }, [quizData]);
+  // useEffect(() => {
+  //   if (quizData) {
+  //     localStorage.setItem('quizData', JSON.stringify(quizData));
+  //   }
+  // }, [quizData]);
 
   if (!quizData) {
     return <div>Loading...</div>;

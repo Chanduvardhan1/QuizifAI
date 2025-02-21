@@ -833,25 +833,25 @@ const handlsubscription =()=> {
                         </div>
                         <div className="flex ">
                             <p className="text-[14px] text-[#214082]">Subscription Type : </p>
-                            <p className="font-medium text-[12px] text-orange-500 ml-2"> {userType}</p>
+                            <p className="font-medium text-[12px] text-orange-500 ml-2 mt-[3px]"> {userType}</p>
                         </div>
                         <div className="flex ">
                             <p className="text-[14px] text-[#214082] mr-31%">Premium (Exp)</p>
                             <p className="text-[14px] text-[#214082] mr-31% ml-6"> : </p>
 
                             {/* <p className="font-medium  text-[14px] ml-2 text-orange-500">   (Expires : {subscriptionDetails1?.end_time || "N/A"})</p> */}
-                                                        <p className="font-medium  text-[12px] ml-2 text-orange-500 ">{subscriptionDetails1?.end_time || "N/A"}</p>
+                                                        <p className="font-medium  text-[12px] ml-2 mt-[3px] text-orange-500 ">{subscriptionDetails1?.end_time || "N/A"}</p>
 
                         </div>
                         <div className="flex ">
                             <p className="text-[14px] text-[#214082] mr-31%">Start Date  </p>
                             <p className="text-[14px] text-[#214082]  ml-[50px]"> :  </p>
-                            <p className="font-medium  text-[12px] text-orange-500 ml-2">  {subscriptionDetails1?.start_time || "N/A"}</p>
+                            <p className="font-medium  text-[12px] text-orange-500 mt-[3px] ml-2">  {subscriptionDetails1?.start_time || "N/A"}</p>
                         </div>
-                        <div className="flex ">
+                        <div className="flex items-center ">
                             <p className="text-[14px] text-[#214082] mr-31%">Days Remaining </p>
                             <p className="text-[14px] text-[#214082]  ml-4"> :  </p>
-                            <p className="font-medium  text-[12px] ml-2 text-orange-500"> {subscriptionDetails1?.remaining_days_left || "N/A"}</p>
+                            <p className="font-medium  text-[12px] ml-2 mt-1 text-orange-500"> {subscriptionDetails1?.remaining_days_left || "N/A"}</p>
                         </div>
                     </div>
                 </div>

@@ -366,7 +366,15 @@ const QuizQuestions = () => {
           throw new Error("Unexpected response format or data missing");
         }
       } catch (error) {
-        console.error("There was a problem with your fetch operation:", error);
+        if (error instanceof SyntaxError) {
+          toast.error("A parsing error occurred. Please check your input file.");
+        } else if (error.message.includes("NetworkError")) {
+          toast.error("A network error occurred. Please check your internet connection.");
+        } else if (error.message.includes("Failed to fetch")) {
+          toast.error("Server could not be reached. Please try again later.");
+        } else {
+          toast.error("An unexpected error occurred while processing your request. Please try again.");
+        }
       }
     };
   
@@ -530,7 +538,15 @@ const QuizQuestions = () => {
         navigate(`/quizresults`, { state: { quizId, attemptNo } });
       })
       .catch((error) => {
-        console.error("There was a problem with your fetch operation:", error);
+        if (error instanceof SyntaxError) {
+          toast.error("A parsing error occurred. Please check your input file.");
+        } else if (error.message.includes("NetworkError")) {
+          toast.error("A network error occurred. Please check your internet connection.");
+        } else if (error.message.includes("Failed to fetch")) {
+          toast.error("Server could not be reached. Please try again later.");
+        } else {
+          toast.error("An unexpected error occurred while processing your request. Please try again.");
+        }
       });
   };
 
@@ -697,7 +713,15 @@ const QuizQuestions = () => {
         console.log("Quiz submitted");
       })
       .catch((error) => {
-        console.error("There was a problem with your fetch operation:", error);
+        if (error instanceof SyntaxError) {
+          toast.error("A parsing error occurred. Please check your input file.");
+        } else if (error.message.includes("NetworkError")) {
+          toast.error("A network error occurred. Please check your internet connection.");
+        } else if (error.message.includes("Failed to fetch")) {
+          toast.error("Server could not be reached. Please try again later.");
+        } else {
+          toast.error("An unexpected error occurred while processing your request. Please try again.");
+        }
       });
   };
   const handleSubmit2 = (isAutoSubmit = false) => {
@@ -777,7 +801,15 @@ const QuizQuestions = () => {
         submittedRef.current = true;
       })
       .catch((error) => {
-        console.error("There was a problem with your fetch operation:", error);
+        if (error instanceof SyntaxError) {
+          toast.error("A parsing error occurred. Please check your input file.");
+        } else if (error.message.includes("NetworkError")) {
+          toast.error("A network error occurred. Please check your internet connection.");
+        } else if (error.message.includes("Failed to fetch")) {
+          toast.error("Server could not be reached. Please try again later.");
+        } else {
+          toast.error("An unexpected error occurred while processing your request. Please try again.");
+        }
       });
   };
   // useEffect(() => {

@@ -190,15 +190,22 @@ const repoarts = () => {
     const orgId = localStorage.getItem("org_id");
 
     const filteredReportsData = reportsData.filter(categoryData => {
-      if (userRole === "Admin" &&categoryData.category === "Organization Reports" && orgId) {
+      if (["Super Admin","Admin"].includes(userRole) && categoryData.category === "Organization Reports" && orgId) {
         return true;
       }
-      if (userRole === "Quiz Master" && categoryData.category.includes("Quiz Master")) {
+      if (["Super Admin",].includes(userRole) && categoryData.category === "Organization Reports") {
         return true;
       }
-      if (userRole === "Super Admin" && categoryData.category.includes("Super Admin")) {
+      if (["Super Admin","Admin"].includes(userRole) && categoryData.category === "Quiz Admin Reports") {
         return true;
       }
+      if (["Super Admin","Quiz Master"].includes(userRole) && categoryData.category.includes("Quiz Master")) {
+        return true;
+      }
+      if (["Super Admin"].includes(userRole)  && categoryData.category.includes("Super Admin")) {
+        return true;
+      }
+
       if (userRole && categoryData.category.includes("My Reports")) {
         return true;
       }

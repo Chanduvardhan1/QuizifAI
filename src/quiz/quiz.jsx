@@ -1078,24 +1078,36 @@ const [multiAnswer, setMultiAnswer] = useState(false);
             {username.charAt(0).toUpperCase() + username.slice(1)}
           </p>
           <div className={styles.headerRight}>
-            {userRole === "Quiz Master" && (
-              <div className="w-[99px] h-[40px] absolute mr-[300px] mb-2 pb-2 -mt-[25px] rounded-[10px] bg-[#fee2e2]">
-                <div  onClick={createquiz} className="flex">
-                  <img
-                   onClick={createquiz}
-                    className="w-[25px] h-[25px] ml-2 mt-2"
-                    src={Plus}
-                    alt="Plus Icon"
-                  />
-                  <a
-                    onClick={createquiz}
-                    // href="./create-quiz"
-                    className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
-                  >
-                    Quiz
-                  </a>
+          <div className="flex justify-end items-center">
+                    <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[10px]">
+                    Premium Quizzes <span className="text-red-500"></span>
+                    </label>
+                    <FormControlLabel
+                          control={<Switch />} 
+                          // label="Required"
+                          onChange={HandlePremium}
+                          checked={Premium}
+                            className="react-switch"
+                          />
                 </div>
-              </div>
+            {userRole === "Quiz Master" && (
+             <div className="flex p-2 rounded-[10px] pr-4 bg-[#fee2e2]">
+             <div  onClick={createquiz} className="flex items-center">
+               <img
+                onClick={createquiz}
+                 className="w-[25px] h-[25px] "
+                 src={Plus}
+                 alt="Plus Icon"
+               />
+               <a
+                 onClick={createquiz}
+                 // href="./create-quiz"
+                 className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-1"
+               >
+                 Quiz
+               </a>
+             </div>
+           </div>
             )}
             <div className={styles.searchIconContainer}>
               <img
@@ -1116,7 +1128,7 @@ const [multiAnswer, setMultiAnswer] = useState(false);
     src={LogoutIcon}
     onClick={handleBackToLogin}
     alt="Logout Icon"
-    className="w-5 h-5 cursor-pointer mt-[-30px]"
+    className="w-5 h-5 cursor-pointer "
   />
   {/* <p className="text-[#002366] text-[14px]">Logout</p> */}
 </div>
@@ -1138,7 +1150,7 @@ const [multiAnswer, setMultiAnswer] = useState(false);
           {/* <div className={styles.latestQuizHeader}>
             <p className="text-[16px] font-Poppins -ml-[18.5px]">Sort by</p>
           </div> */}
-  <div className="flex justify-end items-center">
+  {/* <div className="flex justify-end items-center">
                     <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[10px]">
                     Premium Quizzes <span className="text-red-500"></span>
                     </label>
@@ -1149,7 +1161,7 @@ const [multiAnswer, setMultiAnswer] = useState(false);
                           checked={Premium}
                             className="react-switch"
                           />
-                </div>
+                </div> */}
           <div className={styles.infoCards}>
            
             <div className={styles.sortBy}>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext} from "react";
 // import Image from "next/image";
 
 // Main-Section-icons
@@ -17,10 +17,12 @@ import Orginazation from "../../src/assets/Images/dashboard/orginazations1.jpg";
 import { useNavigate } from "react-router-dom";
 import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 import { CircularProgress } from "@mui/material";
-
+import { AuthContext } from "../Authcontext/AuthContext";
+import tixkmark from "../../src/assets/Images/dashboard/verify.png"
 const subscription = ()=> {
  
   const navigate = useNavigate();
+  const { isAuthenticated, authToken,logout } = useContext(AuthContext);
 
   const [firstName, setFirstName] = useState('');
   const [middleName, setMiddleName] = useState('');
@@ -277,12 +279,14 @@ const subscription = ()=> {
         // alert(`Payment ID: ${response.razorpay_payment_id}`);
         // alert(`Order ID: ${response.razorpay_order_id}`);
         // alert(`Signature: ${response.razorpay_signature}`);
-  
+        // console.log(`Signature: ${response.razorpay_signature}`)
+        // console.log(`Signature: ${response.razorpay_order_id}`)
+        // console.log(`Signature: ${response.razorpay_payment_id}`)
         // Prepare data for the verification API
         const paymentDetails = {
           user_name: userName, // Replace with actual user name
           email_id: emailId,   // Replace with actual email
-          plan_type: planType,  // Replace with actual plan type
+          plan_type: "",  // Replace with actual plan type
           order_id: response.razorpay_order_id,
           payment_id: response.razorpay_payment_id,
           razorpay_signature: response.razorpay_signature,
@@ -336,45 +340,7 @@ const subscription = ()=> {
     rzp1.open(); // Open the Razorpay payment modal
   };
   
-  const handleclose = () => {
-    setResponseMessage(null);
-    handleBackToLogin();
-     // Close the modal
-  };
-  const handleBackToLogin = () => {
-    const authToken = localStorage.getItem('authToken') || null;
-  
-    if (!authToken) {
-      console.error('No authToken found in localStorage.');
-      return;
-    }
-  
-    fetch('https://dev.quizifai.com:8010/usr_logout/', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${authToken}`,
-      },
-      body: JSON.stringify({
-        user_id: userId,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.response === 'success') {
-          localStorage.clear();
-          logout(); // Clear AuthContext
-          console.log('Navigating to login...');
-          navigate('/login'); // Navigate to login page
-        } else {
-          console.error('Logout failed:', data.response_message);
-        }
-      })
-      .catch((error) => {
-        console.error('Error logging out:', error);
-      });
-  };
+ 
   const [currentPage, setCurrentPage] = useState("plans"); // To track the current step
   const [selectedPlan, setSelectedPlan] = useState(null); // To store the selected plan
   const [showAdditionalCards, setShowAdditionalCards] = useState(false);
@@ -643,6 +609,49 @@ const handleSubmit = async (e) => {
   };
         //-------------------**Conctactus END**--------------------//
 
+
+        const handleclose = () => {
+          setResponseMessage(null);
+          handleBackToLogin();
+           // Close the modal
+        };
+        const handleBackToLogin = () => {
+          const authToken = localStorage.getItem('authToken') || null;
+        
+          if (!authToken) {
+            console.error('No authToken found in localStorage.');
+            return;
+          }
+        
+          fetch('https://dev.quizifai.com:8010/usr_logout/', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${authToken}`,
+            },
+            body: JSON.stringify({
+              user_id: userId,
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.response === 'success') {
+                localStorage.clear();
+                logout(); // Clear AuthContext
+                console.log('Navigating to login...');
+                navigate('/login'); 
+                navigate(0)// Navigate to login page
+              } else {
+                console.error('Logout failed:', data.response_message);
+              }
+            })
+            .catch((error) => {
+              console.error('Error logging out:', error);
+            });
+        };
+        const currentSubscriptionType = localStorage.getItem("subscription_type"); // Get stored subscription type
+
   return (
     <div className="flex w-full">
       <Navigation/>
@@ -670,12 +679,73 @@ const handleSubmit = async (e) => {
           height={160}
         />
 </div> */}
-<div className="flex px-4 pb-6 justify-center">
+<div className="flex px-4 pb-6 pt-1 justify-center">
 
-   <h1 className=" text-[18px] text-[#00024b] font-extrabold">Subscription Plans</h1>
+   <h1 className=" text-[24px] text-[#00024b] font-extrabold">Subscription Plans</h1>
 </div>
 {currentPage === "plans" && (
+<>
+{/* <div className="flex flex-wrap justify-center gap-6 px-4 mb-1">
 
+{currentSubscriptionType === "Free" && (
+  <div
+    className={`bg-white text-black rounded-lg shadow-lg p-2 w-full md:w-[22%] flex flex-col justify-between 
+     `}
+  >
+      <div className="flex flex-col gap-[2px] justify-center">
+
+<h2 className="text-[18px] font-bold text-center text-[#00024b]">Your Current Plan Public</h2>
+        
+      </div>
+   
+     
+    </div>
+)}
+    
+  
+ {currentSubscriptionType === "Premium Lite" && (
+    <div
+    className={`bg-white text-black rounded-lg shadow-lg p-2 w-full md:w-[22%] flex flex-col justify-between 
+      ${currentSubscriptionType === "Premium Lite" ? "border-4 border-blue-500 shadow-2xl" : ""}`}
+  >
+    <div className="flex flex-col gap-[2px] justify-center">
+
+<h2 className="text-[18px] font-bold text-center text-[#00024b]">Premium Lite</h2>
+        
+      </div>
+    
+   
+
+    </div>
+ )}
+
+    {currentSubscriptionType === "Premium" &&(
+
+
+    <div
+    className={`bg-white text-black rounded-lg shadow-lg p-2 w-full md:w-[22%] flex flex-col justify-between 
+      ${currentSubscriptionType === "Premium" ? "border-4 border-blue-500 shadow-2xl" : ""}`}
+  >
+    <div className="flex flex-col gap-[2px] justify-center">
+
+<h2 className="text-[18px] font-bold text-center text-[#00024b]">Premium</h2>
+        
+      </div>
+  
+    
+    </div>
+     )}
+    <div className="bg-white text-black rounded-lg shadow-lg p-2 w-full md:w-[22%]   flex flex-col justify-between">
+    
+    <div className="flex flex-col gap-[2px] justify-center">
+
+<h2 className="text-[18px] font-bold text-center text-[#00024b]">Organization</h2>
+        
+      </div>
+ 
+    
+    </div>
+  </div> */}
     <div className="flex flex-wrap justify-center gap-6 px-4">
      {loading && (
   <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
@@ -684,11 +754,23 @@ const handleSubmit = async (e) => {
 )}
     {/* Public Plan */}
 
-    <div className="bg-white text-black rounded-lg shadow-2xl p-6 w-full md:w-[22%]  flex flex-col justify-between">
+    {/* <div className="bg-white text-black rounded-lg shadow-2xl p-6 w-full md:w-[22%]  flex flex-col justify-between"> */}
+
+      <div
+    className={`relative rounded-lg shadow-lg p-6 w-full md:w-[22%] flex flex-col justify-between 
+      ${currentSubscriptionType === "Free" ? "border-2 border-blue-500 bg-[#567ed6] shadow-2xl text-white" : "bg-white text-black "}`}
+  >
+     {/* {currentSubscriptionType === "Free" && (
+    <img 
+      src={tixkmark} 
+      alt="Tick Mark" 
+      className="absolute top-[-12px] right-[-12px] w-6 h-6"
+    />
+  )} */}
       <div className="flex flex-col gap-[2px] justify-center">
       {/* <div className="bg-[#9fcbf0] rounded-r-full flex items-center justify-center"> */}
 
-<h2 className="text-[18px] font-bold text-center text-[#00024b]">Public</h2>
+<h2 className={`text-[18px] font-bold text-center ${currentSubscriptionType === "Free" ? "text-white" : "  text-[#00024b]"} `}>Public</h2>
 {/* </div> */}
         <img src={Public} alt="" className="h-[100px]" />
         
@@ -703,11 +785,11 @@ const handleSubmit = async (e) => {
         Access to Public Quizzes
       </p>
       */}
-      <p className="mt-6 text-center text-gray-800 font-medium">
+      <p className="mt-6 text-center font-medium">
         Pricing: Rs 0 per day
       </p>
    
-      <button onClick={Back} className="mt-2  bg-[#567ed6] text-white font-medium py-2 px-4 rounded-sm ">
+      <button onClick={Back} className={`mt-2 py-2 px-4 rounded-sm ${currentSubscriptionType === "Free" ? "bg-[#ffffff] text-[#567ed6] font-medium" : " bg-[#567ed6] text-white font-medium"} `}>
       Get Started for Free
       </button>
       {/* <div className="flex justify-center">
@@ -719,12 +801,25 @@ const handleSubmit = async (e) => {
     </div>
   
     {/* Premium Lite Plan */}
-    <div className="bg-white text-black rounded-lg shadow-lg p-6 w-full md:w-[22%] flex flex-col justify-between">
-   
+    {/* <div className="bg-white text-black rounded-lg shadow-lg p-6 w-full md:w-[22%] flex flex-col justify-between">
+    */}
+  
+       <div
+    className={`relative rounded-lg shadow-lg p-6 w-full md:w-[22%] flex flex-col justify-between 
+      ${currentSubscriptionType === "Premium Lite" ? "border-2 border-blue-500 bg-[#567ed6] shadow-2xl text-white" : "bg-white text-black "}`}
+  >
+ 
+      {/* {currentSubscriptionType === "Premium Lite" && (
+    <img 
+      src={tixkmark} 
+      alt="Tick Mark" 
+      className="absolute top-[-12px] right-[-12px] w-6 h-6"
+    />
+  )} */}
     <div className="flex flex-col gap-[2px] justify-center">
       {/* <div className="bg-[#9fcbf0] rounded-r-full flex items-center justify-center"> */}
 
-<h2 className="text-[18px] font-bold text-center text-[#00024b]">Premium Lite</h2>
+<h2 className={`text-[18px] font-bold text-center ${currentSubscriptionType === "Premium Lite" ? "text-white" : "  text-[#00024b]"} `}>Premium Lite</h2>
 {/* </div> */}
         <img src={premiumlite} alt="" className="h-[100px]" />
         
@@ -741,7 +836,7 @@ const handleSubmit = async (e) => {
       <p className="mt-6 text-center font-medium">
         Pricing: As per price defined for Premium Quiz Package
       </p>
-      <button onClick={handleGetPremiumLite} className="mt-2  bg-[#567ed6] text-white font-medium py-2 px-4 rounded-sm ">
+      <button onClick={handleGetPremiumLite} className={`mt-2 py-2 px-4 rounded-sm ${currentSubscriptionType === "Premium Lite" ? "bg-[#ffffff] text-[#567ed6] font-medium" : " bg-[#567ed6] text-white font-medium"} `}>
       Subscribe
       </button>
       {/* <div className="flex justify-center">
@@ -752,11 +847,23 @@ const handleSubmit = async (e) => {
     </div>
   
     {/* Premium Plan */}
-    <div className="bg-white text-black rounded-lg shadow-lg p-6 w-full md:w-[22%]  flex flex-col justify-between">
+    {/* <div className="bg-white text-black rounded-lg shadow-lg p-6 w-full md:w-[22%]  flex flex-col justify-between"> */}
+    <div
+    className={`relative rounded-lg shadow-lg p-6 w-full md:w-[22%] flex flex-col justify-between 
+      ${currentSubscriptionType === "Premium" ? "border-2 border-blue-500 bg-[#567ed6] shadow-2xl text-white" : "bg-white text-black "}`}
+  >
+ 
+     {/* {currentSubscriptionType === "Premium" && (
+    <img 
+      src={tixkmark} 
+      alt="Tick Mark" 
+      className="absolute top-[-12px] right-[-12px] w-6 h-6"
+    />
+  )} */}
     <div className="flex flex-col gap-[2px] justify-center">
       {/* <div className="bg-[#9fcbf0] rounded-r-full flex items-center justify-center"> */}
 
-<h2 className="text-[18px] font-bold text-center text-[#00024b]">Premium</h2>
+<h2 className={`text-[18px] font-bold text-center ${currentSubscriptionType === "Premium" ? "text-white" : "  text-[#00024b]"} `}>Premium</h2>
 {/* </div> */}
         <img src={premium} alt="" className="h-[100px]" />
         
@@ -772,14 +879,14 @@ const handleSubmit = async (e) => {
       {/* <p className="text-gray-600 mt-4 text-center">
          . Create daily one AI Quiz and up to 5 manual quizzes. Sell on QuizifAI platform.
       </p> */}
-      <p className="mt-2 text-center text-gray-800 font-medium">
+      <p className="mt-2 text-center font-medium">
         Pricing: Rs 10 per day with one-year subscription<br />
         Rs 30 per day with one-month access
       </p>
       <button  onClick={() => {
     console.log("Button clicked!"); // Debug to verify the button is working
     fetchSubscriptionDetails(3);
-  }} className="mt-2  bg-[#567ed6] text-white font-medium py-2 px-4 rounded-sm ">
+  }} className={`mt-2 py-2 px-4 rounded-sm ${currentSubscriptionType === "Premium" ? "bg-[#ffffff] text-[#567ed6] font-medium" : " bg-[#567ed6] text-white font-medium"} `}>
       Subscribe
       </button>
       {/* <div className="flex justify-center">
@@ -967,6 +1074,8 @@ const handleSubmit = async (e) => {
       )}
     </div>
   </div>
+  
+  </>
 )}
   {/* Payment Methods Page */}
   {currentPage === "payment" && (
@@ -983,20 +1092,17 @@ const handleSubmit = async (e) => {
             You selected: <strong>{selectedPlan}</strong>
           </p>
           <div className="flex flex-wrap justify-center gap-6 px-4">
-          {quizPackages.map((pkg) => (
+          {/* {quizPackages.map((pkg) => (
 
           <div  key={pkg.quiz_package_id} className="bg-white text-gray-800 rounded-lg shadow-lg p-6 w-72 flex flex-col items-center">
         <h3 className="text-lg text-[#00024b] font-semibold mt-6">{pkg.quiz_package_name}</h3>
-        {/* <p className="text-gray-500 mt-2 text-center">{pkg.quiz_package_name}</p> */}
         <h1 className="text-3xl font-bold  mt-2 text-[#00024b]">₹ {pkg.quiz_package_price}</h1>
-        {/* <p className="text-sm text-gray-500">/month</p> */}
         <p className="text-sm text-center mt-4">
         {pkg.quiz_package_description}
         </p>
 
         <button
          onClick={() => setShowPopup(true)}
-        //  onClick={() => handlePayNow1(pkg)}  
          className="mt-2  bg-[#567ed6] text-white font-medium py-2 px-4 rounded-sm ">
             Pay Now
         </button>
@@ -1022,7 +1128,7 @@ const handleSubmit = async (e) => {
       
       )}
       </div>
-           ))}
+           ))} */}
       </div>
 
           {/* <div className="flex flex-wrap justify-center gap-6 px-4">

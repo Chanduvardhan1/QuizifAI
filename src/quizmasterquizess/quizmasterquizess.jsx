@@ -43,8 +43,6 @@ import comment from "../../src/assets/Images/quiz-type/comment.png"
 
 // import view1 from "../../public/view1.png";
 import newView from "../../public/newview.png";
-import NonAtemptedCard from "../../src/commonCard/nonAttemtedCard.jsx";
-import AtemptedCard from "../../src/commonCard/attemptedCard.jsx";
 import WeeklyProgess from "../../src/weeklyProgress/weeklyProgress.jsx";
 import DashBoardNavBar from "../../src/dashboardNavBar/dashboardNavBar.jsx";
 import more from "../../src/assets/Images/dashboard/more.png"
@@ -55,6 +53,7 @@ import print1 from "../../src/assets/Images/dashboard/print.png"
 import back from "../../src/assets/Images/dashboard/quiz12.png"
 import assign from "../../src/assets/Images/dashboard/assign.png"
 import close from "../../src/assets/Images/images/dashboard/cancel.png"
+import crown from "../../src/assets/Images/dashboard/image (16).png";
 
 const qizmasterquizess = () => {
   const getFormattedDate = () => {
@@ -546,9 +545,86 @@ const qizmasterquizess = () => {
       });
   };
   const handleBack = () => {
-    navigate("/configure")
+    navigate(-1)
   };
+  //   const [quizItem, setquizItem] = useState(null);
 
+  //  useEffect(() => {
+  //     const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+  
+  //   if (!authToken) {
+  //     console.error('No authentication token found');
+  //     return;
+  //   }
+  //     const userId = localStorage.getItem("user_id");
+  //     const quizId = localStorage.getItem("quiz_id");
+  //     fetch('https://dev.quizifai.com:8010/access_quiz_for_master', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Accept': 'application/json',
+  //         'Content-Type': 'application/json',
+  //         'Authorization': `Bearer ${authToken}`,
+  //       },
+  //       body: JSON.stringify({
+  //         quiz_id: quizId,
+  //         user_id: userId
+  //       })
+  //     })
+  //     .then(response => {
+  //       if (!response.ok) {
+  //         throw new Error('Network response was not ok');
+  //       }
+  //       return response.json();
+  //     })
+  //     .then(data => {
+  //       console.log(data);
+  //       setquizItem(data.data);
+  //       // setQuizDetails(data["quiz metrics"]);
+  //       // setCreatedBy(data.created_by);
+  //       // setCreatedOn(data.created_on);
+  //     })
+  //     .catch(error => {
+  //         if (error instanceof SyntaxError) {
+  //                 toast.error("A parsing error occurred. Please check your input file.");
+  //               } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+  //                 toast.error("A network error occurred. Please check your internet connection.");
+  //               } else if (error.message.includes("Failed to fetch")) {
+  //                 toast.error("Server could not be reached. Please try again later.");
+  //               } else {
+  //                 toast.error("An unexpected error occurred while processing your request. Please try again.");
+  //               }
+  //     });
+  //   }, []);
+
+  const handleStartQuiz = (quizItem) => {
+    console.log("quizItem:", quizItem); // Debugging
+  
+    if (quizItem && quizItem.quiz_name && quizItem.quiz_id) {
+      navigate(`/Questionview`, {
+        state: { 
+          quiz_id: quizItem.quiz_id,
+          quiz_title: quizItem.quiz_name,  // Changed from quiz_title to quiz_name
+          quiz_description: quizItem.quiz_description,
+          quiz_duration: quizItem.quiz_duration,
+          pass_percentage: quizItem.pass_percentage,
+          num_questions: quizItem.number_of_questions, // Corrected key
+          quiz_total_marks: quizItem.quiz_total_marks,
+          quiz_complexity_name: quizItem.complexity,  // Changed from quiz_complexity_name to complexity
+          quiz_category_name: quizItem.category,  // Changed from quiz_category_name to category
+          quiz_sub_category_name: quizItem.sub_category,  // Changed from quiz_sub_category_name to sub_category
+          course_name: quizItem.course_name,
+          class_name: quizItem.class_name,
+          photo1: quizItem.photo1,
+          avg_score: quizItem.avg_score,
+          min_completion_time: quizItem.min_completion_time,
+          quiz_attempts: quizItem.quiz_attempts,
+        }
+      });
+    } else {
+      console.error("quizItem is undefined or missing required fields", quizItem);
+    }
+  };
+  
   return (
     <div className="flex">
       <Navigation />
@@ -613,14 +689,14 @@ const qizmasterquizess = () => {
                         <div       className="w-[140px] h-[127px]  rounded-md  mr-2"
                         >
                           <img
-                            onClick={() =>
-                              handleStartQuiz1(
-                                quizItem.quiz_id,
-                                quizItem.attempts_count,
-                                quizItem.retake_flag,
-                                quizItem.active_flag
-                              )
-                            }
+                            // onClick={() =>
+                            //   handleStartQuiz1(
+                            //     quizItem.quiz_id,
+                            //     quizItem.attempts_count,
+                            //     quizItem.retake_flag,
+                            //     quizItem.active_flag
+                            //   )
+                            // }
                           src={quizItem.photo1 || back}
                             alt="Quiz Cover"
                             className="w-[140px] h-[140px] rounded-md mr-2 cursor-pointer"
@@ -632,14 +708,14 @@ const qizmasterquizess = () => {
                           <div className="relative group flex justify-between items-center gap-[3px]">
                             {/* Truncated text container */}
                             <h2 
-                            onClick={() =>
-                              handleStartQuiz1(
-                                quizItem.quiz_id,
-                                quizItem.attempts_count,
-                                quizItem.retake_flag,
-                                quizItem.active_flag
-                              )
-                            }
+                            // onClick={() =>
+                            //   handleStartQuiz1(
+                            //     quizItem.quiz_id,
+                            //     quizItem.attempts_count,
+                            //     quizItem.retake_flag,
+                            //     quizItem.active_flag
+                            //   )
+                            // }
                                className="text-[15px] font-semibold text-[#00008b] w-[170px] cursor-pointer sm:w-[215px] truncate">
                             {quizItem.quiz_name}
                             </h2>
@@ -648,6 +724,13 @@ const qizmasterquizess = () => {
                             {/* <span className="text-nowrap cursor-pointer hidden group-hover:inline-block absolute left-2 top-[25px] w-auto z-30 bg-black text-white px-1 border border-black-300 rounded">
                               Physics,Physics,Physics,Physics
                             </span> */}
+                              {quizItem.premium_quiz_flag === true && (
+                                                        <img
+                                          src={crown}
+                                          alt="Premium"
+                                          className="w-6 h-6"
+                                        />
+                                                         )}
                             {(userRole === "Quiz Master" || userRole === "Super Admin") && (
                             <img src={more} alt="" onClick={() => toggleNavbar(index)} className=" w-[12px] h-[12px] hover:bg-gray-200   hover:rounded-full" />
                             )}
@@ -912,14 +995,7 @@ const qizmasterquizess = () => {
                           </div>
                          
                           {/* Meta Information */}
-                          <div  onClick={() =>
-                              handleStartQuiz1(
-                                quizItem.quiz_id,
-                                quizItem.attempts_count,
-                                quizItem.retake_flag,
-                                quizItem.active_flag
-                              )
-                            } className="text-[#00008b] cursor-pointer text-[12px] truncate max-w-[230px] max-h-4 justify-start mt-1">
+                          <div  className="text-[#00008b] cursor-pointer text-[12px] truncate max-w-[230px] max-h-4 justify-start mt-1">
                             <span>{quizItem.category}</span>
                             <span className="mx-1">.</span>
                             <span>{quizItem.sub_category}</span>
@@ -931,14 +1007,7 @@ const qizmasterquizess = () => {
                           <div className="flex-col items-center text-[10px] space-y-1 mt-2 text-[#00008b]">
                             {/* Author and Date */}
                             <div   
-                             onClick={() =>
-                              handleStartQuiz1(
-                                quizItem.quiz_id,
-                                quizItem.attempts_count,
-                                quizItem.retake_flag,
-                                quizItem.active_flag
-                              )
-                            } className="flex items-center justify-between cursor-pointer text-[12px] sm:text-[10px]">
+                          className="flex items-center justify-between cursor-pointer text-[12px] sm:text-[10px]">
                               <div className="flex items-center">
                                 <img src={username1} className="w-[20px] h-[20px] mr-1" />
                                 <span className="ml-1 text-[12px]  ">{quizItem.created_by}</span>
@@ -951,14 +1020,7 @@ const qizmasterquizess = () => {
                       
                             {/* Quiz Info */}
                             <div  
-                             onClick={() =>
-                              handleStartQuiz1(
-                                quizItem.quiz_id,
-                                quizItem.attempts_count,
-                                quizItem.retake_flag,
-                                quizItem.active_flag
-                              )
-                            }
+                          
                              className="flex cursor-pointer items-center justify-between pr-1 text-xs sm:text-sm">
                               <div className="flex items-center">
                                 <img src={comment} className="w-[20px]   h-[20px] mr-1" />
@@ -972,14 +1034,14 @@ const qizmasterquizess = () => {
                       
                             {/* Attempt Info */}
                             <div 
-                             onClick={() =>
-                              handleStartQuiz1(
-                                quizItem.quiz_id,
-                                quizItem.attempts_count,
-                                quizItem.retake_flag,
-                                quizItem.active_flag
-                              )
-                            } 
+                            //  onClick={() =>
+                            //   handleStartQuiz1(
+                            //     quizItem.quiz_id,
+                            //     quizItem.attempts_count,
+                            //     quizItem.retake_flag,
+                            //     quizItem.active_flag
+                            //   )
+                            // } 
                             className="flex items-center cursor-pointer space-x-4 text-xs sm:text-sm">
                               <div className="flex items-center">
                                 <img src={Attemts} className="w-[18px] h-[18px] mr-1" />
@@ -988,13 +1050,12 @@ const qizmasterquizess = () => {
                             </div>
                             <div className="flex items-end justify-end ">
                               <div className="flex items-end">
-                                <img
-                                  onClick={() =>
-                                                      quizresults(
-                                                        quizItem.quiz_id,
-                                                        quizItem.quiz_level_attempt_id
-                                                      )
-                                                    } src={view1} className="w-[18px] cursor-pointer h-[18px] mr-1" />
+                              <img 
+    onClick={() => handleStartQuiz(quizItem)}
+    src={view1} 
+    className="w-[18px] cursor-pointer h-[18px] mr-1" 
+    alt="Start Quiz"
+  />
                                 <img src={leader}
                                      onClick={() =>
                                                         leaderboard1(

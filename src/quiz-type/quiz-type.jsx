@@ -298,7 +298,6 @@ export default function quiztype() {
   const [files, setFiles] = useState("");
   const dispatch = useDispatch();
   // const [next, setNext] = useState(false);
-  const [userId, setUserId] = useState(localStorage.getItem("user_id"));
 
   const [frontImage, setFrontImage] = useState(null);
   const [backImage, setBackImage] = useState(null);
@@ -630,7 +629,40 @@ useEffect(() =>{
    const handleback =() =>{
     navigate('/dashboard')
   }
+  const handleNext6 = () => {
+    setCurrentQuestionIndex((prevIndex) => {
+      const nextIndex = prevIndex + 1;
+  
+      // Check if we are at the last question of the current page
+      if ((nextIndex % questionsPerPage === 0) && (nextIndex < questions.length)) {
+        setCurrentPage((prevPage) => prevPage + 1); // Move to the next page correctly
+      }
+  
+      return nextIndex;
+    });
+  };
+  
+  
+  
+  
+  
 
+  const handleBack6 = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex((prevIndex) => {
+        const prevIndexValue = prevIndex - 1;
+  
+        // If we move back to the first question of a page, move to the previous set of questions
+        if (prevIndexValue % questionsPerPage === questionsPerPage - 1) {
+          handleBack(); // Load the previous page
+        }
+  
+        return prevIndexValue;
+      });
+    }
+  };
+  
+  
 
    const handleToLayout1 = () =>{
     navigate('/pdf1');
@@ -1420,7 +1452,6 @@ const handleToggle4 = (event) => {
 }; 
 const handleToggle5 = (event) => {
   setShowPackageFields(event.target.checked);
-  setShowPackageFields1(event.target.checked);
 }; 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -1524,65 +1555,6 @@ useEffect(() => {
 }, []);
 //-----------------**users dropdown END**-----------------//
 
-//-----------------**package Name **-----------------//
-
-const [packageName, setPackageName] = useState("");
-const [packageDescription, setPackageDescription] = useState("");
-const [packageAmount, setPackageAmount] = useState("");
-const [successMessage, setSuccessMessage] = useState("");
-
-const handleSubmit3 = async (e) => {
-  e.preventDefault();
-
-  const payload = {
-    user_id: userId, // Replace with the actual user_id
-    quiz_package_name: packageName,
-    quiz_package_description: packageDescription,
-    quiz_package_price: parseFloat(packageAmount),
-    price_currency_code: "INR",
-    updated_by: userId, // Replace with the actual updater
-  };
-
-  try {
-    const authToken = localStorage.getItem('authToken'); // Get the auth token from localStorage
-
-    if (!authToken) {
-      throw new Error('No authentication token found');
-    }
-    const response = await fetch(
-      "https://dev.quizifai.com:8010/create_quiz_package",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          'Authorization': `Bearer ${authToken}`,
-        },
-        body: JSON.stringify(payload),
-      }
-    );
-
-    const result = await response.json();
-
-    if (response.ok) {
-      setSuccessMessage("Quiz package created successfully!");
-      setErrorMessage("");
-    } else {
-      setErrorMessage(result.message || "Failed to create quiz package.");
-      setSuccessMessage("");
-    }
-  } catch (error) {
-    setErrorMessage("An error occurred. Please try again.");
-    setSuccessMessage("");
-  }
-};
-
-//-----------------**package Name END**-----------------//
-
-
-
-
-
 const customOption = ({ data, innerRef, innerProps, isSelected }) => (
   <div
     ref={innerRef}
@@ -1642,6 +1614,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
     );
     setQuestions(updatedQuestions);
   };
+
   const [currentPage, setCurrentPage] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const questionsPerPage = 10;
@@ -1694,7 +1667,6 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
     question.correct_answer_description &&
     question.options.some((option) => option.correct_answer_flag) // At least one correct answer
   );
-
   // Move to the next set of questions
   const handleNext5 = () => {
     setCurrentPage((prevPage) => prevPage + 1);
@@ -2140,7 +2112,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
           </div>
 
           {/* Course */}
-           <div className="md:col-span-2">
+          <div className="md:col-span-2">
           
                     <div className="flex gap-6">
                   
@@ -2351,7 +2323,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
 </div>
 </>
             )} */}
-                {showPackageFields && (
+                {/* {showPackageFields && (
 <>
 
               <div className="flex flex-col">
@@ -2391,60 +2363,12 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
            
                 </div>
                 </>
-                )}
-      
+                )} */}
+      <div className="">
 
-      {/* <div className="">
-
-<div className="w-full flex gap-6">
- 
-      <div className="w-full flex flex-col">
-        <div className="w-full flex flex-row">
-        <label className="w-[23%] text-blue-800 font-semibold mb-2">Complexity<span className="text-red-500">*</span></label>
-        
-        <select
-                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-          value={selectedComplexity}
-          onChange={handleSelectComplexity}
-        >
-          <option value="" disabled>Complex</option>
-          {complexities.map((complexity, index) => (
-            <option key={index} value={complexity}>
-              {complexity}
-            </option>
-          ))}
-        </select>
-        </div>
-      
-        <hr className={`h-[1px] w-full`} />
-      </div>
-<div className="w-full flex flex-col">
-  <div className="w-full flex flex-row">
-    <label className="w-[30%] text-blue-800 font-semibold mb-2 ">
-      Subject<span className="text-red-500"></span>
-    </label>
-    <select
-      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-      value={selectedCourse}
-      onChange={handleSelectCourse}
-    >
-      <option value="" disabled>Select a Subject</option>
-      <option value="">None</option>
-      {courses.map((course) => (
-        <option key={course.course_id} value={course.course_name}>
-          {course.course_name}
-        </option>
-      ))}
-    </select>
-  </div>
-  <hr className="h-[1px] w-full" />
-</div>
 
 
 </div>
-
-</div> */}
-
 {/* <div className="md:col-span-2">
 
 <div className="w-full flex justify-between gap-6">
@@ -3038,7 +2962,8 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
               <CircularProgress size={40} color="primary" />
             </div>
           )}
-            <div className="w-full">
+          <div className="flex gap-[20px]">
+          <div className="w-[35%]">
               <h1 className="font-Poppins font-bold text-[30px] leading-[45px] text-orange-400">
                 Create / Edit your Quiz
               </h1>
@@ -3046,10 +2971,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                 Enter all your questions, options, and answers
               </h1>
             </div>
-
-            {/* Questions and options */}
-            <div className="w-full ">
-            <div className="flex justify-center items-center gap-2 mt-4 mb-8">
+          <div className="flex justify-center items-center gap-2 mt-4 mb-8">
             {currentPage > 0 && (
         <button
           onClick={handlePreviousPage}
@@ -3098,6 +3020,12 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
         </button>
       )}
       </div>
+          </div>
+           
+
+            {/* Questions and options */}
+            <div className="w-full ">
+         
 
       {/* Next button to load the next set of questions */}
      
@@ -3298,7 +3226,6 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
     >
       Save as Drafts
     </button>
-
     {allQuestionsCompleted && (
   <button
     disabled={isSubmitting} 
@@ -3308,6 +3235,14 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
     {isSubmitting ? "Created" : "Create"}
   </button>
 )}
+                {/* <button
+                 disabled={isSubmitting} 
+                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
+              onClick={handleNext}
+             
+                >
+                  {isSubmitting ? "Created" : "Create"}
+                </button> */}
                 {shownext && (
                 <button
             onClick={handleNextpage3}

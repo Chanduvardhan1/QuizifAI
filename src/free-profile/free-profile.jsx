@@ -1937,7 +1937,7 @@ const FreeProfile = () => {
         <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px]">Country Name<span className="text-red-500"></span></label>
         <input
               type="text"
-              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+              className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5]  hover:border-blue-200 text-[11px] focus:outline-none `}
                 placeholder="Country"
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}

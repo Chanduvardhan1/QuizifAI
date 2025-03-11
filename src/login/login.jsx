@@ -231,10 +231,15 @@ const LoginPage = () => {
   //   }
   // };
   
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleLogin1(loginMethod, email, mobile, password);
+    }
+  };
+  
+
   const handleLogin1 = async (loginOption, email, mobile, password) => {
-  
-  
-    // Validate email or mobile based on the login option
     if (loginOption === "email") {
       if (!email) {
         setErrorMessage("Please enter your email");
@@ -289,10 +294,10 @@ const LoginPage = () => {
         const backendMessage = errorData.detail || "Failed to retrieve access token";
   
         const errorMessage =
-          loginOption === "email"
-            ? "Please check your credentials and try again."
-            : "Please check your credentials and try again.";
-  
+        loginOption === "email"
+          ? "Please check your credentials and try again."
+          : "Please check your credentials and try again.";
+
         setErrorMessage(backendMessage.includes("Incorrect") ? errorMessage : backendMessage);
         return;
       }
@@ -366,6 +371,7 @@ const LoginPage = () => {
         setErrorMessage(errorMsg);
       }
     } catch (error) {
+    
       if (error instanceof SyntaxError) {
         setErrorMessage("A parsing error occurred. Please check your input file.");
       } else if (error.message.includes("NetworkError")) {
@@ -496,6 +502,7 @@ const LoginPage = () => {
                           id="email"
                           label="Email"
                           required
+                          onKeyDown={handleKeyDown} 
                           value={email}
                           onChange={handleEmailChange1}
                           variant="outlined"
@@ -542,6 +549,7 @@ const LoginPage = () => {
                           id="password1"
                           label="Password"
                           required
+                          onKeyDown={handleKeyDown} 
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           variant="outlined"
@@ -617,6 +625,7 @@ const LoginPage = () => {
                           inputMode: "numeric",
                           pattern: "[0-9]*", 
                         }}
+                        onKeyDown={handleKeyDown} 
                         value={mobile}
                         // onChange={(e) => {
                         //   
@@ -666,6 +675,7 @@ const LoginPage = () => {
                         label="Password"
                         type="text"
                         required
+                        onKeyDown={handleKeyDown} 
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         variant="outlined"

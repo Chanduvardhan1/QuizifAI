@@ -193,7 +193,15 @@ const FreeProfile = () => {
         setCity(locationData[0].location);
       }
     } catch (error) {
-      console.error("Error fetching details by pincode", error);
+        if (error instanceof SyntaxError) {
+             toast.error("A parsing error occurred. Please check your input file.");
+           } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+             toast.error("A network error occurred. Please check your internet connection.");
+           } else if (error.message.includes("Failed to fetch")) {
+             toast.error("Server could not be reached. Please try again later.");
+           } else {
+             toast.error("An unexpected error occurred while processing your request. Please try again.");
+           }
     }finally {
       setLoading(false); // Hide loading after API response
     }
@@ -400,8 +408,15 @@ const FreeProfile = () => {
   
         console.log("User Data Initialized:", initialData);
       } catch (error) {
-        console.error("Error fetching user profile details:", error.message);
-      }finally {
+  if (error instanceof SyntaxError) {
+        toast.error("A parsing error occurred. Please check your input file.");
+      } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+        toast.error("A network error occurred. Please check your internet connection.");
+      } else if (error.message.includes("Failed to fetch")) {
+        toast.error("Server could not be reached. Please try again later.");
+      } else {
+        toast.error("An unexpected error occurred while processing your request. Please try again.");
+      }      }finally {
         setLoading(false); // Hide loading after API response
       }
     };
@@ -642,8 +657,15 @@ const FreeProfile = () => {
         window.location.reload(); // Reload the page or handle success
       }
     } catch (error) {
-      console.error("Error updating profile:", error);
-      toast.error("An error occurred while updating the profile. Please try again.");
+         if (error instanceof SyntaxError) {
+              toast.error("A parsing error occurred. Please check your input file.");
+            } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+              toast.error("A network error occurred. Please check your internet connection.");
+            } else if (error.message.includes("Failed to fetch")) {
+              toast.error("Server could not be reached. Please try again later.");
+            } else {
+              toast.error("An unexpected error occurred while processing your request. Please try again.");
+            }
     }finally {
       setLoading(false); // Hide loading after API response
     }
@@ -876,10 +898,15 @@ const FreeProfile = () => {
       console.error("Unexpected response format:", data);
       toast.error("Unexpected response format. Please try again.");
     } catch (error) {
-      console.error("Error in handleLoginSaveClick:", error);
-  
-      // Show error message only when no success was processed
-      toast.error("Error sending OTP. Please try again.");
+        if (error instanceof SyntaxError) {
+        toast.error("A parsing error occurred. Please check your input file.");
+      } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+        toast.error("A network error occurred. Please check your internet connection.");
+      } else if (error.message.includes("Failed to fetch")) {
+        toast.error("Server could not be reached. Please try again later.");
+      } else {
+        toast.error("An unexpected error occurred while processing your request. Please try again.");
+      }
     }finally {
       setLoading(false); // Hide loading after API response
     }
@@ -940,8 +967,15 @@ const FreeProfile = () => {
         toast.error("Unexpected response from the server.");
       }
     } catch (error) {
-      console.error("Error in updatePreferredLoginMethod:", error.message);
-      toast.error("Error updating preferred login method. Please try again.");
+         if (error instanceof SyntaxError) {
+              toast.error("A parsing error occurred. Please check your input file.");
+            } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+              toast.error("A network error occurred. Please check your internet connection.");
+            } else if (error.message.includes("Failed to fetch")) {
+              toast.error("Server could not be reached. Please try again later.");
+            } else {
+              toast.error("An unexpected error occurred while processing your request. Please try again.");
+            }
     }finally {
       setLoading(false); // Hide loading after API response
     }
@@ -1000,8 +1034,15 @@ const FreeProfile = () => {
         toast.error("Unexpected response from the server.");
       }
     } catch (error) {
-      console.error("Error in updatePreferredLoginMethod:", error.message);
-      toast.error("Error updating preferred login method. Please try again.");
+         if (error instanceof SyntaxError) {
+              toast.error("A parsing error occurred. Please check your input file.");
+            } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+              toast.error("A network error occurred. Please check your internet connection.");
+            } else if (error.message.includes("Failed to fetch")) {
+              toast.error("Server could not be reached. Please try again later.");
+            } else {
+              toast.error("An unexpected error occurred while processing your request. Please try again.");
+            }
     }finally {
       setLoading(false); // Hide loading after API response
     }
@@ -1339,6 +1380,15 @@ const FreeProfile = () => {
       })
       .catch((error) => {
         console.error('Error logging out:', error);
+           if (error instanceof SyntaxError) {
+                toast.error("A parsing error occurred. Please check your input file.");
+              } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+                toast.error("A network error occurred. Please check your internet connection.");
+              } else if (error.message.includes("Failed to fetch")) {
+                toast.error("Server could not be reached. Please try again later.");
+              } else {
+                toast.error("An unexpected error occurred while processing your request. Please try again.");
+              }
       });
   };
   
@@ -1399,7 +1449,15 @@ const FreeProfile = () => {
         setError('Failed to upload image');
       }
     } catch (error) {
-      setError('Error uploading image: ' + error.message);
+         if (error instanceof SyntaxError) {
+              toast.error("A parsing error occurred. Please check your input file.");
+            } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+              toast.error("A network error occurred. Please check your internet connection.");
+            } else if (error.message.includes("Failed to fetch")) {
+              toast.error("Server could not be reached. Please try again later.");
+            } else {
+              toast.error("An unexpected error occurred while processing your request. Please try again.");
+            }
     }finally {
       setLoading(false); // Hide loading after API response
     }
@@ -1451,7 +1509,15 @@ const FreeProfile = () => {
         setError('Failed to delete image');
       }
     } catch (error) {
-      setError('Error deleting image: ' + error.message);
+         if (error instanceof SyntaxError) {
+              toast.error("A parsing error occurred. Please check your input file.");
+            } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+              toast.error("A network error occurred. Please check your internet connection.");
+            } else if (error.message.includes("Failed to fetch")) {
+              toast.error("Server could not be reached. Please try again later.");
+            } else {
+              toast.error("An unexpected error occurred while processing your request. Please try again.");
+            }
     }finally {
       setLoading(false); // Hide loading after API response
     }
@@ -1826,7 +1892,7 @@ const FreeProfile = () => {
 
       <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
-        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px] ">City Name<span className="text-red-500"></span></label>
+        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[8px] ">City Name<span className="text-red-500"></span></label>
      
     <select
        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -1868,7 +1934,7 @@ const FreeProfile = () => {
       </div>
       <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
-        <label className="w-[55%] text-blue-800 font-semibold mb-2">Country Name<span className="text-red-500"></span></label>
+        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px]">Country Name<span className="text-red-500"></span></label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
@@ -1884,7 +1950,7 @@ const FreeProfile = () => {
       </div>
       <div className="flex flex-col w-full">
         <div className="w-full flex flex-row">
-        <label className="w-[55%] text-blue-800 font-semibold mb-2">Mobile Number<span className="text-red-500"></span></label>
+        <label className="w-[55%] text-blue-800 font-semibold mb-2 mr-[9px]">Mobile Number<span className="text-red-500"></span></label>
         <input
               type="text"
               className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}

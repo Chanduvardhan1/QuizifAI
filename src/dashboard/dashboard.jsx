@@ -182,7 +182,15 @@ const Dashboard = () => {
         // window.location.reload();
         // Optionally, update the card to show it's disabled
       } else {
-        console.error("Failed to disable quiz");
+          if (error instanceof SyntaxError) {
+                     toast.error("A parsing error occurred. Please check your input file.");
+                   } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+                     toast.error("A network error occurred. Please check your internet connection.");
+                   } else if (error.message.includes("Failed to fetch")) {
+                     toast.error("Server could not be reached. Please try again later.");
+                   } else {
+                     toast.error("An unexpected error occurred while processing your request. Please try again.");
+                   }
       }
     } catch (error) {
       console.error("Error during disable operation:", error);
@@ -236,15 +244,15 @@ const Dashboard = () => {
         console.error("Failed to disable quiz");
       }
     } catch (error) {
-      if (error instanceof SyntaxError) {
-        toast.error("A parsing error occurred. Please check your input file.");
-      } else if (error.message.includes("NetworkError")) {
-        toast.error("A network error occurred. Please check your internet connection.");
-      } else if (error.message.includes("Failed to fetch")) {
-        toast.error("Server could not be reached. Please try again later.");
-      } else {
-        toast.error("An unexpected error occurred while processing your request. Please try again.");
-      }
+     if (error instanceof SyntaxError) {
+                toast.error("A parsing error occurred. Please check your input file.");
+              } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+                toast.error("A network error occurred. Please check your internet connection.");
+              } else if (error.message.includes("Failed to fetch")) {
+                toast.error("Server could not be reached. Please try again later.");
+              } else {
+                toast.error("An unexpected error occurred while processing your request. Please try again.");
+              }
     }
   };
   
@@ -434,15 +442,15 @@ const Dashboard = () => {
         localStorage.setItem("username", userDetails.full_name);
 
       } catch (error) {
-        if (error instanceof SyntaxError) {
-          toast.error("A parsing error occurred. Please check your input file.");
-        } else if (error.message.includes("NetworkError")) {
-          toast.error("A network error occurred. Please check your internet connection.");
-        } else if (error.message.includes("Failed to fetch")) {
-          toast.error("Server could not be reached. Please try again later.");
-        } else {
-          toast.error("An unexpected error occurred while processing your request. Please try again.");
-        }
+         if (error instanceof SyntaxError) {
+                    toast.error("A parsing error occurred. Please check your input file.");
+                  } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+                    toast.error("A network error occurred. Please check your internet connection.");
+                  } else if (error.message.includes("Failed to fetch")) {
+                    toast.error("Server could not be reached. Please try again later.");
+                  } else {
+                    toast.error("An unexpected error occurred while processing your request. Please try again.");
+                  }
       }finally {
         setLoading1(false); // Stop loading after API call
       }
@@ -486,10 +494,10 @@ const Dashboard = () => {
       const result = await response.json();
 
       if (result.response === "success") {
-        const { remaining_attempts } = result.data;
+        const { remaining_attempts_today } = result.data;
 
         // Check if there are no remaining attempts
-        if (remaining_attempts === 0) {
+        if (remaining_attempts_today_today === 0) {
           toast.error("You have no remaining attempts to access this quiz.");
           return;
         }
@@ -508,14 +516,14 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Error fetching subscription limitations:", error);
       if (error instanceof SyntaxError) {
-        toast.error("A parsing error occurred. Please check your input file.");
-      } else if (error.message.includes("NetworkError")) {
-        toast.error("A network error occurred. Please check your internet connection.");
-      } else if (error.message.includes("Failed to fetch")) {
-        toast.error("Server could not be reached. Please try again later.");
-      } else {
-        toast.error("An unexpected error occurred while processing your request. Please try again.");
-      }
+                 toast.error("A parsing error occurred. Please check your input file.");
+               } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+                 toast.error("A network error occurred. Please check your internet connection.");
+               } else if (error.message.includes("Failed to fetch")) {
+                 toast.error("Server could not be reached. Please try again later.");
+               } else {
+                 toast.error("An unexpected error occurred while processing your request. Please try again.");
+               }
     }
   };
   // const handleStartQuiz1 = (quizId, attemptsCount, retakeFlag) => {
@@ -576,10 +584,10 @@ const Dashboard = () => {
       const result = await response.json();
   
       if (result.response === "success") {
-        const { remaining_attempts } = result.data;
+        const { remaining_attempts_today } = result.data;
   
         // Check if there are no remaining attempts
-        if (remaining_attempts === 0) {
+        if (remaining_attempts_today === 0) {
           toast.error("You have no remaining attempts to access this quiz.");
           return;
         }
@@ -597,15 +605,15 @@ const Dashboard = () => {
       }
     } catch (error) {
       console.error("Error fetching subscription limitations:", error);
-      if (error instanceof SyntaxError) {
-        toast.error("A parsing error occurred. Please check your input file.");
-      } else if (error.message.includes("NetworkError")) {
-        toast.error("A network error occurred. Please check your internet connection.");
-      } else if (error.message.includes("Failed to fetch")) {
-        toast.error("Server could not be reached. Please try again later.");
-      } else {
-        toast.error("An unexpected error occurred while processing your request. Please try again.");
-      }
+        if (error instanceof SyntaxError) {
+                   toast.error("A parsing error occurred. Please check your input file.");
+                 } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+                   toast.error("A network error occurred. Please check your internet connection.");
+                 } else if (error.message.includes("Failed to fetch")) {
+                   toast.error("Server could not be reached. Please try again later.");
+                 } else {
+                   toast.error("An unexpected error occurred while processing your request. Please try again.");
+                 }
     }
   };
   
@@ -749,14 +757,14 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Error fetching subscription limitations:", error);
       if (error instanceof SyntaxError) {
-        toast.error("A parsing error occurred. Please check your input file.");
-      } else if (error.message.includes("NetworkError")) {
-        toast.error("A network error occurred. Please check your internet connection.");
-      } else if (error.message.includes("Failed to fetch")) {
-        toast.error("Server could not be reached. Please try again later.");
-      } else {
-        toast.error("An unexpected error occurred while processing your request. Please try again.");
-      }
+                 toast.error("A parsing error occurred. Please check your input file.");
+               } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+                 toast.error("A network error occurred. Please check your internet connection.");
+               } else if (error.message.includes("Failed to fetch")) {
+                 toast.error("Server could not be reached. Please try again later.");
+               } else {
+                 toast.error("An unexpected error occurred while processing your request. Please try again.");
+               }
     }finally {
       setLoading(false); // Hide loading after API response
     }
@@ -925,7 +933,15 @@ const Dashboard = () => {
         }
       })
       .catch((error) => {
-        console.error('Error logging out:', error);
+           if (error instanceof SyntaxError) {
+                      toast.error("A parsing error occurred. Please check your input file.");
+                    } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+                      toast.error("A network error occurred. Please check your internet connection.");
+                    } else if (error.message.includes("Failed to fetch")) {
+                      toast.error("Server could not be reached. Please try again later.");
+                    } else {
+                      toast.error("An unexpected error occurred while processing your request. Please try again.");
+                    }
       });
   };
 
@@ -1123,7 +1139,7 @@ const Dashboard = () => {
        )}
 
 
-          <div className="w-full flex flex-wrap mx-auto gap-[24px]">
+          <div className="w-full flex justify-center flex-wrap mx-auto gap-[24px]">
             {loading1
           ? // Show Skeleton Loaders
           [...Array(3)].map((_, index) => (
@@ -1169,7 +1185,7 @@ const Dashboard = () => {
                     quizItem.active_flag?.toLowerCase() === "true" ||
                     quizItem.active_flag?.toLowerCase() === "Y";
 
-                     // const shouldShowQuiz = Premium
+                    // const shouldShowQuiz = Premium
                     // ? quizItem.premium_quiz_flag === true // Show only premium quizzes if toggle is on
                     // : quizItem.premium_quiz_flag === null || quizItem.premium_quiz_flag === false; // Show only non-premium quizzes if toggle is off
                     const shouldShowQuiz = Premium
@@ -2754,7 +2770,7 @@ alt="Disable icon"
             </span>
           </div>
 
-          <div className="w-full flex flex-wrap mx-auto gap-[24px]">
+          <div className="w-full flex justify-center flex-wrap mx-auto gap-[24px]">
             {loading1
           ? // Show Skeleton Loaders
           [...Array(3)].map((_, index) => (

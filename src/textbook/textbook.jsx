@@ -43,7 +43,8 @@ import QuestionPaper from "../assets/Images/Assets/questionPaper.png";
 import GreaterThan from "../assets/Images/images/dashboard/greaterthan.png";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch'
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const options1 = [{ label: "Numbers" }];
 
 for (let i = 1; i <= 300; i++) {
@@ -1177,163 +1178,258 @@ const handleToLayout4 = () =>{
 //         await handleNext();
 //     }
 // };
+//------------------------**textbook**--------------------//
+// const handleFileChange = (event) => {
+//   const file = event.target.files[0];
+//   setUploadedFile(file);
+//   if (file) {
+//     handleNext(file);
+//   }
+// };
+
+// const handleNext = async (file) => {
+//   //   if (!uploadedFile) {
+//   //     alert("Please upload a file before proceeding.");
+//   //     return; // Prevent further execution
+//   // }
+//   const requiredFields = [
+//     title,
+//     numQuestions,
+//     description,
+//     selectedCategory,
+//     selectedSubCategory,
+//     percentage,
+//     selectedComplexity,
+//     duration,
+//     timings,
+//     availablefrom,
+ 
+//     quiztotalmarks
+// ];
+
+// const isAnyFieldEmpty = requiredFields.some(field => !field);
+
+// if (isAnyFieldEmpty) {
+//     alert("Please fill in all the required fields before proceeding.");
+//     return; // Prevent further execution
+// }
+// const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
+
+// if (!authToken) {
+//   console.error('No authentication token found. Please log in again.');
+//   return;
+// }
+//     try {
+//       const formData = new FormData();
+//       formData.append("quiz_title", title);
+//       formData.append("number_of_questions", numQuestions);
+//       formData.append("quiz_description", description);
+//       formData.append("quiz_category_name", selectedCategory);
+//       formData.append("multi_answer", multiAnswer);
+//       formData.append("quiz_sub_category_name", selectedSubCategory);
+//       formData.append("class_name", selectedClass);
+//       formData.append("pass_percentage", percentage);
+//       formData.append("quiz_complexity_name", selectedComplexity);
+//       formData.append("retake_flag", retake);
+//       formData.append("quiz_duration", duration);
+//       formData.append("course_name", selectedCourse);
+//       formData.append("quiz_time_bounded_questions", timings);
+//       formData.append("quiz_public_access", publicAccess);
+//       formData.append("available_from", availablefrom);
+//       formData.append("disabled_on", disabledon);
+//       formData.append("org_id", selectedOrg);
+//       formData.append("quiz_instructions", instructionsString);
+//       formData.append("subject_name", subject);
+//       formData.append("quiz_total_marks", quiztotalmarks);
+//       formData.append("file", file);
+   
+//       const options = {
+//         method: 'POST',
+//         headers: {
+//           'Authorization': `Bearer ${authToken}`, // Include the auth token in the Authorization header
+//         },
+//         body: formData,
+//       };
+  
+      // const uploadFileWithSimulatedProgress = (url, options) => {
+      //   return new Promise((resolve, reject) => {
+      //     const xhr = new XMLHttpRequest();
+      //     xhr.open(options.method, url);
+  
+      //     xhr.onload = () => {
+      //       if (xhr.status >= 200 && xhr.status < 300) {
+      //         resolve(xhr.response);
+      //       } else {
+      //         reject(xhr.statusText);
+      //       }
+      //     };
+  
+      //     xhr.onerror = () => reject(xhr.statusText);
+  
+      //     Object.keys(options.headers || {}).forEach(key => {
+      //       xhr.setRequestHeader(key, options.headers[key]);
+      //     });
+  
+      //     xhr.send(options.body);
+  
+      //     // Simulate progress
+      //     let progress = 0;
+      //     const interval = setInterval(() => {
+      //       if (progress < 95) {
+      //         progress += 1;
+      //         setUploadProgress(progress);
+      //       } else {
+      //         clearInterval(interval);
+      //       }
+      //     }, 100); // Update every 100ms
+  
+      //     xhr.onreadystatechange = () => {
+      //       if (xhr.readyState === 4) {
+      //         clearInterval(interval);
+      //         setUploadProgress(100); // Set to 100% on completion
+      //       }
+      //     };
+      //   });
+      // };
+  
+//       const responseText = await uploadFileWithSimulatedProgress(
+//         "https://dev.quizifai.com:8010/uploadTextbook/",
+//         options
+//       );
+  
+//       const responseData = JSON.parse(responseText);
+//       console.log(responseData, "data");
+//       if (responseData.response === "success") {
+//         if (responseData.pdf_url?.status === "success") {
+//           const pdfUrl = responseData.pdf_url.pdf_url;
+//           setPdfUrl(pdfUrl); // Save PDF URL to state
+//           console.log("File uploaded successfully. PDF URL:", pdfUrl);
+//         }
+//         if (responseData.data && responseData.data.questions) {
+//           setQuestions(responseData.data.questions);
+//             setDocument(responseData.data.document_name);
+//             setAuthor(responseData.data.author_name);
+//             setPublisher(responseData.data.publisher_name);
+//             setReleased(responseData.data.released_date);
+//             setRevision(responseData.data.revision_year);
+//             setDocumentType(responseData.data.document_type);
+//             setNext(true);
+//         } else {
+//           setErrorMessage("Questions data is missing from the response.");
+//         }
+//       } else {
+//         if (
+//           responseData.detail &&
+//           responseData.detail[0].type === "missing" &&
+//           responseData.detail[0].loc[1] === "body" &&
+//           responseData.detail[0].loc[2] === "num_questions"
+//         ) {
+//           setErrorMessage("Please provide the number of questions for the quiz.");
+//         } else {
+//           setErrorMessage(responseData.detail);
+//         }
+//       }
+//     } catch (error) {
+//       console.error("Type-Quiz failed:", error);
+//       setErrorMessage("An error occurred while choosing the type of the quiz");
+//     }
+//   };
+  
+//------------------------**textbook end**--------------------//
+
+const [simpleQuestions, setSimpleQuestions] = useState(1);
+const [mediumQuestions, setMediumQuestions] = useState(1);
+const [hardQuestions, setHardQuestions] = useState(1);
+const [units, setUnits] = useState([]);
 
 const handleFileChange = (event) => {
   const file = event.target.files[0];
   setUploadedFile(file);
   if (file) {
-    handleNext(file);
+    fetchQuestions(file);
+  }
+};
+const uploadFileWithSimulatedProgress = (url, options) => {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open(options.method, url);
+
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(xhr.response);
+      } else {
+        reject(xhr.statusText);
+      }
+    };
+
+    xhr.onerror = () => reject(xhr.statusText);
+
+    Object.keys(options.headers || {}).forEach((key) => {
+      xhr.setRequestHeader(key, options.headers[key]);
+    });
+
+    xhr.send(options.body);
+
+    // Simulate progress
+    let progress = 0;
+    const interval = setInterval(() => {
+      if (progress < 95) {
+        progress += 1;
+        setUploadProgress(progress);
+      } else {
+        clearInterval(interval);
+      }
+    }, 100); // Update every 100ms
+
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4) {
+        clearInterval(interval);
+        setUploadProgress(100); // Set to 100% on completion
+      }
+    };
+  });
+};
+
+const fetchQuestions = async (file) => {
+  const apiUrl = `https://dev.quizifai.com:8010/QUESGEN/?total_questions=${numQuestions}&simple_questions=${simpleQuestions}&medium_questions=${mediumQuestions}&hard_questions=${hardQuestions}`;
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  try {
+    const options = {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+      },
+      body: formData,
+    };
+
+    // Upload file with progress tracking
+    const responseText = await uploadFileWithSimulatedProgress(apiUrl, options);
+    const data = JSON.parse(responseText); // Convert response to JSON
+
+    console.log("API Response:", data);
+
+    // Extracting units
+    if (Array.isArray(data) && data.length > 1) {
+      setUnits(data[0].units || []);
+      setQuestions(data[1] || []);
+    } else {
+      console.error("Unexpected response format:", data);
+    }
+  } catch (error) {
+    console.error("Error fetching questions:", error);
   }
 };
 
-const handleNext = async (file) => {
-  //   if (!uploadedFile) {
-  //     alert("Please upload a file before proceeding.");
-  //     return; // Prevent further execution
-  // }
-  const requiredFields = [
-    title,
-    numQuestions,
-    description,
-    selectedCategory,
-    selectedSubCategory,
-    percentage,
-    selectedComplexity,
-    duration,
-    timings,
-    availablefrom,
- 
-    quiztotalmarks
-];
+// Function to get questions for a specific unit
+const getQuestionsByUnit = (unitNumber) => {
+  const unitData = questions.find((unit) => unit.unit_number === unitNumber);
+  return unitData ? unitData.questions : [];
+};
 
-const isAnyFieldEmpty = requiredFields.some(field => !field);
 
-if (isAnyFieldEmpty) {
-    alert("Please fill in all the required fields before proceeding.");
-    return; // Prevent further execution
-}
-const authToken = localStorage.getItem('authToken'); // Retrieve the auth token from localStorage
-
-if (!authToken) {
-  console.error('No authentication token found. Please log in again.');
-  return;
-}
-    try {
-      const formData = new FormData();
-      formData.append("quiz_title", title);
-      formData.append("number_of_questions", numQuestions);
-      formData.append("quiz_description", description);
-      formData.append("quiz_category_name", selectedCategory);
-      formData.append("multi_answer", multiAnswer);
-      formData.append("quiz_sub_category_name", selectedSubCategory);
-      formData.append("class_name", selectedClass);
-      formData.append("pass_percentage", percentage);
-      formData.append("quiz_complexity_name", selectedComplexity);
-      formData.append("retake_flag", retake);
-      formData.append("quiz_duration", duration);
-      formData.append("course_name", selectedCourse);
-      formData.append("quiz_time_bounded_questions", timings);
-      formData.append("quiz_public_access", publicAccess);
-      formData.append("available_from", availablefrom);
-      formData.append("disabled_on", disabledon);
-      formData.append("org_id", selectedOrg);
-      formData.append("quiz_instructions", instructionsString);
-      formData.append("subject_name", subject);
-      formData.append("quiz_total_marks", quiztotalmarks);
-      formData.append("file", file);
-   
-      const options = {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${authToken}`, // Include the auth token in the Authorization header
-        },
-        body: formData,
-      };
-  
-      const uploadFileWithSimulatedProgress = (url, options) => {
-        return new Promise((resolve, reject) => {
-          const xhr = new XMLHttpRequest();
-          xhr.open(options.method, url);
-  
-          xhr.onload = () => {
-            if (xhr.status >= 200 && xhr.status < 300) {
-              resolve(xhr.response);
-            } else {
-              reject(xhr.statusText);
-            }
-          };
-  
-          xhr.onerror = () => reject(xhr.statusText);
-  
-          Object.keys(options.headers || {}).forEach(key => {
-            xhr.setRequestHeader(key, options.headers[key]);
-          });
-  
-          xhr.send(options.body);
-  
-          // Simulate progress
-          let progress = 0;
-          const interval = setInterval(() => {
-            if (progress < 95) {
-              progress += 1;
-              setUploadProgress(progress);
-            } else {
-              clearInterval(interval);
-            }
-          }, 100); // Update every 100ms
-  
-          xhr.onreadystatechange = () => {
-            if (xhr.readyState === 4) {
-              clearInterval(interval);
-              setUploadProgress(100); // Set to 100% on completion
-            }
-          };
-        });
-      };
-  
-      const responseText = await uploadFileWithSimulatedProgress(
-        "https://dev.quizifai.com:8010/uploadTextbook/",
-        options
-      );
-  
-      const responseData = JSON.parse(responseText);
-      console.log(responseData, "data");
-      if (responseData.response === "success") {
-        if (responseData.pdf_url?.status === "success") {
-          const pdfUrl = responseData.pdf_url.pdf_url;
-          setPdfUrl(pdfUrl); // Save PDF URL to state
-          console.log("File uploaded successfully. PDF URL:", pdfUrl);
-        }
-        if (responseData.data && responseData.data.questions) {
-          setQuestions(responseData.data.questions);
-            setDocument(responseData.data.document_name);
-            setAuthor(responseData.data.author_name);
-            setPublisher(responseData.data.publisher_name);
-            setReleased(responseData.data.released_date);
-            setRevision(responseData.data.revision_year);
-            setDocumentType(responseData.data.document_type);
-            setNext(true);
-        } else {
-          setErrorMessage("Questions data is missing from the response.");
-        }
-      } else {
-        if (
-          responseData.detail &&
-          responseData.detail[0].type === "missing" &&
-          responseData.detail[0].loc[1] === "body" &&
-          responseData.detail[0].loc[2] === "num_questions"
-        ) {
-          setErrorMessage("Please provide the number of questions for the quiz.");
-        } else {
-          setErrorMessage(responseData.detail);
-        }
-      }
-    } catch (error) {
-      console.error("Type-Quiz failed:", error);
-      setErrorMessage("An error occurred while choosing the type of the quiz");
-    }
-  };
-  
 
 //   const handleNext = async () => {
 //   //      if (!uploadedFile) {
@@ -1966,7 +2062,7 @@ const handleComplexquestions = (event) => {
 
 {!showRegistrationSuccess && (
   <main className="container mx-auto mt-5">
- 
+ <ToastContainer/>
    {/* <div className="bg-[#eedbe5] rounded-[10px] p-4 mb-8 ">
       <h1 className="font-Poppins font-normal text-[20px] text-[#214082]">
         Finalize the configuration and click 'Next' to proceed with adding your quiz questions.
@@ -2257,169 +2353,169 @@ const handleComplexquestions = (event) => {
           </div>
 
           {/* Course */}
-       <div className="md:col-span-2">
-               
-                         <div className="flex gap-6">
-                       
-               
-                         {/* complexity */}
-                         <div className="w-full flex flex-col">
-             <div className="w-full flex flex-row">
-             <label className="w-[23%] text-blue-800 font-semibold mb-2">Complexity<span className="text-red-500">*</span></label>
-             
-             <select
-                       className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-               value={selectedComplexity}
-               onChange={handleSelectComplexity}
-             >
-               <option value="" disabled>Complex</option>
-               {complexities.map((complexity, index) => (
-                 <option key={index} value={complexity}>
-                   {complexity}
-                 </option>
-               ))}
-             </select>
-             </div>
-           
-             <hr className={`h-[1px] w-full`} />
-           </div>
-           <div className="w-full flex l">
-                          {/* Premium */}
-                          <div className=" w-full flex flex-col">
-                       <div className="w-[100%] flex flex-row items-center">
-                       <label className="w-[40%] text-blue-800 font-semibold  mr-[10px] ">Premium Quiz<span className="text-red-500"></span></label>
-                       <FormControlLabel
-                        control={<Switch />} 
-                        checked={showPackageFields}
-                        onChange={handleToggle5}
-                         className="react-switch"
-                       />
-                       {/* <button onClick={handleToggle4} className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]">+</button> */}
-                      
-                       </div>
-                     
-                     </div>
-                     {/* {showPackageFields1 && (
-                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                    <div className="flex flex-col bg-white p-6 shadow-lg rounded-lg w-[50%]">
-                    <button
-                           className="flex justify-end text-gray-900 hover:text-gray-800"
-                           onClick={handleToggle2}
-                           aria-label="Close"
-                         >
-                           ✕
-                         </button>
-                    <h2 className="text-xl font-semibold text-blue-800 mb-4">Create Package</h2>
-                    <div className="flex items-center gap-2 mb-4">
-                       <input 
-                       className="w-4 h-4" type="checkbox"
-                       onChange={handleCheckboxChange1}
-                       />
-                        <label className="w-[30%] text-blue-800 font-semibold">
-                     Create New Package<span className="text-red-500"></span>
-                     </label>
-                     <select
-                       className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
-     
-                        >
-                        <option value="">Select New Package </option>
-                      
-                     </select>
-                       </div>
-            <>
-                       <div className="flex flex-row mb-4">
-                     <label className="w-[35%] text-blue-800 font-semibold">
-                     Package Name<span className="text-red-500"></span>
-                     </label>
-                     <input
-                           className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
-                           type="text"
-                           placeholder="Package Name"
-                           value={packageName}
-                           onChange={(e) => setPackageName(e.target.value)}
-                           required
-                         />
-                   </div>
-                 
-                       <div className="flex flex-row mb-4">
-                         <label className="w-[35%] text-blue-800 font-semibold">Package Description<span className="text-red-500"></span></label>
-                         <input
-                           className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
-                           type="text"
-                           placeholder="Package Description"
-                           value={packageDescription}
-                           onChange={(e) => setPackageDescription(e.target.value)}
-                           required
-                         />
-                       </div>
-                       <div className="flex flex-row mb-4">
-                         <label className="w-[35%] text-blue-800 font-semibold">Package Amount<span className="text-red-500"></span></label>
-                         <input
-                           className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
-                           type="text"
-                           placeholder="Package Amount"
-                           value={packageAmount}
-                           onChange={(e) => setPackageAmount(e.target.value)}
-                           required
-                         />
-                       </div>
-                   
-                       </>
+          <div className="md:col-span-2">
+          
+          <div className="flex gap-6">
         
-                      
-                   
-                   <div>
-                   {successMessage && (
-             <p className="text-green-600 font-semibold">{successMessage}</p>
-           )}
-           {errorMessage && <p className="text-red-600 font-semibold">{errorMessage}</p>}
-                   </div>
-                     
-                       <div className='flex justify-end'>
-                   
-                      
-                       <div className='flex gap-1'>
-                   
-                        
-                   <button
-                    className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
-                    onClick={handleToggle2}
+
+          {/* complexity */}
+          <div className="w-full flex flex-col">
+<div className="w-full flex flex-row">
+<label className="w-[23%] text-blue-800 font-semibold mb-2">Complexity<span className="text-red-500">*</span></label>
+
+<select
+        className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+value={selectedComplexity}
+onChange={handleSelectComplexity}
+>
+<option value="" disabled>Complex</option>
+{complexities.map((complexity, index) => (
+  <option key={index} value={complexity}>
+    {complexity}
+  </option>
+))}
+</select>
+</div>
+
+<hr className={`h-[1px] w-full`} />
+</div>
+<div className="w-full flex l">
+           {/* Premium */}
+           <div className=" w-full flex flex-col">
+        <div className="w-[100%] flex flex-row items-center">
+        <label className="w-[40%] text-blue-800 font-semibold  mr-[10px] ">Premium Quiz<span className="text-red-500"></span></label>
+        <FormControlLabel
+         control={<Switch />} 
+         checked={showPackageFields}
+         onChange={handleToggle5}
+          className="react-switch"
+        />
+        {/* <button onClick={handleToggle4} className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]">+</button> */}
+       
+        </div>
+      
+      </div>
+      {/* {showPackageFields1 && (
+     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+     <div className="flex flex-col bg-white p-6 shadow-lg rounded-lg w-[50%]">
+     <button
+            className="flex justify-end text-gray-900 hover:text-gray-800"
+            onClick={handleToggle2}
+            aria-label="Close"
+          >
+            ✕
+          </button>
+     <h2 className="text-xl font-semibold text-blue-800 mb-4">Create Package</h2>
+     <div className="flex items-center gap-2 mb-4">
+        <input 
+        className="w-4 h-4" type="checkbox"
+        onChange={handleCheckboxChange1}
+        />
+         <label className="w-[30%] text-blue-800 font-semibold">
+      Create New Package<span className="text-red-500"></span>
+      </label>
+      <select
+        className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+
+         >
+         <option value="">Select New Package </option>
+       
+      </select>
+        </div>
+<>
+        <div className="flex flex-row mb-4">
+      <label className="w-[35%] text-blue-800 font-semibold">
+      Package Name<span className="text-red-500"></span>
+      </label>
+      <input
+            className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+            type="text"
+            placeholder="Package Name"
+            value={packageName}
+            onChange={(e) => setPackageName(e.target.value)}
+            required
+          />
+    </div>
+  
+        <div className="flex flex-row mb-4">
+          <label className="w-[35%] text-blue-800 font-semibold">Package Description<span className="text-red-500"></span></label>
+          <input
+            className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+            type="text"
+            placeholder="Package Description"
+            value={packageDescription}
+            onChange={(e) => setPackageDescription(e.target.value)}
+            required
+          />
+        </div>
+        <div className="flex flex-row mb-4">
+          <label className="w-[35%] text-blue-800 font-semibold">Package Amount<span className="text-red-500"></span></label>
+          <input
+            className="w-3/4 border-b-2 bg-[#f5f5f5] focus:outline-none"
+            type="text"
+            placeholder="Package Amount"
+            value={packageAmount}
+            onChange={(e) => setPackageAmount(e.target.value)}
+            required
+          />
+        </div>
+    
+        </>
+
+       
+    
+    <div>
+    {successMessage && (
+<p className="text-green-600 font-semibold">{successMessage}</p>
+)}
+{errorMessage && <p className="text-red-600 font-semibold">{errorMessage}</p>}
+    </div>
+      
+        <div className='flex justify-end'>
+    
+       
+        <div className='flex gap-1'>
+    
+         
+    <button
+     className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+     onClick={handleToggle2}
+
+    >
+      Cancel
+    </button>
+    <button
+      onClick={handleSubmit3}
+         className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
+        >
+        Create
+        </button>
+    </div>
+        </div>
+    
+      </div>
+        </div>
+           )} */}
+                {/*  Public access */}
+  <div className=" w-full flex flex-col">
+        <div className="w-[100%] flex flex-row items-center">
+        <label className="w-[36%] text-blue-800 font-semibold  mr-[10px] ">  Public access <span className="text-red-500"></span></label>
+        <FormControlLabel
+         control={<Switch />} 
+        // label="Required"
+          onChange={toggler3}
+          checked={publicAccess}
+          className="react-switch"
+        />
+       
+        </div>
+      
+      </div>
+      </div>
+
+      </div>
      
-                   >
-                     Cancel
-                   </button>
-                   <button
-                     onClick={handleSubmit3}
-                        className="px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]"
-                       >
-                       Create
-                       </button>
-                   </div>
-                       </div>
-                   
-                     </div>
-                       </div>
-                          )} */}
-                               {/*  Public access */}
-                 <div className=" w-full flex flex-col">
-                       <div className="w-[100%] flex flex-row items-center">
-                       <label className="w-[36%] text-blue-800 font-semibold  mr-[10px] ">  Public access <span className="text-red-500"></span></label>
-                       <FormControlLabel
-                        control={<Switch />} 
-                       // label="Required"
-                         onChange={toggler3}
-                         checked={publicAccess}
-                         className="react-switch"
-                       />
-                      
-                       </div>
-                     
-                     </div>
-                     </div>
-           
-                     </div>
-                    
-                     </div>
+      </div>
              {/* {publicAccess && (
         <>
   <div className="flex flex-col">
@@ -2467,7 +2563,7 @@ const handleComplexquestions = (event) => {
 </div>
 </>
             )} */}
-             {showPackageFields && (
+             {/* {showPackageFields && (
 <>
 
               <div className="flex flex-col">
@@ -2506,57 +2602,8 @@ const handleComplexquestions = (event) => {
            
                 </div>
                 </>
-                )}
-{/* <div className="">
+                )} */}
 
-<div className="w-full flex gap-6">
-    
-      <div className="w-full flex flex-col">
-        <div className="w-full flex flex-row">
-        <label className="w-[23%] text-blue-800 font-semibold mb-2">Complexity<span className="text-red-500">*</span></label>
-        
-        <select
-                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-          value={selectedComplexity}
-          onChange={handleSelectComplexity}
-        >
-          <option value="" disabled>Complex</option>
-          {complexities.map((complexity, index) => (
-            <option key={index} value={complexity}>
-              {complexity}
-            </option>
-          ))}
-        </select>
-        </div>
-      
-        <hr className={`h-[1px] w-full`} />
-      </div>
-<div className="w-full flex flex-col">
-  <div className="w-full flex flex-row">
-    <label className="w-[30%] text-blue-800 font-semibold mb-2 ">
-      Subject<span className="text-red-500"></span>
-    </label>
-    <select
-      className="w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none"
-      value={selectedCourse}
-      onChange={handleSelectCourse}
-    >
-      <option value="" disabled>Select a Subject</option>
-      <option value="">None</option>
-      {courses.map((course) => (
-        <option key={course.course_id} value={course.course_name}>
-          {course.course_name}
-        </option>
-      ))}
-    </select>
-  </div>
-  <hr className="h-[1px] w-full" />
-</div>
-
-
-</div>
-
-</div> */}
 {/* <div className="w-full flex flex-col">
             <div className="w-full flex flex-row">
               <label className=" w-[20%] text-blue-800 font-semibold mb-2">
@@ -2651,51 +2698,28 @@ const handleComplexquestions = (event) => {
       </div>
      
       {/* Complexity */}
-      {/* <div className="flex flex-col">
+      <div className="flex flex-col">
         <div className="w-full flex flex-row">
         <label className="w-[65%] text-blue-800 font-semibold mb-2 mr-[132px] ">Complexity<span className="text-red-500">*</span></label>
 
-        <select
-                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-          value={simplequestions}
-          onChange={handleSimplequestions}
-        >
-          <option value="" disabled>Simple</option>
-          {Array.from({ length: numQuestions }, (_, index) => (
-          <option key={index + 1} value={index + 1}>
-            {index + 1}
-          </option>
-        ))}
-        </select>
-        <select
-                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-          value={moderatequestions}
-          onChange={handleModeratequestions}
-        >
-          <option value="" disabled>Moderate</option>
-          {Array.from({ length: numQuestions }, (_, index) => (
-          <option key={index + 1} value={index + 1}>
-            {index + 1}
-          </option>
-        ))}
-        </select>
-        <select
-                  className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
-          value={complexquestions}
-          onChange={handleComplexquestions}
-        >
-          <option value="" disabled>Complex</option>
-          {Array.from({ length: numQuestions }, (_, index) => (
-          <option key={index + 1} value={index + 1}>
-            {index + 1}
-          </option>
-        ))}
-        </select>
+      
+        <input 
+         className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+     type="number" value={simpleQuestions} onChange={(e) => setSimpleQuestions(e.target.value)} />
+  <input 
+    className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+
+type="number" value={mediumQuestions} onChange={(e) => setMediumQuestions(e.target.value)} />
+  <input              
+       className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+      type="number" value={hardQuestions} onChange={(e) => setHardQuestions(e.target.value)} />
+
       
         </div>
       
         <hr className={`h-[1px] w-full`} />
-      </div> */}
+      </div>
        {/* Pass Percentage */}
       
  <div className="flex flex-col">
@@ -3196,7 +3220,7 @@ const handleComplexquestions = (event) => {
                   </div>
                   <div>
 
-                <h1 className="flex justify-center">up to 512MB per file</h1>
+                <h1 className="flex justify-center">up to 15MB per file</h1>
                   </div>
                 </div>
                
@@ -3285,9 +3309,14 @@ const handleComplexquestions = (event) => {
       </div>
   
       </div>
-      {paginatedQuestions.map((question, questionIndex) => (
-        <div key={startIndex + questionIndex} className="mb-8">
-          {/* Input field for question */}
+      {units.map((unit) => (
+      <div key={unit.unit_number} className="mb-8">
+        {/* Unit Title */}
+        <h2 className="text-2xl font-bold text-blue-700">{unit.unit_title}</h2>
+
+        {/* Questions for this unit */}
+        {getQuestionsByUnit(unit.unit_number).map((question, questionIndex) => (
+          <div key={startIndex + questionIndex} className="mb-8">
           <div className="flex items-center mb-4">
             <input
               className="ml-[-20px] mr-[5px] mt-1 flex justify-center text-center"
@@ -3311,7 +3340,6 @@ const handleComplexquestions = (event) => {
                       }}
                     />
 
-                    {/* Input field for question weightage */}
                     <input
                       type="number"
                       placeholder="Marks"
@@ -3329,7 +3357,6 @@ const handleComplexquestions = (event) => {
                       }}
                     />
 
-                    {/* Input field for question duration */}
                     <input
                       type="text"
                       hidden
@@ -3351,26 +3378,8 @@ const handleComplexquestions = (event) => {
         }}  
         className="w-[25px] h-[25px] text-orange-500"
 />
-                    {/* <input
-  type="number"
-  placeholder="Duration"
-  className="w-[130px] h-[37px] rounded-[10px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
-  value={question.question_duration}
-  onChange={(e) => {
-    const value = parseInt(e.target.value); // Parse input value to integer
-    if (!isNaN(value)) { // Check if value is a valid number
-      const updatedQuestions = questions.map((q, index) => {
-        if (index === questionIndex) {
-          return { ...q, question_duration: value };
-        }
-        return q;
-      });
-      setQuestions(updatedQuestions);
-    }
-  }}
-/> */}
+         
                   </div>
-                  {/* Input fields for options */}
                   {getOptions(question.options).map((option, optionIndex) => (
               <div key={optionIndex} className="flex items-center mb-2">
                 <div className="mr-2 text-xl font-normal" style={{
@@ -3407,7 +3416,111 @@ const handleComplexquestions = (event) => {
               </div>
             ))}
                 </div>
-              ))}
+        ))}
+      </div>
+    ))}
+      {/* {paginatedQuestions.map((question, questionIndex) => (
+        <div key={startIndex + questionIndex} className="mb-8">
+          <div className="flex items-center mb-4">
+            <input
+              className="ml-[-20px] mr-[5px] mt-1 flex justify-center text-center"
+              type="checkbox"
+              checked={selectedQuestions.includes(startIndex + questionIndex)}
+              onChange={() => toggleQuestionSelection(startIndex + questionIndex)}
+            />
+            <div className="mr-2 text-xl font-bold text-[#214082]">
+              {startIndex + questionIndex + 1}.
+            </div>
+                    <input
+                      type="text"
+                      placeholder={`Question`}
+                      className="w-[70%] h-[40px] font-bold text-[#214082] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] p-[10px] text-[14px]"
+                      value={question.question_text}
+                      onChange={(e) => {
+                        const newQuestions = [...questions];
+                        newQuestions[questionIndex].question_text =
+                          e.target.value;
+                        setQuestions(newQuestions);
+                      }}
+                    />
+
+                    <input
+                      type="number"
+                      placeholder="Marks"
+                      className="w-[85px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mx-2 p-[10px] font-normal"
+                      value={question.question_weightage}
+                      onChange={(e) => {
+                        const value = parseInt(e.target.value);
+                        const updatedQuestions = questions.map((q, index) => {
+                          if (index === questionIndex) {
+                            return { ...q, question_weightage: value };
+                          }
+                          return q;
+                        });
+                        setQuestions(updatedQuestions);
+                      }}
+                    />
+
+                    <input
+                      type="text"
+                      hidden
+                      placeholder="Duration"
+                      className="w-[130px] h-[40px] rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal"
+                      value={question.question_duration}
+                      onChange={(e) => {
+                        const value = parseInt(e.target.value) * 60;
+                        const updatedQuestions = [...questions];
+                        updatedQuestions[questionIndex].question_duration =
+                          value;
+                        setQuestions(updatedQuestions);
+                      }}
+                    />
+                  
+                  <RiDeleteBinLine onClick={() => {
+          const newQuestions = questions.filter((_, index) => index !== questionIndex);
+          setQuestions(newQuestions);
+        }}  
+        className="w-[25px] h-[25px] text-orange-500"
+/>
+         
+                  </div>
+                  {getOptions(question.options).map((option, optionIndex) => (
+              <div key={optionIndex} className="flex items-center mb-2">
+                <div className="mr-2 text-xl font-normal" style={{
+                  width: '40px',
+                  marginRight: '10px',
+                  padding: '5px',
+                  textAlign: 'center' ,
+                  border: '1px solid #ccc',
+                  borderRadius: '5px',
+                  backgroundColor: '#f9f9f9',
+                  justifycontent: 'center',
+                  display: 'flex',
+                  alignitems: 'center',
+                 justifyContent:"center",
+                 fontSize:"14px"
+                }}>
+                 {String.fromCharCode(97 + optionIndex).toUpperCase()}
+                </div>
+                <input
+                  type="text"
+                  placeholder="Option Text"
+                  className="w-[836px]  rounded-[5px] border-solid border-[#B8BBC2] border-[1.8px] mr-2 p-[10px] font-normal text-[12px]"
+                  value={option.answer_option_text}
+                  onChange={(e) => handleOptionChange(questionIndex, optionIndex, e.target.value)}
+                />
+                <button
+                  className={`mr-2 ${option.correct_answer_flag ? "bg-green-500" : "bg-gray-300"} rounded-full w-10 h-[20px] transition-colors duration-300 focus:outline-none`}
+                  onClick={() => handleToggleButton(questionIndex, optionIndex)}
+                >
+                  <span
+                    className={`block ${option.correct_answer_flag ? "translate-x-5" : "translate-x-0"} transform -translate-y-1.5 w-[18px] h-[18px] relative top-[6px] bg-white rounded-full shadow-md transition-transform duration-300`}
+                  ></span>
+                </button>
+              </div>
+            ))}
+                </div>
+              ))} */}
 
 <div className="flex justify-between mt-4">
               <button

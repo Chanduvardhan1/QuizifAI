@@ -1624,7 +1624,6 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
     return numQuestions > 0 ? Math.ceil(quiztotalmarks / numQuestions) : 0;
   };
 
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // Active question index
 
   const handleNumQuestionsChange = (e) => {
     const value = parseInt(e.target.value) || 1;
@@ -1644,12 +1643,56 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
     setQuestions(updatedQuestions);
   };
   const [currentPage, setCurrentPage] = useState(0);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const questionsPerPage = 10;
   
-  // Slice the questions array to get the questions for the current page
+  // Get current page questions
   const currentQuestions = questions.slice(
     currentPage * questionsPerPage,
     (currentPage + 1) * questionsPerPage
+  );
+  
+  // Handle next question within the page
+  const handleNextQuestion = () => {
+    if (currentQuestionIndex < (currentPage + 1) * questionsPerPage - 1 && currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    } else if (currentQuestionIndex === (currentPage + 1) * questionsPerPage - 1 && currentQuestionIndex < questions.length - 1) {
+      setCurrentPage((prevPage) => prevPage + 1);
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    }
+  };
+  
+  // Handle previous question within the page
+  const handlePreviousQuestion = () => {
+    if (currentQuestionIndex > currentPage * questionsPerPage) {
+      setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
+    } else if (currentPage > 0) {
+      setCurrentPage((prevPage) => prevPage - 1);
+      setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
+    }
+  };
+  
+  // Handle next page
+  const handleNextPage = () => {
+    if ((currentPage + 1) * questionsPerPage < questions.length) {
+      setCurrentPage((prevPage) => prevPage + 1);
+      setCurrentQuestionIndex((prevPage + 1) * questionsPerPage);
+    }
+  };
+  
+  // Handle previous page
+  const handlePreviousPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage((prevPage) => prevPage - 1);
+      setCurrentQuestionIndex((prevPage - 1) * questionsPerPage + (questionsPerPage - 1));
+    }
+  };
+
+  const allQuestionsCompleted = questions.every((question) => 
+    question.question_text &&
+    question.options.every((option) => option.answer_option_text) &&
+    question.correct_answer_description &&
+    question.options.some((option) => option.correct_answer_flag) // At least one correct answer
   );
 
   // Move to the next set of questions
@@ -3009,7 +3052,7 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
             <div className="flex justify-center items-center gap-2 mt-4 mb-8">
             {currentPage > 0 && (
         <button
-          onClick={handleBack}
+          onClick={handlePreviousPage}
           className="flex gap-1 items-center cursor-pointer"
         >
              <img
@@ -3020,31 +3063,34 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
                 <h1 className="text-[#F17530]">Previous</h1>
         </button>
       )}
-        {currentQuestions.map((question, index) => {
-          const isIncomplete =
-            !question.question_text ||
-            question.options.some((option) => !option.answer_option_text) ||
-            !question.correct_answer_description;
+    {currentQuestions.map((question, idx) => {
+        const questionIndex = idx + currentPage * questionsPerPage;
+        const isIncomplete =
+          !question.question_text || 
+          question.options.some((option) => !option.answer_option_text) || 
+          !question.correct_answer_description ||
+          !question.options.some((option) => option.correct_answer_flag);
 
-          return (
-            <div
-              key={index}
-              onClick={() => handleQuestionClick(index)}
-              className={`cursor-pointer w-8 h-8 flex items-center justify-center border-[1px] text-sm font-medium ${
-                isIncomplete
-                  ? "bg-red-200" // Red for incomplete questions
-                  : index === currentQuestionIndex % questionsPerPage
-                  ? "bg-blue-200" // Blue for the current question
-                  : "bg-gray-200" // Default gray
-              }`}
-            >
-              {index + 1 + currentPage * questionsPerPage}
-            </div>
-          );
-        })}
-         {currentQuestions.length === questionsPerPage && (
+        return (
+          <div
+            key={questionIndex}
+            onClick={() => setCurrentQuestionIndex(questionIndex)}
+            className={`cursor-pointer w-8 h-8 flex items-center justify-center border-[1px] text-sm font-medium ${
+              isIncomplete
+                ? "bg-red-200" // Red for incomplete questions
+                : questionIndex === currentQuestionIndex
+                ? "bg-blue-200" // Blue for current question
+                : "bg-gray-200" // Default gray
+            }`}
+          >
+            {questionIndex + 1}
+          </div>
+        );
+      })}
+
+         {(currentPage + 1) * questionsPerPage < questions.length && (
         <button
-          onClick={handleNext5}
+          onClick={handleNextPage}
           className="flex gap-1 items-center cursor-pointer"
         >
                  <h1 className="text-[#F17530]">Next</h1>
@@ -3187,6 +3233,25 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
             </div>
             
             )}
+                  <div className="flex justify-between mt-4">
+                  {currentQuestionIndex > 0 && (
+        <button
+          onClick={handlePreviousQuestion}
+          className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
+          >
+            Back
+        </button>
+      )}
+        {currentQuestionIndex < questions.length - 1 && (
+        <button
+          onClick={handleNextQuestion}
+          className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
+          >
+            Next
+        </button>
+      )}
+ 
+      </div>
              <div className="flex justify-between mt-4">
      
         {/* <button
@@ -3234,14 +3299,15 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
       Save as Drafts
     </button>
 
-                <button
-                 disabled={isSubmitting} 
-                  className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white  hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
-              onClick={handleNext}
-             
-                >
-                  {isSubmitting ? "Created" : "Create"}
-                </button>
+    {allQuestionsCompleted && (
+  <button
+    disabled={isSubmitting} 
+    className="w-[123px] h-[32px] rounded-[10px] bg-[#1E4DE9] text-white hover:bg-[rgb(239,81,48)] transform hover:scale-105 transition duration-200"
+    onClick={handleNext}
+  >
+    {isSubmitting ? "Created" : "Create"}
+  </button>
+)}
                 {shownext && (
                 <button
             onClick={handleNextpage3}

@@ -724,7 +724,11 @@ const handlsubscription =()=> {
 
                 <div   onClick={handlemyhistory} className="flex flex-col cursor-pointer justify-start items-center relative  border shadow-lg rounded-sm py-2 bg-white">
                   <div className=" space-y-2 flex flex-col items-start justify-center pl-[10px]">
-              
+                  <div className=" flex justify-center items-center text-center">
+                        <h3 className="text-[14px] font-[500] text-[#214082] ">Last Quiz Attempted </h3>
+                        <span className="text-[14px] font-[500] text-[#214082] ml-[3px]"> : </span>
+                        <p className="text-[12px] font-bold text-orange-500 ml-[2px] mt-1"> {lastquiz}</p>
+                    </div>
                     <div className=" flex justify-center items-center text-center ">
                         <h3 className="text-[14px] font-[500] text-[#214082] ">Minutes </h3>
                         <span className="text-[14px] font-[500] text-[#214082] ml-[103px] "> : </span>
@@ -741,11 +745,7 @@ const handlsubscription =()=> {
 
                         <p className="text-[12px] font-bold text-orange-500 ml-[2px] mt-1"> {totalQuizzes}</p>
                     </div>
-                    <div className=" flex justify-center items-center text-center my-4">
-                        <h3 className="text-[14px] font-[500] text-[#214082] ">Last Quiz Attempted </h3>
-                        <span className="text-[14px] font-[500] text-[#214082] ml-[3px]"> : </span>
-                        <p className="text-[12px] font-bold text-orange-500 ml-[2px] mt-1"> {lastquiz}</p>
-                    </div>
+                  
                     
                     </div>
                 </div>

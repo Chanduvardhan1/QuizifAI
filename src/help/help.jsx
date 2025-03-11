@@ -1,8 +1,9 @@
 import React, {useContext, useState, useEffect } from 'react';
+import { AuthContext } from "../Authcontext/AuthContext";
 
 import { useLocation } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import help from "../../public/closeimage.png";
 import helpVivid from "../../src/assets/Images/quiz-type/star.png"
 import nyayahImage from "../../src/assets/Images/dashboard/print.png"
@@ -38,6 +39,7 @@ const [isLoading, setIsLoading] = useState(true);
 const [error, setError] = useState(null);
 const orgId = localStorage.getItem('org_id');
 const [userId, setUserId] = useState(localStorage.getItem("user_id"));
+  const { isAuthenticated, authToken,logout } = useContext(AuthContext);
 
   const [loading, setLoading] = useState(false);
 
@@ -131,7 +133,15 @@ const [userId, setUserId] = useState(localStorage.getItem("user_id"));
           throw new Error('Invalid data format');
         }
       } catch (err) {
-        setError(err.message);
+          if (error instanceof SyntaxError) {
+                         toast.error("A parsing error occurred. Please check your input file.");
+                       } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+                         toast.error("A network error occurred. Please check your internet connection.");
+                       } else if (error.message.includes("Failed to fetch")) {
+                         toast.error("Server could not be reached. Please try again later.");
+                       } else {
+                         toast.error("An unexpected error occurred while processing your request. Please try again.");
+                       }
       } finally {
         setLoading(false); // Hide loading after API response
       }
@@ -289,7 +299,15 @@ const handleMytickets = ()=> {
         }
       })
       .catch((error) => {
-        console.error('Error logging out:', error);
+        if (error instanceof SyntaxError) {
+          toast.error("A parsing error occurred. Please check your input file.");
+        } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+          toast.error("A network error occurred. Please check your internet connection.");
+        } else if (error.message.includes("Failed to fetch")) {
+          toast.error("Server could not be reached. Please try again later.");
+        } else {
+          toast.error("An unexpected error occurred while processing your request. Please try again.");
+        }
       });
   };
   return (

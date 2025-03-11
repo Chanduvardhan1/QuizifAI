@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import Navigation from "../navbar/navbar.jsx"
 import LogoutBar from "../logoutbar/logoutbar.jsx";
 import styles from "./quizAccess.module.css";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import { useRouter } from 'next/router';
 // import Head from "next/head";
 // import Image from "next/image";
@@ -193,7 +195,15 @@ const quizAccess = () => {
       // setCreatedOn(data.created_on);
     })
     .catch(error => {
-      console.error('There was a problem with your fetch operation:', error);
+        if (error instanceof SyntaxError) {
+                toast.error("A parsing error occurred. Please check your input file.");
+              } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+                toast.error("A network error occurred. Please check your internet connection.");
+              } else if (error.message.includes("Failed to fetch")) {
+                toast.error("Server could not be reached. Please try again later.");
+              } else {
+                toast.error("An unexpected error occurred while processing your request. Please try again.");
+              }
     });
   }, []);
   return (
@@ -201,6 +211,7 @@ const quizAccess = () => {
     <div className="flex flex-row w-full">
         <div>
         <Navigation/>
+        <ToastContainer/>
         </div>
 <div className="w-full p-5">
     <div className="flex justify-end py-2">

@@ -66,7 +66,8 @@ import Attemts from "../../src/assets/Images/dashboard/Attemts.png"
 import Quickest from "../../src/assets/Images/dashboard/image (15).png"
 import Badge from "../../src/assets/Images/dashboard/badge 1.png"
 import close from "../../src/assets/Images/images/dashboard/cancel.png"
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 const quizresults = () => {
@@ -127,8 +128,15 @@ const quizresults = () => {
         const data = await response.json();
         setQuizData1(data.data);
       } catch (error) {
-        console.error('Error fetching quiz report:', error);
-        setError(error);
+      if (error instanceof SyntaxError) {
+                     toast.error("A parsing error occurred. Please check your input file.");
+                   } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+                     toast.error("A network error occurred. Please check your internet connection.");
+                   } else if (error.message.includes("Failed to fetch")) {
+                     toast.error("Server could not be reached. Please try again later.");
+                   } else {
+                     toast.error("An unexpected error occurred while processing your request. Please try again.");
+                   }
       } finally {
         setLoading(false);
       }
@@ -173,10 +181,17 @@ const quizresults = () => {
           console.error('Failed to fetch leaderboard data:', result.message);
         }
       } catch (error) {
-        console.error('Error fetching leaderboard data:', error);
+         if (error instanceof SyntaxError) {
+                        toast.error("A parsing error occurred. Please check your input file.");
+                      } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+                        toast.error("A network error occurred. Please check your internet connection.");
+                      } else if (error.message.includes("Failed to fetch")) {
+                        toast.error("Server could not be reached. Please try again later.");
+                      } else {
+                        toast.error("An unexpected error occurred while processing your request. Please try again.");
+                      }
       }
     };
-
     if (isQuizSubmitted) { // Trigger fetch only if quiz result submission was successful
       fetchLeaderboardData();
     }
@@ -317,7 +332,7 @@ const quizresults = () => {
     <div className="flex w-full" >
 
       <Navigation />
-
+<ToastContainer/>
       <div className="w-full p-5 pt-[60px]" ref={resultRef}>
         {/* <div className={styles.back1} onClick={Back}><MdOutlineCancel /></div> */}
         <div onClick={handleBack} className=" absolute top-5 right-5 cursor-pointer">

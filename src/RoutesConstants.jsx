@@ -133,6 +133,8 @@ import Superadminquizsummary from "./reports/superadminquizsummary.jsx";
 import Superadminusesdetails from "./reports/superadminusersdetails.jsx";
 import Allusersactivitysuperadmin from "./reports/allusersactivitysuperadmin.jsx";
 import Databaseauditsummary from "./reports/databaseauditsummary.jsx";
+import Subscriptionreports from "./reports/subscription.jsx";
+import Questionview from "./questionview/questionview.jsx";
 
 import Organizationcontactus from "./organization_contactus/contactus.jsx";
 export default () => {
@@ -164,6 +166,11 @@ export default () => {
         {
             path:'Superadminsummary',
             component:Superadminsummary,
+            isPrivate: true
+        },
+        {
+            path:'Subscriptionreports',
+            component:Subscriptionreports,
             isPrivate: true
         },
         {
@@ -674,6 +681,11 @@ export default () => {
         {
             path:'/quizquestions/:quizId',
             component: QuizQuestions,
+            isPrivate: true
+        },
+        {
+            path:'Questionview',
+            component: Questionview,
             isPrivate: true
         },
         {

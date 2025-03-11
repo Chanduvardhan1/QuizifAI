@@ -2231,16 +2231,16 @@ const handleTabClick = async (tabName) => {
       const result = await response.json();
 
       if (result.response === "success") {
-        const { remaining_ai_creations, remaining_manual_creations } = result.data;
+        const { remaining_ai_creations_today, remaining_manual_creations_today } = result.data;
 
         // Check conditions for Pdf (AI-Powered Creation)
-        if (tabName === "Pdf" && remaining_ai_creations === 0) {
+        if (tabName === "Pdf" && remaining_ai_creations_today === 0) {
           toast.error("You have no remaining AI-powered quiz creations.");
           return; // Prevent tab change
         }
 
         // Check conditions for Manual Creation
-        if (tabName === "Manual" && remaining_manual_creations === 0) {
+        if (tabName === "Manual" && remaining_manual_creations_today === 0) {
           toast.error("You have no remaining manual quiz creations.");
           return; // Prevent tab change
         }

@@ -15,6 +15,7 @@ import { MdOutlineCancel } from "react-icons/md";
 import { useLocation } from "react-router-dom";
 import Navigation from "../navbar/navbar.jsx";
 import LogoutBar from "../logoutbar/logoutbar.jsx";
+import { toast, ToastContainer } from "react-toastify";
 import print1 from "../../src/assets/Images/dashboard/print.png"
 import trophy from "../../src/assets/Images/dashboard/trophy.png"
 import Attemts from "../../src/assets/Images/dashboard/Attemts.png"
@@ -35,12 +36,13 @@ import editicon from "../../src/assets/Images/quiz-type/edit.png"
 import Playbutton from "../../src/assets/Images/quiz-type/image.png"
 import closeimage from "../../public/closeimage.png";
 import stars from "../../src/assets/Images/quiz-type/star.png"
+import close from "../../src/assets/Images/images/dashboard/cancel.png"
 
-import { toast, ToastContainer } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 import useBlocker from "../useBlocker/useBlocker.jsx";
 // import usePrompt from '../usePrompt/usePrompt.jsx';
-const QuizQuestions = () => {
+const questionview = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -51,7 +53,7 @@ const QuizQuestions = () => {
   const userId = localStorage.getItem("user_id");
   const [attemptNo, setAttemptNo] = useState(null);
   const [skippedQuestionsDisplay, setSkippedQuestionsDisplay] = useState([]);
-  const { quizId } = useParams();
+//   const { quizId } = useParams();
 
   const timerRef = useRef(null);
   const [showWarning, setShowWarning] = useState(false);
@@ -59,8 +61,10 @@ const QuizQuestions = () => {
   const selectedOptionsRef = useRef({});
   const [isNavigating, setIsNavigating] = useState(false);
   // const prevLocation = useRef(location.pathname);
+  const [cameraStream, setCameraStream] = useState(null);
 
   const {
+    quiz_id,
     quiz_title,
     quiz_description,
     quiz_duration,
@@ -73,13 +77,16 @@ const QuizQuestions = () => {
     course_name,
     class_name,
     quiz_metrics,
-    
+    photo1,
+    quiz_attempts,
+    avg_score,
+    min_completion_time,
+
   } = location.state || {};
   const {
     total_attempts,
     your_attempts,
     highest_score,
-    photo1,
     quickest_completion_time,
   } = quiz_metrics || {};
 
@@ -307,7 +314,6 @@ const QuizQuestions = () => {
         return;
       }
   
-      const quizId = localStorage.getItem("quiz_id");
       try {
         const response = await fetch(
           "https://dev.quizifai.com:8010/get-questions",
@@ -319,7 +325,7 @@ const QuizQuestions = () => {
               Authorization: `Bearer ${authToken}`,
             },
             body: JSON.stringify({
-              quiz_id: quizId,
+              quiz_id: quiz_id,
               user_id: userId,
             }),
           }
@@ -365,21 +371,113 @@ const QuizQuestions = () => {
           throw new Error("Unexpected response format or data missing");
         }
       } catch (error) {
-        if (error instanceof SyntaxError) {
-          toast.error("A parsing error occurred. Please check your input file.");
-        } else if (error.message.includes("NetworkError")) {
-          toast.error("A network error occurred. Please check your internet connection.");
-        } else if (error.message.includes("Failed to fetch")) {
-          toast.error("Server could not be reached. Please try again later.");
-        } else {
-          toast.error("An unexpected error occurred while processing your request. Please try again.");
-        }
+         if (error instanceof SyntaxError) {
+               toast.error("A parsing error occurred. Please check your input file.");
+             } else if (error.message.includes("NetworkError")) {
+               toast.error("A network error occurred. Please check your internet connection.");
+             } else if (error.message.includes("Failed to fetch")) {
+               toast.error("Server could not be reached. Please try again later.");
+             } else {
+               toast.error("An unexpected error occurred while processing your request. Please try again.");
+             }
       }
     };
   
     fetchData();
   }, [userId]);
   
+  // useEffect(() => {
+  //   const startCamera = async () => {
+  //     try {
+  //       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+  //       setCameraStream(stream);
+  //       console.log("Camera started");
+  //     } catch (error) {
+  //       console.error("Camera access denied:", error);
+  //       toast.error("Camera access is required to proceed.");
+  //       navigate(-1); // Go back to the previous page
+  //     }
+  //   };
+
+  //   const fetchData = async () => {
+  //     const authToken = localStorage.getItem("authToken");
+  //     if (!authToken) {
+  //       console.error("No authentication token found");
+  //       return;
+  //     }
+
+  //     const quizId = localStorage.getItem("quiz_id");
+  //     try {
+  //       const response = await fetch("https://dev.quizifai.com:8010/get-questions", {
+  //         method: "POST",
+  //         headers: {
+  //           Accept: "application/json",
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${authToken}`,
+  //         },
+  //         body: JSON.stringify({ quiz_id: quizId, user_id: userId }),
+  //       });
+
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok");
+  //       }
+
+  //       const result = await response.json();
+  //       console.log("Fetched data:", result);
+
+  //       if (result.response === "success" && result.data) {
+  //         const questions = result.data.filter(
+  //           (item) => item.question_id && item.question_text
+  //         );
+
+  //         if (questions.length > 0) {
+  //           setQuizData({ questions });
+  //           console.log("Setting quiz questions:", questions);
+  //         } else {
+  //           console.warn("No valid questions found in the response.");
+  //         }
+
+  //         const metadata = result.data.find((item) => item.quiz_level_attempt_id);
+  //         if (metadata) {
+  //           setAttemptNo(metadata.quiz_level_attempt_id);
+  //           setQuizData((prevState) => ({
+  //             ...prevState,
+  //             created_by: metadata.created_by,
+  //             created_on: metadata.created_on,
+  //           }));
+  //           console.log("Attempt No:", metadata.quiz_level_attempt_id);
+  //         } else {
+  //           console.warn("quiz_level_attempt_id is missing.");
+  //         }
+
+  //         setIsLoading(false);
+  //       } else {
+  //         throw new Error("Unexpected response format or data missing");
+  //       }
+  //     } catch (error) {
+  //       if (error instanceof SyntaxError) {
+  //         toast.error("A parsing error occurred. Please check your input file.");
+  //       } else if (error.message.includes("NetworkError")) {
+  //         toast.error("A network error occurred. Please check your internet connection.");
+  //       } else if (error.message.includes("Failed to fetch")) {
+  //         toast.error("Server could not be reached. Please try again later.");
+  //       } else {
+  //         toast.error("An unexpected error occurred while processing your request. Please try again.");
+  //       }
+  //     }
+  //   };
+
+  //   startCamera();
+  //   fetchData();
+
+  //   return () => {
+  //     if (cameraStream) {
+  //       cameraStream.getTracks().forEach((track) => track.stop());
+  //       console.log("Camera stopped on unmount");
+  //     }
+  //   };
+  // }, [userId]);
+
 
   useEffect(() => {
     if (quizData && quizData.questions && quizData.questions.length > 0) {
@@ -510,7 +608,7 @@ const QuizQuestions = () => {
       },
     }));
     const authToken = localStorage.getItem("authToken");
-    const quizId = localStorage.getItem("quiz_id");
+    // const quizId = localStorage.getItem("quiz_id");
 
     fetch("https://dev.quizifai.com:8010/submit", {
       method: "POST",
@@ -534,18 +632,22 @@ const QuizQuestions = () => {
       })
       .then((data) => {
         console.log(data);
+        // if (cameraStream) {
+        //   cameraStream.getTracks().forEach((track) => track.stop());
+        //   console.log("Camera turned off after submission");
+        // }
         navigate(`/quizresults`, { state: { quizId, attemptNo } });
       })
       .catch((error) => {
-        if (error instanceof SyntaxError) {
-          toast.error("A parsing error occurred. Please check your input file.");
-        } else if (error.message.includes("NetworkError")) {
-          toast.error("A network error occurred. Please check your internet connection.");
-        } else if (error.message.includes("Failed to fetch")) {
-          toast.error("Server could not be reached. Please try again later.");
-        } else {
-          toast.error("An unexpected error occurred while processing your request. Please try again.");
-        }
+          if (error instanceof SyntaxError) {
+                toast.error("A parsing error occurred. Please check your input file.");
+              } else if (error.message.includes("NetworkError")) {
+                toast.error("A network error occurred. Please check your internet connection.");
+              } else if (error.message.includes("Failed to fetch")) {
+                toast.error("Server could not be reached. Please try again later.");
+              } else {
+                toast.error("An unexpected error occurred while processing your request. Please try again.");
+              }
       });
   };
 
@@ -678,7 +780,7 @@ const QuizQuestions = () => {
 
     console.log("Submitting answers:", answers); // Log to check the answers array
 
-    const quizId = localStorage.getItem("quiz_id");
+    // const quizId = localStorage.getItem("quiz_id");
     const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
 
     if (!authToken) {
@@ -708,19 +810,23 @@ const QuizQuestions = () => {
       })
       .then((data) => {
         console.log(data);
+        // if (cameraStream) {
+        //   cameraStream.getTracks().forEach((track) => track.stop());
+        //   console.log("Camera turned off after submission");
+        // }
         navigate(`/quizresults`, { state: { quizId, attemptNo } });
         console.log("Quiz submitted");
       })
       .catch((error) => {
-        if (error instanceof SyntaxError) {
-          toast.error("A parsing error occurred. Please check your input file.");
-        } else if (error.message.includes("NetworkError")) {
-          toast.error("A network error occurred. Please check your internet connection.");
-        } else if (error.message.includes("Failed to fetch")) {
-          toast.error("Server could not be reached. Please try again later.");
-        } else {
-          toast.error("An unexpected error occurred while processing your request. Please try again.");
-        }
+          if (error instanceof SyntaxError) {
+                toast.error("A parsing error occurred. Please check your input file.");
+              } else if (error.message.includes("NetworkError")) {
+                toast.error("A network error occurred. Please check your internet connection.");
+              } else if (error.message.includes("Failed to fetch")) {
+                toast.error("Server could not be reached. Please try again later.");
+              } else {
+                toast.error("An unexpected error occurred while processing your request. Please try again.");
+              }
       });
   };
   const handleSubmit2 = (isAutoSubmit = false) => {
@@ -796,19 +902,23 @@ const QuizQuestions = () => {
         return response.json();
       })
       .then((data) => {
+        // if (cameraStream) {
+        //   cameraStream.getTracks().forEach((track) => track.stop());
+        //   console.log("Camera turned off after submission");
+        // }
         navigate("/quizresults", { state: { quizId } });
         submittedRef.current = true;
       })
       .catch((error) => {
-        if (error instanceof SyntaxError) {
-          toast.error("A parsing error occurred. Please check your input file.");
-        } else if (error.message.includes("NetworkError")) {
-          toast.error("A network error occurred. Please check your internet connection.");
-        } else if (error.message.includes("Failed to fetch")) {
-          toast.error("Server could not be reached. Please try again later.");
-        } else {
-          toast.error("An unexpected error occurred while processing your request. Please try again.");
-        }
+         if (error instanceof SyntaxError) {
+               toast.error("A parsing error occurred. Please check your input file.");
+             } else if (error.message.includes("NetworkError")) {
+               toast.error("A network error occurred. Please check your internet connection.");
+             } else if (error.message.includes("Failed to fetch")) {
+               toast.error("Server could not be reached. Please try again later.");
+             } else {
+               toast.error("An unexpected error occurred while processing your request. Please try again.");
+             }
       });
   };
   // useEffect(() => {
@@ -966,13 +1076,18 @@ const QuizQuestions = () => {
   const Back = () => {
     navigate("/quizaccess");
   };
-
+  const handleBack = () => {
+    navigate(-1)
+  };
+  
   console.log('currentQuestionIndex', currentQuestionIndex);
   console.log('quizData)', quizData);
 
   return (
     <div className={`${styles.container} no-select`}>
-
+       <div onClick={handleBack} className=" absolute top-4 right-5 cursor-pointer">
+                <img src={close} alt="" className="w-[25px] h-[25px]" />
+              </div>
       {/*<Head>
         <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600;700&display=swap"
@@ -983,6 +1098,15 @@ const QuizQuestions = () => {
       <ToastContainer />
       <div className={styles.mainContent}>
       <div className="flex justify-end py-2">
+
+      {/* <div className=" absolute top-[85px] right-8 w-[100px] h-[100px]">
+      {isLoading ? <p>Loading...</p> : <p></p>}
+      <video autoPlay playsInline ref={(videoRef) => {
+        if (videoRef && cameraStream) {
+          videoRef.srcObject = cameraStream;
+        }
+      }} />
+    </div> */}
             {/* <div className="flex items-center px-[10px] p-[5px] border-[1px] border-[#FF6865] bg-[#FFCCCB] text-[#FF0500] font-semibold rounded-[10px] "
             >
                 <p>Close</p>
@@ -1106,7 +1230,7 @@ const QuizQuestions = () => {
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">{total_attempts} Attemts</span>
+              <span className="ml-1 text-sm">{quiz_attempts} Attemts</span>
             </div>
             <div className="flex items-center">
               <img
@@ -1114,7 +1238,7 @@ const QuizQuestions = () => {
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">{highest_score}% High Score</span>
+              <span className="ml-1 text-sm">{avg_score}% High Score</span>
             </div>
             <div className="flex items-center">
               <img
@@ -1122,7 +1246,7 @@ const QuizQuestions = () => {
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">{quickest_completion_time} Mins Quickest</span>
+              <span className="ml-1 text-sm">{min_completion_time} Mins Quickest</span>
             </div>
           </div>
         </div>
@@ -1287,126 +1411,24 @@ const QuizQuestions = () => {
 
         
         </div>
-        {/* {currentQuestion && (
-  <>
-  <div>
-   <button
-          className="flex cursor-pointer items-center px-[10px] p-[5px] border-[2px] border-solid border-[#2196F3] bg-[#ADD8E6] text-[#00008b] font-semibold rounded-[10px]"
-
-      onClick={() => {
-        const textToRead = [
-          `Question: ${currentQuestion.question_text}`,
-          ...sortedOptionKeys.map(
-            (key, index) => `Option ${optionLabels[index]}: ${currentQuestion[key]}`
-          ),
-        ].join(". ");
-
-        const utterance = new SpeechSynthesisUtterance(textToRead);
-        speechSynthesis.speak(utterance);
-      }}
-    >
-      Play Question and Options
-    </button>
-    </div>
-    <div className={styles.textContainer}>
-      <p>{`${currentQuestionIndex + 1}. ${
-        currentQuestion.question_text
-      }`}</p>
-      
-    </div>
-
-   
-
-    <div className={styles.boxesContainer}>
-      <ul style={{ listStyleType: "none", padding: 0 }}>
-        {sortedOptionKeys.map((key, index) => {
-          const optionId = currentQuestion[key.replace("_text", "_id")];
-          const optionLabel = optionLabels[index];
-          const isSelected =
-            selectedOptions[currentQuestionIndex] === optionId;
-
-          return (
-            <li key={optionId} style={{ marginBottom: "10px" }}>
-              <button
-                className={styles.box}
-                onClick={() => handleOptionSelect(optionId)}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  backgroundColor: "transparent",
-                  width: "100%",
-                  border: "none",
-                  textAlign: "left",
-                  cursor: "pointer",
-                }}
-              >
-                <div
-                  style={{
-                    width: "40px",
-                    marginRight: "10px",
-                    padding: "7px",
-                    textAlign: "center",
-                    border: isSelected
-                      ? "1px solid #22c55e"
-                      : "1px solid #ccc",
-                    borderRadius: "5px",
-                    backgroundColor: isSelected
-                      ? "#c9e4ca"
-                      : "#E8E9E8",
-                  }}
-                >
-                  {optionLabel}
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    fontWeight: isSelected ? "bold" : "normal",
-                    backgroundColor: isSelected
-                      ? "#c9e4ca"
-                      : "#E8E9E8",
-                    width: "550px",
-                    padding: "10px",
-                    border: isSelected
-                      ? "1px solid #22c55e"
-                      : "1px solid #ccc",
-                    borderRadius: "5px",
-                    textAlign: "left",
-                    fontSize: "14px",
-                  }}
-                >
-                  {currentQuestion[key]}
-                </div>
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  </>
-)} */}
-        <div className='flex flex-col justify-end px-2 items-center'>
+     
+        {/* <div className='flex flex-col justify-end px-2 items-center'>
   <div className=' w-[10px] rounded-full bg-[#00008b] h-[10px]'></div>
   <div className='h-[100%] w-[1px] bg-[#00008b]'></div>
   <div className=' w-[10px] rounded-full bg-[#00008b] h-[10px]'></div>
 
-</div>
-      <div className={styles.Totaltimer}>
-        {/* <div className={styles.back1} onClick={Back}>
-          <MdOutlineCancel />
-        </div> */}
+</div> */}
+      {/* <div className={styles.Totaltimer}>
+     
         <div className={styles.sentence1} style={{ marginTop: "35x" }}>
-          {/* {`${currentQuestionIndex + 1} out of ${filteredQuizData.length}`} */}
         </div>
         <div className={styles.sentence2}>
           <span> Total timer :</span>{" "}
           <span className={styles.sentence3}>{formatTime(elapsedTime)}</span>
         </div>
         <div className={styles.questionNumbersContainer}>
-          {/* Previous Button */}
           {startIndex >= 50 && <button onClick={handlePrevClick}>&lt;</button>}
 
-          {/* Question Numbers */}
 
           {filteredQuizData.slice(startIndex, endIndex).map((_, index) => {
             const actualIndex = startIndex + index;
@@ -1425,12 +1447,10 @@ const QuizQuestions = () => {
             );
           })}
 
-          {/* Next Button */}
           {startIndex + 50 < filteredQuizData.length && (
             <button onClick={handleNextClick}>&gt;</button>
           )}
         </div>
-        {/* {showWarning && <div className={styles.warningMessage}>Warning: You have 5 minutes left!</div>} */}
 
         {skippedQuestionsDisplay.length > 0 && (
           <div className={styles.skippedQuestionsContainer}>
@@ -1454,9 +1474,8 @@ const QuizQuestions = () => {
           </div>
         )}
           
-      </div>
+      </div> */}
       <div className={styles.sentence3} style={{ marginTop: "230px" }}>
-        {/* {formatTime(elapsedTime)} */}
       </div>
       </div>
       <div className={styles.buttonsContainer} style={{ display: "flex", justifyContent: "center", width: "100%", gap:"50px"}}>
@@ -1543,13 +1562,13 @@ const QuizQuestions = () => {
             >
               Submit 
             </button> */}
-            <div 
+            {/* <div 
                    onClick={handleSubmit}
        className="flex cursor-pointer items-center px-[10px] p-[5px] border-[2px] border-solid border-[#18c91e] bg-[#8cd18e] text-[#000085] font-semibold rounded-[10px]"
       >
           <p>Submit</p>
-          {/* <img src={Playbutton} alt="" className="w-[20px] h-[20px]" /> */}
-      </div>
+          <img src={Playbutton} alt="" className="w-[20px] h-[20px]" />
+      </div> */}
       {showPopup && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white rounded-lg p-5 max-w-md w-full">
@@ -1598,4 +1617,4 @@ const QuizQuestions = () => {
   );
 };
 
-export default QuizQuestions;
+export default questionview;

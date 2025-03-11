@@ -455,7 +455,7 @@ const handleUserTypeChange = (e) => {
 };
 // user type end//
 const handleBack = () => {
-  navigate("/configure")
+  navigate(-1)
 };
   const [ isEditing ,setisEditing] = useState(false);
 

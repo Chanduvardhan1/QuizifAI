@@ -26,8 +26,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../Authcontext/AuthContext.jsx";
 import Modal from "react-modal";
-import AttemptedCard from "../../src/commonCard/attemptedCard.jsx"
-import NonttemptedCard from "../../src/commonCard/nonAttemtedCard.jsx";
+// import AttemptedCard from "../../src/commonCard/attemptedCard.jsx"
+// import NonttemptedCard from "../../src/commonCard/nonAttemtedCard.jsx";
 import DashBoardNavBar from "../../src/dashboardNavBar/dashboardNavBar.jsx";
 import physics from "../../src/assets/Images/quiz-type/quizcover.jpg"
 import username1 from "../../src/assets/Images/quiz-type/username.png"
@@ -224,7 +224,15 @@ const [multiAnswer, setMultiAnswer] = useState(false);
         console.error("Failed to disable quiz");
       }
     } catch (error) {
-      console.error("Error during disable operation:", error);
+         if (error instanceof SyntaxError) {
+              toast.error("A parsing error occurred. Please check your input file.");
+            } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+              toast.error("A network error occurred. Please check your internet connection.");
+            } else if (error.message.includes("Failed to fetch")) {
+              toast.error("Server could not be reached. Please try again later.");
+            } else {
+              toast.error("An unexpected error occurred while processing your request. Please try again.");
+            }
     }
   };
 
@@ -322,7 +330,15 @@ const [multiAnswer, setMultiAnswer] = useState(false);
         ).map((item) => JSON.parse(item));
         setAllClasses(uniqueClasses);
       } catch (error) {
-        console.error("Error fetching dropdown values:", error);
+          if (error instanceof SyntaxError) {
+               toast.error("A parsing error occurred. Please check your input file.");
+             } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+               toast.error("A network error occurred. Please check your internet connection.");
+             } else if (error.message.includes("Failed to fetch")) {
+               toast.error("Server could not be reached. Please try again later.");
+             } else {
+               toast.error("An unexpected error occurred while processing your request. Please try again.");
+             }
       }
     };
 
@@ -396,6 +412,15 @@ const [multiAnswer, setMultiAnswer] = useState(false);
         setCreatedBy(uniqueCreatedBy);
       } catch (error) {
         console.error("Error fetching quiz data:", error);
+           if (error instanceof SyntaxError) {
+                toast.error("A parsing error occurred. Please check your input file.");
+              } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+                toast.error("A network error occurred. Please check your internet connection.");
+              } else if (error.message.includes("Failed to fetch")) {
+                toast.error("Server could not be reached. Please try again later.");
+              } else {
+                toast.error("An unexpected error occurred while processing your request. Please try again.");
+              }
       }finally {
         setLoading1(false); // Stop loading after API call
       }
@@ -530,8 +555,15 @@ const [multiAnswer, setMultiAnswer] = useState(false);
         toast.error("Failed to fetch subscription limitations. Please try again.");
       }
     } catch (error) {
-      console.error("Error fetching subscription limitations:", error);
-      toast.error("An error occurred while checking subscription limitations.");
+        if (error instanceof SyntaxError) {
+             toast.error("A parsing error occurred. Please check your input file.");
+           } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+             toast.error("A network error occurred. Please check your internet connection.");
+           } else if (error.message.includes("Failed to fetch")) {
+             toast.error("Server could not be reached. Please try again later.");
+           } else {
+             toast.error("An unexpected error occurred while processing your request. Please try again.");
+           }
     }finally {
       setLoading(false); // Hide loading after API response
     }
@@ -652,10 +684,10 @@ const [multiAnswer, setMultiAnswer] = useState(false);
       const result = await response.json();
 
       if (result.response === "success") {
-        const { remaining_attempts } = result.data;
+        const { remaining_attempts_today } = result.data;
 
         // Check if there are no remaining attempts
-        if (remaining_attempts === 0) {
+        if (remaining_attempts_today === 0) {
           toast.error("You have no remaining attempts to access this quiz.");
           return;
         }
@@ -672,8 +704,15 @@ const [multiAnswer, setMultiAnswer] = useState(false);
         );
       }
     } catch (error) {
-      console.error("Error fetching subscription limitations:", error);
-      toast.error("An error occurred while checking subscription limitations.");
+   if (error instanceof SyntaxError) {
+        toast.error("A parsing error occurred. Please check your input file.");
+      } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+        toast.error("A network error occurred. Please check your internet connection.");
+      } else if (error.message.includes("Failed to fetch")) {
+        toast.error("Server could not be reached. Please try again later.");
+      } else {
+        toast.error("An unexpected error occurred while processing your request. Please try again.");
+      }
     }
   };
   
@@ -719,10 +758,10 @@ const [multiAnswer, setMultiAnswer] = useState(false);
        const result = await response.json();
  
        if (result.response === "success") {
-         const { remaining_attempts } = result.data;
+         const { remaining_attempts_today } = result.data;
  
          // Check if there are no remaining attempts
-         if (remaining_attempts === 0) {
+         if (remaining_attempts_today === 0) {
            toast.error("You have no remaining attempts to access this quiz.");
            return;
          }
@@ -739,8 +778,15 @@ const [multiAnswer, setMultiAnswer] = useState(false);
          );
        }
      } catch (error) {
-       console.error("Error fetching subscription limitations:", error);
-       toast.error("An error occurred while checking subscription limitations.");
+      if (error instanceof SyntaxError) {
+           toast.error("A parsing error occurred. Please check your input file.");
+         } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+           toast.error("A network error occurred. Please check your internet connection.");
+         } else if (error.message.includes("Failed to fetch")) {
+           toast.error("Server could not be reached. Please try again later.");
+         } else {
+           toast.error("An unexpected error occurred while processing your request. Please try again.");
+         }
      }
    };
    const open = () => {
@@ -964,7 +1010,15 @@ const [multiAnswer, setMultiAnswer] = useState(false);
         console.error("Failed to delete quiz");
       }
     } catch (error) {
-      console.error("Error during delete operation:", error);
+        if (error instanceof SyntaxError) {
+              toast.error("A parsing error occurred. Please check your input file.");
+            } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+              toast.error("A network error occurred. Please check your internet connection.");
+            } else if (error.message.includes("Failed to fetch")) {
+              toast.error("Server could not be reached. Please try again later.");
+            } else {
+              toast.error("An unexpected error occurred while processing your request. Please try again.");
+            }
     }
   };
 
@@ -1020,8 +1074,16 @@ const [multiAnswer, setMultiAnswer] = useState(false);
         console.error("Failed to disable quiz: Response not OK");
       }
     } catch (error) {
-      console.error("Error during disable operation:", error.message);
-    }
+   if (error instanceof SyntaxError) {
+        toast.error("A parsing error occurred. Please check your input file.");
+      } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+        toast.error("A network error occurred. Please check your internet connection.");
+      } else if (error.message.includes("Failed to fetch")) {
+        toast.error("Server could not be reached. Please try again later.");
+      } else {
+        toast.error("An unexpected error occurred while processing your request. Please try again.");
+      }   
+     }
   };
   
 
@@ -1057,7 +1119,16 @@ const [multiAnswer, setMultiAnswer] = useState(false);
         }
       })
       .catch((error) => {
-        console.error('Error logging out:', error);
+        if (error instanceof SyntaxError) {
+          toast.error("A parsing error occurred. Please check your input file.");
+        } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+          toast.error("A network error occurred. Please check your internet connection.");
+        } else if (error.message.includes("Failed to fetch")) {
+          toast.error("Server could not be reached. Please try again later.");
+        } else {
+          toast.error("An unexpected error occurred while processing your request. Please try again.");
+        }
+      
       });
   };
   // useEffect(() => {
@@ -1091,23 +1162,23 @@ const [multiAnswer, setMultiAnswer] = useState(false);
                           />
                 </div>
             {userRole === "Quiz Master" && (
-             <div className="flex p-2 rounded-[10px] pr-4 bg-[#fee2e2]">
-             <div  onClick={createquiz} className="flex items-center">
-               <img
-                onClick={createquiz}
-                 className="w-[25px] h-[25px] "
-                 src={Plus}
-                 alt="Plus Icon"
-               />
-               <a
-                 onClick={createquiz}
-                 // href="./create-quiz"
-                 className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-1"
-               >
-                 Quiz
-               </a>
-             </div>
-           </div>
+              <div className="flex p-2 rounded-[10px] pr-4 bg-[#fee2e2]">
+                <div  onClick={createquiz} className="flex items-center">
+                  <img
+                   onClick={createquiz}
+                    className="w-[25px] h-[25px] "
+                    src={Plus}
+                    alt="Plus Icon"
+                  />
+                  <a
+                    onClick={createquiz}
+                    // href="./create-quiz"
+                    className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-1"
+                  >
+                    Quiz
+                  </a>
+                </div>
+              </div>
             )}
             <div className={styles.searchIconContainer}>
               <img
@@ -1128,7 +1199,7 @@ const [multiAnswer, setMultiAnswer] = useState(false);
     src={LogoutIcon}
     onClick={handleBackToLogin}
     alt="Logout Icon"
-    className="w-5 h-5 cursor-pointer "
+    className="w-5 h-5 cursor-pointer"
   />
   {/* <p className="text-[#002366] text-[14px]">Logout</p> */}
 </div>
@@ -1397,12 +1468,12 @@ const [multiAnswer, setMultiAnswer] = useState(false);
     const isActiveForOthers =
       quizItem.active_flag?.toLowerCase() === "true" ||
       quizItem.active_flag?.toLowerCase() === "y";
-       // const shouldShowQuiz = Premium
-                    // ? quizItem.premium_quiz_flag === true // Show only premium quizzes if toggle is on
-                    // : quizItem.premium_quiz_flag === null || quizItem.premium_quiz_flag === false; // Show only non-premium quizzes if toggle is off
-                    const shouldShowQuiz = Premium
-                    ? quizItem.premium_quiz_flag === true // Show only premium quizzes if the toggle is on
-                    : true; 
+      // const shouldShowQuiz = Premium
+      // ? quizItem.premium_quiz_flag === true // Show only premium quizzes if toggle is on
+      // : quizItem.premium_quiz_flag === null || quizItem.premium_quiz_flag === false; // Show only non-premium quizzes if toggle is off
+      const shouldShowQuiz = Premium
+      ? quizItem.premium_quiz_flag === true // Show only premium quizzes if the toggle is on
+      : true; 
                   return (
                     shouldShowQuiz &&
                     (isQuizMaster || isActiveForOthers) &&
@@ -1428,7 +1499,7 @@ const [multiAnswer, setMultiAnswer] = useState(false);
         ${
           quizItem.active_flag?.toLowerCase() === "i" || quizItem.active_flag === "false"
             ? "border-[#A7A7A7] border-[1px] border-b-[8px]"
-            : quizItem.attempts_count > 0 && quizItem.attempts_count >= quizItem.retake_flag
+            : quizItem.attempts_count >= quizItem.retake_flag
             ? "border-[#81c784] border-[1px] border-b-[8px]"
             : "border-[#fba0e3] border-[1px] border-b-[8px]"
         }

@@ -19,6 +19,10 @@ import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
 import { CircularProgress } from "@mui/material";
 import { AuthContext } from "../Authcontext/AuthContext";
 import tixkmark from "../../src/assets/Images/dashboard/verify.png"
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+// import Confetti from "react-confetti";
+// import { motion } from "framer-motion";
 const subscription = ()=> {
  
   const navigate = useNavigate();
@@ -41,7 +45,7 @@ const subscription = ()=> {
   const [quizPackageId, setQuizPackageId] = useState(0);
 
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
-  const [userName, setUserName] = useState("chandu");
+  const [userName, setUserName] = useState("");
 
   const [amount, setAmount] = useState(900); // in rupees
   const [currency, setCurrency] = useState("INR");
@@ -180,7 +184,15 @@ const subscription = ()=> {
         throw new Error("Failed to create order.");
       }
     } catch (err) {
-      setError(err.message || "An error occurred while creating the order.");
+      if (error instanceof SyntaxError) {
+        toast.error("A parsing error occurred. Please check your input file.");
+      } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+        toast.error("A network error occurred. Please check your internet connection.");
+      } else if (error.message.includes("Failed to fetch")) {
+        toast.error("Server could not be reached. Please try again later.");
+      } else {
+        toast.error("An unexpected error occurred while processing your request. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -245,7 +257,15 @@ const subscription = ()=> {
         throw new Error("Failed to create order.");
       }
     } catch (err) {
-      setError(err.message || "An error occurred while creating the order.");
+      if (error instanceof SyntaxError) {
+        toast.error("A parsing error occurred. Please check your input file.");
+      } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+        toast.error("A network error occurred. Please check your internet connection.");
+      } else if (error.message.includes("Failed to fetch")) {
+        toast.error("Server could not be reached. Please try again later.");
+      } else {
+        toast.error("An unexpected error occurred while processing your request. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -319,6 +339,15 @@ const subscription = ()=> {
           }
         } catch (error) {
           setResponseMessage("Error verifying payment: " + error.message);
+          if (error instanceof SyntaxError) {
+            toast.error("A parsing error occurred. Please check your input file.");
+          } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+            toast.error("A network error occurred. Please check your internet connection.");
+          } else if (error.message.includes("Failed to fetch")) {
+            toast.error("Server could not be reached. Please try again later.");
+          } else {
+            toast.error("An unexpected error occurred while processing your request. Please try again.");
+          }
         }
       },
       prefill: {
@@ -418,7 +447,15 @@ const subscription = ()=> {
         setError("Failed to fetch subscription details.");
       }
     } catch (err) {
-      setError("An error occurred while fetching subscription details.");
+      if (error instanceof SyntaxError) {
+        toast.error("A parsing error occurred. Please check your input file.");
+      } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+        toast.error("A network error occurred. Please check your internet connection.");
+      } else if (error.message.includes("Failed to fetch")) {
+        toast.error("Server could not be reached. Please try again later.");
+      } else {
+        toast.error("An unexpected error occurred while processing your request. Please try again.");
+      }
     } finally {
       setLoading(false); // Hide loading state
     }
@@ -462,7 +499,15 @@ const subscription = ()=> {
         }
       } catch (err) {
         console.error("Error fetching quiz packages:", err);
-        setError("An error occurred while fetching quiz packages.");
+        if (error instanceof SyntaxError) {
+          toast.error("A parsing error occurred. Please check your input file.");
+        } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+          toast.error("A network error occurred. Please check your internet connection.");
+        } else if (error.message.includes("Failed to fetch")) {
+          toast.error("Server could not be reached. Please try again later.");
+        } else {
+          toast.error("An unexpected error occurred while processing your request. Please try again.");
+        }
       }
     };
   
@@ -584,7 +629,15 @@ const handleSubmit = async (e) => {
       setResponseMessage1("Something went wrong. Please try again.");
     }
   } catch (error) {
-    setResponseMessage1("Failed to submit. Please check your connection.");
+    if (error instanceof SyntaxError) {
+      toast.error("A parsing error occurred. Please check your input file.");
+    } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+      toast.error("A network error occurred. Please check your internet connection.");
+    } else if (error.message.includes("Failed to fetch")) {
+      toast.error("Server could not be reached. Please try again later.");
+    } else {
+      toast.error("An unexpected error occurred while processing your request. Please try again.");
+    }
   }
 
   setShowPopup1(true); // Ensure the popup is shown even on error
@@ -609,6 +662,10 @@ const handleSubmit = async (e) => {
   };
         //-------------------**Conctactus END**--------------------//
 
+        const handleClose = () => {
+          setResponseMessage("");
+          setShowSuccess(false);
+        };
 
         const handleclose = () => {
           setResponseMessage(null);
@@ -655,6 +712,7 @@ const handleSubmit = async (e) => {
   return (
     <div className="flex w-full">
       <Navigation/>
+      <ToastContainer/>
       <div className="w-full bg-[#f5f5f5]">
       {loading && (
   <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
@@ -806,7 +864,7 @@ const handleSubmit = async (e) => {
   
        <div
     className={`relative rounded-lg shadow-lg p-6 w-full md:w-[22%] flex flex-col justify-between 
-      ${currentSubscriptionType === "Premium Lite" ? "border-2 border-blue-500 bg-[#567ed6] shadow-2xl text-white" : "bg-white text-black "}`}
+      ${currentSubscriptionType === "Premium Lite" || currentSubscriptionType === "NTPL Internship" ? "border-2 border-blue-500 bg-[#567ed6] shadow-2xl text-white" : "bg-white text-black "}`}
   >
  
       {/* {currentSubscriptionType === "Premium Lite" && (
@@ -819,12 +877,15 @@ const handleSubmit = async (e) => {
     <div className="flex flex-col gap-[2px] justify-center">
       {/* <div className="bg-[#9fcbf0] rounded-r-full flex items-center justify-center"> */}
 
-<h2 className={`text-[18px] font-bold text-center ${currentSubscriptionType === "Premium Lite" ? "text-white" : "  text-[#00024b]"} `}>Premium Lite</h2>
+<h2 className={`text-[18px] font-bold text-center ${currentSubscriptionType === "Premium Lite" || currentSubscriptionType === "NTPL Internship" ? "text-white" : "  text-[#00024b]"} `}>Premium Lite</h2>
 {/* </div> */}
         <img src={premiumlite} alt="" className="h-[100px]" />
         
       </div>
-    
+      
+      <ul className="mt-6 space-y-3 text-sm">
+          <li>✔ Virtual Internship Program on GenAI Powered Web Applications</li>
+        </ul>
       {/* <h2 className="text-2xl font-bold mb-4 text-center">Premium Lite</h2> */}
       <ul className="mt-6 space-y-3 text-sm">
           <li>✔ Access to Purchased Quizzes (EX:NEET, JEE, EventCounts.)</li>
@@ -836,9 +897,9 @@ const handleSubmit = async (e) => {
       <p className="mt-6 text-center font-medium">
         Pricing: As per price defined for Premium Quiz Package
       </p>
-      <button onClick={handleGetPremiumLite} className={`mt-2 py-2 px-4 rounded-sm ${currentSubscriptionType === "Premium Lite" ? "bg-[#ffffff] text-[#567ed6] font-medium" : " bg-[#567ed6] text-white font-medium"} `}>
+      {/* <button onClick={handleGetPremiumLite} className={`mt-2 py-2 px-4 rounded-sm ${currentSubscriptionType === "Premium Lite" ? "bg-[#ffffff] text-[#567ed6] font-medium" : " bg-[#567ed6] text-white font-medium"} `}>
       Subscribe
-      </button>
+      </button> */}
       {/* <div className="flex justify-center">
       <button className="mt-6  bg-[#567ed6] text-white font-medium py-2 px-4 rounded-sm ">
        Subscribe
@@ -883,12 +944,12 @@ const handleSubmit = async (e) => {
         Pricing: Rs 10 per day with one-year subscription<br />
         Rs 30 per day with one-month access
       </p>
-      <button  onClick={() => {
+      {/* <button  onClick={() => {
     console.log("Button clicked!"); // Debug to verify the button is working
     fetchSubscriptionDetails(3);
   }} className={`mt-2 py-2 px-4 rounded-sm ${currentSubscriptionType === "Premium" ? "bg-[#ffffff] text-[#567ed6] font-medium" : " bg-[#567ed6] text-white font-medium"} `}>
       Subscribe
-      </button>
+      </button> */}
       {/* <div className="flex justify-center">
       <button className="mt-6  bg-[#567ed6] text-white font-medium py-2 px-4 rounded-sm ">
       Subscribe
@@ -1327,6 +1388,64 @@ const handleSubmit = async (e) => {
             </div>
           </div>
         )}
+           {/* {responseMessage && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <motion.div
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className={`bg-white rounded-lg shadow-lg p-6 w-96 text-center border-t-4 ${
+              responseMessage.includes("success") ? "border-green-500" : "border-red-500"
+            }`}
+          >
+            <h2
+              className={`text-xl font-semibold ${
+                responseMessage.includes("success") ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              {responseMessage.includes("success") ? "Success" : "Error"}
+            </h2>
+            <p className="mt-2 text-gray-700">{responseMessage}</p>
+            <button
+              onClick={handleClose}
+              className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+            >
+              Close
+            </button>
+          </motion.div>
+        </div>
+      )} */}
+
+      {/* {showSuccess && (
+        <>
+          <Confetti width={window.innerWidth} height={window.innerHeight} />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+          >
+            <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+              <h2 className="text-3xl font-bold text-green-500">🎉 Congratulations! 🎉</h2>
+              <p className="mt-2 text-gray-700">Your payment has been successfully verified!</p>
+              <motion.div
+                initial={{ scale: 1 }}
+                animate={{ scale: 1.2 }}
+                transition={{ yoyo: Infinity, duration: 0.5 }}
+                className="mt-4 text-5xl"
+              >
+                🎊✨💥
+              </motion.div>
+              <button
+                onClick={handleClose}
+                className="mt-4 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded"
+              >
+                Enjoy!
+              </button>
+            </div>
+          </motion.div>
+        </>
+      )} */}
         </div>
       
         

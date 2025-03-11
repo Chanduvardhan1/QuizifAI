@@ -79,6 +79,7 @@ import username from "../../src/assets/Images/quiz-type/username.png"
 import comment from "../../src/assets/Images/quiz-type/comment.png"
 import { useNavigate } from 'react-router-dom';
 
+
 const Questions = () => {
     const navigate = useNavigate();
   
@@ -165,7 +166,7 @@ const Questions = () => {
   }, [quizId]);
 
   const handleBack = () => {
-    navigate("/dashboard")
+    navigate(-1)
   };
 console.log("aa",photo1)
 const topThree = leaderboardData.slice(0, 3);

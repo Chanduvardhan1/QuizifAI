@@ -538,10 +538,10 @@ const [multiAnswer, setMultiAnswer] = useState(false);
       const result = await response.json();
   
       if (result.response === "success") {
-        const { remaining_ai_creations, remaining_manual_creations } = result.data;
+        const { remaining_ai_creations_today, remaining_manual_creations_today } = result.data;
   
         // Check if both remaining AI and manual creations are 0
-        if (remaining_ai_creations === 0 && remaining_manual_creations === 0) {
+        if (remaining_ai_creations_today === 0 && remaining_manual_creations_today === 0) {
           toast.error("You have no remaining attempts to create a quiz.");
           return;
         }
@@ -1082,8 +1082,7 @@ const [multiAnswer, setMultiAnswer] = useState(false);
         toast.error("Server could not be reached. Please try again later.");
       } else {
         toast.error("An unexpected error occurred while processing your request. Please try again.");
-      }   
-     }
+      }    }
   };
   
 
@@ -1128,7 +1127,6 @@ const [multiAnswer, setMultiAnswer] = useState(false);
         } else {
           toast.error("An unexpected error occurred while processing your request. Please try again.");
         }
-      
       });
   };
   // useEffect(() => {
@@ -1450,7 +1448,7 @@ const [multiAnswer, setMultiAnswer] = useState(false);
                 <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" />
 
                 <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" />
-                <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" />
+                {/* <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" /> */}
 
                 </div>
               </div>
@@ -1464,10 +1462,10 @@ const [multiAnswer, setMultiAnswer] = useState(false);
                   const quizEndDate = quizItem.quiz_end_date
                     ? new Date(quizItem.quiz_end_date)
                     : null;
-                    const isQuizMaster = userRole === "Quiz Master";
-    const isActiveForOthers =
-      quizItem.active_flag?.toLowerCase() === "true" ||
-      quizItem.active_flag?.toLowerCase() === "y";
+    //                 const isQuizMaster = userRole === "Quiz Master";
+    // const isActiveForOthers =
+    //   quizItem.active_flag?.toLowerCase() === "true" ||
+    //   quizItem.active_flag?.toLowerCase() === "y";
       // const shouldShowQuiz = Premium
       // ? quizItem.premium_quiz_flag === true // Show only premium quizzes if toggle is on
       // : quizItem.premium_quiz_flag === null || quizItem.premium_quiz_flag === false; // Show only non-premium quizzes if toggle is off
@@ -1476,7 +1474,9 @@ const [multiAnswer, setMultiAnswer] = useState(false);
       : true; 
                   return (
                     shouldShowQuiz &&
-                    (isQuizMaster || isActiveForOthers) &&
+                    // (isQuizMaster || isActiveForOthers) &&
+                    quizItem.active_flag?.toLowerCase() !== "i" && // Exclude inactive quizzes
+      quizItem.active_flag !== "false" && 
                     currentDate >= quizCreateDate &&
                     (quizEndDate === null || currentDate <= quizEndDate)
                   );
@@ -1497,9 +1497,10 @@ const [multiAnswer, setMultiAnswer] = useState(false);
       key={index}
       className={`
         ${
-          quizItem.active_flag?.toLowerCase() === "i" || quizItem.active_flag === "false"
-            ? "border-[#A7A7A7] border-[1px] border-b-[8px]"
-            : quizItem.attempts_count >= quizItem.retake_flag
+          // quizItem.active_flag?.toLowerCase() === "i" || quizItem.active_flag === "false"
+          //   ? "border-[#A7A7A7] border-[1px] border-b-[8px]"
+          //   : 
+            quizItem.attempts_count >= quizItem.retake_flag
             ? "border-[#81c784] border-[1px] border-b-[8px]"
             : "border-[#fba0e3] border-[1px] border-b-[8px]"
         }
@@ -1903,7 +1904,7 @@ const [multiAnswer, setMultiAnswer] = useState(false);
                                     } src={view1} 
                                     alt="Quiz Results"
                                     title="Quiz Results"
-                                    className="w-[18px] h-[18px] mr-1" />
+                                    className="w-[18px] h-[18px] mr-1 cursor-pointer" />
                              <img   onClick={() =>
                         
                                                   leaderboard1(
@@ -1919,7 +1920,7 @@ const [multiAnswer, setMultiAnswer] = useState(false);
   className="w-[18px] h-[18px] mr-1"
   alt="Leaderboard"
   title="View Leaderboard" />
-                             <img src={print1} className="w-[18px] h-[18px] mr-1" />
+                             {/* <img src={print1} className="w-[18px] h-[18px] mr-1" /> */}
                    
                            </div>
                          </div>
@@ -2465,9 +2466,10 @@ const [multiAnswer, setMultiAnswer] = useState(false);
   key={index}
   className={`flex flex-row w-full max-w-[390px] h-[170px] rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4
     ${
-      quizItem.active_flag === "i" || quizItem.active_flag === "false"
-        ? "border-gray-400 border-[1px] border-b-[8px]" // Gray border if active_flag is "i"
-        : "border-[#84acfa] border-[1px] border-b-[8px]" // Default blue border
+      // quizItem.active_flag === "i" || quizItem.active_flag === "false"
+      //   ? "border-gray-400 border-[1px] border-b-[8px]" // Gray border if active_flag is "i"
+      //   : 
+        "border-[#84acfa] border-[1px] border-b-[8px]" // Default blue border
     }
   `}
 >
@@ -2841,7 +2843,7 @@ const [multiAnswer, setMultiAnswer] = useState(false);
                              alt="Leaderboard"
                              title="View Leaderboard" />
                       
-                             <img src={print1} className="w-[18px] h-[18px] mr-1" />
+                             {/* <img src={print1} className="w-[18px] h-[18px] mr-1" /> */}
                    
                            </div>
                          </div>

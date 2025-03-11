@@ -43,7 +43,8 @@ import Attemts from "../../src/assets/Images/dashboard/Attemts.png"
 import Quickest from "../../src/assets/Images/dashboard/image (15).png"
 import Badge from "../../src/assets/Images/dashboard/badge 1.png"
 import close from "../../src/assets/Images/images/dashboard/cancel.png"
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const leaderboard = () => {
   const [quizData, setQuizData] = useState(null);
@@ -60,6 +61,16 @@ const leaderboard = () => {
 
   const resultRef = useRef();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const questionsPerPage = 10;
+  
+  // Ensure 'questions' is properly initialized
+  
+  // Calculate total pages based on the number of questions
+  
+  // Calculate indexes for slicing
+  const startIndex = (currentPage - 1) * questionsPerPage;
+  const endIndex = startIndex + questionsPerPage;
 
   const optionLabels = {
     option1: 'A',
@@ -106,8 +117,15 @@ const leaderboard = () => {
         const data = await response.json();
         setQuizData1(data.data);
       } catch (error) {
-        console.error('Error fetching quiz report:', error);
-        setError(error);
+       if (error instanceof SyntaxError) {
+                     toast.error("A parsing error occurred. Please check your input file.");
+                   } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+                     toast.error("A network error occurred. Please check your internet connection.");
+                   } else if (error.message.includes("Failed to fetch")) {
+                     toast.error("Server could not be reached. Please try again later.");
+                   } else {
+                     toast.error("An unexpected error occurred while processing your request. Please try again.");
+                   }
       } finally {
         setLoading(false);
       }
@@ -146,7 +164,15 @@ const leaderboard = () => {
           console.error('Failed to fetch leaderboard data:', result.message);
         }
       } catch (error) {
-        console.error('Error fetching leaderboard data:', error);
+         if (error instanceof SyntaxError) {
+                       toast.error("A parsing error occurred. Please check your input file.");
+                     } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+                       toast.error("A network error occurred. Please check your internet connection.");
+                     } else if (error.message.includes("Failed to fetch")) {
+                       toast.error("Server could not be reached. Please try again later.");
+                     } else {
+                       toast.error("An unexpected error occurred while processing your request. Please try again.");
+                     }
       }
     };
 
@@ -185,7 +211,15 @@ const leaderboard = () => {
           console.error("Failed to fetch quiz data:", result.response_message);
         }
       }catch (error) {
-        console.error('Error submitting quiz result:', error);
+        if (error instanceof SyntaxError) {
+                      toast.error("A parsing error occurred. Please check your input file.");
+                    } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+                      toast.error("A network error occurred. Please check your internet connection.");
+                    } else if (error.message.includes("Failed to fetch")) {
+                      toast.error("Server could not be reached. Please try again later.");
+                    } else {
+                      toast.error("An unexpected error occurred while processing your request. Please try again.");
+                    }
       }
     };
 
@@ -227,7 +261,15 @@ const leaderboard = () => {
           console.error('Failed to fetch leaderboard data:', result.message);
         }
       } catch (error) {
-        console.error('Error fetching leaderboard data:', error);
+         if (error instanceof SyntaxError) {
+                       toast.error("A parsing error occurred. Please check your input file.");
+                     } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+                       toast.error("A network error occurred. Please check your internet connection.");
+                     } else if (error.message.includes("Failed to fetch")) {
+                       toast.error("Server could not be reached. Please try again later.");
+                     } else {
+                       toast.error("An unexpected error occurred while processing your request. Please try again.");
+                     }
       }
     };
 
@@ -253,9 +295,25 @@ if (!quizData1 || !quizData1.questions) {
   navigate(`/dashboard`);
 };
 const handleBack = () => {
-  navigate("/dashboard")
+  navigate(-1)
 };
   const questions = quizData1.questions;
+  const totalPages = Math.ceil(questions.length / questionsPerPage);
+
+  const displayedQuestions = questions.slice(startIndex, endIndex);
+  
+  // Handle Next and Back button clicks
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+  
+  const handleBack1 = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
   const topThree = leaderboardData.slice(0, 3);
   const handleDownload = () => {
     const input = resultRef.current;
@@ -277,12 +335,15 @@ const handleBack = () => {
       console.error('resultRef is not attached to any DOM element');
     }
   };
+
+
+
   return (
 
     <div className="flex w-full" >
 
     <Navigation />
-
+<ToastContainer/>
     <div className="w-full p-5 pt-[60px]" ref={resultRef}>
       {/* <div className={styles.back1} onClick={Back}><MdOutlineCancel /></div> */}
       <div onClick={handleBack} className=" absolute top-5 right-5 cursor-pointer">
@@ -509,30 +570,47 @@ const handleBack = () => {
              {/* <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" /> */}
            </button>
          </div>
-        <div className="flex flex-row">
+         <div className="flex gap-2 flex-row">
+          <>
+          <button
+        onClick={handleBack1}
+        disabled={currentPage === 1}
+        className={`  text-sm rounded-md px-3 py-1 flex items-center  font-lato ${currentPage === 1 ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500 text-white'}`}
+      >
+        Back
+      </button>
           {/* Question Numbers */}
-          {questions.map((question, index) => {
-            const isCorrect = question.selected_option === question.correct_option;
-            const isWrong = question.selected_option !== null && !isCorrect;
-    
-            return (
-              <div
-                key={index}
-                onClick={() => setCurrentQuestionIndex(index)} // Set selected question index
-                className={`cursor-pointer w-8 h-8 flex items-center justify-center border-[1px] text-sm font-medium ${
-                  index === currentQuestionIndex
-                    ? 'bg-[#85b4e9] text-white' // Highlight selected question
-                    : isCorrect
-                    ? 'bg-[#c9e4ca] text-black' // Correct answer (green)
-                    : isWrong
-                    ? 'bg-[#FFB7B7] text-red-600' // Wrong answer (red)
-                    : 'bg-green-100 text-black' // Default
-                }`}
-              >
-                {index + 1}
-              </div>
-            );
-          })}
+          {displayedQuestions.map((question, index) => {
+        const actualIndex = startIndex + index;
+        const isCorrect = question.selected_option === question.correct_option;
+        const isWrong = question.selected_option !== null && !isCorrect;
+
+        return (
+          <div
+            key={actualIndex}
+            onClick={() => setCurrentQuestionIndex(actualIndex)}
+            className={`cursor-pointer w-8 h-8 flex items-center justify-center border-[1px] text-sm font-medium ${
+              actualIndex === currentQuestionIndex
+                ? 'bg-[#85b4e9] text-white'
+                : isCorrect
+                ? 'bg-[#c9e4ca] text-black'
+                : isWrong
+                ? 'bg-[#FFB7B7] text-red-600'
+                : 'bg-green-100 text-black'
+            }`}
+          >
+            {actualIndex + 1}
+          </div>
+        );
+      })}
+        <button
+        onClick={handleNext}
+        disabled={currentPage === totalPages}
+        className={`text-sm rounded-md px-3 py-1 flex items-center  font-lato ${currentPage === totalPages ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500 text-white'}`}
+      >
+        Next
+      </button>
+      </>
         </div>
     
         <div className="flex flex-col items-start">

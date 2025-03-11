@@ -497,7 +497,7 @@ const Dashboard = () => {
         const { remaining_attempts_today } = result.data;
 
         // Check if there are no remaining attempts
-        if (remaining_attempts_today_today === 0) {
+        if (remaining_attempts_today === 0) {
           toast.error("You have no remaining attempts to access this quiz.");
           return;
         }
@@ -738,10 +738,10 @@ const Dashboard = () => {
       const result = await response.json();
   
       if (result.response === "success") {
-        const { remaining_ai_creations, remaining_manual_creations } = result.data;
+        const { remaining_ai_creations_today, remaining_manual_creations_today } = result.data;
   
         // Check if both remaining AI and manual creations are 0
-        if (remaining_ai_creations === 0 && remaining_manual_creations === 0) {
+        if (remaining_ai_creations_today === 0 && remaining_manual_creations_today === 0) {
           toast.error("You have no remaining attempts to create a quiz.");
           return;
         }
@@ -960,17 +960,12 @@ const Dashboard = () => {
 
 <div>
           <div className="flex gap-[10px]">
-          {(userRole === "Quiz Master") && (
+          {/* {(userRole === "Quiz Master") && (
 
 <div className="w-[115px] h-[41px]  rounded-[10px] bg-[#fee2e2]">
   <div className="flex cursor-pointer"  onClick={createQuizbyquizmaster}>
-    {/* <img
-      className="w-[25px] h-[25px] ml-2 mt-2"
-      src={Plus}
-      alt="Plus Icon"
-    /> */}
+
     <a
-      // onClick={createQuiz}
       className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
     >
        Created Quizzes
@@ -978,7 +973,7 @@ const Dashboard = () => {
   </div>
 </div>
 
-            )}  
+            )}   */}
             {(userRole === "Admin" || userRole === "Super Admin") && (
 
               <div className="w-[99px] h-[41px]  rounded-[10px] bg-[#fee2e2]">
@@ -1076,7 +1071,7 @@ const Dashboard = () => {
           >
             <div className="flex items-center">
             <p className="text-[#002366] text-[15px] font-medium leading-6">
-              Latest Quizzes
+              Recently Added Quizzes
             </p>
             </div>
            
@@ -1139,7 +1134,7 @@ const Dashboard = () => {
        )}
 
 
-          <div className="w-full flex justify-center flex-wrap mx-auto gap-[24px]">
+          <div className="w-full justify-center flex flex-wrap mx-auto gap-[24px]">
             {loading1
           ? // Show Skeleton Loaders
           [...Array(3)].map((_, index) => (
@@ -1167,7 +1162,7 @@ const Dashboard = () => {
                 <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" />
 
                 <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" />
-                <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" />
+                {/* <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" /> */}
 
                 </div>
               </div>
@@ -1180,10 +1175,10 @@ const Dashboard = () => {
                 const quizEndDate = quizItem.quiz_end_date
                   ? new Date(quizItem.quiz_end_date)
                   : null;
-                  const isQuizMaster = userRole === "Quiz Master";
-                  const isActiveForOthers =
-                    quizItem.active_flag?.toLowerCase() === "true" ||
-                    quizItem.active_flag?.toLowerCase() === "Y";
+                  // const isQuizMaster = userRole === "Quiz Master";
+                  // const isActiveForOthers =
+                  //   quizItem.active_flag?.toLowerCase() === "true" ||
+                  //   quizItem.active_flag?.toLowerCase() === "Y";
 
                     // const shouldShowQuiz = Premium
                     // ? quizItem.premium_quiz_flag === true // Show only premium quizzes if toggle is on
@@ -1193,8 +1188,10 @@ const Dashboard = () => {
                     : true; 
                 return (
                   shouldShowQuiz  &&
-                  (isQuizMaster || isActiveForOthers) && 
+                  // (isQuizMaster || isActiveForOthers) && 
                   quizItem.latest_flag === "Y" &&
+                  quizItem.active_flag?.toLowerCase() !== "i" && // Exclude inactive quizzes
+                  quizItem.active_flag !== "false" && 
                   currentDate >= quizCreateDate &&
                   (quizEndDate === null || currentDate <= quizEndDate)
                 );
@@ -1209,9 +1206,10 @@ const Dashboard = () => {
                         key={index}
                         className={`
                           ${
-                            quizItem.active_flag?.toLowerCase() === "i"  || quizItem.active_flag === "false"
-                              ? "border-[#A7A7A7] border-[1px] border-b-[8px]"
-                              :quizItem.attempts_count >= quizItem.retake_flag
+                            // quizItem.active_flag?.toLowerCase() === "i"  || quizItem.active_flag === "false"
+                            //   ? "border-[#A7A7A7] border-[1px] border-b-[8px]"
+                            //   :
+                              quizItem.attempts_count >= quizItem.retake_flag
                               ? "border-[#81c784] border-[1px] border-b-[8px]"
                               : "border-[#fba0e3] border-[1px] border-b-[8px]"
                           }
@@ -1643,7 +1641,7 @@ const Dashboard = () => {
                                
                                className="w-[18px] cursor-pointer h-[18px] mr-1" />
 
-                                <img src={print1} className="w-[18px] cursor-pointer h-[18px] mr-1" />
+                                {/* <img src={print1} className="w-[18px] cursor-pointer h-[18px] mr-1" /> */}
                       
                               </div>
                             </div>
@@ -2013,9 +2011,10 @@ const Dashboard = () => {
   key={index}
   className={`flex flex-row w-full max-w-[390px] h-[170px] rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4
     ${
-      quizItem.active_flag?.toLowerCase() === "i" || quizItem.active_flag === "false"
-        ? "border-gray-400 border-[1px] border-b-[8px]" // Gray border for inactive quizzes
-        : "border-[#84acfa] border-[1px] border-b-[8px]" // Default blue border
+      // quizItem.active_flag?.toLowerCase() === "i" || quizItem.active_flag === "false"
+      //   ? "border-gray-400 border-[1px] border-b-[8px]" // Gray border for inactive quizzes
+      //   : 
+        "border-[#84acfa] border-[1px] border-b-[8px]" // Default blue border
     }
   `}
 >
@@ -2387,7 +2386,7 @@ alt="Disable icon"
             }
             
                         className="w-[18px] cursor-pointer h-[18px] mr-1" />
-     <img src={print1} className="w-[18px] h-[18px] mr-1 cursor-pointer" />
+     {/* <img src={print1} className="w-[18px] h-[18px] mr-1 cursor-pointer" /> */}
 
    </div>
  </div>
@@ -2798,7 +2797,7 @@ alt="Disable icon"
                 <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" />
 
                 <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" />
-                <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" />
+                {/* <div  className=" w-[25px]  h-[25px] bg-gray-300 rounded-full" /> */}
 
                 </div>
               </div>
@@ -2811,10 +2810,10 @@ alt="Disable icon"
                 const quizEndDate = quizItem.quiz_end_date
                   ? new Date(quizItem.quiz_end_date)
                   : null;
-                  const isQuizMaster = userRole === "Quiz Master";
-                  const isActiveForOthers =
-                    quizItem.active_flag?.toLowerCase() === "true" ||
-                    quizItem.active_flag?.toLowerCase() === "Y";
+                  // const isQuizMaster = userRole === "Quiz Master";
+                  // const isActiveForOthers =
+                  //   quizItem.active_flag?.toLowerCase() === "true" ||
+                  //   quizItem.active_flag?.toLowerCase() === "Y";
                     // const shouldShowQuiz = Premium
                     // ? quizItem.premium_quiz_flag === true // Show only premium quizzes if toggle is on
                     // : quizItem.premium_quiz_flag === null || quizItem.premium_quiz_flag === false; // Show only non-premium quizzes if toggle is off
@@ -2824,9 +2823,11 @@ alt="Disable icon"
                 return (
 
                   shouldShowQuiz &&
-                  (isQuizMaster || isActiveForOthers) && 
+                  // (isQuizMaster || isActiveForOthers) && 
                   // quizItem.active_flag === "true" &&
                   quizItem.popularity_flag === "Y" &&
+                  quizItem.active_flag?.toLowerCase() !== "i" && // Exclude inactive quizzes
+      quizItem.active_flag !== "false" && 
                   currentDate >= quizCreateDate &&
                   (quizEndDate === null || currentDate <= quizEndDate)
                 );
@@ -2841,9 +2842,10 @@ alt="Disable icon"
       key={index}
       className={`
         ${
-          quizItem.active_flag?.toLowerCase() === "i" || quizItem.active_flag === "false"
-            ? "border-[#A7A7A7] border-[1px] border-b-[8px]"
-            : quizItem.attempts_count >= quizItem.retake_flag
+          // quizItem.active_flag?.toLowerCase() === "i" || quizItem.active_flag === "false"
+          //   ? "border-[#A7A7A7] border-[1px] border-b-[8px]"
+          //   :
+             quizItem.attempts_count >= quizItem.retake_flag
             ? "border-[#81c784] border-[1px] border-b-[8px]"
             : "border-[#fba0e3] border-[1px] border-b-[8px]"
         }
@@ -3276,7 +3278,7 @@ alt="Disable icon"
                                     quizItem.pass_percentage
                                   )
                                 } className="w-[18px] h-[18px] cursor-pointer mr-1" />
-                                <img src={print1} className="w-[18px] cursor-pointer h-[18px] mr-1" />
+                                {/* <img src={print1} className="w-[18px] cursor-pointer h-[18px] mr-1" /> */}
                       
                               </div>
                             </div>
@@ -3576,9 +3578,10 @@ className={`flex flex-row w-full max-w-[400px] h-[170px]  rounded-lg rounded-b-x
   key={index}
   className={`flex flex-row w-full max-w-[390px] h-[170px] rounded-lg rounded-b-xl shadow-lg p-[10px] bg-white mb-4
     ${
-     quizItem.active_flag?.toLowerCase() === "i" || quizItem.active_flag === "false"
-        ? "border-gray-400 border-[1px] border-b-[8px]" // Gray border if active_flag is "i"
-        : "border-[#84acfa] border-[1px] border-b-[8px]" // Default blue border
+    //  quizItem.active_flag?.toLowerCase() === "i" || quizItem.active_flag === "false"
+    //     ? "border-gray-400 border-[1px] border-b-[8px]" // Gray border if active_flag is "i"
+    //     : 
+        "border-[#84acfa] border-[1px] border-b-[8px]" // Default blue border
     }
   `}
 >
@@ -3955,7 +3958,7 @@ src={quizItem.photo1 || back}
               )
             }
                         className="w-[18px] cursor-pointer h-[18px] mr-1" />
-     <img src={print1} className="w-[18px] h-[18px] mr-1 cursor-pointer" />
+     {/* <img src={print1} className="w-[18px] h-[18px] mr-1 cursor-pointer" /> */}
 
    </div>
  </div>

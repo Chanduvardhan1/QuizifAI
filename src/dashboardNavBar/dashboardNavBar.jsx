@@ -745,7 +745,7 @@ const handlsubscription =()=> {
 
                         <p className="text-[12px] font-bold text-orange-500 ml-[2px] mt-1"> {totalQuizzes}</p>
                     </div>
-                  
+              
                     
                     </div>
                 </div>

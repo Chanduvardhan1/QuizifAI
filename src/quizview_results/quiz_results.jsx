@@ -66,7 +66,8 @@ import Attemts from "../../src/assets/Images/dashboard/Attemts.png"
 import Quickest from "../../src/assets/Images/dashboard/image (15).png"
 import Badge from "../../src/assets/Images/dashboard/badge 1.png"
 import close from "../../src/assets/Images/images/dashboard/cancel.png"
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 const quiz_results = () => {
@@ -83,6 +84,16 @@ const quiz_results = () => {
   const [showAnswers, setShowAnswers] = useState(false);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const questionsPerPage = 10;
+  
+  // Ensure 'questions' is properly initialized
+  
+  // Calculate total pages based on the number of questions
+  
+  // Calculate indexes for slicing
+  const startIndex = (currentPage - 1) * questionsPerPage;
+  const endIndex = startIndex + questionsPerPage;
 
   const optionLabels = {
     option1: 'A',
@@ -127,8 +138,15 @@ const quiz_results = () => {
         const data = await response.json();
         setQuizData1(data.data);
       } catch (error) {
-        console.error('Error fetching quiz report:', error);
-        setError(error);
+          if (error instanceof SyntaxError) {
+               toast.error("A parsing error occurred. Please check your input file.");
+             } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+               toast.error("A network error occurred. Please check your internet connection.");
+             } else if (error.message.includes("Failed to fetch")) {
+               toast.error("Server could not be reached. Please try again later.");
+             } else {
+               toast.error("An unexpected error occurred while processing your request. Please try again.");
+             }
       } finally {
         setLoading(false);
       }
@@ -274,8 +292,15 @@ const quiz_results = () => {
           console.error("Failed to fetch quiz data:", result.response_message);
         }
       } catch (error) {
-        console.error("Error submitting quiz result:", error);
-        setIsQuizSubmitted(false);
+           if (error instanceof SyntaxError) {
+                toast.error("A parsing error occurred. Please check your input file.");
+              } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+                toast.error("A network error occurred. Please check your internet connection.");
+              } else if (error.message.includes("Failed to fetch")) {
+                toast.error("Server could not be reached. Please try again later.");
+              } else {
+                toast.error("An unexpected error occurred while processing your request. Please try again.");
+              }
       }
     };
 
@@ -315,7 +340,15 @@ const quiz_results = () => {
           console.error('Failed to fetch leaderboard data:', result.message);
         }
       } catch (error) {
-        console.error('Error fetching leaderboard data:', error);
+          if (error instanceof SyntaxError) {
+               toast.error("A parsing error occurred. Please check your input file.");
+             } else if (error.message.includes("NetworkError") || error.message.includes("ERR_INTERNET_DISCONNECTED")) {
+               toast.error("A network error occurred. Please check your internet connection.");
+             } else if (error.message.includes("Failed to fetch")) {
+               toast.error("Server could not be reached. Please try again later.");
+             } else {
+               toast.error("An unexpected error occurred while processing your request. Please try again.");
+             }
       }
     };
 
@@ -344,9 +377,25 @@ const quiz_results = () => {
     navigate(`/dashboard`);
   };
   const handleBack = () => {
-    navigate("/dashboard")
+    navigate(-1)
   };
   const questions = quizData1.questions;
+  const totalPages = Math.ceil(questions.length / questionsPerPage);
+
+  const displayedQuestions = questions.slice(startIndex, endIndex);
+  
+  // Handle Next and Back button clicks
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+  
+  const handleBack1 = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
   const topThree = leaderboardData.slice(0, 3);
   const handleDownload = () => {
     const input = resultRef.current;
@@ -368,12 +417,14 @@ const quiz_results = () => {
       console.error('resultRef is not attached to any DOM element');
     }
   };
+
+
   return (
 
     <div className="flex w-full" >
 
     <Navigation />
-
+    <ToastContainer/>
     <div className="w-full p-5 pt-[60px]" ref={resultRef}>
       {/* <div className={styles.back1} onClick={Back}><MdOutlineCancel /></div> */}
       <div onClick={handleBack} className=" absolute top-5 right-5 cursor-pointer">
@@ -521,73 +572,73 @@ const quiz_results = () => {
      
       <div className='flex w-full' >
       {!showAnswers ? (
-       <div class="w-[50%] text-center p-4">
-       <div class="">
-     
-         <div class="flex items-center justify-center">
-           <span class="inline-block h-[1px] bg-blue-900 w-[80px] mr-[5px]"></span>
-           <label class="text-[#d98b19] font-lato text-[18px] font-semibold">Your Attempt Details</label>
-           <span class="inline-block h-[1px] bg-blue-900 w-[80px] ml-[5px]"></span>
+         <div class="w-[50%] text-center p-4">
+         <div class="">
+       
+           <div class="flex items-center justify-center">
+             <span class="inline-block h-[1px] bg-blue-900 w-[80px] mr-[5px]"></span>
+             <label class="text-[#d98b19] font-lato text-[18px] font-semibold">Your Attempt Details</label>
+             <span class="inline-block h-[1px] bg-blue-900 w-[80px] ml-[5px]"></span>
+           </div>
+         </div>
+       
+         <div class="relative flex justify-center flex-col items-center">
+           <label class="absolute top-[40%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 text-[50px] text-blue-900 font-bold font-lato">{quizData.rank}</label>
+           <img class="h-[108.62px] w-[130.01px] flex justify-center" src={rankimage} alt="Icon 1" />
+           <span class="text-blue-900 font-bold font-lato text-[17px]">Your Rank</span>
+         </div>
+       
+         <div class="w-full flex items-center">
+         <div class="w-full flex justify-center items-center flex-col gap-4 sm:w-[50%]">
+         <div class="w-[210px] h-[5vh] flex items-center">
+           <img class="h-[30px] w-[30px]" src={dateIcon} alt="Calendar Icon" />
+           <span class="ml-2 font-lato font-bold text-[15px] text-blue-900">{quizData.quiz_start_date}</span>
+         </div>
+         <div class="w-[210px] h-[5vh] flex items-center">
+           <img class="h-[30px] w-[30px]" src={timeIcon} alt="Clock Icon" />
+           <span class="ml-2 font-lato font-bold text-[15px] text-blue-900">{quizData.attempt_duration}</span>
+         </div>
+         <div class="w-[210px] h-[5vh] flex items-center">
+           <img class="h-[30px] w-[30px]" src={vector} alt="Check Icon" />
+           <span class="ml-2 font-lato font-bold text-[15px] text-blue-900">{quizData.correct_answers} Correct answers</span>
+         </div>
+         <div class="w-[210px] h-[5vh] flex items-center">
+           <img class="h-[30px] w-[30px]" src={current} alt="Question Icon" />
+           <span class="ml-2 font-lato font-bold text-[15px] text-blue-900">Attempted {quizData.attempted_questions} questions</span>
          </div>
        </div>
-     
-       <div class="relative flex justify-center flex-col items-center">
-         <label class="absolute top-[40%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 text-[50px] text-blue-900 font-bold font-lato">{quizData.rank}</label>
-         <img class="h-[108.62px] w-[130.01px] flex justify-center" src={rankimage} alt="Icon 1" />
-         <span class="text-blue-900 font-bold font-lato text-[17px]">Your Rank</span>
+       <div className='w-full flex justify-center items-center sm:w-[50%]'>
+       <div class="flex  w-[70%] flex-col p-2 px-6 rounded-2xl bg-green-300 items-center">
+       
+             <div class=" text-green-700 font-medium text-center">{quizData.attained_score_percentage}%</div>
+             <div class=" text-[#fa5967]  text-center">{quizData.quiz_grade}, {quizData.pass_flag ? 'Pass' : 'Fail'}</div>
+           </div>
        </div>
-     
-       <div class="w-full flex items-center">
-       <div class="w-full flex justify-center items-center flex-col gap-4 sm:w-[50%]">
-       <div class="w-[210px] h-[5vh] flex items-center">
-         <img class="h-[30px] w-[30px]" src={dateIcon} alt="Calendar Icon" />
-         <span class="ml-2 font-lato font-bold text-[15px] text-blue-900">{quizData.quiz_start_date}</span>
-       </div>
-       <div class="w-[210px] h-[5vh] flex items-center">
-         <img class="h-[30px] w-[30px]" src={timeIcon} alt="Clock Icon" />
-         <span class="ml-2 font-lato font-bold text-[15px] text-blue-900">{quizData.attempt_duration}</span>
-       </div>
-       <div class="w-[210px] h-[5vh] flex items-center">
-         <img class="h-[30px] w-[30px]" src={vector} alt="Check Icon" />
-         <span class="ml-2 font-lato font-bold text-[15px] text-blue-900">{quizData.correct_answers} Correct answers</span>
-       </div>
-       <div class="w-[210px] h-[5vh] flex items-center">
-         <img class="h-[30px] w-[30px]" src={current} alt="Question Icon" />
-         <span class="ml-2 font-lato font-bold text-[15px] text-blue-900">Attempted {quizData.attempted_questions} questions</span>
-       </div>
-     </div>
-     <div className='w-full flex justify-center items-center sm:w-[50%]'>
-     <div class="flex  w-[70%] flex-col p-2 px-6 rounded-2xl bg-green-300 items-center">
-     
-           <div class=" text-green-700 font-medium text-center">{quizData.attained_score_percentage}%</div>
-           <div class=" text-[#fa5967]  text-center">{quizData.quiz_grade}, {quizData.pass_flag ? 'Pass' : 'Fail'}</div>
+       
+           
          </div>
-     </div>
-     
-         
+         <div className="flex flex-wrap justify-end gap-2">
+         <div className="flex items-center gap-1 justify-center ">
+           <button
+             onClick={handleToggleAnswers}
+             className="text-blue-900 text-sm bg-blue-200 border border-blue-900 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
+           >
+             Answers
+             <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" />
+           </button>
+         </div>
+         <div className="flex items-center justify-center">
+         {/* <button
+             // onClick={handleOnAnswer}
+             className="text-blue-900 text-sm bg-blue-200 border border-blue-900 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
+           >
+             Print
+             <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" />
+           </button> */}
+         </div>
        </div>
-       <div className="flex flex-wrap justify-end gap-2">
-       <div className="flex items-center gap-1 justify-center ">
-         <button
-           onClick={handleToggleAnswers}
-           className="text-blue-900 text-sm bg-blue-200 border border-blue-900 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
-         >
-           Answers
-           <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" />
-         </button>
+       
        </div>
-       <div className="flex items-center justify-center">
-       {/* <button
-           // onClick={handleOnAnswer}
-           className="text-blue-900 text-sm bg-blue-200 border border-blue-900 rounded-md px-3 py-1 cursor-pointer flex items-center  font-lato"
-         >
-           Print
-           <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" />
-         </button> */}
-       </div>
-     </div>
-     
-     </div>
       ):(
       <div className="w-[80%] rounded-2xl bg-white">
         <div className="flex py-1 items-end justify-end ">
@@ -599,30 +650,47 @@ const quiz_results = () => {
              {/* <img className="ml-2 h-5 w-5" src={correction} alt="Correction Icon" /> */}
            </button>
          </div>
-        <div className="flex flex-row">
+         <div className="flex gap-2 flex-row">
+          <>
+          <button
+        onClick={handleBack1}
+        disabled={currentPage === 1}
+        className={`  text-sm rounded-md px-3 py-1 flex items-center  font-lato ${currentPage === 1 ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500 text-white'}`}
+      >
+        Back
+      </button>
           {/* Question Numbers */}
-          {questions.map((question, index) => {
-            const isCorrect = question.selected_option === question.correct_option;
-            const isWrong = question.selected_option !== null && !isCorrect;
-    
-            return (
-              <div
-                key={index}
-                onClick={() => setCurrentQuestionIndex(index)} // Set selected question index
-                className={`cursor-pointer w-8 h-8 flex items-center justify-center border-[1px] text-sm font-medium ${
-                  index === currentQuestionIndex
-                    ? 'bg-[#85b4e9] text-white' // Highlight selected question
-                    : isCorrect
-                    ? 'bg-[#c9e4ca] text-black' // Correct answer (green)
-                    : isWrong
-                    ? 'bg-[#FFB7B7] text-red-600' // Wrong answer (red)
-                    : 'bg-green-100 text-black' // Default
-                }`}
-              >
-                {index + 1}
-              </div>
-            );
-          })}
+          {displayedQuestions.map((question, index) => {
+        const actualIndex = startIndex + index;
+        const isCorrect = question.selected_option === question.correct_option;
+        const isWrong = question.selected_option !== null && !isCorrect;
+
+        return (
+          <div
+            key={actualIndex}
+            onClick={() => setCurrentQuestionIndex(actualIndex)}
+            className={`cursor-pointer w-8 h-8 flex items-center justify-center border-[1px] text-sm font-medium ${
+              actualIndex === currentQuestionIndex
+                ? 'bg-[#85b4e9] text-white'
+                : isCorrect
+                ? 'bg-[#c9e4ca] text-black'
+                : isWrong
+                ? 'bg-[#FFB7B7] text-red-600'
+                : 'bg-green-100 text-black'
+            }`}
+          >
+            {actualIndex + 1}
+          </div>
+        );
+      })}
+        <button
+        onClick={handleNext}
+        disabled={currentPage === totalPages}
+        className={`text-sm rounded-md px-3 py-1 flex items-center  font-lato ${currentPage === totalPages ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500 text-white'}`}
+      >
+        Next
+      </button>
+      </>
         </div>
     
         <div className="flex flex-col items-start">
@@ -711,7 +779,8 @@ const quiz_results = () => {
             ) : null
           )}
         </div>
-      </div>)}
+      </div>
+    )}
  
 
 <div className='flex flex-col justify-end px-2 items-center'>

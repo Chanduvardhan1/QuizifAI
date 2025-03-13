@@ -223,6 +223,7 @@ export default function quiztype() {
   const [optionsArray, setoptionsArray] = useState("");
   const [questionsData, setquestionsData] = useState("");
   const [numQuestions, setNumQuestions] = useState();
+  const [numQuestions1, setNumQuestions1] = useState();
   const [questionDuration, setQuestionDuration] = useState(0);
   const [instructions, setInstructions] = useState([
     "Read all the instructions carefully before starting the quiz.",
@@ -1107,7 +1108,7 @@ setLoading(true);
         
         body: JSON.stringify({
           quiz_title: title,
-          num_questions: numQuestions,
+          num_questions: numQuestions1,
           quiz_description: description,
           quiz_category_name: selectedCategory,
           multi_answer: multiAnswer,
@@ -1129,6 +1130,7 @@ setLoading(true);
           premium_quiz_flag: showPackageFields,
           quiz_package_name: selectedPackageName,
           quiz_package_id: selectedPackageId,
+          total_quiz_questions:numQuestions,
           questions: questions.map((question) => ({
             question_text: question.question_text,
             correct_answer_description:question.correct_answer_description,
@@ -2482,10 +2484,46 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
       </div>
 
       {/* Number of Questions */}
-     
-      <div className="flex flex-col">
+      <div className="md:col-span-2">
+          
+          <div className="w-full flex gap-6">
+
+      <div className="w-full flex flex-col">
         <div className="w-full flex flex-row">
-        <label className="w-[65%] text-blue-800 font-semibold mb-2  ">Number of Questions<span className="text-red-500">*</span></label>
+        <label className="w-[85%] text-blue-800 font-semibold mb-2  ">Number of Questions<span className="text-red-500">*</span></label>
+      
+        <input
+                 type="number"
+                 className={ ` w-full border-transparent border-b-2 bg-[#f5f5f5] hover:border-blue-200 text-[11px] focus:outline-none `}
+                 placeholder="No of question"
+                 value={numQuestions1}
+                 onChange={(e) => { setNumQuestions1(e.target.value)
+                  
+                }}
+                //  onChange={(e) => {
+                //    const value = parseInt(e.target.value);
+                //    setNumQuestions(value);
+                //    setQuestions(
+                //      Array.from({ length: value }, () => ({
+                //        question_text: "",
+                //        options: [
+                //          { answer_option_text: "" },
+                //          { answer_option_text: "" },
+                //          { answer_option_text: "" },
+                //          { answer_option_text: "" },
+                //        ],
+                //      }))
+                //    );
+                //  }}
+               />
+
+        </div>
+      
+        <hr className={`h-[1px] w-full`} />
+      </div>
+      <div className="w-full flex flex-col">
+        <div className="w-full flex flex-row">
+        <label className="w-[126%] text-blue-800 font-semibold mb-2  ">Total Number of Questions<span className="text-red-500">*</span></label>
       
         <input
                  type="number"
@@ -2517,10 +2555,10 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
       
         <hr className={`h-[1px] w-full`} />
       </div>
-    
+      
      
       {/*  Quiz total marks*/}
-      <div className="flex flex-col">
+      <div className="w-full flex flex-col">
         <div className="w-full flex flex-row">
         <label className="w-[59%] text-blue-800 font-semibold mb-2"> Quiz total marks<span className="text-red-500">*</span></label>
       
@@ -2536,8 +2574,10 @@ const customOption = ({ data, innerRef, innerProps, isSelected }) => (
         </div>
       
         <hr className={`h-[1px] w-full`} />
+    
       </div>
-     
+      </div>
+      </div>
       {/* Complexity */}
       {/* <div className="flex flex-col">
         <div className="w-full flex flex-row">

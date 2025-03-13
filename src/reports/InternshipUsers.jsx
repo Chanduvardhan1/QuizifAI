@@ -17,7 +17,7 @@ import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
 import close from "../../src/assets/Images/images/dashboard/cancel.png"
 
 
-const subscription= () => {
+const InternshipUsers= () => {
   const [userName, setUserName] = useState("");
   const [globalRank, setGlobalRank] = useState("");
   const [globalScore, setGlobalScore] = useState("");
@@ -51,65 +51,70 @@ const subscription= () => {
   const [quizMasters, setQuizMasters] = useState([]);
 
   const [users, setUsers] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFirstName, setSelectedFirstName] = useState("");
   const [selectedEmail, setSelectedEmail] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
   const [selectedPlan, setSelectedPlan] = useState('Public');
 
-  const planOptions = [
-    'Public',
-    'Premium Lite',
-    'Premium',
-    'Organization Access',
-    'NTPL Internship'
-  ];
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState("");
+  const [selectedSemester, setSelectedSemester] = useState("");
+  const [selectedClass, setSelectedClass] = useState("");
 
   useEffect(() => {
-    fetchUsers('Public'); // Default fetch with 'Public' plan type
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch(
+          "https://dev.quizifai.com:8010/all-internshipsubscription-users-details/",
+          {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+              Authorization:
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDaGFuZHUgVmFyZGhhbiBLIiwiZXhwIjoyNTM0MDIzMDA3OTl9.5ilMoE-Jx72u-SPkaf853jN5VZIO0GzzlVjxJndnc-s",
+            },
+          }
+        );
+
+        const data = await response.json();
+        if (data.response === "success") {
+          setUsers(data.data);
+          setFilteredUsers(data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
   }, []);
 
-  const fetchUsers = (plan) => {
-    setUsers([]); // Clear existing data before fetching
-    setFilteredUsers([]);
-    const authToken = localStorage.getItem('authToken') || null;
-  
-    if (!authToken) {
-      console.error('No authToken found in localStorage.');
-      return;
+  // Function to handle filter changes
+  const handleFilterChange = () => {
+    let filtered = users;
+
+    if (selectedCourse) {
+      filtered = filtered.filter((user) => user.course === selectedCourse);
     }
-  
-    const encodedPlan = encodeURIComponent(plan);
-    fetch(`https://dev.quizifai.com:8010/all-subscription-users-details/?plan_type=${encodedPlan}`, {
-      method: 'GET',
-      headers: {
-        'accept': 'application/json',
-        Authorization: `Bearer ${authToken}`,
-      }
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.response === 'success') {
-        setUsers(data.data);
-        setFilteredUsers(data.data);
-      } else {
-        setUsers([]);
-        setFilteredUsers([]);
-      }
-    })
-    .catch((error) => {
-      console.error('Error fetching data:', error);
-      setUsers([]);
-      setFilteredUsers([]);
-    });
+
+    if (selectedSemester) {
+      filtered = filtered.filter(
+        (user) => user.pursuing_semester === selectedSemester
+      );
+    }
+
+    if (selectedClass) {
+      filtered = filtered.filter((user) => user.specialization === selectedClass);
+    }
+
+    setFilteredUsers(filtered);
   };
 
-  const handlePlanChange = (event) => {
-    const plan = event.target.value;
-    setSelectedPlan(plan);
-    fetchUsers(plan);
-  };
+  // Apply filters when dropdown values change
+  useEffect(() => {
+    handleFilterChange();
+  }, [selectedCourse, selectedSemester, selectedClass]);
 
   // Extract unique values for dropdowns
   const uniqueFirstNames = [...new Set(users.map((user) => user.first_name))];
@@ -242,88 +247,11 @@ const subscription= () => {
       },
     });
   };
-  const handleBackToLogin = () => {
-    const authToken = localStorage.getItem('authToken') || null;
-  
-    if (!authToken) {
-      console.error('No authToken found in localStorage.');
-      return;
-    }
-  
-    fetch('https://dev.quizifai.com:8010/usr_logout/', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${authToken}`,
-      },
-      body: JSON.stringify({
-        user_id: userId,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Logout response:', data);
-        if (data.response === 'success') {
-          localStorage.clear();
-          logout(); // Clear AuthContext
-          console.log('Navigating to login...');
-          navigate('/login'); // Navigate to login page
-        } else {
-          console.error('Logout failed:', data.response_message);
-        }
-      })
-      .catch((error) => {
-        console.error('Error logging out:', error);
-      });
-  };
-  // --------------***view image*** -------------- //
-const [photo, setPhoto] = useState(''); // State to store the image URL
-const [loading, setLoading] = useState(true); 
-const [error, setError] = useState(null);
 
-      const fetchProfileImage = async () => {
-        try {
-          const authToken = localStorage.getItem("authToken"); // Retrieve the auth token from localStorage
-                if (!authToken) {
-                  console.error("No authentication token found. Please log in again.");
-                  return;
-                }
-          const response = await fetch(`https://dev.quizifai.com:8010/view-profile_image?user_id=${userId}`, {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-              'accept': 'application/json',
-            },
-          });
-      
-          if (response.ok) {
-            const data = await response.json();
-            if (data.response === 'success') {
-              setPhoto(data.data); // Set the image URL from the response
-            } else {
-              setPhoto(defaultPhoto);
-            }
-          } else {
-            setPhoto(defaultPhoto);
-            // setError('Failed to fetch image');
-          }
-        } catch (error) {
-          setPhoto(defaultPhoto);
-          // setError('Error fetching image: ' + error.message);
-        } finally {
-          setLoading(false);
-        }
-      };
 
-      useEffect(() => {
-        fetchProfileImage();
-      }, []);
-// --------------***view image end*** -------------- //
 const handleBack = () => {
   navigate("/repoarts")
 };
-const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
 
 // const quizTitles = ['All', ...new Set(quizAttempts.map(quiz => quiz.quiz_title))];
 
@@ -473,63 +401,49 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
 
             <div className="flex gap-[5px] pl-[5px] justify-center items-center mb-4">
        
-            <div className="flex w-full gap-2 ">
-            <span className="text-[#F17530] text-[14px]">Filter by Plan Type</span>
-    <span className="text-[#F17530] text-[14px] ">: </span>
-
-              <span>
-              <select
-               className="py-1 px-2 text-[12px] rounded-md border" 
-               id="planType"
-               value={selectedPlan}
-               onChange={handlePlanChange}
-                >
-          {planOptions.map((plan) => (
-            <option key={plan} value={plan}>{plan}</option>
+            <div className="flex w-full gap-2 mb-4">
+        <span className="text-[#F17530] text-[14px]">Course:</span>
+        <select
+          className="py-1 px-2 text-[12px] w-[120px] rounded-md border"
+          value={selectedCourse}
+          onChange={(e) => setSelectedCourse(e.target.value)}
+        >
+          <option value="">All Courses</option>
+          {[...new Set(users.map((user) => user.course))].map((course) => (
+            <option key={course} value={course}>
+              {course}
+            </option>
           ))}
         </select>
-              </span>
 
-              <span className="text-[#F17530] text-[14px]">Course : </span>
-              <span>
-              <select className="py-1 px-2 text-[12px] w-[100px] rounded-md border" value={selectedEmail} onChange={(e) => setSelectedEmail(e.target.value)}>
-          <option value="">Course</option>
-          {/* {uniqueEmails.map((email) => (
-            <option key={email} value={email}>{email}</option>
-          ))} */}
-        </select>
-              </span>
-              <span className="text-[#F17530] text-[14px]">Semester : </span>
-              <span>
-              <select className="py-1 px-2 text-[12px] w-[100px] rounded-md border" value={selectedRole} onChange={(e) => setSelectedRole(e.target.value)}>
-          <option value="">Semester</option>
-          {/* {uniqueRoles.map((role) => (
-            <option key={role} value={role}>{role}</option>
-          ))} */}
-        </select>
-              </span>
-              <span className="text-[#F17530] text-[14px]">Class : </span>
-              <span>
-              <select className="py-1 px-2 text-[12px] w-[100px] rounded-md border" value={selectedRole} onChange={(e) => setSelectedRole(e.target.value)}>
-          <option value="">Class</option>
-          {/* {uniqueRoles.map((role) => (
-            <option key={role} value={role}>{role}</option>
-          ))} */}
-        </select>
-              </span>
-             
-
-
-              {/* <span className="text-[#F17530] text-[14px]">Organizations : </span>
-              <span>
-              <select className="py-1 px-2 w-[200px] text-[12px] rounded-md border" value={selectedOrganization} onChange={(e) => setSelectedOrganization(e.target.value)}>
-          <option value="">All Organizations</option>
-          {uniqueOrganizations.map((org) => (
-            <option key={org} value={org}>{org}</option>
+        <span className="text-[#F17530] text-[14px]">Semester:</span>
+        <select
+          className="py-1 px-2 text-[12px] w-[120px] rounded-md border"
+          value={selectedSemester}
+          onChange={(e) => setSelectedSemester(e.target.value)}
+        >
+          <option value="">All Semesters</option>
+          {[...new Set(users.map((user) => user.pursuing_semester))].map((sem) => (
+            <option key={sem} value={sem}>
+              {sem}
+            </option>
           ))}
         </select>
-              </span> */}
-              </div>
+
+        <span className="text-[#F17530] text-[14px]">Class:</span>
+        <select
+          className="py-1 px-2 text-[12px] w-[120px] rounded-md border"
+          value={selectedClass}
+          onChange={(e) => setSelectedClass(e.target.value)}
+        >
+          <option value="">All Classes</option>
+          {[...new Set(users.map((user) => user.specialization))].map((cls) => (
+            <option key={cls} value={cls}>
+              {cls}
+            </option>
+          ))}
+        </select>
+      </div>
               <div className="flex">
                 <input
                   type="search"
@@ -547,97 +461,56 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
 
 
             </div>
-        
-          <div className=" overflow-x-auto">
-    
-
-          <table className="min-w-full bg-gray-100  border border-gray-200 rounded-lg border-spacing-y-2 overflow-hidden">
-        <thead className="bg-[#CBF2FB]">
-          <tr className="text-[14px]">
-            <th className="py-2 px-4 border-b">User ID</th>
-            {/* <th className="py-2 px-4 border-b">Subscription ID</th>
-            <th className="py-2 px-4 border-b">Subscription Plan ID</th> */}
-            <th className="py-2 px-4 border-b">Subscription Plan Type</th>
-            <th className="py-2 px-4 border-b">User Name</th>
-            {/* {selectedPlan === 'NTPL Internship' && ( */}
-
-            <th className="py-2 px-4 border-b">Course</th>
-            {/* // )} */}
-            <th className="py-2 px-4 border-b">Email</th>
-            {/* {selectedPlan === 'Premium' && ( */}
-            <th className="py-2 px-4 border-b">Start Date</th>
-            {/* )} */}
-            {/* {selectedPlan === 'Premium' && ( */}
-
-            <th className="py-2 px-4 border-b">End Date</th>
-            {/* // )} */}
-            <th className="py-2 px-4 border-b">Subscription Status</th>
-
-          </tr>
-        </thead>
-        {filteredUsers.length > 0 ? (
-        <tbody>
-          
-          {filteredUsers.map((user) => (
-            <tr key={user.user_id} className="bg-white hover:bg-gray-100 active:bg-green-200 text-[12px]">
-              <td className="py-2 px-4 border-b text-center">{user.user_id}</td>
-              {/* <td className="py-2 px-4 border-b text-center">{user.subscription_id}</td>
-              <td className="py-2 px-4 border-b text-center">{user.subscription_plan_id}</td> */}
-              <td className="py-2 px-4 border-b text-start">{user.plan_type}</td>
-              <td className="py-2 px-4 border-b text-start">{user.user_full_name}</td>
-              {/* {selectedPlan === 'NTPL Internship' && ( */}
-
-              <td className="py-2 px-4 border-b text-start">N/A</td>
-              {/* )} */}
-              <td className="py-2 px-4 border-b text-start">{user.user_email}</td>
-              {/* {user.plan_type === 'Premium' && ( */}
-              <td className="py-2 px-4 border-b text-start">{user.start_date}</td>
-              {/* // )} */}
-              {/* {user.plan_type === 'Premium' && ( */}
-              <td className="py-2 px-4 border-b text-start">{user.end_date}</td>
-              {/* ) } */}
-
-              <td className="py-2 px-4 border-b text-center">{user.subscription_status}</td>
+            <div className="overflow-x-auto">
+        <table className="min-w-full bg-gray-100 border border-gray-200 rounded-lg border-spacing-y-2 overflow-hidden">
+          <thead className="bg-[#CBF2FB]">
+            <tr className="text-[14px]">
+              <th className="py-2 px-4 border-b">User ID</th>
+              <th className="py-2 px-4 border-b">First Name</th>
+              <th className="py-2 px-4 border-b">Last Name</th>
+              <th className="py-2 px-4 border-b">Email</th>
+              <th className="py-2 px-4 border-b">Phone</th>
+              <th className="py-2 px-4 border-b">College</th>
+              <th className="py-2 px-4 border-b">University</th>
+              <th className="py-2 px-4 border-b">Course</th>
+              <th className="py-2 px-4 border-b">Specialization</th>
+              <th className="py-2 px-4 border-b">Year</th>
+              <th className="py-2 px-4 border-b">Semester</th>
+              <th className="py-2 px-4 border-b">Internship Start</th>
+              <th className="py-2 px-4 border-b">Internship End</th>
+              <th className="py-2 px-4 border-b">Internship Status</th>
+              <th className="py-2 px-4 border-b">Subscription Status</th>
+              <th className="py-2 px-4 border-b">Subscription Start</th>
+              <th className="py-2 px-4 border-b">Subscription End</th>
+              <th className="py-2 px-4 border-b">Verification Status</th>
             </tr>
-          ))}
-        </tbody>
-          ) : (
-            <tr>
-            <td
-              colSpan="9"
-              className="px-4 py-2 text-center text-[#214082] font-bold text-[12px]"
-            >
-              No data available
-            </td>
-          </tr>          )}
-      </table>
-      
-            {/* <div className="flex justify-between mt-4">
-              <button
-                className="flex gap-1 items-center cursor-pointer"
-                disabled={currentPage === 1}
-              >
-                <img
-                  className="h-3 w-3 rotate-180"
-                  src={GreaterThan}
-                  alt="Previous icon"
-                />
-                <h1 className="text-[#F17530]">Previous</h1>
-              </button>
-              <span>
-                Page {currentPage} of{" "}
-                {Math.ceil(sortedQuizzes.length / rowsPerPage)}
-              </span>
-              <button
-                className="flex gap-1 items-center cursor-pointer"
-                onClick={handleNext}
-                disabled={indexOfLastRow >= quizDetails.length}
-              >
-                <h1 className="text-[#F17530]">Next</h1>
-                <img className="h-3 w-3" src={GreaterThan} alt="Next icon" />
-              </button>
-            </div> */}
-          </div>
+          </thead>
+          <tbody>
+            {filteredUsers.map((user, index) => (
+              <tr key={index} className="bg-white hover:bg-gray-100 text-[12px]">
+                <td className="py-2 px-4 border-b text-center">{user.user_id || "N/A"}</td>
+                <td className="py-2 px-4 border-b text-start">{user.first_name || "N/A"}</td>
+                <td className="py-2 px-4 border-b text-start">{user.last_name || "N/A"}</td>
+                <td className="py-2 px-4 border-b text-start">{user.user_email || "N/A"}</td>
+                <td className="py-2 px-4 border-b text-center">{user.user_phone_number || "N/A"}</td>
+                <td className="py-2 px-4 border-b text-start">{user.college_name || "N/A"}</td>
+                <td className="py-2 px-4 border-b text-start">{user.university_name || "N/A"}</td>
+                <td className="py-2 px-4 border-b text-center">{user.course || "N/A"}</td>
+                <td className="py-2 px-4 border-b text-center">{user.specialization || "N/A"}</td>
+                <td className="py-2 px-4 border-b text-center">{user.pursuing_year || "N/A"}</td>
+                <td className="py-2 px-4 border-b text-center">{user.pursuing_semester || "N/A"}</td>
+                <td className="py-2 px-4 border-b text-center">{user.internship_start_date || "N/A"}</td>
+                <td className="py-2 px-4 border-b text-center">{user.internship_end_date || "N/A"}</td>
+                <td className="py-2 px-4 border-b text-center">{user.internship_status || "N/A"}</td>
+                <td className="py-2 px-4 border-b text-center">{user.subscription_status || "N/A"}</td>
+                <td className="py-2 px-4 border-b text-center">{user.subscription_start_date || "N/A"}</td>
+                <td className="py-2 px-4 border-b text-center">{user.subscription_end_date || "N/A"}</td>
+                <td className="py-2 px-4 border-b text-center">{user.verification_status || "N/A"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
         </div>
         {/* <LogoutBar /> */}
       </div>
@@ -645,4 +518,4 @@ const [selectedQuizTitle, setSelectedQuizTitle] = useState('All');
   );
 };
 
-export default subscription;
+export default InternshipUsers;

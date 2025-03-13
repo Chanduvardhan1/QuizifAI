@@ -109,6 +109,8 @@ const reportsData = [
           // 'Organization Overview',
           'Quiz Master Performance',
           'All Users SuperAdmin',
+          'Subscription',
+          'InternshipUsers',
           // 'Super Admin Metrics',
           // 'User List Across Organizations',
           // 'Organization-Wide Quiz Summary',
@@ -280,7 +282,9 @@ const repoarts = () => {
   const handleQuizMasterPerformancesuperadmin = () => handleRestrictedClick5("/Superadminquizmaster");
   const handleAllUsersSuperAdmin = () => handleRestrictedClick5("/Superadminallusers");
   const handleUserSummaryReport = () => handleRestrictedClick5("/Superadminsummary");
-
+  
+  const handleSubscription = () => handleRestrictedClick5("/Subscriptionreports");
+const handleInternshipUsers =() => handleRestrictedClick5("/InternshipUsers");
 
   const  handleMyQuizAttemtDetails =  () => {
     navigate('/Myquizattemtdetails');
@@ -458,6 +462,10 @@ const  handleMyHistory =() => {
                   ? handleQuizMasterPerformancesuperadmin     
                   : reportItem === "All Users SuperAdmin"
                   ? handleAllUsersSuperAdmin  
+                  : reportItem === "Subscription" 
+                  ? handleSubscription 
+                  : reportItem === "InternshipUsers"
+                  ? handleInternshipUsers 
                   : reportItem === "User Summary Report"
                   ? handleUserSummaryReport 
                   : reportItem === "Users Quiz Report"

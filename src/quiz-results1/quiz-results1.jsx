@@ -236,7 +236,7 @@ const topThree = leaderboardData.slice(0, 3);
     </div>
 
     {/* Description */}
-    <p className="text-[#00008b] w-[80%] line-clamp-2 text-sm mt-1">
+    <p className="text-[#00008b] w-full line-clamp-2 text-sm mt-1">
     {quizdescription}
     </p>
 
@@ -263,7 +263,7 @@ const topThree = leaderboardData.slice(0, 3);
             alt="User"
             className="w-[18px] h-[18px] mr-1"
           />
-          <span className="ml-1 text-sm">{createdby}</span>
+          <span className="ml-1 text-sm">Created By : {createdby}</span>
         </div>
         <div className="flex items-center">
           <img
@@ -271,7 +271,7 @@ const topThree = leaderboardData.slice(0, 3);
             alt="Calendar"
             className="w-[18px] h-[18px] mr-1"
           />
-          <span className="ml-1 text-sm">{quizcreatedate}</span>
+          <span className="ml-1 text-sm">Created On :{quizcreatedate}</span>
         </div>
       </div>
 
@@ -299,7 +299,7 @@ const topThree = leaderboardData.slice(0, 3);
             alt="Timer"
             className="w-[18px] h-[18px] mr-1"
           />
-          <span className="ml-1 text-sm">{quizattempts} Attemts</span>
+          <span className="ml-1 text-sm">{quizattempts} Total Attempts</span>
         </div>
         <div className="flex items-center">
           <img
@@ -307,7 +307,7 @@ const topThree = leaderboardData.slice(0, 3);
             alt="Timer"
             className="w-[18px] h-[18px] mr-1"
           />
-          <span className="ml-1 text-sm">{quizMetrics.highest_score}% High Score</span>
+          <span className="ml-1 text-sm">{quizMetrics.highest_score} High Score</span>
         </div>
         <div className="flex items-center">
           <img

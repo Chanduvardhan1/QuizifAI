@@ -43,7 +43,7 @@ import comment from "../../src/assets/Images/quiz-type/comment.png"
 import Modal from "react-modal";
 import { CircularProgress } from "@mui/material";
 import Skeleton from "react-loading-skeleton"; // Install using npm install react-loading-skeleton
-
+import Topnavbar from "../Topnavbar/topnavbar.jsx";
 // import view1 from "../../public/view1.png";
 import newView from "../../public/newview.png";
 // import NonAtemptedCard from "../../src/commonCard/nonAttemtedCard.jsx";
@@ -468,7 +468,7 @@ const Dashboard = () => {
       return;
     }
     // Check if the quiz is premium and the user is not a premium subscriber
-    if (premiumQuizFlag && subscriptionType !== "Premium") {
+    if (premiumQuizFlag && subscriptionType !== "Premium" && subscriptionType !== "NTPL Internship") {
       setIsPremiumModalOpen(true); // Show modal for upgrading to premium
       return;
     }
@@ -558,7 +558,7 @@ const Dashboard = () => {
     }
   
     // Check if the quiz is premium and the user does not have a premium subscription
-    if (premiumQuizFlag && subscriptionType !== "Premium") {
+    if (premiumQuizFlag && subscriptionType !== "Premium" && subscriptionType !== "NTPL Internship") {
       setIsPremiumModalOpen(true); // Show modal for upgrading to premium
       return;
     }
@@ -951,8 +951,8 @@ const Dashboard = () => {
       <Navigation />
       <ToastContainer />
       <div className={styles.mainContent}>
-        <div className={styles.header}>
-          {/* Header content */}
+      <Topnavbar/>
+        {/* <div className={styles.header}>
           <p>
             <span className={styles.Welcome}>Welcome</span>{" "}
             {username.charAt(0).toUpperCase() + username.slice(1)}
@@ -960,20 +960,8 @@ const Dashboard = () => {
 
 <div>
           <div className="flex gap-[10px]">
-          {/* {(userRole === "Quiz Master") && (
-
-<div className="w-[115px] h-[41px]  rounded-[10px] bg-[#fee2e2]">
-  <div className="flex cursor-pointer"  onClick={createQuizbyquizmaster}>
-
-    <a
-      className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
-    >
-       Created Quizzes
-    </a>
-  </div>
-</div>
-
-            )}   */}
+           
+      
             {(userRole === "Admin" || userRole === "Super Admin") && (
 
               <div className="w-[99px] h-[41px]  rounded-[10px] bg-[#fee2e2]">
@@ -1019,32 +1007,12 @@ const Dashboard = () => {
   alt="Logout Icon"
   className="w-5 h-5 cursor-pointer "
 />
-{/* <p className="text-[#002366] text-[14px]">Logout</p> */}
+<p className="text-[#002366] text-[14px]">Logout</p>
 </div>
           </div>
-          {/* <div className={styles.headerRight1}>
-            {userRole === "Quiz Master" && (
-              
-              <div className="w-[99px] h-[41px]  mr-[80px] mb-2 pb-2 -mt-[35px] rounded-[10px] bg-[#fee2e2]">
-                <div className="flex">
-                  <img
-                    className="w-[25px] h-[25px] ml-2 mt-2"
-                    src={Plus}
-                    alt="Plus Icon"
-                  />
-                  <a
-                    onClick={createQuiz}
-                    className="hover:underline underline-offset-2 cursor-pointer font-Poppins font-medium text-[12px] leading-[18px] text-[#214082] ml-2 mt-3"
-                  >
-                    Quiz
-                  </a>
-                </div>
-              </div>
-              
-            )}
-          </div> */}
+        
           </div>
-        </div>
+        </div> */}
         {/* <div className={styles.completionInfo}>
           <p>
             {weeklyQuizCount > 0 && averageScorePercentage > 0
@@ -1074,8 +1042,30 @@ const Dashboard = () => {
               Recently Added Quizzes
             </p>
             </div>
-           
+            <div className="flex gap-2 ">
+              <div className="flex gap-1 justify-start items-center border-[1px] border-[#84acfa] p-1 rounded-full">
+                <div className=" bg-[#84acfa] w-2 h-2"></div>
+<div className="text-[14px] text-[#84acfa]">Not Attempted</div>
+
+              </div>
+              <div className="flex gap-1 justify-start items-center border-[1px] border-[#fba0e3] p-1 rounded-full">
+                <div className=" bg-[#fba0e3]  w-2 h-2"></div>
+<div className="text-[14px] text-[#fba0e3]">Attempted</div>
+
+              </div>
+              <div className="flex gap-1 justify-start items-center border-[1px] border-[#81c784] p-1 rounded-full">
+                <div className=" bg-[#81c784]  w-2 h-2"></div>
+<div className="text-[14px] text-[#81c784]" >No Retake Available</div>
+
+              </div>
+              <div className="flex gap-1 justify-start items-center border-[1px] border-[#A7A7A7] p-1 rounded-full">
+                <div className=" bg-[#A7A7A7]  w-2 h-2"></div>
+<div className="text-[14px] text-[#A7A7A7]">Disabled</div>
+
+              </div>
+            </div>
             <div className="flex justify-end">
+          
             <div className="flex justify-end items-center">
         <label className="font-Poppins text-[#214082] font-medium text-[15px] ml-[10px]">
         Premium Quizzes <span className="text-red-500"></span>
@@ -1190,7 +1180,7 @@ const Dashboard = () => {
                   shouldShowQuiz  &&
                   // (isQuizMaster || isActiveForOthers) && 
                   quizItem.latest_flag === "Y" &&
-                  quizItem.active_flag?.toLowerCase() !== "i" && // Exclude inactive quizzes
+                  quizItem.active_flag !== "i" && // Exclude inactive quizzes
                   quizItem.active_flag !== "false" && 
                   currentDate >= quizCreateDate &&
                   (quizEndDate === null || currentDate <= quizEndDate)
@@ -1414,21 +1404,22 @@ const Dashboard = () => {
       src={disable}
       alt="Disable icon"
     />
-                             {quizItem.active_flag ?.toLowerCase() != "true"  ? 
+   {String(quizItem.active_flag).toLowerCase() !== "true" ? (
+  <span
+    className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
+    onClick={handleEnableOnClick}
+  >
+    Enable
+  </span>
+) : (
+  <span
+    className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
+    onClick={() => setModalIsOpen1(true)}
+  >
+    Disable
+  </span>
+)}
 
-<span
-  className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
-  onClick={handleEnableOnClick}
->
-  Enable
-</span>:
-<span
-  className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
-  onClick={() => setModalIsOpen1(true)}
->
-  Disable
-</span>
-}
    
   <Modal
                                       isOpen={modalIsOpen1}
@@ -2195,21 +2186,22 @@ className="w-2 h-2 mr-1 cursor-pointer"
 src={disable}
 alt="Disable icon"
 />
-{quizItem.active_flag ?.toLowerCase() != "true"  ? 
+{String(quizItem.active_flag).toLowerCase() !== "true" ? (
+  <span
+    className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
+    onClick={handleEnableOnClick}
+  >
+    Enable
+  </span>
+) : (
+  <span
+    className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
+    onClick={() => setModalIsOpen1(true)}
+  >
+    Disable
+  </span>
+)}
 
-<span
-  className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
-  onClick={handleEnableOnClick}
->
-  Enable
-</span>:
-<span
-  className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
-  onClick={() => setModalIsOpen1(true)}
->
-  Disable
-</span>
-}
 
 <Modal
                                       isOpen={modalIsOpen1}
@@ -2826,7 +2818,7 @@ alt="Disable icon"
                   // (isQuizMaster || isActiveForOthers) && 
                   // quizItem.active_flag === "true" &&
                   quizItem.popularity_flag === "Y" &&
-                  quizItem.active_flag?.toLowerCase() !== "i" && // Exclude inactive quizzes
+                  quizItem.active_flag !== "i" && // Exclude inactive quizzes
       quizItem.active_flag !== "false" && 
                   currentDate >= quizCreateDate &&
                   (quizEndDate === null || currentDate <= quizEndDate)
@@ -3055,21 +3047,22 @@ alt="Disable icon"
       src={disable}
       alt="Disable icon"
     />
-                            {quizItem.active_flag ?.toLowerCase() != "true"  ? 
+            {String(quizItem.active_flag).toLowerCase() !== "true" ? (
+  <span
+    className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
+    onClick={handleEnableOnClick}
+  >
+    Enable
+  </span>
+) : (
+  <span
+    className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
+    onClick={() => setModalIsOpen1(true)}
+  >
+    Disable
+  </span>
+)}
 
-<span
-  className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
-  onClick={handleEnableOnClick}
->
-  Enable
-</span>:
-<span
-  className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
-  onClick={() => setModalIsOpen1(true)}
->
-  Disable
-</span>
-}
    
   <Modal
                                       isOpen={modalIsOpen1}
@@ -3766,21 +3759,22 @@ src={quizItem.photo1 || back}
        src={disable}
        alt="Disable icon"
        />
-                               {quizItem.active_flag ?.toLowerCase() != "true"  ? 
+   {String(quizItem.active_flag).toLowerCase() !== "true" ? (
+  <span
+    className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
+    onClick={handleEnableOnClick}
+  >
+    Enable
+  </span>
+) : (
+  <span
+    className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
+    onClick={() => setModalIsOpen1(true)}
+  >
+    Disable
+  </span>
+)}
 
-<span
-  className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
-  onClick={handleEnableOnClick}
->
-  Enable
-</span>:
-<span
-  className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
-  onClick={() => setModalIsOpen1(true)}
->
-  Disable
-</span>
-}
        
   <Modal
                                       isOpen={modalIsOpen1}

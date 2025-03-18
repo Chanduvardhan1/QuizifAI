@@ -136,7 +136,7 @@ import Databaseauditsummary from "./reports/databaseauditsummary.jsx";
 import Subscriptionreports from "./reports/subscription.jsx";
 import Questionview from "./questionview/questionview.jsx";
 import InternshipUsers from "./reports/InternshipUsers.jsx";
-
+import Topnavbar from "./Topnavbar/topnavbar.jsx";
 import Organizationcontactus from "./organization_contactus/contactus.jsx";
 export default () => {
     return [
@@ -367,6 +367,11 @@ export default () => {
         {
             path:'login',
             component: Login
+    
+        },
+        {
+            path:'Topnavbar',
+            component: Topnavbar
     
         },
         {

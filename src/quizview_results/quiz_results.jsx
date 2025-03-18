@@ -484,7 +484,7 @@ const quiz_results = () => {
       </div>
 
       {/* Description */}
-      <p className="text-[#00008b] w-[80%] line-clamp-2 text-sm mt-1">
+      <p className="text-[#00008b] w-full line-clamp-2 text-sm mt-1">
       {quizData.quiz_description}
       </p>
 
@@ -511,7 +511,7 @@ const quiz_results = () => {
               alt="User"
               className="w-[18px] h-[18px] mr-1"
             />
-            <span className="ml-1 text-sm">{`${quizData.created_by}`}</span>
+            <span className="ml-1 text-sm">Created By : {`${quizData.created_by}`}</span>
           </div>
           <div className="flex items-center">
             <img
@@ -519,7 +519,7 @@ const quiz_results = () => {
               alt="Calendar"
               className="w-[18px] h-[18px] mr-1"
             />
-            <span className="ml-1 text-sm">{`${quizData.created_on}`}</span>
+            <span className="ml-1 text-sm">Created On :{`${quizData.created_on}`}</span>
           </div>
         </div>
 
@@ -547,7 +547,7 @@ const quiz_results = () => {
               alt="Timer"
               className="w-[18px] h-[18px] mr-1"
             />
-            <span className="ml-1 text-sm">{quizData.quiz_statistics?.total_attempts} Attemts</span>
+            <span className="ml-1 text-sm">{quizData.quiz_statistics?.total_attempts} Total Attempts</span>
           </div>
           <div className="flex items-center">
             <img
@@ -555,7 +555,7 @@ const quiz_results = () => {
               alt="Timer"
               className="w-[18px] h-[18px] mr-1"
             />
-            <span className="ml-1 text-sm">{quizData.quiz_statistics?.highest_score}% High Score</span>
+            <span className="ml-1 text-sm">{quizData.quiz_statistics?.highest_score} High Score</span>
           </div>
           <div className="flex items-center">
             <img
@@ -575,12 +575,12 @@ const quiz_results = () => {
          <div class="w-[50%] text-center p-4">
          <div class="">
        
-           <div class="flex items-center justify-center">
-             <span class="inline-block h-[1px] bg-blue-900 w-[80px] mr-[5px]"></span>
-             <label class="text-[#d98b19] font-lato text-[18px] font-semibold">Your Attempt Details</label>
-             <span class="inline-block h-[1px] bg-blue-900 w-[80px] ml-[5px]"></span>
-           </div>
-         </div>
+       <div class="flex items-center justify-center">
+ <span class="flex-1 h-[1px] bg-blue-900 mr-[5px]"></span>
+ <label class="text-[#d98b19] font-lato text-[18px] font-semibold">Your Attempt Details</label>
+ <span class="flex-1 h-[1px] bg-blue-900 ml-[5px]"></span>
+</div>
+    </div>
        
          <div class="relative flex justify-center flex-col items-center">
            <label class="absolute top-[40%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 text-[50px] text-blue-900 font-bold font-lato">{quizData.rank}</label>
@@ -589,7 +589,7 @@ const quiz_results = () => {
          </div>
        
          <div class="w-full flex items-center">
-         <div class="w-full flex justify-center items-center flex-col gap-4 sm:w-[50%]">
+         <div class="w-full flex justify-center items-center flex-col gap-4 ml-[13px] sm:w-[50%]">
          <div class="w-[210px] h-[5vh] flex items-center">
            <img class="h-[30px] w-[30px]" src={dateIcon} alt="Calendar Icon" />
            <span class="ml-2 font-lato font-bold text-[15px] text-blue-900">{quizData.quiz_start_date}</span>
@@ -640,7 +640,15 @@ const quiz_results = () => {
        
        </div>
       ):(
-      <div className="w-[80%] rounded-2xl bg-white">
+      <div className="w-[80%] p-4 rounded-2xl bg-white">
+         <div class="">
+       
+       <div class="flex items-center justify-center">
+ <span class="flex-1 h-[1px] bg-blue-900 mr-[5px]"></span>
+ <label class="text-[#d98b19] font-lato text-[18px] font-semibold">Your Attempt Details</label>
+ <span class="flex-1 h-[1px] bg-blue-900 ml-[5px]"></span>
+</div>
+    </div>
         <div className="flex py-1 items-end justify-end ">
            <button
              onClick={handleToggleAnswers}
@@ -715,7 +723,7 @@ const quiz_results = () => {
                     return (
                       <div
                         key={IDXx}
-                        className={` mt-3 flex items-center px-4 `}
+                        className={` mt-3 flex items-center `}
                       >
                          <div
                       className={`mr-2 font-normal font-[lato] w-[40px] rounded-[5px] h-[37px] p-[8px] bg-[#E8E9E8] border-[1px] border-solid border-[#D3D3D3] flex justify-center text-center items-center text-[14px]  ${
@@ -770,7 +778,7 @@ const quiz_results = () => {
                 </div> */}
     
                 {/* Correct Answer Description */}
-                <div className="correct-answer-description mt-4 ml-6">
+                <div className="correct-answer-description mt-4">
                   <span className="description-text">
                  <span className=' font-semibold text-[#000085]'>Answer Description :</span>  {question.correct_answer_description}
                   </span>

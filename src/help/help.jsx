@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 // import help from "../../src/assets/Images/dashboard/communication.png"
 import help from "../../public/chatbots1.png";
 import { CircularProgress } from "@mui/material";
+import Topnavbar from "../Topnavbar/topnavbar.jsx";
 
 const HelpDesk = () => {
     const navigate = useNavigate();
@@ -370,15 +371,16 @@ const handleMytickets = ()=> {
     <CircularProgress size={40} color="primary" />
   </div>
 )}
-        <div className="flex flex-col  flex-1 p-4 pt-12 gap-2">
-           <div className=" absolute top-3 right-3 cursor-pointer">
+        <div className="flex flex-col  flex-1  gap-2">
+        <Topnavbar/>
+           {/* <div className=" absolute top-3 right-3 cursor-pointer">
                     <img
                         src={LogoutIcon}
                         onClick={handleBackToLogin}
                         alt="Logout Icon"
                         className="w-5 h-5 cursor-pointer "
                       />
-                  </div>
+                  </div> */}
           {/* <div className="w-1/3 bg-gray-100 h-screen mt-[-30px] rounded-lg flex flex-col items-center justify-center p-8 relative">
             <img
               src={help}
@@ -395,7 +397,7 @@ const handleMytickets = ()=> {
   Start Over
 </button>
           </div> */}
-          <div className='flex justify-end'>
+          <div className='flex justify-end px-4'>
      <button
   onClick={resetState}
   className={`  px-[20px] p-[5px] bg-[#3B61C8] text-white font-semibold rounded-[10px] hover:bg-[#3B61C8]
@@ -406,7 +408,7 @@ const handleMytickets = ()=> {
   Start Over
 </button>
 </div>
-<div className='flex gap-2 w-full'>
+<div className='flex gap-2 w-full px-4'>
 
 
 <div  className="w-1/3 bg-white shadow-md h-screen  rounded-lg flex flex-col items-center justify-center p-8 relative">

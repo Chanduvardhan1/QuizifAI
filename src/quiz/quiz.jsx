@@ -47,6 +47,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch'
 import crown from "../../src/assets/Images/dashboard/image (16).png";
 import { CircularProgress } from "@mui/material";
+import Topnavbar from "../Topnavbar/topnavbar.jsx";
 
 // Modal.setAppElement(el);
 const Quiz = () => {
@@ -663,7 +664,7 @@ const [multiAnswer, setMultiAnswer] = useState(false);
       }
 
     // Check if the quiz is premium and the user is not a premium subscriber
-    if (premiumQuizFlag && subscriptionType !== "Premium") {
+    if (premiumQuizFlag && subscriptionType !== "Premium" && subscriptionType !== "NTPL Internship") {
       setIsPremiumModalOpen(true); // Show modal for upgrading to premium
       return;
     }
@@ -737,7 +738,7 @@ const [multiAnswer, setMultiAnswer] = useState(false);
      }
  
      // Check if the quiz is premium and the user does not have a premium subscription
-     if (premiumQuizFlag && subscriptionType !== "Premium") {
+     if (premiumQuizFlag && subscriptionType !== "Premium" && subscriptionType !== "NTPL Internship") {
        setIsPremiumModalOpen(true); // Show modal for upgrading to premium
        return;
      }
@@ -1140,13 +1141,15 @@ const [multiAnswer, setMultiAnswer] = useState(false);
       <Navigation />
       <ToastContainer />
       <div className={styles.mainContent}>
+      <Topnavbar/>
         <div className={styles.header}>
-          {/* Header content */}
-          <p className="-mt-[5px]">
+          {/* <p className="-mt-[5px]">
             <span className="text-[20px]">Welcome</span>{" "}
             {username.charAt(0).toUpperCase() + username.slice(1)}
-          </p>
+          </p> */}
+          <p></p>
           <div className={styles.headerRight}>
+       
           <div className="flex justify-end items-center">
                     <label className="font-Poppins text-[#214082] font-medium text-[15px] mr-[10px]">
                     Premium Quizzes <span className="text-red-500"></span>
@@ -1192,15 +1195,15 @@ const [multiAnswer, setMultiAnswer] = useState(false);
                 onChange={handleSearchChange}
               />
             </div>
-            <div className="flex flex-col justify-center items-center">
+            {/* <div className="flex flex-col justify-center items-center">
   <img
     src={LogoutIcon}
     onClick={handleBackToLogin}
     alt="Logout Icon"
     className="w-5 h-5 cursor-pointer"
   />
-  {/* <p className="text-[#002366] text-[14px]">Logout</p> */}
-</div>
+  <p className="text-[#002366] text-[14px]">Logout</p>
+</div> */}
           </div>
         </div>
         {/* <div
@@ -1233,8 +1236,8 @@ const [multiAnswer, setMultiAnswer] = useState(false);
                 </div> */}
           <div className={styles.infoCards}>
            
-            <div className={styles.sortBy}>
-              <div className="flex flex-wrap gap-[20px] mb-3  border-none px-2 ml-[7px] -mr-[20px] mx-auto mt-[10px] rounded-md">
+            <div className="flex gap-2">
+              <div className=" flex gap-2 pb-2 ml-[16px]">
                 <div className="flex-1 min-w-[10px]">
                   <Select
                     isMulti
@@ -1253,7 +1256,7 @@ const [multiAnswer, setMultiAnswer] = useState(false);
                     placeholder="Date Range"
                   />
                 </div>
-                <div className="flex-1 min-w-[150px]">
+                {/* <div className="flex-1 min-w-[150px]">
                   <Select
                     isMulti
                     options={popularity.map((plr) => ({
@@ -1338,11 +1341,11 @@ const [multiAnswer, setMultiAnswer] = useState(false);
                   styles={customStyles}
                   placeholder="Classes"
                 />
-                </div>
-              </div>
-              <div className="flex flex-wrap gap-[20px] mb-3  w-full border-none px-2 ml-[7px] -mr-[20px] mx-auto mt-[10px] rounded-md">
+                </div> */}
+            
+              {/* <div className=""> */}
                 {/* complexity    */}
-                {/* <div className="flex-1 min-w-[150px]"> */}
+                <div className="flex-1 min-w-[150px]">
                 <Select
                   isMulti
                   options={complexities.map((complex) => ({
@@ -1359,8 +1362,8 @@ const [multiAnswer, setMultiAnswer] = useState(false);
                   styles={customStyles}
                   placeholder="Complexity"
                 />
-                {/* </div> */}
-                {/* <div className="flex-1 min-w-[150px]"> */}
+                </div>
+                <div className="flex-1 min-w-[150px]">
                 <Select
                   isMulti
                   options={createdBy.map((ctdBy) => ({
@@ -1377,11 +1380,33 @@ const [multiAnswer, setMultiAnswer] = useState(false);
                   styles={customStyles}
                   placeholder="Created By"
                 />
-                {/* </div> */}
-                
+                </div>
+                </div>
                 
                 {/* CreatedBy   */}
             
+              {/* </div> */}
+            </div>
+            <div className="flex gap-2 mr-8 mb-2">
+              <div className="flex gap-1 justify-start items-center border-[1px] border-[#84acfa] p-1 rounded-full">
+                <div className=" bg-[#84acfa] w-2 h-2"></div>
+<div className="text-[14px] text-[#84acfa]">Not Attempted</div>
+
+              </div>
+              <div className="flex gap-1 justify-start items-center border-[1px] border-[#fba0e3] p-1 rounded-full">
+                <div className=" bg-[#fba0e3]  w-2 h-2"></div>
+<div className="text-[14px] text-[#fba0e3]">Attempted</div>
+
+              </div>
+              <div className="flex gap-1 justify-start items-center border-[1px] border-[#81c784] p-1 rounded-full">
+                <div className=" bg-[#81c784]  w-2 h-2"></div>
+<div className="text-[14px] text-[#81c784]" >No Retake Available</div>
+
+              </div>
+              <div className="flex gap-1 justify-start items-center border-[1px] border-[#A7A7A7] p-1 rounded-full">
+                <div className=" bg-[#A7A7A7]  w-2 h-2"></div>
+<div className="text-[14px] text-[#A7A7A7]">Disabled</div>
+
               </div>
             </div>
           </div>
@@ -1475,14 +1500,14 @@ const [multiAnswer, setMultiAnswer] = useState(false);
                   return (
                     shouldShowQuiz &&
                     // (isQuizMaster || isActiveForOthers) &&
-                    quizItem.active_flag?.toLowerCase() !== "i" && // Exclude inactive quizzes
+                    quizItem.active_flag !== "i" && // Exclude inactive quizzes
       quizItem.active_flag !== "false" && 
                     currentDate >= quizCreateDate &&
                     (quizEndDate === null || currentDate <= quizEndDate)
                   );
                 })
                 .map((quizItem, index) => (
-                  <div className={quizItem?.active_flag?.toLowerCase() != "true" ? "quizDisabled" : ""} key={index}>
+                  <div className={quizItem?.active_flag != "true" ? "quizDisabled" : ""} key={index}>
                     {quizItem.attempt_flag === "Y" ? (
                       <div className="quiz-list">
 
@@ -1618,21 +1643,22 @@ const [multiAnswer, setMultiAnswer] = useState(false);
     src={disable}
     alt="Disable icon"
   />
-   {quizItem?.active_flag?.toLowerCase() != "true"  ? 
+ {String(quizItem.active_flag).toLowerCase() !== "true" ? (
   <span
     className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
     onClick={handleEnableOnClick}
-
   >
     Enable
   </span>
-:
+) : (
   <span
     className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
     onClick={() => setModalIsOpen1(true)}
   >
     Disable
-  </span>}
+  </span>
+)}
+
 
   <Modal
                                       isOpen={modalIsOpen1}
@@ -2568,21 +2594,22 @@ const [multiAnswer, setMultiAnswer] = useState(false);
     src={disable}
     alt="Disable icon"
   />
-                                      {quizItem.active_flag ?.toLowerCase() != "true"  ? 
-
+      {String(quizItem.active_flag).toLowerCase() !== "true" ? (
   <span
     className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
     onClick={handleEnableOnClick}
   >
     Enable
-  </span>:
+  </span>
+) : (
   <span
     className="text-[#00008b] text-[12px] cursor-pointer hover:underline"
     onClick={() => setModalIsOpen1(true)}
   >
     Disable
   </span>
-}
+)}
+
 <Modal
                                       isOpen={modalIsOpen1}
                                       onRequestClose={() =>

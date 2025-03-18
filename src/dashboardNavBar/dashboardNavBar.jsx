@@ -223,6 +223,7 @@ import defaultPhoto from '../../src/assets/Images/dashboard/empty image.png'
 import { useNavigate } from "react-router-dom";
 import questionmark from "../assets/Images/images/dashboard/questionmark.png";
 import card from "../../src/assets/Images/dashboard/image (6).png"
+import info from "../../src/assets/Images/dashboard/info.png"
 import profileIcon from "../../public/profilepage.png";
 import global1 from "../../src/assets/Images/dashboard/image (13).png";
 // import myHistoryIcon from "../../public/myhistory.png"
@@ -559,7 +560,7 @@ const handlsubscription =()=> {
 // const score = 1564;
     return (
         <div className="container mx-auto ">
-          <div className="flex w-full  gap-4 mb-1 py-2 font-semibold rounded-lg">
+          <div className="flex w-full  gap-4 mb-1 pt-2 font-semibold rounded-lg">
       <div  onClick={handleprofile} className="flex gap-2 cursor-pointer justify-center w-full px-4 py-2 
           text-[#214082] bg-[#c1e7e3] rounded-lg">
         <img src={profileIcon} alt="" className="w-6 h-6" />
@@ -623,7 +624,7 @@ const handlsubscription =()=> {
             <div className="grid grid-cols-5 gap-4 mb-4">
             <div
      // handleprofile will be triggered when clicking the profile container
-    className="flex  flex-col cursor-pointer items-center justify-center relative border shadow-lg rounded-md py-2 bg-white"
+    className="flex gap-1  cursor-pointer items-center justify-center relative border shadow-lg rounded-md px-2 bg-white"
   >
     <div className="relative">
       {loading ? (
@@ -705,13 +706,13 @@ const handlsubscription =()=> {
       </h2>
       <div className="flex items-center justify-center gap-1">
         <p className="text-[14px] text-[#002366]">User ID : {userId}</p>
-        <div className="relative group inline-block">
+        <div className=" absolute top-2 right-2 group inline-block">
           <img
-            src={questionmark}
+            src={info}
             alt="question mark icon"
             className="h-[15px] w-[15px] cursor-pointer ml-[5px]"
           />
-          <span className="hidden group-hover:inline-block absolute left-1/2 -translate-x-[65%] -top-[15px] h-[70px] w-[250px] z-10 bg-black text-white text-xs px-2 py-1 rounded">
+          <span className="hidden group-hover:inline-block absolute left-1/2 translate-x-[6%] -top-[2px] h-[70px] w-[250px] z-10 bg-black text-white text-xs px-2 py-1 rounded">
             This is your unique identification number. It will help our support team to identify your account when you need assistance through QuizifAI's support channels.
           </span>
         </div>
@@ -767,15 +768,15 @@ const handlsubscription =()=> {
       </div>
 
       {/* Score */}
-      <div className="text-[16px] text-orange-500 ml-[30%]">
+      {/* <div className="text-[16px] text-orange-500 ml-[30%]">
         {globalscore}
-      </div>
+      </div> */}
 
       {/* Global Score Label */}
       {/* <div className="text-[16px]  font-semibold text-[#214082] ">
         Global Score
       </div> */}
-      <div className="">
+      <div className=" space-y-2 mt-2">
 
       
       <h1 className='text-[#002366] text-[14px]'>Global Rank <span className=' ml-[10px]'>:</span> <span className='text-[#FF6701] text-[12px]'>{globalRank}</span></h1>
@@ -809,22 +810,22 @@ const handlsubscription =()=> {
                             {/* <p className="text-[14px] text-[#214082] ">Subscription  : </p> */}
                             <div className="flex">
   <p
-    className={`text-[14px] font-medium ml-2 ${
-      userType === "Public" ? 'text-orange-500' : 'text-[#8b8c8d]'
+    className={`text-[14px]   ${
+      userType === "Public" ? 'text-orange-500 font-bold' : 'text-[#8b8c8d]'
     }`}
   >
     Public/
   </p>
   <p
-    className={`text-[14px] font-medium ml-2 ${
-      userType === "Subscribed" ? 'text-orange-500' : 'text-[#8b8c8d]'
+    className={`text-[14px]  ml-2 ${
+      userType === "Subscribed" ? 'text-orange-500 font-bold' : 'text-[#8b8c8d]'
     }`}
   >
     Subscribed/
   </p>
   <p
-    className={`text-[14px] font-medium ml-2 ${
-      userType === "Organization" ? 'text-orange-500' : 'text-[#8b8c8d]'
+    className={`text-[14px]  ml-2 ${
+      userType === "Organization" ? 'text-orange-500 font-bold' : 'text-[#8b8c8d]'
     }`}
   >
     Organization

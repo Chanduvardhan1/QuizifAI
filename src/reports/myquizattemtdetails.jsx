@@ -408,9 +408,9 @@ const handleBack = () => {
 
             <div className="flex justify-between items-center mb-4">
        
-<div className="flex w-full gap-2 ">
+<div className="flex w-full gap-2 pl-[5px]">
         <span className="text-[#F17530]  text-[14px]">Quiz Title </span>
-        <span className="text-[#F17530] text-[14px] ml-4">: </span>
+        <span className="text-[#F17530] text-[14px] ml-2">: </span>
         <select
           className="py-1 px-2 text-[12px] rounded-md border"
           value={selectedQuizTitle}
@@ -424,7 +424,7 @@ const handleBack = () => {
           ))}
         </select>
 
-        <span className="text-[#F17530]  text-[14px]">Best Score: </span>
+        <span className="text-[#F17530]  text-[14px]">Best Score : </span>
         <select
           className="py-1 px-2 text-[12px] rounded-md border"
           value={selectedBestScore}

@@ -13,6 +13,7 @@ import QuizAdmin from "../../src/assets/Images/quiz-type/Quiz-admin.png";
 import Profile from "../../src/assets/Images/quiz-type/Profile.png";
 import Navigation from "../navbar/navbar.jsx";
 import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
+import Topnavbar from "../Topnavbar/topnavbar.jsx";
 
 // Main-Section-icons
 import QuizTitle from "../../src/assets/Images/quiz-type/Quiz-Title.png";
@@ -364,11 +365,12 @@ const  handleMyHistory =() => {
     navigate(path); // Navigate to the selected report page
 };
     return (
-        <>
+     
           <div className="flex">
 <Navigation/>
-<div className="w-full p-5 bg-[#F5F5F5]">
-       <div className="flex justify-between ">
+<div className="flex-1 flex flex-col  bg-[#F5F5F5]">
+<Topnavbar/>
+       {/* <div className="flex justify-between ">
             <div>
             <p className="text-[#002366] text-[20px]">
                     Welcome {username.charAt(0).toUpperCase() + username.slice(1)}
@@ -382,9 +384,9 @@ const  handleMyHistory =() => {
               alt="Logout Icon"
               className="w-5 h-5 cursor-pointer "
             />
-            {/* <p className="text-[#002366] text-[14px]">Logout</p> */}
+            <p className="text-[#002366] text-[14px]">Logout</p>
             </div>
-          </div>
+          </div> */}
           <div className="flex flex-wrap justify-left w-full gap-2 ">
       {filteredReportsData.map((categoryData, index) => (
         
@@ -480,7 +482,7 @@ const  handleMyHistory =() => {
          </div>
       ))}
     </div>
-</div>
+
 {isModalOpen1 && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
@@ -557,7 +559,8 @@ const  handleMyHistory =() => {
         </div>
       )}
 </div>
-        </>
+</div>
+       
    
     );
   };

@@ -21,6 +21,8 @@ import { AuthContext } from "../Authcontext/AuthContext";
 import tixkmark from "../../src/assets/Images/dashboard/verify.png"
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Topnavbar from "../Topnavbar/topnavbar.jsx";
+
 // import Confetti from "react-confetti";
 // import { motion } from "framer-motion";
 const subscription = ()=> {
@@ -713,21 +715,22 @@ const handleSubmit = async (e) => {
     <div className="flex w-full">
       <Navigation/>
       <ToastContainer/>
-      <div className="w-full bg-[#f5f5f5]">
+      <div className="flex-1 flex flex-col  bg-[#f5f5f5]">
       {loading && (
   <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
     <CircularProgress size={40} color="primary" />
   </div>
 )}
-    <div className=" absolute right-2 top-2">
+<Topnavbar/>
+    {/* <div className=" absolute right-2 top-2">
             <img
               src={LogoutIcon}
               onClick={handleBackToLogin}
               alt="Logout Icon"
               className="w-5 h-5 cursor-pointer "
             />
-            {/* <p className="text-[#002366] text-[14px]">Logout</p> */}
-            </div>
+            <p className="text-[#002366] text-[14px]">Logout</p>
+            </div> */}
       
 {/* <div className="flex px-4">
     <img

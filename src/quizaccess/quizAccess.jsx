@@ -279,7 +279,7 @@ const quizAccess = () => {
         </div>
 
         {/* Description */}
-        <p className="text-[#00008b] w-[80%] line-clamp-2 text-sm mt-1">
+        <p className="text-[#00008b] w-full line-clamp-2 text-sm mt-1">
         {quizData.quiz_description}
         </p>
 
@@ -306,7 +306,7 @@ const quizAccess = () => {
                 alt="User"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">{quizData.created_by}</span>
+              <span className="ml-1 text-sm">Created By : {quizData.created_by}</span>
             </div>
             <div className="flex items-center">
               <img
@@ -314,7 +314,7 @@ const quizAccess = () => {
                 alt="Calendar"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">{quizData.created_on}</span>
+              <span className="ml-1 text-sm">Created On : {quizData.created_on}</span>
             </div>
           </div>
 
@@ -342,7 +342,7 @@ const quizAccess = () => {
                 alt="Timer"
                 className="w-[18px] h-[18px] mr-1"
               />
-              <span className="ml-1 text-sm">{quizData['quiz metrics'].total_attempts} Attemts</span>
+              <span className="ml-1 text-sm">{quizData['quiz metrics'].total_attempts}  Total Attempts</span>
             </div>
             <div className="flex items-center">
               <img

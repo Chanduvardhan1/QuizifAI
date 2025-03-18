@@ -22,6 +22,7 @@ import camera1 from "../../src/assets/Images/dashboard/edit.png"
 import x from "../../src/assets/Images/quiz-type/cross-button.png"
 import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
+import Topnavbar from "../Topnavbar/topnavbar.jsx";
 
 const FreeProfile = () => {
   const getFormattedDate = () => {
@@ -1537,29 +1538,29 @@ const FreeProfile = () => {
         className={styles.mainContent}
         style={{ backgroundColor: "#F5F5F5" }}
       >
+        <Topnavbar/>
              {loading && (
           <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
             <CircularProgress size={40} color="primary" />
           </div>
         )}
         <div className={styles.header}>
-          {/* Header content */}
-          <div className="flex justify-between w-full items-center px-[25px]">
+          {/* <div className="flex justify-between w-full items-center px-[25px]">
             <div className=" w-full">
               <p className="text-[#002366]">
                 Welcome {userName.charAt(0).toUpperCase() + userName.slice(1)}
               </p>
-              {/* <div className="bg-[#30CDF040] mr-[40px] mt-[10px] pl-[20px] text-[15px] font-medium text-[#214082] leading-6 py-[10px] rounded-[10px]">
+              <div className="bg-[#30CDF040] mr-[40px] mt-[10px] pl-[20px] text-[15px] font-medium text-[#214082] leading-6 py-[10px] rounded-[10px]">
                 <p>
                   {weeklyQuizCount > 0 && averageScorePercentage > 0
                     ? `You have successfully completed ${weeklyQuizCount} Quizzes this week, achieving an average score of ${averageScorePercentage}%`
                     : "You have not attended any quizzes yet, Please attempt the quizzes below."}
                 </p>
-              </div> */}
+              </div>
             </div>
-            {/* <div className={styles.headerRight}>
+            <div className={styles.headerRight}>
               <div className="text-[#002366]">{getFormattedDate()}</div>
-            </div> */}
+            </div>
             <div className="flex flex-col justify-center items-center">
   <img
     src={LogoutIcon}
@@ -1570,7 +1571,7 @@ const FreeProfile = () => {
   <p className="text-[#002366] text-[14px]">Logout</p>
 </div>
 
-          </div>
+          </div> */}
         </div>
 
         {/* Main content  */}

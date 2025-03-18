@@ -112,15 +112,30 @@ const handleNext = () => {
     return true;  // Show all quizzes if "Latest" is selected
   });
 
-  // Sort quizzes if "Latest" is selected
+//   // Sort quizzes if "Latest" is selected
   const sortedQuizzes = sortOption === "latest" 
       ? filteredByDate.sort((a, b) => new Date(b.date) - new Date(a.date))
       : filteredByDate;
 
-const indexOfLastRow = currentPage * rowsPerPage;
-const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-const currentRows = sortedQuizzes.slice(indexOfFirstRow, indexOfLastRow);
-  
+// const indexOfLastRow = currentPage * rowsPerPage;
+// const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+// const currentRows = sortedQuizzes.slice(indexOfFirstRow, indexOfLastRow);
+
+
+const loggedInUser = allUsersData.find((user) => String(user.user_id) === String(userId));
+const otherUsers = allUsersData.filter((user) => String(user.user_id) !== String(userId));
+
+const sortedUsers = sortOption.toLowerCase() === "latest"
+  ? [...otherUsers].sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0))
+  : otherUsers;
+
+const finalUserList = loggedInUser ? [loggedInUser, ...sortedUsers] : sortedUsers;
+
+const indexOfLastRow = Math.min(currentPage * rowsPerPage, finalUserList.length);
+const indexOfFirstRow = Math.max(0, indexOfLastRow - rowsPerPage);
+const currentRows = finalUserList.slice(indexOfFirstRow, indexOfLastRow);
+
+
   const handlePrevious = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -382,8 +397,16 @@ useEffect(() => {
         </thead>
 
         <tbody className='space-y-4'>
-            {currentRows.map((user, index) =>(
-              <tr key={user.user_id} className="bg-white hover:bg-gray-100 active:bg-green-200 text-[12px] text-[#002366] font-medium border-black">
+            {currentRows.map((user, index) =>{
+               const isLoggedInUser = String(user.user_id) === String(userId);
+    
+               return (
+              // <tr key={user.user_id} className="bg-white hover:bg-gray-100 active:bg-green-200 text-[12px] text-[#002366] font-medium border-black">
+              <tr 
+        key={user.user_id} 
+        className={`text-[12px] text-[#002366] font-medium border-black 
+          ${isLoggedInUser ? "bg-[#c7e7ef] font-bold" : "bg-white hover:bg-gray-100 active:bg-green-200"}`}
+      >
               <th className='py-2 px-2 border-b'>{indexOfFirstRow + index + 1}</th>
               <th className='py-2 px-2 border-b text-start'>
               {user.full_name.toLowerCase().replace(/^\w/, (c) => c.toUpperCase())}
@@ -394,7 +417,8 @@ useEffect(() => {
               <th className='py-2 px-2 border-b text-start'>{user.total_duration}</th>
               <th className='py-2 px-2 border-b text-start'>{user.city || '-'}</th>
              </tr>
-            ))}
+            );
+})}
         </tbody>
         </table>
         <div className="flex justify-between mt-4">

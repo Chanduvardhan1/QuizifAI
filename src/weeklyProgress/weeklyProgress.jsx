@@ -133,7 +133,7 @@ const progressLabel = getProgressLabel(progress);
   return (
     <div className="relative flex flex-col items-center bg-white rounded-sm">
       {quizProgress?.response === "success" ? (
-        <div className="flex flex-col w-full px-5 items-center">
+        <div className="flex flex-col w-full items-center">
           <div className="flex w-full flex-col gap-1 justify-between mt-1">
             <div className="flex flex-col gap-2">
             <h1 className="text-[#214082] text-[14px]">

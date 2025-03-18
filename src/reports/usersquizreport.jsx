@@ -392,9 +392,9 @@ const handleBack = () => {
 
             <div className="flex justify-between mb-3 items-center">
      
-            <div className="flex w-full gap-2 ">
+            <div className="flex w-full gap-2 pl-[5px] ">
         <span className="text-[#F17530] text-[14px]">User Name </span>
-        <span className="text-[#F17530] text-[14px] ml-1">: </span>
+        <span className="text-[#F17530] text-[14px]">: </span>
 
         <select
           value={userFilter}

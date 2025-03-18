@@ -7,6 +7,7 @@ import searchIcon from "../assets/Images/images/dashboard/Search.png";
 import cancel from "../assets/Images/images/dashboard/cancel.png";
 import DashBoardNavBar from "../../src/dashboardNavBar/dashboardNavBar.jsx";
 import LogoutIcon from "../assets/Images/images/dashboard/logout.png";
+import Topnavbar from "../Topnavbar/topnavbar.jsx";
 
 import congiguration from "../../src/assets/Images/dashboard/configuration 1.png"
 import preferences from "../../src/assets/Images/dashboard/preferences.png"
@@ -339,9 +340,9 @@ const configure = () => {
     <div className="flex font-Poppins">
       <Navigation />
       <div className="flex-1 flex flex-col bg-[#F5F5F5]">
-        <div className="flex justify-between p-[20px] pr-[80px] text-[20px] font-medium leading-7 text-left ml-[20px] mt-[10px] text-[#002366]">
-          {/* Header content */}
-          <p className="-mt-[5px]">
+        <div className="flex justify-between  text-[20px] font-medium leading-7 text-left  text-[#002366]">
+<Topnavbar/>
+          {/* <p className="-mt-[5px]">
             Welcome {userName.charAt(0).toUpperCase() + userName.slice(1)}
           </p>
           <div className="flex -mt-[5px]">
@@ -357,13 +358,8 @@ const configure = () => {
               value={searchQuery}
               onChange={handleInputChange}
             />
-            {/* <img
-              onClick={handleBanckToDashbaord}
-              className="h-4 w-4 cursor-pointer mt-[5px] mr-1"
-              title="close settings"
-              src={cancel}
-            /> */}
-                <div className=" absolute right-3 top-3">
+         
+                <div className=" absolute right-3 top-8">
   <img
     src={LogoutIcon}
     onClick={handleBackToLogin}
@@ -371,7 +367,7 @@ const configure = () => {
     className="w-5 h-5 cursor-pointer "
   />
 </div>
-          </div>
+          </div> */}
       
  {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -494,7 +490,7 @@ const configure = () => {
 {/* <div className="flex">
 <DashBoardNavBar/>
 </div> */}
-        <div className="flex flex-wrap gap-[20px] mt-[20px] ml-[15px] mr-[10px] justify-center">
+        <div className="flex flex-wrap gap-[20px] mt-[20px] ml-[15px] mr-[10px] justify-start">
           {filteredItems.map((item) => (
             <div
               key={item.id}
